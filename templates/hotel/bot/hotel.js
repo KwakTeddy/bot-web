@@ -1,20 +1,22 @@
 var path = require('path');
-var bot = require(path.resolve('engine/bot.js')).getTemplateBot('hotel');
+var bot = require(path.resolve('engine/bot')).getTemplateBot('hotel');
 
 var messages = require(path.resolve('engine/messages/server/controllers/messages.server.controller'));
-var address = require(path.resolve('./engine/bot/action/common/address'));
-var type = require(path.resolve('./engine/bot/action/common/type'));
 var logger = require(path.resolve('./config/lib/logger'));
 var mongo = require(path.resolve('./engine/bot/action/common/mongo'));
 var async = require('async');
 var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var categoryrooms = mongo.getModel('hotel-room');
-var categoryrestaurants = mongo.getModel('hotel-restaurant');
-var categoryfacilities = mongo.getModel('hotel-facility');
-var categoryevents = mongo.getModel('hotel-event');
+var categoryrooms = mongo.getModel('hotel-rooms');
+var categoryrestaurants = mongo.getModel('hotel-restaurants');
+var categoryfacilities = mongo.getModel('hotel-facilities');
+var categoryevents = mongo.getModel('hotel-events');
 var order = mongo.getModel('hotelorders');
 var config = require(path.resolve('./config/config'));
+var utils = require(path.resolve('engine/bot/action/common/utils'));
+var typelib = require(path.resolve('engine/bot/action/common/type'));
+var globals = require(path.resolve('engine/bot/engine/common/globals'));
+var _ = require('lodash');
 
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
@@ -52,7 +54,7 @@ var mynamesave1 = {
     action: function(task, context, callback){
         context.dialog.myname = context.dialog.inCurRaw;
         context.user.myname=context.dialog.myname;
-        context.dialog.oneallprice=context.dialog.days*context.dialog.roomlistType.room_price*context.dialog.peoplenumber;
+        context.dialog.oneallprice=context.dialog.days*context.dialog.roomlistType.room_price;
 
         var s1  =  context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday;
         var s2  =  context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
@@ -87,7 +89,7 @@ var mynamesave1 = {
         order.collection.insert(neworder,function(err,docs){
             order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
-                console.log(context.dialog.order[0]);
+                //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
                 for(i=0;i<context.dialog.order.length;i++){
                     var number1=context.dialog.order[i].order_price;
@@ -129,8 +131,9 @@ bot.setTask("mynamesave1", mynamesave1);
 var categoryroomlist = {
     name: 'categoryroomlist',
     action: function(task, context, callback) {
+        //context.dialog.hotelroomss=context.bot.hotelrooms;
 
-        if(context.bot.room[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
+        if(context.bot.hotelrooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
         else {
             context.dialog.roomno = 0;
         var mydate=new Date().toLocaleDateString();
@@ -195,7 +198,7 @@ var saveMobile = {
         context.dialog.myyear=x[2];
         context.dialog.mymonth=x[0];
         context.dialog.myday=Number(x[1])+1;
-      if(context.bot.room[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
+      if(context.bot.hotelrooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
       else {
           context.dialog.roomno = 0;
           categoryrooms.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -219,7 +222,7 @@ bot.setTask('saveMobile', saveMobile);
 var categoryrestaurantlist = {
     name: 'categoryrestaurantlist',
     action: function(task, context, callback) {
-        if(context.bot.restaurant[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
+        if(context.bot.hotelrestaurants[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
         else {
             context.dialog.restaurantno=0;
             categoryrestaurants.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -239,7 +242,7 @@ bot.setTask("categoryrestaurantlist", categoryrestaurantlist);
 var categoryfacilitylist = {
     name: 'categoryfacilitylist',
     action: function(task, context, callback) {
-        if(context.bot.facility[0]===undefined){context.dialog.facilityno=undefined;callback(task,context);}
+        if(context.bot.hotelfacilities[0]===undefined){context.dialog.facilityno=undefined;callback(task,context);}
         else {
             context.dialog.facilityno = 0;
             categoryfacilities.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -260,7 +263,7 @@ bot.setTask("categoryfacilitylist", categoryfacilitylist);
 var categoryeventlist = {
     name: 'categoryeventlist',
     action: function(task, context, callback) {
-        if(context.bot.event[0]===undefined){context.dialog.eventno=undefined;callback(task,context);}
+        if(context.bot.hotelevents[0]===undefined){context.dialog.eventno=undefined;callback(task,context);}
         else {
             context.dialog.eventno = 0;
             categoryevents.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -280,12 +283,12 @@ bot.setTask("categoryeventlist", categoryeventlist);
 var inforshuttle = {
     name: 'inforshuttle',
     action: function(task, context, callback) {
-        if(context.bot.shuttle[0]===undefined){context.dialog.shuttleno=undefined;callback(task,context);}
-        else if(context.bot.shuttle[0].shuttleornot==="부"){context.dialog.shuttleno=1;callback(task,context);}
+        if(context.bot.hotelshuttles[0]===undefined){context.dialog.shuttleno=undefined;callback(task,context);}
+        else if(context.bot.hotelshuttles[0].shuttleornot==="부"){context.dialog.shuttleno=1;callback(task,context);}
         else {context.dialog.shuttleno=0;
-            var ss=context.bot.shuttle[0].shuttleimage[0];
+            var ss=context.bot.hotelshuttles[0].shuttleimage[0];
             //console.log(ss+"000000000000");
-            var img = context.bot.shuttle[0].shuttleimage[0]=='h' ? context.bot.shuttle[0].shuttleimage : config.host + context.bot.shuttle[0].shuttleimage;
+            var img = context.bot.hotelshuttles[0].shuttleimage[0]=='h' ? context.bot.hotelshuttles[0].shuttleimage : config.host + context.bot.hotelshuttles[0].shuttleimage;
             console.log(img+"222222222222");
             task.buttons = [{text:"자세히보기",url:img}];
             task.image = {url: img};
@@ -302,14 +305,14 @@ var inforpark = {
         //console.log(context.bot.parks+"222222222");
         // console.log(typeof JSON.stringify(context.bot.parks[0]));
         // console.log(typeof JSON.parse(JSON.stringify(context.bot.parks[0])));
-       if(context.bot.park[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
-       else if(context.bot.park[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
+       if(context.bot.hotelparks[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
+       else if(context.bot.hotelparks[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
        else {context.dialog.parkno=0;
-       context.dialog.parkaddress=context.bot.park[0].parkaddress;
-       context.dialog.parkdetails=context.bot.park[0].parkdetails;
-       context.dialog.parksize=context.bot.park[0].parksize;
-       context.dialog.parkname=context.bot.park[0].parkname;
-       context.dialog.parkornot=context.bot.park[0].parkornot;
+       context.dialog.parkaddress=context.bot.hotelparks[0].parkaddress;
+       context.dialog.parkdetails=context.bot.hotelparks[0].parkdetails;
+       context.dialog.parksize=context.bot.hotelparks[0].parksize;
+       context.dialog.parkname=context.bot.hotelparks[0].parkname;
+       context.dialog.parkornot=context.bot.hotelparks[0].parkornot;
 
        task.buttons = [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.dialog.parkaddress}];
        callback(task,context);}
@@ -352,7 +355,7 @@ bot.setTask("imagefacility", imagefacility);
 var addorder = {
     name:'addorder',
     action: function (task,context,callback) {
-        context.dialog.oneallprice=context.dialog.days*context.dialog.roomlistType.room_price*context.dialog.peoplenumber;
+        context.dialog.oneallprice=context.dialog.days*context.dialog.roomlistType.room_price;
         var s1  =  context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday;
         var s2  =  context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
         context.dialog.days=DateDiff(s1,s2);
@@ -385,7 +388,7 @@ var addorder = {
                 order.collection.insert(neworder,function(err,docs){
                   order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
                                                         context.dialog.order= docs;
-                                                        console.log(context.dialog.order[0]);
+                                                        //console.log(context.dialog.order[0]);
                                                         context.dialog.allprice=0;
                                                         for(i=0;i<context.dialog.order.length;i++){
                                                         var number1=context.dialog.order[i].order_price;
@@ -424,6 +427,161 @@ var addorder = {
 
 
 bot.setTask('addorder',addorder);
+
+
+var addorder1 = {
+    name:'addorder1',
+    action: function (task,context,callback) {
+
+        var s1  =  context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday;
+        var s2  =  context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
+        context.dialog.days=DateDiff(s1,s2);
+        context.dialog.dayss=context.dialog.days+1;
+        context.dialog.oneallprice=context.dialog.days*context.dialog.menumatch.room_price;
+        var mydate=new Date();
+        mydate.setHours(mydate.getHours()+9);
+        context.dialog.myall=mydate;
+        var ss=mydate;
+        context.dialog.todayday=ss.getDate();
+        context.dialog.todaymonth=Number(ss.getMonth())+1;
+        context.dialog.todayyear=ss.getFullYear();
+        context.dialog.todaytime=ss.getHours()+":"+ss.getMinutes()+":"+ss.getSeconds();
+        context.dialog.todaydate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+context.dialog.todayday+" "+context.dialog.todaytime;
+        var tomorrowday = Number(context.dialog.todayday)+1;
+        context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
+
+        var neworder={
+            order_user: context.dialog.myname,
+            order_phone:context.user.mobile,
+            order_price:context.dialog.oneallprice,
+            order_date: context.dialog.todaydate,
+            order_paydate: context.dialog.tomorrowdate,
+            order_daynumbers:context.dialog.days,
+            order_oneprice:context.dialog.menumatch.room_price,
+            order_room:context.dialog.menumatch.category_name,
+            order_category:context.dialog.menumatch._id,
+            order_period:context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday,
+            order_peoplenumber: context.dialog.peoplenumber
+        };
+        order.collection.insert(neworder,function(err,docs){
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
+                context.dialog.order= docs;
+                //console.log(context.dialog.order[0]);
+                context.dialog.allprice=0;
+                for(i=0;i<context.dialog.order.length;i++){
+                    var number1=context.dialog.order[i].order_price;
+                    context.dialog.allprice=number1+context.dialog.allprice;}
+
+
+                context.dialog.inputyear1=context.dialog.inputyear;
+                context.dialog.inputmonth1=context.dialog.inputmonth;
+                context.dialog.inputday1=context.dialog.inputday;
+
+                context.dialog.outyear1=context.dialog.outyear;
+                context.dialog.outmonth1=context.dialog.outmonth;
+                context.dialog.outday1=context.dialog.outday;
+
+                context.dialog.peoplenumber1=context.dialog.peoplenumber;
+
+                context.dialog.myyear=undefined;
+                context.dialog.mymonth=undefined;
+                context.dialog.myday=undefined;
+
+                context.dialog.inputyear=undefined;
+                context.dialog.inputmonth=undefined;
+                context.dialog.inputday=undefined;
+
+                context.dialog.outyear=undefined;
+                context.dialog.outmonth=undefined;
+                context.dialog.outday=undefined;
+
+                context.dialog.peoplenumber=undefined;
+
+                callback(task,context);
+            });
+        });
+    }
+};
+
+
+bot.setTask('addorder1',addorder1);
+
+var addorder2 = {
+    name: 'addorder2',
+    action: function(task, context, callback){
+        context.dialog.myname = context.dialog.inCurRaw;
+        context.user.myname=context.dialog.myname;
+        var s1  =  context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday;
+        var s2  =  context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
+        context.dialog.days=DateDiff(s1,s2);
+        context.dialog.dayss=context.dialog.days+1;
+        context.dialog.oneallprice=context.dialog.days*context.dialog.menumatch.room_price;
+        var mydate=new Date();
+        mydate.setHours(mydate.getHours()+9);
+        context.dialog.myall=mydate;
+        var ss=mydate;
+        context.dialog.todayday=ss.getDate();
+        context.dialog.todaymonth=Number(ss.getMonth())+1;
+        context.dialog.todayyear=ss.getFullYear();
+        context.dialog.todaytime=ss.getHours()+":"+ss.getMinutes()+":"+ss.getSeconds();
+        context.dialog.todaydate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+context.dialog.todayday+" "+context.dialog.todaytime;
+        var tomorrowday = Number(context.dialog.todayday)+1;
+        context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
+
+        var neworder={
+            order_user: context.dialog.myname,
+            order_phone:context.user.mobile,
+            order_price:context.dialog.oneallprice,
+            order_date: context.dialog.todaydate,
+            order_paydate: context.dialog.tomorrowdate,
+            order_daynumbers:context.dialog.days,
+            order_oneprice:context.dialog.menumatch.room_price,
+            order_room:context.dialog.menumatch.category_name,
+            order_category:context.dialog.menumatch._id,
+            order_period:context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday,
+            order_peoplenumber: context.dialog.peoplenumber
+        };
+        order.collection.insert(neworder,function(err,docs){
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
+                context.dialog.order= docs;
+                //console.log(context.dialog.order[0]);
+                context.dialog.allprice=0;
+                for(i=0;i<context.dialog.order.length;i++){
+                    var number1=context.dialog.order[i].order_price;
+                    context.dialog.allprice=number1+context.dialog.allprice;}
+
+
+                context.dialog.inputyear1=context.dialog.inputyear;
+                context.dialog.inputmonth1=context.dialog.inputmonth;
+                context.dialog.inputday1=context.dialog.inputday;
+
+                context.dialog.outyear1=context.dialog.outyear;
+                context.dialog.outmonth1=context.dialog.outmonth;
+                context.dialog.outday1=context.dialog.outday;
+
+                context.dialog.peoplenumber1=context.dialog.peoplenumber;
+
+                context.dialog.myyear=undefined;
+                context.dialog.mymonth=undefined;
+                context.dialog.myday=undefined;
+
+                context.dialog.inputyear=undefined;
+                context.dialog.inputmonth=undefined;
+                context.dialog.inputday=undefined;
+
+                context.dialog.outyear=undefined;
+                context.dialog.outmonth=undefined;
+                context.dialog.outday=undefined;
+
+                context.dialog.peoplenumber=undefined;
+
+                callback(task,context);
+            });
+        });
+    }
+};
+bot.setTask("addorder2", addorder2);
+
 
 
 var deleteorder = {
@@ -563,7 +721,173 @@ function IsLeapYear(nYear)
     // 是4和100的倍数，如果又是400的倍数才是闰年 
     return (nYear % 400 == 0); 
 } 
-//-----------------type------------------------------------------------------------------------------------------------------------------------  
+//-----------------type------------------------------------------------------------------------------------------------------------------------
+var datetype = {
+    name: "datetype",
+    listName: "datetype",
+    typeCheck: "dateTypeCheck"
+};
+bot.setType("datetype", datetype);
+
+var  dateincheck= {
+    name:'dateincheck',
+    action: function(task, context, callback) {
+
+        //console.log(task.date[1]+" 111111111111");
+        context.dialog.date2=task.date[1];
+        context.dialog.inputyear=task.date[1].getFullYear();
+        context.dialog.inputmonth=task.date[1].getMonth()+1;
+        context.dialog.inputday=task.date[1].getDate();
+        //console.log(context.dialog.inputyear+" 111111111111");
+        //console.log(context.dialog.inputmonth+" 111111111111");
+        //console.log(context.dialog.inputday+" 111111111111");
+        callback(task,callback);
+    }
+};
+
+bot.setTask('dateincheck', dateincheck);
+
+var peoplenumbertype = {
+    name: "peoplenumbertype",
+    listName: "peoplenumbertype",
+    typeCheck: function (text, type, task, context, callback) {
+        var x=/[ ]?명/g;
+        //search(x);
+        //var str='2017-12-15부터 5명 4555박5일 예약';
+        var count1=text.search(x);
+        var count2=0;
+        if(count1>=0){
+            context.dialog.peoplenumber='';
+            //console.log(str.search(x));
+            //console.log(str[count1]);
+            for(i=count1-1;i>=0;i--)
+            {
+                if(text[i]===' '){count2=i;break}
+            }
+            var count3=count2+1;
+            for(i=count3;i<count1;i++)
+            {
+                context.dialog.peoplenumber=Number(context.dialog.peoplenumber+text[i]);
+
+            }
+            callback(text, task, true);}
+        else{ callback(text, task, false);}
+        //console.log(context.dialog.daynumber);
+    }
+};
+bot.setType("peoplenumbertype", peoplenumbertype);
+
+
+var daynumbertype = {
+    name: "daynumbertype",
+    listName: "daynumbertype",
+    typeCheck: function (text, type, task, context, callback) {
+        var x=/[ ]?박/g;
+         //search(x);
+        //var str='2017-12-15부터 5명 4555박5일 예약';
+        var count1=text.search(x);
+        var count2=0;
+        if(count1>=0){
+        context.dialog.daynumber='';
+        //console.log(str.search(x));
+        //console.log(str[count1]);
+        for(i=count1-1;i>=0;i--)
+        {
+            if(text[i]===' '){count2=i;break}
+        }
+        var count3=count2+1;
+        for(i=count3;i<count1;i++)
+        {
+            context.dialog.daynumber=Number(context.dialog.daynumber+text[i]);
+
+        }
+            context.dialog.daynumber1=context.dialog.daynumber+1;
+        callback(text, task, true);}
+        else{ callback(text, task, false);}
+        //console.log(context.dialog.daynumber);
+    }
+};
+bot.setType("daynumbertype", daynumbertype);
+
+var  dateoutcheck= {
+    name:'dateoutcheck',
+    action: function(task, context, callback) {
+        //console.log(task.date+"++++++++++++++++++++");
+        var x=context.dialog.date2;
+
+        x.setDate(x.getDate()+context.dialog.daynumber);
+
+        //console.log(task.date+" 111111111111");
+        context.dialog.outyear=x.getFullYear();
+        context.dialog.outmonth=x.getMonth()+1;
+        context.dialog.outday=x.getDate();
+
+        //console.log(context.dialog.inputyear+" 111111111111");
+        //console.log(context.dialog.inputmonth+" 111111111111");
+        //console.log(context.dialog.inputday+" 111111111111");
+        callback(task,callback);
+    }
+};
+
+bot.setTask('dateoutcheck', dateoutcheck);
+
+
+var categoryroomisornot = {
+    name: "categoryroomisornot",
+    listName: "categoryroomisornot",
+    typeCheck: function(text, type, task, context, callback) {
+        var matched=false;
+
+        //context.dialog.menumatch=[];
+        //var ss=0;
+        //var ll='ㄴㅁㅇㄹㅎㄴㅇㄹㅎㅇㅌㄹㅎdddd';
+        //console.log(JSON.stringify(context.bot)+"pppppppppppppppppp");
+        //console.log(context.bot.hotelrooms+"2222222222222222");
+        if(context.bot.hotelrooms[0]===undefined){callback(task,context);}
+        else {
+            categoryrooms.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+                if (err) {
+                    console.log(err);
+                    callback(task, context);
+                } else {
+                    context.dialog.categorys = docs;
+                    if (context.dialog.categorys.length === 0) {
+                        callback(task, context);
+                    }
+                    else {
+
+                        for (i = 0; i < context.dialog.categorys.length; i++) {
+                            var str = context.dialog.inRaw;
+                            var ss=i+1;
+                            //console.log(text+"tttttttttt2222222222222222");
+                            //console.log(i+"tttttttttt2222222222222222");
+                            //console.log(context.dialog.categorys[i].category_name+"2222222222222222");
+                            //console.log(typeof text);
+                            //var regDate =/[context.dialog.inRaw]/;
+                            //if (regDate.test(context.dialog.categorys[i].name)) {context.dialog.menumatch.push(context.dialog.categorys[i]);}
+                            if (str.indexOf(context.dialog.categorys[i].category_name) >= 0 || text == ss) {
+                                context.dialog.menumatch = context.dialog.categorys[i];
+                               // console.log(context.dialog.inRaw+"ssssssss2222222222222222");
+                               // console.log((i+1)+"ssssssss2222222222222222");
+                               // console.log(context.dialog.menumatch+"ssssssss2222222222222222");
+                            }
+                        }
+                        if (context.dialog.menumatch !== undefined) {
+                            matched = true;
+                            context.dialog.preallprice = context.dialog.daynumber * context.dialog.menumatch.room_price;
+                        }
+                        callback(task, context,matched);
+                    }
+                }
+            });
+        }
+    }
+};
+
+bot.setType('categoryroomisornot', categoryroomisornot);
+
+
+
 var roomlistType = {
     name: "categoryroom",
     listName: "categoryroom",
@@ -616,13 +940,26 @@ if (!regDate.test(text))
 else{
     // 将年、月、日的值取到数组arr中，其中arr[0]为整个字符串，arr[1]-arr[3]为年、月、日
     var arr = regDate.exec(text);
-
-    // 判断年、月、日的取值范围是否正确
-    context.dialog.inputyear=arr[1];
-    context.dialog.inputmonth=arr[2];
-    context.dialog.inputday=arr[3];
-    matched=IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
-   callback(text, task, matched);
+    if(!context.dialog.outyear && !context.dialog.outmonth && !context.dialog.outday) {
+        // 判断年、月、日的取值范围是否正确
+        context.dialog.inputyear = arr[1];
+        context.dialog.inputmonth = arr[2];
+        context.dialog.inputday = arr[3];
+        matched = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
+        callback(text, task, matched);
+    }
+    else{
+        context.dialog.inputyear = arr[1];
+        context.dialog.inputmonth = arr[2];
+        context.dialog.inputday = arr[3];
+        var ss=false;
+        ss = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
+        if(ss && context.dialog.inputyear<=context.dialog.outyear && context.dialog.inputmonth<=context.dialog.outmonth && context.dialog.inputday<=context.dialog.outday)
+        {
+            matched=true;callback(text, task, matched);
+        }
+        else{matched=false;callback(text, task, matched);}
+    }
 }
 	}
 };
@@ -738,7 +1075,7 @@ if (!regDate.test(text))
 }
 else{
     context.dialog.peoplenumber=context.dialog.inCurRaw;
-    context.dialog.backallprice=context.dialog.preallprice*context.dialog.peoplenumber;
+    //context.dialog.backallprice=context.dialog.preallprice*context.dialog.peoplenumber;
     matched=true;
     callback(text, task, matched);
 }

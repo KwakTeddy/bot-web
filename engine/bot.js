@@ -107,16 +107,22 @@ function loadBot(botName, callback) {
                                 var schemaPostFix = file.split('-')[0];
 
                                 var schema = new mongoose.Schema(JSON.parse(data));
-                                if(mongoose.models[doc.id + '-' + schemaPostFix])
-                                    schema = mongoose.model(doc.id + '-' + schemaPostFix);
+                                if(mongoose.models[doc.id + '-' + schemaPostFix + 's'])
+                                    schema = mongoose.model(doc.id + '-' + schemaPostFix + 's');
                                 else
-                                    schema = mongoose.model(doc.id + '-' + schemaPostFix, schema);
+                                    schema = mongoose.model(doc.id + '-' + schemaPostFix + 's', schema);
 
                                 schema.find({ botId: bot.id }).lean().exec(function(err, doc1)
                                 {
                                     if(schemaPostFix == 'data')
                                     {
-                                        utils.merge(bot, (doc1.length == 1 && doc1[0]) || {});
+                                        if(doc1.length == 1 && doc1[0])
+                                        {
+                                            for(var key in doc1[0])
+                                            {
+                                                bot[key] = doc1[0][key];
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -125,6 +131,7 @@ function loadBot(botName, callback) {
 
                                         utils.merge(bot, tempData);
                                     }
+
                                     // utils.merge(bot, doc1);
                                     next();
                                 });

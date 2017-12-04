@@ -1498,9 +1498,10 @@
 
         var lan = function(key)
         {
+            key = key.trim();
             if(!languages[key])
             {
-                console.error('languages', key);
+                // console.error('languages', key);
                 return '언어가 없습니다';
             }
             else

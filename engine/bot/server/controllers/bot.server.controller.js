@@ -80,7 +80,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
         if(_task && context && context.bot && context.bot.commonButtons &&
             context.botUser && context.botUser._currentDialog &&
-            context.botUser._currentDialog.name != context.bot.startDialog.name) {
+           context.botUser.startDialog && context.botUser._currentDialog.name != context.bot.startDialog.name) {
 
             if(_task.buttons && (_task.buttons.length < 2 ||
                     _.isEqual(_task.buttons.slice(_task.buttons.length - 2, _task.buttons.length), context.bot.commonButtons) == false))
