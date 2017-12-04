@@ -79,8 +79,6 @@ module.exports.createDatas = function(req, res)
         else
             model = mongoose.model(name, schema);
 
-        console.log('모델명', name);
-
         model.remove({ botId: botId }).exec(function(err)
         {
             if(err)
@@ -93,6 +91,7 @@ module.exports.createDatas = function(req, res)
             {
                 data = new model(data);
                 data.botId = botId;
+
                 data.save(function(err)
                 {
                     if(err)
