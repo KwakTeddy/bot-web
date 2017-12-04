@@ -24,12 +24,24 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
             </colgroup>
             <thead>
                 <tr>
@@ -54,6 +66,61 @@
             </thead>
             <tbody>
                 <tr ng-repeat="data in datas">
+                    <td>
+                        <input type="text" ng-model="data.category_name">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_form">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_kind">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_bed">
+                    </td>
+                    <td>
+                        <input type="text"  ng-model="data.room_size">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_checkin">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_checkout">
+                    </td>
+                    <td>
+                        <input type="number" ng-model="data.room_price">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_facility1">
+                    </td>
+                    <td>
+                        <input type="text"  ng-model="data.room_facility2">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_facility3">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_facility4">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_facility5">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.room_facility6">
+                    </td>
+                    <td>
+                        <input type="text"  ng-model="data.room_facility7">
+                    </td>
+                    <td>
+                        <input type="text"  ng-model="data.room_introduction">
+                    </td>
+                    <td>
+                        <img src="{{ data.room_image }}" style="width: 50px;" ng-if="data.room_image" ng-click="editImage($event);">
+                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.room_image" />
+                    </td>
+                    <td>
+                        <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="5">
