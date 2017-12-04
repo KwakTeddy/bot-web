@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('LogAnalysisController','LanguageService', ['$window', '$scope', function ($window, $scope, LanguageService)
+angular.module('playchat').controller('LogAnalysisController', ['$window', '$scope', 'LanguageService', function ($window, $scope, LanguageService)
 {
     $scope.$parent.loaded('log-analysis');
 

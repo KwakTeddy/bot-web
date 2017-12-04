@@ -1498,7 +1498,6 @@
 
         var lan = function(key)
         {
-            console.log(code);
             if(!languages[key])
             {
                 console.error('languages', key);

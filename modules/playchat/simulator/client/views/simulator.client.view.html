@@ -16,13 +16,13 @@
 <div class="answer">
     <img src="modules/playchat/simulator/client/imgs/bot.png">
     <div class="system-text">
-        <span class="name">{{lan('{botName}') }}</span>
-        <span class="time">{{lan('{time}') }}</span>
+        <span class="name">{botName}</span>
+        <span class="time">{time}</span>
     </div>
     <div class="bubble">
         <em class="tail"></em>
         <div class="speech">
-            <div class="speech-text">{{lan('{text}') }}</div>
+            <div class="speech-text">{text}</div>
         </div>
     </div>
 </div>
@@ -31,13 +31,13 @@
 <script type="text/template" id="userAnswerTemplate">
 <div class="question">
     <div class="system-text">
-        <span class="time">{{lan('{time}') }}</span>
+        <span class="time">{time}</span>
     </div>
     <div class="bubble">
         <em class="tail"></em>
         <div>
             <div class="speech">
-                <div class="speech-text">{{lan('{text}') }}</div>
+                <div class="speech-text">{text}</div>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
 <div ng-controller="SimulatorController" style="height: 100%;">
     <div class="simulator-background">
         <div class="simulator-header">
-            <p>{{lan('Simulator') }} [{{ chatbotName }}]</p>
+            <p>Simulator [{{ chatbotName }}]</p>
             <a href="#" class="simulator-close" ng-click="toggle($event);"></a>
         </div>
         <div class="chatContents" id="simulatorBody"></div>
@@ -59,7 +59,7 @@
         </div>
     </div>
     <div class="simulator-btn" ng-show="isClosed" ng-click="toggle($event);">
-        <a href="#" class="">{{lan('Chat') }}</a>
+        <a href="#" class="">Chat</a>
         <img src="modules/playchat/simulator/client/imgs/speech.png">
     </div>
 </div>
