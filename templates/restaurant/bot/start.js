@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('engine/bot')).getBot('restaurants');
+var bot = require(path.resolve('engine/bot')).getTemplateBot('restaurants');
 
 var type = require(path.resolve('./engine/bot/action/common/type'));
 
