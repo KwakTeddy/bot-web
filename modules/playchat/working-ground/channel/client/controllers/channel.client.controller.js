@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('ChannelController', ['$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($scope, $resource, $cookies, $location, LanguageService)
+angular.module('playchat').controller('ChannelController', ['$scope', '$resource', '$cookies', '$location', 'LanguageService', function ($scope, $resource, $cookies, $location, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Channel', '/modules/playchat/gnb/client/imgs/channel.png');
 

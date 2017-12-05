@@ -1134,6 +1134,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('restaurants');
+var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('restaurant');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

@@ -127,7 +127,7 @@ function loadBot(botName, callback) {
                                     else
                                     {
                                         var tempData = {};
-                                        tempData[schemaPostFix] = doc1 || [];
+                                        tempData[schemaPostFix + 's'] = doc1 || [];
 
                                         utils.merge(bot, tempData);
                                     }
@@ -285,7 +285,7 @@ function loadBot(botName, callback) {
                         // var filePath = path.join(botDir, file);
 
                         try {
-                            console.log('\tloading file: ' + file);
+                            console.log('\tloading5 file: ' + file);
                             utils.requireNoCache(file, true);
                         } catch(e) {
                             console.error(e);
