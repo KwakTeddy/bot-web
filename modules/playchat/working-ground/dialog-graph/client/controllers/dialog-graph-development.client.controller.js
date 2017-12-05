@@ -309,7 +309,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var data = DialogGraph.getCompleteData();
 
             var fileName = $location.search().fileName || 'default.graph.js';
-            DialogGraphsService.save({ data: data, botId: chatbot.id, fileName: fileName }, function()
+            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: chatbot.templateId.id, fileName: fileName }, function()
             {
                 //저장할때마다 history 업데이트
                 $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);

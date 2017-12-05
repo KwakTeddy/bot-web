@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
 var IntentSchema = new Schema(
 {
     botId: { type: String },
+    templateId: { type: String },
     name: { type: String },
     content: {},
     created: { type: Date, default: Date.now },
@@ -26,6 +27,7 @@ mongoose.model('Intent', IntentSchema);
 var IntentContentSchema = new Schema(
 {
     botId: { type: String },
+    templateId: { type: String },
     name: { type: String },
     input: String,
     created: { type: Date, default: Date.now },

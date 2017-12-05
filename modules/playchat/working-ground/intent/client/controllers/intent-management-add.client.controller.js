@@ -49,6 +49,8 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
             if(e.currentTarget.value)
             {
                 $scope.intents.push(e.currentTarget.value);
+
+                console.log('인텐트 : ', $scope.intents);
                 e.currentTarget.value = '';
             }
 
@@ -61,7 +63,7 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
         var input = e.currentTarget.previousElementSibling;
         if(input.value)
         {
-            $scope.intents.push(e.currentTarget.value);
+            $scope.intents.push(input.value);
             input.value = '';
         }
 
@@ -77,12 +79,14 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
     {
         var params = {};
         params.botId = chatbot.id;
+        if(chatbot.templateId)
+            params.templateId = chatbot.templateId._id;
         params.name = $scope.name;
         params.intentContents = [];
 
         for(var i=0; i<$scope.intents.length; i++)
         {
-            params.intentContents.push($scope.intents[i].name);
+            params.intentContents.push($scope.intents[i]);
         }
 
         if($scope.intent._id)

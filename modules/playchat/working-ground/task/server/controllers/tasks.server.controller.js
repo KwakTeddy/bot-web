@@ -119,7 +119,7 @@ exports.findTasks = function(req, res)
         var tasks = [];
         for(var i=0, l=result.length; i<l; i++)
         {
-            var content = fs.readFileSync(path.resolve('./custom_modules/' + req.params.botId + '/' + result[i]));
+            var content = fs.readFileSync(filePath + '/' + result[i]);
             if(content)
             {
                 content = content.toString();
