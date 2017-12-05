@@ -608,6 +608,18 @@ var dialogs = [
                                         "input": [
                                             {
                                                 "text": "네"
+                                            },
+                                            {
+                                                "text": "ㅇㅇ"
+                                            },
+                                            {
+                                                "text": "웅"
+                                            },
+                                            {
+                                                "text": "응"
+                                            },
+                                            {
+                                                "text": "ok"
                                             }
                                         ],
                                         "output": [
@@ -1671,9 +1683,21 @@ var dialogs = [
 										"id": "default49",
 										"filename": "default",
 										"input": [
-											{
-												"intent": "네"
-											}
+                                            {
+                                                "text": "네"
+                                            },
+                                            {
+                                                "text": "ㅇㅇ"
+                                            },
+                                            {
+                                                "text": "웅"
+                                            },
+                                            {
+                                                "text": "응"
+                                            },
+                                            {
+                                                "text": "ok"
+                                            }
 										],
 										"output": [
 											{
@@ -2592,7 +2616,19 @@ var dialogs = [
                                         "filename": "default",
                                         "input": [
                                             {
-                                                "intent": "네"
+                                                "text": "네"
+                                            },
+                                            {
+                                                "text": "ㅇㅇ"
+                                            },
+                                            {
+                                                "text": "웅"
+                                            },
+                                            {
+                                                "text": "응"
+                                            },
+                                            {
+                                                "text": "ok"
                                             }
                                         ],
                                         "output": [
@@ -2745,7 +2781,19 @@ var dialogs = [
                                 "filename": "default",
                                 "input": [
                                     {
-                                        "intent": "네"
+                                        "text": "네"
+                                    },
+                                    {
+                                        "text": "ㅇㅇ"
+                                    },
+                                    {
+                                        "text": "웅"
+                                    },
+                                    {
+                                        "text": "응"
+                                    },
+                                    {
+                                        "text": "ok"
                                     }
                                 ],
                                 "output": [
