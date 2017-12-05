@@ -26,6 +26,11 @@ exports.findTotalPage = function(req, res)
     var countPerPage = req.query.countPerPage || 10;
 
     var query = { botId: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -50,6 +55,11 @@ exports.find = function(req, res)
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
     var query = { botId: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };

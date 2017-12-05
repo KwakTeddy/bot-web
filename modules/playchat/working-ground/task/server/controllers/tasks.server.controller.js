@@ -20,6 +20,11 @@ exports.findTotalPage = function(req, res)
     var countPerPage = req.query.countPerPage || 10;
 
     var query = { bots: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -43,6 +48,11 @@ exports.find = function(req, res)
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
     var query = { bots: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -144,6 +154,11 @@ exports.findTasks = function(req, res)
 exports.findTypes = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId);
+    if(req.query.templateId)
+    {
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot');
+    }
+
     fs.readdir(filePath, function(err, list)
     {
         if(err)
@@ -165,7 +180,7 @@ exports.findTypes = function(req, res)
         var types = [];
         for(var i=0, l=result.length; i<l; i++)
         {
-            var content = fs.readFileSync(path.resolve('./custom_modules/' + req.params.botId + '/' + result[i]));
+            var content = fs.readFileSync(filePath + '/' + result[i]);
             if(content)
             {
                 content = content.toString();
@@ -196,6 +211,10 @@ exports.readTask = function(req, res)
         fileName += '.js';
 
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + (fileName ? fileName : 'default.js'));
+    if(req.query.templateId)
+    {
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot/' + (fileName ? fileName : 'default.js'));
+    }
 
     var content = '';
     if(fs.existsSync(filePath))
@@ -266,6 +285,10 @@ exports.saveTaskToFile = function(req, res)
         fileName += '.js';
 
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + (fileName ? fileName : 'default.js'));
+    if(req.body.templateId)
+    {
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot/' + (fileName ? fileName : 'default.js'));
+    }
 
     var content = '';
     if(fs.existsSync(filePath))

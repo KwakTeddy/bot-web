@@ -96,6 +96,8 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         var params = {};
         params.botId = chatbot.id;
+        if(chatbot.templateId)
+            params.templateId = chatbot.templateId._id;
         params.name = $scope.name;
         params.entityContents = JSON.parse(angular.toJson($scope.entities));
 

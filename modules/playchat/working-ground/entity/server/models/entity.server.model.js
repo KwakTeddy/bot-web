@@ -13,6 +13,7 @@ var EntitySchema = new Schema(
 {
     name: { type: String },
     botId: { type: String },
+    templateId: { type: String },
     content: {},
     created: { type: Date, default: Date.now },
     user: { type: Schema.ObjectId, ref: 'User' },
@@ -28,6 +29,7 @@ var EntityContentSchema = new Schema(
 {
     name: { type: String },
     botId: { type: String },
+    templateId: { type: String },
     created: { type: Date, default: Date.now },
     user: { type: Schema.ObjectId, ref: 'User' },
     entityId: { type: Schema.ObjectId, ref: 'Entity' },
