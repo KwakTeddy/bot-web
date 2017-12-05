@@ -86,6 +86,7 @@ angular.module('template').controller('hotelShuttleController', ['$scope', '$res
             }
             
             var datas = JSON.parse(angular.toJson($scope.datas));
+            console.log('데이터스 : ', datas);
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
             {
                 console.log(result);

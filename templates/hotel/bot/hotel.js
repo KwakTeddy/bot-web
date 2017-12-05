@@ -11,12 +11,14 @@ var categoryrooms = mongo.getModel('hotel-rooms');
 var categoryrestaurants = mongo.getModel('hotel-restaurants');
 var categoryfacilities = mongo.getModel('hotel-facilities');
 var categoryevents = mongo.getModel('hotel-events');
+var categoryparks = mongo.getModel('hotel-parks');
 var order = mongo.getModel('hotelorders');
 var config = require(path.resolve('./config/config'));
 var utils = require(path.resolve('engine/bot/action/common/utils'));
 var typelib = require(path.resolve('engine/bot/action/common/type'));
 var globals = require(path.resolve('engine/bot/engine/common/globals'));
 var _ = require('lodash');
+var intent = require(path.resolve('./engine/bot/engine/nlu/intent'))
 
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
@@ -75,7 +77,7 @@ var mynamesave1 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobile,
+            order_phone:context.user.mobiles,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -87,7 +89,7 @@ var mynamesave1 = {
             order_peoplenumber: context.dialog.peoplenumber
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -131,9 +133,9 @@ bot.setTask("mynamesave1", mynamesave1);
 var categoryroomlist = {
     name: 'categoryroomlist',
     action: function(task, context, callback) {
-        //context.dialog.hotelroomss=context.bot.hotelrooms;
-
-        if(context.bot.hotelrooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
+        //context.dialog.roomss=context.bot.rooms;
+        //console.log(context.bot.rooms+"============================");
+        if(context.bot.rooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
         else {
             context.dialog.roomno = 0;
         var mydate=new Date().toLocaleDateString();
@@ -141,8 +143,8 @@ var categoryroomlist = {
         context.dialog.myyear=x[2];
         context.dialog.mymonth=x[0];
         context.dialog.myday=Number(x[1])+1;
-            //console.log(JSON.stringify(context.bot.templateDataId) +" *********************");
-          categoryrooms.find({upTemplateId:context.bot.templateDataId}).lean().exec(function(err, docs) {
+            //console.log(JSON.stringify(context.bot.id) +" *********************");
+          categoryrooms.find({botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -160,7 +162,7 @@ bot.setTask("categoryroomlist", categoryroomlist);
 var orderlist = {
     name: 'orderlist',
     action: function(task, context, callback) {
-         order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err, docs) {
+         order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -192,16 +194,16 @@ bot.setTask("saveinputdate", saveinputdate);
 var saveMobile = {
   action: function (task,context,callback) {
     if(context.dialog.mobile)
-    {context.user.mobile = context.dialog.mobile;}
+    {context.user.mobiles = context.dialog.mobile;}
      var mydate=new Date().toLocaleDateString();
         var x=mydate.split("/");
         context.dialog.myyear=x[2];
         context.dialog.mymonth=x[0];
         context.dialog.myday=Number(x[1])+1;
-      if(context.bot.hotelrooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
+      if(context.bot.rooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
       else {
           context.dialog.roomno = 0;
-          categoryrooms.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+          categoryrooms.find({botId: context.bot.id}).lean().exec(function (err, docs) {
               if (err) {
                   console.log(err);
                   callback(task, context);
@@ -222,10 +224,10 @@ bot.setTask('saveMobile', saveMobile);
 var categoryrestaurantlist = {
     name: 'categoryrestaurantlist',
     action: function(task, context, callback) {
-        if(context.bot.hotelrestaurants[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
+        if(context.bot.restaurants[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
         else {
             context.dialog.restaurantno=0;
-            categoryrestaurants.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+            categoryrestaurants.find({botId: context.bot.id}).lean().exec(function (err, docs) {
                 if (err) {
                     console.log(err);
                     callback(task, context);
@@ -242,10 +244,10 @@ bot.setTask("categoryrestaurantlist", categoryrestaurantlist);
 var categoryfacilitylist = {
     name: 'categoryfacilitylist',
     action: function(task, context, callback) {
-        if(context.bot.hotelfacilities[0]===undefined){context.dialog.facilityno=undefined;callback(task,context);}
+        if(context.bot.facilities[0]===undefined){context.dialog.facilityno=undefined;callback(task,context);}
         else {
             context.dialog.facilityno = 0;
-            categoryfacilities.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+            categoryfacilities.find({botId: context.bot.id}).lean().exec(function (err, docs) {
                 if (err) {
                     console.log(err);
                     callback(task, context);
@@ -263,10 +265,10 @@ bot.setTask("categoryfacilitylist", categoryfacilitylist);
 var categoryeventlist = {
     name: 'categoryeventlist',
     action: function(task, context, callback) {
-        if(context.bot.hotelevents[0]===undefined){context.dialog.eventno=undefined;callback(task,context);}
+        if(context.bot.events[0]===undefined){context.dialog.eventno=undefined;callback(task,context);}
         else {
             context.dialog.eventno = 0;
-            categoryevents.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+            categoryevents.find({botId: context.bot.id}).lean().exec(function (err, docs) {
                 if (err) {
                     console.log(err);
                     callback(task, context);
@@ -283,12 +285,12 @@ bot.setTask("categoryeventlist", categoryeventlist);
 var inforshuttle = {
     name: 'inforshuttle',
     action: function(task, context, callback) {
-        if(context.bot.hotelshuttles[0]===undefined){context.dialog.shuttleno=undefined;callback(task,context);}
-        else if(context.bot.hotelshuttles[0].shuttleornot==="부"){context.dialog.shuttleno=1;callback(task,context);}
+        if(context.bot.shuttles[0]===undefined){context.dialog.shuttleno=undefined;callback(task,context);}
+        else if(context.bot.shuttles[0].shuttleornot===false){context.dialog.shuttleno=1;callback(task,context);}
         else {context.dialog.shuttleno=0;
-            var ss=context.bot.hotelshuttles[0].shuttleimage[0];
+            var ss=context.bot.shuttles[0].shuttleimage[0];
             //console.log(ss+"000000000000");
-            var img = context.bot.hotelshuttles[0].shuttleimage[0]=='h' ? context.bot.hotelshuttles[0].shuttleimage : config.host + context.bot.hotelshuttles[0].shuttleimage;
+            var img = context.bot.shuttles[0].shuttleimage[0]=='h' ? context.bot.shuttles[0].shuttleimage : config.host + context.bot.shuttles[0].shuttleimage;
             console.log(img+"222222222222");
             task.buttons = [{text:"자세히보기",url:img}];
             task.image = {url: img};
@@ -305,14 +307,14 @@ var inforpark = {
         //console.log(context.bot.parks+"222222222");
         // console.log(typeof JSON.stringify(context.bot.parks[0]));
         // console.log(typeof JSON.parse(JSON.stringify(context.bot.parks[0])));
-       if(context.bot.hotelparks[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
-       else if(context.bot.hotelparks[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
+       if(context.bot.parks[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
+       else if(context.bot.parks[0].parkornot==="false"){context.dialog.parkno=1; callback(task,context);}
        else {context.dialog.parkno=0;
-       context.dialog.parkaddress=context.bot.hotelparks[0].parkaddress;
-       context.dialog.parkdetails=context.bot.hotelparks[0].parkdetails;
-       context.dialog.parksize=context.bot.hotelparks[0].parksize;
-       context.dialog.parkname=context.bot.hotelparks[0].parkname;
-       context.dialog.parkornot=context.bot.hotelparks[0].parkornot;
+       context.dialog.parkaddress=context.bot.parks[0].parkaddress;
+       context.dialog.parkdetails=context.bot.parks[0].parkdetails;
+       context.dialog.parksize=context.bot.parks[0].parksize;
+       context.dialog.parkname=context.bot.parks[0].parkname;
+       context.dialog.parkornot=context.bot.parks[0].parkornot;
 
        task.buttons = [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.dialog.parkaddress}];
        callback(task,context);}
@@ -371,11 +373,11 @@ var addorder = {
     context.dialog.todaydate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+context.dialog.todayday+" "+context.dialog.todaytime;
     var tomorrowday = Number(context.dialog.todayday)+1;
     context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
-      
+
                 var neworder={
                 order_user: context.dialog.myname,
-                order_phone:context.user.mobile,
-                order_price:context.dialog.oneallprice,           
+                order_phone:context.user.mobiles,
+                order_price:context.dialog.oneallprice,
                 order_date: context.dialog.todaydate,
                 order_paydate: context.dialog.tomorrowdate,
                 order_daynumbers:context.dialog.days,
@@ -386,37 +388,37 @@ var addorder = {
                    order_peoplenumber: context.dialog.peoplenumber
                             };
                 order.collection.insert(neworder,function(err,docs){
-                  order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
+                  order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
                                                         context.dialog.order= docs;
                                                         //console.log(context.dialog.order[0]);
                                                         context.dialog.allprice=0;
                                                         for(i=0;i<context.dialog.order.length;i++){
                                                         var number1=context.dialog.order[i].order_price;
                                                         context.dialog.allprice=number1+context.dialog.allprice;}
-                                      
-                                                        
+
+
                                                         context.dialog.inputyear1=context.dialog.inputyear;
                                                         context.dialog.inputmonth1=context.dialog.inputmonth;
                                                         context.dialog.inputday1=context.dialog.inputday;
-                                                        
+
                                                         context.dialog.outyear1=context.dialog.outyear;
                                                         context.dialog.outmonth1=context.dialog.outmonth;
                                                         context.dialog.outday1=context.dialog.outday;
-                    
+
                                                         context.dialog.peoplenumber1=context.dialog.peoplenumber;
-                    
+
                                                         context.dialog.myyear=undefined;
                                                         context.dialog.mymonth=undefined;
                                                         context.dialog.myday=undefined;
-                                                          
+
                                                         context.dialog.inputyear=undefined;
                                                         context.dialog.inputmonth=undefined;
                                                         context.dialog.inputday=undefined;
-                                                        
+
                                                         context.dialog.outyear=undefined;
                                                         context.dialog.outmonth=undefined;
                                                         context.dialog.outday=undefined;
-                    
+
                                                         context.dialog.peoplenumber=undefined;
 
                                                         callback(task,context);
@@ -452,7 +454,7 @@ var addorder1 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobile,
+            order_phone:context.user.mobiles,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -464,7 +466,7 @@ var addorder1 = {
             order_peoplenumber: context.dialog.peoplenumber
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -530,7 +532,7 @@ var addorder2 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobile,
+            order_phone:context.user.mobiles,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -542,7 +544,7 @@ var addorder2 = {
             order_peoplenumber: context.dialog.peoplenumber
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -587,16 +589,16 @@ bot.setTask("addorder2", addorder2);
 var deleteorder = {
     name: 'deleteorder',
     action: function(task, context, callback) {
-       
+
                 order.find({_id:context.dialog.orderlistType._id}).remove({},function(err){
-                   order.find({order_user:context.user.myname,order_phone:context.user.mobile}).lean().exec(function(err, docs) {
+                   order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
             } else {
                 context.dialog.orders = docs;
                 callback(task,context);}
-                     
+
                 });
 
         });
@@ -651,76 +653,76 @@ function regexpTypeCheck (text, type, task, context, callback) {
     callback(text, task, matched);
 }
 
-   //计算天数差的函数，通用  
-   function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式  
-       var  aDate,oDate1,oDate2,iDays;  
+   //计算天数差的函数，通用
+   function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式
+       var  aDate,oDate1,oDate2,iDays;
        aDate  =  sDate1.split("-");
        oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0]);   //转换为12-18-2002格式
        aDate  =  sDate2.split("-");
        oDate2  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0]);
        iDays  =  parseInt((oDate2  -  oDate1)  /  1000  /  60  /  60  /24);   //把相差的毫秒数转换为天数
-       return  iDays  
+       return  iDays
 }
 
-function IsMonthAndDateCorrect(nYear, nMonth, nDay) 
-{ 
-    // 月份是否在1-12的范围内，注意如果该字符串不是C#语言的，而是JavaScript的，月份范围为0-11 
-    if (nMonth > 12 || nMonth <= 0) 
-        return false; 
- 
-    // 日是否在1-31的范围内，不是则取值不正确 
-    if (nDay > 31 || nMonth <= 0) 
-        return false; 
-     
-    // 根据月份判断每月最多日数 
-    var bTrue = false; 
-    switch(nMonth) 
-    { 
-        case 1: 
-        case 3: 
-        case 5: 
-        case 7: 
-        case 8: 
-        case 10: 
-        case 12: 
-            bTrue = true;               // 大月，由于已判断过nDay的范围在1-31内，因此直接返回true 
-            break; 
-        case 4: 
-        case 6: 
-        case 9: 
-        case 11: 
-            bTrue = (nDay <= 30);    // 小月，如果小于等于30日返回true 
-            break; 
-    } 
-     
-    if (!bTrue) 
-      
-        return true; 
-     
-    // 2月的情况 
-    // 如果小于等于28天一定正确 
-    if (nDay <= 28) 
-        return true; 
-    // 闰年小于等于29天正确 
-    if (IsLeapYear(nYear)) 
-        return (nDay <= 29); 
-    // 不是闰年，又不小于等于28，返回false 
-    return false; 
-} 
- 
-// 是否为闰年，规则：四年一闰，百年不闰，四百年再闰 
-function IsLeapYear(nYear) 
-{ 
-    // 如果不是4的倍数，一定不是闰年 
-    if (nYear % 4 != 0) 
-        return false; 
-    // 是4的倍数，但不是100的倍数，一定是闰年 
-    if (nYear % 100 != 0) 
-        return true; 
-     
-    // 是4和100的倍数，如果又是400的倍数才是闰年 
-    return (nYear % 400 == 0); 
-} 
+function IsMonthAndDateCorrect(nYear, nMonth, nDay)
+{
+    // 月份是否在1-12的范围内，注意如果该字符串不是C#语言的，而是JavaScript的，月份范围为0-11
+    if (nMonth > 12 || nMonth <= 0)
+        return false;
+
+    // 日是否在1-31的范围内，不是则取值不正确
+    if (nDay > 31 || nMonth <= 0)
+        return false;
+
+    // 根据月份判断每月最多日数
+    var bTrue = false;
+    switch(nMonth)
+    {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            bTrue = true;               // 大月，由于已判断过nDay的范围在1-31内，因此直接返回true
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            bTrue = (nDay <= 30);    // 小月，如果小于等于30日返回true
+            break;
+    }
+
+    if (!bTrue)
+
+        return true;
+
+    // 2月的情况
+    // 如果小于等于28天一定正确
+    if (nDay <= 28)
+        return true;
+    // 闰年小于等于29天正确
+    if (IsLeapYear(nYear))
+        return (nDay <= 29);
+    // 不是闰年，又不小于等于28，返回false
+    return false;
+}
+
+// 是否为闰年，规则：四年一闰，百年不闰，四百年再闰
+function IsLeapYear(nYear)
+{
+    // 如果不是4的倍数，一定不是闰年
+    if (nYear % 4 != 0)
+        return false;
+    // 是4的倍数，但不是100的倍数，一定是闰年
+    if (nYear % 100 != 0)
+        return true;
+
+    // 是4和100的倍数，如果又是400的倍数才是闰年
+    return (nYear % 400 == 0);
+}
 //-----------------type------------------------------------------------------------------------------------------------------------------------
 var datetype = {
     name: "datetype",
@@ -842,10 +844,10 @@ var categoryroomisornot = {
         //var ss=0;
         //var ll='ㄴㅁㅇㄹㅎㄴㅇㄹㅎㅇㅌㄹㅎdddd';
         //console.log(JSON.stringify(context.bot)+"pppppppppppppppppp");
-        //console.log(context.bot.hotelrooms+"2222222222222222");
-        if(context.bot.hotelrooms[0]===undefined){callback(task,context);}
+        //console.log(context.bot.rooms+"2222222222222222");
+        if(context.bot.rooms[0]===undefined){callback(task,context);}
         else {
-            categoryrooms.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+            categoryrooms.find({botId: context.bot.id}).lean().exec(function (err, docs) {
                 if (err) {
                     console.log(err);
                     callback(task, context);
