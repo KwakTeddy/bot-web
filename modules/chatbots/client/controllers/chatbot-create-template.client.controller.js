@@ -161,6 +161,7 @@
 
                 ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
                 {
+                    delete chatbot.user;
                     $cookies.putObject('chatbot', chatbot);
                     ChatbotTemplateDataService.save({ templateId: $scope.template.id, botId: chatbot.id, data: data }, function(result)
                     {
