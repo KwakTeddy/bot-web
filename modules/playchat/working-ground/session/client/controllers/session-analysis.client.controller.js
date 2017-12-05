@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', function ($scope, $cookies, $resource, DateRangePickerService, ExcelDownloadService)
+angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService','LanguageService', function ($scope, $cookies, $resource, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Session Analysis', '/modules/playchat/gnb/client/imgs/analysis.png');
 
@@ -240,4 +240,5 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
     $scope.getList();
 
     $scope.$parent.loaded('working-ground');
+    $scope.lan=LanguageService;
 }]);

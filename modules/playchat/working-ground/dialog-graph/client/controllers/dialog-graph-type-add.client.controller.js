@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('playchat').controller('TypeAddController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', function ($window, $scope, $resource, $cookies, $element, $timeout)
+    angular.module('playchat').controller('TypeAddController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', 'LanguageService',function ($window, $scope, $resource, $cookies, $element, $timeout, LanguageService)
     {
         var TaskService = $resource('/api/:botId/types/:fileName', { botId: '@botId', fileName: '@fileName' }, { update: { method: 'PUT' } });
 
@@ -58,5 +58,7 @@
                 };
             });
         };
+
+        $scope.lan=LanguageService;
     }]);
 })();

@@ -38,7 +38,8 @@
             <div class="form-row">
                 <label>
                     <span class="form-title">주소</span>
-                    <input type="text" class="data-input" name="address">
+                    <input type="text" class="data-input" name="address" style="width: 90%;">
+                    <button type="button" class="default-button" ng-click="findAddress($event);">검색</button>
                 </label>
             </div>
             <div class="form-row">
@@ -50,13 +51,13 @@
             <div class="form-row">
                 <label>
                     <span class="form-title">시작시간</span>
-                    <input type="time" class="data-input" name="startTime">
+                    <input type="time" class="data-input" name="startTime" value="09:00">
                 </label>
             </div>
             <div class="form-row">
                 <label>
                     <span class="form-title">종료시간</span>
-                    <input type="time" class="data-input" name="endTime">
+                    <input type="time" class="data-input" name="endTime" value="18:00">
                 </label>
             </div>
             <div class="form-row">

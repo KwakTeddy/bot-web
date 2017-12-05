@@ -1,5 +1,5 @@
 'use strict';
-angular.module("playchat").controller("UserStatisticsController", ['$scope', "$http", '$cookies', function ($scope, $http, $cookies)
+angular.module("playchat").controller("UserStatisticsController", ['$scope', "$http", '$cookies','LanguageService', function ($scope, $http, $cookies, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > User');
 
@@ -339,5 +339,5 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
             console.log(err);
         });
     };
-
+    $scope.lan=LanguageService;
 }]);

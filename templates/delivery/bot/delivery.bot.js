@@ -1,10 +1,8 @@
 var path = require('path');
 var botlib = require(path.resolve('./engine/bot'));
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-
 var delivery = {
+    use: true,
     reserveFields: [
         {name: 'numOfPerson', title: '인원수'}
     ],

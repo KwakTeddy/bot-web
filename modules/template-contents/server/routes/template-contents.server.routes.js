@@ -2,11 +2,13 @@ var TemplateContentsController = require('../controllers/template-contents.serve
 
 module.exports = function(app)
 {
-    app.get('/api/:templateName/:botId/menus', TemplateContentsController.findMenus);
-    app.post('/api/:templateName/:botId/menus', TemplateContentsController.saveMenus);
-
-    app.get('/api/:templateName/:botId/events', TemplateContentsController.findEvents);
-    app.post('/api/:templateName/:botId/events', TemplateContentsController.saveEvents);
-
     app.post('/api/:botId/template-contents/upload', TemplateContentsController.uploadImage);
+    app.get('/api/:templateId/:botId/:datas', TemplateContentsController.findDatas);
+    app.post('/api/:templateId/:botId/:datas', TemplateContentsController.createDatas);
+
+    // app.get('/api/:templateId/:botId/menus', TemplateContentsController.findMenus);
+    // app.post('/api/:templateId/:botId/menus', TemplateContentsController.saveMenus);
+    //
+    // app.get('/api/:templateId/:botId/events', TemplateContentsController.findEvents);
+    // app.post('/api/:templateId/:botId/events', TemplateContentsController.saveEvents);
 };

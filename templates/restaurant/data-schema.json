@@ -1,0 +1,9 @@
+{
+    "phone" : "String",
+    "mobile" : "String",
+    "startTime" : "String",
+    "endTime" : "String",
+    "holiday" : "String",
+    "menuImage" : "String",
+    "address" : "String"
+}

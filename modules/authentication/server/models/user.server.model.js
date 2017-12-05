@@ -94,7 +94,8 @@ var UserSchema = new Schema({
     type: Boolean,
     default: false
   },
-  messengerIds: Schema.Types.Mixed
+  messengerIds: Schema.Types.Mixed,
+    language: { type: String, default: 'ko' }
 
 });
 

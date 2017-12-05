@@ -87,24 +87,87 @@ function loadBot(botName, callback) {
 
         function(cb) {
             if(bot && bot.templateId) {
-                // var TemplateModel = mongoose.model('Template');
-                // TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
-                //     if(doc) {
-                //         bot.template = doc;
-                //         if(!bot.path) bot.path = 'templates/' + doc.id;
-                //
-                //         if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
-                //             global._templates[bot.template.id] = undefined;
-                //
-                //         var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
-                //         templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
-                //             utils.merge(bot, doc1);
-                //             cb(null);
-                //         });
-                //     } else {
-                //         cb(null);
-                //     }
-                // });
+                var TemplateModel = mongoose.model('Template');
+                TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
+                    if(doc) {
+                        bot.template = doc;
+
+                        if(!bot.path) bot.path = 'templates/' + doc.id + '/bot';
+
+                        if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
+                            global._templates[bot.template.id] = undefined;
+
+                        var files = fs.readdirSync(path.resolve('./templates/' + doc.id));
+                        async.eachSeries(files, function(file, next)
+                        {
+                            if(!file.startsWith('playchat-') && file.endsWith('.json'))
+                            {
+                                var data = fs.readFileSync(path.resolve('./templates/' + doc.id + '/' + file));
+
+                                var schemaPostFix = file.split('-')[0];
+
+                                var schema = new mongoose.Schema(JSON.parse(data));
+                                if(mongoose.models[doc.id + '-' + schemaPostFix + 's'])
+                                    schema = mongoose.model(doc.id + '-' + schemaPostFix + 's');
+                                else
+                                    schema = mongoose.model(doc.id + '-' + schemaPostFix + 's', schema);
+
+                                schema.find({ botId: bot.id }).lean().exec(function(err, doc1)
+                                {
+                                    if(schemaPostFix == 'data')
+                                    {
+                                        if(doc1.length == 1 && doc1[0])
+                                        {
+                                            for(var key in doc1[0])
+                                            {
+                                                bot[key] = doc1[0][key];
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var tempData = {};
+                                        tempData[schemaPostFix + 's'] = doc1 || [];
+
+                                        utils.merge(bot, tempData);
+                                    }
+
+                                    // utils.merge(bot, doc1);
+                                    next();
+                                });
+                            }
+                            else
+                            {
+                                next();
+                            }
+                        },
+                        function()
+                        {
+                            cb();
+                        });
+
+
+
+                        // templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
+                        //     utils.merge(bot, doc1);
+                        //     cb(null);
+                        // });
+
+                        // bot.template = doc;
+                        // if(!bot.path) bot.path = 'templates/' + doc.id;
+                        //
+                        // if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
+                        //     global._templates[bot.template.id] = undefined;
+                        //
+                        // var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
+                        // templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
+                        //     utils.merge(bot, doc1);
+                        //     cb(null);
+                        // });
+                    } else {
+                        cb(null);
+                    }
+                });
                 cb(null);
             } else {
                 cb(null);
@@ -112,7 +175,8 @@ function loadBot(botName, callback) {
         },
 
         function(cb) {
-            if(bot && bot.template && global._templates[bot.template.id] && global._templates[bot.template.id].loaded == true) {
+            if(bot != undefined && bot.template != undefined && global._templates[bot.template.id] != undefined &&
+              global._templates[bot.template.id].loaded == true) {
                 cb(null);
             } else {
                 if(bot && bot.path) botDir = path.resolve(bot.path);
@@ -184,7 +248,7 @@ function loadBot(botName, callback) {
                             //bot.dialogFiles[i] = filePath;
 
                             try {
-                                console.log('\tloading file: ' + file);
+                                console.log('\tloading file2: ' + file);
 
                                 utils.requireNoCache(filePath, true);
                             } catch(e) {
@@ -197,7 +261,7 @@ function loadBot(botName, callback) {
 
                     fileFilter = function(file) {
                         if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
-                        else return file.endsWith('.dialog.js');
+                        else return file.endsWith('.dialog.js') || file.endsWith('.graph.js');
                     };
 
                     try {
@@ -221,8 +285,7 @@ function loadBot(botName, callback) {
                         // var filePath = path.join(botDir, file);
 
                         try {
-                            console.log('\tloading file: ' + file);
-
+                            console.log('\tloading5 file: ' + file);
                             utils.requireNoCache(file, true);
                         } catch(e) {
                             console.error(e);
@@ -235,7 +298,7 @@ function loadBot(botName, callback) {
                     fileFilter = function(file) {
                         if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
 
-                        else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.test.js') && !file.endsWith('.bot.js')) {
+                        else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.graph.js') && !file.endsWith('.test.js') && !file.endsWith('.bot.js')) {
                             // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
                             // var info = path.parse(jsPath);
                             // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
@@ -322,6 +385,7 @@ function loadBot(botName, callback) {
 
                 bot.commonDialogs =bot.commonDialogs.concat(bot.template.commonDialogs);
                 bot.dialogs = bot.dialogs.concat(bot.template.dialogs);
+
                 utils.merge(bot.tasks, bot.template.tasks);
                 utils.merge(bot.actions , bot.template.actions );
                 utils.merge(bot.types, bot.template.types);

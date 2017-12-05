@@ -2,10 +2,8 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService', function ($window, $scope, $location, $cookies, $resource, MenuService)
+angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService','LanguageService', function ($window, $scope, $location, $cookies, $resource, MenuService, LanguageService)
 {
-    $scope.$parent.loaded('side-menu');
-
     var ChatbotService = $resource('/api/chatbots/:botId', { botId : '@botId'});
 
     var chatbot = $cookies.getObject('chatbot');
@@ -23,6 +21,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
                 MenuService.get(result.templateId.id, function(menus)
                 {
                     $scope.menus = menus;
+                    $scope.$parent.loaded('side-menu');
                 });
             }
             else
@@ -30,6 +29,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
                 MenuService.get(function(menus)
                 {
                     $scope.menus = menus;
+                    $scope.$parent.loaded('side-menu');
                 });
             }
         },
@@ -55,6 +55,8 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.toggleGnb = function()
         {
             var isClosed = !angular.element('.gnb .logo-min img').is(':visible');
+
+            console.log('하 : ', isClosed);
 
             //responsive 링크가 작동하면 접히고 그렇지 않으면 펼쳐진다.
             var link = angular.element('#gnb-responsive-css');
@@ -89,4 +91,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
         return '';
     };
+
+    $scope.lan=LanguageService;
+
 }]);

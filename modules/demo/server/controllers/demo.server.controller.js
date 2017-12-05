@@ -55,7 +55,7 @@ module.exports = function (io, socket)
 
             socket.emit('response-analytics', { nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, nlu: nlu, language: lngDetector.detect(msg.msg) });
 
-        }, { dev: true, language: msg.options.language });
+        }, { dev: true, language: 'ko' });
     })
 };
 

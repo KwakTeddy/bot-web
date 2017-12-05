@@ -1,7 +1,7 @@
 <!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
 
 <div ng-controller="HumanChatLogController">
-    <h2 class="operation-title">Human Chat log</h2>
+    <h2 class="operation-title">{{lan('Human Chat log') }}</h2>
     <div class="operation-search-area">
         <input type="text" placeholder="Search" class="input_type09" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
         <button type="button" class="btn04" style="color: white;" ng-click="search($event);">Search</button>
@@ -16,22 +16,22 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>Channel</th>
-                    <th>User Key</th>
-                    <th>Last Update</th>
-                    <th>Dialog</th>
+                    <th>{{lan('Channel') }}</th>
+                    <th>{{lan('User Key') }}</th>
+                    <th>{{lan('Last Update') }}</th>
+                    <th>{{lan('Dialog') }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-if="list.length == 0">
-                    <td colspan="5">empty</td>
+                    <td colspan="5">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="item in list">
                     <td>{{ item._id.channel }}</td>
                     <td>{{ item._id.userKey }}</td>
                     <td>{{ dateFormat(item.maxDate) }}</td>
                     <td>
-                        <a href="/playchat/operation/user/detail?_id={{ item._id._id }}&userKey={{ item._id.userKey }}&liveChat=true" class="operation-user-dialog-button">Dialog</a>
+                        <a href="/playchat/operation/user/detail?_id={{ item._id._id }}&userKey={{ item._id.userKey }}&liveChat=true" class="operation-user-dialog-button">{{lan('Dialog') }}</a>
                     </td>
                 </tr>
             </tbody>

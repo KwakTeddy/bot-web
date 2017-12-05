@@ -22,7 +22,7 @@ exports.findTotalPage = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -46,7 +46,7 @@ exports.find = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -104,7 +104,7 @@ exports.create = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 
@@ -152,7 +152,7 @@ exports.update = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 
@@ -200,7 +200,7 @@ exports.delete = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 

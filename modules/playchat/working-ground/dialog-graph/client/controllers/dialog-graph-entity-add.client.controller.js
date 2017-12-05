@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('DialogGraphEntityAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'CaretService', function ($scope, $resource, $cookies, $timeout, $element, CaretService)
+    angular.module('playchat').controller('DialogGraphEntityAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'CaretService','LanguageService', function ($scope, $resource, $cookies, $timeout, $element, CaretService, LanguageService)
     {
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
 
@@ -77,7 +77,7 @@
         {
             if($scope.entity.entityContents.length == 1)
             {
-                alert('마지막 엔티티는 삭제할 수 없습니다');
+                alert($scope.lan('The last entity cannot be deleted.'));
                 return;
             }
 
@@ -93,7 +93,7 @@
         {
             if(content.synonyms.length == 1)
             {
-                alert('마지막 Synonym은 삭제할 수 없습니다');
+                alert($scope.lan('The last synonym cannot be deleted.'));
                 return;
             }
 
@@ -154,5 +154,6 @@
                 };
             });
         };
+        $scope.lan=LanguageService;
     }]);
 })();

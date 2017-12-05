@@ -1,0 +1,8 @@
+{
+    "category_name": "String",
+    "facility_introduction": "String",
+    "facility_location": "String",
+    "facility_size": "String",
+    "facility_number": "String",
+    "facility_image" : "String"
+}

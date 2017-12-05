@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', function ($scope, $resource, $cookies, $timeout, $element)
+    angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'LanguageService',function ($scope, $resource, $cookies, $timeout, $element, LanguageService)
     {
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
 
@@ -51,7 +51,7 @@
         {
             if($scope.intent.intentContents.length == 1)
             {
-                alert('마지막 Input은 삭제할 수 없습니다');
+                alert($scope.lan('The last input cannot be deleted.'));
                 return;
             }
 
@@ -111,5 +111,7 @@
                 };
             });
         };
+
+        $scope.lan=LanguageService;
     }]);
 })();

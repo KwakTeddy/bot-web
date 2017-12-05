@@ -6,19 +6,19 @@
         <div class="funtionbtn1">
             <a href="#">
                 <img src="modules/playchat/working-ground/common/client/imgs/export.png">
-                <span ng-click="modal.importModal.open();">Import</span>
+                <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
         </div>
     </div>
     <div class="tab01">
         <ul class="tabs1">
-            <li class="select_tab"><a href="#">Default</a></li>
-            <li><a href="#">Store</a></li>
-            <li><a href="#">Shared</a></li>
+            <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
+            <li><a href="#">{{lan('Store') }}</a></li>
+            <li><a href="#">{{lan('Shared') }}</a></li>
         </ul>
         <div class="btn02 flR" ng-click="modal.mgmtModal.open();">
-            <a href="#" class="">Add New</a>
+            <a href="#" class="">{{lan('Add New') }}</a>
         </div>
     </div>
     <div class="downSide">
@@ -35,7 +35,7 @@
             </thead>
             <tbody>
                 <tr ng-if="dialogGraphs.length == 0">
-                    <td colspan="2">empty</td>
+                    <td colspan="2">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="fileName in dialogGraphs track by $index">
                     <td style="text-align: left;">{{ fileName }}</td>
@@ -52,25 +52,25 @@
             <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span class="form-title">File Type</span>
+                        <span class="form-title">{{lan('File Type') }}</span>
                         <label>
-                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> graph file
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> {{lan('graph file') }}
                         </label>
                         <label>
-                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> logic file
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> {{lan('logic file') }}
                         </label>
                     </label>
                 </div>
                 <div class="form-row">
                     <label class="required">
-                        <span class="form-title">File Name</span>
+                        <span class="form-title">{{lan('File Name') }}</span>
                         <input type="text" placeholder="파일 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-z]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
                     </label>
                     <p style="color: red; font-size: 12px; padding-left: 20px;">{{ modal.mgmtModal.data.error }}</p>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">저장</button>
-                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">닫기</button>
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>
@@ -81,15 +81,15 @@
             <form name="modalFormDefault" ng-submit="save(modal.importModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span>File</span>
+                        <span>{{lan('File') }}</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>
                     </label>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">저장</button>
-                    <button type="button" class="default-button" ng-click="modal.importModal.close();">닫기</button>
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>

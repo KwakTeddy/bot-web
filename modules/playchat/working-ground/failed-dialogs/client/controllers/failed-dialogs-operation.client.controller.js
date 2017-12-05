@@ -1,4 +1,4 @@
-angular.module('playchat').controller('FailedDialogsOperationController', ['$window', '$scope', '$resource', '$cookies', '$location', function ($window, $scope, $resource, $cookies, $location)
+angular.module('playchat').controller('FailedDialogsOperationController', ['$window', '$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Operation > Failed Chat Log');
 
@@ -28,4 +28,5 @@ angular.module('playchat').controller('FailedDialogsOperationController', ['$win
             angular.element('.failed-dialog .tab-body[data-id="' + $location.hash() + '"]').show();
         }, 100);
     }
+    $scope.lan=LanguageService;
 }]);

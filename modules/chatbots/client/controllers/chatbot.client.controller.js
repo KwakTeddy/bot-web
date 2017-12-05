@@ -2,11 +2,13 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService)
+    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService)
     {
         var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
+        var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
-        var ChatBotPageService = $resource('/api/chatbots/totalpage');
+        var ChatBotShareService = $resource('/api/chatbots/:botId/share', { botId: '@botId' });
+        var SharedChatBotService = $resource('/api/chatbots/shared');
 
         if($cookies.get('login') === 'false')
         {
@@ -14,39 +16,64 @@
             return;
         }
 
+        var page = 1;
+        var countPerPage = $location.search().countPerPage || 50;
+
         var chatbot = $cookies.getObject('chatbot');
 
         $scope.selectedBot = undefined;
         $scope.openShareModal = false;
         $scope.share = {};
 
+        $scope.sharedList = [];
+
         window.addEventListener('click', function()
         {
             $scope.closeMenu();
         });
 
-        $scope.getList = function(page, name)
+        $scope.getList = function(name)
         {
-            var page = page || $location.search().page || 1;
-            var countPerPage = $location.search().countPerPage || 12;
-
-            ChatBotPageService.get({ countPerPage: countPerPage, name : name }, function(result)
-            {
-                var totalPage = result.totalPage;
-                $scope.pageOptions = PagingService(page, totalPage);
-            });
-
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
                 $scope.list = list;
                 $scope.$parent.loading = false;
             });
+
+            SharedChatBotService.query({}, function(list)
+            {
+                $scope.sharedList = list;
+            });
         };
+
+        angular.element('#main > section').on('scroll', function(e)
+        {
+            if(e.currentTarget.scrollTop + e.currentTarget.offsetHeight >= e.currentTarget.scrollHeight)
+            {
+                page++;
+                ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
+                {
+                    for(var i=0; i<list.length; i++)
+                    {
+                        $scope.list.push(list[i]);
+                    }
+                });
+            }
+        });
 
         $scope.selectChatbot = function(chatbot)
         {
             $cookies.putObject('chatbot', chatbot);
             $location.url('/playchat');
+        };
+
+        $scope.moveTab = function(e, name)
+        {
+            angular.element('.select_tab').removeClass('select_tab');
+            angular.element('#botContent').hide();
+            angular.element('#sharedBotContent').hide();
+            angular.element('#' + name).show();
+            angular.element(e.currentTarget).parent().addClass('select_tab');
         };
 
         $scope.toPage = function(page)
@@ -60,6 +87,11 @@
                 return;
 
             $scope.selectedBot = bot;
+            $scope.share = {
+                email: '',
+                read: false,
+                write: false
+            };
 
             var x = e.currentTarget.offsetLeft;
             var y = e.currentTarget.offsetTop;
@@ -80,8 +112,9 @@
             if(name == 'Rename')
             {
                 var target = angular.element('li[data-id="' + $scope.selectedBot.id + '"]').attr('contenteditable', 'true').get(0);
-                console.log(target);
                 CaretService.placeCaretAtEnd(target);
+
+                target.style.cursor = 'text';
             }
             else if(name == 'Share')
             {
@@ -91,7 +124,7 @@
             {
                 ChatBotDuplicateService.save({ botId: $scope.selectedBot._id }, function(item)
                 {
-                    console.log(item);
+                    $scope.list.unshift(item);
                 },
                 function(err)
                 {
@@ -100,7 +133,7 @@
             }
             else if(name == 'Delete')
             {
-                if(confirm('정말 삭제하시겠습니까?'))
+                if(confirm($scope.lan('Are you sure you want to delete this item?')))
                 {
                     ChatBotService.delete({ botId : $scope.selectedBot._id, botDisplayId: $scope.selectedBot.id }, function()
                     {
@@ -121,21 +154,16 @@
             if(e.keyCode == 13)
             {
                 var value = e.currentTarget.innerText;
-                $scope.selectedBot.id = value;
+                $scope.selectedBot.name = value;
 
-                var params = {};
-                params.botId = chatbot._id;
-
-                for(var key in chatbot)
+                ChatBotRenameService.update({ botId: $scope.selectedBot._id, name: value }, function()
                 {
-                    params[key] = chatbot[key];
-                }
+                    e.currentTarget.style.color = 'green';
 
-                params.id = value;
-
-                ChatBotService.update(params, function()
-                {
-                    console.log('성공');
+                    setTimeout(function()
+                    {
+                        e.currentTarget.style.color = '';
+                    }, 1000);
                 },
                 function(err)
                 {
@@ -148,17 +176,25 @@
             {
                 e.currentTarget.removeAttribute('contenteditable');
             }
-
-            console.log(e.keyCode);
         };
 
         $scope.chatbotNameClick = function(e)
         {
+            var isEditing = e.currentTarget.getAttribute('contenteditable');
+
+            if(isEditing)
+            {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
             // e.stopPropagation();
         };
 
         $scope.chatbotNameBlur = function(e)
         {
+            e.currentTarget.style.cursor = 'pointer';
+
             e.currentTarget.removeAttribute('contenteditable');
         };
 
@@ -169,21 +205,21 @@
 
         $scope.shareChatbot = function()
         {
-            // if(!$scope.share.read || !$scope.share.write)
-            // {
-            //     alert('Please select at least one permission.');
-            //     return false;
-            // }
-            //
-            // $http.post("/api/bot-auths", { authData: authData, email: $scope.share.email }).then(function (doc)
-            // {
-            //     $state.go("bot-auths.list")
-            // },
-            // function (err)
-            // {
-            //     $scope.error = err.data.message;
-            //     console.log(err);
-            // })
+            if(!$scope.share.read && !$scope.share.write)
+            {
+                alert($scope.lan('Please select at least one permission.'));
+                return false;
+            }
+
+            ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
+            {
+                $scope.openShareModal = false;
+                alert($scope.lan('Shared ') + $scope.selectedBot.name + ' to ' + $scope.share.email);
+            },
+            function(err)
+            {
+                alert(err.message);
+            });
         };
 
         $scope.selectBot = function(bot)
@@ -198,5 +234,9 @@
         };
 
         $scope.getList();
+
+
+
+        $scope.lan = LanguageService;
     }]);
 })();

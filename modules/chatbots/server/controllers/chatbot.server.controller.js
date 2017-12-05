@@ -5,12 +5,13 @@ var fs = require('fs');
 var ChatBot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
 var Template = mongoose.model('Template');
+var User = mongoose.model('User');
 
 exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    var query = {  };
+    var query = { user: req.user._id };
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -19,7 +20,7 @@ exports.findTotalPage = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -34,7 +35,7 @@ exports.find = function (req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    var query = {  };
+    var query = { user: req.user._id };
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -48,6 +49,22 @@ exports.find = function (req, res)
         else
         {
             res.json(bots);
+        }
+    });
+};
+
+exports.sharedList = function(req, res)
+{
+    BotAuth.find({ user: req.user._id, giver: { $ne : req.user._id } }).populate('bot').exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp(list);
         }
     });
 };
@@ -93,28 +110,33 @@ exports.create = function(req, res)
 
             Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
             {
-                var dir = path.resolve('./custom_modules/' + req.body.id);
-                if(!fs.existsSync(dir))
+                // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
+                // if(chatbot.templateId)
+                // {
+                //     var templateDir = path.resolve('./templates/' + req.body.templateDir);
+                //
+                //     var files = fs.readdirSync(templateDir + '/bot');
+                //     for(var i=0; i<files.length; i++)
+                //     {
+                //         if(files[i].endsWith('.js'))
+                //         {
+                //             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
+                //             fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
+                //         }
+                //     }
+                // }
+                // else
+                // {
+                if(!chatbot.templateId)
                 {
-                    fs.mkdirSync(dir);
-                }
-
-                if(chatbot.templateId)
-                {
-                    var templateDir = path.resolve('./templates/' + req.body.templateDir);
-
-                    var files = fs.readdirSync(templateDir + '/bot');
-                    for(var i=0; i<files.length; i++)
+                    var dir = path.resolve('./custom_modules/' + req.body.id);
+                    if(!fs.existsSync(dir))
                     {
-                        if(files[i].endsWith('.js'))
-                        {
-                            var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
-                            fs.writeFileSync(dir + '/' + files[i], fileData);
-                        }
+                        fs.mkdirSync(dir);
                     }
-                }
-                else
-                {
+
+                    // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
+                    // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
                     var botjs = fs.readFileSync(__dirname + '/bot.template');
                     var defaultjs = fs.readFileSync(__dirname + '/default.template');
                     var graphjs = fs.readFileSync(__dirname + '/graph.template');
@@ -123,6 +145,7 @@ exports.create = function(req, res)
                     fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                     fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                 }
+                // }
 
                 var botAuth = new BotAuth();
                 botAuth.bot = chatbot._id;
@@ -175,6 +198,20 @@ exports.update = function(req, res)
     });
 };
 
+exports.rename = function(req, res)
+{
+    ChatBot.update({ _id: req.params.botId }, { $set: { name: req.body.name } }).exec(function(err, result)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        res.jsonp(result);
+    });
+};
+
 exports.duplicate = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
@@ -187,7 +224,7 @@ exports.duplicate = function(req, res)
         {
             var clone = new ChatBot();
             clone.id = item.id + ' Clone';
-            clone.name = item.name;
+            clone.name = item.name + 'Clone';
             clone.description = item.description;
             clone.user = req.user;
 
@@ -198,7 +235,7 @@ exports.duplicate = function(req, res)
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                res.jsonp(item);
+                res.jsonp(clone);
             });
         }
     });
@@ -210,12 +247,49 @@ exports.delete = function(req, res)
     {
         if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
         {
             var rimraf = require('rimraf');
             rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
+        }
+    });
+};
+
+exports.share = function(req, res)
+{
+    User.findOne({ email: req.body.data.email }).exec(function(err, item)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        if(item)
+        {
+            var botAuth = new BotAuth();
+            botAuth.bot = req.params.botId;
+            botAuth.user = item._id;
+            botAuth.giver = req.user;
+            botAuth.edit = req.body.data.write ? true : false;
+
+            botAuth.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                res.end();
+            });
+        }
+        else
+        {
+            res.status(404).send({ message: req.body.data.email + ' is not found' });
         }
     });
 };

@@ -1,4 +1,4 @@
-angular.module('playchat').controller('FailedDialogTrainingController', ['$window', '$scope', '$resource', '$cookies', '$location', function ($window, $scope, $resource, $cookies, $location)
+angular.module('playchat').controller('FailedDialogTrainingController', ['$window', '$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, LanguageService)
 {
     var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var SimiliarsService = $resource('/api/:botId/operation/training/similiars', { botId: '@botId' });
@@ -121,4 +121,5 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
     })();
 
     $scope.getList();
+    $scope.lan=LanguageService;
 }]);

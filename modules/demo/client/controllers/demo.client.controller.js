@@ -99,39 +99,38 @@
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
 
-            Socket.on('response-dl', function(data)
-            {
-                console.log('딥러닝 데이터 : ' , data);
-
-                clearTimeout(deeplearningTimer);
-
-                if(data.error == -1)
-                {
-                    var probability = data.probability;
-
-                    for(var i=0; i<probability.length; i++)
-                    {
-                        probability[i] = { name : emotionLabel[i], value: parseInt(probability[i]*100) / 100 };
-                    }
-
-                    probability.sort(function(a, b)
-                    {
-                        return b.value - a.value;
-                    });
-
-                    probability.splice(5, 7);
-
-                    $scope.diagram.emotion = probability;
-                }
-
-                // deeplearningTimer = setTimeout(function()
-                // {
-                //     $scope.diagram.emotion = [];
-                // }, 1000 * 10);
-            });
+            // Socket.on('response-dl', function(data)
+            // {
+            //     clearTimeout(deeplearningTimer);
+            //
+            //     if(data && data.error == -1)
+            //     {
+            //         var probability = data.probability;
+            //
+            //         for(var i=0; i<probability.length; i++)
+            //         {
+            //             probability[i] = { name : emotionLabel[i], value: parseInt(probability[i]*100) / 100 };
+            //         }
+            //
+            //         probability.sort(function(a, b)
+            //         {
+            //             return b.value - a.value;
+            //         });
+            //
+            //         probability.splice(5, 7);
+            //
+            //         $scope.diagram.emotion = probability;
+            //     }
+            //
+            //     // deeplearningTimer = setTimeout(function()
+            //     // {
+            //     //     $scope.diagram.emotion = [];
+            //     // }, 1000 * 10);
+            // });
 
             Socket.on('response-analytics', function(data)
             {
+                console.log('데이터 : ', data);
                 clearTimeout(analyticsTimer);
 
                 $scope.diagram.profile = {};
@@ -211,8 +210,8 @@
                     {
                         var matchRate = parseInt((context.nlu.matchInfo.qa[i].matchRate || 0) * 10);
 
-                        if(matchRate == 0)
-                            continue;
+                        // if(matchRate == 0)
+                        //     continue;
 
                         context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
 
@@ -264,9 +263,7 @@
                     $scope.diagram.profile.language.push({ name: data.language[i][0], rate: Math.round(data.language[i][1] * 100) / 100 });
                 }
 
-                console.log('랭', data.language);
-
-
+                console.log('실행');
                 analyticsTimer = setTimeout(function()
                 {
                     $scope.diagram.nlp = undefined;
@@ -275,18 +272,38 @@
                     $scope.diagram.entity = undefined;
                     $scope.diagram.turnTaking = undefined;
                     $scope.diagram.emotion = undefined;
-                    $scope.diagram.suggestion = [];
+
                     $scope.diagram.profile = undefined;
 
-                    console.log('초기화');
-                }, 1000 * 10);
+                    if($scope.diagram.suggestion[0])
+                    {
+                        var msg = new SpeechSynthesisUtterance();
+                        var voices = window.speechSynthesis.getVoices();
+                        msg.voice = voices[0];
+                        msg.rate = 1;
+                        msg.pitch = 1;
+                        msg.text = $scope.diagram.suggestion[0].output;
+
+                        console.log('우와 : ', $scope.diagram.suggestion[0]);
+
+                        msg.onend = function(e) {
+                            console.log('Finished in ' + event.elapsedTime + ' seconds.');
+
+                            $scope.diagram.suggestion = [];
+                        };
+
+                        speechSynthesis.speak(msg);
+                    }
+
+                    console.log($scope.diagram.suggestion);
+
+                }, 1000);
             });
 
             var sendSocket = function(text)
             {
-                console.log('실행 : ', text);
-                Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'en' } });
-                Socket.emit('analytics', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'en' } });
+                Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
+                Socket.emit('analytics', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
             };
 
             var makeRecognition = function()
@@ -411,13 +428,13 @@
                         }
                         else
                         {
-                            if(count % 2 == 0)
-                            {
-                                sendSocket(interim_transcript);
-                                count = 0;
-                            }
-
-                            count++;
+                            // if(count % 2 == 0)
+                            // {
+                            //     sendSocket(interim_transcript);
+                            //     count = 0;
+                            // }
+                            //
+                            // count++;
                         }
                         // else
                         // {
@@ -468,7 +485,7 @@
 
             function recognizeStart() {
 
-                recognition.lang = 'en-US';
+                recognition.lang = 'ko-KR';
                 // console.log(recognition);
                 recognition.start();
 

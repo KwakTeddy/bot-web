@@ -1,6 +1,6 @@
 <div class="failed-intent">
     <div class="failed-intent-title">
-        <span>Intent</span>
+        <span>{{lan('Intent') }}</span>
     </div>
     <div class="failed-intent-content">
         <div>
@@ -13,15 +13,15 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Contents</th>
+                        <th>{{lan('Contents') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-if="list.length == 0">
-                        <td>empty</td>
+                        <td>{{lan('empty') }}</td>
                     </tr>
                     <tr>
-                        <td>Test Intent</td>
+                        <td>{{lan('Test Intent') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -34,26 +34,26 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Failed Contents</th>
+                        <th>{{lan('Failed Contents') }}</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-if="list.length == 0">
-                        <td colspan="2">empty</td>
+                        <td colspan="2">{{lan('empty') }}</td>
                     </tr>
                     <tr>
-                        <td>Test Intent</td>
+                        <td>{{lan('Test Intent') }}</td>
                         <td>
-                            <button type="button" class="jump-button">Add</button>
-                            <button type="button" class="ignore-button">Ignore</button>
+                            <button type="button" class="jump-button">{{lan('Add') }}</button>
+                            <button type="button" class="ignore-button">{{lan('Ignore') }}</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div style="text-align: right; margin-top: 20px;">
-            <button type="button" class="blue-button">Add</button>
+            <button type="button" class="blue-button">{{lan('Add') }}</button>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <form ng-controller="DialogGraphCodeEditorController">
     <div class="dialog-graph-code-editor-controller">
-        <button type="button" class="blue-button" ng-click="save();">Save</button>
-        <div class="alert-success" role="alert" style="top: 50px;"> <strong>저장되었습니다!</strong> </div>
+        <button type="button" class="blue-button" ng-click="save();">{{lan('Save') }}</button>
+        <div class="alert-success" role="alert" style="top: 50px;"> <strong>{{lan('저장되었습니다!') }}</strong> </div>
     </div>
     <div class="dialog-graph-code-editor-body">
         <textarea style="display: none;"></textarea>

@@ -514,8 +514,9 @@
                 var diff = button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
                 if(diff > 50)
                 {
-                    button[0].style.top = -(button[0].offsetTop - target.offsetTop - 188) + 'px';
+                    button[0].style.top = -(button[0].offsetTop - target.offsetTop) + (target.children[0].offsetHeight + button[0].offsetHeight) + 'px';
                     button[0].style.position = 'relative';
+                    button[0].setAttribute('data-diff', diff);
                 }
             }
 
@@ -530,16 +531,24 @@
         var makeInputTemplate = function(input)
         {
             var template = '';
-            for(var key in input)
+
+            if(typeof input == 'string')
             {
-                var icon = key.charAt(0).toUpperCase();
-                if(key == 'if')
-                    icon = 'IF';
+                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">[text] ' + input + '</span>';
+            }
+            else
+            {
+                for(var key in input)
+                {
+                    var icon = key.charAt(0).toUpperCase();
+                    if(key == 'if')
+                        icon = 'IF';
 
-                if(!input[key])
-                    continue;
+                    if(!input[key])
+                        continue;
 
-                template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
+                    template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
+                }
             }
 
             return template;
@@ -594,7 +603,8 @@
                     }
                 }
 
-                console.log('나머지 : ', output);
+                if(!template)
+                    console.log('나머지 : ', output);
 
                 return template;
             }
@@ -779,12 +789,7 @@
             var outputTemplate = '';
             var buttonTemplate = '';
 
-            if(!dialog.input.length)
-            {
-                // 예전 그래프에 input이 리스트가 아닌것도 있었다.
-                inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
-            }
-            else
+            if(typeof dialog.input == 'object' && dialog.input.length)
             {
                 //or
                 for(var i=0; i<dialog.input.length; i++)
@@ -792,6 +797,11 @@
                     var input = dialog.input[i];
                     inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
                 }
+            }
+            else
+            {
+                // 예전 그래프에 input이 리스트가 아닌것도 있었다.
+                inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
             }
 
             if(typeof dialog.output == 'object')

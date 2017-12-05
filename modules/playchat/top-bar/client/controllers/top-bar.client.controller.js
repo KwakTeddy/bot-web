@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('TopBarController', ['$window', '$scope', function ($window, $scope)
+angular.module('playchat').controller('TopBarController', ['$window', '$scope','LanguageService', function ($window, $scope, LanguageService)
 {
     $scope.$parent.loaded('top-bar');
 
@@ -33,4 +33,6 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
         angular.element('.breadcrumbs .menu-name').text(data.name);
         angular.element('.breadcrumbs .menu-name-icon').get(0).src = data.imgUrl;
     });
+
+    $scope.lan=LanguageService;
 }]);

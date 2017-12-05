@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'ModalService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope)
+angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Learning', '/modules/playchat/gnb/client/imgs/speech.png');
 
@@ -242,7 +242,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
         $scope.deleteDialog = function(dialog, e)
         {
-            if(confirm('정말 삭제하시겠습니까'))
+            if(confirm($scope.lan('Are you sure you want to delete this item?')))
             {
                 DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
                 {
@@ -476,4 +476,5 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             $scope.initialize();
         }
     });
+    $scope.lan=LanguageService;
 }]);

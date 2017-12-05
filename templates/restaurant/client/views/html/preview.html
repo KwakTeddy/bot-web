@@ -1,0 +1,71 @@
+<style>
+    .template-demo-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-demo-data
+    {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .template-demo-data input
+    {
+        border: 1px solid #ddd;
+        padding: 10px 20px;
+    }
+</style>
+
+<h1 class="template-demo-title">매장정보관리</h1>
+<div ng-controller="restaurantPreviewController" class="template-demo-data">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 30%;">
+                <col style="width: 30%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>분류</th>
+                <th>이름</th>
+                <th>설명</th>
+                <th>이미지</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in datas">
+                <td>
+                    <input type="text" ng-model="data.category">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.name">
+                </td>
+                <td>
+                    <input type="checkbox" ng-model="data.description">
+                </td>
+                <td>
+                    <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                </td>
+                <td>
+                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <button type="button" class="default-button" ng-click="add();">추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

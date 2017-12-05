@@ -22,6 +22,7 @@ module.exports = function (config) {
     providerData.accessToken = accessToken;
     providerData.refreshToken = refreshToken;
 
+    console.log(profile);
     // Create the user OAuth profile
     var providerUserProfile = {
       // firstName: firstName,
@@ -29,7 +30,7 @@ module.exports = function (config) {
       // displayName: profile.username,
       username: providerData.properties.nickname,
       displayName: providerData.properties.nickname,
-      email: providerData.kaccount_email ? providerData.kaccount_email : undefined,
+      email: providerData.kaccount_email ? providerData.kaccount_email : 'kakao',
       profileImageURL: providerData.properties.profile_image,
       provider: 'kakao',
       providerIdentifierField: 'id',

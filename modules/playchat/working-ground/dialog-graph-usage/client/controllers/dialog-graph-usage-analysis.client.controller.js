@@ -1,6 +1,6 @@
 "user strict"
 
-angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', function ($scope, $http, $cookies, $resource, DateRangePickerService)
+angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'LanguageService',function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Dialog Graph Usage');
 
@@ -150,11 +150,13 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
             },
             function (err)
             {
-                alert('error: ' + JSON.stringify(err));
+                alert($scope.lan('error: ') + JSON.stringify(err));
             });
         };
     })();
 
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
+
+    $scope.lan=LanguageService;
 }]);

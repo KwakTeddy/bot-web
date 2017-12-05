@@ -1,6 +1,6 @@
 "user strict"
 
-angular.module("playchat").controller("DialogTrainingInputController", ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService', function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService)
+angular.module("playchat").controller("DialogTrainingInputController", ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService', 'LanguageService',function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Dialog Training Input');
 
@@ -97,4 +97,5 @@ angular.module("playchat").controller("DialogTrainingInputController", ['$scope'
     //initialize
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
+    $scope.lan=LanguageService;
 }]);

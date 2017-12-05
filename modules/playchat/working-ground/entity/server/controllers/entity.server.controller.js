@@ -31,7 +31,7 @@ exports.findTotalPage = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -55,7 +55,7 @@ exports.find = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -71,7 +71,7 @@ exports.findOne = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ error: err.stack || err });
         }
         else
@@ -87,7 +87,7 @@ exports.findEntityContents = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 
@@ -99,7 +99,7 @@ exports.findEntityContents = function(req, res)
             {
                 if(err)
                 {
-                    logger.systemError(err);
+                    logger.systemError(err.stack || err);
                 }
 
                 json.synonyms = entityContentSynonyms;
@@ -137,7 +137,7 @@ function saveEntityContentSynonyms(botId, user, entityId, contentId, synonyms, c
             {
                 if(err)
                 {
-                    logger.systemError(err);
+                    logger.systemError(err.stack || err);
                 }
                 else
                 {
@@ -178,7 +178,7 @@ function saveEntityContents(botId, user, entityId, contents, callback, errCallba
             {
                 if(err)
                 {
-                    logger.systemError(err);
+                    logger.systemError(err.stack || err);
                     errs.push(err);
                     done();
                 }
@@ -365,7 +365,7 @@ exports.create = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 
@@ -382,7 +382,7 @@ exports.create = function(req, res)
         {
             if (err)
             {
-                logger.systemError(err);
+                logger.systemError(err.stack || err);
                 return res.status(400).send({ message: err.stack || err });
             }
             else
@@ -416,7 +416,7 @@ exports.create = function(req, res)
                     },
                     function(err)
                     {
-                        logger.systemError(err);
+                        logger.systemError(err.stack || err);
                         return res.status(400).send({ message: err.stack || err });
                     });
                 }
@@ -431,7 +431,7 @@ exports.update = function(req, res)
     {
         if (err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 
@@ -443,7 +443,7 @@ exports.update = function(req, res)
                 {
                     if (err)
                     {
-                        logger.systemError(err);
+                        logger.systemError(err.stack || err);
                         return res.status(400).send({ message: err.stack || err });
                     }
 
@@ -457,7 +457,7 @@ exports.update = function(req, res)
                     {
                         if (err)
                         {
-                            logger.systemError(err);
+                            logger.systemError(err.stack || err);
                             return res.status(400).send({ message: err.stack || err });
                         }
 
@@ -467,7 +467,7 @@ exports.update = function(req, res)
                         },
                         function(err)
                         {
-                            logger.systemError(err);
+                            logger.systemError(err.stack || err);
                             return res.status(400).send({ message: err.stack || err });
                         });
                     });
@@ -481,7 +481,7 @@ exports.update = function(req, res)
                 },
                 function(err)
                 {
-                    logger.systemError(err);
+                    logger.systemError(err.stack || err);
                     return res.status(400).send({ message: err.stack || err });
                 });
             }
@@ -499,21 +499,21 @@ exports.delete = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
         }
 
         EntityContent.remove({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err)
         {
             if(err)
             {
-                logger.systemError(err);
+                logger.systemError(err.stack || err);
             }
 
             EntityContentSynonym.remove({ botId: req.params.botId, entityId: req.params.entityId }).exec(function(err)
             {
                 if (err)
                 {
-                    logger.systemError(err);
+                    logger.systemError(err.stack || err);
                 }
 
                 res.end();

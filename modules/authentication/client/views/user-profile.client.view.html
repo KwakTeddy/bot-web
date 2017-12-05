@@ -1,27 +1,38 @@
 <div class="chatbot-body">
     <form ng-submit="save();" style="width: 600px; margin: 30px auto;">
         <h2 style="font-size: 20px; font-weight: bold; border-bottom: 1px solid #ddd; padding: 20px 0;">Profile</h2>
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">E-mail</span>-->
+                <!--<input type="email" ng-model="user.email" class="data-input" ng-required="true" disabled="true">-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">First name</span>-->
+                <!--<input type="text" ng-model="user.firstName" class="data-input" ng-required="true" autofocus="true">-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">Last name</span>-->
+                <!--<input type="text" ng-model="user.lastName" class="data-input" ng-required="true">-->
+            <!--</label>-->
+        <!--</div>-->
         <div class="form-row">
             <label class="required">
-                <span class="form-title">E-mail</span>
-                <input type="email" ng-model="user.email" class="data-input" ng-required="true" disabled="true">
-            </label>
-        </div>
-        <div class="form-row">
-            <label class="required">
-                <span class="form-title">First name</span>
-                <input type="text" ng-model="user.firstName" class="data-input" ng-required="true" autofocus="true">
-            </label>
-        </div>
-        <div class="form-row">
-            <label class="required">
-                <span class="form-title">Last name</span>
-                <input type="text" ng-model="user.lastName" class="data-input" ng-required="true">
+                <span class="form-title">Language</span>
+                <select class="jumbo-select" ng-model="language">
+                    <option value="ko">Korean</option>
+                    <option value="en">English</option>
+                    <option value="zh">Chinese</option>
+                    <option value="jp">Japanese</option>
+                </select>
             </label>
         </div>
         <div class="tab-footer" style="border-top: 0;">
             <button class="blue-button">Update</button>
-            <button class="red-button" style="float: left;">Delete Account</button>
+            <!--<button class="red-button" style="float: left;">Delete Account</button>-->
         </div>
     </form>
 </div>

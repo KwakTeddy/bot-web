@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('dashboardController', ['$scope', '$resource', '$cookies', function ($scope, $resource, $cookies)
+angular.module('template').controller('deliveryDashboardController', ['$scope', '$resource', '$cookies', function ($scope, $resource, $cookies)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -10,7 +10,7 @@ angular.module('template').controller('dashboardController', ['$scope', '$resour
     (function()
     {
         $scope.chatbot = chatbot;
-        ChatbotTemplateService.get({ templateId: chatbot.templateId }, function(result)
+        ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
         {
             $scope.template = result;
         },

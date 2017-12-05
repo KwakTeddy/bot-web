@@ -1,12 +1,3 @@
-var path = require("path")
-var address = require(path.resolve("./engine/bot/action/common/address"));
-var type = require(path.resolve("./engine/bot/action/common/type"));
-var shop = require(path.resolve("./engine/bot/common/shop"));
-var start = require("./start");
-
-
-
-
 var dialogs = [
     {
         "name": "카테고리보기",
@@ -135,12 +126,26 @@ var dialogs = [
                         "task": "makeOrderList"
                     },
                     {
-                        "input": {"regexp": "/^<$/"} ,
-                        "output": {"repeat": 1, "options": {"page": "pre"}}
+                        "input": {
+                            "regexp": "/^<$/"
+                        },
+                        "output": {
+                            "repeat": 1,
+                            "options": {
+                                "page": "pre"
+                            }
+                        }
                     },
                     {
-                        "input": {"regexp": "/^>$/"} ,
-                        "output": {"repeat": 1, "options": {"page": "next"}}
+                        "input": {
+                            "regexp": "/^>$/"
+                        },
+                        "output": {
+                            "repeat": 1,
+                            "options": {
+                                "page": "next"
+                            }
+                        }
                     },
                     {
                         "name": "메뉴재선택",
@@ -318,7 +323,7 @@ var dialogs = [
                                                 ],
                                                 "output": [
                                                     {
-                                                        "text": "[주문최종확인]\n#cart#[+name+] X+quant+, +price+원\n#\n\n*총금액 : +totalPrice+\n*배달주소 : +address.지번주소+\n*주문자 전화번호 : +mobile+\n*결제 : +pay+\n*요청사항 : +request+\n\n위 내용대로 주문하시겠습니까?\n1. 주문\n2. 취소",
+                                                        "text": "[주문최종확인]\n#cart#[+name+] X+quant+, +price+원\n#\n\n*총금액 : +totalPrice+\n*배달주소 : +address.지번주소+\n*주문자 전화번호 : +mobile+\n*결제 : +pay+\n*요청사항 : +discription+\n\n위 내용대로 주문하시겠습니까?\n1. 주문\n2. 취소",
                                                         "kind": "Text"
                                                     }
                                                 ],
@@ -340,7 +345,7 @@ var dialogs = [
                                                         ],
                                                         "output": [
                                                             {
-                                                                "text": "주문이 완료되었습니다.\n\n배달은 30분 가량 소요될 예정입니다.\n\n처음으로 돌아가시려면 '시작'을 입력해주세요.",
+                                                                "text": "주문요청이 완료되었습니다. 음식점이 승인하면 접수완료 문자가 발송되며, 그전까진 '주문내역 보기'에서 주문 취소 가능합니다.\n\n배달은 30분 가량 소요될 예정입니다.\n\n처음으로 돌아가시려면 '시작'을 입력해주세요.",
                                                                 "kind": "Text"
                                                             }
                                                         ],
@@ -797,7 +802,7 @@ var dialogs = [
                                 "kind": "Action",
                                 "call": "주문목록",
                                 "options": {
-                                    "output": "*배달가능한 최소가격은 +restaurant.minPrice+입니다.*[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
+                                    "output": "*배달가능한 최소가격은 +minPrice+입니다.*[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
                                 }
                             }
                         ]
@@ -1321,7 +1326,7 @@ var dialogs = [
                                 }
                             },
                             {
-                                "text": "휴대폰 번호가\n\n+mobile+\n\n로 등록되었습니다.",
+                                "text": "휴대폰 번호가\n\n+mobile+\n\n로 등록되었습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                                 "kind": "Text"
                             }
                         ],
@@ -1516,12 +1521,12 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.orderHistory",
-                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n<주문내용>:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n[주문내용]:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text",
                 "id": "default22_0"
             },
             {
-                "text": "아직 회원님의 주문내역이 없네요.\n\n어서 <+restaurant.name+> 챗봇을 통해 음식을 주문해보세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "아직 회원님의 주문내역이 없네요.\n\n어서 <+name+> 챗봇을 통해 음식을 주문해보세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text",
                 "id": "default22_1"
             }
@@ -1545,11 +1550,10 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "<+restaurant.name+>\n\n전화번호 : +restaurant.phone+\n주소: +restaurant.location.지번주소+\n<영업시간>\n#restaurant.openTime#+day+: +time+\n#\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "[[+resname+]]\n\n전화번호 : +phone+\n주소: +address+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text"
             }
-        ],
-        "task": "makeOpenTime"
+        ]
     },
     {
         "name": "쿠폰",
@@ -1565,14 +1569,46 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "<+restaurant.name+> 쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text"
+                "if": "context.bot.event",
+                "text": "<+resname+> \n쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text",
+                "id": "default0_0"
+            },
+            {
+                "if": "true",
+                "text": "<+resname+> \n지금은 등록된 쿠폰이 없습니다. 다음에 다시 확인해주세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text",
+                "id": "default0_1"
             }
         ]
     },
     {
-        "name": "사장님주문내역",
-        "id": "default85",
+        "id": "default100",
+        "filename": "default",
+        "input": [
+            {
+                "text": "주문 취소"
+            }
+        ],
+        "output": [
+            {
+                "if": "context.dialog.orderHistory && context.dialog.orderHistory.status=='승인대기중'",
+                "kind": "Action",
+                "id": "default0_0",
+                "call": "주문취소확인"
+            },
+            {
+                "if": "",
+                "text": "<+resname+> \n취소가능한 주문이 없습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text"
+            }
+        ],
+        "name": "주문취소",
+        "task": "getOrderHistory"
+    },
+    {
+        "name": "주문취소확인",
+        "id": "default101",
         "filename": "default",
         "input": [
             {
@@ -1580,95 +1616,85 @@ var dialogs = [
             }
         ],
         "output": [
-            { "if": "context.botUser.isOwner && context.dialog.reserves != undefined", "output": "사장님으로 접속하였습니다. 미처리 예약내역입니다.\n#reserves#+index+. +mobile+,+address+[+status+]\n#\n처리할 예약번호를 말씀해주세요.",
-                "children": [
+            {
+                "text": "주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n[주문내용]:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n위 주문을 취소하시겠습니까?\"\n\n1. 네\n2. 아니오",
+                "kind": "Text"
+            }
+        ],
+        "children": [
+            {
+                "name": "주문취소완료",
+                "id": "default102",
+                "filename": "default",
+                "input": [
                     {
-                        "id": "restaurant30",
-                        "filename": "restaurant",
-                        "input": {"types": [{"name": "reserve", "listName": "reserves", "typeCheck": "listTypeCheck"}]},
-                        "task": "makeReserve",
-                        "output": "상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserveTime.month+.+reserveTime.date+ +reserveTime.hour+:+reserveTime.minute+ \n#reserve.order#+name+, +quant+, +price+\n#\n\n1.확정\n2.취소",
-                        "children": [
-                            {
-                                "id": "restaurant26",
-                                "filename": "restaurant",
-                                "input": [
-                                    {
-                                        "text": "1"
-                                    },
-                                    {
-                                        "text": "확정"
-                                    }
-                                ],
-                                "task": "reserveOwnerConfirm",
-                                "output": {"call": "예약내역", "options": {"prefix": "예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n"}}
-                            },
-                            {
-                                "id": "restaurant28",
-                                "filename": "restaurant",
-                                "input": [
-                                    {
-                                        "text": "2"
-                                    },
-                                    {
-                                        "text": "취소"
-                                    }
-                                ],
-                                "output": "취소 이유를 입력해주세요.",
-                                "children": [
-                                    {
-                                        "id": "restaurant27",
-                                        "filename": "restaurant",
-                                        "input": {"if": "true"},
-                                        "task": "reserveOwnerCancel",
-                                        "output": {"call": "예약내역", "options": {"prefix": "예약이 취소 되었습니다.\n\n"}}
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "restaurant29",
-                                "filename": "restaurant",
-                                "input": {"if": "true"},
-                                "output": {"repeat": 1, "options": {"output": "'확정' 또는 '취소'라고 말씀해주세요."}}
-                            }
-                        ]
+                        "text": "1"
                     },
                     {
-                        "id": "restaurant31",
-                        "filename": "restaurant",
-                        "input": {"if": "true"},
-                        "output": {"repeat": 1, "options": {"prefix": "목록에서 선택해주세요.\n"}}
-                    }
-                ]},
-            {"if": "context.botUser.isOwner && context.dialog.reserves == undefined", "output": "미처리 예약내역이 없습니다."},
-            {"if": "context.dialog.reserves != undefined", "output": "고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.",
-                "children": [
-                    {
-                        "id": "restaurant32",
-                        "filename": "restaurant",
-                        "input": {"types": [{"name": "reserve", "listName": "reserves", "typeCheck": "listTypeCheck"}]},
-                        "task": "reserveCancel",
-                        "output": "예약이 취소되었습니다."
+                        "text": "네"
                     },
                     {
-                        "id": "restaurant33",
-                        "filename": "restaurant",
-                        "input": {"if": "true"},
-                        "output": {"repeat": 1, "options": {"prefix": "목록에서 선택해주세요.\n"}}
+                        "text": "응"
                     }
-                ]},
-            {"if": "context.dialog.reserve != undefined", "output": "고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 '취소'라고 말씀해주세요.",
-                "children": [
+                ],
+                "output": [
                     {
-                        "id": "restaurant34",
-                        "filename": "restaurant",
-                        "input": "취소",
-                        "task": "reserveCancel",
-                        "output": "예약이 취소되었습니다."
+                        "text": "주문이 취소되었습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                        "kind": "Text"
+                    }
+                ],
+                "task": "orderCancel"
+            },
+            {
+                "name": "주문취소중단",
+                "id": "default103",
+                "filename": "default",
+                "input": [
+                    {
+                        "text": "2"
+                    },
+                    {
+                        "text": "아니다"
+                    }
+                ],
+                "output": [
+                    {
+                        "text": "주문이 취소되지 않았습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                        "kind": "Text"
                     }
                 ]
             }
         ]
+    },
+    {
+        "id": "default0",
+        "filename": "default",
+        "input": [
+            {
+                "text": "그대로"
+            },
+            {
+                "text": "지난"
+            },
+            {
+                "text": "똑같이"
+            }
+        ],
+        "output": [
+            {
+                "if": "context.dialog.orderHistory",
+                "kind": "Action",
+                "call": "최종확인"
+            },
+            {
+                "text": "아직 저를 통해 주문하신적이 없네요. 한번 주문을 하신 뒤로는, 모든 내용을 기억해 그대로 주문해드릴 수 있어요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text"
+            }
+        ],
+        "name": "그대로",
+        "task": {
+            "name": "recentCart"
+        }
     }
 ];
 
@@ -1693,7 +1719,7 @@ var commonDialogs = [
                 "type": "Call"
             },
             {
-                "text": "안녕하세요. \n<+restaurant.name+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n+notOpen+\n1. 메뉴보기\n2. 배달받을 주소 확인 / 변경\n3. 배달받을 핸드폰번호 확인 / 변경\n4. 내 주문내역 보기\n5. 매장안내\n6. 쿠폰",
+                "text": "안녕하세요. \n<+resname+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n+notOpen+\n1. 메뉴보기\n2. 배달받을 주소 확인 / 변경\n3. 배달받을 핸드폰번호 확인 / 변경\n4. 주문내역(과거주문 취소, 그대로 주문)\n5. 매장안내\n6. 쿠폰",
                 "kind": "Text"
             }
         ],
@@ -1734,6 +1760,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require("path").resolve("./engine/bot")).getTemplateBot("delivery");
+var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('delivery');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

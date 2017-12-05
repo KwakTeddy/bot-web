@@ -13,77 +13,17 @@
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
 <title ng-bind="enterpriseTitle"></title>
 
-
+<link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
 
 {% if env == 'development' %}
 
-<link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
+{% for cssFile in cssFiles %}
+<link rel="stylesheet" type="text/css" href="{{cssFile}}">
+{% endfor %}
 
-<!-- Core -->
-<link href="/modules/core/client/css/core.css" rel="stylesheet" type="text/css">
-<link href="/modules/core/client/css/popup.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/authentication/client/css/signin.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/chatbots/client/css/chatbot.css" rel="stylesheet" type="text/css">
-
-<!-- PlayChat Core -->
-
-<!-- PlayChat Core Layout -->
-<link href="/modules/playchat/core/layout/client/css/layout.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/playchat/core/layout/client/css/styleCustom.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/core/layout/client/css/common.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/core/layout/client/css/component.css" rel="stylesheet" type="text/css">
-
-<!-- PlayChat Global Navigation Bar -->
-<link href="/modules/playchat/gnb/client/css/gnb.css" rel="stylesheet" type="text/css">
 <link href="/modules/playchat/gnb/client/css/gnb-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 1024px)" id="gnb-responsive-css">
-
-<!-- PlayChat TopBar -->
-<link href="/modules/playchat/top-bar/client/css/top-bar.css" rel="stylesheet" type="text/css" id="topbar-css">
-
-<!-- PlayChat Simulator -->
-<link href="/modules/playchat/simulator/client/css/simulator.css" rel="stylesheet" type="text/css">
 <link href="/modules/playchat/simulator/client/css/simulator-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 900px)" id="simulator-responsive-css">
 
-<!-- PlayChat LogAnalysis -->
-<link href="/modules/playchat/log-analysis/client/css/log-analysis.css" rel="stylesheet" type="text/css">
-
-<!-- PlayChat Working Ground -->
-<link href="/modules/playchat/working-ground/common/client/css/working-ground-common.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/playchat/working-ground/dashboard/client/css/dashboard.css" rel="stylesheet" type="text/css">
-
-<!-- Dialog Set -->
-<link href="/modules/playchat/working-ground/dialog-set/client/css/dialog-set-management.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/dialog-set/client/css/dialog-set-development.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/dialog-graph/client/css/dialog-graph-development.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/dialog-graph/client/css/dialog-graph-development-editor.css" rel="stylesheet" type="text/css">
-
-<!-- Entity -->
-<link href="/modules/playchat/working-ground/entity/client/css/entity-management.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/entity/client/css/entity-management-add.css" rel="stylesheet" type="text/css">
-
-<!-- Intent -->
-<link href="/modules/playchat/working-ground/intent/client/css/intent-management.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/intent/client/css/intent-management-add.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/playchat/working-ground/user/client/css/user-operation.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/failed-dialogs/client/css/failed-dialogs.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/playchat/working-ground/summary/client/css/summary-analysis.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/session/client/css/session-analysis.css" rel="stylesheet" type="text/css">
-<link href="/modules/playchat/working-ground/dialog-graph-path/client/css/dialog-graph-path.css" rel="stylesheet" type="text/css">
-
-<link href="/modules/playchat/working-ground/channel/client/css/channel.css" rel="stylesheet" type="text/css">
-
-
-<script src="/js/witch/witch.js"></script>
-
-<script src="modules/playchat/gnb/client/gnb.witch.test.js"></script>
-<script src="modules/playchat/simulator/client/simulator.witch.test.js"></script>
-<script src="modules/playchat/working-ground/intent/client/intent.witch.test.js"></script>
 {% endif %}
 
 <script>
@@ -157,6 +97,8 @@ if('{{env}}' == 'production')
 <link rel="stylesheet" href="/lib/bootstrap-daterangepicker/daterangepicker.css">
 <script src="/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+
 <script>
 // UI 공통 에러 구현.. 임시로 여기 위치.
 var Beagle = {};
@@ -168,162 +110,9 @@ Beagle.error = function(e)
 
 
 {% if env == 'development' %}
-<!-- Core -->
-<script src="modules/core/client/config/config.js"></script>
-<script src="modules/core/client/config/init.js"></script>
-<script src="modules/core/client/config/modules.js"></script>
-
-<script src="modules/core/client/services/interceptors/auth.interceptor.client.service.js"></script>
-<script src="modules/core/client/services/socket.io.client.service.js"></script>
-<script src="modules/core/client/services/paging-service.js"></script>
-
-<script src="modules/core/client/controllers/title.client.controller.js"></script>
-<script src="modules/core/client/controllers/main.client.controller.js"></script>
-<script src="modules/core/client/controllers/header.client.controller.js"></script>
-
-<script src="modules/core/client/config/core.client.routes.js"></script>
-
-
-<!-- Admin -->
-<script src="/modules/admin/client/controllers/template-admin.client.controller.js"></script>
-<script src="/modules/admin/client/config/admin.client.routes.js"></script>
-
-
-
-<!-- Authentication -->
-<script src="modules/authentication/client/controllers/signup.client.controller.js"></script>
-<script src="modules/authentication/client/controllers/signin.client.controller.js"></script>
-<script src="modules/authentication/client/controllers/password-forgot.client.controller.js"></script>
-<script src="modules/authentication/client/controllers/user-profile.client.controller.js"></script>
-<!--<script src="modules/authentication/client/controllers/authentication.client.controller.js"></script>-->
-<script src="modules/authentication/client/services/authentication.client.service.js"></script>
-<!--<script src="modules/authentication/client/services/password-validator.client.service.js"></script>-->
-<script src="modules/authentication/client/config/authentication.client.route.js"></script>
-
-
-
-<!-- chatbots -->
-<script src="modules/chatbots/client/config/chatbot.client.route.js"></script>
-<script src="modules/chatbots/client/controllers/chatbot.client.controller.js"></script>
-<script src="modules/chatbots/client/controllers/chatbot-create.client.controller.js"></script>
-<script src="modules/chatbots/client/controllers/chatbot-create-template.client.controller.js"></script>
-
-
-
-<!-- demo -->
-<script src="modules/demo/client/config/demo.client.route.js"></script>
-<script src="modules/demo/client/controllers/demo.client.controller.js"></script>
-<script src="modules/playchat/working-ground/knowledge/client/controllers/knowledge-graph.client.controller.js"></script>
-<script src="modules/playchat/working-ground/knowledge/client/controllers/knowledge-graph2.client.controller.js"></script>
-
-
-
-<!-- PlayChat Core -->
-
-<!-- PlayChat Core Layout -->
-<script src="modules/playchat/core/layout/client/controllers/playchat.client.controller.js"></script>
-<script src="modules/playchat/core/layout/client/controllers/layout.client.controller.js"></script>
-<script src="modules/playchat/core/layout/client/services/layout.client.service.js"></script>
-<script src="modules/playchat/core/layout/client/services/menu.client.service.js"></script>
-<script src="modules/playchat/core/layout/client/config/layout.routes.js"></script>
-
-<!-- PlayChat SideMenu -->
-<script src="modules/playchat/gnb/client/controllers/gnb.client.controller.js"></script>
-
-<!-- PlayChat TopBar -->
-<script src="modules/playchat/top-bar/client/controllers/top-bar.client.controller.js"></script>
-
-<!-- PlayChat Simulator -->
-<script src="modules/playchat/simulator/client/controllers/simulator.client.controller.js"></script>
-
-<!-- PlayChat LogAnalysis -->
-<script src="modules/playchat/log-analysis/client/controllers/log-analysis.client.controller.js"></script>
-
-<!-- PlayChat Working Ground -->
-<script src="modules/playchat/working-ground/dashboard/client/controllers/dashboard.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/dialog-set/client/controllers/dialog-set-management.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-set/client/controllers/dialog-set-development.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/entity/client/controllers/entity-management.client.controller.js"></script>
-<script src="modules/playchat/working-ground/entity/client/controllers/entity-management-add.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/intent/client/controllers/intent-management.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/task/client/controllers/task-management.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-management.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-development.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-editor.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-code-editor.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-intent-add.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-entity-add.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-task-add.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-type-add.client.controller.js"></script>
-
-
-<script src="modules/playchat/working-ground/dialog-graph/client/services/dialog-graph-editor-task.client.service.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/services/dialog-graph-editor-input.client.service.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/services/dialog-graph-editor-output.client.service.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/services/dialog-graph-editor.client.service.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph/client/services/dialog-graph.client.service.js"></script>
-
-
-<script src="modules/playchat/working-ground/user/client/controllers/user-operation.client.controller.js"></script>
-<script src="modules/playchat/working-ground/user/client/controllers/user-operation-detail.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/chat-log/client/controllers/ai-chat-log-operation.client.controller.js"></script>
-<script src="modules/playchat/working-ground/chat-log/client/controllers/human-chat-log-operation.client.controller.js"></script>
-
-
-<script src="modules/playchat/working-ground/summary/client/controllers/summary-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-traffic/client/controllers/dialog-traffic-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/user/client/controllers/user-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/session/client/controllers/session-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-training-input/client/controllers/dialog-training-input-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-training-usage/client/controllers/dialog-training-usage-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph-usage/client/controllers/dialog-graph-usage-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph-input/client/controllers/dialog-graph-input-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/dialog-graph-path/client/controllers/dialog-graph-path-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/intent/client/controllers/intent-analysis.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/failed-dialogs/client/controllers/failed-dialogs-analysis.client.controller.js"></script>
-<script src="modules/playchat/working-ground/failed-dialogs/client/controllers/failed-dialogs-operation.client.controller.js"></script>
-<script src="modules/playchat/working-ground/failed-dialogs/client/controllers/failed-dialog-training.client.controller.js"></script>
-<script src="modules/playchat/working-ground/failed-dialogs/client/controllers/failed-dialog-intent.client.controller.js"></script>
-<script src="modules/playchat/working-ground/failed-dialogs/client/controllers/failed-dialog-graph.client.controller.js"></script>
-
-<script src="modules/playchat/working-ground/channel/client/controllers/channel.client.controller.js"></script>
-
-
-
-
-<script src="modules/playchat/working-ground/common/client/services/modal-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/tab-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/form-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/tooltip-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/caret-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/date-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/daterangepicker-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/excel-download-service.js"></script>
-
-
-
-
-
-
-
-
-
-<!-- Templates -->
-<script src="/templates/demo/client/controllers/dashboard.client.controller.js"></script>
-<script src="/templates/demo/client/controllers/basic.client.controller.js"></script>
-<script src="/templates/demo/client/controllers/menu.client.controller.js"></script>
-<script src="/templates/demo/client/controllers/event.client.controller.js"></script>
-
-<script src="/templates/delivery/client/controllers/dashboard.client.controller.js"></script>
-<script src="/templates/delivery/client/controllers/basic.client.controller.js"></script>
-<script src="/templates/delivery/client/controllers/menu.client.controller.js"></script>
+{% for jsFile in jsFiles %}
+<script type="text/javascript" src="{{jsFile}}"></script>
+{% endfor %}
 {% endif %}
 
 

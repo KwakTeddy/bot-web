@@ -1,7 +1,7 @@
 <div ng-controller="DialogTrafficAnalysisController" data-ng-init="init();">
 
     <div style="text-align: right; margin-bottom: 20px;">
-        <button type="button" class="default-button" ng-click="exelDownload('dailyUser')">Excel 다운로드</button>
+        <button type="button" class="default-button" ng-click="exelDownload('dailyUser')">{{lan('Excel Download') }}</button>
         <div id="createdRange" class="pull-right" style="width: 40%;">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
             <span></span> <b class="caret"></b>
@@ -9,19 +9,19 @@
     </div>
 
     <div>
-        <h2 class="dialog-traffic-title">기간별 대화량(채널)</h2>
+        <h2 class="dialog-traffic-title">{{lan('Historical amount of dialog(channel)') }}</h2>
         <div>
             <canvas id="dailyDialog" width="400" height="100"></canvas>
         </div>
     </div>
     <div>
-        <h2 class="dialog-traffic-title">기간별 대화량(성공/실패)</h2>
+        <h2 class="dialog-traffic-title">{{lan('Historical amount of dialog(Success/Fail)') }}</h2>
         <div>
             <canvas id="isFailDialog" width="400" height="100"></canvas>
         </div>
     </div>
     <div>
-        <h2 class="dialog-traffic-title">채널별 대화 비율</h2>
+        <h2 class="dialog-traffic-title">{{lan('Ratio of dialog on channels') }}</h2>
         <div style="display: flex;">
             <div style="flex: 1">
                 <div>
@@ -32,29 +32,29 @@
                 <table class="tb02" style="height: 100%">
                     <thead>
                     <tr>
-                        <th class="text-center">채널</th>
-                        <th class="text-center">비율</th>
-                        <th class="text-center">이용자수</th>
+                        <th class="text-center">{{lan('Channel') }}</th>
+                        <th class="text-center">{{lan('비율') }}</th>
+                        <th class="text-center">{{lan('이용자수') }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="text-center">카카오톡</td>
+                        <td class="text-center">{{lan('Kakaotalk') }}</td>
                         <td class="text-center">{{kakao*100/(kakao + facebook + navertalk)| number:1}}%</td>
                         <td class="text-center">{{kakao}}</td>
                     </tr>
                     <tr>
-                        <td class="text-center">페이스북</td>
+                        <td class="text-center">{{lan('Facebook') }}</td>
                         <td class="text-center">{{facebook*100/(kakao + facebook + navertalk)| number:1}}%</td>
                         <td class="text-center">{{facebook}}</td>
                     </tr>
                     <tr>
-                        <td class="text-center">네이버톡톡</td>
+                        <td class="text-center">{{lan('Naver talk talk') }}</td>
                         <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk)| number:1}}%</td>
                         <td class="text-center">{{navertalk}}</td>
                     </tr>
                     <tr>
-                        <td class="text-center">합계</td>
+                        <td class="text-center">{{lan('Total') }}</td>
                         <td class="text-center">100%</td>
                         <td class="text-center">{{kakao + facebook + navertalk}}</td>
                     </tr>

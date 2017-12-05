@@ -1,6 +1,6 @@
 <div ng-controller="GnbController">
     <div class="gnb-header">
-        <a href="/playchat/chatbots" class="logo-min"><img src="/modules/playchat/gnb/client/imgs/logo.png"></a>
+        <a href="/playchat/chatbots" class="logo-min"><img src="/modules/playchat/gnb/client/imgs/logo.png" style="padding-top: 4px;"></a>
         <a href="#" class="gnb-close" ng-click="toggleGnb($event);"></a>
     </div>
 
@@ -39,19 +39,19 @@
         <li>
             <a href="#">
                 <img src="/modules/playchat/gnb/client/imgs/docs.png">
-                <span>Docs</span>
+                <span>{{ lan('Docs') }}</span>
             </a>
         </li>
         <li>
             <a href="#">
                 <img src="/modules/playchat/gnb/client/imgs/forum.png">
-                <span>Forum</span>
+                <span>{{ lan('Forum') }}</span>
             </a>
         </li>
         <li>
             <a href="#">
                 <img src="/modules/playchat/gnb/client/imgs/support.png">
-                <span>Support</span>
+                <span>{{ lan('Support') }}</span>
             </a>
         </li>
     </ul>

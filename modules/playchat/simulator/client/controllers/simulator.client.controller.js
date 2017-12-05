@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', '$rootScope', 'Socket',
-function ($window, $scope, $cookies, $resource, $rootScope, Socket)
+angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', '$rootScope', 'Socket','LanguageService',
+function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageService)
 {
     $scope.$parent.loaded('simulator');
 
@@ -40,13 +40,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             if(typeof text != 'object')
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
-
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/\n/gi, '<br>'));
             }
             else
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text);
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/\n/gi, '<br>'));
 
                 template = angular.element(template);
                 if(text.image)
@@ -64,7 +63,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
 
                     for(var i=0; i<text.buttons.length; i++)
                     {
-                        t += '<a href="' + text.buttons[i].url + '" class="default-button">' + text.buttons[i].text + '</a>';
+                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button">' + text.buttons[i].text + '</a>';
                     }
 
                     t += '</div>';
@@ -75,10 +74,10 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
 
             simulatorBody.append(template);
 
-            simulatorBody.find('.output-buttons a').on('click', function(e)
+            simulatorBody.find('.output-buttons a').off('click').on('click', function(e)
             {
                 var href = angular.element(this).attr('href');
-                if(href === undefined || href == 'undefined')
+                if(href === undefined || href == 'undefined' || href == '#')
                 {
                     var text = angular.element(this).text();
 
@@ -221,4 +220,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             }
         };
     })();
+
+    $scope.lan=LanguageService;
 }]);

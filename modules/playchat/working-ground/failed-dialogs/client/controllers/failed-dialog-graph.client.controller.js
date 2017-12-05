@@ -1,4 +1,4 @@
-angular.module('playchat').controller('FailedDialogGraphController', ['$window', '$scope', '$resource', '$cookies', '$location', function ($window, $scope, $resource, $cookies, $location)
+angular.module('playchat').controller('FailedDialogGraphController', ['$window', '$scope', '$resource', '$cookies', '$location','LanguageService', function ($window, $scope, $resource, $cookies, $location, LanguageService)
 {
     var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var FailedDialogGraphService = $resource('/api/:botId/operation/failed-graph', { botId: '@botId' });
@@ -47,4 +47,5 @@ angular.module('playchat').controller('FailedDialogGraphController', ['$window',
     })();
 
     $scope.getFailedGraphList();
+    $scope.lan=LanguageService;
 }]);

@@ -1,19 +1,19 @@
 <script type="text/template" id="dialogLearningRowTemplate">
 <div class="dialog-learning-development-content-row">
-    <p class="new-dialog-title">New Dialog</p>
+    <p class="new-dialog-title">{{lan('New Dialog') }}</p>
     <form ng-submit="addDialog($event);">
         <div class="topic-area">
             <div>
                 <div>
-                    <p>Topic 1</p>
+                    <p>{{lan('Topic 1') }}</p>
                     <select class="data-select"></select>
                 </div>
                 <div>
-                    <p>Topic 1</p>
+                    <p>{{lan('Topic 1') }}</p>
                     <select class="data-select"></select>
                 </div>
                 <div>
-                    <p>Topic 1</p>
+                    <p>{{lan('Topic 1') }}</p>
                     <select class="data-select"></select>
                 </div>
             </div>
@@ -27,11 +27,11 @@
             <span class="plus-button" ng-click="addInput($event);"></span>
         </div>
         <div class="functions-area">
-            <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> Add</button>
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="display: none;">
-            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="display: none;">
+            <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="{{lan('display: none;') }}">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="{{lan('display: none;') }}">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="{{lan('display: none;') }}">
+            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="{{lan('display: none;') }}">
         </div>
     </form>
 </div>
@@ -45,7 +45,7 @@
         <div class="funtionbtn1">
             <a href="#">
                 <img src="modules/playchat/working-ground/common/client/imgs/import.png">
-                <span>Import</span>
+                <span>{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
         </div>
@@ -56,7 +56,7 @@
         </ul>
     </div>
     <div class="topicswitch">
-        <span class="mr10">topic</span>
+        <span class="mr10">{{lan('topic') }}</span>
         <div class="slide inline-block">
             <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
             <label for="topicOpen"></label>
@@ -64,26 +64,26 @@
     </div>
 
     <div class="dialog-learning-development-title">
-        <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">Topic</span>
-        <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">Question</span>
-        <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">Answer</span>
+        <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">{{lan('Topic') }}</span>
+        <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">{{lan('Question') }}</span>
+        <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">{{lan('Answer') }}</span>
     </span>
     <div class="dialog-learning-development-content">
         <div class="dialog-learning-development-content-row">
-            <p class="new-dialog-title">New Dialog</p>
+            <p class="new-dialog-title">{{lan('New Dialog') }}</p>
             <form ng-submit="addDialog($event);">
                 <div class="topic-area">
                     <div>
                         <div>
-                            <p>Topic 1</p>
+                            <p>{{lan('Topic 1') }}</p>
                             <select class="data-select"></select>
                         </div>
                         <div>
-                            <p>Topic 2</p>
+                            <p>{{lan('Topic 2') }}</p>
                             <select class="data-select"></select>
                         </div>
                         <div>
-                            <p>Topic 3</p>
+                            <p>{{lan('Topic 3') }}</p>
                             <select class="data-select"></select>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     <span class="plus-button" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="functions-area">
-                    <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> Add</button>
+                    <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> {{lan('Add') }}</button>
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="display: none;">
@@ -110,19 +110,19 @@
                 <div class="topic-area">
                     <div>
                         <div>
-                            <p>Topic 1</p>
+                            <p>{{lan('Topic 1') }}</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>Topic 2</p>
+                            <p>{{lan('Topic 2') }}</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>Topic 3</p>
+                            <p>{{lan('Topic 3') }}</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context">{{ dialog.context.name }}</option>
                             </select>

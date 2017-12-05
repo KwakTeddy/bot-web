@@ -19,8 +19,6 @@ module.exports = function (io, socket) {
         logger.systemLog('메시지 : ', JSON.stringify(msg));
         bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg, function(_out, _task) {
 
-            logger.systemLog('ㅎㅎㅎ : ', _out, _task);
-
             if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined)) {
                 socket.emit('send_msg', _out);
             } else if(_task.result) {

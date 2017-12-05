@@ -438,6 +438,15 @@
                 }
             };
 
+            $scope.inputOnBlur = function(e, index)
+            {
+                var value = e.currentTarget.value;
+                DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                {
+                    $scope.dialog.input[index].text = result.text;
+                });
+            };
+
             $scope.inputOnKeyDown = function(e, index)
             {
                 var _this = e.currentTarget;

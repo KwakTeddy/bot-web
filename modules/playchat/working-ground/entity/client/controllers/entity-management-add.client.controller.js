@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
+angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$location','LanguageService', function ($scope, $resource, $cookies, $location, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Entity > Add', '/modules/playchat/gnb/client/imgs/entity.png');
 
@@ -18,24 +18,27 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         var _id = $location.search()._id;
 
-        EntityService.get({ botId: chatbot.id, entityId: _id }, function(entity)
+        if(_id)
         {
-            $scope.name = entity.name;
-            $scope.entity = entity;
-        },
-        function(err)
-        {
-            alert(err);
-        });
-
-        EntityContentService.query({ botId: chatbot.id, entityId: _id }, function(entityContents)
-        {
-            if(entityContents.length > 0)
+            EntityService.get({ botId: chatbot.id, entityId: _id }, function(entity)
             {
-                console.log(entityContents);
-                $scope.entities = entityContents;
-            }
-        });
+                $scope.name = entity.name;
+                $scope.entity = entity;
+            },
+            function(err)
+            {
+                alert(err);
+            });
+
+            EntityContentService.query({ botId: chatbot.id, entityId: _id }, function(entityContents)
+            {
+                if(entityContents.length > 0)
+                {
+                    console.log(entityContents);
+                    $scope.entities = entityContents;
+                }
+            });
+        }
     })();
 
     $scope.contentInputKeydown = function(e)
@@ -76,7 +79,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 setTimeout(function()
                 {
                     angular.element(e.currentTarget).parent().parent().find('input:last').focus();
-                }, 300);
+                }, 100);
 
                 e.preventDefault();
                 e.stopPropagation();
@@ -130,7 +133,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
             {
                 if(err.data.message == 'Duplicated entity name')
                 {
-                    alert(params.name + '은 중복된 이름 입니다.');
+                    alert(params.name + $scope.lan('is duplicated name.'));
                 }
             });
         }
@@ -140,4 +143,5 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         $location.url('/playchat/management/entity');
     };
+    $scope.lan=LanguageService;
 }]);
