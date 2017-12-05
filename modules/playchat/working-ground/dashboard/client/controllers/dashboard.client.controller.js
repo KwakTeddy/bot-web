@@ -6,6 +6,8 @@ angular.module('playchat').controller('DashboardController', ['$window', '$scope
 
     var chatbot = $cookies.getObject('chatbot');
 
+    console.log('챗봇 : ', chatbot);
+
     $scope.chatbot = chatbot;
 
     $scope.$parent.loaded('working-ground');

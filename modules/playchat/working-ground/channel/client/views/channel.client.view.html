@@ -77,6 +77,40 @@
         </div>
     </div>
 
+    <div class="modal-background" ng-show="help.facebook">
+        <div class="modal">
+            <div class="modal-title">페이스북</div>
+            <div class="modal-body" style="padding: 30px 0;">
+                <table class="tb02">
+                    <thead>
+                        <tr>
+                            <th>페이지 이름</th>
+                            <th>페이지 링크</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="page in pageList">
+                            <td>{{ page.name }}</td>
+                            <td>{{ page.link }}</td>
+                            <td>
+                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">Connect</button>
+                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">Disconnect</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 35px;">
+                    <a href="https://www.facebook.com/pages/create/?ref_type=pages_browser" class="blue-button" style="color: white;">페이스북 페이지 새로 만들기</a>
+                </p>
+            </div>
+            <div class="tab-footer">
+                <button class="blue-button">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('facebook')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-background" ng-show="help.line">
         <div class="modal">
             <div class="modal-title">라인</div>

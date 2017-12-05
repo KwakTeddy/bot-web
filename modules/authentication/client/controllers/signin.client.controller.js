@@ -38,7 +38,6 @@
 
         $scope.oauthCall = function(name)
         {
-            console.log('ㅓ매');
             $window.location.href = '/auth/' + name;
         };
 
@@ -50,7 +49,7 @@
             err = decodeURIComponent(err);
             if(err.indexOf('email_1 up key'))
             {
-                alert('이미 ')
+                alert('이미 다른 방법으로 로그인이 되었습니다');
             }
         }
     }]);
