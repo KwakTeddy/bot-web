@@ -588,9 +588,9 @@
 
 .tab
 {
-    padding-top: 16px;
-    border-bottom: 2px solid #038eda;
-    height: 45px;
+    padding-top: 35px;
+    border-bottom: 2px solid #768ea2;
+    height: 40px;
     display: flex;
 }
 
@@ -607,19 +607,15 @@
 .tab-body li, .prev-tab, .next-tab
 {
     display: inline-block;
-    padding: 10px 15px;
-    margin: 0 3px;
+    padding: 10px 24px 5px;
     background-color: #f5f5f5;
     border-radius: 6px 6px 0 0;
     border: 2px solid #ebebeb;
     border-bottom-color: transparent;
-
+    color: #7e7e7e;
     position: relative;
-
     top: -2px;
-
     z-index: 10;
-
     cursor: pointer;
 }
 
@@ -645,11 +641,11 @@
 .tab-body li.select_tab
 {
     background-color: white;
-    border-color: #038eda;
+    border-color: #768ea2;
     border-bottom-color: white;
-
+    color: #038eda;
     padding-top: 12px;
-
+    margin: 0;
     top: 0;
 }
 
