@@ -63,6 +63,11 @@ exports.find = function(req, res)
 exports.findTaskFiles = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId);
+    if(req.query.templateId)
+    {
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot');
+    }
+
     fs.readdir(filePath, function(err, list)
     {
         if (err)
@@ -88,6 +93,11 @@ exports.findTaskFiles = function(req, res)
 exports.findTasks = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId);
+    if(req.query.templateId)
+    {
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot');
+    }
+
     fs.readdir(filePath, function(err, list)
     {
         if(err)
