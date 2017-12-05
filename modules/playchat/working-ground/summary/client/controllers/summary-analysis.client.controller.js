@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket', function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $cookies, Authentication, Socket)
+angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService', function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $cookies, Authentication, Socket, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis Dashboard', '/modules/playchat/gnb/client/imgs/analysis.png');
 
@@ -318,4 +318,5 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
     })();
 
     $scope.$parent.loaded('working-ground');
+    $scope.lan=LanguageService;
 }]);

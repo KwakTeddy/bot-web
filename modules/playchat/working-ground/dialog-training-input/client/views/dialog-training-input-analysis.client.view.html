@@ -1,6 +1,6 @@
 <div ng-controller="DialogTrainingInputController" data-ng-init="init()">
     <div style="text-align: right; margin-bottom: 20px;">
-        <button type="button" class="default-button" ng-click="exelDownload('dailyUser')">Excel 다운로드</button>
+        <button type="button" class="default-button" ng-click="exelDownload('dailyUser')">{{lan('Excel Download') }}</button>
         <div id="createdRange" class="pull-right" style="width: 40%;">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
             <span></span> <b class="caret"></b>
@@ -15,9 +15,9 @@
         </colgroup>
         <thead>
             <tr>
-                <th>학습 대화 목록</th>
-                <th>이용자 입력</th>
-                <th>사용 횟수</th>
+                <th>{{lan('Trained Dialog') }}</th>
+                <th>{{lan("User's input") }}</th>
+                <th>{{lan('사용 횟수') }}</th>
             </tr>
         </thead>
         <tbody>

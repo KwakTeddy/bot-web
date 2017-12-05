@@ -357,3 +357,44 @@ module.exports.forgot = function (req, res, next)
         }
     });
 };
+
+
+exports.oauthCall = function (strategy, scope) {
+    return function (req, res, next) {
+        passport.authenticate(strategy, scope)(req, res, next);
+    };
+};
+
+exports.oauthCallback = function (strategy, scope) {
+    return function (req, res, next) {
+        // Pop redirect URL from session
+        var sessionRedirectURL = req.session.redirect_to;
+        delete req.session.redirect_to;
+        // console.log('callback');
+
+        passport.authenticate(strategy, scope, function (err, user, redirectURL)
+        {
+            if (err)
+            {
+                console.error(err);
+                return res.redirect('/signin?err=' + encodeURIComponent(err));
+            }
+
+            if (!user)
+            {
+                return res.redirect('/signin?err=' + encodeURIComponent('User is not found'));
+            }
+
+            req.login(user, function (err)
+            {
+                if (err) {
+                    if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/signin');
+                    else                                                                    return res.redirect('/signin');
+                }
+                res.cookie('login', true);
+                if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/playchat/chatbots');
+                else                                                                    return res.redirect('/');
+            });
+        })(req, res, next);
+    };
+};

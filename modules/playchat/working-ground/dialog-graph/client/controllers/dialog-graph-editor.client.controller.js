@@ -1,4 +1,4 @@
-angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask)
+angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
 {
     var chatbot = $cookies.getObject('chatbot');
 
@@ -29,7 +29,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 if(check)
                 {
                     //아웃풋이 여러개고 그 중에 Action도 있는경우는 basic모드에서 편집 불가
-                    alert('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.');
+                    alert($scope.lan('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.'));
                     return;
                 }
             }
@@ -303,7 +303,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         if(!DialogGraph.checkDuplicatedName($scope.dialog))
         {
-            alert($scope.dialog.name + ' is duplicated');
+            alert($scope.dialog.name + $scope.lan(' is duplicated'));
             return;
         }
 
@@ -477,4 +477,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.dialog.input = data.input;
         })
     });
+
+    $scope.lan=LanguageService;
 }]);

@@ -57,7 +57,7 @@
     "google-auth-library": "^0.10.0",
     "google-protobuf": "^3.4.0",
     "googleapis": "^17.1.0",
-    "grpc": "^1.7.1",
+    "grpc": "^1.7.2",
     "grunt": "0.4.5",
     "grunt-cli": "^0.1.13",
     "helmet": "~0.9.1",

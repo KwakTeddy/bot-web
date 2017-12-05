@@ -1,4 +1,4 @@
-angular.module('playchat').controller('AIChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', 'PagingService', 'DateService', function ($window, $scope, $resource, $cookies, $location, PagingService, DateService)
+angular.module('playchat').controller('AIChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', 'PagingService', 'DateService','LanguageService', function ($window, $scope, $resource, $cookies, $location, PagingService, DateService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Operation > AI Chat Log');
 
@@ -64,4 +64,6 @@ angular.module('playchat').controller('AIChatLogController', ['$window', '$scope
     })();
 
     $scope.getList();
+
+    $scope.lan=LanguageService;
 }]);

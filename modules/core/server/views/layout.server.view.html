@@ -18,8 +18,11 @@
 {% if env == 'development' %}
 
 {% for cssFile in cssFiles %}
-<link rel="stylesheet" type="text/css" href="{{cssFile}}"></script>
+<link rel="stylesheet" type="text/css" href="{{cssFile}}">
 {% endfor %}
+
+<link href="/modules/playchat/gnb/client/css/gnb-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 1024px)" id="gnb-responsive-css">
+<link href="/modules/playchat/simulator/client/css/simulator-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 900px)" id="simulator-responsive-css">
 
 {% endif %}
 

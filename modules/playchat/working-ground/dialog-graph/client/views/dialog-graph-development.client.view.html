@@ -64,11 +64,11 @@
             <!--<a class="refresh" href="#">-->
                 <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/refresh.png" ng-click="undo();">-->
             <!--</a>-->
-            <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex <= 0">Undo</button>
-            <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">Redo</button>
-            <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">Save</button>
-            <button type="button" class="graph-button save" ng-if="fromFailedDialog" ng-click="backToFailedDialog();" style="width: 170px;">Back to Failed Dialog</button>
-            <div class="alert-success" role="alert"> <strong>저장되었습니다!</strong> </div>
+            <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex <= 0">{{lan('Undo') }}</button>
+            <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">{{lan('Redo') }}</button>
+            <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">{{lan('Save') }}</button>
+            <button type="button" class="graph-button save" ng-if="fromFailedDialog" ng-click="backToFailedDialog();" style="width: 170px;">{{lan('Back to Failed Dialog') }}</button>
+            <div class="alert-success" role="alert"> <strong>{{lan('Saved.') }}</strong> </div>
                 <!--font-size: 12px;-->
                 <!--vertical-align: middle;-->
                 <!--padding: 10px;-->
@@ -82,14 +82,14 @@
         <div id="graphDialogCanvas"></div>
 
         <ul class="dialog-menu" style="display: none;">
-            <li><span class="menu-title">More</span></li>
+            <li><span class="menu-title">{{lan('More') }}</span></li>
             <li class="dialog-menu-divider"></li>
-            <li class="dialog-menu-item" data-name="addChild"><a>Add Child</a></li>
-            <li class="dialog-menu-item" data-name="moveUp"><a>Move Up</a></li>
-            <li class="dialog-menu-item" data-name="moveDown"><a>Move Down</a></li>
+            <li class="dialog-menu-item" data-name="addChild"><a>{{lan('Add Child') }}</a></li>
+            <li class="dialog-menu-item" data-name="moveUp"><a>{{lan('Move Up') }}</a></li>
+            <li class="dialog-menu-item" data-name="moveDown"><a>{{lan('Move Down') }}</a></li>
             <li class="dialog-menu-divider"></li>
-            <li class="dialog-menu-item" data-name="duplicate"><a>Duplicate</a></li>
-            <li class="dialog-menu-item" data-name="delete"><a>Delete</a></li>
+            <li class="dialog-menu-item" data-name="duplicate"><a>{{lan('Duplicate') }}</a></li>
+            <li class="dialog-menu-item" data-name="delete"><a>{{lan('Delete') }}</a></li>
         </ul>
     </div>
 </div>

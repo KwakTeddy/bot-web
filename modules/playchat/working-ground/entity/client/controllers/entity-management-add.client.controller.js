@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
+angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$location','LanguageService', function ($scope, $resource, $cookies, $location, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Entity > Add', '/modules/playchat/gnb/client/imgs/entity.png');
 
@@ -133,7 +133,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
             {
                 if(err.data.message == 'Duplicated entity name')
                 {
-                    alert(params.name + '은 중복된 이름 입니다.');
+                    alert(params.name + $scope.lan('is duplicated name.'));
                 }
             });
         }
@@ -143,4 +143,5 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         $location.url('/playchat/management/entity');
     };
+    $scope.lan=LanguageService;
 }]);

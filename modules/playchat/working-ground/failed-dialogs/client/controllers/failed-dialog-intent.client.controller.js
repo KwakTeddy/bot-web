@@ -1,4 +1,4 @@
-angular.module('playchat').controller('FailedDialogIntentController', ['$window', '$scope', '$resource', '$cookies', function ($window, $scope, $resource, $cookies)
+angular.module('playchat').controller('FailedDialogIntentController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService',function ($window, $scope, $resource, $cookies, LanguageService)
 {
     var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var FailedIntentService = $resource('/api/:botId/operation/failed-intent/:intentId', { botId: '@botId', intentId: '@intentId' });
@@ -53,4 +53,5 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
     })();
 
     $scope.getFailedIntentList();
+    $scope.lan=LanguageService;
 }]);

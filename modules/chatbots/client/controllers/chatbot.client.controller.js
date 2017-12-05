@@ -2,12 +2,13 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService)
+    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService)
     {
         var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
         var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
         var ChatBotShareService = $resource('/api/chatbots/:botId/share', { botId: '@botId' });
+        var SharedChatBotService = $resource('/api/chatbots/shared');
 
         if($cookies.get('login') === 'false')
         {
@@ -24,6 +25,8 @@
         $scope.openShareModal = false;
         $scope.share = {};
 
+        $scope.sharedList = [];
+
         window.addEventListener('click', function()
         {
             $scope.closeMenu();
@@ -35,6 +38,11 @@
             {
                 $scope.list = list;
                 $scope.$parent.loading = false;
+            });
+
+            SharedChatBotService.query({}, function(list)
+            {
+                $scope.sharedList = list;
             });
         };
 
@@ -57,6 +65,15 @@
         {
             $cookies.putObject('chatbot', chatbot);
             $location.url('/playchat');
+        };
+
+        $scope.moveTab = function(e, name)
+        {
+            angular.element('.select_tab').removeClass('select_tab');
+            angular.element('#botContent').hide();
+            angular.element('#sharedBotContent').hide();
+            angular.element('#' + name).show();
+            angular.element(e.currentTarget).parent().addClass('select_tab');
         };
 
         $scope.toPage = function(page)
@@ -116,7 +133,7 @@
             }
             else if(name == 'Delete')
             {
-                if(confirm('정말 삭제하시겠습니까?'))
+                if(confirm($scope.lan('Are you sure you want to delete this item?')))
                 {
                     ChatBotService.delete({ botId : $scope.selectedBot._id, botDisplayId: $scope.selectedBot.id }, function()
                     {
@@ -190,14 +207,14 @@
         {
             if(!$scope.share.read && !$scope.share.write)
             {
-                alert('Please select at least one permission.');
+                alert($scope.lan('Please select at least one permission.'));
                 return false;
             }
 
             ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
             {
                 $scope.openShareModal = false;
-                alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
+                alert($scope.lan('Shared ') + $scope.selectedBot.name + ' to ' + $scope.share.email);
             },
             function(err)
             {
@@ -217,5 +234,9 @@
         };
 
         $scope.getList();
+
+
+
+        $scope.lan = LanguageService;
     }]);
 })();

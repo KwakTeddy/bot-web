@@ -13,6 +13,7 @@ module.exports = function (app)
 
     app.get('/api/chatbots/totalpage', chatbot.findTotalPage);
     app.route('/api/chatbots').get(chatbot.find).post(chatbot.create);
+    app.get('/api/chatbots/shared', chatbot.sharedList);
     app.route('/api/chatbots/:botId').get(chatbot.findOne).put(chatbot.update).delete(chatbot.delete);
     app.put('/api/chatbots/:botId/rename', chatbot.rename);
     app.post('/api/chatbots/:botId/duplicate', chatbot.duplicate);

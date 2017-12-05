@@ -9,13 +9,13 @@
         <div class="social">
             <p class="mb25">{{ lan('Sign in with your social network account.') }}</p>
             <div class="fbbtn">
-                <a href="#">{{ lan('Sign in with Facebook') }}</a>
+                <a href="#" ng-click="oauthCall('facebook');">{{ lan('Sign in with Facebook') }}</a>
             </div>
             <div class="gbtn">
-                <a href="#">{{ lan('Sign in with Google') }}</a>
+                <a href="#" ng-click="oauthCall('google')">{{ lan('Sign in with Google') }}</a>
             </div>
             <div class="kbtn">
-                <a href="#">{{ lan('Sign in with Kakao') }}</a>
+                <a href="#" ng-click="oauthCall('kakao');">{{ lan('Sign in with Kakao') }}</a>
             </div>
         </div>
         <div class="email">

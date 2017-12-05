@@ -9,6 +9,8 @@
         var userLang = navigator.language || navigator.userLanguage;
         var code = user ? user.language : userLang;
 
+        code = code.split('-')[0];
+
         var languages = {
             "Welcome to Playchat!": {
                 "ko": "플레이쳇에 오신 걸 환영합니다!",
@@ -515,7 +517,7 @@
                 "zh": "话题"
             },
             "Are you sure you want to delete this item?": {
-                "ko": "정말 삭제하시겠습니까?",
+                    "ko": "정말 삭제하시겠습니까?",
                 "en": "Are you sure you want to delete this item?",
                 "jp": "本当に削除しますか",
                 "zh": "您确定要删除吗？"
@@ -1210,9 +1212,9 @@
                 "jp": "使用量",
                 "zh": "使用量"
             },
-            "Excel Downlad": {
+            "Excel Download": {
                 "ko": "Excel 다운로드",
-                "en": "Excel Downlad",
+                "en": "Excel Download",
                 "jp": "Excelダウンロード",
                 "zh": "Excel下载"
             },
@@ -1496,9 +1498,10 @@
 
         var lan = function(key)
         {
+            key = key.trim();
             if(!languages[key])
             {
-                console.error('languages', key);
+                // console.error('languages', key);
                 return '언어가 없습니다';
             }
             else

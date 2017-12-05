@@ -1,4 +1,4 @@
-angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, DialogGraph, DialogGraphEditor)
+angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'DialogGraph', 'DialogGraphEditor', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, DialogGraph, DialogGraphEditor, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph', '/modules/playchat/gnb/client/imgs/scenario.png');
 
@@ -347,7 +347,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 }, 5);
             }, function(error)
             {
-                alert('저장 실패 : ' + error.message);
+                alert($scope.lan('저장 실패 : ') + error.message);
             });
         };
 
@@ -397,4 +397,5 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     $scope.checkFailedDialog();
     $scope.initialize();
     $scope.getFileList();
+    $scope.lan=LanguageService;
 }]);

@@ -17,7 +17,7 @@
 
 <div ng-controller="DialogGraphInputAnalysisController">
     <div style="text-align: right; margin-bottom: 20px;">
-        <button type="button" class="default-button" ng-click="exelDownload()">Excel 다운로드</button>
+        <button type="button" class="default-button" ng-click="exelDownload()">{{lan('Excel Download') }}</button>
         <div id="createdRange" class="pull-right" style="width: 40%;">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
             <span></span> <b class="caret"></b>
@@ -37,16 +37,16 @@
         </colgroup>
         <thead>
             <tr>
-                <th rowspan="2">그래프 아이디</th>
-                <th rowspan="2" colspan="2">그래프 이름</th>
-                <th colspan="5">대화입력</th>
+                <th rowspan="2">{{lan('Graph ID') }}</th>
+                <th rowspan="2" colspan="2">{{lan('Graph Name') }}</th>
+                <th colspan="5">{{lan('대화입력') }}</th>
             </tr>
             <tr>
-                <th>1위</th>
-                <th>2위</th>
-                <th>3위</th>
-                <th>4위</th>
-                <th>5위</th>
+                <th>{{lan('1st') }}</th>
+                <th>{{lan('2nd') }}</th>
+                <th>{{lan('3rd') }}</th>
+                <th>{{lan('4th') }}</th>
+                <th>{{lan('5th') }}</th>
             </tr>
         </thead>
         <tbody id="tbody">

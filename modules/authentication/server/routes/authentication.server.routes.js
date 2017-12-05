@@ -5,13 +5,22 @@ var UserController = require('../controllers/users.server.controller.js');
 
 module.exports = function(app)
 {
+    app.get('/auth/facebook', authentication.oauthCall('facebook', {scope: ['email']}));
+    app.route('/auth/facebook/:callback').get(authentication.oauthCallback('facebook'));
+    // app.route('/api/auth/facebook/page').get(authentication.oauthCall('facebook', { scope: [ 'manage_pages', 'pages_show_list', 'pages_messaging' ]}));
+
+    app.route('/auth/kakao').get(authentication.oauthCall('kakao'));
+    app.route('/auth/kakao/:callback').get(authentication.oauthCallback('kakao'));
+
+    app.route('/auth/google').get(authentication.oauthCall('google', { scope: [ 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/plus.login'] }));
+    app.route('/auth/google/:callback').get(authentication.oauthCallback('google'));
+
     app.get('/api/auth/signout', authentication.signout);
     app.post('/api/auth/signin', authentication.signin);
     app.post('/api/auth/signup', authentication.signup);
     app.post('/api/auth/forgot', authentication.forgot);
     app.get('/api/auth/emailconfirm/:token', authentication.validateEmailConfirmToken);
     app.post('/api/users/language', UserController.saveLanguage);
-
 };
 
 /**

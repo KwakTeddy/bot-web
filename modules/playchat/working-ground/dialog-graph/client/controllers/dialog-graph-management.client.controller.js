@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogGraphManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService)
+angular.module('playchat').controller('DialogGraphManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Dialog Graph', '/modules/playchat/gnb/client/imgs/scenario.png');
 
@@ -87,7 +87,7 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
             {
                 if(result.exist)
                 {
-                    if(confirm('Filename is duplicated. Keep going?'))
+                    if(confirm($scope.lan('Filename is duplicated. Keep going?')))
                     {
                         saveFunc(modal);
                     }
@@ -115,7 +115,7 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
         $scope.delete = function(fileName)
         {
-            if(confirm('정말 삭제하시겠습니까'))
+            if(confirm($scope.lan('Are you sure you want to delete this item?')))
             {
                 var params = {};
                 params.botId = chatbot.id;
@@ -162,4 +162,6 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
         // initialize
         $scope.getList();
     })();
+
+    $scope.lan=LanguageService;
 }]);

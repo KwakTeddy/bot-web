@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService', function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService)
+angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService','LanguageService', function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Failed Dialogs');
 
@@ -30,4 +30,5 @@ angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scop
     //initialize
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
+    $scope.lan=LanguageService;
 }]);

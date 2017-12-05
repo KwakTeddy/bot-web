@@ -6,19 +6,19 @@
         <div class="funtionbtn1">
             <a href="#">
                 <img src="modules/playchat/working-ground/common/client/imgs/export.png">
-                <span ng-click="modal.importModal.open();">Import</span>
+                <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
         </div>
     </div>
     <div class="tab01">
         <ul class="tabs1">
-            <li class="select_tab"><a href="#">Default</a></li>
-            <li><a href="#">Store</a></li>
-            <li><a href="#">Shared</a></li>
+            <li class="select_tab"><a href="#">Default') }}</a></li>
+            <li><a href="#">{{lan('Store') }}</a></li>
+            <li><a href="#">{{lan('Shared') }}</a></li>
         </ul>
         <div class="btn02 flR" ng-click="modal.mgmtModal.open();">
-            <a href="#" class="">Add New</a>
+            <a href="#" class="">{{lan('Add New') }}</a>
         </div>
     </div>
     <div class="downSide">
@@ -32,16 +32,16 @@
             </colgroup>
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Last Update</th>
+                <th>{{lan('Title') }}</th>
+                <th>{{lan('Content') }}</th>
+                <th>{{lan('Last Update') }}</th>
                 <th></th>
-                <th>Usable</th>
+                <th>{{lan('Usable') }}</th>
             </tr>
             </thead>
             <tbody>
                 <tr ng-if="dialogsets.length == 0">
-                    <td colspan="5">empty</td>
+                    <td colspan="5">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="item in dialogsets">
                     <td><a href="/playchat/development/dialog-set?dialogsetId={{ item._id }}&dialogsetTitle={{ item.title }}">{{ item.title }}</a></td>
@@ -79,19 +79,19 @@
             <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span class="form-title">Title</span>
+                        <span class="form-title">{{lan('Title') }}</span>
                         <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true">
                     </label>
                 </div>
                 <div class="form-row">
                     <label>
-                        <span>Content</span>
+                        <span>{{lan('Content') }}</span>
                         <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">저장</button>
-                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">닫기</button>
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>
@@ -102,22 +102,22 @@
             <form name="modalFormDefault" ng-submit="save(modal.importModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span class="form-title">Title</span>
+                        <span class="form-title">{{lan('Title') }}</span>
                         <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
                     </label>
                 </div>
                 <div class="form-row">
                     <label class="required">
-                        <span>Type</span>
+                        <span>{{lan('Type') }}</span>
                         <div class="form-box">
                             <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> (csv 또는 xlsx 파일)</span>
+                            <span> {{lan('(csv 또는 xlsx 파일)') }}</span>
                         </div>
                     </label>
                 </div>
                 <div class="form-row">
                     <label class="required">
-                        <span>File</span>
+                        <span>{{lan('File') }}</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>
@@ -125,13 +125,13 @@
                 </div>
                 <div class="form-row">
                     <label>
-                        <span>Content</span>
+                        <span>{{lan('Content') }}</span>
                         <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">저장</button>
-                    <button type="button" class="default-button" ng-click="modal.importModal.close();">닫기</button>
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>

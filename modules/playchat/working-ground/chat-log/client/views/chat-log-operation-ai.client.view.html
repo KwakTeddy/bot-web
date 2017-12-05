@@ -1,10 +1,10 @@
 <!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
 
 <div ng-controller="AIChatLogController">
-    <h2 class="operation-title">AI Chat log</h2>
+    <h2 class="operation-title">{{lan('AI Chat log') }}</h2>
     <div class="operation-search-area">
         <input type="text" placeholder="Search" class="input_type09" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
-        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">Search</button>
+        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">{{lan('Search') }}</button>
     </div>
     <div class="operation-content">
         <table class="tb02">
@@ -17,16 +17,16 @@
             </colgroup>
             <thead>
             <tr>
-                <th>Channel</th>
-                <th>User Key</th>
-                <th>Last Update</th>
-                <th>Dialog Count</th>
-                <th>Dialog</th>
+                <th>{{lan('Channel') }}</th>
+                <th>{{lan('User Key') }}</th>
+                <th>{{lan('Last Update') }}</th>
+                <th>{{lan('Dialog Count') }}</th>
+                <th>{{lan('Dialog') }}</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-if="list.length == 0">
-                <td colspan="5">empty</td>
+                <td colspan="5">{{lan('empty') }}</td>
             </tr>
             <tr ng-repeat="item in list">
                 <td>{{ item.channel }}</td>
@@ -34,7 +34,7 @@
                 <td>{{ dateFormat(item.lastUpdate) }}</td>
                 <td>{{ item.dialogCount }}</td>
                 <td>
-                    <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">Dialog</a>
+                    <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">{{lan('Dialog') }}</a>
                 </td>
             </tr>
             </tbody>

@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotCreateController', ['$scope', '$resource', function ($scope, $resource)
+    angular.module('playchat').controller('ChatbotCreateController', ['$scope', '$resource','LanguageService', function ($scope, $resource, LanguageService)
     {
         var ChatbotTemplateCategoryService = $resource('/api/template-categories');
         var ChatbotTemplatesService = $resource('/api/chatbots/templates');
@@ -36,5 +36,7 @@
         })();
 
         $scope.getList();
+        $scope.lan=LanguageService;
     }]);
+
 })();

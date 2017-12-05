@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('OperationUserController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $element, PagingService)
+angular.module('playchat').controller('OperationUserController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'PagingService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $element, PagingService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Operation > User');
 
@@ -180,4 +180,5 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
     })();
 
     $scope.getList();
+    $scope.lan=LanguageService;
 }]);

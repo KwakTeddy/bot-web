@@ -11,7 +11,7 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    var query = {  };
+    var query = { user: req.user._id };
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -35,7 +35,7 @@ exports.find = function (req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    var query = {  };
+    var query = { user: req.user._id };
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -49,6 +49,22 @@ exports.find = function (req, res)
         else
         {
             res.json(bots);
+        }
+    });
+};
+
+exports.sharedList = function(req, res)
+{
+    BotAuth.find({ user: req.user._id, giver: { $ne : req.user._id } }).populate('bot').exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp(list);
         }
     });
 };

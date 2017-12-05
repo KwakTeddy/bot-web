@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService', function ($window, $scope, $location, $cookies, $resource, MenuService)
+angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService','LanguageService', function ($window, $scope, $location, $cookies, $resource, MenuService, LanguageService)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId : '@botId'});
 
@@ -56,6 +56,8 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         {
             var isClosed = !angular.element('.gnb .logo-min img').is(':visible');
 
+            console.log('하 : ', isClosed);
+
             //responsive 링크가 작동하면 접히고 그렇지 않으면 펼쳐진다.
             var link = angular.element('#gnb-responsive-css');
             if(!isClosed)
@@ -89,4 +91,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
         return '';
     };
+
+    $scope.lan=LanguageService;
+
 }]);

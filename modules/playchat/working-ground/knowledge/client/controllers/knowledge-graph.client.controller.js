@@ -1,8 +1,8 @@
 'use strict';
 
 // Bots controller
-angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket',
-        function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $cookies, Authentication, Socket) {
+angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService',
+        function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $cookies, Authentication, Socket, LanguageService) {
             var vm = this;
 
             $scope.$parent.loaded('working-ground');
@@ -397,6 +397,7 @@ angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$r
                     update();
                 });
             };
+            $scope.lan=LanguageService;
 
         }]
 );

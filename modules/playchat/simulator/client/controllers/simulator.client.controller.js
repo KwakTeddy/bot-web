@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', '$rootScope', 'Socket',
-function ($window, $scope, $cookies, $resource, $rootScope, Socket)
+angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', '$rootScope', 'Socket','LanguageService',
+function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageService)
 {
     $scope.$parent.loaded('simulator');
 
@@ -220,4 +220,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             }
         };
     })();
+
+    $scope.lan=LanguageService;
 }]);
