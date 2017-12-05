@@ -1,0 +1,7 @@
+{
+    "botId" : "String",
+    "category1" : "String",
+    "category2" : "String",
+    "name" : "String",
+    "price" : "Number"
+}

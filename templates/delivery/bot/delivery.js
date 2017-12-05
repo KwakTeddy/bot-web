@@ -21,6 +21,9 @@ bot.setTask("defaultTask", defaultTask);
 
 var startTask = {
     action: function (task,context,callback) {
+
+        // console.log("@@@@@@@@@@@@@@@@@@"+JSON.stringify(context.bot));
+
         context.user.cart = [];
         if(context.bot.authKey != undefined && context.botUser.options && context.bot.authKey == context.botUser.options.authKey) {
             context.botUser.isOwner = true;
