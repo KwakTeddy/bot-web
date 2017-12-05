@@ -25,7 +25,7 @@ img { border: 0px; vertical-align:top; }
 table{/* table-layout:fixed; */border-collapse:collapse;border-spacing:0}
 a:link { text-decoration: none; color:#393939; }
 a:visited { text-decoration: none; color:#393939; }
-a:hover { text-decoration: none; color:#393939; }
+a:hover { text-decoration: none; color: #038eda; }
 a:active { text-decoration: none; color:#393939; }
 
 
@@ -52,7 +52,7 @@ input { margin:0; padding:0; }
 button { cursor:pointer; }
 
 input[type="checkbox"],input[type="radio"] { padding:0; vertical-align:middle; margin-top:-1px; *margin-top:-2px; }
-input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:8px 18px 8px 8px; }
+input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:6px 18px 7px 8px; }
 input[type="button"] ,input[type="submit"] { cursor:pointer; }
 
 textarea { font-size: 12px; border:1px solid #e5e5e5; padding:5px; }
@@ -130,7 +130,7 @@ input.search[type="submit"]:hover {
 /*upside*/
 .upSide{
   height: 40px;
-  padding-bottom: 15px;
+  padding-bottom: 14px;
 }
 .funtionbtn1{
 	display: inline-block;
@@ -602,7 +602,7 @@ div.slide>input[type=checkbox]{
 	letter-spacing: 0;
 }
 .tabs1>li.mini{
-	width: 50px;
+	width: 30px;
 }
 .tabs1>li.mini img{
 	vertical-align: middle;

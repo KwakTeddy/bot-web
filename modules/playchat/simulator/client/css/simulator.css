@@ -23,7 +23,7 @@
 
 .simulator p
 {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
     line-height: 65px;
@@ -87,13 +87,13 @@
 {
     position: absolute;
     top: 16px;
-    left: 12px;
+    left: 6px;
 }
 
 .simulator .answer .system-text
 {
     font-size: 12px;
-    margin-left: 50px;
+    margin-left: 46px;
 }
 
 .simulator .answer span.name
@@ -125,20 +125,20 @@
 
 .simulator .answer em.tail
 {
-    border-top: 10px solid #dfdfdf;
+    border-top: 10px solid #ececec;
     position: absolute;
-    left: 46px;
+    left: 45px;
     top: 4px;
     border-left: 10px solid transparent;
 }
 
 .simulator .answer .speech
 {
-    background: #dfdfdf;
+    background: #ececec;
     display: inline-block;
     border-radius: 4px;
-    padding: 7px 10px 0px 10px;
-    font-size: 14px;
+    padding: 10px;
+    font-size: 13px;
     line-height: 17px;
     white-space: normal;
     position: relative;

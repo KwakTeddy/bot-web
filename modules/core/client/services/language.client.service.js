@@ -25,25 +25,25 @@
                 "zh": "请使用账号密码登录。"
             },
             "Sign in with your social network account.": {
-                "ko": "SNS계정으로 로그인하기",
+                "ko": "SNS 계정으로 로그인해보세요.",
                 "en": "Sign in with your social network account.",
                 "jp": "SNSアカウントでログインすること",
                 "zh": "第三方账号登录。"
             },
             "Sign in with Facebook": {
-                "ko": "페이스북 계정으로 로그인하기",
+                "ko": "페이스북으로 로그인",
                 "en": "Sign in with Facebook",
                 "jp": "フェイスブックアカウントでログインすること",
                 "zh": "Facebook账号登录"
             },
             "Sign in with Google": {
-                "ko": "구글 계정으로 로그인하기",
+                "ko": "구글계정으로 로그인",
                 "en": "Sign in with Google",
                 "jp": "グーグルアカウントでログインすること",
                 "zh": "Google账号登录"
             },
             "Sign in with Kakao": {
-                "ko": "카카오톡 계정으로 로그인하기",
+                "ko": "카카오톡으로 로그인",
                 "en": "Sign in with Kakao",
                 "jp": "カカオトークのアカウントでログインすること",
                 "zh": "Kakaotalk账号登录"
@@ -61,7 +61,7 @@
                 "zh": "密码"
             },
             "Forget your password?": {
-                "ko": "비밀번호 찾기",
+                "ko": "비밀번호를 잊으셨나요?",
                 "en": "Forget your password?",
                 "jp": "秘密番号を探す",
                 "zh": "忘记密码"

@@ -105,6 +105,7 @@ header .header .logo_min
     height: 38px;
     vertical-align: middle;
     float: left;
+    padding-top: 4px;
 }
 
 header .system
