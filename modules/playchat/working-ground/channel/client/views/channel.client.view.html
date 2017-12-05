@@ -4,56 +4,77 @@
     <div class="channel-content-row">
         <div class="channel-content-item">
             <div>
-                <img src="" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/kakao.png" style="width: 50px; height: 50px;">
                 <span class="channel-content-item-name">{{lan('KaKao Talk') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
                 <span class="bot-link-text">{{lan('Bot Link') }}</span>
             </div>
             <div style="margin: 8px 6px;">
-                <input type="text" class="channel-input" value="https:/dev.moneybrain.ai/kakao/aaaa">
-                <img src="">
+                <input type="text" class="channel-input" value="{{ host }}/kakao/{{ chatbot.id }}">
+                <span class="channel-content-item-question" ng-click="viewHelp('kakao');">?</span>
             </div>
         </div>
         <div class="channel-content-item">
             <div>
-                <img src="" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/facebook.png" style="width: 50px; height: 50px;">
                 <span class="channel-content-item-name">{{lan('Facebook') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
                 <span></span>
             </div>
             <div style="margin: 8px 6px; text-align: right;">
-                <button type="button" class="blue-button">{{lan('Connect') }}</button>
+                <button type="button" class="blue-button" ng-click="connectFacebook();">{{lan('Connect') }}</button>
             </div>
         </div>
     </div>
     <div class="channel-content-row">
         <div class="channel-content-item">
             <div>
-                <img src="" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/naver.png" style="width: 50px; height: 50px;">
                 <span class="channel-content-item-name">{{lan('Naver Talk Talk') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
                 <span class="bot-link-text">{{lan('Bot Link') }}</span>
             </div>
             <div style="margin: 8px 6px;">
-                <input type="text" class="channel-input" value="https://dev.moneybrain.ai/naver/aaaa">
-                <img src="">
+                <input type="text" class="channel-input" value="{{ host }}/naver/{{ chatbot.id }}">
+                <span class="channel-content-item-question" ng-click="viewHelp('naver');">?</span>
             </div>
         </div>
         <div class="channel-content-item">
             <div>
-                <img src="" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/line.png" style="width: 50px; height: 50px;">
                 <span class="channel-content-item-name">{{lan('Line') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
                 <span class="bot-link-text">{{lan('Bot Link') }}</span>
             </div>
             <div style="margin: 8px 6px;">
-                <input type="text" class="channel-input" value="https://dev.moneybrain.ai/line/aaaa">
-                <img src="">
+                <input type="text" class="channel-input" value="{{ host }}/line/{{ chatbot.id }}">
+                <span class="channel-content-item-question" ng-click="viewHelp('line');">?</span>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-background" ng-show="help.kakao">
+    <div class="modal">
+        <div class="modal-title">
+        </div>
+        <div class="modal-body">
+            <p>1. 카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)</p>
+            <p>- 옐로아이디 만들기 자세한 설명보기</p>
+            <p>2. 옐로아이디 프로필을 만들고 심사를 기다려요(5일 이내 소요)!</p>
+            <p>3. 심사된 프로필로 옐로아이디 페이지 자동응답 탭으로 들어가요</p>
+            <p>4. API 자동응답 설정하기로 들어가요</p>
+            <p>5. 앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!</p>
+            <p>- API 자동응답 자세한 설명보기</p>
+            <p>Webhook URL : {{ host }}/kakao/{{ chatbot.id }}</p>
+        </div>
+        <div class="tab-footer">
+            <button class="blue-button">{{lan('Save') }}</button>
+            <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
         </div>
     </div>
 </div>
