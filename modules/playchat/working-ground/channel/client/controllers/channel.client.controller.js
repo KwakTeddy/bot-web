@@ -16,7 +16,7 @@ angular.module('playchat').controller('ChannelController', ['$scope', '$resource
         naver: false,
         line: false,
         facebook: false
-    }
+    };
 
     (function()
     {
@@ -27,7 +27,9 @@ angular.module('playchat').controller('ChannelController', ['$scope', '$resource
 
         $scope.viewHelp = function(name)
         {
+            $scope.help[name] = true;
 
+            console.log('흠 : ', name);
         };
     })();
 

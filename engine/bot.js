@@ -106,7 +106,10 @@ function loadBot(botName, callback) {
 
                                 var schemaPostFix = file.split('-')[0];
 
-                                var schema = new mongoose.Schema(JSON.parse(data));
+                                var json = JSON.parse(data);
+                                json.botId = 'String';
+
+                                var schema = new mongoose.Schema(json);
                                 if(mongoose.models[doc.id + '-' + schemaPostFix])
                                     schema = mongoose.model(doc.id + '-' + schemaPostFix);
                                 else

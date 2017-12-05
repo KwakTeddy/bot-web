@@ -1,14 +1,14 @@
 <div ng-controller="ChannelController">
-    <div class="channel-title">{{lan('Messanger') }}
+    <div class="channel-title">{{ lan('Messanger') }}
     </div>
     <div class="channel-content-row">
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/kakao.png" style="width: 50px; height: 50px;">
-                <span class="channel-content-item-name">{{lan('KaKao Talk') }}</span>
+                <span class="channel-content-item-name">{{ lan('KaKao Talk') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
-                <span class="bot-link-text">{{lan('Bot Link') }}</span>
+                <span class="bot-link-text">{{ lan('Bot Link') }}</span>
             </div>
             <div style="margin: 8px 6px;">
                 <input type="text" class="channel-input" value="{{ host }}/kakao/{{ chatbot.id }}">
@@ -18,13 +18,13 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/facebook.png" style="width: 50px; height: 50px;">
-                <span class="channel-content-item-name">{{lan('Facebook') }}</span>
+                <span class="channel-content-item-name">{{ lan('Facebook') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
                 <span></span>
             </div>
             <div style="margin: 8px 6px; text-align: right;">
-                <button type="button" class="blue-button" ng-click="connectFacebook();">{{lan('Connect') }}</button>
+                <button type="button" class="blue-button" ng-click="connectFacebook();">{{ lan('Connect') }}</button>
             </div>
         </div>
     </div>
@@ -32,10 +32,10 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/naver.png" style="width: 50px; height: 50px;">
-                <span class="channel-content-item-name">{{lan('Naver Talk Talk') }}</span>
+                <span class="channel-content-item-name">{{ lan('Naver Talk Talk') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
-                <span class="bot-link-text">{{lan('Bot Link') }}</span>
+                <span class="bot-link-text">{{ lan('Bot Link') }}</span>
             </div>
             <div style="margin: 8px 6px;">
                 <input type="text" class="channel-input" value="{{ host }}/naver/{{ chatbot.id }}">
@@ -45,10 +45,10 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/line.png" style="width: 50px; height: 50px;">
-                <span class="channel-content-item-name">{{lan('Line') }}</span>
+                <span class="channel-content-item-name">{{ lan('Line') }}</span>
             </div>
             <div style="margin-top: 12px; padding-left: 12px;">
-                <span class="bot-link-text">{{lan('Bot Link') }}</span>
+                <span class="bot-link-text">{{ lan('Bot Link') }}</span>
             </div>
             <div style="margin: 8px 6px;">
                 <input type="text" class="channel-input" value="{{ host }}/line/{{ chatbot.id }}">
@@ -73,8 +73,8 @@
             <p>Webhook URL : {{ host }}/kakao/{{ chatbot.id }}</p>
         </div>
         <div class="tab-footer">
-            <button class="blue-button">{{lan('Save') }}</button>
-            <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
+            <button class="blue-button">{{ lan('Save') }}</button>
+            <button type="button" class="default-button" ng-click="help.kakao">{{ lan('Close') }}</button>
         </div>
     </div>
 </div>
