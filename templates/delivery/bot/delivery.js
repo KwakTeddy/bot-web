@@ -90,8 +90,8 @@ var reserveCheck = {
 
 var getCategory = {
     action: function (task,context,callback) {
-        // context.dialog.category = context.bot.menu;
-        context.dialog.category = menuPreproc(context.bot.menu);
+        // context.dialog.category = context.bot.menus;
+        context.dialog.category = menuPreproc(context.bot.menus);
         callback(task,context);
     }
 };
@@ -175,7 +175,7 @@ var menuElementText = {
         var matched = false;
         var array = context.dialog.menuList;
         for(i=0; i<array.length; i++){
-            if (matchFun(text, array[i].name)) {
+            if (matchFun(context.dialog.inRaw, array[i].name)) {
                 matched = true;
                 task.menuElement = array[i];
             };
@@ -195,7 +195,7 @@ var makeOrderList = {
         context.dialog.keyword = context.dialog.inRaw;
         if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
         context.dialog.menu = {};
-        context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.menu);
+        context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.menus);
         if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
         // context.dialog.menuList = filter(context.dialog.inRaw, mdmenu);
 
@@ -208,7 +208,11 @@ bot.setTask('makeOrderList', makeOrderList);
 var orderble = {
     typeCheck: function (text, type, task, context, callback) {
         var matched = false;
-        if (filter(text, context.bot.menu).length) matched =  true;
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log(text);
+        // console.log(context.dialog);
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        if (filter(context.dialog.inRaw, context.bot.menus).length) matched =  true;
 
         callback(text, task, matched);
     }
@@ -350,7 +354,7 @@ function reserveRequest(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
 
             // var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
-            var url = "https://chicken.moneybrain.ai" + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            var url = (config.host || "https://chicken.moneybrain.ai") + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
             context.bot.authKey = randomNum;
 
             var query = {url: url};
