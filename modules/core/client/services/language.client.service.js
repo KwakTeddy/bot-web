@@ -1611,6 +1611,12 @@
                 "en": "Content is already added",
                 "zh": "内容已添加",
                 "jp": "コンテンツは既に追加されています"
+            },
+            "Intent edit": {
+                "ko": "Intent 편집",
+                "en": "Intent edit",
+                "zh": "意图编辑",
+                "jp": "インテント編集"
             }
         };
 
