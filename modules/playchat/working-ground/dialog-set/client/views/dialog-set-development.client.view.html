@@ -5,15 +5,15 @@
         <div class="topic-area">
             <div>
                 <div>
-                    <p>{{lan('Topic 1') }}</p>
+                    <p>Topic 1</p>
                     <select class="data-select"></select>
                 </div>
                 <div>
-                    <p>{{lan('Topic 1') }}</p>
+                    <p>Topic 1</p>
                     <select class="data-select"></select>
                 </div>
                 <div>
-                    <p>{{lan('Topic 1') }}</p>
+                    <p>Topic 1</p>
                     <select class="data-select"></select>
                 </div>
             </div>
@@ -28,10 +28,10 @@
         </div>
         <div class="functions-area">
             <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="{{lan('display: none;') }}">
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="{{lan('display: none;') }}">
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="{{lan('display: none;') }}">
-            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="{{lan('display: none;') }}">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="display: none;">
         </div>
     </form>
 </div>
@@ -56,7 +56,7 @@
         </ul>
     </div>
     <div class="topicswitch">
-        <span class="mr10">{{lan('topic') }}</span>
+        <span class="mr10">topic</span>
         <div class="slide inline-block">
             <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
             <label for="topicOpen"></label>
@@ -75,15 +75,15 @@
                 <div class="topic-area">
                     <div>
                         <div>
-                            <p>{{lan('Topic 1') }}</p>
+                            <p>Topic 1</p>
                             <select class="data-select"></select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 2') }}</p>
+                            <p>Topic 2</p>
                             <select class="data-select"></select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 3') }}</p>
+                            <p>Topic 3</p>
                             <select class="data-select"></select>
                         </div>
                     </div>
@@ -110,19 +110,19 @@
                 <div class="topic-area">
                     <div>
                         <div>
-                            <p>{{lan('Topic 1') }}</p>
+                            <p>Topic 1</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 2') }}</p>
+                            <p>Topic 2</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 3') }}</p>
+                            <p>Topic 3</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context">{{ dialog.context.name }}</option>
                             </select>

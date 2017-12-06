@@ -14,13 +14,14 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     (function()
     {
+        var savedMenu = [];
         ChatbotService.get({ botId: chatbot._id }, function(result)
         {
             if(result.templateId)
             {
                 MenuService.get(result.templateId.id, function(menus)
                 {
-                    $scope.menus = menus;
+                    $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
             }
@@ -28,7 +29,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             {
                 MenuService.get(function(menus)
                 {
-                    $scope.menus = menus;
+                    $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
             }

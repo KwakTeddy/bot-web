@@ -54,10 +54,10 @@
                     <label class="required">
                         <span class="form-title">{{lan('File Type') }}</span>
                         <label>
-                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> {{lan('graph file') }}
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> {graph file
                         </label>
                         <label>
-                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> {{lan('logic file') }}
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> logic file
                         </label>
                     </label>
                 </div>
@@ -81,7 +81,7 @@
             <form name="modalFormDefault" ng-submit="save(modal.importModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span>{{lan('File') }}</span>
+                        <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>

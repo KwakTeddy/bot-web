@@ -37,7 +37,7 @@
             <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
         </div>
         <div class="chatbots">
-            <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectBot(chatbot);">
+            <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectBot(chatbot.bot);">
                 <ul class="hei50">
                     <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
                     <li class="sub3" data-id="{{ chatbot.bot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.bot.name }}</li>
@@ -80,7 +80,7 @@
                         </ul>
                         <ul class="list2 mt10">
                             <li class="ml7">{{ lan('Member ID(Email)') }} :</li>
-                            <li class="ml8 mt23">{{ lan('Authorization') }} :</li>
+                            <li class="ml8 mt23">Authorization :</li>
                         </ul>
                         <ul class="list4 mt4">
                             <li><input type="text" class="input_pop" placeholder="username@moneybrain.ai" ng-model="share.email" ng-required="true"></li>
