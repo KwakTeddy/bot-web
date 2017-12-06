@@ -36,7 +36,7 @@ angular.module('template').controller('hotelReservationController', ['$scope', '
 
         $scope.add = function()
         {
-            $scope.datas.push({ order_user: '', order_phone: '', order_room: '', order_category: '', order_oneprice: '' ,order_price:'',order_date:'',order_paydate:'',order_daynumbers:'',order_period:'',order_peoplenumber:''});
+            $scope.datas.push({ order_user: '', order_phone: '', order_room: '', order_category: '', order_oneprice: '' ,order_price:'',order_date:'',order_paydate:'',order_daynumbers:'',order_period:'',order_peoplenumber:'',order_status:''});
         };
 
         $scope.delete = function(index)

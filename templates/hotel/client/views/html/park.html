@@ -24,11 +24,11 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 10%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 30%;">
                 <col style="width: 10%;">
             </colgroup>
             <thead>
@@ -53,6 +53,7 @@
                     </td>
                     <td>
                         <input type="text" ng-model="data.parkaddress">
+                        <button type="button" ng-click="findAddress($event);">검색</button>
                     </td>
                     <td>
                         <input type="checkbox" ng-model="data.parkornot">

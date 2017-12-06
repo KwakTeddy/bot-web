@@ -23,7 +23,7 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
                     angular.element('*[name="' + key + '"]').val(result[key]);
                 }
 
-                console.log(result);
+                console.log('리절트 : ', result);
             },
             function(err)
             {

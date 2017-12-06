@@ -34,7 +34,7 @@ module.exports.findDatas = function(req, res)
         else
             model = mongoose.model(name, schema);
 
-        console.log('모델명 : ', name);
+        console.log('모델명 : ', name, botId);
 
         model.find({ botId: botId }).exec(function(err, list)
         {

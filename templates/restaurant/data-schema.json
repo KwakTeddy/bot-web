@@ -1,9 +1,12 @@
 {
+    "restaurantname" : "String",
     "phone" : "String",
     "mobile" : "String",
+    "address" : "String",
     "startTime" : "String",
     "endTime" : "String",
     "holiday" : "String",
     "menuImage" : "String",
-    "address" : "String"
+    "description" : "String"
+
 }
