@@ -554,7 +554,7 @@
             },
             "Saved.": {
                 "ko": "저장되었습니다!",
-                "en": "Saved.",
+                "en": "Saved!",
                 "jp": "保存されました!",
                 "zh": "保存成功！"
             },
@@ -1539,6 +1539,42 @@
                 "en": "Id",
                 "zh" : "Id",
                 "jp" : "Id"
+            },
+            "Korean": {
+                "ko": "한국어",
+                "en": "Korean",
+                "zh": "朝鲜的",
+                "jp": "韓国語"
+            },
+            "English": {
+                "ko": "영어",
+                "en": "English",
+                "zh": "英语",
+                "jp": "英語"
+            },
+            "Chinese": {
+                "ko": "중국어",
+                "en": "Chinese",
+                "zh": "中文",
+                "jp": "中国語"
+            },
+            "Japanese": {
+                "ko": "일본어",
+                "en": "Japanese",
+                "zh": "日本",
+                "jp": "日本語"
+            },
+            "Rename": {
+                "ko": "이름변경",
+                "en": "Rename",
+                "zh": "改名",
+                "jp": "名前を変更する"
+            },
+            "Confirm": {
+                "ko": "확인",
+                "en": "Confirm",
+                "zh": "确认",
+                "jp": "確認"
             }
         };
 

@@ -73,7 +73,7 @@
             angular.element('#botContent').hide();
             angular.element('#sharedBotContent').hide();
             angular.element('#' + name).show();
-            angular.element(e.currentTarget).parent().addClass('select_tab');
+            angular.element(e.currentTarget).addClass('select_tab');
         };
 
         $scope.toPage = function(page)

@@ -6,6 +6,8 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 {
     $scope.isLogin = $cookies.get('login') == 'true';
 
+    $scope.user = $cookies.getObject('user');
+
     angular.element('.user-menu a').on('click', function()
     {
         angular.element('.user-menu').hide();

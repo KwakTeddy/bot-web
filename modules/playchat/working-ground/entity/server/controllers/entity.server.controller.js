@@ -171,7 +171,13 @@ function saveEntityContents(botId, templateId, user, entityId, contents, callbac
     {
         if(err)
         {
-            return errCallback(err);
+            if(errCallback)
+            {
+                return errCallback(err);
+            }
+
+            console.error(err);
+            return;
         }
 
         var errs = [];
@@ -477,7 +483,7 @@ exports.update = function(req, res)
                             return res.status(400).send({ message: err.stack || err });
                         }
 
-                        saveEntityContents(req.params.botId, req.user, item._id, req.body.entityContents, function()
+                        saveEntityContents(req.params.botId, req.body.templateId, req.user, item._id, req.body.entityContents, function()
                         {
                             res.jsonp(item);
                         },
@@ -491,7 +497,7 @@ exports.update = function(req, res)
             }
             else
             {
-                saveEntityContents(req.params.botId, req.user, item._id, req.body.entityContents, function()
+                saveEntityContents(req.params.botId, req.body.templateId, req.user, item._id, req.body.entityContents, function()
                 {
                     res.jsonp(item);
                 },

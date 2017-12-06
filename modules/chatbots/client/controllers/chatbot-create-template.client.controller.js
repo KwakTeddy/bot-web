@@ -16,6 +16,8 @@
             language: 'ko'
         };
 
+        var user = $cookies.getObject('user');
+
         (function()
         {
             if($scope.templateId != 'blank')
@@ -97,10 +99,15 @@
 
             $scope.save = function()
             {
-                if(!$scope.bot.id.match(/^[a-zA-Z]+/))
+                if(!$scope.bot.id)
                 {
-                    return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
+                    $scope.bot.id = 'blank_' + user.username + '_' + new Date().getTime();
                 }
+
+                // if(!$scope.bot.id.match(/^[a-zA-Z]+/))
+                // {
+                //     return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
+                // }
 
                 ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description }, function()
                 {
