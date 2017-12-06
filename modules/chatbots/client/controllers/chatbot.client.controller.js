@@ -224,6 +224,7 @@
 
         $scope.selectBot = function(bot)
         {
+            delete bot.user;
             $cookies.putObject('chatbot', bot);
             $state.go('playchat-main');
         };

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'ModalService', 'PagingService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope, LanguageService)
+angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Learning', '/modules/playchat/gnb/client/imgs/speech.png');
 

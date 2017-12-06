@@ -110,12 +110,6 @@ exports.create = function(req, res)
 
             Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
             {
-                var dir = path.resolve('./custom_modules/' + req.body.id);
-                if(!fs.existsSync(dir))
-                {
-                    fs.mkdirSync(dir);
-                }
-
                 // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
                 // if(chatbot.templateId)
                 // {
@@ -135,6 +129,12 @@ exports.create = function(req, res)
                 // {
                 if(!chatbot.templateId)
                 {
+                    var dir = path.resolve('./custom_modules/' + req.body.id);
+                    if(!fs.existsSync(dir))
+                    {
+                        fs.mkdirSync(dir);
+                    }
+
                     // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
                     // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
                     var botjs = fs.readFileSync(__dirname + '/bot.template');

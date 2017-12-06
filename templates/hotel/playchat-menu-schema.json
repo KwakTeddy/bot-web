@@ -12,6 +12,7 @@
             { "name" : "예약정보관리", "url" : "/templates/contents/reservation", "icon" : "contents.png" }
         ] },
         { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario.png" }
+        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario.png" },
+        { "name" : "인텐트관리", "url": "/development/intent", "icon": "scenario.png" }
     ]
 }

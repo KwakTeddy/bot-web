@@ -229,7 +229,7 @@
             {
                 ListModal.open('entity', y, x, function(page, bind)
                 {
-                    EntityService.query({ botId: $scope.chatbot.id, page: page, countPerPage: 10, name : name }, function(list)
+                    EntityService.query({ botId: $scope.chatbot.id, templateId: ($scope.chatbot.templateId ? $scope.chatbot.templateId._id: ''), page: page, countPerPage: 10, name : name }, function(list)
                     {
                         bind(name, list);
                     },
@@ -272,7 +272,7 @@
             {
                 ListModal.open('intent', y, x, function(page, bind)
                 {
-                    IntentService.query({ botId: $scope.chatbot.id, page: page, countPerPage: 10, name: name }, function(list)
+                    IntentService.query({ botId: $scope.chatbot.id, templateId: ($scope.chatbot.templateId ? $scope.chatbot.templateId._id: ''), page: page, countPerPage: 10, name: name }, function(list)
                     {
                         bind(name, list);
                     },
@@ -317,7 +317,7 @@
                         //나중에 실제로 서버에서 타입을 가져와야 함.
                         $scope.commonTypes = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
 
-                        TypeService.query({ botId: $scope.chatbot.id }, function(result)
+                        TypeService.query({ botId: $scope.chatbot.id, templateId: ($scope.chatbot.templateId ? $scope.chatbot.templateId.id: '') }, function(result)
                         {
                             var list = [];
                             for(var i=0, l=$scope.commonTypes.length; i<l; i++)

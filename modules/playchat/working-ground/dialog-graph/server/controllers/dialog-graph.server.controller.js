@@ -79,9 +79,15 @@ exports.findFile = function(req, res)
 
 exports.saveFile = function(req, res)
 {
+    var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.body.fileName);
+    if(req.body.templateId)
+    {
+        filePath = path.resolve('./templates/' + req.body.templateId + '/bot/' + req.body.fileName);
+    }
+
     if(req.params.fileName && req.body.path)
     {
-        fs.rename(req.body.path + '/' + req.body.fileName, path.resolve('./custom_modules/' + req.params.botId + '/' + req.body.fileName), function(err)
+        fs.rename(req.body.path + '/' + req.body.fileName, filePath, function(err)
         {
             if(err)
             {
@@ -94,8 +100,6 @@ exports.saveFile = function(req, res)
     }
     else
     {
-        var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
-
         fs.writeFile(filePath, req.body.data, function(err)
         {
             if(err)

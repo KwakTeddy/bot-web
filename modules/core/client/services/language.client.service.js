@@ -1493,15 +1493,67 @@
                 "en": "Failed Dialogs",
                 "jp": "失敗対話",
                 "zh": "失败的对话框"
+            },
+            "Bot Link": {
+                "ko": "챗봇링크",
+                "en" : "Bot Link"
+            },
+            "Connect" : {
+                "ko": "연결",
+                "en": "Connect"
+            },
+            "Entity analysis": {
+                "ko": "엔터티 분석",
+                "en": "Entity analysis"
+            },
+            "Intent analysis": {
+                "ko": "인텐트 분석",
+                "en": "Intent analysis"
+            },
+            "KaKao Talk": {
+                "ko": "카카오톡",
+                "en": "KaKao Talk"
+            },
+            "LOG": {
+                "ko": "로그",
+                "en": "LOG"
+            },
+            "Line": {
+                "ko": "라인",
+                "en": "Line"
+            },
+            "Messanger": {
+                "ko": "메신저",
+                "en": "Messanger"
+            },
+            "Naver Talk Talk": {
+                "ko": "네이버 톡톡",
+                "en": "Naver Talk Talk"
+            },
+            "Signout": {
+                "ko": "로그아웃",
+                "en": "Signout"
+            },
+            "ID": {
+                "ko": "아이디",
+                "en": "Id",
+                "zh" : "Id",
+                "jp" : "Id"
             }
         };
+
+        var list = {};
 
         var lan = function(key)
         {
             key = key.trim();
             if(!languages[key])
             {
-                // console.error('languages', key);
+                if(!list[key])
+                    list[key] = true;
+
+                console.error('language', key);
+
                 return '언어가 없습니다';
             }
             else

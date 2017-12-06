@@ -13,7 +13,7 @@
 
         var make = function($scope)
         {
-            TaskService.query({ botId: chatbot.id }, function(list)
+            TaskService.query({ botId: chatbot.id, templateId: chatbot.templateId.id }, function(list)
             {
                 $scope.tasks = list;
             },

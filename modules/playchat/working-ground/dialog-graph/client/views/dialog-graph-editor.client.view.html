@@ -6,7 +6,7 @@
 
 <div ng-controller="DialogGraphEditorController">
     <div class="topicswitch2">
-        <span class="mr10">{{lan('Advenced') }}</span>
+        <span class="mr10">Advenced</span>
         <div class="minislide inline-block" ng-class="isAdvancedMode ? 'on' : ''" ng-click="changeMode($event);">
             <input type="checkbox" value="switch" id="advance" ng-model="isAdvancedMode">
             <label for="advance"></label>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
-                    <p class="dialog-editor-subject">{{lan('Input') }} <a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject">Input <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-input-box">
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input" data-nlu="{{nlpedTextPrefix}} {{ nlpedText[$index] }}">
                             <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-keyup="inputOnKeyUp($event, $index)" ng-blur="inputOnBlur($event, $index);" ng-required="true">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">{{lan('Input ') }}<a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject">Input<a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
                         <p class="dialog-editor-advanced-input-placeholder">{{lan('키워드, #인텐트, @엔티티, $타입, /정규식/, if(조건식)') }}</p>
                         <div ng-repeat="input in dialog.input">
@@ -44,7 +44,7 @@
                                         <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
                                         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">
                                     </span>
-                                    <span class="and" ng-if="getLength(input);">{{lan('and') }}</span>
+                                    <span class="and" ng-if="getLength(input);">and</span>
                                 </span>
 
                                 <span class="dialog-editor-input-item">
@@ -53,7 +53,7 @@
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);" style="position: absolute; top: 7px; right: 12px;">
                             </div>
                             <div class="or" ng-if="dialog.input.length > 1 && $index < dialog.input.length-1">
-                                <span>{{lan('or') }}</span>
+                                <span>or</span>
                             </div>
                         </div>
                         <div style="position: relative;">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">{{lan('Task ') }}<a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject">Task<a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
                         <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
                         <ul class="dialog-editor-select-options">
@@ -74,22 +74,22 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row">
-                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="isAdvancedMode || dialog.output.length > 1 || dialog.output[0].kind != 'Action' || isUseOutput === true" ng-click="useOutput($event, dialog);" tabindex="-1"> {{lan('Output') }} <a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="isAdvancedMode || dialog.output.length > 1 || dialog.output[0].kind != 'Action' || isUseOutput === true" ng-click="useOutput($event, dialog);" tabindex="-1"> Output <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <a href="#" class="dialog-editor-output-add" ng-click="addOutput($event);" tabindex="-1"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
                     <div class="dialog-editor-output-box" ng-repeat="output in dialog.output" ng-disabled="isUseOutput === false">
                         <div class="dialog-editor-output-functions">
                             <a href="#" tabindex="-1" style="position: relative;" ng-if="isAdvancedMode === true">
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png" class="image-button">
                                 <select style="position: absolute; left: 0; top: 0px; width: 28px; opacity:0;" ng-model="output.kind" ng-change="outputTypeChanged($event);">
-                                    <option value="Content">{{lan('Content') }}</option>
-                                    <option value="Action">{{lan('Action') }}</option>
+                                    <option value="Content">Content</option>
+                                    <option value="Action">Action</option>
                                 </select>
                             </a>
                             <a href="#" tabindex="-1"><img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteOutput(dialog.output, $index);" style="margin-right: 5px;"></a>
                         </div>
                         <div ng-if="output.kind == 'Text' || output.kind == 'Content'">
                             <div class="dialog-editor-output-if" ng-if="isAdvancedMode === true">
-                                <span>{{lan('IF') }}</span>
+                                <span>IF</span>
                                 <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
                             <div class="dialog-editor-output-text">
@@ -120,20 +120,20 @@
                         </div>
                         <div ng-if="output.kind == 'Action' && isAdvancedMode">
                             <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">{{lan('Action1') }}</p>
-                                <span>{{lan('IF') }}</span>
+                                <p class="dialog-editor-output-label">Action</p>
+                                <span>IF</span>
                                 <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
                             <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">{{lan('Action Type') }}</p>
+                                <p class="dialog-editor-output-label">Action Type</p>
                                 <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-required="true" ng-change="actionValueChanged(output);">
-                                    <option value="">{{lan('none') }}</option>
-                                    <option value="call">{{lan('Call') }}</option>
-                                    <option value="callChild">{{lan('Call Child') }}</option>
-                                    <option value="returnCall">{{lan('Return Call') }}</option>
-                                    <option value="up">{{lan('Up') }}</option>
-                                    <option value="repeat">{{lan('Repeat') }}</option>
-                                    <option value="return">{{lan('Return') }}</option>
+                                    <option value="">none</option>
+                                    <option value="call">Call</option>
+                                    <option value="callChild">Call Child</option>
+                                    <option value="returnCall">Return Call</option>
+                                    <option value="up">Up</option>
+                                    <option value="repeat">Repeat</option>
+                                    <option value="return">Return</option>
                                 </select>
                             </div>
                             <div class="dialog-editor-output-action-row">
@@ -147,7 +147,7 @@
                                 </div>
                             </div>
                             <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">{{lan('Option') }}</p>
+                                <p class="dialog-editor-output-label">Option</p>
                                 <textarea class="dialog-editor-output-input options" ng-model="output.options.output"></textarea>
                                 <!--<input type="text" class="dialog-editor-output-input" style="width: 100%;" ng-model="output.options.output">-->
                             </div>
@@ -155,16 +155,16 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
-                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="(dialog.output.length == 1 && dialog.output[0].kind == 'Action') || isUseOutput === false" ng-click="useAction($event);" tabindex="-1">{{lan(' Action') }} <a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="(dialog.output.length == 1 && dialog.output[0].kind == 'Action') || isUseOutput === false" ng-click="useAction($event);" tabindex="-1"> Action <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div style="padding: 8px 12px;">
                         <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type" ng-change="actionValueChanged(dialog.actionOutput);">
-                            <option value="">{{lan('none') }}</option>
-                            <option value="call">{{lan('Call') }}</option>
-                            <option value="callChild">{{lan('Call Child') }}</option>
-                            <option value="returnCall">{{lan('Return Call') }}</option>
-                            <option value="up">{{lan('Up') }}</option>
-                            <option value="repeat">{{lan('Repeat') }}</option>
-                            <option value="return">{{lan('Return') }}</option>
+                            <option value="">none</option>
+                            <option value="call">Call</option>
+                            <option value="callChild">Call Child</option>
+                            <option value="returnCall">Return Call</option>
+                            <option value="up">Up</option>
+                            <option value="repeat">Repeat</option>
+                            <option value="return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
                             <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false">

@@ -61,9 +61,9 @@ var reserveCheck = {
     action: function (task, context, callback) {
 
         if(context.botUser.isOwner) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.find({
-                upTemplateId: context.bot.templateDataId,
+                botId: context.bot.id,
                 status: '승인대기중'
             }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
                 if(docs && docs.length > 0) {
@@ -90,8 +90,8 @@ var reserveCheck = {
 
 var getCategory = {
     action: function (task,context,callback) {
-        // context.dialog.category = context.bot.menu;
-        context.dialog.category = menuPreproc(context.bot.menu);
+        // context.dialog.category = context.bot.menus;
+        context.dialog.category = menuPreproc(context.bot.menus);
         callback(task,context);
     }
 };
@@ -175,7 +175,7 @@ var menuElementText = {
         var matched = false;
         var array = context.dialog.menuList;
         for(i=0; i<array.length; i++){
-            if (matchFun(text, array[i].name)) {
+            if (matchFun(context.dialog.inRaw, array[i].name)) {
                 matched = true;
                 task.menuElement = array[i];
             };
@@ -195,7 +195,7 @@ var makeOrderList = {
         context.dialog.keyword = context.dialog.inRaw;
         if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
         context.dialog.menu = {};
-        context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.menu);
+        context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.menus);
         if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
         // context.dialog.menuList = filter(context.dialog.inRaw, mdmenu);
 
@@ -208,7 +208,11 @@ bot.setTask('makeOrderList', makeOrderList);
 var orderble = {
     typeCheck: function (text, type, task, context, callback) {
         var matched = false;
-        if (filter(text, context.bot.menu).length) matched =  true;
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log(text);
+        // console.log(context.dialog);
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        if (filter(context.dialog.inRaw, context.bot.menus).length) matched =  true;
 
         callback(text, task, matched);
     }
@@ -270,7 +274,7 @@ bot.setTask("reserveRequest", reserveRequest);
 var recentCart = {
     action: function (task,context,callback) {
 
-        var orderList = mongoModule.getModel('templateorderlist');
+        var orderList = mongoModule.getModel('delivery-orders');
         orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
             if(docs.length != 0){
                 var orderHis = docs[0]
@@ -324,7 +328,7 @@ function reserveRequest(task, context, callback) {
         // mobile: context.dialog.mobile || context.user.mobile,
         // time: context.dialog.time,
         status: '승인대기중',
-        upTemplateId: context.bot.templateDataId,
+        botId: context.bot.id,
         // userKey: context.user.userKey
 
 
@@ -338,7 +342,7 @@ function reserveRequest(task, context, callback) {
     };
 
 
-    var TemplateReservation = mongoModule.getModel('templateorderlist');
+    var TemplateReservation = mongoModule.getModel('delivery-orders');
     var templateReservation = new TemplateReservation(doc);
 
     templateReservation.save(function(err) {
@@ -350,7 +354,7 @@ function reserveRequest(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
 
             // var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
-            var url = "https://chicken.moneybrain.ai" + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            var url = (config.host || "https://chicken.moneybrain.ai") + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
             context.bot.authKey = randomNum;
 
             var query = {url: url};
@@ -563,7 +567,7 @@ function sendSMS(phone, message) {
 
 var getOrderHistory = {
     action: function (task,context,callback) {
-        var orderList = mongoModule.getModel('templateorderlist');
+        var orderList = mongoModule.getModel('delivery-orders');
         orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
             if(docs.length != 0){
                 context.dialog.orderHistory = docs[0];
@@ -688,7 +692,7 @@ bot.setTask('makeReserve2', makeReserve2);
 var reserveOwnerConfirm = {
     action: function (task, context, callback) {
         if(context.dialog.reserve) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
 
                 if(!context.bot.testMode) {
@@ -726,7 +730,7 @@ bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
 var reserveOwnerCancel = {
     action: function (task, context, callback) {
         if(context.dialog.reserve) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
@@ -762,7 +766,7 @@ bot.setTask('reserveOwnerCancel', reserveOwnerCancel);
 var orderCancel = {
     action: function (task, context, callback) {
 
-        var TemplateReservation = mongoModule.getModel('templateorderlist');
+        var TemplateReservation = mongoModule.getModel('delivery-orders');
         TemplateReservation.update({_id: context.dialog.orderHistory._id}, {$set: {status: '주문자취소'}}, function (err) {
 
             if(!context.bot.testMode) {
@@ -797,9 +801,9 @@ var pastHistory = {
     action: function (task, context, callback) {
 
         if(context.botUser.isOwner) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.find({
-                upTemplateId: context.bot.templateDataId,
+                botId: context.bot.id,
                 status: {$not:/승인대기중/}
             }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
                 if(docs && docs.length > 0) {

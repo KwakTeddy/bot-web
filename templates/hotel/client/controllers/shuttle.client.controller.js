@@ -3,7 +3,7 @@
 angular.module('template').controller('hotelShuttleController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/shuttle', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/shuttles', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
@@ -86,6 +86,7 @@ angular.module('template').controller('hotelShuttleController', ['$scope', '$res
             }
             
             var datas = JSON.parse(angular.toJson($scope.datas));
+            console.log('데이터스 : ', datas);
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
             {
                 console.log(result);

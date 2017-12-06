@@ -20,6 +20,8 @@
 
     padding: 12px;
     margin: 0 20px;
+
+    position: relative;
 }
 
 .channel-content-item > div > *
@@ -53,4 +55,39 @@
 {
     font-size: 14px;
     font-weight: 100;
+}
+
+.channel-content-item-question
+{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    cursor: pointer;
+
+    padding: 3px 10px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ddd;
+    border-radius: 50%;
+}
+
+.channel-content-item-question:HOVER
+{
+    background-color: #efefef;
+}
+
+
+.modal-body p
+{
+    margin: 20px 0;
+}
+
+.modal-title
+{
+    border-bottom: 1px solid #ddd;
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
 }

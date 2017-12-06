@@ -18,5 +18,5 @@ var restaurants = {
     }
 };
 
-botlib.makeTemplateBot('restaurants', restaurants);
+botlib.makeTemplateBot('restaurant', restaurants);
 
