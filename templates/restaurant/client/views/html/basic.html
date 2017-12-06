@@ -19,8 +19,8 @@
         <form ng-submit="saveTemplateBot($event);">
             <div class="form-row">
                 <label class="required">
-                    <span class="form-title">호텔이름</span>
-                    <input type="text" class="data-input" placeholder="호텔이름(ex:엠프레스호텔)" data-bot-name="true" name="hotelname" required="true" autofocus="true">
+                    <span class="form-title">레스토랑이름</span>
+                    <input type="text" class="data-input" placeholder="레스토랑이름(ex:엠프레스호텔)" data-bot-name="true" name="restaurantname" required="true" autofocus="true">
                 </label>
             </div>
             <div class="form-row">
@@ -30,16 +30,41 @@
                 </label>
             </div>
             <div class="form-row">
-                <label>
+                <label class="required">
                     <span class="form-title">휴대폰</span>
                     <input type="text" class="data-input" name="mobile" placeholder="휴대폰(ex:000-0000-0000)">
                 </label>
             </div>
             <div class="form-row">
-                <label>
+                <label class="required">
                     <span class="form-title">주소</span>
                     <input type="text" class="data-input" name="address" style="width: 90%;">
                     <button type="button" class="default-button" ng-click="findAddress($event);">검색</button>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">영업 시작 시간</span>
+                    <input type="text" class="data-input" placeholder="영업 시작 시간(ex:오전 09:00)" name="startTime" required="true" >
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">영업 종료 시간</span>
+                    <input type="text" class="data-input" placeholder="영업 종료 시간(ex:오후 06:00)" name="endTime" required="true" >
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">휴일</span>
+                    <input type="text" class="data-input" placeholder="휴일(ex:일요일)" name="holiday" required="true" >
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">메뉴판 사진</span>
+                        <img src="{{ data.room_image }}" style="width: 50px;" ng-if="data.room_image" ng-click="editImage($event);">
+                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.room_image" />
                 </label>
             </div>
             <div class="form-row">

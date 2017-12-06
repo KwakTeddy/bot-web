@@ -428,7 +428,6 @@
                 if(commandMatch && commandMatch.length == 1)
                 {
                     var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
-
                     this.commonDialogs = JSON.parse(parsed);
 
                     this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');

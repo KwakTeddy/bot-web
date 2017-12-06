@@ -833,128 +833,93 @@ function eventCategoryAction(task, context, callback) {
     query = {botId: context.bot.id};
     sort = {'_id': -1};
 
-    model.find({ botId: context.bot.id }).sort({ _id: -1 }).exec(function(err, list)
-    {
-       if(!list)
-       {
-           callback(task, context);
-       }
-       else
-       {
-           console.log('ㅑㅐ너랴ㅐㄴ어래쟈 결과 : ', list);
 
-           var events = [];
-           for(var i=0; i<list.length; i++)
-           {
-               events.push({ name: list[i].name, description: list[i].description, image: list[i].image });
-           }
+    model.aggregate([
+        {$match: query},
+        {$sort: sort},
+        {$group: {
+            _id: '$category',
+            category: {$first: '$category'}
+        }}
+    ], function(err, docs) {
+        if(docs == undefined) {
+            callback(task, context);
+        } else {
+            var categorys = [];
+            for (var i = 0; i < docs.length; i++) {
+                var doc = docs[i];
 
-           context.dialog.events = events;
-           task.doc = events;
-           callback(task,context);
-       }
+                var category = doc.category;
+                if(!_.includes(categorys, category)){
+                    categorys.push({name: category});
+                }
+
+                // for (var j = 0; j < doc.category.length; j++) {
+                //   var category = doc.category[j];
+                //   if(!_.includes(categorys, category)){
+                //     categorys.push({name: category});
+                //   }
+                // }
+            }
+
+            if (categorys.length == 1) {
+                task.doc = categorys;
+                context.dialog.categorys = categorys;
+                eventAction(task,context, function(task,context) {
+                    callback(task,context);
+                });
+            } else if (categorys.length > 1) {
+                task.doc = categorys;
+                context.dialog.categorys = categorys;
+                callback(task,context);
+            } else {
+                callback(task,context);
+            }
+        }
     });
-
-    // model.aggregate([
-    //     {$match: query},
-    //     {$sort: sort},
-    //     {$group: {
-    //         _id: '$category',
-    //         category: {$first: '$category'}
-    //     }}
-    // ], function(err, docs) {
-    //     if(docs == undefined) {
-    //         callback(task, context);
-    //     } else {
-    //         var categorys = [];
-    //         for (var i = 0; i < docs.length; i++) {
-    //             var doc = docs[i];
-    //
-    //             var category = doc.category;
-    //             if(!_.includes(categorys, category)){
-    //                 categorys.push({name: category});
-    //             }
-    //
-    //             // for (var j = 0; j < doc.category.length; j++) {
-    //             //   var category = doc.category[j];
-    //             //   if(!_.includes(categorys, category)){
-    //             //     categorys.push({name: category});
-    //             //   }
-    //             // }
-    //         }
-    //
-    //         if (categorys.length == 1) {
-    //
-    //             console.log('카테고리 : ', categorys);
-    //             task.doc = categorys;
-    //             context.dialog.categorys = categorys;
-    //             eventAction(task,context, function(task,context) {
-    //                 callback(task,context);
-    //             });
-    //         } else if (categorys.length > 1) {
-    //             task.doc = categorys;
-    //             context.dialog.categorys = categorys;
-    //             callback(task,context);
-    //         } else {
-    //             callback(task,context);
-    //         }
-    //     }
-    // });
 }
 
 
 exports.eventCategoryAction = eventCategoryAction;
 
 function eventAction(task, context, callback) {
+    var model, query, sort;
+    if (context.dialog.categorys.length == 1) {
+        context.dialog.category = context.dialog.categorys[0];
+    }
+    model = mongoModule.getModel('restaurant-events');
+    query = {botId: context.bot.id,
+        category: context.dialog.category.name};
+    sort = {'_id': +1};
 
-    var inCurRaw = context.dialog.inCurRaw;
-
-    inCurRaw = parseInt(inCurRaw);
-
-    var event = context.dialog.events[inCurRaw-1];
-
-    task.doc = context.dialog.events;
-    task.result = { items: [event] };
-
-    console.log('ㅇ너럳재ㅑ러ㅑ대저랮댤', task);
-    callback(task, context);
-
-    // var model, query, sort;
-    // // if (context.dialog.events.length == 1) {
-    // //     context.dialog.category = context.dialog.categorys[0];
-    // // }
-    // model = mongoModule.getModel('restaurant-events');
-    // query = {botId: context.bot.id};
-    // sort = {'_id': +1};
-    //
-    // model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
-    //     task.doc = docs;
-    //     context.dialog.menus = docs;
-    //     var result = [];
-    //     async.eachSeries(task.doc, function(doc, cb) {
-    //         var _doc = {};
-    //         if (doc.name) {
-    //             _doc.title = doc.name;
-    //         }
-    //         if (doc.description) {
-    //             _doc.text = doc.description;
-    //         }
-    //         if (doc.price) {
-    //             _doc.text = _doc.text + ' ' + doc.title + '원';
-    //         }
-    //         if (doc.image) {
-    //             _doc.imageUrl = doc.image;
-    //         }
-    //         result.push(_doc);
-    //         cb(null)
-    //     }, function (err) {
-    //         task.result = {items: result};
-    //         if (task.result.items.length == 0) {
-    //             task.result = null;
-    //         }
-    //         callback(task, context);
-    //     });
-    // });
+    model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
+        task.doc = docs;
+        context.dialog.menus = docs;
+        var result = [];
+        async.eachSeries(task.doc, function(doc, cb) {
+            var _doc = {};
+            if (doc.name) {
+                _doc.title = doc.name;
+            }
+            if (doc.description) {
+                _doc.text = doc.description;
+            }
+            if (doc.price) {
+                _doc.text = _doc.text + ' ' + doc.title + '원';
+            }
+            if (doc.image) {
+                _doc.imageUrl = doc.image;
+            }
+            result.push(_doc);
+            cb(null)
+        }, function (err) {
+            task.result = {items: result};
+            if (task.result.items.length == 0) {
+                task.result = null;
+            }
+            callback(task, context);
+        });
+    });
 }
 
 exports.eventAction = eventAction;
@@ -1156,7 +1121,6 @@ function previewAction(task, context, callback) {
 exports.previewAction = previewAction;
 
 function menuCategoryAction(task, context, callback) {
-
     if(context.bot.menuImage) {
         var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
         task.result = {
