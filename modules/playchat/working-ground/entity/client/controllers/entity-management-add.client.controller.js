@@ -47,6 +47,14 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         {
             if(e.currentTarget.value)
             {
+                for(var i=0; i<$scope.entities.length; i++)
+                {
+                    if($scope.entities[i].name == e.currentTarget.value)
+                    {
+                        return alert($scope.lan('Content is already added'));
+                    }
+                }
+
                 $scope.entities.push({ name: e.currentTarget.value, synonyms: [{ name: '' }] });
                 e.currentTarget.value = '';
             }
@@ -61,6 +69,14 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         var input = e.currentTarget.previousElementSibling;
         if(input.value)
         {
+            for(var i=0; i<$scope.entities.length; i++)
+            {
+                if($scope.entities[i].name == input.value)
+                {
+                    return alert($scope.lan('Content is already added'));
+                }
+            }
+
             $scope.entities.push({ name: input.value, synonyms: [{ name: '' }] });
             input.value = '';
         }
@@ -85,6 +101,11 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 e.stopPropagation();
             }
         }
+    };
+
+    $scope.deleteContent = function(entities, index)
+    {
+        entities.splice(index, 1);
     };
 
     $scope.deleteSynonym = function(synonyms, index)

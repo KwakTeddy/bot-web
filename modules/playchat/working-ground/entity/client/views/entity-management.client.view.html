@@ -42,7 +42,7 @@
                 <td colspan="4">{{lan('empty') }}</td>
             </tr>
             <tr ng-repeat="item in entitys">
-                <td><a href="/playchat/management/entity/add?_id={{item._id}}">{{ item.name }}</a></td>
+                <td style="text-align: left;"><a href="/playchat/management/entity/add?_id={{item._id}}">{{ item.name }}</a></td>
                 <td>{{ item.user.displayName }}</td>
                 <td>
                     <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>

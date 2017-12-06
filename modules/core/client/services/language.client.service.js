@@ -1599,6 +1599,18 @@
                 "en": "Type name",
                 "zh": "类型名称",
                 "jp": "型名"
+            },
+            "Press Enter to add": {
+                "ko": "Enter를 누르면 추가됩니다",
+                "en": "Press Enter to add",
+                "zh": "按Enter键添加。",
+                "jp": "Enterキーを押すと、追加されます。"
+            },
+            "Content is already added": {
+                "ko": "Content가 이미 추가되었습니다.",
+                "en": "Content is already added",
+                "zh": "内容已添加",
+                "jp": "コンテンツは既に追加されています"
             }
         };
 
