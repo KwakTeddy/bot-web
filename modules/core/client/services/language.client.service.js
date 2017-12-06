@@ -1623,6 +1623,18 @@
                 "en": "Create File",
                 "zh": "创建文件",
                 "jp": "ファイルの作成"
+            },
+            "New Memo": {
+                "ko": "새로운메모",
+                "en": "New Memo",
+                "zh": "新备忘录",
+                "jp": "新しいメモ"
+            },
+            "History": {
+                "ko": "History",
+                "en": "History",
+                "zh": "History",
+                "jp": "History"
             }
         };
 
