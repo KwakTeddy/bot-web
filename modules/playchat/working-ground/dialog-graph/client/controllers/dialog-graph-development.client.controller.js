@@ -250,7 +250,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
             else if(after <= 0.7)
             {
-                angular.element('.graph-zoom-out    ').attr('disabled', 'true');
+                angular.element('.graph-zoom-out').attr('disabled', 'true');
             }
         });
 
