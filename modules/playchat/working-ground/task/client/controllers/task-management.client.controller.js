@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('TaskManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $element, FileUploader, ModalService, LanguageService)
+angular.module('playchat').controller('TaskManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'FileUploader', 'ModalService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $element, FileUploader, ModalService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Task', '/modules/playchat/gnb/client/imgs/task.png');
 

@@ -1617,6 +1617,12 @@
                 "en": "Intent edit",
                 "zh": "意图编辑",
                 "jp": "インテント編集"
+            },
+            "Create File" : {
+                "ko": "파일생성",
+                "en": "Create File",
+                "zh": "创建文件",
+                "jp": "ファイルの作成"
             }
         };
 
