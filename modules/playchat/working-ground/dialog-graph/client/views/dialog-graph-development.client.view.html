@@ -28,7 +28,7 @@
 
 
 <div ng-controller="DialogGraphDevelopmentController" class="graph-background">
-    <div class="tab">
+    <div class="tab" style="padding-top: 16px;">
         <a class="prev-tab" ng-mousedown="prevTab($event);"><img src="/modules/playchat/gnb/client/imgs/left.png"></a>
         <ul class="tab-body">
             <li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">
@@ -45,7 +45,7 @@
             <!--<li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>-->
         <!--</ul>-->
     <!--</div>-->
-    <div class="graph-controller">
+    <div class="graph-controller" style="text-indent: 8px;">
         <div>
             <form>
                 <input id="search" name="search" type="search" class="search" ng-keyup="searchDialog($event);">
@@ -78,7 +78,7 @@
                 <!--top: 2px;-->
         </div>
     </div>
-    <div class="graph-body">
+    <div class="graph-body" style="text-indent: 8px;">
         <div id="graphDialogCanvas"></div>
 
         <ul class="dialog-menu" style="display: none;">

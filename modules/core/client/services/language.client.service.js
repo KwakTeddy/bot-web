@@ -288,7 +288,7 @@
                 "jp": "書く",
                 "zh": "写"
             },
-            "\"Flow chatbots are tree-based. The user is driven down a specific path": {
+            "Flow chatbots are tree-based. The user is driven down a specific path": {
                 "ko": "플로우 챗봇은 트리구조입니다. 사용자는 개발자가 지정한 특정 대화 구조에 맞게 대화를 진행하게 됩니다.",
                 "en": "\"Flow chatbots are tree-based. The user is driven down a specific path",
                 "jp": " a path previously defined by the chatbot's developer\"",
@@ -385,7 +385,7 @@
                 "zh": "支持"
             },
             "Store": {
-                "ko": "스토어",
+                "ko": "Store",
                 "en": "Store",
                 "jp": "ストア",
                 "zh": "商店"

@@ -14,8 +14,8 @@
             this.dashboard = { name: 'Dashboard', url:'/', icon: 'dashboard.png' };
 
             this.development = { name: 'Development', url: '/development', icon: 'develop.png', childMenus: [
-                { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
-                { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario_select.png' }
+                { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenatio_select.png' }
             ] };
 
             this.management = { name: 'Management', url: '/management', icon: 'Managemant.png', childMenus: [
