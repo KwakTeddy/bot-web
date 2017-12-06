@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', function ($scope, $resource, $cookies, $stateParams)
+angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', 'FileUploader', function ($scope, $resource, $cookies, $stateParams, FileUploader)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -96,6 +96,27 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
         {
             alert(err.data.error || err.data.message);
         });
+    };
+
+    $scope.uploader = new FileUploader({
+        url: '/api/' + chatbot.id + '/template-contents/upload',
+        alias: 'uploadFile',
+        autoUpload: true
+    });
+
+    $scope.uploader.onErrorItem = function(item, response, status, headers)
+    {
+        console.log($scope.modalForm.fileUploadError);
+    };
+
+    $scope.uploader.onSuccessItem = function(item, response, status, headers)
+    {
+        $scope.data.image = response.url;
+    };
+
+    $scope.uploader.onProgressItem = function(fileItem, progress)
+    {
+        angular.element('.form-box-progress').css('width', progress + '%');
     };
 
     $scope.findAddress = function(e)

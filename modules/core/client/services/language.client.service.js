@@ -1350,7 +1350,7 @@
                 "jp": "利用者入力",
                 "zh": "用户的输入"
             },
-            "1st ": {
+            "1st": {
                 "ko": "1위",
                 "en": "1st ",
                 "jp": "1位",
@@ -1635,6 +1635,30 @@
                 "en": "History",
                 "zh": "History",
                 "jp": "History"
+            },
+            "Dialog Count": {
+                "ko": "대화수",
+                "en": "Dialog Count",
+                "zh": "对话计数",
+                "jp": "ダイアログ数"
+            },
+            "Use Count": {
+                "ko": "사용횟수",
+                "en": "Use Count",
+                "zh": "使用计数",
+                "jp": "カウントを使用する"
+            },
+            "Dialog Input": {
+                "ko": "대화입력",
+                "en": "Dialog Input",
+                "zh": "对话框输入",
+                "jp": "ダイアログ入力"
+            },
+            "Basic Information": {
+                "ko": "기본정보",
+                "en": "Basic Information",
+                "zh": "基本信息",
+                "jp": "基本情報"
             }
         };
 

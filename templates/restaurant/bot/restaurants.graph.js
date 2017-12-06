@@ -37,7 +37,7 @@ var dialogs = [
             "주차장",
             "주차정보"
         ],
-        "task":start.inforpark,
+        "task": "start.inforpark",
         "output": [
             {
                 "if": "context.dialog.parkno==undefined",
@@ -61,7 +61,7 @@ var dialogs = [
             "인기",
             "인기메뉴정보"
         ],
-        "task": start.categoryrestaurantlist,
+        "task": "start.categoryrestaurantlist",
         "output": [
             {
                 "if": "context.dialog.restaurantno===undefined",
@@ -82,7 +82,7 @@ var dialogs = [
                                 {
                                     "name": "category",
                                     "listName": "categorys",
-                                    "typeCheck": 'listTypeCheck'
+                                    "typeCheck": "listTypeCheck"
                                 }
                             ]
                         },
@@ -122,7 +122,7 @@ var dialogs = [
             "~있나?",
             "~메뉴 있나"
         ],
-        "task": start.categoryrestaurantisornot,
+        "task": "start.categoryrestaurantisornot",
         "output": [
             {
                 "if": "context.dialog.menuis===0",
@@ -143,7 +143,7 @@ var dialogs = [
             "어떻다 가다",
             "가다 방법"
         ],
-        "task": start.mapButton,
+        "task": "start.mapButton",
         "output": "저희 매장의 주소는\n+address+\n입니다."
     },
     {
@@ -155,7 +155,7 @@ var dialogs = [
             "이벤트"
         ],
         "task": {
-            "action": start.eventCategoryAction
+            "name": "eventCategoryAction"
         },
         "output": [
             {
@@ -179,7 +179,7 @@ var dialogs = [
                             ]
                         },
                         "task": {
-                            "action": start.eventAction
+                            "action": "start.eventAction"
                         },
                         "output": [
                             {
@@ -218,7 +218,7 @@ var dialogs = [
             "매장 사진"
         ],
         "task": {
-            "action": start.previewCategoryAction
+            "action": "start.previewCategoryAction"
         },
         "output": [
             {
@@ -242,7 +242,7 @@ var dialogs = [
                             ]
                         },
                         "task": {
-                            "action": start.previewAction
+                            "action": "start.previewAction"
                         },
                         "output": [
                             {
@@ -264,7 +264,7 @@ var dialogs = [
                                                 }
                                             ]
                                         },
-                                        "task": start.menuDetailTask,
+                                        "task": "start.menuDetailTask",
                                         "output": "+menu.name+ +menu.description+"
                                     },
                                     {
@@ -319,7 +319,7 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": start.menuDetailTask,
+                        "task": "start.menuDetailTask",
                         "output": "+menu.name+ +menu.description+"
                     },
                     {
@@ -356,16 +356,16 @@ var dialogs = [
             "비용"
         ],
         "task": {
-            "action": start.menuCategoryAction
+            "action": "start.menuCategoryAction"
         },
         "output": [
             {
-                "if": 'context.dialog.categorys == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == \"\")',
+                "if": "context.dialog.categorys == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == \"\")",
                 "output": "아직 메뉴를 등록하지 않았습니다."
             },
             {
                 "if": "context.dialog.categorys == undefined && context.bot.menuImage != undefined",
-                "task": start.menuImageTask,
+                "task": "start.menuImageTask",
                 "output": "[메뉴판보기]"
             },
             {
@@ -384,7 +384,7 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task":start.categorymenu,
+                        "task":"start.categorymenu",
                         "output": [
                             {
                                 "output": "[+categoryss+]\n #categorymenus#+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
@@ -395,14 +395,14 @@ var dialogs = [
                                         "input": {
                                             "if": "true"
                                         },
-                                        "task":start.categorymenuisornot,
+                                        "task":"start.categorymenuisornot",
                                         "output":[
                                             {
-                                            "if": 'context.dialog.menuis == 1',
+                                            "if": "context.dialog.menuis == 1",
                                             "output": "#categorymenu#+index+. +name+ +price+원\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                                         },
                                             {
-                                                "if": 'context.dialog.menuis == 0',
+                                                "if": "context.dialog.menuis == 0",
                                                 "output": {
                                                     "repeat": 1,
                                                     "options": {
@@ -449,7 +449,7 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": start.menuDetailTask,
+                        "task": "start.menuDetailTask",
                         "output": "+menu.name+ +menu.price+원\n+menu.description+"
                     },
                     {
@@ -484,7 +484,7 @@ var dialogs = [
             "regexp": {}
         },
         "task": {
-            "action": start.checkDate
+            "action": "start.checkDate"
         },
         "output": [
             {
@@ -512,7 +512,7 @@ var dialogs = [
             "regexp": {}
         },
         "task": {
-            "action": start.checkTime
+            "action": "start.checkTime"
         },
         "output": [
             {
@@ -559,7 +559,7 @@ var dialogs = [
             "예약 확인",
             "예약 내역"
         ],
-        "task": start.reserveCheck,
+        "task": "start.reserveCheck",
         "output": [
             {
                 "if": "context.botUser.isOwner && context.dialog.reserves != undefined",
@@ -578,7 +578,7 @@ var dialogs = [
                             ]
                         },
                         "task": {
-                            "action": start.action1
+                            "action": "start.action1"
                         },
                         "output": "상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n연락처: +reserve.mobile+\n\n\"확정\", \"취소\"를 선택해 주세요.",
                         "children": [
@@ -586,7 +586,7 @@ var dialogs = [
                                 "id": "restaurant26",
                                 "filename": "restaurants",
                                 "input": "~확정",
-                                "task": start.reserveOwnerConfirm,
+                                "task": "start.reserveOwnerConfirm",
                                 "output": {
                                     "call": "예약내역",
                                     "options": {
@@ -606,7 +606,7 @@ var dialogs = [
                                         "input": {
                                             "if": "true"
                                         },
-                                        "task": start.reserveOwnerCancel,
+                                        "task": "start.reserveOwnerCancel",
                                         "output": {
                                             "call": "예약내역",
                                             "options": {
@@ -666,7 +666,7 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": start.reserveCancel,
+                        "task": "start.reserveCancel",
                         "output": "예약이 취소되었습니다."
                     },
                     {
@@ -692,7 +692,7 @@ var dialogs = [
                         "id": "restaurant34",
                         "filename": "restaurants",
                         "input": "취소",
-                        "task": start.reserveCancel,
+                        "task": "start.reserveCancel",
                         "output": "예약이 취소되었습니다."
                     }
                 ]
@@ -727,7 +727,7 @@ var dialogs = [
                             ]
                         },
                         "task": {
-                            "action": start.checkDate
+                            "action": "start.checkDate"
                         },
                         "output": {
                             "callChild": "시간선택"
@@ -740,7 +740,7 @@ var dialogs = [
                             "if": "context.dialog.날짜입력최초 == undefined"
                         },
                         "task": {
-                            "action": start.action2
+                            "action": "start.action2"
                         },
                         "output": {
                             "call": "날짜선택"
@@ -781,7 +781,7 @@ var dialogs = [
                             ]
                         },
                         "task": {
-                            "action": start.checkTime
+                            "action": "start.checkTime"
                         },
                         "output": [
                             {
@@ -808,7 +808,7 @@ var dialogs = [
                             "if": "context.dialog.시간입력최초 == undefined"
                         },
                         "task": {
-                            "action": start.action3
+                            "action": "start.action3"
                         },
                         "output": {
                             "call": "시간선택"
@@ -860,7 +860,7 @@ var dialogs = [
                             "if": "context.dialog.인원선택최초 == undefined"
                         },
                         "task": {
-                            "action": start.action4
+                            "action": "start.action4"
                         },
                         "output": {
                             "call": "인원선택"
@@ -895,7 +895,7 @@ var dialogs = [
                         "input": {
                             "if": "true"
                         },
-                        "task": start.reserveNameTask,
+                        "task": "start.reserveNameTask",
                         "output": [
                             {
                                 "if": "context.user.mobile == undefined",
@@ -926,12 +926,12 @@ var dialogs = [
                         "input": {
                             "types": [
                                 {
-                                    "type": 'type.mobileType',
+                                    "type": "type.mobileType",
                                     "context": false
                                 }
                             ]
                         },
-                        "task": start.smsAuth,
+                        "task": "start.smsAuth",
                         "output": "문자메세지(SMS)로 발송된 인증번호를 입력해주세요.",
                         "children": [
                             {
@@ -942,14 +942,14 @@ var dialogs = [
                                 },
                                 "output": [
                                     {
-                                        "if": start.smsAuthValid,
-                                        "task": start.smsAuthTask,
+                                        "if": "start.smsAuthValid",
+                                        "task": "start.smsAuthTask",
                                         "output": {
                                             "call": "예약내용확인"
                                         }
                                     },
                                     {
-                                        "if": start.smsAuthinValid,
+                                        "if": "start.smsAuthinValid",
                                         "repeat": 1,
                                         "options": {
                                             "output": "인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음"
@@ -992,7 +992,7 @@ var dialogs = [
                 "name": "예약내용확인",
                 "input": false,
                 "task": {
-                    "action": start.reserveConfirm
+                    "action": "start.reserveConfirm"
                 },
                 "output": "예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n인원: +numOfPerson+명\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?",
                 "children": [
@@ -1001,7 +1001,7 @@ var dialogs = [
                         "filename": "restaurants",
                         "input": "~네",
                         "task": {
-                            "action": start.reserveRequest
+                            "action": "start.reserveRequest"
                         },
                         "output": "예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다."
                     }
@@ -1031,7 +1031,9 @@ var commonDialogs = [
         "filename": "restaurantcommon",
         "name": "시작",
         "input": "시작",
-        "task": start.startTask,
+        "task": {
+            "name": "startTask"
+        },
         "output": [
             {
                 "if": "context.botUser.isOwner",
