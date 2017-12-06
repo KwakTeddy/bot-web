@@ -141,7 +141,6 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
 
         $scope.delete = function(item)
         {
-            console.log(item);
             if(confirm($scope.lan('Are you sure you want to delete this item?')))
             {
                 var params = {};
