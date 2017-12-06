@@ -5,7 +5,7 @@
         </form>
         <div class="funtionbtn1">
             <a href="#">
-                <img src="modules/playchat/working-ground/common/client/imgs/export.png">
+                <img src="modules/playchat/working-ground/common/client/imgs/import.png">
                 <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
@@ -14,8 +14,8 @@
     <div class="tab01">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
-            <li><a href="#">{{lan('Store') }}</a></li>
-            <li><a href="#">{{lan('Shared') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
         <div class="btn02 flR" style="width: 110px;">
             <a href="/playchat/management/entity/add" class="">{{lan('Add New') }}</a>
@@ -127,7 +127,7 @@
                         <input type="text" placeholder="엔티티 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="entity-title data-input" ng-required="true">
                     </label>
                 </div>
-                <div class="form-row">
+                <div class="form-row" style="display: none;">
                     <label class="required">
                         <span>{{lan('Type') }}</span>
                         <div class="form-box">
@@ -138,7 +138,7 @@
                 </div>
                 <div class="form-row">
                     <label class="required">
-                        <span>{{lan('File') }}</span>
+                        <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>

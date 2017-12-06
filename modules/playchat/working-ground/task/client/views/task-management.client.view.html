@@ -14,8 +14,8 @@
     <div class="tab01">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
-            <li><a href="#">{{lan('Store') }}</a></li>
-            <li><a href="#">{{lan('Shared') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
         <!--<div class="btn02 flR" ng-click="open();">-->
             <!--<a href="#" class="">Add New</a>-->
@@ -123,18 +123,18 @@
                         <input type="text" placeholder="태스크 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="task-title data-input" ng-required="true">
                     </label>
                 </div>
+                <!--<div class="form-row">-->
+                    <!--<label class="required">-->
+                        <!--<span>Type</span>-->
+                        <!--<div class="form-box">-->
+                            <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
+                            <!--<span> {{lan('(csv or xlsx file)') }}</span>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
                 <div class="form-row">
                     <label class="required">
-                        <span>Type</span>
-                        <div class="form-box">
-                            <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> {{lan('(csv or xlsx file)') }}</span>
-                        </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label class="required">
-                        <span>{{lan('File') }}</span>
+                        <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>
