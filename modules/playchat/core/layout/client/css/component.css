@@ -3,11 +3,12 @@
     outline: 0;
     background: white;
     cursor: pointer;
-
+    font-weight: 600;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px 15px;
-    font-size: 14px;
+    font-size: 13px;
+    color: #919191;
 }
 
 .default-button:hover, .default-button:focus
@@ -26,7 +27,7 @@
     border-radius: 5px;
     font-weight: 600;
     padding: 10px;
-    font-size: 14px;
+    font-size: 13px;
     color: white;
 }
 
@@ -122,11 +123,10 @@
 .data-input, .form-box
 {
     position: relative;
-
     outline: 0;
     border: solid 1px #e8ebf0;
     border-radius: 5px;
-    padding: 8px 12px !important;
+    padding: 8px 12px 8px 8px!important;
 
     transition: border 0.5s;
 }
@@ -165,7 +165,7 @@
 .tab-footer
 {
     border-top: 1px solid #ddd;
-    padding-top: 5px;
+    padding-top: 25px;
     text-align: center;
 }
 
@@ -190,6 +190,7 @@
     font-size: 13px;
     padding-left: 3px;
     padding-bottom: 5px;
+    text-align: left;
 }
 
 .form-row label.required > .form-title:after
@@ -233,7 +234,7 @@
 
 .image-button, .delete-img, .modify-img
 {
-    opacity: 0.4;
+    opacity: 0.1;
     cursor: pointer;
 }
 
@@ -245,10 +246,11 @@
 .jumbo-select
 {
     border-radius: 6px;
-    border: 1px solid #d7d7d7;
+    border:1px solid #e8ebf0;
     width: 100px;
     height: 35px;
     outline: 0;
+    float: left;
 }
 
 .jumbo-select::after

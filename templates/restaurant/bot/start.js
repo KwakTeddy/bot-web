@@ -14,7 +14,7 @@ var request = require('request');
 var _ = require('lodash');
 var globals = require(path.resolve('engine/bot/engine/common/globals'));
 var async = require('async');
-var restaurantmenu= mongo.getModel('templaterestaurantmenus');
+var restaurantmenu= mongo.getModel('restaurant-menus');
 
 var startTask = {
     action: function (task, context, callback) {
@@ -47,7 +47,7 @@ var reserveCheck = {
         if(context.botUser.isOwner) {
             var TemplateReservation = mongoModule.getModel('TemplateReservation');
             TemplateReservation.find({
-                upTemplateId: context.bot.templateDataId,
+                botId: context.bot.id,
                 status: '예약요청중',
                 date: {$gte: new Date()}
             }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
@@ -66,7 +66,7 @@ var reserveCheck = {
         } else {
             var TemplateReservation = mongoModule.getModel('TemplateReservation');
             TemplateReservation.find({
-                upTemplateId: context.bot.templateDataId,
+                botId: context.bot.id,
                 userKey: context.user.userKey,
                 status: {$ne: '취소'},
                 date: {$gte: new Date()}
@@ -108,7 +108,7 @@ function menuCategoryAction(task, context, callback) {
     var model, query, sort;
 
     model = mongoose.model('TemplateMenu');
-    query = {upTemplateId: context.bot.templateDataId,
+    query = {botId: context.bot.id,
              hotmenus:"여"};
     sort = {'_id': -1};
 
@@ -165,7 +165,7 @@ function menuAction(task, context, callback) {
         context.dialog.category = context.dialog.categorys[0];
     }
     model = mongoose.model('TemplateMenu');
-    query = {upTemplateId: context.bot.templateDataId,
+    query = {botId: context.bot.id,
         category: context.dialog.category.name};
     sort = {'_id': +1};
 
@@ -209,7 +209,7 @@ function menuAction1(task, context, callback) {
         context.dialog.category = context.dialog.categorys[0];
     }
     model = mongoose.model('TemplateMenu');
-    query = {upTemplateId: context.bot.templateDataId,
+    query = {botId: context.bot.id,
         category: context.dialog.category.name,
         hotmenus:"여"};
     sort = {'_id': +1};
@@ -273,14 +273,14 @@ var inforpark = {
 
         // console.log(typeof JSON.stringify(context.bot.parks[0]));
         // console.log(typeof JSON.parse(JSON.stringify(context.bot.parks[0])));
-        if(context.bot.restaurantparks[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
-        else if(context.bot.restaurantparks[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
+        if(context.bot.parks[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
+        else if(context.bot.parks[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
         else {context.dialog.parkno=0;
-            context.dialog.parkaddress=context.bot.restaurantparks[0].parkaddress;
-            context.dialog.parkdetails=context.bot.restaurantparks[0].parkdetails;
-            context.dialog.parksize=context.bot.restaurantparks[0].parksize;
-            context.dialog.parkname=context.bot.restaurantparks[0].parkname;
-            context.dialog.parkornot=context.bot.restaurantparks[0].parkornot;
+            context.dialog.parkaddress=context.bot.parks[0].parkaddress;
+            context.dialog.parkdetails=context.bot.parks[0].parkdetails;
+            context.dialog.parksize=context.bot.parks[0].parksize;
+            context.dialog.parkname=context.bot.parks[0].parkname;
+            context.dialog.parkornot=context.bot.parks[0].parkornot;
 
                 task.result = {
                     buttons : [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.dialog.parkaddress}]
@@ -297,10 +297,10 @@ var categoryrestaurantlist = {
     name: 'categoryrestaurantlist',
     action: function(task, context, callback) {
 
-        if(context.bot.restaurantmenus[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
+        if(context.bot.menus[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
         else {
 
-            restaurantmenu.find({upTemplateId: context.bot.templateDataId,hotmenus:"여"}).lean().exec(function (err, docs) {
+            restaurantmenu.find({botId: context.bot.id,hotmenus:"여"}).lean().exec(function (err, docs) {
                 if (err) {
                     console.log(err);
                     callback(task, context);
@@ -345,10 +345,10 @@ var categoryrestaurantisornot = {
         //var ll='ㄴㅁㅇㄹㅎㄴㅇㄹㅎㅇㅌㄹㅎdddd';
         //console.log(JSON.stringify(context.bot)+"pppppppppppppppppp");
         //console.log(task.text+"2222222222222222");
-        if(context.bot.restaurantmenus[0]===undefined){context.dialog.menuis=0;callback(task,context);}
+        if(context.bot.menus[0]===undefined){context.dialog.menuis=0;callback(task,context);}
         else {
             context.dialog.menuis=0;
-            restaurantmenu.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
+            restaurantmenu.find({botId: context.bot.id}).lean().exec(function (err, docs) {
                 if (err) {
                     console.log(err);
                     callback(task, context);

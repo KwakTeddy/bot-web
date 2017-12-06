@@ -13,11 +13,10 @@
 .simulator .simulator-background .chatContents
 {
     position: absolute;
-    top: 64px;
+    top: 56px;
     left: 0;
     right: 0;
     bottom: 70px;
-
     overflow: auto;
 }
 
@@ -147,7 +146,8 @@
 
 .simulator .answer .speech .speech-text
 {
-    padding: 0px 0px 10px 0px;
+    padding: 0px 0px 4px 0px;
+    line-height: 18px;
 }
 
 .simulator .question
@@ -173,7 +173,7 @@
 .simulator .question .system-text
 {
     font-size: 12px;
-    margin-right: 26px;
+    margin-right: 10px;
     text-align: right;
 }
 
@@ -198,7 +198,7 @@
 {
     border-top: 10px solid #dfdfdf;
     position: absolute;
-    right: 17px;
+    right: 7px;
     top: 4px;
     border-right: 10px solid transparent;
 }
@@ -219,7 +219,7 @@
     white-space: normal;
     position: relative;
     margin-top: 4px;
-    right: 25px;
+    right: 15px;
 }
 
 .simulator .question .speech .speech-text
@@ -230,7 +230,7 @@
 .simulator .input-box
 {
     background: #fff;
-    padding: 10px 16px;
+    padding: 4px 16px;
     border-radius:4px;
     width: 300px;
     max-width: 400px;
@@ -272,10 +272,10 @@
     height: 32px;
     background: #038eda;
     cursor: pointer;
-    -webkit-border-radius: 4px 4px 0px 0px;
-    -moz-border-radius: 4px 4px 0px 0px;
-    border-radius: 4px 4px 0px 0px;
-    padding: 10px 16px 0px;
+    -webkit-border-radius: 6px 6px 0px 0px;
+    -moz-border-radius: 6px 6px 0px 0px;
+    border-radius: 6px 6px 0px 0px;
+    padding: 10px 14px 0px;
     position: fixed;
     right: -25px;
     top: 110px;

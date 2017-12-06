@@ -265,7 +265,7 @@
     border-radius: 6px;
     margin-top: 20px;
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 14px;
 
     box-sizing: border-box;
 
@@ -647,6 +647,7 @@
     padding-top: 12px;
     margin: 0;
     top: 0;
+    margin-right: 4px;
 }
 
 .tab-body li:hover, .prev-tab:hover, .next-tab:hover
