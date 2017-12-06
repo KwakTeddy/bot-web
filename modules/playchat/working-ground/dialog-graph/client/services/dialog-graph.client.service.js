@@ -939,7 +939,8 @@
             line.setAttribute('y2', y2);
             line.setAttribute('stroke', '#ddd');
             line.setAttribute('stroke-width', '1px');
-            line.setAttribute('shape-rendering', 'crispEdges');
+            line.setAttribute('vector-effect', 'non-scaling-stroke');
+            // line.setAttribute('shape-rendering', 'crispEdges');
 
             return line;
         };

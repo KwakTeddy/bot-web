@@ -67,7 +67,7 @@
     border-radius: 0;
 }
 
-.graph-zoom-controller a
+.graph-zoom-controller button
 {
     position: relative;
     display: inline-block;
@@ -81,16 +81,23 @@
     height: 35px;
 }
 
-.graph-zoom-controller a.graph-zoom-in
+.graph-zoom-controller .graph-zoom-in
 {
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     border-right: none;
+
+    cursor: pointer;
 }
 
-.graph-zoom-controller a:hover
+.graph-zoom-controller button:hover
 {
     background-color: #efefef;
+}
+
+.graph-zoom-controller button:focus
+{
+    outline: 0;
 }
 
 .graph-zoom-in::before
@@ -117,10 +124,20 @@
     left: 50%;
 }
 
-.graph-zoom-controller a.graph-zoom-out
+.graph-zoom-controller .graph-zoom-out
 {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
+
+    cursor: pointer;
+}
+
+.graph-zoom-controller .graph-zoom-out[disabled], .graph-zoom-controller .graph-zoom-in[disabled]
+{
+    background-color: #ddd;
+    cursor: default;
+    user-select: none;
+    color: #aaa;
 }
 
 .graph-zoom-out::after

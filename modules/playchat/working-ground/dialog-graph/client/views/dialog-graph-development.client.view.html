@@ -52,10 +52,8 @@
             </form>
             <div class="graph-zoom-controller">
                 <div>
-                    <a class="graph-zoom-in" ng-click="zoomIn();">
-                    </a>
-                    <a class="graph-zoom-out" ng-click="zoomOut();">
-                    </a>
+                    <button type="button" class="graph-zoom-in" ng-click="zoomIn($event);"></button>
+                    <button type="button" class="graph-zoom-out" ng-click="zoomOut($event);"></button>
                 </div>
             </div>
         </div>

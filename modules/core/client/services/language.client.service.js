@@ -1575,6 +1575,30 @@
                 "en": "Confirm",
                 "zh": "确认",
                 "jp": "確認"
+            },
+            "Task name": {
+                "ko": "Task 이름",
+                "en": "Task name",
+                "zh": "",
+                "jp": ""
+            },
+            "Type Add": {
+                "ko": "Type 추가",
+                "en": "Type Add",
+                "zh": "输入Add",
+                "jp": "タイプ追加"
+            },
+            "Type Logic": {
+                "ko": "Type 로직",
+                "en": "Type Logic",
+                "zh": "类型逻辑",
+                "jp": "タイプロジック"
+            },
+            "Type name": {
+                "ko": "Type 이름",
+                "en": "Type name",
+                "zh": "类型名称",
+                "jp": "型名"
             }
         };
 

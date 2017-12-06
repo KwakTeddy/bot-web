@@ -14,8 +14,8 @@
     <div class="tab01">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
-            <li><a href="#">{{lan('Store') }}</a></li>
-            <li><a href="#">{{lan('Shared') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
         <div class="btn02 flR" ng-click="modal.mgmtModal.open();" style="width: 110px;">
             <a href="#" class="">{{lan('Add New') }}</a>
@@ -38,7 +38,7 @@
                     <td colspan="2">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="fileName in dialogGraphs track by $index">
-                    <td style="text-align: left;">{{ fileName }}</td>
+                    <td style="text-align: left;"><a href="/playchat/development/dialog-graph?fileName={{ fileName }}">{{ fileName }}</a></td>
                     <td>
                         <a href="#" class="flR" ng-click="delete(fileName);" ng-if="checkEssentionFile(fileName);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
                     </td>
