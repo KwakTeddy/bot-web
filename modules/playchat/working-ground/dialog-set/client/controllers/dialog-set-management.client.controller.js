@@ -73,7 +73,7 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                     }
                 }
 
-                if(!check)
+                if(!title && !check)
                 {
                     DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
                     {
