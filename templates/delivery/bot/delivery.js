@@ -61,9 +61,9 @@ var reserveCheck = {
     action: function (task, context, callback) {
 
         if(context.botUser.isOwner) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.find({
-                upTemplateId: context.bot.templateDataId,
+                botId: context.bot.id,
                 status: '승인대기중'
             }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
                 if(docs && docs.length > 0) {
@@ -274,7 +274,7 @@ bot.setTask("reserveRequest", reserveRequest);
 var recentCart = {
     action: function (task,context,callback) {
 
-        var orderList = mongoModule.getModel('templateorderlist');
+        var orderList = mongoModule.getModel('delivery-orders');
         orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
             if(docs.length != 0){
                 var orderHis = docs[0]
@@ -328,7 +328,7 @@ function reserveRequest(task, context, callback) {
         // mobile: context.dialog.mobile || context.user.mobile,
         // time: context.dialog.time,
         status: '승인대기중',
-        upTemplateId: context.bot.templateDataId,
+        botId: context.bot.id,
         // userKey: context.user.userKey
 
 
@@ -342,7 +342,7 @@ function reserveRequest(task, context, callback) {
     };
 
 
-    var TemplateReservation = mongoModule.getModel('templateorderlist');
+    var TemplateReservation = mongoModule.getModel('delivery-orders');
     var templateReservation = new TemplateReservation(doc);
 
     templateReservation.save(function(err) {
@@ -567,7 +567,7 @@ function sendSMS(phone, message) {
 
 var getOrderHistory = {
     action: function (task,context,callback) {
-        var orderList = mongoModule.getModel('templateorderlist');
+        var orderList = mongoModule.getModel('delivery-orders');
         orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
             if(docs.length != 0){
                 context.dialog.orderHistory = docs[0];
@@ -692,7 +692,7 @@ bot.setTask('makeReserve2', makeReserve2);
 var reserveOwnerConfirm = {
     action: function (task, context, callback) {
         if(context.dialog.reserve) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
 
                 if(!context.bot.testMode) {
@@ -730,7 +730,7 @@ bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
 var reserveOwnerCancel = {
     action: function (task, context, callback) {
         if(context.dialog.reserve) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
@@ -766,7 +766,7 @@ bot.setTask('reserveOwnerCancel', reserveOwnerCancel);
 var orderCancel = {
     action: function (task, context, callback) {
 
-        var TemplateReservation = mongoModule.getModel('templateorderlist');
+        var TemplateReservation = mongoModule.getModel('delivery-orders');
         TemplateReservation.update({_id: context.dialog.orderHistory._id}, {$set: {status: '주문자취소'}}, function (err) {
 
             if(!context.bot.testMode) {
@@ -801,9 +801,9 @@ var pastHistory = {
     action: function (task, context, callback) {
 
         if(context.botUser.isOwner) {
-            var TemplateReservation = mongoModule.getModel('templateorderlist');
+            var TemplateReservation = mongoModule.getModel('delivery-orders');
             TemplateReservation.find({
-                upTemplateId: context.bot.templateDataId,
+                botId: context.bot.id,
                 status: {$not:/승인대기중/}
             }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
                 if(docs && docs.length > 0) {
