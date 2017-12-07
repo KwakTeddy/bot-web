@@ -250,6 +250,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             }
         };
 
+        $scope.deleteInput = function(dialogs, index)
+        {
+            dialogs.splice(index, 1);
+        };
+
         $scope.deleteDialog = function(dialog, e)
         {
             if(confirm($scope.lan('Are you sure you want to delete this item?')))

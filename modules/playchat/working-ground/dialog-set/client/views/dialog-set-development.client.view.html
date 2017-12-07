@@ -130,12 +130,18 @@
                     </div>
                 </div>
                 <div class="question-area">
-                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw', input);" ng-if="isArray(dialog.inputRaw);" ng-repeat="input in dialog.inputRaw track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
+                    <div style="position: relative;" ng-repeat="input in dialog.inputRaw track by $index">
+                        <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw', input);" ng-if="isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
+                        <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
+                    </div>
                     <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw');" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ dialog.inputRaw }}</textarea>
                     <span class="plus-button" ng-click="addInput($event, dialog, 'inputRaw');" ng-required="true"></span>
                 </div>
                 <div class="answer-area">
-                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output', output);" ng-if="isArray(dialog.output);" ng-repeat="output in dialog.output track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
+                    <div style="position: relative;" ng-repeat="output in dialog.output track by $index">
+                        <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output', output);" ng-if="isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
+                        <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
+                    </div>
                     <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output');" ng-if="!isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>
                     <span class="plus-button" ng-click="addInput($event, dialog, 'output');" ng-required="true" ></span>
                 </div>
