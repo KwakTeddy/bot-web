@@ -50,7 +50,7 @@
 .question-area, .answer-area
 {
     display: inline-block;
-    width: 45%;
+    width: 44%;
 }
 
 .functions-area
@@ -83,7 +83,7 @@
 .dialog-learning-development-content.topic-open .topic-area
 {
     display: inline-block;
-    width: 49%;
+    width: 29%;
     height: auto;
 }
 
@@ -91,13 +91,13 @@
 .dialog-learning-development-content.topic-open .answer-area
 {
     display: inline-block;
-    width: 19%;
+    width: 30%;
 }
 
 .dialog-learning-development-content.topic-open .functions-area
 {
     display: inline-block;
-    width: 10%;
+    width: 8%;
 }
 
 .dialog-learning-development-title, .dialog-learning-development-content
@@ -130,17 +130,17 @@
 
 .dialog-learning-development-title .topicopen-topic
 {
-    width: 48%;
+    width: 29%;
 }
 
 .dialog-learning-development-title .topicopen-question
 {
-    width: 23%;
+    width: 31%;
 }
 
 .dialog-learning-development-title .topicopen-answer
 {
-    width: 15%;
+    width: 30%;
 }
 
 .dialog-learning-development-title .topicclose-topic
@@ -150,12 +150,12 @@
 
 .dialog-learning-development-title .topicclose-question
 {
-    width: 48%;
+    width: 47%;
 }
 
 .dialog-learning-development-title .topicclose-answer
 {
-    width: 42%;
+    width: 41%;
 }
 
 .dialog-learning-development-content div
@@ -243,7 +243,6 @@
     color: #fff;
     font-weight: normal;
     line-height: 30px;
-    right: 0.5px;
 }
 
 .tabs1 li

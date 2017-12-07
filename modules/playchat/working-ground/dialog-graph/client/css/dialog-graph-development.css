@@ -665,6 +665,8 @@
     margin: 0;
     top: 1px;
     margin-right: 4px;
+    width: 120px;
+    text-align: center;
 }
 
 .tab-body li:hover, .prev-tab:hover, .next-tab:hover
