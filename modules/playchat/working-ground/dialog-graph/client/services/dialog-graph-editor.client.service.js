@@ -48,6 +48,7 @@
         {
             angular.element('.dialog-editor-creation-panel').css('right', this.rightStyle);
             angular.element('#graphDialogEditor').css('right', this.rightStyle);
+            angular.element('.dialog-editor-input-list-modal').hide();
         };
 
         if(!instance)

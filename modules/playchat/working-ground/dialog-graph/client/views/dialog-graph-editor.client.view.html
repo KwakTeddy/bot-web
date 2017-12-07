@@ -36,7 +36,7 @@
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
                     <p class="dialog-editor-subject">Input<a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
-                        <p class="dialog-editor-advanced-input-placeholder">{{lan('키워드, #인텐트, @엔티티, $타입, /정규식/, if(조건식)') }}</p>
+                        <p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>
                         <div ng-repeat="input in dialog.input">
                             <div class="dialog-editor-input-textarea" data-nlu="nlu: {{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
                                 <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
@@ -66,7 +66,7 @@
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
                         <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
                         <ul class="dialog-editor-select-options">
-                            <li ng-mousedown="createTask();">{{lan('새로 만들기') }}</li>
+                            <li ng-mousedown="createTask();">{{lan('Add New') }}</li>
                             <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">
                                 <span data-filename="{{ task.fileName }}">{{ task.name }}</span>
                             </li>

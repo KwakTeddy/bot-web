@@ -1721,6 +1721,12 @@
                 "en": "Please select at least one permission",
                 "zh": "请至少选择一个权限",
                 "jp": "少なくとも1つの権限を選択してください"
+            },
+            "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)": {
+                "ko": "키워드, #인텐트, @엔티티, $타입, /정규식/, if(조건식)",
+                "en": "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)",
+                "zh": "关键词, #意图, @实体, $类型, /正则表达式/, if(条件)",
+                "jp": "キーワード, #インテント, @エンティティ, $タイプ, /正規表現/, if(調子)"
             }
         };
 

@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('playchat').controller('TaskAddController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout','LanguageService', function ($window, $scope, $resource, $cookies, $element, $timeout, LanguageService)
+    angular.module('playchat').controller('DialogGraphTaskAddController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout','LanguageService', function ($window, $scope, $resource, $cookies, $element, $timeout, LanguageService)
     {
         var TaskService = $resource('/api/:botId/tasks/:fileName', { botId: '@botId', fileName: '@fileName' }, { update: { method: 'PUT' } });
 
