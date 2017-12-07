@@ -5,6 +5,7 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
     console.log("################################orderControll");
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/orders', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var SendSMS = $resource('/api/sendSMS');
 
 
 
@@ -44,8 +45,17 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
 
         $scope.accept = function(menu)
         {
-            menu.status = '';
+            menu.status = '주문승인';
             MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, status: menu.status }, function(result)
+                {
+                    console.log(result);
+                },
+                function(err)
+                {
+                    alert(err);
+                });
+
+            SendSMS.save({mobile:menu.mobile, message:"주문이 확정되었습니다."}, function(result)
                 {
                     console.log(result);
                 },
@@ -55,18 +65,26 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
                 });
         };
 
-        $scope.saveMenu = function()
+        $scope.deny = function(menu)
         {
-            var menus = JSON.parse(angular.toJson($scope.menus));
+            menu.status = '주문거부';
+            MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, status: menu.status }, function(result)
+                {
+                    console.log(result);
+                },
+                function(err)
+                {
+                    alert(err);
+                });
 
-            MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
-            {
-                console.log(result);
-            },
-            function(err)
-            {
-                alert(err);
-            });
+            SendSMS.save({mobile:menu.mobile, message:"주문이 거부되었습니다."}, function(result)
+                {
+                    console.log(result);
+                },
+                function(err)
+                {
+                    alert(err);
+                });
         };
     })();
 
