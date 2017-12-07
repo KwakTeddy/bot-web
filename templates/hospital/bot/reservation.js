@@ -1,4 +1,8 @@
-
+var path = require('path')
+var address = require(path.resolve('./engine/bot/action/common/address'));
+var type = require(path.resolve('./engine/bot/action/common/type'));
+var shop = require(path.resolve('./engine/bot/common/shop'));
+// var start = require('./start');
 
 
 var dialogs = [
@@ -136,7 +140,7 @@ var dialogs = [
                         task:           {action: shop.checkTime},
                         output: [
                             {if: 'context.dialog.check == \'re\'', output: {call : '시간선택', options: {prefix: '시간은 오전/오후를 붙여서 이야기 해주세요.\n예시: 오후 2시, 14시\n\n'}}},
-                            {if: 'true', output: {callChild: '인원선택'}}]
+                            {if: 'true', output: {call: '예약자명'}}]
                     },
                     {
                         id: 'restaurant41',
@@ -249,14 +253,14 @@ var dialogs = [
                 name: '예약내용확인',
                 input: false,
                 task:       {action: 'reserveConfirm'},
-                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n인원: +numOfPerson+명\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?',
+                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?',
                 children: [
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
                         input: '~네',
                         task:           {action: 'reserveRequest'},
-                        output: '예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.'
+                        output: '예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n확인 후 예약완료 문자를 보내 드리겠습니다.'
                     }
                 ]
             }
@@ -264,5 +268,5 @@ var dialogs = [
     }
 ];
 
-var _bot = require(require('path').resolve("config/lib/bot")).getTemplateBot('hospital2');
+var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('hospital');
 _bot.setDialogs(dialogs);
