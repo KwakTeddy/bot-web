@@ -1,6 +1,6 @@
 angular.module('playchat').controller('FailedDialogsOperationController', ['$window', '$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Operation > Failed Chat Log');
+    $scope.$parent.changeWorkingGroundName('Operation > Failed Chat Log', '/modules/playchat/gnb/client/imgs/failed.png');
 
     $scope.changeTab = function(e, name)
     {

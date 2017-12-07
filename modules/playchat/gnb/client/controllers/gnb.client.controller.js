@@ -57,8 +57,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         {
             var isClosed = !angular.element('.gnb .logo-min img').is(':visible');
 
-            console.log('하 : ', isClosed);
-
             //responsive 링크가 작동하면 접히고 그렇지 않으면 펼쳐진다.
             var link = angular.element('#gnb-responsive-css');
             if(!isClosed)

@@ -1423,7 +1423,7 @@
                 "zh": "即时聊天"
             },
             "AI Chat log": {
-                "ko": "AI Chat log",
+                "ko": "인공지능 대화 내역",
                 "en": "AI Chat log",
                 "jp": "人工知能チャットのログ",
                 "zh": "AI聊天记录"
@@ -1463,6 +1463,12 @@
                 "en": "Dialog Graph Path",
                 "jp": "対話ルート",
                 "zh": "对话图路径"
+            },
+            "Dialog Training": {
+                "ko": "대화학습",
+                "en": "Dialog Training",
+                "zh": "对话培训",
+                "jp": "ダイアログトレーニング"
             },
             "Dialog Training Usage": {
                 "ko": "대화 학습 이용",
@@ -1727,6 +1733,12 @@
                 "en": "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)",
                 "zh": "关键词, #意图, @实体, $类型, /正则表达式/, if(条件)",
                 "jp": "キーワード, #インテント, @エンティティ, $タイプ, /正規表現/, if(調子)"
+            },
+            "Human Chat log": {
+                "ko": "상담원 대화 내역",
+                "en": "Human Chat log",
+                "zh" : "座席对话历史。",
+                "jp" : "エージェントの会話履歴。"
             }
         };
 
