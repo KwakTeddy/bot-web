@@ -26,7 +26,7 @@
 
 .operation-search-area
 {
-    margin-top: 20px;
+    margin-top: 14px;
 }
 
 .operation-search-area > input, .search-area > button
@@ -50,8 +50,7 @@
     background-color: #f8f8f8;
     border: 1px solid #e8e8e8;
     border-radius: 6px;
-    padding: 20px 46px;
-
+    padding: 10px 30px;
     position: relative;
 }
 
@@ -102,7 +101,7 @@
 
 .operation-content
 {
-    margin-top: 18px;
+    margin-top: 28px;
 }
 
 .operation-user-dialog-button

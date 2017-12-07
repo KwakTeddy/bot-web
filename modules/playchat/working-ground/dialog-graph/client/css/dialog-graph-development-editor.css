@@ -197,7 +197,7 @@
 {
     font-size: 13px;
     font-weight: 500;
-    background: #eef4ff;
+    background: #eef4ff ;
     border-radius: 18px;
     padding: 4px 11px 6px;
     margin-left: 5px;
@@ -205,6 +205,11 @@
     margin-bottom: 5px;
 
     display: inline-block;
+}
+
+.dialog-editor-input-item > input
+{
+    background: transparent !important;
 }
 
 .dialog-editor-input-item > img

@@ -4,27 +4,27 @@
     <div class="channel-content-row">
         <div class="channel-content-item">
             <div>
-                <img src="/modules/playchat/working-ground/channel/client/imgs/kakao.png" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/kakao.png">
                 <span class="channel-content-item-name">{{ lan('KaKao Talk') }}</span>
             </div>
-            <div style="margin-top: 12px; padding-left: 12px;">
+            <div style="padding: 12px;">
                 <span class="bot-link-text">{{ lan('Bot Link') }}</span>
             </div>
-            <div style="margin: 8px 6px;">
-                <input type="text" class="channel-input" value="{{ host }}/kakao/{{ chatbot.id }}">
-                <button type="button" class="default-button" ng-click="copyLink($event);">{{ lan('Copy') }}</button>
+            <div >
+                <input type="text" class="channel-input" value="{{ host }}/kakao/{{ chatbot.id }}" >
+                <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 <span class="channel-content-item-question" ng-click="viewHelp('kakao');">?</span>
             </div>
         </div>
         <div class="channel-content-item">
             <div>
-                <img src="/modules/playchat/working-ground/channel/client/imgs/facebook.png" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/facebook.png">
                 <span class="channel-content-item-name">{{ lan('Facebook') }}</span>
             </div>
-            <div style="margin-top: 12px; padding-left: 12px;">
+            <div style="padding: 12px;">
                 <span></span>
             </div>
-            <div style="margin: 8px 6px; text-align: right;">
+            <div style="margin: 0px 6px; text-align: right;">
                 <button type="button" class="blue-button" ng-click="connectFacebook();">{{ lan('Connect') }}</button>
             </div>
         </div>
@@ -32,29 +32,29 @@
     <div class="channel-content-row">
         <div class="channel-content-item">
             <div>
-                <img src="/modules/playchat/working-ground/channel/client/imgs/naver.png" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/naver.png">
                 <span class="channel-content-item-name">{{ lan('Naver Talk Talk') }}</span>
             </div>
-            <div style="margin-top: 12px; padding-left: 12px;">
+            <div style="padding: 12px;">
                 <span class="bot-link-text">{{ lan('Bot Link') }}</span>
             </div>
-            <div style="margin: 8px 6px;">
+            <div>
                 <input type="text" class="channel-input" value="{{ host }}/naver/{{ chatbot.id }}">
-                <button type="button" class="default-button" ng-click="copyLink($event);">{{ lan('Copy') }}</button>
+                <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 <span class="channel-content-item-question" ng-click="viewHelp('naver');">?</span>
             </div>
         </div>
         <div class="channel-content-item">
             <div>
-                <img src="/modules/playchat/working-ground/channel/client/imgs/line.png" style="width: 50px; height: 50px;">
+                <img src="/modules/playchat/working-ground/channel/client/imgs/line.png">
                 <span class="channel-content-item-name">{{ lan('Line') }}</span>
             </div>
-            <div style="margin-top: 12px; padding-left: 12px;">
+            <div style="padding: 12px;">
                 <span class="bot-link-text">{{ lan('Bot Link') }}</span>
             </div>
-            <div style="margin: 8px 6px;">
+            <div>
                 <input type="text" class="channel-input" value="{{ host }}/line/{{ chatbot.id }}">
-                <button type="button" class="default-button" ng-click="copyLink($event);">{{ lan('Copy') }}</button>
+                <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 <span class="channel-content-item-question" ng-click="viewHelp('line');">?</span>
             </div>
         </div>
@@ -81,7 +81,7 @@
     </div>
 
     <div class="modal-background" ng-show="help.facebook">
-        <div class="modal">
+        <div class="modal" style="min-width: 490px; width: auto;">
             <div class="modal-title">페이스북</div>
             <div class="modal-body" style="padding: 30px 0;">
                 <table class="tb02">
@@ -93,12 +93,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr ng-if="pageList.length == 0">
+                            <td colspan="3">{{ lan('You do not have any Facebook pages to connect to.'); }}</td>
+                        </tr>
                         <tr ng-repeat="page in pageList">
                             <td>{{ page.name }}</td>
                             <td>{{ page.link }}</td>
                             <td>
-                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">Connect</button>
-                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">Disconnect</button>
+                                <a href="https://www.messenger.com/t/{{ page.id }}" class="default-button" target="_blank" ng-if="page.connected">{{lan('Try now')}}</a>
+                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">{{lan('Connect')}}</button>
+                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">{{lan('Disconnect')}}</button>
                             </td>
                         </tr>
                     </tbody>
@@ -108,7 +112,6 @@
                 </p>
             </div>
             <div class="tab-footer">
-                <button class="blue-button">{{ lan('Save') }}</button>
                 <button type="button" class="default-button" ng-click="closeHelp('facebook')">{{ lan('Close') }}</button>
             </div>
         </div>

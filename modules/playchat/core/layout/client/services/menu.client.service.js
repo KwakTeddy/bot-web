@@ -29,14 +29,14 @@
             this.contents = { name: 'Contents', icon: 'contents.png' };
             this.channel = { name: 'Channel', url: '/channel', icon: 'channel.png' };
 
-            this.operation = { name: 'Operation', icon: 'operat.png', childMenus: [
+            this.operation = { name: 'Operation', icon: 'operat.png', url: '/operation', childMenus: [
                 { name: 'User', url: '/operation/user', icon: 'user_mini.png' },
                 { name: 'Human Chat log', url: '/operation/chat-log/human', icon: 'human_select.png' },
                 { name: 'AI Chat log', url: '/operation/chat-log/ai', icon: 'ai_select.png' },
                 { name: 'Failed Chat log', url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
-            this.analysis = { name: 'Analysis', icon: 'analysis.png', childMenus: [
+            this.analysis = { name: 'Analysis', icon: 'analysis.png', url: '/analysis', childMenus: [
                 { name: 'Summery', url : '/analysis/summary', icon: 'summary_select.png' },
                 { name: 'Dialog Traffic', url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
                 { name: 'User', url : '/analysis/user', icon: 'user_mini.png' },
@@ -50,7 +50,7 @@
                 { name: 'Failed Dialogs', url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
-            this.setting = { name: 'Setting', icon: 'setting.png' };
+            // this.setting = { name: 'Setting', icon: 'setting.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
@@ -60,8 +60,6 @@
             {
                 TemplateGnbService.get({ templateId : templateId }, function(menu)
                 {
-                    console.log('템플릿 메뉴 : ', menu);
-
                     var menus = menu.menus;
 
                     menus.push(that.channel);
@@ -85,7 +83,7 @@
                 menus.push(this.channel);
                 menus.push(this.operation);
                 menus.push(this.analysis);
-                menus.push(this.setting);
+                // menus.push(this.setting);
 
                 templateId(menus);
             }

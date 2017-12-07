@@ -47,6 +47,15 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.$watch('isAdvancedMode', function(after, before)
     {
+        if(after)
+        {
+            for(var i=0; i<$scope.dialog.input.length; i++)
+            {
+                if(!$scope.dialog.input[i].text)
+                    delete $scope.dialog.input[i].text;
+            }
+        }
+
         if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
         {
             // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.
@@ -274,7 +283,17 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             }
             else
             {
-                $scope.dialog.name = '';
+                console.log('페런트 : ', parent);
+
+                if(parent)
+                {
+                    $scope.dialog.name = parent.name + "'s child dialog " + ((parent.children ? parent.children.length : 0) + 1);
+                }
+                else
+                {
+                    $scope.dialog.name = 'New Dialog ' + new Date().getTime();
+                }
+
                 $scope.dialog.input = [{ text: '' }];
                 $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
                 $scope.dialog.actionOutput = { kind: 'Action', type: '', dialog: '' };
@@ -371,6 +390,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         result.output = JSON.parse(angular.toJson(result.output));
         if(result.task)
             result.task = JSON.parse(angular.toJson(result.task));
+
+        for(var i=0; i<result.output.length; i++)
+        {
+            delete result.output[i].uploader;
+        }
 
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)

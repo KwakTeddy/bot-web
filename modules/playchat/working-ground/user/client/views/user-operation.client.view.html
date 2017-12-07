@@ -9,9 +9,10 @@
             <label for="advancedMode"></label>
         </div>
     </div>
-    <div class="operation-search-area" ng-show="!isAdvancedMode">
-        <input type="text" placeholder="Search" class="input_type09" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
-        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">{{lan('Search') }}</button>
+    <div class="upSide operation-search-area" ng-show="!isAdvancedMode">
+        <form class="inline-block">
+            <input name="search" type="search" class="search" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
+        </form>
     </div>
     <div class="operation-search-area advanced" ng-show="isAdvancedMode">
         <table>
@@ -25,7 +26,7 @@
                 <tr>
                     <th>Channel</th>
                     <td>
-                        <input type="text" class="input_type09" ng-model="searchValues.channel">
+                        <input type="text" class="input_type09" ng-model="searchValues.channel" style="padding: 7px 10px;">
                     </td>
                     <th>User Key</th>
                     <td>

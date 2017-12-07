@@ -1,0 +1,77 @@
+<div ng-controller="ChatbotEditController">
+    <form ng-submit="save();">
+        <div class="dashboard-bot-profile">
+            <div class="dashboard-bot-profile-image">
+                <div class="dashboard-bot-profile-image-wrapper">
+                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <span></span>
+                </div>
+            </div>
+            <div class="dashboard-bot-profile-content">
+                <div>
+                    <span>Bot Name</span>
+                    <input type="text" ng-model="chatbot.name">
+                </div>
+                <div>
+                    <span class="form-title">{{ lan('Language') }}</span>
+                    <select class="jumbo-select" ng-model="chatbot.language" style="margin-left: 55px;">
+                        <option value="ko">{{ lan('Korean') }}</option>
+                        <option value="en">{{ lan('English') }}</option>
+                        <option value="zh">{{ lan('Chinese') }}</option>
+                        <option value="jp">{{ lan('Japanese') }}</option>
+                    </select>
+                </div>
+                <div>
+                    <p>Description</p>
+                    <textarea ng-model="chatbot.description">{{ chatbot.description }}</textarea>
+                </div>
+            </div>
+            <div style="padding-top: 15px;">
+                <button type="button" class="blue-button" ng-click="saveChatbot();">Save</button>
+            </div>
+        </div>
+    </form>
+    <form>
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 25%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 15%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Authority</th>
+                    <th>
+                        <button type="button" class="default-button">Add New Member</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="list.length == 0">
+                    <td colspan="4">Empty</td>
+                </tr>
+                <tr ng-repeat="item in list">
+                    <td>{{ item.user.email }}</td>
+                    <td>{{ item.user.username }}</td>
+                    <td>{{ item.user.displayName }}</td>
+                    <td>
+                        <label style="margin: 5px;">
+                            <input type="checkbox" ng-model="item.read" ng-change="saveAuth(item);"><span>Read</span>
+                        </label>
+                        <label style="margin: 5px;">
+                            <input type="checkbox" ng-model="item.edit" ng-change="saveAuth(item);"><span>Edit</span>
+                        </label>
+                    </td>
+                    <td>
+                        <a href="#" class="flR" ng-click="deleteAuth(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

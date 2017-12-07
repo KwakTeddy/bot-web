@@ -14,16 +14,16 @@
 .channel-content-item
 {
     width: 350px;
-
-    border: 1px solid #038eda;
+    border: 1px solid #d3e4ee;
     border-radius: 6px;
-
     padding: 12px;
     margin: 0 20px;
-
     position: relative;
 }
-
+.channel-content-item:hover{
+    background:#e7f1f7;
+    transition: all 1s cubic-bezier(.25,.8,.25,1);
+}
 .channel-content-item > div > *
 {
     display: inline-block;

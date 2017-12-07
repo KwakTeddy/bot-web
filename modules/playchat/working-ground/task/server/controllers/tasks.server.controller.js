@@ -78,6 +78,11 @@ exports.findTaskFiles = function(req, res)
         filePath = path.resolve('./templates/' + req.query.templateId + '/bot');
     }
 
+    if(!fs.existsSync(filePath))
+    {
+        return res.jsonp([]);
+    }
+
     fs.readdir(filePath, function(err, list)
     {
         if (err)
@@ -106,6 +111,11 @@ exports.findTasks = function(req, res)
     if(req.query.templateId)
     {
         filePath = path.resolve('./templates/' + req.query.templateId + '/bot');
+    }
+
+    if(!fs.existsSync(filePath))
+    {
+        return res.jsonp([]);
     }
 
     fs.readdir(filePath, function(err, list)

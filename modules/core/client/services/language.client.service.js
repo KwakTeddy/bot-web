@@ -13,7 +13,7 @@
 
         var languages = {
             "Welcome to Playchat!": {
-                "ko": "플레이쳇에 오신 걸 환영합니다!",
+                "ko": "플레이챗에 오신 걸 환영합니다!",
                 "en": "Welcome to Playchat!",
                 "jp": "プレーイチェッにいらっしゃったことを歓迎します!",
                 "zh": "欢迎来到Playchat!"
@@ -247,7 +247,7 @@
                 "zh": "共享的聊天机器人"
             },
             "New chatbot": {
-                "ko": "New chatbot",
+                "ko": "새 봇 만들기",
                 "en": "New chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
@@ -355,7 +355,7 @@
                 "zh": "描述"
             },
             "Create": {
-                "ko": "만들기",
+                "ko": "Create",
                 "en": "Create",
                 "jp": "作り",
                 "zh": "创建"
@@ -541,7 +541,7 @@
                 "zh": "重来"
             },
             "Save": {
-                "ko": "저장하기",
+                "ko": "확인",
                 "en": "Save",
                 "jp": "保存する",
                 "zh": "保存"
@@ -703,7 +703,7 @@
                 "zh": "或"
             },
             "Content": {
-                "ko": "컨텐트",
+                "ko": "컨텐츠",
                 "en": "Content",
                 "jp": "コンテント",
                 "zh": "内容"
@@ -817,13 +817,13 @@
                 "zh": "实体添加"
             },
             "Entity name": {
-                "ko": "엔터티 이름",
+                "ko": "Entity name",
                 "en": "Entity name",
                 "jp": "エントティの名前",
                 "zh": "实体名称"
             },
             "Value Name": {
-                "ko": "밸류 이름(????)",
+                "ko": "Value Name",
                 "en": "Value Name",
                 "jp": "バリューの名前",
                 "zh": "值名称"
@@ -841,7 +841,7 @@
                 "zh": "意图添加"
             },
             "Intent name": {
-                "ko": "인텐트 이름",
+                "ko": "Intent name",
                 "en": "Intent name",
                 "jp": "インテントゥの名前",
                 "zh": "意图名称"
@@ -877,7 +877,7 @@
                 "zh": "添加"
             },
             "File Name": {
-                "ko": "파일 이름",
+                "ko": "File Name",
                 "en": "File Name",
                 "jp": "ファイル名",
                 "zh": "文件名称"
@@ -1423,7 +1423,7 @@
                 "zh": "即时聊天"
             },
             "AI Chat log": {
-                "ko": "인공지능 챗팅 로그",
+                "ko": "인공지능 대화 내역",
                 "en": "AI Chat log",
                 "jp": "人工知能チャットのログ",
                 "zh": "AI聊天记录"
@@ -1464,6 +1464,12 @@
                 "jp": "対話ルート",
                 "zh": "对话图路径"
             },
+            "Dialog Training": {
+                "ko": "대화학습",
+                "en": "Dialog Training",
+                "zh": "对话培训",
+                "jp": "ダイアログトレーニング"
+            },
             "Dialog Training Usage": {
                 "ko": "대화 학습 이용",
                 "en": "Dialog Training Usage",
@@ -1497,10 +1503,6 @@
             "Bot Link": {
                 "ko": "Bot Link",
                 "en" : "Bot Link"
-            },
-            "Connect" : {
-                "ko": "Connect",
-                "en": "Connect"
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
@@ -1673,10 +1675,70 @@
                 "jp": "テキストをコピーしました！"
             },
             "New to Playchat?": {
-                "ko": "PlayChat에 처음이십니까?",
+                "ko": "플레이챗에 처음이십니까?",
                 "en": "New to PlayChat?",
                 "zh": "PlayChat新手？",
                 "jp": "PlayChatを初めてお使いですか？"
+            },
+            "Choose Dialogset": {
+                "ko": "대화셋 선택",
+                "en": "Choose Dialogset",
+                "zh": "选择对话框",
+                "jp": "ダイアログセットを選択"
+            },
+            "Enter dialogset name": {
+                "ko": "대화셋 이름을 입력해주세요",
+                "en": "Enter dialogset name",
+                "zh": "输入对话框名称。",
+                "jp": "ダイアログセット名を入力します。"
+            },
+            "If you would like to receive the e-mail again, please click on the again button.": {
+                "ko": "",
+                "en": "If you would like to receive the e-mail again, please click on the again button.",
+                "zh": "",
+                "jp": ""
+            },
+            "You do not have any Facebook pages to connect to.": {
+                "ko": "연결가능한 페이스북 페이지가 없습니다.",
+                "en": "You do not have any Facebook pages to connect to.",
+                "zh": "您没有任何Facebook页面连接到。",
+                "jp": "接続するFacebookページはありません。"
+            },
+            "Try now": {
+                "ko": "Try now",
+                "en": "Try now",
+                "zh": "现在试试",
+                "jp": "今すぐやってみて下さい\n"
+            },
+            "Connect": {
+                "ko": "연결하기",
+                "en": "Connect",
+                "zh": "连",
+                "jp": "接続する"
+            },
+            "Disconnect": {
+                "ko": "연결해제",
+                "en": "Disconnect",
+                "zh": "断开",
+                "jp": "切断する"
+            },
+            "Please select at least one permission": {
+                "ko": "하나 이상의 권한을 선택하십시오.",
+                "en": "Please select at least one permission",
+                "zh": "请至少选择一个权限",
+                "jp": "少なくとも1つの権限を選択してください"
+            },
+            "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)": {
+                "ko": "키워드, #인텐트, @엔티티, $타입, /정규식/, if(조건식)",
+                "en": "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)",
+                "zh": "关键词, #意图, @实体, $类型, /正则表达式/, if(条件)",
+                "jp": "キーワード, #インテント, @エンティティ, $タイプ, /正規表現/, if(調子)"
+            },
+            "Human Chat log": {
+                "ko": "상담원 대화 내역",
+                "en": "Human Chat log",
+                "zh" : "座席对话历史。",
+                "jp" : "エージェントの会話履歴。"
             }
         };
 

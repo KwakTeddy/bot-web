@@ -22,25 +22,37 @@ var botContext = '';
 var bot = "";
  
 
-exports.messageGet =  function(req, res) {
-  contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
-      var bot = '';
-      if (!context.botUser){
-          bot = context.bot
-      }else {
-          bot = context.botUser.orgBot
-      }
-      // var bot = context.botUser.orgBot || context.bot;
+exports.messageGet =  function(req, res)
+{
+    if(req.query['hub.verify_token'] === 'moneybrain_token')
+    {
+        res.status(200).send(req.query['hub.challenge']);
+    }
+    else
+    {
+        console.error("Failed validation. Make sure the validation tokens match.");
+        res.sendStatus(403);
+    }
 
-      if (req.query['hub.mode'] === 'subscribe' &&
-          req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
-          console.log("Validating webhook");
-          res.status(200).send(req.query['hub.challenge']);
-      } else {
-          console.error("Failed validation. Make sure the validation tokens match.");
-          res.sendStatus(403);
-      }
-  });
+
+  // contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
+  //     var bot = '';
+  //     if (!context.botUser){
+  //         bot = context.bot
+  //     }else {
+  //         bot = context.botUser.orgBot
+  //     }
+  //     // var bot = context.botUser.orgBot || context.bot;
+  //
+  //     if (req.query['hub.mode'] === 'subscribe' &&
+  //         req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
+  //         console.log("Validating webhook");
+  //         res.status(200).send(req.query['hub.challenge']);
+  //     } else {
+  //         console.error("Failed validation. Make sure the validation tokens match.");
+  //         res.sendStatus(403);
+  //     }
+  // });
 };
 
 
@@ -134,7 +146,7 @@ function receivedMessage(event) {
       }
     },
     function (done) {
-      if (event.botId == "subscribeBot"){
+      if (event.botId == "subscribeBot" || !event.botId){
         console.log('Subscribe Coming In');
         UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
@@ -930,12 +942,17 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
       console.log("Successfully sent message");
       if(cb) cb();
     } else {
-      console.log("Unable to send message.");
-      console.log(JSON.stringify(response.body.error));
-      console.log(error);
+        console.log("Unable to send message.");
+        console.log(JSON.stringify(response.body.error));
+        console.log(error);
     }
   });
 }
+
+module.exports.refresh = function(req, res)
+{
+
+};
 
 
 /*

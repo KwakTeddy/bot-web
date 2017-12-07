@@ -41,7 +41,7 @@
             </thead>
             <tbody>
             <tr ng-if="tasks.length == 0">
-                <td colspan="4">{{lan('empty') }}</td>
+                <td colspan="4">Empty</td>
             </tr>
             <tr ng-repeat="item in tasks">
                 <td>{{ item.fileName }}</td>
@@ -80,24 +80,24 @@
                 <div class="form-row">
                     <label class="required" ng-if="!modal.mgmtModal.isNewFile">
                         <span class="form-title">{{lan('File Name') }}</span>
-                        <select ng-model="modal.mgmtModal.data.fileName" ng-required="true" class="task-file-select jumbo-select" style="width: 40%;" ng-change="selectedFileName();">
+                        <select ng-model="modal.mgmtModal.data.fileName" ng-required="true" class="task-file-select jumbo-select" ng-change="selectedFileName();">
                             <option>[{{lan('Create File') }}]</option>
                             <option ng-repeat="option in taskFiles" value="{{ option }}">{{ option }}</option>
                         </select>
                     </label>
                     <label class="required" ng-if="modal.mgmtModal.isNewFile">
                         <span class="form-title">{{lan('File Name') }}</span>
-                        <input type="text" placeholder="Enter file name" name="filename" ng-model="modal.mgmtModal.data.fileName" style="width: 40%;" class="task-title data-input" ng-required="true" disabled="true">
+                        <input type="text" placeholder="Enter file name" name="filename" ng-model="modal.mgmtModal.data.fileName" class="task-title data-input" ng-required="true" disabled="true">
                     </label>
                 </div>
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">{{lan('Name') }}</span>
-                        <input type="text" placeholder="Task Name(English, Number, _)" name="name" ng-model="modal.mgmtModal.data.name" style="width: 40%;" class="task-title data-input" ng-required="true" pattern="[^0-9]+[a-zA-Z_0-9]*" disabled="true">
+                        <input type="text" placeholder="Task Name(English, Number, _)" name="name" ng-model="modal.mgmtModal.data.name" class="task-title data-input" ng-required="true" pattern="[^0-9]+[a-zA-Z_0-9]*" disabled="true">
                     </label>
                 </div>
                 <div class="form-row">
-                    <label>
+                    <label  style="width: 98%;">
                         <span>Content</span>
                         <div class="dialog-graph-task-add-logic" style="margin: 0;">
                             <p><span style="color: #708;">function</span>(<span style="color: #00f;">task</span>, <span style="color: #00f;">context</span>, <span style="color: #00f;">callback</span>) {</p>

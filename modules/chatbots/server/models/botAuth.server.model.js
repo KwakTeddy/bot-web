@@ -17,7 +17,8 @@ var BotAuthSchema = new Schema(
     bot: { type: Schema.ObjectId, ref: 'Bot' },
     subjectSchema: { type: "String" },
     subject: { type: Schema.ObjectId },
-    edit: { type: Boolean, default: false }
+    edit: { type: Boolean, default: false },
+    read: { type: Boolean, default: true }
 });
 
 mongoose.model('BotAuth', BotAuthSchema);

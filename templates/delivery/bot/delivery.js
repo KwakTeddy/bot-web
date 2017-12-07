@@ -21,6 +21,9 @@ bot.setTask("defaultTask", defaultTask);
 
 var startTask = {
     action: function (task,context,callback) {
+
+        // console.log("@@@@@@@@@@@@@@@@@@"+JSON.stringify(context.bot.templateDataIdId));
+
         context.user.cart = [];
         if(context.bot.authKey != undefined && context.botUser.options && context.bot.authKey == context.botUser.options.authKey) {
             context.botUser.isOwner = true;
@@ -340,6 +343,7 @@ function reserveRequest(task, context, callback) {
         discr: context.dialog.discription,
         created: new Date()
     };
+    console.log("####################################" + JSON.stringify(doc));
 
 
     var TemplateReservation = mongoModule.getModel('delivery-orders');

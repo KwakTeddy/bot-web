@@ -1,6 +1,6 @@
 angular.module('playchat').controller('HumanChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', 'DateService', 'PagingService','LanguageService', function ($window, $scope, $resource, $cookies, $location, DateService, PagingService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Operation > Human Chat Log');
+    $scope.$parent.changeWorkingGroundName('Operation > Human Chat Log', '/modules/playchat/gnb/client/imgs/human.png');
 
     var HumanChatService = $resource('/api/:botId/operation/humanchatlog', { botId: '@botId' });
     var HumanChatBotUserService = $resource('/api/:botId/operation/humanchatlog/:userKey', { botId: '@botId', userKey: '@userKey' });

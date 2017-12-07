@@ -2,9 +2,9 @@
 
 angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
+    console.log("################################orderControll");
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
-
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
@@ -59,5 +59,5 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
         };
     })();
 
-    $scope.getList();
+    // $scope.getList();
 }]);

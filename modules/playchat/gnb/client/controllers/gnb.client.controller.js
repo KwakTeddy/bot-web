@@ -57,8 +57,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         {
             var isClosed = !angular.element('.gnb .logo-min img').is(':visible');
 
-            console.log('하 : ', isClosed);
-
             //responsive 링크가 작동하면 접히고 그렇지 않으면 펼쳐진다.
             var link = angular.element('#gnb-responsive-css');
             if(!isClosed)
@@ -92,9 +90,29 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     $scope.checkUrl = function(menu)
     {
-        if($scope.path.startsWith('/playchat' + menu.url))
+        if(menu)
         {
-            return 'open';
+            if(menu.url == '/')
+            {
+                if($scope.path == '/playchat' || $scope.path == '/playchat/')
+                {
+                    return 'selected';
+                }
+            }
+            else
+            {
+                if($scope.path.startsWith('/playchat' + menu.url))
+                {
+                    if(menu.childMenus)
+                    {
+                        return 'open';
+                    }
+                    else
+                    {
+                        return 'selected';
+                    }
+                }
+            }
         }
 
         return '';

@@ -61,6 +61,8 @@
                         {
                             target.css('right', '-368px');
                         };
+
+                        that.close();
                     }
 
                     e.stopPropagation();
@@ -538,7 +540,7 @@
 
             $scope.getInputKeyLength = function(input, key)
             {
-                return input[key].length;
+                return input[key] ? input[key].length : 0;
             };
 
             $scope.inputKeyOnClick = function(e)
@@ -613,8 +615,7 @@
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'entities')
                         {
-                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                            return e.preventDefault();
+                            return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                         }
 
                         // addOrPushData(input, 'entities', value);
@@ -625,19 +626,17 @@
                         if(checkDuplicateInput(e.currentTarget, 'intent'))
                         {
                             //이미 추가된게 있으면 추가 할 수 없게 함.
-                            alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
-                            e.preventDefault();
+                            return alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'intent')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
-                            input.intent = value;
+                            input.intent = value == '#' ? '' : value;
                             e.currentTarget.value = '';
 
                             angular.element('.dialog-editor-input-key:last').focus();
@@ -648,8 +647,7 @@
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'types')
                         {
-                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                            return e.preventDefault();
+                            return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                         }
 
                         // addOrPushData(input, 'types', value.replace('$', ''));
@@ -669,8 +667,7 @@
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'regexp')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
                             input.regexp = value.replace(/\//gi, '');
@@ -691,8 +688,7 @@
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'if')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
                             input.if = value.replace('if(', '').replace(')', '');
@@ -705,16 +701,14 @@
                     {
                         if(input.text && key != 'text')
                         {
-                            alert('이미 텍스트 형태의 Input이 추가되어 있습니다');
-                            e.preventDefault();
+                            return alert('이미 텍스트 형태의 Input이 추가되어 있습니다');
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'text')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
                             input.text = value;
