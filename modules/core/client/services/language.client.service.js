@@ -247,7 +247,7 @@
                 "zh": "共享的聊天机器人"
             },
             "New chatbot": {
-                "ko": "새로운 챗봇",
+                "ko": "New chatbot",
                 "en": "New chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
@@ -301,13 +301,13 @@
                 "zh": "取消"
             },
             "New Chatbot": {
-                "ko": "새로운 챗봇",
+                "ko": "New Chatbot",
                 "en": "New Chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
             },
             "Blank Bot": {
-                "ko": "빈 봇",
+                "ko": "Blank Bot",
                 "en": "Blank Bot",
                 "jp": "空いたボット",
                 "zh": "空白机器人"
@@ -367,19 +367,19 @@
                 "zh": " MoneyBrain\""
             },
             "Docs": {
-                "ko": "문서",
+                "ko": "Docs",
                 "en": "Docs",
                 "jp": "文書",
                 "zh": "文件"
             },
             "Forum": {
-                "ko": "포럼",
+                "ko": "Forum",
                 "en": "Forum",
                 "jp": "フォーラム",
                 "zh": "论坛"
             },
             "Support": {
-                "ko": "서포트",
+                "ko": "Support",
                 "en": "Support",
                 "jp": "サポート",
                 "zh": "支持"
@@ -493,25 +493,25 @@
                 "zh": "默认"
             },
             "Question": {
-                "ko": "질문",
+                "ko": "Question",
                 "en": "Question",
                 "jp": "質問",
                 "zh": "问题"
             },
             "Answer": {
-                "ko": "답변",
+                "ko": "Answer",
                 "en": "Answer",
                 "jp": "答弁",
                 "zh": "答案"
             },
             "New Dialog": {
-                "ko": "새로운 대화",
+                "ko": "New Dialog",
                 "en": "New Dialog",
                 "jp": "新しい対話",
                 "zh": "新的对话框"
             },
             "Topic": {
-                "ko": "주제",
+                "ko": "Topic",
                 "en": "Topic",
                 "jp": "テーマ",
                 "zh": "话题"
@@ -1495,11 +1495,11 @@
                 "zh": "失败的对话框"
             },
             "Bot Link": {
-                "ko": "챗봇링크",
+                "ko": "Bot Link",
                 "en" : "Bot Link"
             },
             "Connect" : {
-                "ko": "연결",
+                "ko": "Connect",
                 "en": "Connect"
             },
             "Entity analysis": {
@@ -1523,7 +1523,7 @@
                 "en": "Line"
             },
             "Messanger": {
-                "ko": "메신저",
+                "ko": "Messanger",
                 "en": "Messanger"
             },
             "Naver Talk Talk": {

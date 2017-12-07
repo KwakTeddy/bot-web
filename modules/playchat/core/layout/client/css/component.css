@@ -9,6 +9,7 @@
     padding: 10px 15px;
     font-size: 13px;
     color: #919191;
+    width: 110px;
 }
 
 .default-button:hover, .default-button:focus
@@ -29,6 +30,7 @@
     padding: 10px;
     font-size: 13px;
     color: white;
+    width: 110px;
 }
 
 .red-button
@@ -118,6 +120,7 @@
     border: 1px solid white;
     border-radius: 5px;
     background-color: white;
+    width: 590px;
 }
 
 .data-input, .form-box
@@ -164,8 +167,7 @@
 
 .tab-footer
 {
-    border-top: 1px solid #ddd;
-    padding-top: 25px;
+    padding-top: 15px;
     text-align: center;
 }
 
@@ -234,8 +236,9 @@
 
 .image-button, .delete-img, .modify-img
 {
-    opacity: 0.1;
+    opacity: 0.3;
     cursor: pointer;
+    margin-right: 5px;
 }
 
 .image-button:hover, .delete-img:hover, .modify-img:hover

@@ -8,7 +8,7 @@ body,html{
 }
 html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, pre, optgroup {
   -webkit-text-size-adjust:none; 
-	font-size:14px; 
+	font-size:13px;
 	letter-spacing: -0.02em; 
 	font-weight:normal; 
 	color:#393939; 
@@ -23,10 +23,10 @@ img{box-sizing: content-box;}
 img,fieldset,iframe{border:0 none;}
 img { border: 0px; vertical-align:top; }
 table{/* table-layout:fixed; */border-collapse:collapse;border-spacing:0}
-a:link { text-decoration: none; color:#393939; }
-a:visited { text-decoration: none; color:#393939; }
+a:link { text-decoration: none; color:#363636; }
+a:visited { text-decoration: none; color:#363636; }
 a:hover { text-decoration: none; color: #038eda; }
-a:active { text-decoration: none; color:#393939; }
+a:active { text-decoration: none; color:#363636; }
 
 
 /*clear*/
@@ -65,7 +65,7 @@ input {
 button, input, optgroup, select, textarea {
     font-family: noto sans;
     font-size: 100%;
-    line-height: 1.15;
+    line-height: 15px;
     margin: 0;
 }
 
