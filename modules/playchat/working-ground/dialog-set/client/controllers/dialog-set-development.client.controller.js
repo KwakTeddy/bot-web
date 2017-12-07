@@ -498,7 +498,27 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             DialogSetsService.query({ botId: chatbot._id }, function(list)
             {
-                $scope.openModal.dialogsetList = list;
+                $scope.openModal.dialogsetList = [];
+
+                for(var key in openDialogsets[chatbot.id])
+                {
+                    console.log(key);
+                    for(var i=0; i<list.length; i++)
+                    {
+                        if(list[i].title == key)
+                        {
+                            list[i].isOpened = true;
+                        }
+                    }
+                }
+
+                for(var i=0; i<list.length; i++)
+                {
+                    if(!list[i].isOpened)
+                    {
+                        $scope.openModal.dialogsetList.push(list[i]);
+                    }
+                }
             },
             function(err)
             {
@@ -536,6 +556,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 $scope.selectTab($scope.openModal.selectedDialogset, text);
 
                 $scope.closeOpenModal();
+
+                $scope.openModal.selectedDialogset = '';
             }
         };
 

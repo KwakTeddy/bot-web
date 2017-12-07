@@ -52,7 +52,7 @@
     </div>
     <div class="tab01">
         <ul class="tabs1">
-            <li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
+            <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
     </div>
     <div class="topicswitch">
@@ -116,13 +116,13 @@
                             </select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 2') }}</p>
+                            <p>Topic 2</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 3') }}</p>
+                            <p>Topic 3</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context">{{ dialog.context.name }}</option>
                             </select>
@@ -150,5 +150,44 @@
     </div>
     <div style="text-align: center;">
         <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="more-progress" style="opacity: 0;">
+    </div>
+
+    <div class="modal-background open-modal" ng-show="openModal.isOpened">
+        <div class="modal">
+            <div>
+                <h2 style="border-bottom: 1px solid #ddd; padding: 10px 0;">Open Dialogset</h2>
+            </div>
+            <div ng-show="!openModal.isCreate">
+                <div style="padding: 30px 0;">
+                    <select class="jumbo-select" style="font-size: 12px; width: 150px;" ng-change="createNewDialogset();" ng-model="openModal.selectedDialogset">
+                        <option value="" disabled>{{lan('Choose Dialogset')}}</option>
+                        <option value="create-new">{{lan('Add New')}}</option>
+                        <option ng-repeat="dialogset in openModal.dialogsetList" value="{{ dialogset._id }}">{{ dialogset.title }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
+                </div>
+            </div>
+            <form name="modalFormDefault" ng-submit="saveNewDialogset();" ng-show="openModal.isCreate">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('Title') }}</span>
+                        <input type="text" placeholder="{{lan('Enter dialogset name')}}" name="title" ng-model="openModal.data.title" class="dialogset-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label style="width: 100%;">
+                        <span>{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="openModal.data.content" class="data-input"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

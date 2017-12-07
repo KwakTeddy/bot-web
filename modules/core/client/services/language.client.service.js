@@ -1677,6 +1677,18 @@
                 "en": "New to PlayChat?",
                 "zh": "PlayChat新手？",
                 "jp": "PlayChatを初めてお使いですか？"
+            },
+            "Choose Dialogset": {
+                "ko": "대화셋 선택",
+                "en": "Choose Dialogset",
+                "zh": "选择对话框",
+                "jp": "ダイアログセットを選択"
+            },
+            "Enter dialogset name": {
+                "ko": "대화셋 이름을 입력해주세요",
+                "en": "Enter dialogset name",
+                "zh": "输入对话框名称。",
+                "jp": "ダイアログセット名を入力します。"
             }
         };
 

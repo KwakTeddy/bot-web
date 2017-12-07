@@ -22,7 +22,6 @@ angular.module('playchat').controller('DialogSetManagementAddController', ['$sco
         {
             DialogSetsService.get({ botId: chatbot.id, dialogsetId: id }, function(result)
             {
-                console.log('흠 : ', result);
                 $scope.title = result.title;
                 $scope.content = result.content;
             }, function(err)
