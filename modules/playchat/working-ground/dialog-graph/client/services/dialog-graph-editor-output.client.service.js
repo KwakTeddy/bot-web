@@ -20,6 +20,11 @@
                     $scope.dialog.output[index].buttons = [];
             };
 
+            $scope.deleteOutputButton = function(buttons, index)
+            {
+                buttons.splice(index, 1);
+            };
+
             $scope.setOutputImageUploader = function(index)
             {
                 $scope.dialog.output[index].uploader = new FileUploader({
