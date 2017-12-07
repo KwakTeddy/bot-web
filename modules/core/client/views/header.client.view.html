@@ -39,6 +39,15 @@
     color: white;
 }
 
+.popup-menu li.popup-title
+{
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 .popup-menu .popup-menu-divider
 {
     height: 1px;
@@ -55,7 +64,7 @@
             </a>
         </div>
         <div class="system">
-            <ul class="docs">
+            <ul class="docs" style="display: none;">
                 <li>
                     <a href="#" class="mr20">
                         <img src="/modules/core/client/imgs/docs.png" class="mr5">
@@ -75,10 +84,11 @@
                     </a>
                 </li>
             </ul>
-            <a class="notify_silver" href="#" ng-if="isLogin"></a>
+            <a style="display: none;" class="notify_silver" href="#" ng-if="isLogin"></a>
             <a class="login_silver" href="#" ng-if="isLogin" ng-click="openMenu($event);"></a>
             <ul class="popup-menu user-menu">
                 <ul>
+                    <li class="popup-title"">{{ user.username }}</a></li>
                     <li><a href="/playchat/user-profile">Profile</a></li>
                     <li><a href="#" ng-click="signout();">Signout</a></li>
                 </ul>

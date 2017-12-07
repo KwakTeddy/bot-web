@@ -6,8 +6,8 @@ var UserController = require('../controllers/users.server.controller.js');
 module.exports = function(app)
 {
     app.get('/auth/facebook', authentication.oauthCall('facebook', {scope: ['email']}));
+    app.route('/auth/facebook/page').get(authentication.oauthCall('facebook', { scope: [ 'manage_pages', 'pages_show_list', 'pages_messaging' ]}));
     app.route('/auth/facebook/:callback').get(authentication.oauthCallback('facebook'));
-    // app.route('/api/auth/facebook/page').get(authentication.oauthCall('facebook', { scope: [ 'manage_pages', 'pages_show_list', 'pages_messaging' ]}));
 
     app.route('/auth/kakao').get(authentication.oauthCall('kakao'));
     app.route('/auth/kakao/:callback').get(authentication.oauthCallback('kakao'));

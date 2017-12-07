@@ -23,6 +23,11 @@ exports.findTotalPage = function(req, res)
     var countPerPage = req.query.countPerPage || 10;
 
     var query = { botId: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -47,6 +52,11 @@ exports.find = function(req, res)
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
     var query = { botId: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -116,7 +126,7 @@ exports.findEntityContents = function(req, res)
     });
 };
 
-function saveEntityContentSynonyms(botId, user, entityId, contentId, synonyms, callback, errCallback)
+function saveEntityContentSynonyms(botId, templateId, user, entityId, contentId, synonyms, callback, errCallback)
 {
     EntityContentSynonym.remove({ botId: botId, entityId: entityId, contentId: contentId }, function(err, result)
     {
@@ -129,6 +139,8 @@ function saveEntityContentSynonyms(botId, user, entityId, contentId, synonyms, c
         {
             var synonym = new EntityContentSynonym();
             synonym.botId = botId;
+            if(templateId)
+                synonym.templateId = templateId;
             synonym.entityId = entityId;
             synonym.contentId = contentId;
             synonym.name = item;
@@ -153,13 +165,19 @@ function saveEntityContentSynonyms(botId, user, entityId, contentId, synonyms, c
     });
 };
 
-function saveEntityContents(botId, user, entityId, contents, callback, errCallback)
+function saveEntityContents(botId, templateId, user, entityId, contents, callback, errCallback)
 {
     EntityContent.remove({ botId: botId, user: user._id, entityId: entityId }, function(err, result)
     {
         if(err)
         {
-            return errCallback(err);
+            if(errCallback)
+            {
+                return errCallback(err);
+            }
+
+            console.error(err);
+            return;
         }
 
         var errs = [];
@@ -171,6 +189,8 @@ function saveEntityContents(botId, user, entityId, contents, callback, errCallba
                 content._id = item._id;
             content.name = item.name;
             content.botId = botId;
+            if(templateId)
+                content.templateId = templateId;
             content.user = user;
             content.entityId = entityId;
 
@@ -184,7 +204,7 @@ function saveEntityContents(botId, user, entityId, contents, callback, errCallba
                 }
                 else
                 {
-                    saveEntityContentSynonyms(botId, user, entityId, content._id, item.synonyms, done, function(err)
+                    saveEntityContentSynonyms(botId, templateId, user, entityId, content._id, item.synonyms, done, function(err)
                     {
                         errs.push(err);
                         done();
@@ -376,6 +396,8 @@ exports.create = function(req, res)
 
         var entity = new Entity(req.body);
         entity.botId = req.params.botId;
+        if(req.body.templateId)
+            entity.templateId = req.body.templateId;
         entity.user = req.user;
 
         entity.save(function(err)
@@ -393,7 +415,7 @@ exports.create = function(req, res)
                     {
                         if(contents.length > 0)
                         {
-                            saveEntityContents(req.params.botId, req.user, entity._id, contents, function()
+                            saveEntityContents(req.params.botId, req.body.templateId, req.user, entity._id, contents, function()
                             {
                                 res.jsonp(entity);
                             },
@@ -410,7 +432,7 @@ exports.create = function(req, res)
                 }
                 else
                 {
-                    saveEntityContents(req.params.botId, req.user, entity._id, req.body.entityContents, function()
+                    saveEntityContents(req.params.botId, req.body.templateId, req.user, entity._id, req.body.entityContents, function()
                     {
                         res.jsonp(entity);
                     },
@@ -461,7 +483,7 @@ exports.update = function(req, res)
                             return res.status(400).send({ message: err.stack || err });
                         }
 
-                        saveEntityContents(req.params.botId, req.user, item._id, req.body.entityContents, function()
+                        saveEntityContents(req.params.botId, req.body.templateId, req.user, item._id, req.body.entityContents, function()
                         {
                             res.jsonp(item);
                         },
@@ -475,7 +497,7 @@ exports.update = function(req, res)
             }
             else
             {
-                saveEntityContents(req.params.botId, req.user, item._id, req.body.entityContents, function()
+                saveEntityContents(req.params.botId, req.body.templateId, req.user, item._id, req.body.entityContents, function()
                 {
                     res.jsonp(item);
                 },

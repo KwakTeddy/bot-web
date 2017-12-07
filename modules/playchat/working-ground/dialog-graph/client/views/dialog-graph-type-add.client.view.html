@@ -10,7 +10,7 @@
         <input type="text" class="dialog-graph-instant-add-input type-add" placeholder="Type Name(English, Number, _)" ng-model="type.name" ng-required="true" pattern="[a-zA-Z_0-9]*">
         <p class="dialog-graph-instant-add-subject">{{lan('Type Logic') }}</p>
         <div class="dialog-graph-task-add-logic">
-            <p><span style="color: #708;">{{lan('function') }}</span>(<span style="color: #00f;">{{lan('text') }}</span>, <span style="color: #00f;">{{lan('type') }}</span>, <span style="color: #00f;">{{lan('task') }}</span>, <span style="color: #00f;">{{lan('context') }}</span>, <span style="color: #00f;">{{lan('callback') }}</span>) {</p>
+            <p><span style="color: #708;">function</span>(<span style="color: #00f;">text</span>, <span style="color: #00f;">type</span>, <span style="color: #00f;">task</span>, <span style="color: #00f;">context</span>, <span style="color: #00f;">callback</span>) {</p>
             <textarea style="display: none;" id="dialogGraphEditorTypeLogic">var matched = true;</textarea>
             <p style="padding-left: 34px;">callback(task, context, matched);</p>
             <p>}</p>

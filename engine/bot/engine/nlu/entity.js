@@ -35,27 +35,38 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
       cb(null);
     },
 
-    function(cb) {
-      var Dic = mongoose.model('EntityContentSynonym');
-       async.eachSeries(nouns, function(word, cb1) {
-           console.log('워드 : ' + word);
-        Dic.find({botId: context.bot.id, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
-          for(var i in docs) {
-            if(docs[i].entityId)
+    function(cb)
+    {
+        var Dic = mongoose.model('EntityContentSynonym');
+        async.eachSeries(nouns, function(word, cb1)
+        {
+            console.log('워드 : ' + word);
+
+           var query = { name: word };
+           if(context.bot.templateId)
+               query.templateId = context.bot.templateId;
+           else 
+               query.botId = context.bot.id;
+
+            Dic.find(query).lean().populate('entityId').populate('contentId').exec(function(err, docs)
             {
-                if(entities[docs[i].entityId.name] == undefined)
-                    entities[docs[i].entityId.name] = [];
+              for(var i in docs) {
+                if(docs[i].entityId)
+                {
+                    if(entities[docs[i].entityId.name] == undefined)
+                        entities[docs[i].entityId.name] = [];
 
-                entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
-            }
-          }
+                    entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+                }
+              }
 
-          cb1(null);
-        })
-      }, function(err) {
-           console.log('에러 : ' + err);
-        cb(null);
-      });
+              cb1(null);
+            });
+        }, function(err)
+        {
+            console.log('에러 : ' + err);
+            cb(null);
+        });
     },
 
     function(cb) {

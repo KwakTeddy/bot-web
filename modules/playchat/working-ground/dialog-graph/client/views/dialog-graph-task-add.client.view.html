@@ -10,7 +10,7 @@
         <input type="text" class="dialog-graph-instant-add-input" placeholder="Task Name(English, Number, _)" ng-model="task.name" ng-required="true" pattern="[a-zA-Z_0-9]*">
         <p class="dialog-graph-instant-add-subject">{{lan('Task Logic') }}</p>
         <div class="dialog-graph-task-add-logic">
-            <p><span style="color: #708;">{{lan('function') }}</span>(<span style="color: #00f;">{{lan('task') }}</span>, <span style="color: #00f;">{{lan('context') }}</span>, <span style="color: #00f;">{{lan('callback') }}</span>) {</p>
+            <p><span style="color: #708;">function</span>(<span style="color: #00f;">task</span>, <span style="color: #00f;">context</span>, <span style="color: #00f;">callback</span>) {</p>
             <textarea style="display: none;" id="dialogGraphEditorTaskLogic"></textarea>
             <p style="padding-left: 34px;">callback(task, context);</p>
             <p>}</p>

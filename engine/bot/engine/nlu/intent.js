@@ -112,7 +112,17 @@ exports.matchIntent = matchIntent;
 function loadIntents(bot, callback) {
   var Intent = mongoose.model('Intent');
 
-  Intent.find({botId: bot.id}).lean().exec(function(err, docs) {
+  var query = {};
+  if(bot.templateId)
+  {
+      query.templateId = bot.templateId;
+  }
+  else
+  {
+      query.botId = bot.id;
+  }
+
+  Intent.find(query).lean().exec(function(err, docs) {
     bot.intents = docs;
     if(callback) callback();
   });

@@ -12,7 +12,7 @@ var categoryrestaurants = mongo.getModel('hotel-restaurants');
 var categoryfacilities = mongo.getModel('hotel-facilities');
 var categoryevents = mongo.getModel('hotel-events');
 var categoryparks = mongo.getModel('hotel-parks');
-var order = mongo.getModel('hotelorders');
+var order = mongo.getModel('hotel-reservations');
 var config = require(path.resolve('./config/config'));
 var utils = require(path.resolve('engine/bot/action/common/utils'));
 var typelib = require(path.resolve('engine/bot/action/common/type'));
@@ -86,10 +86,13 @@ var mynamesave1 = {
             order_room:context.dialog.roomlistType.category_name,
             order_category:context.dialog.roomlistType._id,
             order_period:context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday,
-            order_peoplenumber: context.dialog.peoplenumber
+            order_peoplenumber: context.dialog.peoplenumber,
+            order_status:"reserve",
+            botId:context.bot.id,
+            __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"reserve",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -162,7 +165,7 @@ bot.setTask("categoryroomlist", categoryroomlist);
 var orderlist = {
     name: 'orderlist',
     action: function(task, context, callback) {
-         order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err, docs) {
+         order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"reserve",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -385,10 +388,13 @@ var addorder = {
                 order_room:context.dialog.roomlistType.category_name,
                 order_category:context.dialog.roomlistType._id,
                 order_period:context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday,
-                   order_peoplenumber: context.dialog.peoplenumber
+                   order_peoplenumber: context.dialog.peoplenumber,
+                    order_status:"reserve",
+                    botId:context.bot.id,
+                    __v:0
                             };
                 order.collection.insert(neworder,function(err,docs){
-                  order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
+                  order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"reserve",botId:context.bot.id}).lean().exec(function(err,docs) {
                                                         context.dialog.order= docs;
                                                         //console.log(context.dialog.order[0]);
                                                         context.dialog.allprice=0;
@@ -463,10 +469,13 @@ var addorder1 = {
             order_room:context.dialog.menumatch.category_name,
             order_category:context.dialog.menumatch._id,
             order_period:context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday,
-            order_peoplenumber: context.dialog.peoplenumber
+            order_peoplenumber: context.dialog.peoplenumber,
+            order_status:"reserve",
+            botId:context.bot.id,
+            __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"reserve",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -541,10 +550,13 @@ var addorder2 = {
             order_room:context.dialog.menumatch.category_name,
             order_category:context.dialog.menumatch._id,
             order_period:context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday,
-            order_peoplenumber: context.dialog.peoplenumber
+            order_peoplenumber: context.dialog.peoplenumber,
+            order_status:"reserve",
+            botId:context.bot.id,
+            __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"reserve",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -590,8 +602,9 @@ var deleteorder = {
     name: 'deleteorder',
     action: function(task, context, callback) {
 
-                order.find({_id:context.dialog.orderlistType._id}).remove({},function(err){
-                   order.find({order_user:context.user.myname,order_phone:context.user.mobiles}).lean().exec(function(err, docs) {
+                order.find({_id:context.dialog.orderlistType._id}).update({order_status:"cancel"}).exec(function(err){
+
+                   order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"reserve",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -755,7 +768,7 @@ var peoplenumbertype = {
     typeCheck: function (text, type, task, context, callback) {
         var x=/[ ]?명/g;
         //search(x);
-        //var str='2017-12-15부터 5명 4555박5일 예약';
+        //var str='2017-12-15부터 5명 4555박5일 reserve';
         var count1=text.search(x);
         var count2=0;
         if(count1>=0){
@@ -786,7 +799,7 @@ var daynumbertype = {
     typeCheck: function (text, type, task, context, callback) {
         var x=/[ ]?박/g;
          //search(x);
-        //var str='2017-12-15부터 5명 4555박5일 예약';
+        //var str='2017-12-15부터 5명 4555박5일 reserve';
         var count1=text.search(x);
         var count2=0;
         if(count1>=0){

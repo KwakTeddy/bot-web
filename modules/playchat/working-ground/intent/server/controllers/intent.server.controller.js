@@ -26,6 +26,11 @@ exports.findTotalPage = function(req, res)
     var countPerPage = req.query.countPerPage || 10;
 
     var query = { botId: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -50,6 +55,11 @@ exports.find = function(req, res)
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
     var query = { botId: req.params.botId, user: req.user._id };
+    if(req.query.templateId)
+    {
+        delete query.botId;
+        query.templateId = req.query.templateId;
+    }
 
     if(req.query.name)
         query.name = { "$regex": req.query.name, "$options": 'i' };
@@ -99,7 +109,7 @@ exports.findIntentContent = function(req, res)
     });
 };
 
-var saveIntentContexts = function(botId, success, error)
+var saveIntentContexts = function(botId, templateId, language, success, error)
 {
     var words = {};
 
@@ -132,7 +142,7 @@ var saveIntentContexts = function(botId, success, error)
         for(var i in words)
         {
             if(i.length > 1)
-                list.push({ word: i, count: words[i], botId: botId });
+                list.push({ word: i, count: words[i], botId: botId, templateId: templateId });
         }
 
         IntentContext.remove({ botId: botId }).exec(function(err)
@@ -155,12 +165,14 @@ var saveIntentContexts = function(botId, success, error)
     });
 };
 
-var saveIntentContents = function(botId, user, intentId, contents, success, error)
+var saveIntentContents = function(botId, templateId, language, user, intentId, contents, success, error)
 {
     IntentContent.remove({ botId: botId, user: user, intentId: intentId }).exec(function(err)
     {
         if(err)
         {
+            console.error(err);
+
             return error(err);
         }
 
@@ -170,11 +182,13 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
         {
             var intentContent = {};
             intentContent.botId = botId;
+            if(templateId)
+                intentContent.templateId = templateId;
             intentContent.user = user._id;
             intentContent.intentId = intentId;
             intentContent.name = name;
 
-            var language = 'ko'; //temporary
+            language = language || 'ko';
             NLPManager.getNlpedText(name, language, function(err, result)
             {
                 if(err)
@@ -196,7 +210,7 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
                 }
                 else
                 {
-                    saveIntentContexts(botId, success, error);
+                    saveIntentContexts(botId, templateId, language, success, error);
                 }
             });
         });
@@ -311,6 +325,8 @@ exports.create = function(req, res)
 
             var intent = new Intent();
             intent.botId = req.params.botId;
+            if(req.body.templateId)
+                intent.templateId = req.body.templateId;
             intent.name = req.body.name;
             intent.user = req.user;
 
@@ -329,7 +345,7 @@ exports.create = function(req, res)
                         {
                             if(contents.length > 0)
                             {
-                                saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+                                saveIntentContents(req.params.botId, req.body.templateId, req.body.language, req.user, intent._id, contents, function()
                                 {
                                     res.jsonp(intent);
                                 },
@@ -347,7 +363,7 @@ exports.create = function(req, res)
                     else
                     {
                         var contents = req.body.intentContents;
-                        saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+                        saveIntentContents(req.params.botId, req.body.templateId, req.body.language, req.user, intent._id, contents, function()
                         {
                             res.jsonp(intent);
                         },
@@ -415,7 +431,7 @@ exports.update = function(req, res)
         function()
         {
             var contents = req.body.intentContents;
-            saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+            saveIntentContents(req.params.botId, req.body.templateId, req.body.language, req.user, intent._id, contents, function()
             {
                 res.jsonp(intent);
             },

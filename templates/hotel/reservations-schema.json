@@ -9,5 +9,6 @@
     "order_paydate": "String",
     "order_daynumbers": "Number",
     "order_period":"String",
-    "order_peoplenumber": "Number"
+    "order_peoplenumber": "Number",
+    "order_status": "String"
 }

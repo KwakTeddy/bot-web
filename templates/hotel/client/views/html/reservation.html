@@ -36,6 +36,7 @@
                 <col style="width: 5%;">
                 <col style="width: 5%;">
                 <col style="width: 5%;">
+                <col style="width: 5%;">
             </colgroup>
             <thead>
             <tr>
@@ -50,6 +51,7 @@
                 <th>예약날수</th>
                 <th>예약 기간</th>
                 <th>예약 인원</th>
+                <th>예약 상테</th>
             </tr>
             </thead>
             <tbody>
@@ -86,12 +88,15 @@
                     <input type="number" ng-model="data.order_peoplenumber">
                 </td>
                 <td>
+                    <input type="number" ng-model="data.order_status">
+                </td>
+                <td>
                     <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
                 </td>
             </tr>
             <tr>
                 <td colspan="5">
-                    <button type="button" class="default-button" ng-click="add();">주차장 추가</button>
+                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
                 </td>
             </tr>
             </tbody>

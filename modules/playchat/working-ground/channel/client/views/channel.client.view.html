@@ -56,25 +56,93 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal-background" ng-show="help.kakao">
-    <div class="modal">
-        <div class="modal-title">
+    <div class="modal-background" ng-show="help.kakao">
+        <div class="modal">
+            <div class="modal-title">카카오톡</div>
+            <div class="modal-body">
+                <p>1. 카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)</p>
+                <p>- 옐로아이디 만들기 자세한 설명보기</p>
+                <p>2. 옐로아이디 프로필을 만들고 심사를 기다려요(5일 이내 소요)!</p>
+                <p>3. 심사된 프로필로 옐로아이디 페이지 자동응답 탭으로 들어가요</p>
+                <p>4. API 자동응답 설정하기로 들어가요</p>
+                <p>5. 앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!</p>
+                <p>- API 자동응답 자세한 설명보기</p>
+                <p>Webhook URL : {{ host }}/kakao/{{ chatbot.id }}</p>
+            </div>
+            <div class="tab-footer">
+                <button class="blue-button">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('kakao')">{{ lan('Close') }}</button>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>1. 카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)</p>
-            <p>- 옐로아이디 만들기 자세한 설명보기</p>
-            <p>2. 옐로아이디 프로필을 만들고 심사를 기다려요(5일 이내 소요)!</p>
-            <p>3. 심사된 프로필로 옐로아이디 페이지 자동응답 탭으로 들어가요</p>
-            <p>4. API 자동응답 설정하기로 들어가요</p>
-            <p>5. 앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!</p>
-            <p>- API 자동응답 자세한 설명보기</p>
-            <p>Webhook URL : {{ host }}/kakao/{{ chatbot.id }}</p>
+    </div>
+
+    <div class="modal-background" ng-show="help.facebook">
+        <div class="modal">
+            <div class="modal-title">페이스북</div>
+            <div class="modal-body" style="padding: 30px 0;">
+                <table class="tb02">
+                    <thead>
+                        <tr>
+                            <th>페이지 이름</th>
+                            <th>페이지 링크</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="page in pageList">
+                            <td>{{ page.name }}</td>
+                            <td>{{ page.link }}</td>
+                            <td>
+                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">Connect</button>
+                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">Disconnect</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 35px;">
+                    <a href="https://www.facebook.com/pages/create/?ref_type=pages_browser" class="blue-button" style="color: white;">페이스북 페이지 새로 만들기</a>
+                </p>
+            </div>
+            <div class="tab-footer">
+                <button class="blue-button">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('facebook')">{{ lan('Close') }}</button>
+            </div>
         </div>
-        <div class="tab-footer">
-            <button class="blue-button">{{ lan('Save') }}</button>
-            <button type="button" class="default-button" ng-click="help.kakao">{{ lan('Close') }}</button>
+    </div>
+
+    <div class="modal-background" ng-show="help.line">
+        <div class="modal">
+            <div class="modal-title">라인</div>
+            <div class="modal-body">
+                <p>1. LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요</p>
+                <p>2. 가입이 됐다면 LINE Business Center에서 사용할 이메일을 등록해요</p>
+                <p>3. 서비스 탭에서 Messaging API 시작하기 버튼을 누르고 정보를 입력해요</p>
+                <p>4. LINE Manager에서 API 켜기 버튼을 누르고 Webhook 사용을 허용하고 저장해요</p>
+                <p>5. LINE Business Center에서 계정 목록 탭으로 이동해요</p>
+                <p>6. Messaging API에 있는 LINE Developers 버튼을 눌러요</p>
+                <p>7. ISSUE 버튼을 눌러 Channel access token을 발급받아요</p>
+                <p>8. EDIT 버튼을 눌러 Webhook URL을 아래의 Webhook URL을 복사해 넣고 저장 및 확인해요</p>
+                <p>다 끝났습니다!</p>
+                <p>Webhook URL : {{ host }}/line/{{ chatbot.id }}</p>
+            </div>
+            <div class="tab-footer">
+                <button class="blue-button">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('line')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.naver">
+        <div class="modal">
+            <div class="modal-title">네이버톡톡</div>
+            <div class="modal-body">
+                <p>Webhook URL : {{ host }}/naver/{{ chatbot.id }}</p>
+            </div>
+            <div class="tab-footer">
+                <button class="blue-button">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('naver')">{{ lan('Close') }}</button>
+            </div>
         </div>
     </div>
 </div>

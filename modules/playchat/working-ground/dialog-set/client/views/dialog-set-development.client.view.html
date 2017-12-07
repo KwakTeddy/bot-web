@@ -5,15 +5,15 @@
         <div class="topic-area">
             <div>
                 <div>
-                    <p>{{lan('Topic 1') }}</p>
+                    <p>Topic 1</p>
                     <select class="data-select"></select>
                 </div>
                 <div>
-                    <p>{{lan('Topic 1') }}</p>
+                    <p>Topic 1</p>
                     <select class="data-select"></select>
                 </div>
                 <div>
-                    <p>{{lan('Topic 1') }}</p>
+                    <p>Topic 1</p>
                     <select class="data-select"></select>
                 </div>
             </div>
@@ -28,10 +28,10 @@
         </div>
         <div class="functions-area">
             <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="{{lan('display: none;') }}">
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="{{lan('display: none;') }}">
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="{{lan('display: none;') }}">
-            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="{{lan('display: none;') }}">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="display: none;">
         </div>
     </form>
 </div>
@@ -45,18 +45,18 @@
         <div class="funtionbtn1">
             <a href="#">
                 <img src="modules/playchat/working-ground/common/client/imgs/import.png">
-                <span>{{lan('Import') }}</span>
+                <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
         </div>
     </div>
     <div class="tab01">
         <ul class="tabs1">
-            <li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
+            <li class="mini"><a href="#" ng-click="openDialogset();"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
     </div>
     <div class="topicswitch">
-        <span class="mr10">{{lan('topic') }}</span>
+        <span class="mr10">topic</span>
         <div class="slide inline-block">
             <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
             <label for="topicOpen"></label>
@@ -75,15 +75,15 @@
                 <div class="topic-area">
                     <div>
                         <div>
-                            <p>{{lan('Topic 1') }}</p>
+                            <p>Topic 1</p>
                             <select class="data-select"></select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 2') }}</p>
+                            <p>Topic 2</p>
                             <select class="data-select"></select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 3') }}</p>
+                            <p>Topic 3</p>
                             <select class="data-select"></select>
                         </div>
                     </div>
@@ -110,19 +110,19 @@
                 <div class="topic-area">
                     <div>
                         <div>
-                            <p>{{lan('Topic 1') }}</p>
+                            <p>Topic 1</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 2') }}</p>
+                            <p>Topic 2</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
                             </select>
                         </div>
                         <div>
-                            <p>{{lan('Topic 3') }}</p>
+                            <p>Topic 3</p>
                             <select class="data-select">
                                 <option ng-if="dialog.context">{{ dialog.context.name }}</option>
                             </select>
@@ -150,5 +150,85 @@
     </div>
     <div style="text-align: center;">
         <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="more-progress" style="opacity: 0;">
+    </div>
+
+
+    <div class="modal-background open-modal" ng-show="openModal.isOpened">
+        <div class="modal">
+            <div>
+                <h2 style="border-bottom: 1px solid #ddd; padding: 10px 0;">Open Dialogset</h2>
+            </div>
+            <div ng-show="!openModal.isCreate">
+                <div style="padding: 30px 0;">
+                    <select class="jumbo-select" style="font-size: 12px; width: 150px;" ng-change="createNewDialogset();" ng-model="openModal.selectedDialogset">
+                        <option value="">대화셋선택</option>
+                        <option value="create-new">새로만들기</option>
+                        <option ng-repeat="dialogset in openModal.dialogsetList" value="{{ dialogset._id }}">{{ dialogset.title }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
+                </div>
+            </div>
+            <form name="modalFormDefault" ng-submit="saveNewDialogset();" ng-show="openModal.isCreate">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('Title') }}</span>
+                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="openModal.data.title" class="dialogset-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label style="width: 100%;">
+                        <span>{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="openModal.data.content" class="data-input"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="saveImport(modal.importModal);">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('Title') }}</span>
+                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span>Type</span>
+                        <div class="form-box">
+                            <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
+                            <span>(csv or xlsx)</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span>File</span>
+                        <div class="form-box">
+                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label style="width: 100%;">
+                        <span>{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

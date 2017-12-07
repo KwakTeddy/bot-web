@@ -19,11 +19,11 @@ var dialogs = [
 		],
 		"output": [
             {
-                "if":'context.dialog.roomno===undefined',
+                "if":"context.dialog.roomno===undefined",
                 "text":"아직 객실 정보를 등록하지 않았습니다.",
                 "kind": "Text"
             },
-            {   "if":'context.dialog.roomno===0',
+            {   "if":"context.dialog.roomno===0",
                 "kind": "Action",
                 "options":
                     {
@@ -173,7 +173,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "if":'context.dialog.roomno===undefined',
+                "if":"context.dialog.roomno===undefined",
                 "text":"아직 객실 정보를 등록하지 않았습니다.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                 "kind": "Text"
             },
@@ -183,7 +183,7 @@ var dialogs = [
                 "callChild": "체크인날짜"
             }
         ],
-        "task":'categoryroomlist'
+        "task":"categoryroomlist"
     },
     {
         "id": "default119",
@@ -484,7 +484,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": '예약자 성함을 입력해주세요',
+                "text": "예약자 성함을 입력해주세요",
                 "kind": "Text"
             }
         ],
@@ -500,12 +500,12 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "if":'!context.user.mobiles',
+                        "if":"!context.user.mobiles",
                         "kind": "Action",
                         "call": "빠른예약휴대혼번호입력"
                     },
                     {
-                        "if":'context.user.mobiles',
+                        "if":"context.user.mobiles",
                         "kind": "Action",
                         "call": "빠른예약휴대혼번호입력3"
                     }
@@ -608,6 +608,18 @@ var dialogs = [
                                         "input": [
                                             {
                                                 "text": "네"
+                                            },
+                                            {
+                                                "text": "ㅇㅇ"
+                                            },
+                                            {
+                                                "text": "웅"
+                                            },
+                                            {
+                                                "text": "응"
+                                            },
+                                            {
+                                                "text": "ok"
                                             }
                                         ],
                                         "output": [
@@ -1230,11 +1242,11 @@ var dialogs = [
 				],
 				"output": [
                     {
-                        "if":'context.dialog.roomno===undefined',
+                        "if":"context.dialog.roomno===undefined",
                         "text":"아직 객실 정보를 등록하지 않았습니다.",
                         "kind": "Text"
                     },
-                    {   "if":'context.dialog.roomno===0',
+                    {   "if":"context.dialog.roomno===0",
                         "kind": "Action",
                         "options":
                             {
@@ -1259,11 +1271,11 @@ var dialogs = [
 				],
 				"output": [
                     {
-                        "if":'context.dialog.roomno===undefined',
+                        "if":"context.dialog.roomno===undefined",
                         "text":"아직 객실 정보를 등록하지 않았습니다.",
                         "kind": "Text"
                     },
-                    {   "if":'context.dialog.roomno===0',
+                    {   "if":"context.dialog.roomno===0",
                         "kind": "Action",
                         "options":
                             {
@@ -1351,11 +1363,11 @@ var dialogs = [
 		],
 		"output": [
 			{
-               "if":'context.dialog.restaurantno===undefined',
+               "if":"context.dialog.restaurantno===undefined",
                 "text":"아직 다이닝 정보를 등록하지 않았습니다.",
                 "kind": "Text"
 			},
-            {   "if":'context.dialog.restaurantno===0',
+            {   "if":"context.dialog.restaurantno===0",
                 "kind": "Action",
                 "options":
                     {
@@ -1382,12 +1394,12 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {   "if":'context.dialog.facilityno===undefined',
+            {   "if":"context.dialog.facilityno===undefined",
                 "text": "아직 시설 정보를 등록하지 않았습니다.",
                 "kind": "Text"
             },
 			{
-                "if":'context.dialog.facilityno===0',
+                "if":"context.dialog.facilityno===0",
                 "kind": "Action",
                 "options":
                     {
@@ -1414,12 +1426,12 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {   "if":'context.dialog.eventno===undefined',
+            {   "if":"context.dialog.eventno===undefined",
                 "text": "아직 이벤트 정보를 등록하지 않았습니다.",
                 "kind": "Text"
             },
 			{
-                "if":'context.dialog.eventno===0',
+                "if":"context.dialog.eventno===0",
                 "kind": "Action",
                 "options":
                     {
@@ -1482,17 +1494,17 @@ var dialogs = [
 		],
 		"output": [
             {
-                "if": 'context.dialog.shuttleno===undefined',
-                "text": '아직 셔틀정보를 등록하지 않았습니다.',
+                "if": "context.dialog.shuttleno===undefined",
+                "text": "아직 셔틀정보를 등록하지 않았습니다.",
                 "kind": "Text"
             },
             {
-                "if": 'context.dialog.shuttleno===1',
-                "text": '아직 셔틀을 이용하실 수 없습니다.',
+                "if": "context.dialog.shuttleno===1",
+                "text": "아직 셔틀을 이용하실 수 없습니다.",
                 "kind": "Text"
             },
             {
-                "if": 'context.dialog.shuttleno===0',
+                "if": "context.dialog.shuttleno===0",
                 "text": "[셔틀 정보]\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.\n",
                 "kind": "Text"
             }
@@ -1519,17 +1531,17 @@ var dialogs = [
 		],
 		"output": [
             {
-                "if": 'context.dialog.parkno===undefined',
-                "text": '아직 주차정보를 등록하지 않았습니다.',
+                "if": "context.dialog.parkno===undefined",
+                "text": "아직 주차정보를 등록하지 않았습니다.",
                 "kind": "Text"
             },
             {
-                "if": 'context.dialog.parkno===1',
-                "text": '아직 주차장를 이용하실 수 없습니다.',
+                "if": "context.dialog.parkno===1",
+                "text": "아직 주차장를 이용하실 수 없습니다.",
                 "kind": "Text"
             },
 			{
-				"if": 'context.dialog.parkno===0',
+				"if": "context.dialog.parkno===0",
 				"text": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소객: +parkdetails+\n-주차장 위치: +parkaddress+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 				"kind": "Text"
 			}
@@ -1671,9 +1683,21 @@ var dialogs = [
 										"id": "default49",
 										"filename": "default",
 										"input": [
-											{
-												"intent": "네"
-											}
+                                            {
+                                                "text": "네"
+                                            },
+                                            {
+                                                "text": "ㅇㅇ"
+                                            },
+                                            {
+                                                "text": "웅"
+                                            },
+                                            {
+                                                "text": "응"
+                                            },
+                                            {
+                                                "text": "ok"
+                                            }
 										],
 										"output": [
 											{
@@ -2592,7 +2616,19 @@ var dialogs = [
                                         "filename": "default",
                                         "input": [
                                             {
-                                                "intent": "네"
+                                                "text": "네"
+                                            },
+                                            {
+                                                "text": "ㅇㅇ"
+                                            },
+                                            {
+                                                "text": "웅"
+                                            },
+                                            {
+                                                "text": "응"
+                                            },
+                                            {
+                                                "text": "ok"
                                             }
                                         ],
                                         "output": [
@@ -2745,7 +2781,19 @@ var dialogs = [
                                 "filename": "default",
                                 "input": [
                                     {
-                                        "intent": "네"
+                                        "text": "네"
+                                    },
+                                    {
+                                        "text": "ㅇㅇ"
+                                    },
+                                    {
+                                        "text": "웅"
+                                    },
+                                    {
+                                        "text": "응"
+                                    },
+                                    {
+                                        "text": "ok"
                                     }
                                 ],
                                 "output": [

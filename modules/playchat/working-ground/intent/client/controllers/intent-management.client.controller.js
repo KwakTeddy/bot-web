@@ -85,11 +85,16 @@ angular.module('playchat').controller('IntentManagementController', ['$window', 
             params.botId = chatbot.id;
             params.name = modal.data.name;
             params.user = user._id;
+            params.language = chatbot.language;
             params.intentContents = [];
+
+            if(chatbot.templateId)
+                params.templateId = chatbot.templateId.id;
 
             angular.element('#intentList .intent-content-row').each(function()
             {
                 var content = angular.element(this).find('td:first-child').text();
+                console.log(content);
                 params.intentContents.push(content);
             });
 

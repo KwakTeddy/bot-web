@@ -139,28 +139,25 @@ $.ajaxPrefilter(function( options, original_Options, jqXHR )
 <script src="https://connect.facebook.net/en_US/all.js" async></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js" async></script>
 <script>
-if('{{env}}' == 'production')
-{
-    var facebookAppId = {{ facebookAppId | json | safe }};
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : facebookAppId,
-            status     : true,
-            xfbml      : true,
-            version    : 'v2.8'
-        });
-    };
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+var facebookAppId = {{ facebookAppId | json | safe }};
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : facebookAppId,
+        status     : true,
+        xfbml      : true,
+        version    : 'v2.8'
+    });
+};
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 
-    var kakaoJSID = {{ kakaoJSID | json | safe }};
-    Kakao.init(kakaoJSID);  // 사용할 앱의 JavaScript 키를 설정해 주세요.
-}
+//var kakaoJSID = {{ kakaoJSID | json | safe }};
+//    Kakao.init(kakaoJSID);  // 사용할 앱의 JavaScript 키를 설정해 주세요.
 </script>
 </body>
 </html>

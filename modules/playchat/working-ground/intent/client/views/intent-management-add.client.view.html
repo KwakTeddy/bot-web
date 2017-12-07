@@ -58,7 +58,6 @@
 </style>
 
 <div ng-controller="IntentManagementAddController">
-    <div class="channel-title">{{lan('Intent edit') }}</div>
     <div style="width: 90%; margin: 0 auto;">
         <form class="intent-management-add-form" ng-submit="save();">
             <div>
@@ -71,7 +70,7 @@
                 <label>
                     <span>{{lan('Contents') }}</span>
                     <input type="text" ng-keydown="contentInputKeydown($event);">
-                    <button type="button" class="intent-management-add-button" ng-click="addIntentContentClick($event);">{{lan('+ Add') }}</button>
+                    <button type="button" class="intent-management-add-button" ng-click="addIntentContentClick($event);">+ Add</button>
                 </label>
             </div>
             <div>
@@ -90,8 +89,11 @@
                                 </tr>
                             </thead>
                             <tbody id="intentList">
-                                <tr ng-repeat="item in intents track by $index">
-                                    <td> {{ item.name }}</td>
+                                <tr ng-if="intents.length == 0">
+                                    <td colspan="2">Empty</td>
+                                </tr>
+                                <tr ng-repeat="item in intents">
+                                    <td style="text-align: left;"> <input type="text" class="intent-content-name" ng-model="item.name"></td>
                                     <td>
                                         <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(intents, $index);">
                                     </td>

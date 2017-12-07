@@ -47,6 +47,14 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         {
             if(e.currentTarget.value)
             {
+                for(var i=0; i<$scope.entities.length; i++)
+                {
+                    if($scope.entities[i].name == e.currentTarget.value)
+                    {
+                        return alert($scope.lan('Content is already added'));
+                    }
+                }
+
                 $scope.entities.push({ name: e.currentTarget.value, synonyms: [{ name: '' }] });
                 e.currentTarget.value = '';
             }
@@ -61,6 +69,14 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         var input = e.currentTarget.previousElementSibling;
         if(input.value)
         {
+            for(var i=0; i<$scope.entities.length; i++)
+            {
+                if($scope.entities[i].name == input.value)
+                {
+                    return alert($scope.lan('Content is already added'));
+                }
+            }
+
             $scope.entities.push({ name: input.value, synonyms: [{ name: '' }] });
             input.value = '';
         }
@@ -87,6 +103,11 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         }
     };
 
+    $scope.deleteContent = function(entities, index)
+    {
+        entities.splice(index, 1);
+    };
+
     $scope.deleteSynonym = function(synonyms, index)
     {
         synonyms.splice(index, 1);
@@ -96,6 +117,8 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         var params = {};
         params.botId = chatbot.id;
+        if(chatbot.templateId)
+            params.templateId = chatbot.templateId._id;
         params.name = $scope.name;
         params.entityContents = JSON.parse(angular.toJson($scope.entities));
 

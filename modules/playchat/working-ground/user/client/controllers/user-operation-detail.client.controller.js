@@ -63,6 +63,7 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
         {
             MemoService.save({ botId: chatbot.id, userKey: $scope.data.userKey, memo: $scope.memo }, function(result)
             {
+                $scope.memo = '';
                 $scope.data.memos.unshift(JSON.parse(JSON.stringify(result)));
             },
             function(err)
