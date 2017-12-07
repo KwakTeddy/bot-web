@@ -9,9 +9,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     var FacebookPageService = $resource('/auth/facebook/page');
 
-    console.log('채널');
-
-    $scope.host = 'https://' + $location.host() + ($location.port() ? ':' + $location.port() : $location.port());
+    $scope.host = 'https://' + $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : $location.port());
     $scope.chatbot = $cookies.getObject('chatbot');
 
     $scope.help = {
@@ -143,19 +141,47 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
             {
                 $scope.pageList = [];
 
-                console.log('엑세스 토큰 : ', accessToken);
                 FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response)
                 {
                     console.log(response);
                     if(response.error)
                     {
-                        alert('페이지를 가져오는데 실패했습니다');
+                        console.log(response.error);
                     }
                     else
                     {
                         if(!response.data.length)
                         {
-                            //페이지 없음
+                            FB.api('/me/permissions?access_token='+accessToken, function (response2)
+                            { //현재 토큰의 권한 확인
+                                if(response2.error)
+                                {
+                                    console.log(response2.error)
+                                }
+                                else
+                                {
+                                    var hasPageToken = '';
+                                    for(var i = 0; i < response2.data.length; i++)
+                                    {
+                                        if(response2.data[i].permission == "manage_pages"){
+                                            hasPageToken = true;
+                                            break
+                                        }
+                                    }
+
+                                    if(!hasPageToken)
+                                    { // 페이지 권한 요청
+                                        var url = '/auth/facebook/page';
+                                        if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+                                        $scope.fbLoading = false;
+                                        $window.location.href = url; //register facebook but No page Token(getting Token)
+                                    }
+                                    else
+                                    { //페이지가 없음
+                                        $scope.help.facebook = true;
+                                    }
+                                }
+                            });
                         }
                         else
                         {
@@ -176,6 +202,8 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                                         }
                                     }
                                 }
+
+                                console.log(response.data);
 
                                 $scope.pageList = response.data;
 

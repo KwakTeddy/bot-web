@@ -28,6 +28,7 @@ module.exports = function (app) {
   // 페이스북
   app.route('/facebook/:bot/webhook').get(facebook.messageGet);
   app.route('/facebook/:bot/webhook').post(facebook.message);
+  app.route('/facebook/webhook/refresh').get(facebook.refresh);
 
   // 네이버 톡톡
   app.route('/navertalk/:bot/webhook').post(navertalk.message);
