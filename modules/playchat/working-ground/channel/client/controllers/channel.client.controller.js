@@ -196,6 +196,21 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
         {
             $scope.help[name] = false;
         };
+
+        $scope.copyLink = function(e)
+        {
+            try {
+                var copyText = e.currentTarget.previousElementSibling;
+                copyText.select();
+                document.execCommand("Copy");
+                alert($scope.lan('Copied the text!'));
+            }
+            catch(err)
+            {
+                console.error(err);
+                alert('Error');
+            }
+        };
     })();
 
 

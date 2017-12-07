@@ -12,6 +12,7 @@
             </div>
             <div style="margin: 8px 6px;">
                 <input type="text" class="channel-input" value="{{ host }}/kakao/{{ chatbot.id }}">
+                <button type="button" class="default-button" ng-click="copyLink($event);">{{ lan('Copy') }}</button>
                 <span class="channel-content-item-question" ng-click="viewHelp('kakao');">?</span>
             </div>
         </div>
@@ -39,6 +40,7 @@
             </div>
             <div style="margin: 8px 6px;">
                 <input type="text" class="channel-input" value="{{ host }}/naver/{{ chatbot.id }}">
+                <button type="button" class="default-button" ng-click="copyLink($event);">{{ lan('Copy') }}</button>
                 <span class="channel-content-item-question" ng-click="viewHelp('naver');">?</span>
             </div>
         </div>
@@ -52,6 +54,7 @@
             </div>
             <div style="margin: 8px 6px;">
                 <input type="text" class="channel-input" value="{{ host }}/line/{{ chatbot.id }}">
+                <button type="button" class="default-button" ng-click="copyLink($event);">{{ lan('Copy') }}</button>
                 <span class="channel-content-item-question" ng-click="viewHelp('line');">?</span>
             </div>
         </div>

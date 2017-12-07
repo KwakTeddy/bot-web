@@ -1659,6 +1659,24 @@
                 "en": "Basic Information",
                 "zh": "基本信息",
                 "jp": "基本情報"
+            },
+            "Copy": {
+                "ko": "복사",
+                "en": "Copy",
+                "zh": "复制",
+                "jp": "コピー"
+            },
+            "Copied the text!": {
+                "ko": "복사되었습니다!",
+                "en": "Copied the text!",
+                "zh": "复制文本！",
+                "jp": "テキストをコピーしました！"
+            },
+            "New to Playchat?": {
+                "ko": "PlayChat에 처음이십니까?",
+                "en": "New to PlayChat?",
+                "zh": "PlayChat新手？",
+                "jp": "PlayChatを初めてお使いですか？"
             }
         };
 
