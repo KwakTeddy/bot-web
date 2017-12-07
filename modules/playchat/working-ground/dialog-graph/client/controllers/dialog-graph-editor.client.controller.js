@@ -47,6 +47,15 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.$watch('isAdvancedMode', function(after, before)
     {
+        if(after)
+        {
+            for(var i=0; i<$scope.dialog.input.length; i++)
+            {
+                if(!$scope.dialog.input[i].text)
+                    delete $scope.dialog.input[i].text;
+            }
+        }
+
         if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
         {
             // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.

@@ -540,7 +540,7 @@
 
             $scope.getInputKeyLength = function(input, key)
             {
-                return input[key].length;
+                return input[key] ? input[key].length : 0;
             };
 
             $scope.inputKeyOnClick = function(e)
