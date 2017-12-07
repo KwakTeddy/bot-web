@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout','LanguageService', function ($window, $scope, $resource, $cookies, $element, $timeout, LanguageService)
+    angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', '$location','LanguageService', function ($window, $scope, $resource, $cookies, $element, $timeout, $location, LanguageService)
     {
         var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
@@ -14,19 +14,27 @@
 
         $scope.currentFileName = undefined;
 
-        angular.element('.dialog-graph-code-editor').get(0).openCodeEditor = function(fileName)
+        var fileName = $location.search().fileName;
+        function openCodeEditor(fileName)
         {
             DialogGraphsService.get({ botId: chatbot.id, fileName: fileName}, function(result)
-            {
-                angular.element('.dialog-graph-code-editor').show();
-                editor.setValue(result.data);
-                $scope.currentFileName = fileName;
-            },
-            function(err)
-            {
-                alert(err.data.message);
-            });
+                {
+                    angular.element('.dialog-graph-code-editor').show();
+                    editor.setValue(result.data);
+                    $scope.currentFileName = fileName;
+                },
+                function(err)
+                {
+                    alert(err.data.message);
+                });
         };
+
+        if(fileName && fileName.endsWith('.js') && !fileName.endsWith('.graph.js'))
+        {
+            openCodeEditor(fileName);
+        }
+
+        angular.element('.dialog-graph-code-editor').get(0).openCodeEditor = openCodeEditor;
 
         $scope.save = function()
         {

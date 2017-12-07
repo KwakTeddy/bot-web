@@ -117,7 +117,12 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 if(fileName)
                 {
                     $scope.currentTabName = fileName;
-                    $scope.loadFile(fileName);
+
+                    if(fileName.endsWith('.graph.js'))
+                    {
+                        angular.element('.dialog-graph-code-editor').hide();
+                        $scope.loadFile(fileName);
+                    }
                 }
                 else
                 {

@@ -625,6 +625,11 @@
     top: 2px;
 }
 
+.tab-body li
+{
+    width: auto;
+}
+
 .tab-body li, .prev-tab, .next-tab
 {
     display: inline-block;
