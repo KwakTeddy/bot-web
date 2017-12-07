@@ -8,6 +8,7 @@ module.exports = function(app)
     app.get('/api/:botId/dialogsets/findbytitle', dialogsets.findDialogsetByTitle);
 
     app.get('/api/:botId/dialogsets', dialogsets.find);
+    app.get('/api/:botId/dialogsets/:dialogsetId', dialogsets.findOne);
     app.post('/api/:botId/dialogsets', dialogsets.create);
     app.put('/api/:botId/dialogsets', dialogsets.update);
     app.delete('/api/:botId/dialogsets/:dialogsetId', dialogsets.delete);

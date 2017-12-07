@@ -74,6 +74,11 @@
     border-left: #e7e7e7 solid 1px;
 }
 
+.playchat-background .top-bar+div > div
+{
+    overflow-x: auto;
+}
+
 .playchat-background .top-bar+div > div .working-ground
 {
     position: absolute;
@@ -84,7 +89,9 @@
 
     padding: 20px;
 
-    overflow: auto;
+    min-width: 800px;
+
+    overflow-y: auto;
 }
 
 .playchat-background .top-bar+div > div .log-analysis
