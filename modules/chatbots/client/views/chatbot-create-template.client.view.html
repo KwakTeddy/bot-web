@@ -14,7 +14,13 @@
             </label>
         </div>
         <div class="form-row">
-            <label class="required">
+            <label>
+                <span class="form-title">{{ lan('Description') }}</span>
+                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
+            </label>
+        </div>
+        <div class="form-row">
+            <label class="required" style="text-align: left;">
                 <span class="form-title">{{ lan('Language') }}</span>
                 <select class="jumbo-select" ng-model="bot.language">
                     <option value="ko">{{ lan('Korean') }}</option>
@@ -22,12 +28,6 @@
                     <option value="zh">{{ lan('Chinese') }}</option>
                     <option value="jp">{{ lan('Japanese') }}</option>
                 </select>
-            </label>
-        </div>
-        <div class="form-row">
-            <label>
-                <span class="form-title">{{ lan('Description') }}</span>
-                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
             </label>
         </div>
         <div class="tab-footer" style="border-top: 0;">

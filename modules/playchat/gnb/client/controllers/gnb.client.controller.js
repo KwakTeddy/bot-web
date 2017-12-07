@@ -79,8 +79,15 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         var target = e.currentTarget;
         var subMenuItemGroup = target.parentElement;
 
-        angular.element('.menu-item-list .open').removeClass('open');
-        subMenuItemGroup.className = subMenuItemGroup.className + ' open';
+        if(subMenuItemGroup.className.indexOf('open') == -1)
+        {
+            angular.element('.menu-item-list .open').removeClass('open');
+            subMenuItemGroup.className = subMenuItemGroup.className + ' open';
+        }
+        else
+        {
+            angular.element('.menu-item-list .open').removeClass('open');
+        }
     };
 
     $scope.checkUrl = function(menu)
