@@ -73,7 +73,6 @@ exports.findOne = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).populate('templateId').exec(function(err, item)
     {
-        console.log('머지 : ', req.params.botId);
         if(err)
         {
             return res.status(400).send({ message: err.stack || err });
@@ -261,7 +260,7 @@ exports.delete = function(req, res)
 
 exports.share = function(req, res)
 {
-    User.findOne({ email: req.body.data.email }).exec(function(err, item)
+    User.findOne({ $or: [{ email: req.body.data.email }, { username: req.body.data.email }] }).exec(function(err, item)
     {
         if(err)
         {

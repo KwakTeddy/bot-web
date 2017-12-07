@@ -1715,6 +1715,12 @@
                 "en": "Disconnect",
                 "zh": "断开",
                 "jp": "切断する"
+            },
+            "Please select at least one permission": {
+                "ko": "하나 이상의 권한을 선택하십시오.",
+                "en": "Please select at least one permission",
+                "zh": "请至少选择一个权限",
+                "jp": "少なくとも1つの権限を選択してください"
             }
         };
 
