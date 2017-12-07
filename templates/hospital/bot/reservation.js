@@ -90,6 +90,7 @@ var dialogs = [
     {
         id: 'restaurant57',
         filename: 'restaurant',
+        name: "예약하기",
         input: '예약',
         output: {callChild: '날짜선택'},
         children: [

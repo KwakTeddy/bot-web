@@ -1,7 +1,11 @@
 {
-    "botId" : "String",
-    "category1" : "String",
-    "category2" : "String",
-    "name" : "String",
-    "price" : "Number"
+    "status": "String",
+    "botId": "String",
+    "user": "String",
+    "mobile": "String",
+    "address": "String",
+    "order" : "Object",
+    "pay": "String",
+    "discr": "String",
+    "created": "Date"
 }
