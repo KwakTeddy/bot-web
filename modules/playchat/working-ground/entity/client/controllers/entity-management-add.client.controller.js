@@ -77,7 +77,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 }
             }
 
-            $scope.entities.push({ name: input.value, synonyms: [{ name: '' }] });
+            $scope.entities.push({ name: input.value, synonyms: [] });
             input.value = '';
         }
 
@@ -91,11 +91,13 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
             var value = e.currentTarget.value;
             if(value)
             {
-                synonyms.push({ name: '' });
+                synonyms.push({ name: value });
                 setTimeout(function()
                 {
                     angular.element(e.currentTarget).parent().parent().find('input:last').focus();
                 }, 100);
+
+                e.currentTarget.value = '';
 
                 e.preventDefault();
                 e.stopPropagation();
@@ -126,7 +128,8 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         {
             for(var j=0; j<params.entityContents[i].synonyms.length; j++)
             {
-                params.entityContents[i].synonyms[j] = params.entityContents[i].synonyms[j].name;
+                if(params.entityContents[i].synonyms[j].name)
+                    params.entityContents[i].synonyms[j] = params.entityContents[i].synonyms[j].name;
             }
         }
 

@@ -92,9 +92,26 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     $scope.checkUrl = function(menu)
     {
-        if($scope.path.startsWith('/playchat' + menu.url))
+        if(menu)
         {
-            return 'open';
+            if(menu.url == '/' && $scope.path.startsWith('/playchat'))
+            {
+                return 'open';
+            }
+            else
+            {
+                if($scope.path.startsWith('/playchat' + menu.url))
+                {
+                    if(menu.childMenus)
+                    {
+                        return 'open';
+                    }
+                    else
+                    {
+                        return 'selected';
+                    }
+                }
+            }
         }
 
         return '';
