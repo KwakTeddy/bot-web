@@ -754,6 +754,10 @@
                         {
                             instance.setDirty(true);
                             instance.refresh();
+
+                            instance.$scope.compactMode = 'Compact';
+
+                            instance.$scope.toggleCompactMode();
                         }
                     }
 
