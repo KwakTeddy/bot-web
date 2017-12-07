@@ -81,7 +81,7 @@
     </div>
 
     <div class="modal-background" ng-show="help.facebook">
-        <div class="modal">
+        <div class="modal" style="min-width: 490px; width: auto;">
             <div class="modal-title">페이스북</div>
             <div class="modal-body" style="padding: 30px 0;">
                 <table class="tb02">
@@ -93,12 +93,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr ng-if="pageList.length == 0">
+                            <td colspan="3">{{ lan('You do not have any Facebook pages to connect to.'); }}</td>
+                        </tr>
                         <tr ng-repeat="page in pageList">
                             <td>{{ page.name }}</td>
                             <td>{{ page.link }}</td>
                             <td>
-                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">Connect</button>
-                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">Disconnect</button>
+                                <a href="https://www.messenger.com/t/{{ page.id }}" class="default-button" target="_blank" ng-if="page.connected">{{lan('Try now')}}</a>
+                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">{{lan('Connect')}}</button>
+                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">{{lan('Disconnect')}}</button>
                             </td>
                         </tr>
                     </tbody>
@@ -108,7 +112,6 @@
                 </p>
             </div>
             <div class="tab-footer">
-                <button class="blue-button">{{ lan('Save') }}</button>
                 <button type="button" class="default-button" ng-click="closeHelp('facebook')">{{ lan('Close') }}</button>
             </div>
         </div>

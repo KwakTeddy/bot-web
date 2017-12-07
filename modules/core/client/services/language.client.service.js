@@ -1498,10 +1498,6 @@
                 "ko": "Bot Link",
                 "en" : "Bot Link"
             },
-            "Connect" : {
-                "ko": "Connect",
-                "en": "Connect"
-            },
             "Entity analysis": {
                 "ko": "엔터티 분석",
                 "en": "Entity analysis"
@@ -1689,6 +1685,36 @@
                 "en": "Enter dialogset name",
                 "zh": "输入对话框名称。",
                 "jp": "ダイアログセット名を入力します。"
+            },
+            "If you would like to receive the e-mail again, please click on the again button.": {
+                "ko": "",
+                "en": "If you would like to receive the e-mail again, please click on the again button.",
+                "zh": "",
+                "jp": ""
+            },
+            "You do not have any Facebook pages to connect to.": {
+                "ko": "연결가능한 페이스북 페이지가 없습니다.",
+                "en": "You do not have any Facebook pages to connect to.",
+                "zh": "您没有任何Facebook页面连接到。",
+                "jp": "接続するFacebookページはありません。"
+            },
+            "Try now": {
+                "ko": "Try now",
+                "en": "Try now",
+                "zh": "现在试试",
+                "jp": "今すぐやってみて下さい\n"
+            },
+            "Connect": {
+                "ko": "연결하기",
+                "en": "Connect",
+                "zh": "连",
+                "jp": "接続する"
+            },
+            "Disconnect": {
+                "ko": "연결해제",
+                "en": "Disconnect",
+                "zh": "断开",
+                "jp": "切断する"
             }
         };
 

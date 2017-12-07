@@ -53,7 +53,7 @@
 #entityList .entity-content-synonyms .entity-content-synonym
 {
     display: inline-block;
-    border: 1px solid #038eda;
+    border: 1px solid #ddd;
     border-radius: 5px;
     outline: 0;
     font-size: 12px;
@@ -61,6 +61,11 @@
     margin: 3px;
 
     vertical-align: middle;
+}
+
+#entityList .entity-content-synonyms .entity-content-synonym:focus
+{
+    border-color: #038eda;
 }
 
 /*.entity-add-new-modal .entity-content*/

@@ -50,7 +50,7 @@
                 { name: 'Failed Dialogs', url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
-            this.setting = { name: 'Setting', icon: 'setting.png' };
+            // this.setting = { name: 'Setting', icon: 'setting.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)

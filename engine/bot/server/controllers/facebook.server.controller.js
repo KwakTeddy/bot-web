@@ -942,12 +942,17 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
       console.log("Successfully sent message");
       if(cb) cb();
     } else {
-      console.log("Unable to send message.");
-      console.log(JSON.stringify(response.body.error));
-      console.log(error);
+        console.log("Unable to send message.");
+        console.log(JSON.stringify(response.body.error));
+        console.log(error);
     }
   });
 }
+
+module.exports.refresh = function(req, res)
+{
+
+};
 
 
 /*
