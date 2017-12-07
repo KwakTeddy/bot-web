@@ -57,8 +57,8 @@
 }
 </style>
 
-<div ng-controller="DialogSetManagementAddController">
-    <div style="width: 90%; margin: 0 auto;">
+<div ng-controller="DialogSetManagementAddController" style="margin-top: -20px;">
+    <div>
         <form class="intent-management-add-form" ng-submit="save();">
             <div>
                 <label class="required">
@@ -66,13 +66,13 @@
                     <input type="text" ng-model="title" required="true">
                 </label>
             </div>
-            <div>
+            <div >
                 <label style="width: 100%;">
                     <span style="vertical-align: top;">{{lan('Content') }}</span>
                     <textarea placeholder="내용을 입력해주세요" name="content" ng-model="content" class="data-input" style="width: 60%; height: 90px;"></textarea>
                 </label>
             </div>
-            <div style="text-align: center; padding-right: 12px;">
+            <div style="text-align: right;width:70%;">
                 <button class="blue-button mr5">{{lan('Save') }}</button>
                 <button type="button" class="default-button" ng-click="cancel();">{{lan('Cancel') }}</button>
             </div>

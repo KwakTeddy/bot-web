@@ -77,7 +77,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 }
             }
 
-            $scope.entities.push({ name: input.value, synonyms: [] });
+            $scope.entities.push({ name: input.value, synonyms: [{ name: input.value }] });
             input.value = '';
         }
 

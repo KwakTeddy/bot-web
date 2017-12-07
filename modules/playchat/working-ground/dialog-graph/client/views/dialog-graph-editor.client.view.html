@@ -110,8 +110,9 @@
                                 </div>
                             </div>
                             <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
-                                <input type="text" class="output-button-name" placeholder="버튼 이름을 입력하세요" ng-model="button.text" ng-required="true" ng-disabled="isUseOutput === false">
-                                <input type="text" class="output-button-url" placeholder="URL을 입력하세요" ng-model="button.url" ng-disabled="isUseOutput === false">
+                                <input type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true" ng-disabled="isUseOutput === false">
+                                <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url" ng-disabled="isUseOutput === false">
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
                             <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">
                                 <span class="blue-label">{{lan('Add button') }}</span>

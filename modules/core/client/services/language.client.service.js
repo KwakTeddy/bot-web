@@ -13,7 +13,7 @@
 
         var languages = {
             "Welcome to Playchat!": {
-                "ko": "Playchat에 오신 걸 환영합니다!",
+                "ko": "플레이챗에 오신 걸 환영합니다!",
                 "en": "Welcome to Playchat!",
                 "jp": "プレーイチェッにいらっしゃったことを歓迎します!",
                 "zh": "欢迎来到Playchat!"
@@ -247,7 +247,7 @@
                 "zh": "共享的聊天机器人"
             },
             "New chatbot": {
-                "ko": "New chatbot",
+                "ko": "새 봇 만들기",
                 "en": "New chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
@@ -295,7 +295,7 @@
                 "zh": "フローチェッボッはツリー構造です。 使用者は開発者が指定した特定対話構造に合わせて対話を進めるようになります。"
             },
             "Cancel": {
-                "ko": "Cancel",
+                "ko": "취소",
                 "en": "Cancel",
                 "jp": "キャンセル",
                 "zh": "取消"
@@ -541,7 +541,7 @@
                 "zh": "重来"
             },
             "Save": {
-                "ko": "저장하기",
+                "ko": "확인",
                 "en": "Save",
                 "jp": "保存する",
                 "zh": "保存"
@@ -703,7 +703,7 @@
                 "zh": "或"
             },
             "Content": {
-                "ko": "컨텐트",
+                "ko": "컨텐츠",
                 "en": "Content",
                 "jp": "コンテント",
                 "zh": "内容"
@@ -817,13 +817,13 @@
                 "zh": "实体添加"
             },
             "Entity name": {
-                "ko": "엔터티 이름",
+                "ko": "Entity name",
                 "en": "Entity name",
                 "jp": "エントティの名前",
                 "zh": "实体名称"
             },
             "Value Name": {
-                "ko": "밸류 이름(????)",
+                "ko": "Value Name",
                 "en": "Value Name",
                 "jp": "バリューの名前",
                 "zh": "值名称"
@@ -841,7 +841,7 @@
                 "zh": "意图添加"
             },
             "Intent name": {
-                "ko": "인텐트 이름",
+                "ko": "Intent name",
                 "en": "Intent name",
                 "jp": "インテントゥの名前",
                 "zh": "意图名称"
@@ -877,7 +877,7 @@
                 "zh": "添加"
             },
             "File Name": {
-                "ko": "파일 이름",
+                "ko": "File Name",
                 "en": "File Name",
                 "jp": "ファイル名",
                 "zh": "文件名称"
@@ -1675,7 +1675,7 @@
                 "jp": "テキストをコピーしました！"
             },
             "New to Playchat?": {
-                "ko": "PlayChat에 처음이십니까?",
+                "ko": "플레이챗에 처음이십니까?",
                 "en": "New to PlayChat?",
                 "zh": "PlayChat新手？",
                 "jp": "PlayChatを初めてお使いですか？"
