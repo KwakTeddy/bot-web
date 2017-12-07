@@ -382,6 +382,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         if(result.task)
             result.task = JSON.parse(angular.toJson(result.task));
 
+        for(var i=0; i<result.output.length; i++)
+        {
+            delete result.output[i].uploader;
+        }
+
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)
         {
