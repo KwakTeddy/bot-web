@@ -123,5 +123,6 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
     {
         $location.url('/playchat/management/intent');
     };
+
     $scope.lan=LanguageService;
 }]);

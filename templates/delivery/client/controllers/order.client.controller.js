@@ -1,10 +1,13 @@
 'use strict';
 
-angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('orderController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
     console.log("################################orderControll");
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var MenuService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var MenuService = $resource('/api/:templateId/:botId/orders', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+
+
+
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
@@ -39,9 +42,17 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
             $scope.menus.push({ category1: '', category2: '', name: '', price: '' });
         };
 
-        $scope.deleteMenu = function(index)
+        $scope.accept = function(menu)
         {
-            $scope.menus.splice(index, 1);
+            menu.status = '';
+            MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, status: menu.status }, function(result)
+                {
+                    console.log(result);
+                },
+                function(err)
+                {
+                    alert(err);
+                });
         };
 
         $scope.saveMenu = function()
@@ -59,5 +70,5 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
         };
     })();
 
-    // $scope.getList();
+    $scope.getList();
 }]);

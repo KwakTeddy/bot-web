@@ -55,6 +55,14 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
         var page = $stateParams.page ? $stateParams.page : 'dashboard';
         var detail = $stateParams.detail ? $stateParams.detail: '';
 
-        $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (category ? '-' + category : '') + (detail ? '-' + detail : '') + '.client.view.html';
+        if(templateId && page == 'dashboard')
+        {
+            $scope.page = '/templates/' + templateId + '/client/views/html/dashboard.html';
+            $scope.loaded('working-ground');
+        }
+        else
+        {
+            $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (category ? '-' + category : '') + (detail ? '-' + detail : '') + '.client.view.html';
+        }
     }
 }]);

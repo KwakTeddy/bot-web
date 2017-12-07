@@ -1,0 +1,11 @@
+{
+    "status": "String",
+    "botId": "String",
+    "user": "String",
+    "mobile": "String",
+    "address": "String",
+    "order" : "Object",
+    "pay": "String",
+    "discr": "String",
+    "created": "Date"
+}

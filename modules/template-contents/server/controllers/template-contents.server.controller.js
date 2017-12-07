@@ -110,6 +110,12 @@ module.exports.createDatas = function(req, res)
     });
 };
 
+module.exports.updateData = function(req, res)
+{
+    //
+    res.end();
+}
+
 module.exports.findMenus = function(req, res)
 {
     var botId = req.params.botId;

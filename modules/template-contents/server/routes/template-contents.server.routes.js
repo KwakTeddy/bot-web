@@ -4,6 +4,7 @@ module.exports = function(app)
 {
     app.post('/api/:botId/template-contents/upload', TemplateContentsController.uploadImage);
     app.get('/api/:templateId/:botId/:datas', TemplateContentsController.findDatas);
+    app.put('/api/:templateId/:botId/:datas', TemplateContentsController.updateData);
     app.post('/api/:templateId/:botId/:datas', TemplateContentsController.createDatas);
 
     // app.get('/api/:templateId/:botId/menus', TemplateContentsController.findMenus);

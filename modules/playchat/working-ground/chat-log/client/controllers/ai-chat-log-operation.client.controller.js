@@ -1,6 +1,6 @@
 angular.module('playchat').controller('AIChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', 'PagingService', 'DateService','LanguageService', function ($window, $scope, $resource, $cookies, $location, PagingService, DateService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Operation > AI Chat Log');
+    $scope.$parent.changeWorkingGroundName('Operation > AI Chat Log', '/modules/playchat/gnb/client/imgs/ai.png');
 
     var BotUserService = $resource('/api/:botId/operation/users', { botId: '@botId' });
     var BotUserPageService = $resource('/api/:botId/operation/users/totalpage', { botId: '@botId' });
