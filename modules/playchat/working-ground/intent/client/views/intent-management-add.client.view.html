@@ -76,7 +76,7 @@
             <div>
                 <label class="required" style="width: 100%;">
                     <span style="vertical-align: top;">{{lan('List') }}</span>
-                    <div style="display: inline-block; vertical-align: top; width: 90%;">
+                    <div style="display: inline-block; vertical-align: top; width: 85%;">
                         <table class="tb02" style="width: 100%;">
                             <colgroup>
                                 <col style="width: 90%;">
@@ -93,7 +93,7 @@
                                     <td colspan="2">Empty</td>
                                 </tr>
                                 <tr ng-repeat="item in intents">
-                                    <td style="text-align: left;"> <input type="text" class="intent-content-name" ng-model="item.name"></td>
+                                    <td style="text-align: left;"> <textarea class="intent-content-name" ng-model="item.name" style="width: 100%;"></textarea></td>
                                     <td>
                                         <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(intents, $index);">
                                     </td>
