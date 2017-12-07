@@ -52,11 +52,28 @@ exports.find = function(req, res)
     {
         if (err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
         {
             res.jsonp(dialogsets);
+        }
+    });
+};
+
+exports.findOne = function(req, res)
+{
+    Dialogset.findOne({ _id: req.params.dialogsetId }).exec(function(err, dialogset)
+    {
+        if (err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp(dialogset);
         }
     });
 };

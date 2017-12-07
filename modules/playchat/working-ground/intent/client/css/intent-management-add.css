@@ -77,3 +77,14 @@
     content: '+';
     color: #fff;
 }
+
+.intent-content-name
+{
+    height: 30px;
+    transition: height 0.3s;
+}
+
+.intent-content-name:focus
+{
+    height: 120px;
+}
