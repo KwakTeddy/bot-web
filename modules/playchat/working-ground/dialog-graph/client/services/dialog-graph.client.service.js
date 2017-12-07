@@ -1006,13 +1006,15 @@
 
                         dest = children[i];
 
+                        var destCompareTarget = dest.previousElementSibling.children[0];
+
                         var destHalf = dest.offsetHeight / 2;
 
-                        x2 = dest.offsetLeft - 80;
+                        x2 = destCompareTarget.offsetLeft;
                         y2 = dest.offsetTop + (destHalf > 90 ? 90 : destHalf);
 
                         // 세로선.
-                        var x1_5 = (x2 - x1)/2 + x1;
+                        var x1_5 = ((x2 - x1)/2) + x1;
                         var line = createLine(x1_5, y1, x1_5, y2);
                         svg.appendChild(line);
 
