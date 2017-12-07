@@ -428,7 +428,6 @@
                 if(commandMatch && commandMatch.length == 1)
                 {
                     var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
-
                     this.commonDialogs = JSON.parse(parsed);
 
                     this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
@@ -939,7 +938,8 @@
             line.setAttribute('y2', y2);
             line.setAttribute('stroke', '#ddd');
             line.setAttribute('stroke-width', '1px');
-            line.setAttribute('shape-rendering', 'crispEdges');
+            line.setAttribute('vector-effect', 'non-scaling-stroke');
+            // line.setAttribute('shape-rendering', 'crispEdges');
 
             return line;
         };

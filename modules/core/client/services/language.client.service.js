@@ -554,7 +554,7 @@
             },
             "Saved.": {
                 "ko": "저장되었습니다!",
-                "en": "Saved.",
+                "en": "Saved!",
                 "jp": "保存されました!",
                 "zh": "保存成功！"
             },
@@ -1350,7 +1350,7 @@
                 "jp": "利用者入力",
                 "zh": "用户的输入"
             },
-            "1st ": {
+            "1st": {
                 "ko": "1위",
                 "en": "1st ",
                 "jp": "1位",
@@ -1539,6 +1539,126 @@
                 "en": "Id",
                 "zh" : "Id",
                 "jp" : "Id"
+            },
+            "Korean": {
+                "ko": "한국어",
+                "en": "Korean",
+                "zh": "朝鲜的",
+                "jp": "韓国語"
+            },
+            "English": {
+                "ko": "영어",
+                "en": "English",
+                "zh": "英语",
+                "jp": "英語"
+            },
+            "Chinese": {
+                "ko": "중국어",
+                "en": "Chinese",
+                "zh": "中文",
+                "jp": "中国語"
+            },
+            "Japanese": {
+                "ko": "일본어",
+                "en": "Japanese",
+                "zh": "日本",
+                "jp": "日本語"
+            },
+            "Rename": {
+                "ko": "이름변경",
+                "en": "Rename",
+                "zh": "改名",
+                "jp": "名前を変更する"
+            },
+            "Confirm": {
+                "ko": "확인",
+                "en": "Confirm",
+                "zh": "确认",
+                "jp": "確認"
+            },
+            "Task name": {
+                "ko": "Task 이름",
+                "en": "Task name",
+                "zh": "",
+                "jp": ""
+            },
+            "Type Add": {
+                "ko": "Type 추가",
+                "en": "Type Add",
+                "zh": "输入Add",
+                "jp": "タイプ追加"
+            },
+            "Type Logic": {
+                "ko": "Type 로직",
+                "en": "Type Logic",
+                "zh": "类型逻辑",
+                "jp": "タイプロジック"
+            },
+            "Type name": {
+                "ko": "Type 이름",
+                "en": "Type name",
+                "zh": "类型名称",
+                "jp": "型名"
+            },
+            "Press Enter to add": {
+                "ko": "Enter를 누르면 추가됩니다",
+                "en": "Press Enter to add",
+                "zh": "按Enter键添加。",
+                "jp": "Enterキーを押すと、追加されます。"
+            },
+            "Content is already added": {
+                "ko": "Content가 이미 추가되었습니다.",
+                "en": "Content is already added",
+                "zh": "内容已添加",
+                "jp": "コンテンツは既に追加されています"
+            },
+            "Intent edit": {
+                "ko": "Intent 편집",
+                "en": "Intent edit",
+                "zh": "意图编辑",
+                "jp": "インテント編集"
+            },
+            "Create File" : {
+                "ko": "파일생성",
+                "en": "Create File",
+                "zh": "创建文件",
+                "jp": "ファイルの作成"
+            },
+            "New Memo": {
+                "ko": "새로운메모",
+                "en": "New Memo",
+                "zh": "新备忘录",
+                "jp": "新しいメモ"
+            },
+            "History": {
+                "ko": "History",
+                "en": "History",
+                "zh": "History",
+                "jp": "History"
+            },
+            "Dialog Count": {
+                "ko": "대화수",
+                "en": "Dialog Count",
+                "zh": "对话计数",
+                "jp": "ダイアログ数"
+            },
+            "Use Count": {
+                "ko": "사용횟수",
+                "en": "Use Count",
+                "zh": "使用计数",
+                "jp": "カウントを使用する"
+            },
+            "Dialog Input": {
+                "ko": "대화입력",
+                "en": "Dialog Input",
+                "zh": "对话框输入",
+                "jp": "ダイアログ入力"
+            },
+            "Basic Information": {
+                "ko": "기본정보",
+                "en": "Basic Information",
+                "zh": "基本信息",
+                "jp": "基本情報"
             }
         };
 

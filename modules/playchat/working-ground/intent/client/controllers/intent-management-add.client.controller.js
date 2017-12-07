@@ -2,7 +2,8 @@
 
 angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($scope, $resource, $cookies, $location, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Intent > Add', '/modules/playchat/gnb/client/imgs/intent.png');
+    var id = $location.search()._id;
+    $scope.$parent.changeWorkingGroundName('Management > Intent > ' + (id ? 'Edit' : 'Add'), '/modules/playchat/gnb/client/imgs/intent.png');
 
     var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
     var IntentContentsService = $resource('/api/:botId/intents/:intentId/contents', { botId: '@botId', intentId: '@intentId' });
@@ -23,8 +24,6 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
             {
                 $scope.name = intent.name;
                 $scope.intent = intent;
-
-                console.log('인텐트 : ', intent);
             },
             function(err)
             {
@@ -35,7 +34,6 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
             {
                 if(intentContents.length > 0)
                 {
-                    console.log(intentContents);
                     $scope.intents = intentContents;
                 }
             });
@@ -48,9 +46,8 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
         {
             if(e.currentTarget.value)
             {
-                $scope.intents.push(e.currentTarget.value);
+                $scope.intents.push({ name: e.currentTarget.value });
 
-                console.log('인텐트 : ', $scope.intents);
                 e.currentTarget.value = '';
             }
 
@@ -63,7 +60,7 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
         var input = e.currentTarget.previousElementSibling;
         if(input.value)
         {
-            $scope.intents.push(input.value);
+            $scope.intents.push({ name: input.value });
             input.value = '';
         }
 
@@ -82,11 +79,12 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
         if(chatbot.templateId)
             params.templateId = chatbot.templateId._id;
         params.name = $scope.name;
+        params.language = chatbot.language;
         params.intentContents = [];
 
         for(var i=0; i<$scope.intents.length; i++)
         {
-            params.intentContents.push($scope.intents[i]);
+            params.intentContents.push($scope.intents[i].name);
         }
 
         if($scope.intent._id)

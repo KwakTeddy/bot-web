@@ -112,13 +112,23 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 $scope.fileList = fileList;
 
-                for(var i=0; i<fileList.length; i++)
+                var fileName = $location.search().fileName;
+
+                if(fileName)
                 {
-                    if(fileList[i].endsWith('graph.js'))
+                    $scope.currentTabName = fileName;
+                    $scope.loadFile(fileName);
+                }
+                else
+                {
+                    for(var i=0; i<fileList.length; i++)
                     {
-                        $scope.currentTabName = fileList[i];
-                        $scope.loadFile($scope.currentTabName);
-                        break;
+                        if(fileList[i].endsWith('graph.js'))
+                        {
+                            $scope.currentTabName = fileList[i];
+                            $scope.loadFile($scope.currentTabName);
+                            break;
+                        }
                     }
                 }
             },
@@ -230,7 +240,21 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             DialogGraph.refreshLine();
         };
 
-        $scope.zoomIn = function()
+        $scope.$watch('zoom', function(after, before)
+        {
+            angular.element('.graph-zoom-controller button').removeAttr('disabled');
+
+            if(after >= 1.3)
+            {
+                angular.element('.graph-zoom-in').attr('disabled', 'true');
+            }
+            else if(after <= 0.7)
+            {
+                angular.element('.graph-zoom-out').attr('disabled', 'true');
+            }
+        });
+
+        $scope.zoomIn = function(e)
         {
             $scope.zoom += 0.1;
             angular.element('#graphDialogCanvas').css('zoom', $scope.zoom);
@@ -238,9 +262,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 angular.element('svg line').attr('shape-rendering', 'crispEdges');
             }
+
+            DialogGraph.refreshLine();
         };
 
-        $scope.zoomOut = function()
+        $scope.zoomOut = function(e)
         {
             $scope.zoom -= 0.1;
             angular.element('#graphDialogCanvas').css('zoom', $scope.zoom);
@@ -250,6 +276,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 // 1 이하로 줌이 내려가면 line이 사라지는 현상 해결용 코드
                 angular.element('svg line').attr('shape-rendering', 'geometricPrecision');
             }
+
+            DialogGraph.refreshLine();
         };
 
         window.addEventListener('wheel', function(e)
@@ -309,7 +337,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var data = DialogGraph.getCompleteData();
 
             var fileName = $location.search().fileName || 'default.graph.js';
-            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: chatbot.templateId.id, fileName: fileName }, function()
+            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
                 //저장할때마다 history 업데이트
                 $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);

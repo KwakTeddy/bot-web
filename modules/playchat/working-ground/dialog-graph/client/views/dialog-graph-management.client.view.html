@@ -5,7 +5,7 @@
         </form>
         <div class="funtionbtn1">
             <a href="#">
-                <img src="modules/playchat/working-ground/common/client/imgs/export.png">
+                <img src="modules/playchat/working-ground/common/client/imgs/import.png">
                 <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
@@ -14,8 +14,8 @@
     <div class="tab01">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
-            <li><a href="#">{{lan('Store') }}</a></li>
-            <li><a href="#">{{lan('Shared') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
         <div class="btn02 flR" ng-click="modal.mgmtModal.open();" style="width: 110px;">
             <a href="#" class="">{{lan('Add New') }}</a>
@@ -38,7 +38,7 @@
                     <td colspan="2">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="fileName in dialogGraphs track by $index">
-                    <td style="text-align: left;">{{ fileName }}</td>
+                    <td style="text-align: left;"><a href="/playchat/development/dialog-graph?fileName={{ fileName }}">{{ fileName }}</a></td>
                     <td>
                         <a href="#" class="flR" ng-click="delete(fileName);" ng-if="checkEssentionFile(fileName);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
                     </td>
@@ -54,10 +54,10 @@
                     <label class="required">
                         <span class="form-title">{{lan('File Type') }}</span>
                         <label>
-                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> {{lan('graph file') }}
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> {graph file
                         </label>
                         <label>
-                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> {{lan('logic file') }}
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> logic file
                         </label>
                     </label>
                 </div>
@@ -81,7 +81,7 @@
             <form name="modalFormDefault" ng-submit="save(modal.importModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span>{{lan('File') }}</span>
+                        <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>

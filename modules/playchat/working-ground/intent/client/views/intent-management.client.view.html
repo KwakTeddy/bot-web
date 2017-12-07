@@ -5,7 +5,7 @@
         </form>
         <div class="funtionbtn1">
             <a href="#">
-                <img src="modules/playchat/working-ground/common/client/imgs/export.png">
+                <img src="modules/playchat/working-ground/common/client/imgs/import.png">
                 <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
@@ -14,8 +14,8 @@
     <div class="tab01">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
-            <li><a href="#">{{lan('Store') }}</a></li>
-            <li><a href="#">{{lan('Shared') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
         <div class="btn02 flR" id="openNewModal" style="width: 110px;">
             <a href="/playchat/management/intent/add" class="">{{lan('Add New') }}</a>
@@ -42,7 +42,7 @@
                     <td colspan="4">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="item in intents">
-                    <td><a href="/playchat/management/intent/add?_id={{item._id}}">{{ item.name }}</a></td>
+                    <td style="text-align: left;"><a href="/playchat/management/intent/add?_id={{item._id}}">{{ item.name }}</a></td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
                         <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
@@ -70,52 +70,6 @@
         </div>
     </div>
 
-
-    <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
-        <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);" style="width: 500px;">
-                <div class="form-row">
-                    <label class="required">
-                        <span class="form-title">{{lan('Name') }}</span>
-                        <input type="text" placeholder="인텐트 이름을 입력해주세요" name="name" ng-model="modal.mgmtModal.data.name" class="intent-title data-input" ng-required="true">
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label class="required">
-                        <span>{{lan('Content') }}</span>
-                        <div>
-                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;" ng-keydown="addContent($event);">
-                            <button type="button" class="default-button" style="width: 19%;" ng-click="addContent($event);">{{lan('내용추가') }}</button>
-                        </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <table class="data-table">
-                        <colgroup>
-                            <col style="width: 85%;">
-                            <col style="width: 15%;">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th>{{lan('contents') }}</th>
-                            <th>{{lan('delete') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody id="intentList">
-                            <tr ng-if="!intentContentAdded">
-                                <td colspan="2" style="text-align: center; padding: 15px 0; font-size: 12px;">{{lan('Add contents.') }} <input type="text" style="opacity:0; width:0;" ng-required="true"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-footer">
-                    <button class="blue-button">{{lan('Save') }}</button>
-                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="modal-background import-modal" ng-show="modal.importModal.isOpened">
         <div class="modal">
             <form name="modalFormDefault" ng-submit="saveByImport(modal.importModal);">
@@ -125,18 +79,18 @@
                         <input type="text" placeholder="인텐트 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="intent-title data-input" ng-required="true">
                     </label>
                 </div>
+                <!--<div class="form-row">-->
+                    <!--<label class="required">-->
+                        <!--<span>{{lan('Type') }}</span>-->
+                        <!--<div class="form-box">-->
+                            <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
+                            <!--<span> (csv, xlsx, txt)</span>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
                 <div class="form-row">
                     <label class="required">
-                        <span>{{lan('Type') }}</span>
-                        <div class="form-box">
-                            <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> (csv, xlsx, txt)</span>
-                        </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label class="required">
-                        <span>{{lan('File') }}</span>
+                        <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>

@@ -171,6 +171,8 @@ var saveIntentContents = function(botId, templateId, language, user, intentId, c
     {
         if(err)
         {
+            console.error(err);
+
             return error(err);
         }
 
@@ -429,7 +431,7 @@ exports.update = function(req, res)
         function()
         {
             var contents = req.body.intentContents;
-            saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+            saveIntentContents(req.params.botId, req.body.templateId, req.body.language, req.user, intent._id, contents, function()
             {
                 res.jsonp(intent);
             },

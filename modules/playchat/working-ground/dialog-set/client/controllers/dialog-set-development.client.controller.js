@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope, LanguageService)
+angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'LanguageService', 'ModalService', 'FileUploader', function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope, LanguageService, ModalService, FileUploader)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Learning', '/modules/playchat/gnb/client/imgs/speech.png');
 
@@ -15,6 +15,16 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
     var user = $cookies.getObject('user');
     var openDialogsets = $cookies.getObject('openDialogsets');
     var currentPage = 1;
+
+    $scope.openModal = {
+        isOpened: false,
+        data: {}
+    };
+
+    $scope.importModal = {
+        isOpened: false,
+        data: {}
+    };
 
     //UI Handling
     (function()
@@ -476,5 +486,137 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             $scope.initialize();
         }
     });
-    $scope.lan=LanguageService;
+
+
+    (function()
+    {
+        $scope.openModal.selectedDialogset = '';
+
+        $scope.openDialogset = function()
+        {
+            $scope.openModal.isOpened = true;
+
+            DialogSetsService.query({ botId: chatbot._id }, function(list)
+            {
+                $scope.openModal.dialogsetList = list;
+            },
+            function(err)
+            {
+                alert(err);
+            });
+        };
+
+        $scope.closeOpenModal = function()
+        {
+            $scope.openModal.isOpened = false;
+            $scope.openModal.isCreate = false;
+        };
+
+        $scope.createNewDialogset = function(e)
+        {
+            if($scope.openModal.selectedDialogset == 'create-new')
+            {
+                $scope.openModal.isCreate = true;
+            }
+            else
+            {
+                $scope.openModal.isCreate = false;
+
+                var text = angular.element('.open-modal option[value="' + $scope.openModal.selectedDialogset + '"]').text();
+                var selected = angular.element('li[data-id="' + $scope.openModal.selectedDialogset + '"]').get(0);
+
+                if(!selected)
+                {
+                    openDialogsets[chatbot.id][text] = $scope.openModal.selectedDialogset;
+                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+                    $scope.createTab($scope.openModal.selectedDialogset, text);
+                }
+
+                $scope.selectTab($scope.openModal.selectedDialogset, text);
+
+                $scope.closeOpenModal();
+            }
+        };
+
+        $scope.saveNewDialogset = function()
+        {
+
+            var params = {};
+            params.botId = chatbot._id;
+            params.title = $scope.openModal.data.title;
+            params.content = $scope.openModal.data.content;
+            DialogSetsService.save(params, function(result)
+            {
+                openDialogsets[chatbot.id][result.title] = result._id;
+                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+                $scope.createTab(result._id, result.title);
+                $scope.selectTab(result._id, result.title);
+                $scope.closeOpenModal();
+            });
+        };
+    })();
+
+    (function()
+    {
+        var importModal = new ModalService('importModal', $scope);
+        importModal.setOpenCallback(function()
+        {
+            setTimeout(function()
+            {
+                angular.element('.dialogset-title').focus();
+            }, 100);
+        });
+
+        $scope.saveImport = function(modal)
+        {
+            var params = {};
+            params.botId = chatbot._id;
+            params.title = modal.data.title;
+            params.content = modal.data.content;
+            params.type = modal.data.type;
+            params.path = modal.data.path;
+            params.filename = modal.data.filename;
+            params.user = user._id;
+
+            DialogSetsService.save(params, function(result)
+            {
+                console.log('결과 : ', result);
+                openDialogsets[chatbot.id][result.title] = result._id;
+                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+                $scope.createTab(result._id, result.title);
+                $scope.selectTab(result._id, result.title);
+                modal.close();
+            });
+        };
+
+        $scope.uploader = new FileUploader({
+            url: '/api/dialogsets/uploadfile',
+            alias: 'uploadFile',
+            autoUpload: true
+        });
+
+        $scope.uploader.onErrorItem = function(item, response, status, headers)
+        {
+            $scope.modalForm.fileUploadError = response.message;
+            console.log($scope.modalForm.fileUploadError);
+        };
+
+        $scope.uploader.onSuccessItem = function(item, response, status, headers)
+        {
+            importModal.data.path = response.path;
+            importModal.data.filename = response.filename;
+
+            console.log(importModal);
+        };
+
+        $scope.uploader.onProgressItem = function(fileItem, progress)
+        {
+            angular.element('.form-box-progress').css('width', progress + '%');
+        };
+    })();
+
+    $scope.lan = LanguageService;
 }]);

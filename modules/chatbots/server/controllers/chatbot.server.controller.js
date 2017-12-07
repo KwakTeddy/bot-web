@@ -73,6 +73,7 @@ exports.findOne = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).populate('templateId').exec(function(err, item)
     {
+        console.log('머지 : ', req.params.botId);
         if(err)
         {
             return res.status(400).send({ message: err.stack || err });

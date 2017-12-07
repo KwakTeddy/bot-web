@@ -73,7 +73,7 @@
             angular.element('#botContent').hide();
             angular.element('#sharedBotContent').hide();
             angular.element('#' + name).show();
-            angular.element(e.currentTarget).parent().addClass('select_tab');
+            angular.element(e.currentTarget).addClass('select_tab');
         };
 
         $scope.toPage = function(page)
@@ -214,7 +214,7 @@
             ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
             {
                 $scope.openShareModal = false;
-                alert($scope.lan('Shared ') + $scope.selectedBot.name + ' to ' + $scope.share.email);
+                alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
             },
             function(err)
             {
