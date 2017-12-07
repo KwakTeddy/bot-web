@@ -4,6 +4,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var async = require('async');
+var request = require('request');
 
 module.exports.findDatas = function(req, res)
 {
@@ -114,6 +115,20 @@ module.exports.updateData = function(req, res)
 {
     //
     res.end();
+}
+
+module.exports.sendSMS = function(req, res) {
+    console.log(JSON.stringify(req.params));
+    console.log(JSON.stringify(req.body));
+    request.post(
+        'https://bot.moneybrain.ai/api/messages/sms/send',
+        {json: {callbackPhone: "02-858-5683", phone: req.body.mobile.replace(/-/g, ""), message: req.body.message}},
+        function (error, response, body) {
+            if(error) console.log("!!!"+error);
+            console.log(body);
+            console.log('sms send');
+        }
+    );
 }
 
 module.exports.findMenus = function(req, res)
@@ -363,3 +378,4 @@ exports.uploadImage = function(req, res)
         }
     });
 };
+
