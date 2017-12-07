@@ -3,7 +3,8 @@
     display:inline-block;
     cursor: pointer;
     line-height: 24px;
-    height: 24px;
+    height: 100%;
+    width: 100%;
 }
 
 .playchat-background .gnb li
@@ -183,7 +184,10 @@
 {
     color: #b7bbc4;
 }
-
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item a img
+{
+    opacity: 1;
+}
 .playchat-background .gnb .menu-item-list .sub-menu-item-group li
 {
     cursor: pointer;
@@ -198,12 +202,14 @@
     line-height: 48px;
 }
 
+playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a img{
+    opacity: 1 !important;
+}
+
 .playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a
 {
     color: #fff;
 }
-
-
 
 .playchat-background .gnb .bottom-list
 {
@@ -213,7 +219,7 @@
 .playchat-background .gnb .bottom-list > li
 {
     padding: 0px 30px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight:400;
     height: 40px;
     line-height: 40px;

@@ -8,7 +8,7 @@ body,html{
 }
 html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, pre, optgroup {
   -webkit-text-size-adjust:none; 
-	font-size:14px; 
+	font-size:13px;
 	letter-spacing: -0.02em; 
 	font-weight:normal; 
 	color:#393939; 
@@ -23,10 +23,10 @@ img{box-sizing: content-box;}
 img,fieldset,iframe{border:0 none;}
 img { border: 0px; vertical-align:top; }
 table{/* table-layout:fixed; */border-collapse:collapse;border-spacing:0}
-a:link { text-decoration: none; color:#393939; }
-a:visited { text-decoration: none; color:#393939; }
+a:link { text-decoration: none; color:#363636; }
+a:visited { text-decoration: none; color:#363636; }
 a:hover { text-decoration: none; color: #038eda; }
-a:active { text-decoration: none; color:#393939; }
+a:active { text-decoration: none; color:#363636; }
 
 
 /*clear*/
@@ -52,7 +52,7 @@ input { margin:0; padding:0; }
 button { cursor:pointer; }
 
 input[type="checkbox"],input[type="radio"] { padding:0; vertical-align:middle; margin-top:-1px; *margin-top:-2px; }
-input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:10px 18px 10px 8px; }
+input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:10px 18px 10px 8px; background: #fff;}
 input[type="button"] ,input[type="submit"] { cursor:pointer; }
 
 textarea { font-size: 12px; border:1px solid #e5e5e5; padding:5px; }
@@ -65,7 +65,7 @@ input {
 button, input, optgroup, select, textarea {
     font-family: noto sans;
     font-size: 100%;
-    line-height: 1.15;
+    line-height: 15px;
     margin: 0;
 }
 
@@ -577,7 +577,7 @@ div.slide>input[type=checkbox]{
 	border-radius: 6px 6px 0 0;
 	background: #fff;
 	border-bottom-color:#fff;
-	width: 130px;
+	width: 120px;
 	top: 2px;
 	text-align: center;
 }
@@ -1531,3 +1531,6 @@ input.line1{
 /*placeholder*/
 input::-webkit-input-placeholder { color:#cacaca; font-size: 14px;}
 input::-moz-input-placeholder { color:#cacaca; font-size: 14px;}
+
+/*margin*/
+

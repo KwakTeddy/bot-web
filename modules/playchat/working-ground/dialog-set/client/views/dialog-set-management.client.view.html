@@ -18,7 +18,7 @@
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
         <div class="btn02 flR" ng-click="modal.mgmtModal.open();" style="width: 110px;">
-            <a href="#" class="">{{lan('Add New') }}</a>
+            <a href="/playchat/management/dialog-set/add" class="">{{lan('Add New') }}</a>
         </div>
     </div>
     <div class="downSide">
@@ -49,7 +49,7 @@
                     <td>{{ item.user.displayName }}</td>
                     <td>
                         <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-                        <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                     </td>
                     <td>
                         <div class="slide" ng-class="item.usable ? 'on' : ''">
@@ -78,20 +78,20 @@
         <div class="modal">
             <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
                 <div class="form-row">
-                    <label class="required">
+                    <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true">
+                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true" >
                     </label>
                 </div>
                 <div class="form-row">
-                    <label>
-                        <span>{{lan('Content') }}</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input"></textarea>
+                    <label style="width: 100%;">
+                        <span style="display: block;">{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input" style="height: 90px;"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">{{lan('Save') }}</button>
-                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
+                    <button class="blue-button" style="width: 100px;">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();" style="width: 100px;">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>

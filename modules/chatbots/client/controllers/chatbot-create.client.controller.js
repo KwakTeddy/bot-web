@@ -15,12 +15,16 @@
             {
                 ChatbotTemplatesService.query({}, function(result)
                 {
+                    console.log(result);
                     for(var i=0; i<result.length; i++)
                     {
-                        if(!$scope.list[result[i].category.name])
-                            $scope.list[result[i].category.name] = [];
+                        if(result[i].category)
+                        {
+                            if(!$scope.list[result[i].category.name])
+                                $scope.list[result[i].category.name] = [];
 
-                        $scope.list[result[i].category.name].push(result[i]);
+                            $scope.list[result[i].category.name].push(result[i]);
+                        }
                     }
                     // $scope.list = result;
 

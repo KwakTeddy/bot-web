@@ -631,7 +631,7 @@
     border-bottom-color: transparent;
     color: #7e7e7e;
     position: relative;
-    top: -2px;
+    top: -1px;
     z-index: 10;
     cursor: pointer;
 }
@@ -663,8 +663,10 @@
     color: #038eda;
     padding-top: 12px;
     margin: 0;
-    top: 0;
+    top: 1px;
     margin-right: 4px;
+    width: 120px;
+    text-align: center;
 }
 
 .tab-body li:hover, .prev-tab:hover, .next-tab:hover

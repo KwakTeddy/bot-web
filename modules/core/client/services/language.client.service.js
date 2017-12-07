@@ -13,7 +13,7 @@
 
         var languages = {
             "Welcome to Playchat!": {
-                "ko": "플레이쳇에 오신 걸 환영합니다!",
+                "ko": "Playchat에 오신 걸 환영합니다!",
                 "en": "Welcome to Playchat!",
                 "jp": "プレーイチェッにいらっしゃったことを歓迎します!",
                 "zh": "欢迎来到Playchat!"
@@ -247,7 +247,7 @@
                 "zh": "共享的聊天机器人"
             },
             "New chatbot": {
-                "ko": "새로운 챗봇",
+                "ko": "New chatbot",
                 "en": "New chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
@@ -295,19 +295,19 @@
                 "zh": "フローチェッボッはツリー構造です。 使用者は開発者が指定した特定対話構造に合わせて対話を進めるようになります。"
             },
             "Cancel": {
-                "ko": "취소",
+                "ko": "Cancel",
                 "en": "Cancel",
                 "jp": "キャンセル",
                 "zh": "取消"
             },
             "New Chatbot": {
-                "ko": "새로운 챗봇",
+                "ko": "New Chatbot",
                 "en": "New Chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
             },
             "Blank Bot": {
-                "ko": "빈 봇",
+                "ko": "Blank Bot",
                 "en": "Blank Bot",
                 "jp": "空いたボット",
                 "zh": "空白机器人"
@@ -355,7 +355,7 @@
                 "zh": "描述"
             },
             "Create": {
-                "ko": "만들기",
+                "ko": "Create",
                 "en": "Create",
                 "jp": "作り",
                 "zh": "创建"
@@ -367,19 +367,19 @@
                 "zh": " MoneyBrain\""
             },
             "Docs": {
-                "ko": "문서",
+                "ko": "Docs",
                 "en": "Docs",
                 "jp": "文書",
                 "zh": "文件"
             },
             "Forum": {
-                "ko": "포럼",
+                "ko": "Forum",
                 "en": "Forum",
                 "jp": "フォーラム",
                 "zh": "论坛"
             },
             "Support": {
-                "ko": "서포트",
+                "ko": "Support",
                 "en": "Support",
                 "jp": "サポート",
                 "zh": "支持"
@@ -493,25 +493,25 @@
                 "zh": "默认"
             },
             "Question": {
-                "ko": "질문",
+                "ko": "Question",
                 "en": "Question",
                 "jp": "質問",
                 "zh": "问题"
             },
             "Answer": {
-                "ko": "답변",
+                "ko": "Answer",
                 "en": "Answer",
                 "jp": "答弁",
                 "zh": "答案"
             },
             "New Dialog": {
-                "ko": "새로운 대화",
+                "ko": "New Dialog",
                 "en": "New Dialog",
                 "jp": "新しい対話",
                 "zh": "新的对话框"
             },
             "Topic": {
-                "ko": "주제",
+                "ko": "Topic",
                 "en": "Topic",
                 "jp": "テーマ",
                 "zh": "话题"
@@ -1423,7 +1423,7 @@
                 "zh": "即时聊天"
             },
             "AI Chat log": {
-                "ko": "인공지능 챗팅 로그",
+                "ko": "AI Chat log",
                 "en": "AI Chat log",
                 "jp": "人工知能チャットのログ",
                 "zh": "AI聊天记录"
@@ -1495,12 +1495,8 @@
                 "zh": "失败的对话框"
             },
             "Bot Link": {
-                "ko": "챗봇링크",
+                "ko": "Bot Link",
                 "en" : "Bot Link"
-            },
-            "Connect" : {
-                "ko": "연결",
-                "en": "Connect"
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
@@ -1523,7 +1519,7 @@
                 "en": "Line"
             },
             "Messanger": {
-                "ko": "메신저",
+                "ko": "Messanger",
                 "en": "Messanger"
             },
             "Naver Talk Talk": {
@@ -1659,6 +1655,66 @@
                 "en": "Basic Information",
                 "zh": "基本信息",
                 "jp": "基本情報"
+            },
+            "Copy": {
+                "ko": "복사",
+                "en": "Copy",
+                "zh": "复制",
+                "jp": "コピー"
+            },
+            "Copied the text!": {
+                "ko": "복사되었습니다!",
+                "en": "Copied the text!",
+                "zh": "复制文本！",
+                "jp": "テキストをコピーしました！"
+            },
+            "New to Playchat?": {
+                "ko": "PlayChat에 처음이십니까?",
+                "en": "New to PlayChat?",
+                "zh": "PlayChat新手？",
+                "jp": "PlayChatを初めてお使いですか？"
+            },
+            "Choose Dialogset": {
+                "ko": "대화셋 선택",
+                "en": "Choose Dialogset",
+                "zh": "选择对话框",
+                "jp": "ダイアログセットを選択"
+            },
+            "Enter dialogset name": {
+                "ko": "대화셋 이름을 입력해주세요",
+                "en": "Enter dialogset name",
+                "zh": "输入对话框名称。",
+                "jp": "ダイアログセット名を入力します。"
+            },
+            "If you would like to receive the e-mail again, please click on the again button.": {
+                "ko": "",
+                "en": "If you would like to receive the e-mail again, please click on the again button.",
+                "zh": "",
+                "jp": ""
+            },
+            "You do not have any Facebook pages to connect to.": {
+                "ko": "연결가능한 페이스북 페이지가 없습니다.",
+                "en": "You do not have any Facebook pages to connect to.",
+                "zh": "您没有任何Facebook页面连接到。",
+                "jp": "接続するFacebookページはありません。"
+            },
+            "Try now": {
+                "ko": "Try now",
+                "en": "Try now",
+                "zh": "现在试试",
+                "jp": "今すぐやってみて下さい\n"
+            },
+            "Connect": {
+                "ko": "연결하기",
+                "en": "Connect",
+                "zh": "连",
+                "jp": "接続する"
+            },
+            "Disconnect": {
+                "ko": "연결해제",
+                "en": "Disconnect",
+                "zh": "断开",
+                "jp": "切断する"
             }
         };
 

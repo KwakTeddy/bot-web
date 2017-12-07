@@ -23,10 +23,18 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
         console.log(angular.element('.user-menu'));
 
         angular.element('.user-menu').css('left', x + 'px').css('top', y + 'px').show();
+
+        e.stopPropagation();
+        e.preventDefault();
     };
 
     $scope.signout = function()
     {
         $window.location.href = '/api/auth/signout';
     };
+
+    window.addEventListener('click', function(e)
+    {
+        angular.element('.user-menu').hide();
+    });
 }]);

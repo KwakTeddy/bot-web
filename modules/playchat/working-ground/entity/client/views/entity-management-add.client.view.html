@@ -102,10 +102,13 @@
                                             <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(entities, $index);">
                                         </span>
                                     </td>
-                                    <td class="entity-content-synonyms" style="text-align: left;">
+                                    <td class="entity-content-synonyms" style="text-align: left; white-space: normal;">
                                         <span ng-repeat="synonym in item.synonyms" style="position: relative;">
-                                            <input type="text" class="entity-content-synonym" style="width: 160px; padding: 10px;" placeholder="{{lan('Press Enter to add')}}" ng-model="synonym.name" required="true" ng-keydown="addEntityContentSynonym($event, item.synonyms);">
+                                            <input type="text" class="entity-content-synonym" style="width: 160px; padding: 10px;" placeholder="{{lan('Press Enter to add')}}" ng-model="synonym.name" required="true">
                                             <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="position: absolute; right: 5px; top: -1px;" ng-click="deleteSynonym(item.synonyms, $index);">
+                                        </span>
+                                        <span>
+                                            <input type="text" class="entity-content-synonym" style="width: 160px; padding: 10px;" placeholder="{{lan('Press Enter to add')}}" ng-keydown="addEntityContentSynonym($event, item.synonyms);">
                                         </span>
                                     </td>
                                     <td>

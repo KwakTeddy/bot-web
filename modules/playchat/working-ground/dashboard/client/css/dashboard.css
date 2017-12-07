@@ -3,8 +3,7 @@
     font-size: 15px;
     font-weight: 600;
     color: #424242;
-    padding-left: 30px;
-
+    padding-left: 20px;
     margin-top: 20px;
 }
 
@@ -21,7 +20,7 @@
 .dashboard-bot-profile
 {
     display: flex;
-    padding: 20px 40px;
+    padding: 20px;
 }
 
 .dashboard-bot-profile-image
@@ -90,15 +89,15 @@
 
 .dashboard-bot-profile-content textarea
 {
-    width: 498px;
-    height: 75px;
-
+    width: 492px;
+    height: 64px;
     border-radius: 4px;
+    padding: 8px;
 }
 
 .dashboard-dialog-develop
 {
-    padding: 20px 40px;
+    padding: 20px 30px;
 
     display: flex;
     justify-content: center;
@@ -124,14 +123,25 @@
     padding: 10px;
 }
 
+.wid1
+{
+    width: 155px;
+}
+.wid2
+{
+    width: 215px;
+}
 .dashboard-dialog-management-card > div
 {
-    border: 1px solid #038eda;
+    border: 1px solid #d3e4ee;
     border-radius: 6px;
     padding: 20px 30px;
     height: 75px;
 }
-
+.dashboard-dialog-management-card > div:hover{
+    background: #e7f1f7;
+    transition: all 1s cubic-bezier(.25,.8,.25,1);
+}
 .dashboard-dialog-management-card > div > div
 {
     text-align: left;
@@ -142,6 +152,7 @@
 }
 .dashboard-dialog-management-card > div > div a>img{
     margin-right: 5px;
+    margin-top: -2px;
 }
 .dashboard-dialog-learning > div p:first-child, .dashboard-dialog-graph > div p:first-child
 {

@@ -2,14 +2,14 @@
     "menus" : [
         { "name" : "대시보드", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
         { "name" : "컨텐츠 관리", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
-            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "contents.png" },
+            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "basic.png" },
             { "name" : "이벤트정보관리", "url" : "/templates/contents/event", "icon" : "contents.png" },
-            { "name" : "메뉴정보관리", "url" : "/templates/contents/menu", "icon" : "contents.png" },
+            { "name" : "메뉴정보관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
             { "name" : "주차정보관리", "url" : "/templates/contents/park", "icon" : "contents.png" },
             { "name" : "매장정보관리", "url" : "/templates/contents/preview", "icon" : "contents.png" },
             { "name" : "예약정보관리", "url" : "/templates/contents/reservation", "icon" : "contents.png" }
         ] },
         { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario.png" }
+        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "dgm.png" }
     ]
 }

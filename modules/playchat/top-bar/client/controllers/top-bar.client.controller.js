@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('TopBarController', ['$window', '$scope','LanguageService', function ($window, $scope, LanguageService)
+angular.module('playchat').controller('TopBarController', ['$window', '$scope', '$cookies','LanguageService', function ($window, $scope, $cookies, LanguageService)
 {
     $scope.$parent.loaded('top-bar');
 
@@ -11,6 +11,8 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope','
         angular.element('.user-menu').hide();
     });
 
+    $scope.user = $cookies.getObject('user');
+
     $scope.openMenu = function(e)
     {
         var x = e.currentTarget.offsetLeft;
@@ -18,9 +20,10 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope','
 
         x -= angular.element('.user-menu').css('width').replace('px', '')*1;
 
-        console.log(angular.element('.user-menu'));
-
         angular.element('.user-menu').css('left', x + 'px').css('top', y + 'px').show();
+
+        e.stopPropagation();
+        e.preventDefault();
     };
 
     $scope.signout = function()
@@ -32,6 +35,11 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope','
     {
         angular.element('.breadcrumbs .menu-name').text(data.name);
         angular.element('.breadcrumbs .menu-name-icon').get(0).src = data.imgUrl;
+    });
+
+    window.addEventListener('click', function(e)
+    {
+        angular.element('.user-menu').hide();
     });
 
     $scope.lan=LanguageService;
