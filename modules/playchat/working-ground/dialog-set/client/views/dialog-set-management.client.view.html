@@ -78,20 +78,20 @@
         <div class="modal">
             <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
                 <div class="form-row">
-                    <label class="required">
+                    <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true">
+                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true" >
                     </label>
                 </div>
                 <div class="form-row">
-                    <label>
-                        <span>{{lan('Content') }}</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input"></textarea>
+                    <label style="width: 100%;">
+                        <span style="display: block;">{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input" style="height: 90px;"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">{{lan('Save') }}</button>
-                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
+                    <button class="blue-button" style="width: 100px;">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();" style="width: 100px;">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>
