@@ -207,7 +207,7 @@
         {
             if(!$scope.share.read && !$scope.share.write)
             {
-                alert($scope.lan('Please select at least one permission.'));
+                alert($scope.lan('Please select at least one permission'));
                 return false;
             }
 
@@ -218,7 +218,7 @@
             },
             function(err)
             {
-                alert(err.message);
+                alert(err.data.message);
             });
         };
 

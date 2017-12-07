@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'LanguageService',function ($scope, $resource, $cookies, $timeout, $element, LanguageService)
+    angular.module('playchat').controller('DialogGraphIntentAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'LanguageService',function ($scope, $resource, $cookies, $timeout, $element, LanguageService)
     {
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
 
@@ -24,9 +24,8 @@
 
         $scope.keydown = function(e, index)
         {
-            if(e.keyCode == 13 && (e.ctrlKey || e.metaKey))
+            if(e.keyCode == 13)
             {
-                console.log(index);
                 e.preventDefault();
                 $scope.intent.intentContents.splice(index + 1, 0, { content: '' });
 

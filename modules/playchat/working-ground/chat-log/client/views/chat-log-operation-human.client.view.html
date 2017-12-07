@@ -2,9 +2,10 @@
 
 <div ng-controller="HumanChatLogController">
     <h2 class="operation-title">{{lan('Human Chat log') }}</h2>
-    <div class="operation-search-area">
-        <input type="text" placeholder="Search" class="input_type09" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
-        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">Search</button>
+    <div class="upSide operation-search-area" ng-show="!isAdvancedMode">
+        <form class="inline-block">
+            <input name="search" type="search" class="search" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
+        </form>
     </div>
     <div class="operation-content">
         <table class="tb02">
@@ -16,15 +17,15 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>{{lan('Channel') }}</th>
-                    <th>{{lan('User Key') }}</th>
-                    <th>{{lan('Last Update') }}</th>
-                    <th>{{lan('Dialog') }}</th>
+                    <th>Channel</th>
+                    <th>User Key</th>
+                    <th>Last Update</th>
+                    <th>Dialog</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-if="list.length == 0">
-                    <td colspan="5">{{lan('empty') }}</td>
+                    <td colspan="5">Empty</td>
                 </tr>
                 <tr ng-repeat="item in list">
                     <td>{{ item._id.channel }}</td>
