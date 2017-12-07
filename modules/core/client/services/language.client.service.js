@@ -13,7 +13,7 @@
 
         var languages = {
             "Welcome to Playchat!": {
-                "ko": "플레이쳇에 오신 걸 환영합니다!",
+                "ko": "Playchat에 오신 걸 환영합니다!",
                 "en": "Welcome to Playchat!",
                 "jp": "プレーイチェッにいらっしゃったことを歓迎します!",
                 "zh": "欢迎来到Playchat!"
