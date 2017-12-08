@@ -15,12 +15,23 @@
         $scope.currentFileName = undefined;
 
         var fileName = $location.search().fileName;
-        function openCodeEditor(fileName)
+        function openCodeEditor(fileName, newText)
         {
             DialogGraphsService.get({ botId: chatbot.id, fileName: fileName}, function(result)
             {
                 angular.element('.dialog-graph-code-editor').show();
-                editor.setValue(result.data);
+
+                if(newText)
+                {
+                    editor.setValue(result.data + '\n\n' + newText);
+                    editor.focus();
+                    editor.setCursor({line: result.data.split('\n').length + 1, ch: 1});
+                }
+                else
+                {
+                    editor.setValue(result.data);
+                }
+
                 $scope.currentFileName = fileName;
             },
             function(err)

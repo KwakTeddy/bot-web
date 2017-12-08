@@ -11,7 +11,7 @@
     border-left: #e7e7e7 solid 1px;
 
     box-sizing: border-box;
-    z-index: 1000;
+    z-index: 1002;
     transition: right 0.5s;
 }
 
@@ -773,7 +773,7 @@
     border: 1px solid #ddd;
     border-radius: 6px;
 
-    z-index: 1000;
+    z-index: 1005;
 
     max-height: 400px;
     overflow: auto;

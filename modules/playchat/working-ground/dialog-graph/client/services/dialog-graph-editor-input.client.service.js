@@ -37,11 +37,27 @@
                 {
                     if(this.getAttribute('data-new') == 'true')
                     {
+                        var value = this.getAttribute('data-name');
+
+                        if(type == 'type')
+                        {
+                            if(!value)
+                            {
+                                e.stopPropagation();
+                                return alert('새로만들 타입 이름을 입력해주세요');
+                            }
+
+                            that.$rootScope.$broadcast('makeNewType', value);
+
+                            selectCallback(value);
+                            that.close();
+                            return;
+                        }
+
                         //열어야 함.
                         var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]');
                         target.css('right', '0');
 
-                        var value = this.getAttribute('data-name');
                         setTimeout(function()
                         {
                             if(target.find('form').get(0).open)
@@ -195,8 +211,9 @@
     })();
 
 
-    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource)
+    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $rootScope)
     {
+        ListModal.$rootScope = $rootScope;
         var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });

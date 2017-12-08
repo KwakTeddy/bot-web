@@ -421,7 +421,7 @@
 .graph-dialog-input span, .graph-dialog-output span, .graph-dialog-output div
 {
     /*color: #656565;*/
-    font-weight: 100;
+    font-weight: 700;
     font-size: 13px;
 }
 
@@ -739,7 +739,7 @@
 {
     width: 100%;
 
-    text-align: right;
+    text-align: left;
     padding: 10px 20px;
 
     background-color: white;

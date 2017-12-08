@@ -66,7 +66,7 @@
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
                         <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
                         <ul class="dialog-editor-select-options">
-                            <li ng-mousedown="createTask();">{{lan('Add New') }}</li>
+                            <li ng-mousedown="createTask(dialog.task.name);">{{lan('Add New') }}</li>
                             <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">
                                 <span data-filename="{{ task.fileName }}">{{ task.name }}</span>
                             </li>

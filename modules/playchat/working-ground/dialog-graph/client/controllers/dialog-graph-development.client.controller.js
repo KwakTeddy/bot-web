@@ -35,6 +35,56 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
+        $scope.$on('makeNewType', function(context, name)
+        {
+            var text = 'var ' + name + ' = {\n' +
+                       '  typeCheck: function (text, type, task, context, callback) {\n' +
+                       '    var matched = true;\n' +
+                       '    \n' +
+                       '    callback(text, task, matched);\n' +
+                       '\t}\n' +
+                       '};\n' +
+                       '\n' +
+                       'bot.setType(\'' + name + '\', ' + name + ');';
+            for(var i=0; i<$scope.fileList.length; i++)
+            {
+                if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
+                {
+                    angular.element('.tab-body .select_tab').removeClass('select_tab');
+                    angular.element('#' + $scope.fileList[i].replace(/\./gi, '\\.')).addClass('select_tab');
+
+                    $location.search().fileName = $scope.fileList[i];
+
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], text);
+                    break;
+                }
+            }
+        });
+
+        $scope.$on('makeNewTask', function(context, name)
+        {
+            var text = 'var ' + name + ' = {\n' +
+                       '  action: function (task,context,callback) {\n' +
+                       '    callback(task,context);\n' +
+                       '\t}\n' +
+                       '};\n' +
+                       '\n' +
+                       'bot.setTask(\'' + name + '\', ' + name + ');';
+            for(var i=0; i<$scope.fileList.length; i++)
+            {
+                if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
+                {
+                    angular.element('.tab-body .select_tab').removeClass('select_tab');
+                    angular.element('#' + $scope.fileList[i].replace(/\./gi, '\\.')).addClass('select_tab');
+
+                    $location.search().fileName = $scope.fileList[i];
+
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], text);
+                    break;
+                }
+            }
+        });
+
         $scope.$on('$locationChangeStart', function(event, next, current)
         {
             if(DialogGraph.isDirty())
@@ -165,7 +215,9 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             if(fileName.endsWith('.graph.js'))
             {
                 angular.element('.dialog-graph-code-editor').hide();
-                $scope.loadFile(fileName);
+
+                if(!DialogGraph.isDirty())
+                    $scope.loadFile(fileName);
             }
             else
             {
