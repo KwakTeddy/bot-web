@@ -5,7 +5,7 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('DialogGraphEditorTask', function ($cookies, $resource, $rootScope)
+    angular.module('playchat').factory('DialogGraphEditorTask', function ($cookies, $resource, $rootScope, LanguageService)
     {
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -80,8 +80,20 @@
                 $scope.dialog.task = { name: task.name };
             };
 
+            $scope.moveCodeEditor = function(e, task)
+            {
+                e.stopPropagation();
+
+                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name});
+            };
+
             $scope.createTask = function(taskName)
             {
+                if(!taskName)
+                {
+                    return alert(LanguageService('Please enter Task name'));
+                }
+
                 $rootScope.$broadcast('makeNewTask', taskName);
 
                 // //열어야 함.

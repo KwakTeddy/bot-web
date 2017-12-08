@@ -1745,6 +1745,19 @@
                 "en": "Human Chat log",
                 "zh" : "座席对话历史。",
                 "jp" : "エージェントの会話履歴。"
+            },
+            "Please enter Type name": {
+                "ko": "타입 이름을 입력해주세요.",
+                "en": "Please enter Type name",
+                "zh": "请输入类型名称。",
+                "jp": "タイプ名を入力してください。"
+            }
+            ,
+            "Please enter Task name": {
+                "ko": "Task 이름을 입력해주세요.",
+                "en": "Please enter Task name",
+                "zh": "请输入任务名称",
+                "jp": "タスク名を入力してください"
             }
         };
 

@@ -69,6 +69,7 @@
                             <li ng-mousedown="createTask(dialog.task.name);">{{lan('Add New') }}</li>
                             <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">
                                 <span data-filename="{{ task.fileName }}">{{ task.name }}</span>
+                                <span style="float: right;" ng-mousedown="moveCodeEditor($event, task);">view</span>
                             </li>
                         </ul>
                     </div>

@@ -44,7 +44,7 @@
                             if(!value)
                             {
                                 e.stopPropagation();
-                                return alert('새로만들 타입 이름을 입력해주세요');
+                                return alert(that.lan('Please enter Type name'));
                             }
 
                             that.$rootScope.$broadcast('makeNewType', value);
@@ -211,9 +211,10 @@
     })();
 
 
-    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $rootScope)
+    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $rootScope, LanguageService)
     {
         ListModal.$rootScope = $rootScope;
+        ListModal.lan = LanguageService;
         var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });

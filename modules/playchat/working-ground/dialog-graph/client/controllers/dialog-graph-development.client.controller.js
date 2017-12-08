@@ -85,6 +85,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
         });
 
+        $scope.$on('moveToTask', function(context, data)
+        {
+            angular.element('.tab-body .select_tab').removeClass('select_tab');
+            angular.element('#' + data.fileName.replace(/\./gi, '\\.')).addClass('select_tab');
+
+            $location.search().fileName = data.fileName;
+
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(data.fileName, data.name, true);
+        });
+
         $scope.$on('$locationChangeStart', function(event, next, current)
         {
             if(DialogGraph.isDirty())

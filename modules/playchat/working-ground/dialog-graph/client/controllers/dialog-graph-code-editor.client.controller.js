@@ -15,7 +15,7 @@
         $scope.currentFileName = undefined;
 
         var fileName = $location.search().fileName;
-        function openCodeEditor(fileName, newText)
+        function openCodeEditor(fileName, newText, isView)
         {
             DialogGraphsService.get({ botId: chatbot.id, fileName: fileName}, function(result)
             {
@@ -23,9 +23,26 @@
 
                 if(newText)
                 {
-                    editor.setValue(result.data + '\n\n' + newText);
-                    editor.focus();
-                    editor.setCursor({line: result.data.split('\n').length + 1, ch: 1});
+                    if(isView)
+                    {
+                        editor.setValue(result.data);
+                        editor.focus();
+
+                        var split = result.data.split('\n');
+                        for(var i=0; i<split.length; i++)
+                        {
+                            if(split[i].indexOf('var ' + newText) != -1)
+                            {
+                                editor.setCursor({line: i, ch: 1});
+                            }
+                        }
+                    }
+                    else
+                    {
+                        editor.setValue(result.data + '\n\n' + newText);
+                        editor.focus();
+                        editor.setCursor({line: result.data.split('\n').length + 1, ch: 1});
+                    }
                 }
                 else
                 {
