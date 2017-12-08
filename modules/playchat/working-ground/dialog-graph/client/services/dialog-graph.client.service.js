@@ -614,7 +614,15 @@
             }
             else if(output.text)
             {
-                return '<div><span>' + output.text + '</span></div>';
+                var template = '<div><div><span>' + output.text + '</span></div>';
+                if(output.image)
+                {
+                    template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                }
+
+                template += '</div>';
+
+                return template;
             }
             else
             {
@@ -660,8 +668,7 @@
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><span>' + buttons[i].text + '</span></div>';
-                break;
+                template += '<div><a href="' + (buttons[i].url || '#') + '" class="default-button" target="_blank">' + buttons[i].text + '</a></div>';
             }
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
