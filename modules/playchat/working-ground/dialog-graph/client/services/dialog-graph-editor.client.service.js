@@ -17,6 +17,7 @@
 
         DialogGraphEditor.prototype.open = function(parent, dialog)
         {
+            angular.element('.graph-body').css('right', '365px');
             angular.element('#graphDialogEditor').css('right', '0');
             setTimeout(function()
             {
@@ -46,6 +47,7 @@
 
         DialogGraphEditor.prototype.close = function()
         {
+            angular.element('.graph-body').css('right', '');
             angular.element('.dialog-editor-creation-panel').css('right', this.rightStyle);
             angular.element('#graphDialogEditor').css('right', this.rightStyle);
             angular.element('.dialog-editor-input-list-modal').hide();

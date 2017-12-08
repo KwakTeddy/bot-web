@@ -38,7 +38,7 @@
                     <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
                         <p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>
                         <div ng-repeat="input in dialog.input">
-                            <div class="dialog-editor-input-textarea" data-nlu="nlu: {{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
+                            <div class="dialog-editor-input-textarea" data-nlu="{{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
                                 <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
                                     <span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">
                                         <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
@@ -169,10 +169,10 @@
                             <option value="return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
-                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false">
+                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false" ng-keyup="findActionDialogs($event);">
                             <ul class="dialog-editor-select-options">
-                                <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
-                                <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in userDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in commonDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                             </ul>
                         </div>
                     </div>

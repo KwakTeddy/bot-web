@@ -559,20 +559,39 @@
 
             if(typeof input == 'string')
             {
-                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">[text] ' + input + '</span>';
+                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">' + input + '</span>';
             }
             else
             {
                 for(var key in input)
                 {
-                    var icon = key.charAt(0).toUpperCase();
-                    if(key == 'if')
-                        icon = 'IF';
+                    var displayText = '';
+                    if(key == 'entities')
+                    {
+                        displayText = '@' + input[key];
+                    }
+                    else if(key == 'intent')
+                    {
+                        displayText = '#' + input[key];
+                    }
+                    else if(key == 'types')
+                    {
+                        displayText = '$' + input[key];
+                    }
+                    else if(key == 'regexp')
+                    {
+                        displayText = '/' + input[key] + '/';
+                    }
+                    else if(key == 'text')
+                    {
+                        displayText = input[key];
+                    }
+                    else if(key == 'if')
+                    {
+                        displayText = 'if(' + input[key].replace(/[\n\r]*/gi, '').trim() + ')';
+                    }
 
-                    if(!input[key])
-                        continue;
-
-                    template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
+                    template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
                 }
             }
 
@@ -595,7 +614,15 @@
             }
             else if(output.text)
             {
-                return '<div><span>' + output.text + '</span></div>';
+                var template = '<div><div><span>' + output.text + '</span></div>';
+                if(output.image)
+                {
+                    template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                }
+
+                template += '</div>';
+
+                return template;
             }
             else
             {
@@ -607,7 +634,7 @@
                     {
                         if(key != 'kind' && key != 'options')
                         {
-                            template = '<div><span>[' + key + '] ' + output[key] + '</span></div>';
+                            template = '<div><span>' + (output.return ? '[return]' : '[' + key + '] ' + output[key]) + '</span></div>';
                         }
                     }
                 }
@@ -641,8 +668,7 @@
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><span>[button] ' + buttons[i].text + '</span></div>';
-                break;
+                template += '<div><a href="' + (buttons[i].url || '#') + '" class="default-button" target="_blank">' + buttons[i].text + '</a></div>';
             }
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';

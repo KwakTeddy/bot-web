@@ -1786,6 +1786,42 @@
                 "en": "JSON Format Error",
                 "zh": "JSON格式错误",
                 "jp": "JSON形式のエラー"
+            },
+            "There is an error in the graph file or an unsupported version of the graph file.": {
+                "ko": "그래프 파일에 오류가 있거나 지원하지 않는 버전의 그래프 파일입니다.",
+                "en": "There is an error in the graph file or an unsupported version of the graph file.",
+                "zh": "图形文件或图形文件的不受支持的版本中存在错误。",
+                "jp": "グラフファイルまたはサポートされていないバージョンのグラフファイルにエラーがあります。"
+            },
+            "View Source": {
+                "ko": "소스보기",
+                "en": "View Source",
+                "zh": "查看来源",
+                "jp": "ソースを表示"
+            },
+            "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
+                "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
+                "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
+                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 你想保存吗？",
+                "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
+            },
+            "Typing the regular expression, press Enter to finish.": {
+                "ko": "정규식 입력 중, 마치려면 Enter를 입력해주세요.",
+                "en": "While typing the regular expression, press Enter to finish.",
+                "zh": "输入正则表达式，按Enter完成。",
+                "jp": "正規表現を入力し、Enterキーを押して終了します。"
+            },
+            "Entering conditional statements, press Enter to finish.": {
+                "ko": "조건문 입력 중, 마치려면 Enter를 입력해주세요.",
+                "en": "Entering conditional statements, press Enter to finish.",
+                "zh": "输入条件语句，按Enter完成。",
+                "jp": "条件文を入力し、Enterキーを押して終了します。"
+            },
+            "Back to Graph edit mode": {
+                "ko": "그래프 편집으로 돌아가기",
+                "en": "Back to Graph edit mode",
+                "zh": "返回图形编辑模式",
+                "jp": "グラフ編集モードに戻る"
             }
         };
 

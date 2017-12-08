@@ -255,7 +255,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     var result = DialogGraph.loadFromFile(data, fileName);
                     if(!result)
                     {
-                        angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
+                        angular.element('.graph-body').html($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
                     }
                 }
             },
@@ -263,7 +263,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 if(err.status == 404)
                 {
-                    angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>파일을 찾을 수 없습니다</h1></div>');
+                    angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>' + $scope.lan('File not found') + '</h1></div>');
                 }
             });
         };

@@ -17,6 +17,16 @@
     font-weight: bold;
 }
 
+.dialog-graph-error > div
+{
+    text-align: center;
+}
+
+.dialog-graph-error button
+{
+    margin: 20px 0;
+}
+
 .graph-background
 {
     min-width: 800px;
@@ -246,6 +256,8 @@
     right: 14px;
     bottom: 0;
 
+    transition: right 0.5s;
+
     overflow: auto;
 }
 
@@ -388,13 +400,40 @@
     background-image: url(../imgs/more-blue.png);
 }
 
-.graph-dialog-input, .graph-dialog-buttons
+.graph-dialog-input
 {
     position: relative;
-    height: 43px;
-    text-align: center;
-    /*line-height: 43px;*/
+     height: 33px;
+    /* text-align: center; */
+    /* line-height: 43px; */
     line-height: 33px;
+}
+
+.graph-dialog-buttons
+{
+    position: relative;
+    padding: 10px 0;
+    line-height: 33px;
+}
+
+.graph-dialog-buttons > div
+{
+    padding: 5px 0;
+}
+
+.graph-dialog-buttons a
+{
+    width: 91%;
+    padding:0 10px;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
 }
 
 .graph-dialog-input, .graph-dialog-buttons span
@@ -437,7 +476,7 @@
     min-height: 45px;
     max-height: 200px;
     cursor: pointer;
-    text-align: center;
+    /*text-align: center;*/
 
     /*padding: 10px;*/
     padding: 5px;
