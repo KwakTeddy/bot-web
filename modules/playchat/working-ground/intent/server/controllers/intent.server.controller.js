@@ -309,7 +309,7 @@ exports.create = function(req, res)
         return res.status(400).send({ message: 'Name is not found' });
     }
 
-    Intent.findOne({ botId: req.params.botId, user: req.user._id, name: req.body.name }, function (err, intent)
+    Intent.findOne({ botId: req.params.botId, name: req.body.name }, function (err, intent)
     {
         if (err)
         {
@@ -384,7 +384,7 @@ exports.update = function(req, res)
         return res.status(400).send({ message: 'Name is not found' });
     }
 
-    Intent.findOne({ _id: req.body._id, botId: req.params.botId, user: req.user._id }).populate('user', 'displayName').exec(function(err, intent)
+    Intent.findOne({ _id: req.body._id, botId: req.params.botId }).populate('user', 'displayName').exec(function(err, intent)
     {
         if(err)
         {
@@ -444,7 +444,7 @@ exports.update = function(req, res)
 
 exports.delete = function(req, res)
 {
-    IntentContent.remove({ botId: req.params.botId, intentId: req.params.intentId, user: req.user._id }).exec(function(err)
+    IntentContent.remove({ botId: req.params.botId, intentId: req.params.intentId }).exec(function(err)
     {
         if(err)
         {
