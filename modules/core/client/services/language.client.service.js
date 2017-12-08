@@ -246,6 +246,12 @@
                 "jp": "共有されたチェッボッ",
                 "zh": "共享的聊天机器人"
             },
+            "Share chatbot": {
+                "ko": "챗봇 공유하기",
+                "en": "Share chatbot",
+                "zh": "分享chatbot",
+                "jp": "チャットボットを共有する"
+            },
             "New chatbot": {
                 "ko": "새 봇 만들기",
                 "en": "New chatbot",

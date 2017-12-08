@@ -87,6 +87,16 @@
     overflow-y: auto;
 }
 
+.playchat-background .top-bar+div > div .working-ground > div
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    min-width: 800px;
+    overflow-x: auto;
+}
+
 .playchat-background .top-bar+div > div .log-analysis
 {
     position: absolute;

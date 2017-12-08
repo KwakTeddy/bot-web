@@ -236,8 +236,6 @@
 
         $scope.getList();
 
-
-
         $scope.lan = LanguageService;
     }]);
 })();
