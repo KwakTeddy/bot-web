@@ -26,8 +26,8 @@
                     <textarea ng-model="chatbot.description">{{ chatbot.description }}</textarea>
                 </div>
             </div>
-            <div style="padding-top: 15px;">
-                <button type="button" class="blue-button" ng-click="saveChatbot();">Save</button>
+            <div style="display: flex; padding-bottom: 20px;">
+                <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;">Save</button>
             </div>
         </div>
     </form>
@@ -47,13 +47,13 @@
                     <th>Name</th>
                     <th>Authority</th>
                     <th>
-                        <button type="button" class="default-button">Add New Member</button>
+                        <button type="button" class="default-button" ng-click="addNewMember();">Add New Member</button>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-if="list.length == 0">
-                    <td colspan="4">Empty</td>
+                    <td colspan="5">Empty</td>
                 </tr>
                 <tr ng-repeat="item in list">
                     <td>{{ item.user.email }}</td>
@@ -68,10 +68,60 @@
                         </label>
                     </td>
                     <td>
-                        <a href="#" class="flR" ng-click="deleteAuth(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a href="#" class="flR" ng-click="deleteAuth(item, list);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </form>
+
+    <div class="window_overlay" ng-show="openShareModal">
+        <div class="window">
+            <form class="card_detail_window" ng-submit="shareChatbot();">
+                <div class="window_header">
+				<span class="window_header_icon">
+					<img src="/modules/chatbots/client/imgs/share.png">
+				</span>
+                    <div class="window_title">
+                        <h1>{{ lan('Share chatbot')}}</h1>
+                    </div>
+                </div>
+                <div class="window_main_col">
+                    <div class="card_detail_item">
+                        <ul class="list mt20">
+                            <li class="card_detail_item_header">{{ lan('Chatbot') }}</li>
+                        </ul>
+                        <ul class="list mt20">
+                            <li class="card_detail_item_content1">{{ chatbot.id }}</li>
+                        </ul>
+                        <ul class="list clear">
+                            <li class="card_detail_item_header">{{ lan('Share') }}</li>
+                        </ul>
+                        <ul class="list2 mt10">
+                            <li class="ml7">{{ lan('Member ID(Email)') }} :</li>
+                            <li class="ml8 mt23">Authorization :</li>
+                        </ul>
+                        <ul class="list4 mt4">
+                            <li><input type="text" class="input_pop" placeholder="username or username@moneybrain.ai" ng-model="share.email" ng-required="true"></li>
+                            <li class="ml10 mt10">
+                                <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="share.read">
+                                <label for="checkBox1" class="label">{{ lan('Read') }}</label>
+                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.edit">
+                                <label for="checkBox2" class="label">{{ lan('Write') }}</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--<div class="list2 mt20 clear">-->
+                    <!--<li class="card_detail_item_content4">-->
+                        <!--{{ lan("Flow chatbots are tree-based. The user is driven down a specific path") }}-->
+                    <!--</li>-->
+                <!--</div>-->
+                <div class="popbtnarea">
+                    <button type="button" class="default-button" ng-click="closeShareModal();">{{ lan('Cancel') }}</button>
+                    <button class="blue-button" style="margin-left: 20px;">{{ lan('Share') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

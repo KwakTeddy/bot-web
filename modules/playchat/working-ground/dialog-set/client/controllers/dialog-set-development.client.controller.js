@@ -478,7 +478,14 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             },
             function(err)
             {
-                alert(err.data.error || err.data.message);
+                if(err.status == 401)
+                {
+                    $scope.initialize();
+                }
+                else
+                {
+                    alert(err.data.error || err.data.message);
+                }
             });
         }
         else
@@ -609,7 +616,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             DialogSetsService.save(params, function(result)
             {
-                console.log('결과 : ', result);
                 openDialogsets[chatbot.id][result.title] = result._id;
                 $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 

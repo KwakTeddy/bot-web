@@ -82,7 +82,14 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                     },
                     function(err)
                     {
-                        alert(err.data.error || err.data.message);
+                        if(err.status == 401)
+                        {
+
+                        }
+                        else
+                        {
+                            alert(err.data.error || err.data.message);
+                        }
                     });
                 }
 
