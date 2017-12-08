@@ -215,6 +215,8 @@
             this.onLoadCallback = undefined;
 
             this.dirty = false;
+
+            this.mode = 'dialog';
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -441,6 +443,8 @@
                     {
                         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
 
+                        console.log(parsed);
+
                         startDialog.children = this.userDialogs = JSON.parse(parsed);
                         this.graphData = startDialog;
 
@@ -464,6 +468,30 @@
             }
 
             return false;
+        };
+
+        DialogGraph.prototype.changeToCommonDialogs = function()
+        {
+            if(this.commonDialogs.length > 1)
+            {
+                this.commonDialogs[0].children = [];
+
+                for(var i=1; i<this.commonDialogs.length; i++)
+                {
+                    this.commonDialogs[0].children.push(this.commonDialogs[i]);
+                }
+
+                this.mode = 'common';
+            }
+
+            this.refresh();
+        };
+
+        DialogGraph.prototype.changeToDialogs = function()
+        {
+            this.mode = 'dialog';
+            this.graphData.children = this.userDialogs;
+            this.refresh();
         };
 
         DialogGraph.prototype.getAllUserDialogs = function(dialogs)
@@ -1204,20 +1232,40 @@
 
         DialogGraph.prototype.refresh = function()
         {
-            this.idList = {};
-            this.canvas.html('');
-            this.drawDialog(this.canvas, this.graphData);
-            this.drawLines(this.canvas.find('.graph-dialog'));
-            if(this.focusedDialog)
+            if(this.mode == 'common')
             {
-                this.focusById(this.focusedDialog);
+                this.idList = {};
+                this.canvas.html('');
+                this.drawDialog(this.canvas, this.commonDialogs[0]);
+                this.drawLines(this.canvas.find('.graph-dialog'));
+                if(this.focusedDialog)
+                {
+                    this.focusById(this.focusedDialog);
+                }
+                else
+                {
+                    this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+                }
+
+                this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
             else
             {
-                this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
-            }
+                this.idList = {};
+                this.canvas.html('');
+                this.drawDialog(this.canvas, this.graphData);
+                this.drawLines(this.canvas.find('.graph-dialog'));
+                if(this.focusedDialog)
+                {
+                    this.focusById(this.focusedDialog);
+                }
+                else
+                {
+                    this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+                }
 
-            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+                this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+            }
         };
 
         DialogGraph.prototype.refreshLine = function()

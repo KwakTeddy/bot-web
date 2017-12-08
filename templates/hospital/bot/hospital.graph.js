@@ -119,60 +119,6 @@ var dialogs = [
             "name": "mapButton"
         }
     },
-    // {
-    //     "id": "default0",
-    //     "filename": "default",
-    //     "input": [
-    //         {
-    //             "text": "예약"
-    //         }
-    //     ],
-    //     "output": [
-    //         {
-    //             "kind": "Action",
-    //             "call": "예약안내"
-    //         }
-    //     ],
-    //     "name": "예약하기",
-    //     "children": [
-    //         {
-    //             "name": "예약안내",
-    //             "id": "default3",
-    //             "filename": "default",
-    //             "input": [
-    //                 {
-    //                     "if": "false"
-    //                 }
-    //             ],
-    //             "output": [
-    //                 {
-    //                     "text": "<+hospitalName+>는 전화로 진료예약을 받고 있습니다.\n지금 바로 전화주세요!\n\n전화하기 -> +phone+",
-    //                     "kind": "Text"
-    //                 }
-    //             ],
-    //             "task": {
-    //                 "name": "addButton"
-    //             },
-    //             "buttons": []
-    //         },
-    //         {
-    //             "name": "예약하기2",
-    //             "id": "default4",
-    //             "filename": "default",
-    //             "input": [
-    //                 {
-    //                     "text": "1"
-    //                 }
-    //             ],
-    //             "output": [
-    //                 {
-    //                     "text": "ㅁㄴㅇㄹ",
-    //                     "kind": "Text"
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // },
     {
         "name": "시술후기",
         "id": "default10",

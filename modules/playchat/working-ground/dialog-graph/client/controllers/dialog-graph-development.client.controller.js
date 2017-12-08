@@ -157,6 +157,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.initialize = function()
         {
             $scope.compactMode = 'Compact';
+            $scope.commonMode = 'Common';
             $scope.zoom = 1;
             $scope.searchedDialogs = [];
             $scope.searchedDialogFocus = 0;
@@ -280,6 +281,21 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
             var target = e.currentTarget.parentElement.nextElementSibling;
             DialogGraph.toggleChild(target);
+        };
+
+        $scope.toggleCommonMode = function()
+        {
+            if($scope.commonMode == 'Common')
+            {
+                // to commonDialogs
+                $scope.commonMode = 'Dialog';
+                DialogGraph.changeToCommonDialogs();
+            }
+            else
+            {
+                $scope.commonMode = 'Common';
+                DialogGraph.changeToDialogs();
+            }
         };
 
         $scope.toggleCompactMode = function()
