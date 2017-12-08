@@ -108,7 +108,7 @@ var surgeImageButton = {
     action: function (task,context,callback) {
         task.buttons = [{text:"바로 예약"}, {text:"시술후기 보기"}];
         // task.buttons = [];
-        task.image = {url: config.host + context.dialog.surgeListType.image};
+        task.image = {url: context.dialog.surgeListType.image};
 
         callback(task,context);
     }
@@ -139,7 +139,7 @@ var reviewButtonImage = {
         task.buttons = [{text:"바로 예약"}, {text:"시술정보 보기"}];
         console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         console.log(config.host);
-        task.image = {url: config.host + context.dialog.surgeListType.image};
+        task.image = {url: context.dialog.surgeListType.image};
 
         callback(task,context);
         callback(task,context);
@@ -188,7 +188,7 @@ bot.setType('eventListType', eventListType);
 
 var addEventImage = {
     action: function (task,context,callback) {
-        task.image = {url: config.host + context.dialog.eventListType.image};
+        task.image = {url: context.dialog.eventListType.image};
         callback(task,context);
     }
 };
