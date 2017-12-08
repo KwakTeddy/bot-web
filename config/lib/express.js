@@ -239,6 +239,7 @@ module.exports.initModulesServerRoutes = function (app)
 {
     var Bot = mongoose.model('Bot');
     var BotAuth = mongoose.model('BotAuth');
+    var Template = mongoose.model('Template');
 
     app.all('/api*', function(req, res, next)
     {
@@ -266,7 +267,7 @@ module.exports.initModulesServerRoutes = function (app)
                     else
                         query.id = botId;
 
-                    Bot.findOne(query).exec(function(err, item)
+                    Template.findOne({ id:botId }).exec(function(err, item)
                     {
                         if(err)
                         {
@@ -276,7 +277,12 @@ module.exports.initModulesServerRoutes = function (app)
 
                         if(item)
                         {
-                            BotAuth.findOne({ bot: item._id, user: req.user }).exec(function(err, botAuth)
+                            //템플릿아이디는 그냥 넘긴다.
+                            next();
+                        }
+                        else
+                        {
+                            Bot.findOne(query).exec(function(err, item)
                             {
                                 if(err)
                                 {
@@ -284,26 +290,38 @@ module.exports.initModulesServerRoutes = function (app)
                                     return res.status(400).send({ error: err});
                                 }
 
-                                if(botAuth)
+                                if(item)
                                 {
-                                    if((req.method == 'GET' && !botAuth.read) || (req.method != 'GET' && !botAuth.edit))
+                                    BotAuth.findOne({ bot: item._id, user: req.user }).exec(function(err, botAuth)
                                     {
-                                        res.status(401).end();
-                                    }
-                                    else
-                                    {
-                                        next();
-                                    }
+                                        if(err)
+                                        {
+                                            console.error(err);
+                                            return res.status(400).send({ error: err});
+                                        }
+
+                                        if(botAuth)
+                                        {
+                                            if((req.method == 'GET' && !botAuth.read) || (req.method != 'GET' && !botAuth.edit))
+                                            {
+                                                res.status(401).end();
+                                            }
+                                            else
+                                            {
+                                                next();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            res.status(401).end();
+                                        }
+                                    });
                                 }
                                 else
                                 {
-                                    res.status(401).end();
+                                    next();
                                 }
                             });
-                        }
-                        else
-                        {
-                            next();
                         }
                     });
                 }
