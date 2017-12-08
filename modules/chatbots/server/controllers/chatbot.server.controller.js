@@ -2,6 +2,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var fs = require('fs');
 
+var ncp = require('ncp').ncp;
+ncp.limit = 16;
+
 var ChatBot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
 var Template = mongoose.model('Template');
@@ -218,12 +221,13 @@ exports.duplicate = function(req, res)
     {
         if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
         {
             var clone = new ChatBot();
-            clone.id = item.id + ' Clone';
+            clone.id = item.id + '_Clone';
             clone.name = item.name + 'Clone';
             clone.description = item.description;
             clone.user = req.user;
@@ -235,7 +239,34 @@ exports.duplicate = function(req, res)
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                res.jsonp(clone);
+                if(!item.templateId)
+                {
+                    var dest = path.resolve('./custom_modules/' + item.id + '_Clone');
+                    ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
+                    {
+                        if (err)
+                        {
+                            console.error(err);
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        var fileList = fs.readdirSync(dest);
+                        for(var i=0; i<fileList.length; i++)
+                        {
+                            var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
+                            content = content.toString();
+                            content = content.replace(new RegExp(item.id, 'gi'), clone.id);
+
+                            fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
+                        }
+
+                        res.jsonp(clone);
+                    });
+                }
+                else
+                {
+                    res.jsonp(clone);
+                }
             });
         }
     });

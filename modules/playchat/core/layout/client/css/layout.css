@@ -87,7 +87,7 @@
     overflow-y: auto;
 }
 
-.playchat-background .top-bar+div > div .working-ground > div
+.playchat-background .top-bar+div > div .working-ground > div.fixed-width
 {
     position: absolute;
     left: 0;
