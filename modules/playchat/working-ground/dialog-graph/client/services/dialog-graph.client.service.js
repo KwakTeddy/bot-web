@@ -626,7 +626,7 @@
                     {
                         if(key != 'kind' && key != 'options')
                         {
-                            template = '<div><span>' + output[key] + '</span></div>';
+                            template = '<div><span>' + (output.return ? '[return]' : '[' + key + '] ' + output[key]) + '</span></div>';
                         }
                     }
                 }

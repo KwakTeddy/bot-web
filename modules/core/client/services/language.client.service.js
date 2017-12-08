@@ -1816,6 +1816,12 @@
                 "en": "Entering conditional statements, press Enter to finish.",
                 "zh": "输入条件语句，按Enter完成。",
                 "jp": "条件文を入力し、Enterキーを押して終了します。"
+            },
+            "Back to Graph edit mode": {
+                "ko": "그래프 편집으로 돌아가기",
+                "en": "Back to Graph edit mode",
+                "zh": "返回图形编辑模式",
+                "jp": "グラフ編集モードに戻る"
             }
         };
 

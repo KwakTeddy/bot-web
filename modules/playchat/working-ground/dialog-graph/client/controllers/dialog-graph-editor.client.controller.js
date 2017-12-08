@@ -371,7 +371,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                     if(result.output[i].kind == 'Action')
                     {
                         var actionObject = { kind: 'Action' };
-                        actionObject[result.output[i].type] = result.output[i].dialog;
+                        actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
                         if(result.output[i].if)
                             actionObject.if = result.output[i].if;
                         if(result.output[i].options)
@@ -385,7 +385,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 //액션 타입을 선택한 경우 저장시 액션데이터만 저장하도록.
                 //이렇게 하면 저장하기 전에 다시 Content등의 아웃풋을 선택하면 기존 데이터를 그대로 활용할 수 있음.
                 var output = { kind: 'Action' };
-                output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.dialog;
+                output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.type == 'return' ? 1 : $scope.dialog.actionOutput.dialog;
                 result.output = [output];
             }
         }

@@ -19,6 +19,8 @@
         var fileName = $location.search().fileName;
         function openCodeEditor(fileName, options)
         {
+            $scope.mode = '';
+
             angular.element('.dialog-graph-code-editor-controller').removeClass('edit');
 
             if(angular.element('#graphDialogEditor').css('right') == '0px')
@@ -169,6 +171,11 @@
             {
                 alert(err.data.message);
             });
+        };
+
+        $scope.backToGraph = function()
+        {
+            angular.element('.dialog-graph-code-editor').hide();
         };
 
         $scope.closeError = function()

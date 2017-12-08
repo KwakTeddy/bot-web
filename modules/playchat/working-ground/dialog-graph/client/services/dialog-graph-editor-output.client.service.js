@@ -162,12 +162,15 @@
             $scope.actionValueChanged = function(dialog)
             {
                 var type = dialog.type;
-                console.log('타입 : ', type);
                 if(type == 'up' || type == 'repeat' || type == 'return')
                 {
-                    console.log('머야 : ', dialog);
                     $scope.actionTypeCheck = true;
                     dialog.dialog = 1;
+
+                    if(type == 'return')
+                    {
+                        dialog.dialog = '';
+                    }
                 }
                 else
                 {
