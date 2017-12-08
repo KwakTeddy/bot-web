@@ -1,6 +1,10 @@
 {
-    "category": "String",
-    "name": "String",
-    "price": "Number",
-    "image": "String"
+    "botId" : "String",
+    "name" : "String",
+    "description" : "String",
+    "price" : "Number",
+    "recovery" : "String",
+    "image" : "String",
+    "reviewImage" : "String",
+    "review" : "String"
 }

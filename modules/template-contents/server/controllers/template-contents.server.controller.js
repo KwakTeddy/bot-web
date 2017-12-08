@@ -17,6 +17,7 @@ module.exports.findDatas = function(req, res)
         if(err)
         {
             console.error(err);
+            console.log("!!!!!!!!!!!!");
             return res.status(400).send({ error: err });
         }
 
