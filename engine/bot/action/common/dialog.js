@@ -458,8 +458,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                   cb2(true, false);
                 }
 
-                if (eachMatched2) cb2(null, true);
-                else cb2(true, false);
+                // if (eachMatched2) cb2(null, true);
+                // else cb2(true, false);
               }
 
             } else {

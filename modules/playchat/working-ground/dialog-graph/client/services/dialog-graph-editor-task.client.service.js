@@ -5,7 +5,7 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('DialogGraphEditorTask', function ($cookies, $resource)
+    angular.module('playchat').factory('DialogGraphEditorTask', function ($cookies, $resource, $rootScope, LanguageService)
     {
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -80,52 +80,43 @@
                 $scope.dialog.task = { name: task.name };
             };
 
-            $scope.createTask = function()
+            $scope.moveCodeEditor = function(e, task)
             {
-                //열어야 함.
-                var target = angular.element('.dialog-editor-creation-panel[data-type="task"]');
-                target.css('right', '0');
+                e.stopPropagation();
 
-                setTimeout(function()
-                {
-                    target.find('form input').focus();
-                    target.find('form').get(0).openCallback();
-                }, 501);
-
-                target.find('form').get(0).saveCallback = function(name)
-                {
-                    $scope.dialog.task = { name: name };
-                    target.css('right', '-368px');
-                };
-
-                target.find('form').get(0).closeCallback = function()
-                {
-                    target.css('right', '-368px');
-                };
+                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name});
             };
 
-            // $scope.editTask = function(task)
-            // {
-            //     var target = angular.element('.dialog-editor-creation-panel[data-type="task"]');
-            //     target.css('right', '0');
-            //
-            //     setTimeout(function()
-            //     {
-            //         target.find('form input').focus().val(task.name);
-            //         target.find('form').get(0).openCallback(task.fileName);
-            //     }, 501);
-            //
-            //     target.find('form').get(0).saveCallback = function(task)
-            //     {
-            //         $scope.dialog.task = { name: task.name };
-            //         target.css('right', '-368px');
-            //     };
-            //
-            //     target.find('form').get(0).closeCallback = function()
-            //     {
-            //         target.css('right', '-368px');
-            //     };
-            // };
+            $scope.createTask = function(taskName)
+            {
+                if(!taskName)
+                {
+                    return alert(LanguageService('Please enter Task name'));
+                }
+
+                $rootScope.$broadcast('makeNewTask', taskName);
+
+                // //열어야 함.
+                // var target = angular.element('.dialog-editor-creation-panel[data-type="task"]');
+                // target.css('right', '0');
+                //
+                // setTimeout(function()
+                // {
+                //     target.find('form input').focus();
+                //     target.find('form').get(0).openCallback();
+                // }, 501);
+                //
+                // target.find('form').get(0).saveCallback = function(name)
+                // {
+                //     $scope.dialog.task = { name: name };
+                //     target.css('right', '-368px');
+                // };
+                //
+                // target.find('form').get(0).closeCallback = function()
+                // {
+                //     target.css('right', '-368px');
+                // };
+            };
         };
 
         return { make : make };

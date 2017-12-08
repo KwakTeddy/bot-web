@@ -37,11 +37,27 @@
                 {
                     if(this.getAttribute('data-new') == 'true')
                     {
+                        var value = this.getAttribute('data-name');
+
+                        if(type == 'type')
+                        {
+                            if(!value)
+                            {
+                                e.stopPropagation();
+                                return alert(that.lan('Please enter Type name'));
+                            }
+
+                            that.$rootScope.$broadcast('makeNewType', value);
+
+                            selectCallback(value);
+                            that.close();
+                            return;
+                        }
+
                         //열어야 함.
                         var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]');
                         target.css('right', '0');
 
-                        var value = this.getAttribute('data-name');
                         setTimeout(function()
                         {
                             if(target.find('form').get(0).open)
@@ -195,8 +211,10 @@
     })();
 
 
-    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource)
+    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $rootScope, LanguageService)
     {
+        ListModal.$rootScope = $rootScope;
+        ListModal.lan = LanguageService;
         var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
@@ -422,7 +440,7 @@
 
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                     {
-                        $scope.nlpedTextPrefix = 'nlu: ';
+                        // $scope.nlpedTextPrefix = 'nlu: ';
                         $scope.nlpedText[index] = result.text;
 
                         if($scope.showNlpTimeout)
@@ -470,7 +488,7 @@
                 {
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                     {
-                        $scope.nlpedTextPrefix = 'nlu: ';
+                        // $scope.nlpedTextPrefix = 'nlu: ';
                         $scope.dialog.input[index].text = result.text;
 
                         if($scope.showNlpTimeout)
@@ -922,7 +940,7 @@
 
                             DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                             {
-                                $scope.nlpedTextPrefix = 'nlu: ';
+                                // $scope.nlpedTextPrefix = 'nlu: ';
                                 input.text = $scope.nlpedText[index];
 
                                 if($scope.showNlpTimeout)
@@ -982,6 +1000,19 @@
 
                     if(value !== undefined && value !== null && value !== '')
                     {
+                        if(value.startsWith('/'))
+                        {
+                            $scope.nlpedTextPrefix = '';
+                            $scope.nlpedText[index] = LanguageService('Typing the regular expression, press Enter to finish.');
+                            return;
+                        }
+                        else if(value.startsWith('if('))
+                        {
+                            $scope.nlpedTextPrefix = '';
+                            $scope.nlpedText[index] = LanguageService('Entering conditional statements, press Enter to finish.');
+                            return;
+                        }
+
                         if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if(') || value.startsWith('/'))
                         {
                             return;
@@ -989,8 +1020,8 @@
 
                         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
-                            $scope.nlpedTextPrefix = 'nlu: ';
-                            $scope.nlpedText[index] = result.text;
+                            // $scope.nlpedTextPrefix = 'nlu: ';
+                            $scope.nlpedText[index] = 'nlu: ' + result.text;
 
                             if($scope.showNlpTimeout)
                                 clearTimeout($scope.showNlpTimeout);
@@ -999,7 +1030,7 @@
                             {
                                 $scope.$apply(function()
                                 {
-                                    $scope.nlpedTextPrefix = '';
+                                    $scope.nlpedText[index] = '';
                                 });
                             }, 2000);
                         });

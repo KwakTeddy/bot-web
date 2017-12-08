@@ -37,7 +37,7 @@
 </div>
 </script>
 
-<div ng-controller="DialogLearningDevelopmentController">
+<div ng-controller="DialogLearningDevelopmentController" style="min-width: 800px; overflow: auto;">
     <div class="upSide">
         <form class="inline-block">
             <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
@@ -45,7 +45,7 @@
         <div class="funtionbtn1">
             <a href="#">
                 <img src="modules/playchat/working-ground/common/client/imgs/import.png">
-                <span>{{lan('Import') }}</span>
+                <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
                 <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
         </div>
@@ -192,6 +192,46 @@
                 <div class="tab-footer">
                     <button class="blue-button">{{lan('Save') }}</button>
                     <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('Title') }}</span>
+                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <!--<div class="form-row" style="display: none;">-->
+                <!--<label class="required" style="width: 100%;">-->
+                <!--<span>Type</span>-->
+                <!--<div class="form-box">-->
+                <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
+                <!--<span>(csv or xlsx)</span>-->
+                <!--</div>-->
+                <!--</label>-->
+                <!--</div>-->
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span>File</span>
+                        <div class="form-box">
+                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label style="width: 100%;">
+                        <span>{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>

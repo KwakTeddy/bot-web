@@ -232,8 +232,15 @@ module.exports.initModulesServerPolicies = function (app)
 /**
  * Configure the modules server routes
  */
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
+
 module.exports.initModulesServerRoutes = function (app)
 {
+    var Bot = mongoose.model('Bot');
+    var BotAuth = mongoose.model('BotAuth');
+    var Template = mongoose.model('Template');
+
     app.all('/api*', function(req, res, next)
     {
         if(req.url.startsWith('/api/auth/signin') || req.url.startsWith('/api/auth/signup') || req.url.startsWith('/api/auth/forgot') || req.url.startsWith('/api/auth/emailconfirm'))
@@ -248,7 +255,80 @@ module.exports.initModulesServerRoutes = function (app)
             }
             else
             {
-                next();
+                var split = req.url.substring(1).split('/');
+                if(split.length > 1)
+                {
+                    var botId = split[1];
+
+                    var query = {};
+
+                    if(ObjectId.isValid(botId))
+                        query._id = botId;
+                    else
+                        query.id = botId;
+
+                    Template.findOne({ id:botId }).exec(function(err, item)
+                    {
+                        if(err)
+                        {
+                            console.error(err);
+                            return res.status(400).send({ error: err});
+                        }
+
+                        if(item)
+                        {
+                            //템플릿아이디는 그냥 넘긴다.
+                            next();
+                        }
+                        else
+                        {
+                            Bot.findOne(query).exec(function(err, item)
+                            {
+                                if(err)
+                                {
+                                    console.error(err);
+                                    return res.status(400).send({ error: err});
+                                }
+
+                                if(item)
+                                {
+                                    BotAuth.findOne({ bot: item._id, user: req.user }).exec(function(err, botAuth)
+                                    {
+                                        if(err)
+                                        {
+                                            console.error(err);
+                                            return res.status(400).send({ error: err});
+                                        }
+
+                                        if(botAuth)
+                                        {
+                                            if((req.method == 'GET' && !botAuth.read) || (req.method != 'GET' && !botAuth.edit))
+                                            {
+                                                res.status(401).end();
+                                            }
+                                            else
+                                            {
+                                                next();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            res.status(401).end();
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    next();
+                                }
+                            });
+                        }
+                    });
+                }
+                else
+                {
+                    next();
+                }
             }
         }
     });

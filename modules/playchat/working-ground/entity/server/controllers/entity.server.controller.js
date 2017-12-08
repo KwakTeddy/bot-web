@@ -22,7 +22,7 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    var query = { botId: req.params.botId, user: req.user._id };
+    var query = { botId: req.params.botId };
     if(req.query.templateId)
     {
         delete query.botId;
@@ -51,7 +51,7 @@ exports.find = function(req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    var query = { botId: req.params.botId, user: req.user._id };
+    var query = { botId: req.params.botId };
     if(req.query.templateId)
     {
         delete query.botId;
@@ -93,7 +93,7 @@ exports.findOne = function(req, res)
 
 exports.findEntityContents = function(req, res)
 {
-    EntityContent.find({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err, entityContents)
+    EntityContent.find({ botId: req.params.botId, entityId: req.params.entityId }).exec(function(err, entityContents)
     {
         if(err)
         {
@@ -381,7 +381,7 @@ function getContentFromFile(req, res, callback)
 
 exports.create = function(req, res)
 {
-    Entity.findOne({ botId : req.params.botId, user: req.user._id, name: req.body.name}).exec(function(err, item)
+    Entity.findOne({ botId : req.params.botId, name: req.body.name}).exec(function(err, item)
     {
         if (err)
         {
@@ -449,7 +449,7 @@ exports.create = function(req, res)
 
 exports.update = function(req, res)
 {
-    Entity.findOne({ _id: req.body._id, user: req.user._id, botId: req.params.botId }).populate('user', 'displayName').exec(function(err, item)
+    Entity.findOne({ _id: req.body._id, botId: req.params.botId }).populate('user', 'displayName').exec(function(err, item)
     {
         if (err)
         {
@@ -461,7 +461,7 @@ exports.update = function(req, res)
         {
             if(item.name != req.body.name)
             {
-                Entity.findOne({ botId: req.params.botId, user: req.user._id, name: req.body.name }).exec(function(err, duplicatedItem)
+                Entity.findOne({ botId: req.params.botId, name: req.body.name }).exec(function(err, duplicatedItem)
                 {
                     if (err)
                     {
@@ -524,7 +524,7 @@ exports.delete = function(req, res)
             logger.systemError(err.stack || err);
         }
 
-        EntityContent.remove({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err)
+        EntityContent.remove({ botId: req.params.botId, entityId: req.params.entityId }).exec(function(err)
         {
             if(err)
             {

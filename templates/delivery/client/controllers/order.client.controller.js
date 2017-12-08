@@ -46,7 +46,7 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
         $scope.accept = function(menu)
         {
             menu.status = '주문승인';
-            MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, status: menu.status }, function(result)
+            MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, datas: {status:menu.status} }, function(result)
                 {
                     console.log(result);
                 },

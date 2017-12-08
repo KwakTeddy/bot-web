@@ -111,7 +111,7 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
             },
             function(err)
             {
-                if(err.data.message == 'Duplicated intent name')
+                if(err.data.message == 'Duplicated name')
                 {
                     alert(params.name + $scope.lan('is duplicated name.'));
                 }
