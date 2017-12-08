@@ -443,8 +443,6 @@
                     {
                         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
 
-                        console.log(parsed);
-
                         startDialog.children = this.userDialogs = JSON.parse(parsed);
                         this.graphData = startDialog;
 
@@ -783,9 +781,11 @@
                             instance.setDirty(true);
                             instance.refresh();
 
-                            instance.$scope.compactMode = 'Compact';
-
-                            instance.$scope.toggleCompactMode();
+                            if(instance.$scope.compactMode != 'Compact')
+                            {
+                                instance.$scope.compactMode = 'Compact';
+                                instance.$scope.toggleCompactMode();
+                            }
                         }
                     }
 

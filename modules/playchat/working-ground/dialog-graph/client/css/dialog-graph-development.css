@@ -45,6 +45,11 @@
     flex: 1;
 }
 
+.graph-controller > div:last-child
+{
+    flex: 2;
+}
+
 .graph-controller > div form, .graph-zoom-controller
 {
     display: inline-block;
@@ -704,6 +709,29 @@
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
 }
 
+.alert-error
+{
+    display: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+    color: #a94442;
+    background-color: #f2dede;
+
+    position: absolute;
+    top: 120px;
+    right: 15px;
+
+    z-index: 1001;
+
+    opacity: 0;
+
+    transition: opacity 0.5s;
+
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+}
+
 .graph-dialog-line
 {
     height: 2px;
@@ -739,7 +767,7 @@
 {
     width: 100%;
 
-    text-align: left;
+    text-align: right;
     padding: 10px 20px;
 
     background-color: white;

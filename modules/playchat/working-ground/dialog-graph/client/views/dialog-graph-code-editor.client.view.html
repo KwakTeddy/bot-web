@@ -1,7 +1,21 @@
+<style>
+.dialog-graph-code-editor-controller.edit
+{
+    position: relative;
+    right: 360px;
+}
+
+.dialog-graph-code-editor-controller.edit .alert-success, .dialog-graph-code-editor-controller.edit .alert-error
+{
+    top: 30px;
+}
+</style>
+
 <form ng-controller="DialogGraphCodeEditorController">
     <div class="dialog-graph-code-editor-controller">
         <button type="button" class="blue-button" ng-click="save();">{{lan('Save') }}</button>
-        <div class="alert-success" role="alert" style="top: 50px;"> <strong>{{lan('Saved.') }}</strong> </div>
+        <div class="alert-success" role="alert" style="top: 80px;"> <strong>{{lan('Saved.') }}</strong> </div>
+        <div class="alert-error" role="alert" style="top: 80px; text-align: left; max-width: 800px;"> <strong>{{lan('JSON Format Error') }}</strong> <div>{{saveError}}</div></div>
     </div>
     <div class="dialog-graph-code-editor-body">
         <textarea style="display: none;"></textarea>

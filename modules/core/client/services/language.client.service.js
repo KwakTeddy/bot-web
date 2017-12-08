@@ -535,13 +535,13 @@
                 "zh": "紧凑"
             },
             "Undo": {
-                "ko": "되돌아가기",
+                "ko": "실행취소",
                 "en": "Undo",
                 "jp": "戻る",
                 "zh": "返回 "
             },
             "Redo": {
-                "ko": "다시하기",
+                "ko": "다시실행",
                 "en": "Redo",
                 "jp": "もう一度する",
                 "zh": "重来"
@@ -1780,6 +1780,12 @@
                 "en": "Jump",
                 "zh": "跳",
                 "jp": "ジャンプ"
+            },
+            "JSON Format Error": {
+                "ko": "JSON 형식 오류",
+                "en": "JSON Format Error",
+                "zh": "JSON格式错误",
+                "jp": "JSON形式のエラー"
             }
         };
 

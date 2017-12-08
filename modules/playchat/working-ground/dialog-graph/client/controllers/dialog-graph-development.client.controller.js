@@ -55,7 +55,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], text);
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
                     break;
                 }
             }
@@ -79,7 +79,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], text);
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
                     break;
                 }
             }
@@ -92,7 +92,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
             $location.search().fileName = data.fileName;
 
-            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(data.fileName, data.name, true);
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(data.fileName, { isView: true, target: data.name });
         });
 
         $scope.$on('$locationChangeStart', function(event, next, current)
@@ -296,6 +296,12 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 $scope.commonMode = 'Common';
                 DialogGraph.changeToDialogs();
             }
+        };
+
+        $scope.viewGraphSource = function()
+        {
+            var fileName = $scope.currentTabName;
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource' });
         };
 
         $scope.toggleCompactMode = function()
