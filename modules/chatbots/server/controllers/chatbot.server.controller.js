@@ -259,8 +259,24 @@ exports.duplicate = function(req, res)
 
                             fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
                         }
+                        
+                        var botAuth = new BotAuth();
+                        botAuth.giver = req.user;
+                        botAuth.user = req.user;
+                        botAuth.bot = clone._id;
+                        botAuth.read = true;
+                        botAuth.edit = true;
 
-                        res.jsonp(clone);
+                        botAuth.save(function(err)
+                        {
+                            if (err)
+                            {
+                                console.error(err);
+                                return res.status(400).send({ message: err.stack || err });
+                            }
+
+                            res.jsonp(clone);
+                        });
                     });
                 }
                 else
