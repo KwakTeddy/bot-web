@@ -326,7 +326,8 @@ function processOutput(task, context, out) {
                     }
                 }
 
-                p2.replace(re2, function (match1, p11, offset1, string1) {
+                // TODO 가끔 list에 변경된 텍스트가 replace callback 반영이 안되는 경우 있음
+                p2 = p2.replace(re2, function (match1, p11, offset1, string1) {
                     for (var i = start; i < end; i++) {
                         var val1 = val[i][p11];
 
@@ -361,22 +362,15 @@ function processOutput(task, context, out) {
         out = out.replace(re2, function replacer(match, p1) {
             var val;
             if (task && task[DOC_NAME]) val = _.get(task[DOC_NAME], p1);
-            // if (!val && task) val = _.get(task, p1);
-            // if (!val && context.dialog && context.dialog[DOC_NAME]) val = _.get(context.dialog[DOC_NAME], p1);
-            // if (!val && context.dialog) val = _.get(context.dialog, p1);
-            // if (!val && context.bot && context.bot[DOC_NAME]) val = _.get(context.bot[DOC_NAME], p1);
-            // if (!val && context.bot) val = _.get(context.bot, p1);
-            // if (!val && context.user && context.user[DOC_NAME]) val = _.get(context.user[DOC_NAME], p1);
-            // if (!val && context.user) val = _.get(context.user, p1);
+            if (!val && task) val = _.get(task, p1);
+            if (!val && context.dialog && context.dialog[DOC_NAME]) val = _.get(context.dialog[DOC_NAME], p1);
+            if (!val && context.dialog) val = _.get(context.dialog, p1);
+            if (!val && context.bot && context.bot[DOC_NAME]) val = _.get(context.bot[DOC_NAME], p1);
+            if (!val && context.bot) val = _.get(context.bot, p1);
+            if (!val && context.user && context.user[DOC_NAME]) val = _.get(context.user[DOC_NAME], p1);
+            if (!val && context.user) val = _.get(context.user, p1);
 
-            // 만약 task에 name키가 있으면 그 걸로 할당이 되어서 bot.name을 가져온다든지 하는게 안되버린다.
-            if (task && task[p1]) val = task[p1];
-            if (context.dialog && context.dialog[DOC_NAME] && context.dialog[DOC_NAME][p1]) val = context.dialog[DOC_NAME][p1];
-            if (context.dialog && context.dialog[p1]) val = _.get(context.dialog, p1);
-            if (context.bot && context.bot[DOC_NAME] && context.bot[DOC_NAME][p1]) val = _.get(context.bot[DOC_NAME], p1);
-            if (context.bot && context.bot[p1]) val = _.get(context.bot, p1);
-            if (context.user && context.user[DOC_NAME] && context.user[DOC_NAME][p1]) val = _.get(context.user[DOC_NAME], p1);
-            if (context.user && context.user[p1]) val = _.get(context.user, p1);
+            // TODO 만약 task에 name키가 있으면 그 걸로 할당이 되어서 bot.name을 가져온다든지 하는게 안되버린다.
 
             if (val) return val;
             else return '';
