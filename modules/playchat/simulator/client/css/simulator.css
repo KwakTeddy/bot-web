@@ -124,6 +124,7 @@
 {
     display: block;
     margin: 5px 0;
+    width: 100%;
 }
 
 .simulator .answer em.tail

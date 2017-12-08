@@ -112,21 +112,20 @@
 
                 $scope.saveError = err.message;
 
-                angular.element('.dialog-graph-code-editor .alert-error').show();
-                $timeout(function()
+                if(confirm('JSON Format error detected. The chatbot may not work properly. Do you want to save it?'))
                 {
-                    angular.element('.dialog-graph-code-editor .alert-error').css('opacity', 1);
+
+                }
+                else
+                {
+                    angular.element('.dialog-graph-code-editor .alert-error').show();
                     $timeout(function()
                     {
-                        angular.element('.dialog-graph-code-editor .alert-error').css('opacity', 0);
-                        $timeout(function()
-                        {
-                            angular.element('.dialog-graph-code-editor .alert-error').hide();
-                        }, 600);
-                    }, 1500);
-                }, 5);
+                        angular.element('.dialog-graph-code-editor .alert-error').css('opacity', 1);
+                    }, 5);
 
-                return;
+                    return;
+                }
             }
 
             DialogGraphsService.save({ botId: chatbot.id, fileName: $scope.currentFileName, data: editor.getValue() }, function()
@@ -170,6 +169,18 @@
             {
                 alert(err.data.message);
             });
+        };
+
+        $scope.closeError = function()
+        {
+            $timeout(function()
+            {
+                angular.element('.dialog-graph-code-editor .alert-error').css('opacity', 0);
+                $timeout(function()
+                {
+                    angular.element('.dialog-graph-code-editor .alert-error').hide();
+                }, 600);
+            }, 5);
         };
 
         $scope.lan=LanguageService;

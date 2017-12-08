@@ -17,6 +17,16 @@
     font-weight: bold;
 }
 
+.dialog-graph-error > div
+{
+    text-align: center;
+}
+
+.dialog-graph-error button
+{
+    margin: 20px 0;
+}
+
 .graph-background
 {
     min-width: 800px;
