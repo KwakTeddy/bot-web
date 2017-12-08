@@ -559,20 +559,41 @@
 
             if(typeof input == 'string')
             {
-                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">[text] ' + input + '</span>';
+                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">' + input + '</span>';
             }
             else
             {
                 for(var key in input)
                 {
-                    var icon = key.charAt(0).toUpperCase();
-                    if(key == 'if')
-                        icon = 'IF';
+                    var displayText = '';
+                    if(key == 'entities')
+                    {
+                        displayText = '@' + input[key];
+                    }
+                    else if(key == 'intent')
+                    {
+                        displayText = '#' + input[key];
+                    }
+                    else if(key == 'types')
+                    {
+                        displayText = '$' + input[key];
+                    }
+                    else if(key == 'regexp')
+                    {
+                        displayText = '/' + input[key] + '/';
+                    }
+                    else if(key == 'text')
+                    {
+                        displayText = input[key];
+                    }
+                    else if(key == 'if')
+                    {
+                        displayText = 'if(' + input[key].replace(/[\n\r]*/gi, '').trim() + ')';
+                    }
 
-                    if(!input[key])
-                        continue;
+                    console.log(key);
 
-                    template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
+                    template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
                 }
             }
 
@@ -607,7 +628,7 @@
                     {
                         if(key != 'kind' && key != 'options')
                         {
-                            template = '<div><span>[' + key + '] ' + output[key] + '</span></div>';
+                            template = '<div><span>' + output[key] + '</span></div>';
                         }
                     }
                 }
@@ -641,7 +662,7 @@
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><span>[button] ' + buttons[i].text + '</span></div>';
+                template += '<div><span>' + buttons[i].text + '</span></div>';
                 break;
             }
 
