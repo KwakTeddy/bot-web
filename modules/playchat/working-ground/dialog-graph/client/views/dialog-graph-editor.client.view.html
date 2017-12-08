@@ -169,10 +169,10 @@
                             <option value="return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
-                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false">
+                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false" ng-keyup="findActionDialogs($event);">
                             <ul class="dialog-editor-select-options">
-                                <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
-                                <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in userDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in commonDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                             </ul>
                         </div>
                     </div>

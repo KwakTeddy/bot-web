@@ -177,6 +177,30 @@
                     $scope.actionTypeCheck = false;
                 }
             };
+
+            $scope.findActionDialogs = function(e)
+            {
+                var value = e.currentTarget.value;
+
+                angular.element(e.currentTarget.nextElementSibling).find('li').each(function()
+                {
+                    if(!value)
+                    {
+                        $(this).show();
+                    }
+                    else
+                    {
+                        if($(this).attr('data-name').indexOf(value) != -1)
+                        {
+                            $(this).show();
+                        }
+                        else
+                        {
+                            $(this).hide();
+                        }
+                    }
+                });
+            };
         };
 
         return { make: make };
