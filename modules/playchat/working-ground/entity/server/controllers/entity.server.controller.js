@@ -22,7 +22,7 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    var query = { botId: req.params.botId, user: req.user._id };
+    var query = { botId: req.params.botId };
     if(req.query.templateId)
     {
         delete query.botId;
@@ -51,7 +51,7 @@ exports.find = function(req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    var query = { botId: req.params.botId, user: req.user._id };
+    var query = { botId: req.params.botId };
     if(req.query.templateId)
     {
         delete query.botId;
@@ -93,7 +93,7 @@ exports.findOne = function(req, res)
 
 exports.findEntityContents = function(req, res)
 {
-    EntityContent.find({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err, entityContents)
+    EntityContent.find({ botId: req.params.botId, entityId: req.params.entityId }).exec(function(err, entityContents)
     {
         if(err)
         {
