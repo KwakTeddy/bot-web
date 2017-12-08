@@ -370,13 +370,47 @@ function processOutput(task, context, out) {
             // if (!val && context.user) val = _.get(context.user, p1);
 
             // 만약 task에 name키가 있으면 그 걸로 할당이 되어서 bot.name을 가져온다든지 하는게 안되버린다.
-            if (task && task[p1]) val = task[p1];
-            if (context.dialog && context.dialog[DOC_NAME] && context.dialog[DOC_NAME][p1]) val = context.dialog[DOC_NAME][p1];
-            if (context.dialog && context.dialog[p1]) val = _.get(context.dialog, p1);
-            if (context.bot && context.bot[DOC_NAME] && context.bot[DOC_NAME][p1]) val = _.get(context.bot[DOC_NAME], p1);
-            if (context.bot && context.bot[p1]) val = _.get(context.bot, p1);
-            if (context.user && context.user[DOC_NAME] && context.user[DOC_NAME][p1]) val = _.get(context.user[DOC_NAME], p1);
-            if (context.user && context.user[p1]) val = _.get(context.user, p1);
+            if (task) {
+                var t = _.get(task, p1);
+                if (t)
+                    val = t;
+            }
+
+            if (context.dialog && context.dialog[DOC_NAME]) {
+                var t = _.get(context.dialog[DOC_NAME], p1);
+                if (t) {
+                    val = t;
+                }
+            }
+            if (context.dialog) {
+                var t = _.get(context.dialog, p1);
+                if (t)
+                    val = t;
+            }
+
+            if (context.bot && context.bot[DOC_NAME]) {
+                var t = _.get(context.bot[DOC_NAME], p1);
+                if (t)
+                    val = t;
+            }
+
+            if (context.bot) {
+                var t = _.get(context.bot, p1);
+                if (t)
+                    val = t;
+            }
+
+            if (context.user && context.user[DOC_NAME]) {
+                var t = _.get(context.user[DOC_NAME], p1);
+                if (t)
+                    val = t;
+            }
+
+            if (context.user) {
+                var t = _.get(context.user, p1);
+                if(t)
+                    val = t;
+            }
 
             if (val) return val;
             else return '';
