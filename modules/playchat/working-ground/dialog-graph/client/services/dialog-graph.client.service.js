@@ -591,8 +591,6 @@
                         displayText = 'if(' + input[key].replace(/[\n\r]*/gi, '').trim() + ')';
                     }
 
-                    console.log(key);
-
                     template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
                 }
             }

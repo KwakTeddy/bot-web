@@ -1804,6 +1804,18 @@
                 "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
                 "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 你想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
+            },
+            "Typing the regular expression, press Enter to finish.": {
+                "ko": "정규식 입력 중, 마치려면 Enter를 입력해주세요.",
+                "en": "While typing the regular expression, press Enter to finish.",
+                "zh": "输入正则表达式，按Enter完成。",
+                "jp": "正規表現を入力し、Enterキーを押して終了します。"
+            },
+            "Entering conditional statements, press Enter to finish.": {
+                "ko": "조건문 입력 중, 마치려면 Enter를 입력해주세요.",
+                "en": "Entering conditional statements, press Enter to finish.",
+                "zh": "输入条件语句，按Enter完成。",
+                "jp": "条件文を入力し、Enterキーを押して終了します。"
             }
         };
 
