@@ -54,7 +54,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
                     t += '</div>';
 
-                    template.append(t);
+                    template.find('.speech').append(t);
                 }
 
                 if(text.buttons)
@@ -68,7 +68,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                     t += '</div>';
 
-                    template.append(t);
+                    template.find('.speech').append(t);
                 }
             }
 

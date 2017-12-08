@@ -115,11 +115,15 @@
 .simulator .answer .output-image img
 {
     max-width: 100%;
+
+    border-radius: 6px;
+    margin-top: 10px;
 }
 
 .simulator .answer .output-buttons a
 {
     display: block;
+    margin: 5px 0;
 }
 
 .simulator .answer em.tail
