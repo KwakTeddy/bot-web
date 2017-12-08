@@ -294,9 +294,9 @@ var inforshuttle = {
             var ss=context.bot.shuttles[0].shuttleimage[0];
             //console.log(ss+"000000000000");
             var img = context.bot.shuttles[0].shuttleimage[0]=='h' ? context.bot.shuttles[0].shuttleimage : config.host + context.bot.shuttles[0].shuttleimage;
-            console.log(img+"222222222222");
+            //console.log(img+"222222222222");
             task.buttons = [{text:"자세히보기",url:img}];
-            task.image = {url: img};
+            task.image = {url: context.bot.shuttles[0].shuttleimage};
 
             callback(task,context);}
     }
@@ -329,8 +329,11 @@ bot.setTask("inforpark", inforpark);
 var imageroom = {
     name: 'imageroom',
     action: function(task, context, callback) {
-        var img = context.dialog.roomlistType.room_image[0]=='h' ? context.dialog.roomlistType.room_image : config.host + context.dialog.roomlistType.room_image;
-        task.image = {url: img};
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        console.log(JSON.stringify(context.dialog.roomlistType));
+
+        //var img = context.dialog.roomlistType.room_image[0]=='h' ? context.dialog.roomlistType.room_image : config.host + context.dialog.roomlistType.room_image;
+        task.image = {url: context.dialog.roomlistType.room_image};
         callback(task,context);
     }
 };
@@ -339,8 +342,8 @@ bot.setTask("imageroom", imageroom);
 var imagerestaurant = {
     name: 'imagerestaurant',
     action: function(task, context, callback) {
-        var img = context.dialog.restaurantlistType.restaurant_image[0]=='h' ? context.dialog.restaurantlistType.restaurant_image : config.host + context.dialog.restaurantlistType.restaurant_image;
-        task.image = {url: img};
+        //var img = context.dialog.restaurantlistType.restaurant_image[0]=='h' ? context.dialog.restaurantlistType.restaurant_image : config.host + context.dialog.restaurantlistType.restaurant_image;
+        task.image = {url: context.dialog.restaurantlistType.restaurant_image};
         callback(task,context);
     }
 };
@@ -349,8 +352,8 @@ bot.setTask("imagerestaurant", imagerestaurant);
 var imagefacility = {
     name: 'imagefacility',
     action: function(task, context, callback) {
-        var img = context.dialog.facilitylistType.facility_image[0]=='h' ? context.dialog.facilitylistType.facility_image : config.host + context.dialog.facilitylistType.facility_image;
-        task.image = {url: img};
+        //var img = context.dialog.restaurantlistType.restaurant_image[0]=='h' ? context.dialog.facilitylistType.facility_image : config.host + context.dialog.facilitylistType.facility_image;
+        task.image = {url: context.dialog.facilitylistType.facility_image};
         callback(task,context);
     }
 };
@@ -884,7 +887,7 @@ var categoryroomisornot = {
                                 context.dialog.menumatch = context.dialog.categorys[i];
                                // console.log(context.dialog.inRaw+"ssssssss2222222222222222");
                                // console.log((i+1)+"ssssssss2222222222222222");
-                               // console.log(context.dialog.menumatch+"ssssssss2222222222222222");
+                                console.log(context.dialog.menumatch+"ssssssss2222222222222222");
                             }
                         }
                         if (context.dialog.menumatch !== undefined) {

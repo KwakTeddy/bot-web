@@ -36,7 +36,7 @@ angular.module('template').controller('restaurantReservationController', ['$scop
 
         $scope.add = function()
         {
-            $scope.datas.push({ name: '', mobile: '', numOfman: '', memo: '', period: '', date:'',status:'',userKey:''});
+            $scope.datas.push({ name: '', mobile: '', numOfPerson: '', memo: '', date:'',time:'',status:'',userKey:''});
         };
 
         $scope.delete = function(index)

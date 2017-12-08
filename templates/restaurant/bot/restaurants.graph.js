@@ -1,9 +1,8 @@
-
 var path = require('path');
-var address = require(path.resolve('./engine/bot/action/common/address'));
 var type = require(path.resolve('./engine/bot/action/common/type'));
-var start = require(path.resolve('./engine/bot/common/start'));
-var start = require('./start');
+//var start = require(path.resolve('./engine/bot/common/start'));
+// var start = require('./start');
+
 
 var dialogs = [
     {
@@ -16,20 +15,6 @@ var dialogs = [
         "output": "전화번호는 +phone+ 입니다."
     },
     {
-        "id": "restaurant200",
-        "filename": "restaurants",
-        "input": {
-            "types": [
-                {
-                    "name": "categorys",
-                    "listName": "categorys",
-                    "typeCheck": "listTypeCheck"
-                }
-            ]
-        },
-        "output": "##+name+ #입니다."
-    },
-    {
         "id": "restaurant97",
         "filename": "restaurants",
         "input": [
@@ -37,7 +22,7 @@ var dialogs = [
             "주차장",
             "주차정보"
         ],
-        "task": "start.inforpark",
+        "task": "inforpark",
         "output": [
             {
                 "if": "context.dialog.parkno==undefined",
@@ -49,7 +34,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.parkno===0",
-                "output": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소객: +parkdetails+\n-주차장 위치: +parkaddress+"
+                "output": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소객: +parkdetails+\n-주차장 위치: +parkaddress+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
             }
         ]
     },
@@ -61,7 +46,7 @@ var dialogs = [
             "인기",
             "인기메뉴정보"
         ],
-        "task": "start.categoryrestaurantlist",
+        "task": "categoryrestaurantlist",
         "output": [
             {
                 "if": "context.dialog.restaurantno===undefined",
@@ -86,6 +71,7 @@ var dialogs = [
                                 }
                             ]
                         },
+                        "task":"categoryrestaurantlistisornot",
                         "output": [
                             {
                                 "if": "context.dialog.menuprice===0",
@@ -93,7 +79,8 @@ var dialogs = [
                             },
                             {
                                 "if": "context.dialog.menuprice===1",
-                                "output": "[+category.name+] +category.price+원"
+                                'task':"menuImageTask1",
+                                "output": "#menucategory#[+name+] +price+원#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                             }
                         ]
                     },
@@ -115,35 +102,17 @@ var dialogs = [
         ]
     },
     {
-        "id": "restaurant95",
-        "filename": "restaurants",
-        "input": [
-            "있어",
-            "~있나?",
-            "~메뉴 있나"
-        ],
-        "task": "start.categoryrestaurantisornot",
-        "output": [
-            {
-                "if": "context.dialog.menuis===0",
-                "output": "정보가 등록되지 않았습니다."
-            },
-            {
-                "if": "context.dialog.menuis===1",
-                "output": "찾으시는 메뉴가 아래와 같이 있습니다.\n\n#menumatch#+index+.[+name+] +price+원\n#"
-            }
-        ]
-    },
-    {
         "id": "restaurant1",
         "filename": "restaurants",
         "input": [
             "위치",
             "찾아가다",
             "어떻다 가다",
-            "가다 방법"
+            "가다 방법",
+            "주소",
+            "어디"
         ],
-        "task": "start.mapButton",
+        "task": "mapButton",
         "output": "저희 매장의 주소는\n+address+\n입니다."
     },
     {
@@ -154,9 +123,7 @@ var dialogs = [
             "행사",
             "이벤트"
         ],
-        "task": {
-            "name": "eventCategoryAction"
-        },
+        "task": "eventCategoryAction",
         "output": [
             {
                 "if": "context.dialog.events == undefined || context.dialog.events.length == 0",
@@ -164,31 +131,24 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.events.length > 0",
-                "output": "[이벤트]\n##+index+. +name+\n#번호를 선택해주세요.",
+                "output": "[이벤트]\n#events#+index+. +name+\n#번호를 선택해주세요.",
                 "children": [
                     {
                         "id": "restaurant4",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "name",
-                                    "listName": "events",
-                                    "typeCheck": "listTypeCheck"
-                                }
-                            ]
-                        },
-                        "task": {
-                            "action": "start.eventAction"
-                        },
-                        "output": [
+                        "input": [
                             {
-                                "kind": "Content",
-                                "text": "+description+",
-                                "image": {
-                                    "url": "+image+"
-                                }
+                                "types": [
+                                    "eventlistType"
+                                ]
                             }
+                        ],
+                        "task": "eventAction",
+                        "output":[
+                            {
+                            "text": "#eventss#+name+\n+description+#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
+                            "kind": "Text"
+                        }
                         ]
                     },
                     {
@@ -217,9 +177,7 @@ var dialogs = [
             "기구",
             "매장 사진"
         ],
-        "task": {
-            "action": "start.previewCategoryAction"
-        },
+        "task": "previewCategoryAction",
         "output": [
             {
                 "if": "context.dialog.categorys == undefined",
@@ -241,89 +199,35 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": {
-                            "action": "start.previewAction"
-                        },
-                        "output": [
+                        "task": "previewAction",
+                        "output": "[+categoryselect+]\n#categoryss#+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
+                        "children": [
                             {
-                                "if": "context.user.channel == 'socket'",
-                                "output": "정보가 등록되지 않았습니다."
+                                "id": "restaurant9",
+                                "filename": "restaurants",
+                                "input": {
+                                    "regexp": /\d/
+                                },
+                                "task": "menuDetailTask",
+                                "output": "+menu.name+ +menu.description+"
                             },
                             {
-                                "output": "[+category.name+]\n##+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
-                                "children": [
-                                    {
-                                        "id": "restaurant9",
-                                        "filename": "restaurants",
-                                        "input": {
-                                            "types": [
-                                                {
-                                                    "name": "menu",
-                                                    "listName": "menus",
-                                                    "typeCheck": "listTypeCheck"
-                                                }
-                                            ]
-                                        },
-                                        "task": "start.menuDetailTask",
-                                        "output": "+menu.name+ +menu.description+"
-                                    },
-                                    {
-                                        "id": "restaurant10",
-                                        "filename": "restaurants",
-                                        "input": {
-                                            "if": "true"
-                                        },
-                                        "output": {
-                                            "repeat": 1,
-                                            "options": {
-                                                "postfix": "\n처음으로 가려면\n \"시작\"이라고 입력해주세요."
-                                            }
-                                        }
+                                "id": "restaurant10",
+                                "filename": "restaurants",
+                                "input": {
+                                    "if": "true"
+                                },
+                                "output": {
+                                    "repeat": 1,
+                                    "options": {
+                                        "postfix": "\n처음으로 가려면\n \"시작\"이라고 입력해주세요."
                                     }
-                                ]
+                                }
                             }
                         ]
                     },
                     {
                         "id": "restaurant12",
-                        "filename": "restaurants",
-                        "input": {
-                            "if": "true"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "postfix": "\n처음으로 가려면\n \"시작\"이라고 입력해주세요."
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                "if": "context.dialog.categorys.length == 1 && context.user.channel == 'socket'",
-                "output": "정보가 등록되지 않았습니다."
-            },
-            {
-                "if": "context.dialog.categorys.length == 1",
-                "output": "##+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
-                "children": [
-                    {
-                        "id": "restaurant13",
-                        "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "menu",
-                                    "listName": "menus",
-                                    "typeCheck": "listTypeCheck"
-                                }
-                            ]
-                        },
-                        "task": "start.menuDetailTask",
-                        "output": "+menu.name+ +menu.description+"
-                    },
-                    {
-                        "id": "restaurant14",
                         "filename": "restaurants",
                         "input": {
                             "if": "true"
@@ -355,22 +259,20 @@ var dialogs = [
             "얼마",
             "비용"
         ],
-        "task": {
-            "action": "start.menuCategoryAction"
-        },
+        "task": "menuCategoryAction",
         "output": [
             {
-                "if": "context.dialog.categorys == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == \"\")",
+                "if": "context.dialog.restaurantno == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == \"\")",
                 "output": "아직 메뉴를 등록하지 않았습니다."
             },
             {
-                "if": "context.dialog.categorys == undefined && context.bot.menuImage != undefined",
-                "task": "start.menuImageTask",
+                "if": "context.dialog.restaurantno == 1 && context.bot.menuImage != undefined",
+                "task": "menuImageTask",
                 "output": "[메뉴판보기]"
             },
             {
-                "if": "context.dialog.categorys.length != 1",
-                "output": "[가격표]\n##+index+. +category+\n#번호를 선택해주세요.",
+                "if": "context.dialog.restaurantno== 0 && context.dialog.categoryisone==0",
+                "output": "[가격표]\n#categorylength#+index+. +category+\n#번호를 선택해주세요.",
                 "children": [
                     {
                         "id": "restaurant18",
@@ -384,36 +286,37 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task":"start.categorymenu",
-                        "output": [
+                        "task": "categorymenu",
+                        "output": "[+categoryss+]\n #categorymenus#+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
+                        "children": [
                             {
-                                "output": "[+categoryss+]\n #categorymenus#+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
-                                "children": [
+                                "id": "restaurant16",
+                                "filename": "restaurants",
+                                "input": [
                                     {
-                                        "id": "restaurant16",
-                                        "filename": "restaurants",
-                                        "input": {
-                                            "if": "true"
-                                        },
-                                        "task":"start.categorymenuisornot",
-                                        "output":[
-                                            {
-                                            "if": "context.dialog.menuis == 1",
-                                            "output": "#categorymenu#+index+. +name+ +price+원\n처음으로 가려면 \"시작\"이라고 입력해주세요."
-                                        },
-                                            {
-                                                "if": "context.dialog.menuis == 0",
-                                                "output": {
-                                                    "repeat": 1,
-                                                    "options": {
-                                                        "postfix": "\n처음으로 가려면 \"시작\"이라고 입력해주세요."
-                                                    }
-                                                }
+                                        "if": "true"
+                                    }
+                                ],
+                                "task": "categorymenuisornot",
+                                "output": [
+                                    {
+                                        "if": "context.dialog.menuis == 1",
+                                        "task": "menuimagedisplay",
+                                        "output": "#categorymenu#[+name+] +price+원 #+hot+\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                    },
+                                    {
+                                        "if": "context.dialog.menuis == 0",
+                                        "output": {
+                                            "repeat": 1,
+                                            "options": {
+                                                "postfix": "\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                                             }
-                                        ]
+                                        }
+                                    }
+                                ]
                             }
-                             ]
-                    }]},
+                        ]
+                    },
                     {
                         "id": "restaurant19",
                         "filename": "restaurants",
@@ -430,30 +333,74 @@ var dialogs = [
                 ]
             },
             {
-                "if": "context.dialog.categorys.length == 1 && context.user.channel == 'socket'",
-                "output": "정보가 등록되지 않았습니다."
-            },
-            {
-                "if": "context.dialog.categorys.length == 1",
-                "output": "##+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.",
+                "if": "context.dialog.restaurantno==0 && context.dialog.categoryisone==1",
+                "output": "[#categorys#+name+#]\n#menus#+index+.+name+\n#\n번호나 메뉴명을 입력해주세요.",
                 "children": [
                     {
                         "id": "restaurant20",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "menu",
-                                    "listName": "menus",
-                                    "typeCheck": "listTypeCheck"
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "task": "menuisornot",
+                        "output": [
+                            {
+                                "if": "context.dialog.menuis == 1",
+                                "output": "#categorymenu#[+name+] +price+원# +hot+\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                            },
+                            {
+                                "if": "context.dialog.menuis == 0",
+                                "output": {
+                                    "repeat": 1,
+                                    "options": {
+                                        "postfix": "\n처음으로 가려면\n \"시작\"이라고 입력해주세요."
+                                    }
                                 }
-                            ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "restaurant95",
+        "filename": "restaurants",
+        "input": [
+            "있어",
+            "있다",
+            "~있나",
+            "~메뉴 있나",
+            "~메뉴 있다"
+        ],
+        "task": "categoryrestaurantisornot",
+        "output": [
+            {
+                "if": "context.dialog.menuis===0",
+                "output": "정보가 등록되지 않았습니다."
+            },
+            {
+                "if": "context.dialog.menuis===1",
+                'task':"menuImageTask2",
+                "output": "찾으시는 메뉴가 아래와 같이 있습니다.\n\n#menumatch#+index+.[+name+] +price+원\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+            },
+            {
+                "if":"context.dialog.categoryis===1",
+                "output": "찾으시는 메뉴가 아래와 같이 있습니다.\n\n#categorymatchmenu#+index+.[+name+] +price+원\n#\n\n번호를 선택해주세요.",
+                "children": [
+                    {
+                        "id": "restaurant188",
+                        "filename": "restaurants",
+                        "input": {
+                            regex:/\d/
                         },
-                        "task": "start.menuDetailTask",
-                        "output": "+menu.name+ +menu.price+원\n+menu.description+"
+                        "task": "menuImageTask3",
+                        "output": "#categorymenu#+index+.[+name+] +price+원\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                     },
                     {
-                        "id": "restaurant21",
+                        "id": "restaurant187",
                         "filename": "restaurants",
                         "input": {
                             "if": "true"
@@ -481,11 +428,9 @@ var dialogs = [
                     "raw": true
                 }
             ],
-            "regexp": {}
+            "regexp": /~영업/
         },
-        "task": {
-            "action": "start.checkDate"
-        },
+        "task": "checkDate",
         "output": [
             {
                 "if": "context.dialog.check == true",
@@ -493,7 +438,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.check == false",
-                "output": "네 영업일입니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다."
+                "output": "네 영업일입니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             }
         ]
     },
@@ -509,11 +454,9 @@ var dialogs = [
                     "raw": true
                 }
             ],
-            "regexp": {}
+            "regexp": /~영업/
         },
-        "task": {
-            "action": "start.checkTime"
-        },
+        "task": "checkTime",
         "output": [
             {
                 "if": "context.dialog.check == 're'",
@@ -525,7 +468,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.check == false",
-                "output": "네 영업시간 입니다. \n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다."
+                "output": "네 영업시간 입니다. \n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             }
         ]
     },
@@ -545,9 +488,9 @@ var dialogs = [
         "output": [
             {
                 "if": "context.bot.holiday == '휴일없음'",
-                "output": "영업시간은 +startTime+ 에서 +endTime+ 입니다.\n 휴무일은 없습니다."
+                "output": "영업시간은 +startTime+ 에서 +endTime+ 입니다.\n 휴무일은 없습니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             },
-            "영업시간은 +startTime+ 에서 +endTime+ 입니다.\n+holiday+은 휴무입니다."
+            "영업시간은 +startTime+ 에서 +endTime+ 입니다.\n+holiday+은 휴무입니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
         ]
     },
     {
@@ -559,7 +502,7 @@ var dialogs = [
             "예약 확인",
             "예약 내역"
         ],
-        "task": "start.reserveCheck",
+        "task": "reserveCheck",
         "output": [
             {
                 "if": "context.botUser.isOwner && context.dialog.reserves != undefined",
@@ -577,16 +520,14 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": {
-                            "action": "start.action1"
-                        },
-                        "output": "상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n연락처: +reserve.mobile+\n\n\"확정\", \"취소\"를 선택해 주세요.",
+                        "task": "action1",
+                        "output": "상세 예약내역입니다.#ordermenu#\n상태: +status+\n예약자명: +name+#\n#reserves#일시: +dateStr+##ordermenu# +time+\n인원: +numOfPerson+명\n연락처: +mobile+#\n\n\"확정\", \"취소\"를 선택해 주세요.",
                         "children": [
                             {
                                 "id": "restaurant26",
                                 "filename": "restaurants",
                                 "input": "~확정",
-                                "task": "start.reserveOwnerConfirm",
+                                "task": "reserveOwnerConfirm",
                                 "output": {
                                     "call": "예약내역",
                                     "options": {
@@ -606,7 +547,7 @@ var dialogs = [
                                         "input": {
                                             "if": "true"
                                         },
-                                        "task": "start.reserveOwnerCancel",
+                                        "task": "reserveOwnerCancel",
                                         "output": {
                                             "call": "예약내역",
                                             "options": {
@@ -648,7 +589,7 @@ var dialogs = [
             },
             {
                 "if": "context.botUser.isOwner && context.dialog.reserves == undefined",
-                "output": "미처리 예약내역이 없습니다."
+                "output": "미처리 예약내역이 없습니다. \n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             },
             {
                 "if": "context.dialog.reserves != undefined",
@@ -666,8 +607,8 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": "start.reserveCancel",
-                        "output": "예약이 취소되었습니다."
+                        "task": "reserveCancel",
+                        "output": "예약이 취소되었습니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
                     },
                     {
                         "id": "restaurant33",
@@ -692,7 +633,7 @@ var dialogs = [
                         "id": "restaurant34",
                         "filename": "restaurants",
                         "input": "취소",
-                        "task": "start.reserveCancel",
+                        "task": "reserveCancel",
                         "output": "예약이 취소되었습니다."
                     }
                 ]
@@ -713,7 +654,7 @@ var dialogs = [
                 "filename": "restaurants",
                 "name": "날짜선택",
                 "input": false,
-                "output": "예약하실 일자를 말씀해 주세요.",
+                "output": "예약하실 일자를 말씀해 주세요.\n(ex: 2017-02-06)",
                 "children": [
                     {
                         "id": "restaurant36",
@@ -726,9 +667,7 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": {
-                            "action": "start.checkDate"
-                        },
+                        "task": "checkDate",
                         "output": {
                             "callChild": "시간선택"
                         }
@@ -739,9 +678,7 @@ var dialogs = [
                         "input": {
                             "if": "context.dialog.날짜입력최초 == undefined"
                         },
-                        "task": {
-                            "action": "start.action2"
-                        },
+                        "task": "action2",
                         "output": {
                             "call": "날짜선택"
                         }
@@ -767,7 +704,7 @@ var dialogs = [
                 "filename": "restaurants",
                 "name": "시간선택",
                 "input": false,
-                "output": "예약하실 시간을 말씀해 주세요.",
+                "output": "예약하실 시간을 말씀해 주세요.\n(ex: 오후 4시)",
                 "children": [
                     {
                         "id": "restaurant40",
@@ -780,16 +717,14 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "task": {
-                            "action": "start.checkTime"
-                        },
+                        "task": "checkTime",
                         "output": [
                             {
                                 "if": "context.dialog.check == 're'",
                                 "output": {
                                     "call": "시간선택",
                                     "options": {
-                                        "prefix": "시간은 오전/오후를 붙여서 이야기 해주세요.\n예시: 오후 2시, 14시\n\n"
+                                        "prefix": "시간은 오전/오후를 붙여서 이야기 해주세요.\n\n"
                                     }
                                 }
                             },
@@ -807,9 +742,7 @@ var dialogs = [
                         "input": {
                             "if": "context.dialog.시간입력최초 == undefined"
                         },
-                        "task": {
-                            "action": "start.action3"
-                        },
+                        "task": "action3",
                         "output": {
                             "call": "시간선택"
                         }
@@ -835,7 +768,7 @@ var dialogs = [
                 "filename": "restaurants",
                 "name": "인원선택",
                 "input": false,
-                "output": "몇명이 오실지 말씀해 주세요",
+                "output": "몇명이 오실지 말씀해 주세요\n(ex: 6명)",
                 "children": [
                     {
                         "id": "restaurant44",
@@ -849,9 +782,17 @@ var dialogs = [
                                 }
                             ]
                         },
-                        "output": {
-                            "call": "예약자명"
-                        }
+                        "task":"numOfPersonTypeCheck1",
+                        "output": [
+                            {
+                                "if": "context.dialog.numOfPersonis ==1",
+                                "output": {"call": "예약자명"}
+                            },
+                            {
+                                "if": "context.dialog.numOfPersonis ==0",
+                                "output": {"call": "인원선택"}
+                            }
+                        ]
                     },
                     {
                         "id": "restaurant45",
@@ -859,9 +800,7 @@ var dialogs = [
                         "input": {
                             "if": "context.dialog.인원선택최초 == undefined"
                         },
-                        "task": {
-                            "action": "start.action4"
-                        },
+                        "task": "action4",
                         "output": {
                             "call": "인원선택"
                         }
@@ -895,7 +834,7 @@ var dialogs = [
                         "input": {
                             "if": "true"
                         },
-                        "task": "start.reserveNameTask",
+                        "task": "reserveNameTask",
                         "output": [
                             {
                                 "if": "context.user.mobile == undefined",
@@ -918,41 +857,41 @@ var dialogs = [
                 "filename": "restaurants",
                 "name": "휴대폰번호입력",
                 "input": false,
-                "output": "휴대폰 번호를 말씀해주세요.",
+                "output": "휴대폰 번호를 말씀해주세요.(01012123434)",
                 "children": [
                     {
                         "id": "restaurant52",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "type": "type.mobileType",
-                                    "context": false
-                                }
-                            ]
-                        },
-                        "task": "start.smsAuth",
+                        "input": [
+                            {
+                                "types": [
+                                    "mobile"
+                                ]
+                            }
+                        ],
+                        "task": "smsAuth",
                         "output": "문자메세지(SMS)로 발송된 인증번호를 입력해주세요.",
                         "children": [
                             {
                                 "id": "restaurant50",
                                 "filename": "restaurants",
                                 "input": {
-                                    "regexp": {}
+                                    "regexp": /[\d\s]+/
                                 },
+                                "task": "smsAuthValid",
                                 "output": [
                                     {
-                                        "if": "start.smsAuthValid",
-                                        "task": "start.smsAuthTask",
+                                        "if": "context.dialog.matched1==true",
+                                        "task": "smsAuthTask",
                                         "output": {
                                             "call": "예약내용확인"
                                         }
                                     },
                                     {
-                                        "if": "start.smsAuthinValid",
+                                        "if": "context.dialog.matched1==false",
                                         "repeat": 1,
                                         "options": {
-                                            "output": "인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음"
+                                            "output": "인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n1. 처음"
                                         }
                                     }
                                 ]
@@ -964,7 +903,7 @@ var dialogs = [
                                 "output": {
                                     "repeat": 1,
                                     "options": {
-                                        "output": "인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음"
+                                        "output": "인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n1. 처음"
                                     }
                                 }
                             }
@@ -991,19 +930,15 @@ var dialogs = [
                 "filename": "restaurants",
                 "name": "예약내용확인",
                 "input": false,
-                "task": {
-                    "action": "start.reserveConfirm"
-                },
+                "task":"reserveConfirm",
                 "output": "예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n인원: +numOfPerson+명\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?",
                 "children": [
                     {
                         "id": "restaurant55",
                         "filename": "restaurants",
                         "input": "~네",
-                        "task": {
-                            "action": "start.reserveRequest"
-                        },
-                        "output": "예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다."
+                        "task": "reserveRequest",
+                        "output": "예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                     }
                 ]
             }
@@ -1031,16 +966,14 @@ var commonDialogs = [
         "filename": "restaurantcommon",
         "name": "시작",
         "input": "시작",
-        "task": {
-            "name": "startTask"
-        },
+        "task": "startTask",
         "output": [
             {
                 "if": "context.botUser.isOwner",
                 "output": {
                     "call": "예약내역",
                     "options": {
-                        "prefix": "+context.bot.name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n"
+                        "prefix": "+name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n"
                     }
                 }
             },
