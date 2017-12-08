@@ -246,6 +246,8 @@
     right: 14px;
     bottom: 0;
 
+    transition: right 0.5s;
+
     overflow: auto;
 }
 
