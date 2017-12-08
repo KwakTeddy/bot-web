@@ -63,7 +63,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                     for(var i=0; i<text.buttons.length; i++)
                     {
-                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button">' + text.buttons[i].text + '</a>';
+                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
                     }
 
                     t += '</div>';
