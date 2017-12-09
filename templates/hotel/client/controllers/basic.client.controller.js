@@ -82,7 +82,7 @@ angular.module('template').controller('hotelBasicController', ['$scope', '$resou
             data.language = 'ko';
         }
 
-        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description }, function()
+        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description,bank:data.bank }, function()
         {
             ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.templateData._id, data: data }, function(result)
             {

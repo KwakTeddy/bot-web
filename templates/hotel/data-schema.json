@@ -3,5 +3,6 @@
     "phone" : "String",
     "mobile" : "String",
     "address" : "String",
-    "description" : "String"
+    "description" : "String",
+    "bank" : "String"
 }

@@ -6,7 +6,6 @@
     "startTime" : "String",
     "endTime" : "String",
     "holiday" : "String",
-    "menuImage" : "String",
+    "image" : "String",
     "description" : "String"
-
 }

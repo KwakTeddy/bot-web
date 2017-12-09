@@ -1,10 +1,10 @@
 {
     "name": "String",
     "mobile": "String",
-    "numOfman": "String",
+    "numOfPerson": "String",
     "memo": "String",
-    "period": "String",
     "date": "String",
+    "time":"String",
     "status": "String",
     "userKey": "String"
 }
