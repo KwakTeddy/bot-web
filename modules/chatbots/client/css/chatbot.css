@@ -17,8 +17,8 @@
 
 .chatbots
 {
-    text-align: center;
     overflow: auto;
+    margin-left: 4%;
 }
 
 .chatbot-new
@@ -33,7 +33,7 @@
     padding: 2px 22px 4px 16px;
     line-height: 32px;
     width: 120px;
-    margin-left: 38px;
+    margin-left: 5%;
     margin-top: 50px;
     margin-bottom: 10px;
 }
@@ -87,8 +87,8 @@
 
 .bot_unselect ul .sub1 >img {
     border-radius: 50%;
-    filter: grayscale(100%);
-    opacity: 0.3;
+    filter: grayscale(10%);
+    opacity: 0.9;
     transition: color 2s;
 }
 .bot_unselect:hover ul .sub1 >img{
