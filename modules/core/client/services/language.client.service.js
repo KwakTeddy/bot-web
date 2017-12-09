@@ -1830,6 +1830,12 @@
                 "en": "Back to Graph edit mode",
                 "zh": "返回图形编辑模式",
                 "jp": "グラフ編集モードに戻る"
+            },
+            "Select": {
+                "ko": "선택",
+                "en": "Select",
+                "zh": "选择",
+                "jp": "選択"
             }
         };
 
