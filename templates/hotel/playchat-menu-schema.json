@@ -8,7 +8,7 @@
             { "name" : "이벤트정보관리", "url" : "/templates/contents/event", "icon" : "contents.png" },
             { "name" : "시설정보관리", "url" : "/templates/contents/facility", "icon" : "contents.png" },
             { "name" : "객실정보관리", "url" : "/templates/contents/room", "icon" : "contents.png" },
-            { "name" : "다이정보관리", "url" : "/templates/contents/restaurant", "icon" : "contents.png" },
+            { "name" : "다이닝정보관리", "url" : "/templates/contents/restaurant", "icon" : "contents.png" },
             { "name" : "예약정보관리", "url" : "/templates/contents/reservation", "icon" : "contents.png" }
         ] },
         { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
