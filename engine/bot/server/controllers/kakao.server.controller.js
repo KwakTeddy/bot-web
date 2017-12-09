@@ -142,8 +142,6 @@ function respondMessage(res, text, json) {
   if(json && json.image){
     if (json.image.url.substring(0,4) !== 'http'){
       json.image.url = config.host + json.image.url
-
-        console.log('요기다 이미지 유알엘:', json.image);
     }
     sendMsg.message.photo =
       {
