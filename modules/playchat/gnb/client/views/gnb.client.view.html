@@ -25,7 +25,7 @@
                 <a href="#" class="close" ng-click="toggleMenuItem($event);" ng-if="menu.childMenus"></a>
             </div>
             <ul class="sub-menu-item-group" ng-if="menu.childMenus">
-                <li class="sub-menu-item" ng-repeat="child in menu.childMenus" ng-class="'/playchat{{ child.url }}' == '{{ path }}' ? 'selected' : ''">
+                <li class="sub-menu-item" ng-repeat="child in menu.childMenus" ng-class="'{{ path }}'.startsWith('/playchat{{ child.url }}') ? 'selected' : ''">
                     <a href="/playchat{{ child.url }}">
                         <img ng-src="/modules/playchat/gnb/client/imgs/{{ child.icon }}">
                         <span>{{ child.name }}</span>
