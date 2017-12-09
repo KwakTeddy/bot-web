@@ -2,7 +2,7 @@
 
 angular.module('template').controller('hospitalMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
-    console.log("################################orderControll");
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 시술정보관리', '/modules/playchat/gnb/client/imgs/info_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var chatbot = $cookies.getObject('chatbot');

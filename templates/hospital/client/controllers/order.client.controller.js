@@ -2,6 +2,7 @@
 
 angular.module('template').controller('reserveController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 예약관리', '/modules/playchat/gnb/client/imgs/reservation_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/orders', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var SendSMS = $resource('/api/sendSMS');
