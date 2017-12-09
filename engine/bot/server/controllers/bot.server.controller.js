@@ -47,17 +47,17 @@ var consoleTrace = console.trace;
 
 console = {};
 console.log = function(out) {
-    consoleLog(out);
+    consoleLog.apply(null, arguments);
     if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 }
 
 console.error = function(out) {
-    consoleError(out);
-    if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
+    consoleError.apply(null, arguments);
+    if(botSocket) botSocket.emit('send_msg', ":log \n" + (out && out.stack ? out.stack : out) +"\n");
 }
 
 console.trace = function(out, t) {
-  consoleTrace(out);
+  consoleTrace.apply(null, arguments);
   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 }
 
