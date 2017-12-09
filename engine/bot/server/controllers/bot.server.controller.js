@@ -46,9 +46,10 @@ var consoleError = console.error;
 var consoleTrace = console.trace;
 
 console = {};
-console.log = function(out) {
-    consoleLog(out);
-    if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+console.log = function(out, context) {
+  process.stdout.write(out+'\n');
+  if(context && context.botUser && context.botUser.socket && context.botUser.dev === true)
+    context.botUser.socket.emit('send_msg', ":log \n" + out +"\n");
 }
 
 console.error = function(out) {
@@ -61,7 +62,7 @@ console.trace = function(out, t) {
   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 }
 
-function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
+function botProc(botName, channel, user, inTextRaw, json, outCallback, options, socket) {
     // TODO 개발용
     dialog = utils.requireNoCache(path.resolve('engine/bot/action/common/dialog'));
 
@@ -119,7 +120,15 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             contextModule.getContext(botName, channel, user, options, function(_context) {
                 context = _context;
                 if(context.bot.language == undefined) context.bot.language = options.language || 'ko';
-                cb(null);
+                if(socket && options && options.dev === true) {
+                    context.botUser.socket = socket;
+                    context.botUser.dev = true;
+                } else {
+                    context.botUser.socket = undefined;
+                    context.botUser.dev = undefined;
+                }
+
+              cb(null);
             });
         },
         function(cb) {
