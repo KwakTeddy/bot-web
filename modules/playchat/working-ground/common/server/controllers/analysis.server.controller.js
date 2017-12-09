@@ -101,7 +101,7 @@ module.exports.senarioExelDownload = function (req, res) {
     var cond = {
         inOut: true,
         botId: req.params.bId,
-        channel: {$ne: "socket"},
+        // channel: {$ne: "socket"},
         created: {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()},
 
     };
