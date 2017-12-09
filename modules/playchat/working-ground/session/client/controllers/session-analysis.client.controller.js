@@ -143,19 +143,25 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
 
                 var labels = [];
                 var dataset = [{
-                    label: '카카오톡',
+                    label: LanguageService('Kakaotalk'),
                     data: [],
                     backgroundColor: [],
                     borderColor: [],
                     borderWidth: 1
                 }, {
-                    label: '페이스북',
+                    label: LanguageService('Facebook'),
                     data: [],
                     backgroundColor: [],
                     borderColor: [],
                     borderWidth: 1
                 }, {
-                    label: '네이버톡톡',
+                    label: LanguageService('Naver talk talk'),
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1
+                }, {
+                    label: LanguageService('Socket'),
                     data: [],
                     backgroundColor: [],
                     borderColor: [],
@@ -163,7 +169,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                 }];
 
                 var averageDataset = [{
-                    label: '세션당 평균 대화량',
+                    label: LanguageService('Average amount of traffic per session'),
                     data: [],
                     backgroundColor: [],
                     borderColor: [],
@@ -182,11 +188,12 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                         dataset[0].data.push(list[key].kakao);
                         dataset[1].data.push(list[key].facebook);
                         dataset[2].data.push(list[key].navertalk);
+                        dataset[3].data.push(list[key].socket);
 
-                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk))
+                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk + list[key].socket))
                         averageDataset[0].data.push(avg);
 
-                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: list[key].kakao, facebook: list[key].facebook, navertalk: list[key].navertalk, average: avg });
+                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: list[key].kakao, facebook: list[key].facebook, navertalk: list[key].navertalk, socket: list[key].socket, average: avg });
                         // averageDatas.push({ date: key, count: Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk)) });
                     }
                     else
