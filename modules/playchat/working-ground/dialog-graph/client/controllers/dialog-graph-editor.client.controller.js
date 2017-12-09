@@ -1,5 +1,7 @@
 angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
 {
+    var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
+
     var chatbot = $cookies.getObject('chatbot');
 
     $scope.chatbot = chatbot;
@@ -507,8 +509,26 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     },
     function(data)
     {
-        $scope.$apply(function(){
+        $scope.$apply(function()
+        {
             $scope.dialog.input = data.input;
+
+            for(var i=0; i<data.input.length; i++)
+            {
+                for(var key in data.input[i])
+                {
+                    if(key == 'text')
+                    {
+                        (function(index)
+                        {
+                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: data.input[index][key] }, function(result)
+                            {
+                                data.input[index][key] = result.text;
+                            });
+                        })(i);
+                    }
+                }
+            }
         })
     });
 

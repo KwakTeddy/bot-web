@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('OperationUserController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'PagingService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $element, PagingService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Operation > User', '/modules/playchat/gnb/client/imgs/users.png');
+    $scope.$parent.changeWorkingGroundName('Operation > User', '/modules/playchat/gnb/client/imgs/user.png');
 
     var BotUserService = $resource('/api/:botId/operation/users', { botId: '@botId' });
     var BotUserPageService = $resource('/api/:botId/operation/users/totalpage', { botId: '@botId' });

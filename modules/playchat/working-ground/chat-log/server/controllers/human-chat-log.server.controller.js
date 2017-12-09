@@ -8,7 +8,7 @@ module.exports.find = function(req, res)
     var query = {};
     query['botId'] = req.params.botId;
     query['liveChat'] = true;
-    query['channel'] = { $ne: "socket" };
+    // query['channel'] = { $ne: "socket" };
 
     var page = parseInt(req.query.page || 1);
     var countPerPage = parseInt(req.query.countPerPage || 50);
@@ -34,8 +34,6 @@ module.exports.find = function(req, res)
         });
         query = searchQuery;
     };
-
-    console.log('페이지 : ', page, countPerPage);
 
     UserDialog.aggregate([ { $match: query }, { $group: { _id: { userKey: "$userId", channel: "$channel", botId: "$botId" }, count: { $sum: 1 }, maxDate: { $max: "$created" } } }, { $sort: sort }, { $skip: (page-1) * countPerPage }, { $limit: countPerPage }]).exec(function (err, data)
     {

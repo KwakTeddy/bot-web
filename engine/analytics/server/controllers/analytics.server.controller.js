@@ -39,7 +39,7 @@ exports.senarioExelDownload = function (req, res) {
   var cond = {
     inOut: true,
     botId: req.params.bId,
-    channel: {$ne: "socket"},
+    // channel: {$ne: "socket"},
     created: {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()},
 
 };
@@ -410,7 +410,7 @@ exports.list = function (req, res) {
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1 };
 
   cond.botId = botId;
-  cond.channel = {$ne: "socket"};
+  // cond.channel = {$ne: "socket"};
 
   console.log(JSON.stringify(cond));
   UserDialogLog.aggregate(
@@ -432,7 +432,7 @@ exports.list = function (req, res) {
 };
 
 exports.failDailogs = function (req, res) {
-  var cond = {botId: req.params.bId, inOut: true, fail: true, channel : {$ne: "socket"}};
+  var cond = {botId: req.params.bId, inOut: true, fail: true};
   var startYear =  parseInt(req.body.date.start.split('/')[0]);
   var startMonth = parseInt(req.body.date.start.split('/')[1]);
   var startDay =   parseInt(req.body.date.start.split('/')[2]);
@@ -473,8 +473,8 @@ exports.failDialogStatistics = function (req, res) {
       fail: true,
       dialog: {$nin: [":reset user", null]},
       preDialogId :{ $exists:true, $ne: null },
-      clear : {$ne: true},
-      channel: {$ne: "socket"}
+      clear : {$ne: true}
+      // channel: {$ne: "socket"}
     };
   cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
   var query = [
@@ -508,7 +508,7 @@ exports.userCount = function (req, res) {
     case "facebook": cond.channel = "facebook"; break;
     case "kakao": cond.channel = "kakao"; break;
     case "navertalk": cond.channel = "navertalk"; break;
-    default : cond.channel = {$ne: "socket"}; break;
+    // default : cond.channel = {$ne: "socket"}; break;
   }
   switch (req.body.userType){
     case  "new": console.log(1); break;
@@ -576,7 +576,7 @@ exports.userCount = function (req, res) {
 exports.userDialogCumulativeCount = function (req, res) {
   var cond = {};
   cond.botId = req.params.bId;
-  cond.channel = {$ne: "socket"};
+  // cond.channel = {$ne: "socket"};
   UserDialog.count(cond).exec(function (err, dialogTotalCount) {
     if (err) {
       return res.status(400).send({
@@ -601,7 +601,7 @@ exports.dailyDialogUsage = function (req, res) {
     case "facebook": cond.channel = "facebook"; break;
     case "kakao": cond.channel = "kakao"; break;
     case "navertalk": cond.channel = "navertalk"; break;
-    default : cond.channel = {$ne: "socket"}; break;
+    // default : cond.channel = {$ne: "socket"}; break;
   }
   UserDialog.aggregate(
     [

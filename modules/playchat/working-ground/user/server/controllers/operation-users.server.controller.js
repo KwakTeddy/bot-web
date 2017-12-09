@@ -81,7 +81,7 @@ exports.find = function(req, res)
 
     if(req.query.neSocket)
     {
-        query.channel = { $ne: "socket" };
+        // query.channel = { $ne: "socket" };
     }
 
     BotUser.find(query).sort('-created').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, list)

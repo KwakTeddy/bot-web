@@ -178,7 +178,7 @@
 
 .form-row label
 {
-    width: 43%;
+    width: 50%;
 }
 
 .form-row label > .form-title
@@ -238,7 +238,6 @@
 {
     opacity: 0.3;
     cursor: pointer;
-    margin-right: 5px;
 }
 
 .image-button:hover, .delete-img:hover, .modify-img:hover

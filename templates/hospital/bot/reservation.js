@@ -2,7 +2,7 @@ var path = require('path')
 var address = require(path.resolve('./engine/bot/action/common/address'));
 var type = require(path.resolve('./engine/bot/action/common/type'));
 var shop = require(path.resolve('./engine/bot/common/shop'));
-// var start = require('./start');
+// var hospital = require('./hospital');
 
 
 var dialogs = [
@@ -260,7 +260,7 @@ var dialogs = [
                         id: 'restaurant55',
                         filename: 'restaurant',
                         input: '~네',
-                        task:           {action: 'reserveRequest'},
+                        task: "reserveRequest2",
                         output: '예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n확인 후 예약완료 문자를 보내 드리겠습니다.'
                     }
                 ]

@@ -55,6 +55,11 @@ angular.module('playchat').controller('DialogSetManagementAddController', ['$sco
                 });
             }
         };
+
+        $scope.cancel = function()
+        {
+            $location.url('/playchat/management/dialog-set');
+        };
     })();
 
     $scope.lan=LanguageService;

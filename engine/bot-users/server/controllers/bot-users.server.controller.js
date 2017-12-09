@@ -129,7 +129,7 @@ exports.list = function (req, res) {
   console.log(util.inspect(req.query, {showHidden: false, depth: null}));
   var query = {};
   query['botId'] = req.query.botId;
-  query['channel'] = {$ne: "socket"};
+  // query['channel'] = {$ne: "socket"};
   var currentPage = 0;
   var perPage = 10;
   var sort = {};

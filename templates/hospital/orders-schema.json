@@ -1,0 +1,9 @@
+{
+    "status": "String",
+    "botId": "String",
+    "name": "String",
+    "mobile": "String",
+    "date": "Date",
+    "time": "String",
+    "userKey" : "String"
+}

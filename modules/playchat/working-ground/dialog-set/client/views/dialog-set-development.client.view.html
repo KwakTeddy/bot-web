@@ -6,15 +6,15 @@
             <div>
                 <div>
                     <p>Topic 1</p>
-                    <select class="data-select"></select>
+                    <select class="data-select" tabindex="-1"></select>
                 </div>
                 <div>
                     <p>Topic 2</p>
-                    <select class="data-select"></select>
+                    <select class="data-select" tabindex="-1"></select>
                 </div>
                 <div>
                     <p>Topic 3</p>
-                    <select class="data-select"></select>
+                    <select class="data-select" tabindex="-1"></select>
                 </div>
             </div>
         </div>
@@ -76,15 +76,15 @@
                     <div>
                         <div>
                             <p>Topic 1</p>
-                            <select class="data-select"></select>
+                            <select class="data-select" tabindex="-1"></select>
                         </div>
                         <div>
                             <p>Topic 2</p>
-                            <select class="data-select"></select>
+                            <select class="data-select" tabindex="-1"></select>
                         </div>
                         <div>
                             <p>Topic 3</p>
-                            <select class="data-select"></select>
+                            <select class="data-select" tabindex="-1"></select>
                         </div>
                     </div>
                 </div>
@@ -106,24 +106,24 @@
             </form>
         </div>
         <div class="dialog-learning-development-content-row" ng-repeat="dialog in dialogs" data-id="{{ dialog._id }}">
-            <form ng-submit="addDialog($event);">
+            <form ng-submit="addDialog($event);" data-id="{{ dialog._id }}">
                 <div class="topic-area">
                     <div>
                         <div>
                             <p>Topic 1</p>
-                            <select class="data-select">
+                            <select class="data-select" tabindex="-1">
                                 <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
                             </select>
                         </div>
                         <div>
                             <p>Topic 2</p>
-                            <select class="data-select">
+                            <select class="data-select" tabindex="-1">
                                 <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
                             </select>
                         </div>
                         <div>
                             <p>Topic 3</p>
-                            <select class="data-select">
+                            <select class="data-select" tabindex="-1">
                                 <option ng-if="dialog.context">{{ dialog.context.name }}</option>
                             </select>
                         </div>

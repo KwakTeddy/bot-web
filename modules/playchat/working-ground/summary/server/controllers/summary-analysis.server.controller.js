@@ -7,7 +7,7 @@ var botLib = require(path.resolve('./engine/bot.js'));
 
 module.exports.totalDialogCount = function(req, res)
 {
-    UserDialog.count({ botId: req.params.botId, channel: { $ne: 'socket' } }).exec(function (err, count)
+    UserDialog.count({ botId: req.params.botId }).exec(function (err, count)
     {
         if (err)
         {
@@ -22,7 +22,7 @@ module.exports.totalDialogCount = function(req, res)
 
 module.exports.periodDialogCount = function(req, res)
 {
-    UserDialog.count({ botId: req.params.botId, channel: { $ne: 'socket' }, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count)
+    UserDialog.count({ botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count)
     {
         if (err)
         {
@@ -38,7 +38,7 @@ module.exports.periodDialogCount = function(req, res)
 module.exports.totalUserCount = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, channel: { $ne: 'socket' }, inOut: true } },
+        { $match: { botId: req.params.botId, inOut: true } },
         { $project:
             {
                 _id: 0,
@@ -81,7 +81,7 @@ module.exports.liveUserCount = function(req, res)
     var endDate = new Date();
 
     var query = [
-        { $match: { botId: req.params.botId, channel: { $ne: 'socket' }, inOut: true, created: { $gte: startDate, $lte: endDate } } },
+        { $match: { botId: req.params.botId, inOut: true, created: { $gte: startDate, $lte: endDate } } },
         { $group: { _id: '$userId', count: { $sum: 1 }} }
     ];
 
@@ -101,7 +101,7 @@ module.exports.liveUserCount = function(req, res)
 module.exports.periodUserCount = function(req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, channel: { $ne: 'socket' }, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
+        { $match: { botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
         { $group: { _id: '$userId', count: { $sum: 1 }} }
     ];
 
@@ -121,7 +121,7 @@ module.exports.periodUserCount = function(req, res)
 module.exports.dailyDialogUsage = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, channel: { $ne: 'socket' } } },
+        { $match: { botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
         { $project:
             {
                 _id: 0,
@@ -161,7 +161,7 @@ module.exports.dailyDialogUsage = function (req, res)
 exports.userInputStatistics = function (req, res)
 {
     var query = [
-        { $match: { inOut: true, dialog: { $nin: [null, ':reset user', ':build'] }, botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, channel: { $ne: 'socket' } } },
+        { $match: { inOut: true, dialog: { $nin: [null, ':reset user', ':build'] }, botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
         { $group: { _id: { dialog:'$dialog', dialogName: '$dialogName', dialogId:"$dialogId" }, count: { $sum: 1 } } },
         { $sort: { count: -1 } }
     ];
@@ -185,7 +185,7 @@ exports.userInputStatistics = function (req, res)
 exports.failDailogs = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, inOut: true, fail: true, channel : { $ne: 'socket' }, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
+        { $match: { botId: req.params.botId, inOut: true, fail: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
         { $group: { _id: { dialog: "$dialog" }, count: { $sum: 1 } } },
         { $sort: {count: -1} }
     ];
@@ -211,7 +211,7 @@ exports.failDailogs = function (req, res)
 exports.scenarioUsage = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, inOut: true, dialogName: { $nin: [null, "답변없음"] }, channel: { $ne: 'socket' }, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
+        { $match: { botId: req.params.botId, inOut: true, dialogName: { $nin: [null, "답변없음"] }, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
         {$project:
             {
                 _id: 0,

@@ -3,13 +3,21 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('LanguageService', function($cookies)
+    angular.module('playchat').factory('LanguageService', function($cookies, $rootScope)
     {
         var user = $cookies.getObject('user');
         var userLang = navigator.language || navigator.userLanguage;
-        var code = user ? user.language : userLang;
+        var code = user ? user.language : userLang || 'en';
 
         code = code.split('-')[0];
+
+        $rootScope.$on('changeLanguage', function()
+        {
+            user = $cookies.getObject('user');
+            code = user ? user.language : userLang || 'en';
+
+            code = code.split('-')[0];
+        });
 
         var languages = {
             "Welcome to Playchat!": {
@@ -1822,6 +1830,12 @@
                 "en": "Back to Graph edit mode",
                 "zh": "返回图形编辑模式",
                 "jp": "グラフ編集モードに戻る"
+            },
+            "Select": {
+                "ko": "선택",
+                "en": "Select",
+                "zh": "选择",
+                "jp": "選択"
             }
         };
 
