@@ -17,6 +17,16 @@
     font-weight: bold;
 }
 
+.dialog-graph-error > div
+{
+    text-align: center;
+}
+
+.dialog-graph-error button
+{
+    margin: 20px 0;
+}
+
 .graph-background
 {
     min-width: 800px;
@@ -43,6 +53,11 @@
 .graph-controller > div
 {
     flex: 1;
+}
+
+.graph-controller > div:last-child
+{
+    flex: 2;
 }
 
 .graph-controller > div form, .graph-zoom-controller
@@ -241,6 +256,8 @@
     right: 14px;
     bottom: 0;
 
+    transition: right 0.5s;
+
     overflow: auto;
 }
 
@@ -383,13 +400,40 @@
     background-image: url(../imgs/more-blue.png);
 }
 
-.graph-dialog-input, .graph-dialog-buttons
+.graph-dialog-input
 {
     position: relative;
-    height: 43px;
-    text-align: center;
-    /*line-height: 43px;*/
+     height: 33px;
+    /* text-align: center; */
+    /* line-height: 43px; */
     line-height: 33px;
+}
+
+.graph-dialog-buttons
+{
+    position: relative;
+    padding: 10px 0;
+    line-height: 33px;
+}
+
+.graph-dialog-buttons > div
+{
+    padding: 5px 0;
+}
+
+.graph-dialog-buttons a
+{
+    width: 91%;
+    padding:0 10px;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
 }
 
 .graph-dialog-input, .graph-dialog-buttons span
@@ -421,7 +465,7 @@
 .graph-dialog-input span, .graph-dialog-output span, .graph-dialog-output div
 {
     /*color: #656565;*/
-    font-weight: 100;
+    font-weight: 700;
     font-size: 13px;
 }
 
@@ -432,7 +476,7 @@
     min-height: 45px;
     max-height: 200px;
     cursor: pointer;
-    text-align: center;
+    /*text-align: center;*/
 
     /*padding: 10px;*/
     padding: 5px;
@@ -625,6 +669,11 @@
     top: 2px;
 }
 
+.tab-body li
+{
+    width: auto;
+}
+
 .tab-body li, .prev-tab, .next-tab
 {
     display: inline-block;
@@ -685,6 +734,29 @@
     border-radius: 4px;
     color: #3c763d;
     background-color: #dff0d8;
+
+    position: absolute;
+    top: 120px;
+    right: 15px;
+
+    z-index: 1001;
+
+    opacity: 0;
+
+    transition: opacity 0.5s;
+
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+}
+
+.alert-error
+{
+    display: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+    color: #a94442;
+    background-color: #f2dede;
 
     position: absolute;
     top: 120px;

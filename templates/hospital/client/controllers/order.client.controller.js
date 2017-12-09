@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('template').controller('orderController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('reserveController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
-    console.log("################################orderControll");
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/orders', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var SendSMS = $resource('/api/sendSMS');
@@ -45,8 +44,8 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
 
         $scope.accept = function(menu)
         {
-            menu.status = '주문승인';
-            MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, datas: {status:menu.status} }, function(result)
+            menu.status = '예약승인';
+            MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, status: menu.status }, function(result)
                 {
                     console.log(result);
                 },
@@ -55,7 +54,7 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
                     alert(err);
                 });
 
-            SendSMS.save({mobile:menu.mobile, message:"주문이 확정되었습니다."}, function(result)
+            SendSMS.save({mobile:menu.mobile, message:"예약이 확정되었습니다."}, function(result)
                 {
                     console.log(result);
                 },
@@ -67,7 +66,7 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
 
         $scope.deny = function(menu)
         {
-            menu.status = '주문거부';
+            menu.status = '예약거부';
             MenuService.update({ templateId: $scope.template.id, botId: chatbot.id, _id: menu._id, status: menu.status }, function(result)
                 {
                     console.log(result);
@@ -77,7 +76,7 @@ angular.module('template').controller('orderController', ['$scope', '$resource',
                     alert(err);
                 });
 
-            SendSMS.save({mobile:menu.mobile, message:"주문이 거부되었습니다."}, function(result)
+            SendSMS.save({mobile:menu.mobile, message:"예약이 거부되었습니다."}, function(result)
                 {
                     console.log(result);
                 },

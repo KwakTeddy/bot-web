@@ -3,13 +3,21 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('LanguageService', function($cookies)
+    angular.module('playchat').factory('LanguageService', function($cookies, $rootScope)
     {
         var user = $cookies.getObject('user');
         var userLang = navigator.language || navigator.userLanguage;
-        var code = user ? user.language : userLang;
+        var code = user ? user.language : userLang || 'en';
 
         code = code.split('-')[0];
+
+        $rootScope.$on('changeLanguage', function()
+        {
+            user = $cookies.getObject('user');
+            code = user ? user.language : userLang || 'en';
+
+            code = code.split('-')[0];
+        });
 
         var languages = {
             "Welcome to Playchat!": {
@@ -245,6 +253,12 @@
                 "en": "Shared chatbot",
                 "jp": "共有されたチェッボッ",
                 "zh": "共享的聊天机器人"
+            },
+            "Share chatbot": {
+                "ko": "챗봇 공유하기",
+                "en": "Share chatbot",
+                "zh": "分享chatbot",
+                "jp": "チャットボットを共有する"
             },
             "New chatbot": {
                 "ko": "새 봇 만들기",
@@ -529,19 +543,19 @@
                 "zh": "紧凑"
             },
             "Undo": {
-                "ko": "되돌아가기",
+                "ko": "실행취소",
                 "en": "Undo",
                 "jp": "戻る",
                 "zh": "返回 "
             },
             "Redo": {
-                "ko": "다시하기",
+                "ko": "다시실행",
                 "en": "Redo",
                 "jp": "もう一度する",
                 "zh": "重来"
             },
             "Save": {
-                "ko": "확인",
+                "ko": "저장",
                 "en": "Save",
                 "jp": "保存する",
                 "zh": "保存"
@@ -1536,6 +1550,16 @@
                 "ko": "로그아웃",
                 "en": "Signout"
             },
+
+
+
+
+
+
+
+
+
+            // 새로 추가된 부분
             "ID": {
                 "ko": "아이디",
                 "en": "Id",
@@ -1739,6 +1763,79 @@
                 "en": "Human Chat log",
                 "zh" : "座席对话历史。",
                 "jp" : "エージェントの会話履歴。"
+            },
+            "Please enter Type name": {
+                "ko": "타입 이름을 입력해주세요.",
+                "en": "Please enter Type name",
+                "zh": "请输入类型名称。",
+                "jp": "タイプ名を入力してください。"
+            }
+            ,
+            "Please enter Task name": {
+                "ko": "Task 이름을 입력해주세요.",
+                "en": "Please enter Task name",
+                "zh": "请输入任务名称",
+                "jp": "タスク名を入力してください"
+            },
+            "Ignore": {
+                "ko": "Ignore",
+                "en": "Ignore",
+                "zh": "忽视",
+                "jp": "無視する"
+            },
+            "Jump": {
+                "ko": "Jump",
+                "en": "Jump",
+                "zh": "跳",
+                "jp": "ジャンプ"
+            },
+            "JSON Format Error": {
+                "ko": "JSON 형식 오류",
+                "en": "JSON Format Error",
+                "zh": "JSON格式错误",
+                "jp": "JSON形式のエラー"
+            },
+            "There is an error in the graph file or an unsupported version of the graph file.": {
+                "ko": "그래프 파일에 오류가 있거나 지원하지 않는 버전의 그래프 파일입니다.",
+                "en": "There is an error in the graph file or an unsupported version of the graph file.",
+                "zh": "图形文件或图形文件的不受支持的版本中存在错误。",
+                "jp": "グラフファイルまたはサポートされていないバージョンのグラフファイルにエラーがあります。"
+            },
+            "View Source": {
+                "ko": "소스보기",
+                "en": "View Source",
+                "zh": "查看来源",
+                "jp": "ソースを表示"
+            },
+            "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
+                "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
+                "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
+                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 你想保存吗？",
+                "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
+            },
+            "Typing the regular expression, press Enter to finish.": {
+                "ko": "정규식 입력 중, 마치려면 Enter를 입력해주세요.",
+                "en": "While typing the regular expression, press Enter to finish.",
+                "zh": "输入正则表达式，按Enter完成。",
+                "jp": "正規表現を入力し、Enterキーを押して終了します。"
+            },
+            "Entering conditional statements, press Enter to finish.": {
+                "ko": "조건문 입력 중, 마치려면 Enter를 입력해주세요.",
+                "en": "Entering conditional statements, press Enter to finish.",
+                "zh": "输入条件语句，按Enter完成。",
+                "jp": "条件文を入力し、Enterキーを押して終了します。"
+            },
+            "Back to Graph edit mode": {
+                "ko": "그래프 편집으로 돌아가기",
+                "en": "Back to Graph edit mode",
+                "zh": "返回图形编辑模式",
+                "jp": "グラフ編集モードに戻る"
+            },
+            "Select": {
+                "ko": "선택",
+                "en": "Select",
+                "zh": "选择",
+                "jp": "選択"
             }
         };
 

@@ -46,6 +46,7 @@
     </div>
     <div class="user-operation-history-area">
         <p class="operation-history-title">{{lan('History') }}</p>
+        <div ng-if="data.memos.length == 0" style="text-align: center; padding: 30px 0;">Empty</div>
         <div class="operation-history-card" ng-repeat="memo in data.memos">
             <div class="operation-history-card-content">
                 {{ memo.memo }}

@@ -38,7 +38,7 @@
                     <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
                         <p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>
                         <div ng-repeat="input in dialog.input">
-                            <div class="dialog-editor-input-textarea" data-nlu="nlu: {{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
+                            <div class="dialog-editor-input-textarea" data-nlu="{{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
                                 <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
                                     <span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">
                                         <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
@@ -66,9 +66,10 @@
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
                         <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
                         <ul class="dialog-editor-select-options">
-                            <li ng-mousedown="createTask();">{{lan('Add New') }}</li>
+                            <li ng-mousedown="createTask(dialog.task.name);">{{lan('Add New') }}</li>
                             <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">
                                 <span data-filename="{{ task.fileName }}">{{ task.name }}</span>
+                                <span style="float: right;" ng-mousedown="moveCodeEditor($event, task);">view</span>
                             </li>
                         </ul>
                     </div>
@@ -110,8 +111,9 @@
                                 </div>
                             </div>
                             <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
-                                <input type="text" class="output-button-name" placeholder="버튼 이름을 입력하세요" ng-model="button.text" ng-required="true" ng-disabled="isUseOutput === false">
-                                <input type="text" class="output-button-url" placeholder="URL을 입력하세요" ng-model="button.url" ng-disabled="isUseOutput === false">
+                                <input type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true" ng-disabled="isUseOutput === false">
+                                <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url" ng-disabled="isUseOutput === false">
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
                             <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">
                                 <span class="blue-label">{{lan('Add button') }}</span>
@@ -167,10 +169,10 @@
                             <option value="return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
-                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false">
+                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false" ng-keyup="findActionDialogs($event);">
                             <ul class="dialog-editor-select-options">
-                                <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
-                                <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in userDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in commonDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                             </ul>
                         </div>
                     </div>

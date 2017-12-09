@@ -1,5 +1,7 @@
 angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
 {
+    var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
+
     var chatbot = $cookies.getObject('chatbot');
 
     $scope.chatbot = chatbot;
@@ -47,6 +49,15 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.$watch('isAdvancedMode', function(after, before)
     {
+        if(after)
+        {
+            for(var i=0; i<$scope.dialog.input.length; i++)
+            {
+                if(!$scope.dialog.input[i].text)
+                    delete $scope.dialog.input[i].text;
+            }
+        }
+
         if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
         {
             // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.
@@ -323,6 +334,16 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result = $scope.oldDialog;
         }
 
+        for(var i=0; i<$scope.dialog.input.length; i++)
+        {
+            var input = $scope.dialog.input[i];
+            for(var key in input)
+            {
+                if(!input[key])
+                    delete input[key];
+            }
+        }
+
         // 저장시 불필요한 데이터 삭제.
         for(var i=0; i<$scope.dialog.output.length; i++)
         {
@@ -352,7 +373,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                     if(result.output[i].kind == 'Action')
                     {
                         var actionObject = { kind: 'Action' };
-                        actionObject[result.output[i].type] = result.output[i].dialog;
+                        actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
                         if(result.output[i].if)
                             actionObject.if = result.output[i].if;
                         if(result.output[i].options)
@@ -366,7 +387,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 //액션 타입을 선택한 경우 저장시 액션데이터만 저장하도록.
                 //이렇게 하면 저장하기 전에 다시 Content등의 아웃풋을 선택하면 기존 데이터를 그대로 활용할 수 있음.
                 var output = { kind: 'Action' };
-                output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.dialog;
+                output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.type == 'return' ? 1 : $scope.dialog.actionOutput.dialog;
                 result.output = [output];
             }
         }
@@ -488,8 +509,26 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     },
     function(data)
     {
-        $scope.$apply(function(){
+        $scope.$apply(function()
+        {
             $scope.dialog.input = data.input;
+
+            for(var i=0; i<data.input.length; i++)
+            {
+                for(var key in data.input[i])
+                {
+                    if(key == 'text')
+                    {
+                        (function(index)
+                        {
+                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: data.input[index][key] }, function(result)
+                            {
+                                data.input[index][key] = result.text;
+                            });
+                        })(i);
+                    }
+                }
+            }
         })
     });
 

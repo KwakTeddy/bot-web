@@ -6,6 +6,7 @@ module.exports = function(app)
     app.get('/api/:templateId/:botId/:datas', TemplateContentsController.findDatas);
     app.put('/api/:templateId/:botId/:datas', TemplateContentsController.updateData);
     app.post('/api/:templateId/:botId/:datas', TemplateContentsController.createDatas);
+    app.post('/api/sendSMS', TemplateContentsController.sendSMS);
 
     // app.get('/api/:templateId/:botId/menus', TemplateContentsController.findMenus);
     // app.post('/api/:templateId/:botId/menus', TemplateContentsController.saveMenus);

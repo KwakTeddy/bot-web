@@ -57,6 +57,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 $scope.dialogs = list;
 
+                angular.element('textarea:first').focus();
+
                 // 로딩 끝.
                 $scope.$parent.loaded('working-ground');
             });
@@ -97,14 +99,12 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 DialogsService.save(data, function(result)
                 {
-                    console.log(result);
-
                     if(callback)
                         callback(result);
                 });
             }
 
-            $rootScope.$broadcast('simulator-build');
+            // $rootScope.$broadcast('simulator-build');
         };
 
         $scope.getDialogFromElement = function(element)
@@ -137,6 +137,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 angular.element(parent).find('textarea').val('');
                 $scope.dialogs.unshift(dialog);
+
+                angular.element('textarea:first').focus();
             });
         };
 
@@ -283,9 +285,10 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             setTimeout(function()
             {
+                console.log('깡깡');
                 //delete 이미지 출력
                 angular.element(element).find('.functions-area img').hide();
-                element.querySelector('.delete-img').style.display = 'inline';
+                angular.element(element).find('.delete-img').show();
             }, 1000);
         };
 
@@ -340,6 +343,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             var data = $scope.getDialogFromElement(element);
             data._id = element.getAttribute('data-id');
             data.botId = chatbot.id;
+
+            console.log('엘레먼트 : ', element);
 
             $scope.save(data, function()
             {
@@ -478,7 +483,14 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             },
             function(err)
             {
-                alert(err.data.error || err.data.message);
+                if(err.status == 401)
+                {
+                    $scope.initialize();
+                }
+                else
+                {
+                    alert(err.data.error || err.data.message);
+                }
             });
         }
         else
@@ -609,7 +621,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             DialogSetsService.save(params, function(result)
             {
-                console.log('결과 : ', result);
                 openDialogsets[chatbot.id][result.title] = result._id;
                 $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 

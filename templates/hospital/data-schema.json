@@ -1,5 +1,6 @@
 {
     "hospitalName": "String",
+    "greeting" : "String",
     "phone": "String",
     "mobile": "String",
     "startTime": "String",

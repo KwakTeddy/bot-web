@@ -54,7 +54,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
                     t += '</div>';
 
-                    template.append(t);
+                    template.find('.speech').append(t);
                 }
 
                 if(text.buttons)
@@ -63,12 +63,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                     for(var i=0; i<text.buttons.length; i++)
                     {
-                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button">' + text.buttons[i].text + '</a>';
+                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
                     }
 
                     t += '</div>';
 
-                    template.append(t);
+                    template.find('.speech').append(t);
                 }
             }
 

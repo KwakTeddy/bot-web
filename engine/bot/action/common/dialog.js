@@ -335,26 +335,87 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           },
 
           function(matched, cb2) {
-            if(input && Array.isArray(input.entities)) {
+            if(input && input.entities != undefined) {
               var eachMatched2 = false;
-              for(var i in input.entities) {
+
+              if(Array.isArray(input.entities)) {
+                for(var i in input.entities) {
+                  for(key in context.botUser.entities) {
+                    if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
+                      eachMatched2 = true;
+                    }
+                  }
+                }
+                if (eachMatched2) cb2(null, true);
+                else cb2(true, false);
+              } else {
                 for(key in context.botUser.entities) {
-                  if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
+                  if(input.entities == '@' + key || input.entities == context.botUser.entities[key] + '@' + key) {
                     eachMatched2 = true;
                   }
                 }
+
+                if (eachMatched2) cb2(null, true);
+                else cb2(true, false);
               }
-              if (eachMatched2) cb2(null, true);
-              else cb2(true, false);
             } else {
               cb2(null, true);
             }
           },
 
           function(matched, cb2) {
-            if(input && Array.isArray(input.types)) {
+            if(input && input.types != undefined) {
               var eachMatched2 = true;
-              async.eachSeries(input.types, function (type1, cb3) {
+
+              if(Array.isArray(input.types)) {
+                async.eachSeries(input.types, function (type1, cb3) {
+                  if(typeof type1 == 'string') {
+                    var _type = context.bot.types[type1];
+                    if(_type) type1 = _type;
+                    else {
+                      _type = context.global.types[type1];
+                      if(_type) type1 = _type;
+                    }
+                  }
+
+                  var type2 = taskModule.paramDefType(type1);           // TODO type1 없는 경우 디버겅 처리
+                  // if (dialog.task == undefined) dialog.task = {};
+
+                  if(typeof type2.typeCheck == 'string') {
+                    var _typeCheck = context.bot.typeChecks[type2.typeCheck];
+                    if(_typeCheck) type2.typeCheck = _typeCheck;
+                    else {
+                      _typeCheck = context.global.typeChecks[type2.typeCheck];
+                      if(_typeCheck) type2.typeCheck = _typeCheck;
+                    }
+                  }
+
+                  if(type2.typeCheck) {
+                    // if(dialog.task && typeof dialog.task == 'string') {
+                    //   var _task = context.bot.tasks[dialog.task];
+                    //   if(_task) dialog.task = utils.clone(_task);
+                    //   else {
+                    //     _task = context.global.tasks[dialog.task];
+                    //     if(_task) dialog.task = utils.clone(_task);
+                    //   }
+                    // }
+
+                    inDoc = {};
+                    executeType(inRaw, inNLP, type2, inDoc, context, function(inNLP, inDoc, _match) {
+                      if(_match) cb3(null);
+                      else {eachMatched2 = false; cb3(true);}
+                    });
+                  } else {
+                    console.log('Type이 없습니다. ' + type1, context);
+                    eachMatched2 = false; cb3(true);
+                  }
+
+                }, function (err) {
+                  if (eachMatched2) cb2(null, true);
+                  else cb2(true, false);
+                })
+              } else {
+                var type1 = input.types;
                 if(typeof type1 == 'string') {
                   var _type = context.bot.types[type1];
                   if(_type) type1 = _type;
@@ -388,18 +449,19 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
                   inDoc = {};
                   executeType(inRaw, inNLP, type2, inDoc, context, function(inNLP, inDoc, _match) {
-                    if(_match) cb3(null);
-                    else {eachMatched2 = false, cb3(true);}
+                    if (_match) cb2(null, true);
+                    else cb2(true, false);
+
                   });
                 } else {
                   console.log('Type이 없습니다. ' + type1, context);
-                  eachMatched2 = false, cb3(true);
+                  cb2(true, false);
                 }
 
-              }, function (err) {
-                if (eachMatched2) cb2(null, true);
-                else cb2(true, false);
-              });
+                // if (eachMatched2) cb2(null, true);
+                // else cb2(true, false);
+              }
+
             } else {
               cb2(null, true);
             }

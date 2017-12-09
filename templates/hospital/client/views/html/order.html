@@ -20,7 +20,7 @@
 </style>
 
 <h1 class="template-demo-title">메뉴관리</h1>
-<div ng-controller="orderController" class="template-demo-menu">
+<div ng-controller="reserveController" class="template-demo-menu">
     <form ng-submit="saveMenu($event);">
         <!--<table class="tb02" style="table-layout:fixed;">-->
         <table style="table-layout:fixed;">
@@ -34,12 +34,10 @@
             <thead>
             <tr>
                 <th>상태</th>
+                <th>이름</th>
                 <th>핸드폰</th>
-                <th>주소</th>
-                <th>결제방식</th>
-                <th>요청사항</th>
-                <th>주문내용</th>
-                <th>주문처리</th>
+                <th>날짜</th>
+                <th>시간</th>
 
             </tr>
             </thead>
@@ -49,21 +47,16 @@
                     <p>{{menu.status}}</p>
                 </td>
                 <td>
+                    <p>{{menu.name}}</p>
+                </td>
+                <td>
                     <p>{{menu.mobile}}</p>
                 </td>
                 <td>
-                    <p>{{menu.address}}</p>
+                    <p>{{menu.date}}</p>
                 </td>
                 <td>
-                    <p>{{menu.pay}}</p>
-                </td>
-                <td>
-                    <p>{{menu.discr}}</p>
-                </td>
-                <td>
-                    <ul ng-repeat="item in menu.order">
-                        <li>{{item.name}}, X{{item.quant}}, {{item.price}}</li>
-                    </ul>
+                    <p>{{menu.time}}</p>
                 </td>
                 <td>
                     <button type="button" class="default-button" ng-click="accept(menu)">승인</button>

@@ -215,6 +215,8 @@
             this.onLoadCallback = undefined;
 
             this.dirty = false;
+
+            this.mode = 'dialog';
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -466,6 +468,30 @@
             return false;
         };
 
+        DialogGraph.prototype.changeToCommonDialogs = function()
+        {
+            if(this.commonDialogs.length > 1)
+            {
+                this.commonDialogs[0].children = [];
+
+                for(var i=1; i<this.commonDialogs.length; i++)
+                {
+                    this.commonDialogs[0].children.push(this.commonDialogs[i]);
+                }
+
+                this.mode = 'common';
+            }
+
+            this.refresh();
+        };
+
+        DialogGraph.prototype.changeToDialogs = function()
+        {
+            this.mode = 'dialog';
+            this.graphData.children = this.userDialogs;
+            this.refresh();
+        };
+
         DialogGraph.prototype.getAllUserDialogs = function(dialogs)
         {
             if(!dialogs)
@@ -533,20 +559,39 @@
 
             if(typeof input == 'string')
             {
-                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">[text] ' + input + '</span>';
+                template = '<span class="graph-dialog-input-span" data-key="text" data-content="' + input + '">' + input + '</span>';
             }
             else
             {
                 for(var key in input)
                 {
-                    var icon = key.charAt(0).toUpperCase();
-                    if(key == 'if')
-                        icon = 'IF';
+                    var displayText = '';
+                    if(key == 'entities')
+                    {
+                        displayText = '@' + input[key];
+                    }
+                    else if(key == 'intent')
+                    {
+                        displayText = '#' + input[key];
+                    }
+                    else if(key == 'types')
+                    {
+                        displayText = '$' + input[key];
+                    }
+                    else if(key == 'regexp')
+                    {
+                        displayText = '/' + input[key] + '/';
+                    }
+                    else if(key == 'text')
+                    {
+                        displayText = input[key];
+                    }
+                    else if(key == 'if')
+                    {
+                        displayText = 'if(' + input[key].replace(/[\n\r]*/gi, '').trim() + ')';
+                    }
 
-                    if(!input[key])
-                        continue;
-
-                    template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
+                    template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
                 }
             }
 
@@ -569,7 +614,15 @@
             }
             else if(output.text)
             {
-                return '<div><span>' + output.text + '</span></div>';
+                var template = '<div><div><span>' + output.text + '</span></div>';
+                if(output.image)
+                {
+                    template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                }
+
+                template += '</div>';
+
+                return template;
             }
             else
             {
@@ -581,7 +634,7 @@
                     {
                         if(key != 'kind' && key != 'options')
                         {
-                            template = '<div><span>[' + key + '] ' + output[key] + '</span></div>';
+                            template = '<div><span>' + (output.return ? '[return]' : '[' + key + '] ' + output[key]) + '</span></div>';
                         }
                     }
                 }
@@ -615,8 +668,7 @@
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><span>[button] ' + buttons[i].text + '</span></div>';
-                break;
+                template += '<div><a href="' + (buttons[i].url || '#') + '" class="default-button" target="_blank">' + buttons[i].text + '</a></div>';
             }
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
@@ -754,6 +806,12 @@
                         {
                             instance.setDirty(true);
                             instance.refresh();
+
+                            if(instance.$scope.compactMode != 'Compact')
+                            {
+                                instance.$scope.compactMode = 'Compact';
+                                instance.$scope.toggleCompactMode();
+                            }
                         }
                     }
 
@@ -1006,13 +1064,15 @@
 
                         dest = children[i];
 
+                        var destCompareTarget = dest.previousElementSibling.children[0];
+
                         var destHalf = dest.offsetHeight / 2;
 
-                        x2 = dest.offsetLeft - 80;
+                        x2 = destCompareTarget.offsetLeft;
                         y2 = dest.offsetTop + (destHalf > 90 ? 90 : destHalf);
 
                         // 세로선.
-                        var x1_5 = (x2 - x1)/2 + x1;
+                        var x1_5 = ((x2 - x1)/2) + x1;
                         var line = createLine(x1_5, y1, x1_5, y2);
                         svg.appendChild(line);
 
@@ -1198,20 +1258,40 @@
 
         DialogGraph.prototype.refresh = function()
         {
-            this.idList = {};
-            this.canvas.html('');
-            this.drawDialog(this.canvas, this.graphData);
-            this.drawLines(this.canvas.find('.graph-dialog'));
-            if(this.focusedDialog)
+            if(this.mode == 'common')
             {
-                this.focusById(this.focusedDialog);
+                this.idList = {};
+                this.canvas.html('');
+                this.drawDialog(this.canvas, this.commonDialogs[0]);
+                this.drawLines(this.canvas.find('.graph-dialog'));
+                if(this.focusedDialog)
+                {
+                    this.focusById(this.focusedDialog);
+                }
+                else
+                {
+                    this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+                }
+
+                this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
             else
             {
-                this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
-            }
+                this.idList = {};
+                this.canvas.html('');
+                this.drawDialog(this.canvas, this.graphData);
+                this.drawLines(this.canvas.find('.graph-dialog'));
+                if(this.focusedDialog)
+                {
+                    this.focusById(this.focusedDialog);
+                }
+                else
+                {
+                    this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+                }
 
-            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+                this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+            }
         };
 
         DialogGraph.prototype.refreshLine = function()

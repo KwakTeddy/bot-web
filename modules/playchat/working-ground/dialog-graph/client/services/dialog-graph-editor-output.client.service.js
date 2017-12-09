@@ -20,6 +20,11 @@
                     $scope.dialog.output[index].buttons = [];
             };
 
+            $scope.deleteOutputButton = function(buttons, index)
+            {
+                buttons.splice(index, 1);
+            };
+
             $scope.setOutputImageUploader = function(index)
             {
                 $scope.dialog.output[index].uploader = new FileUploader({
@@ -157,17 +162,44 @@
             $scope.actionValueChanged = function(dialog)
             {
                 var type = dialog.type;
-                console.log('타입 : ', type);
                 if(type == 'up' || type == 'repeat' || type == 'return')
                 {
-                    console.log('머야 : ', dialog);
                     $scope.actionTypeCheck = true;
                     dialog.dialog = 1;
+
+                    if(type == 'return')
+                    {
+                        dialog.dialog = '';
+                    }
                 }
                 else
                 {
                     $scope.actionTypeCheck = false;
                 }
+            };
+
+            $scope.findActionDialogs = function(e)
+            {
+                var value = e.currentTarget.value;
+
+                angular.element(e.currentTarget.nextElementSibling).find('li').each(function()
+                {
+                    if(!value)
+                    {
+                        $(this).show();
+                    }
+                    else
+                    {
+                        if($(this).attr('data-name').indexOf(value) != -1)
+                        {
+                            $(this).show();
+                        }
+                        else
+                        {
+                            $(this).hide();
+                        }
+                    }
+                });
             };
         };
 

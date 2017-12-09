@@ -4,6 +4,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var async = require('async');
+var request = require('request');
 
 module.exports.findDatas = function(req, res)
 {
@@ -16,6 +17,7 @@ module.exports.findDatas = function(req, res)
         if(err)
         {
             console.error(err);
+            console.log("!!!!!!!!!!!!");
             return res.status(400).send({ error: err });
         }
 
@@ -112,7 +114,58 @@ module.exports.createDatas = function(req, res)
 
 module.exports.updateData = function(req, res)
 {
-    //
+    var botId = req.params.botId;
+    var templateId = req.params.templateId;
+    var datasKey = req.params.datas;
+    var datas = req.body.datas;
+
+    fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ error: err });
+        }
+
+        var json = JSON.parse(data.toString());
+        json.botId = 'String';
+
+        //몽고디비 스키마 생성
+        var schema = new Schema(json);
+
+        var name = templateId + '-' + datasKey;
+
+        var model = undefined;
+
+        if(mongoose.models[name])
+            model = mongoose.model(name);
+        else
+            model = mongoose.model(name, schema);
+
+        model.findById(req.body._id, function(err, doc){
+            if(err) return res.status(500).json({ error: 'database failure' });
+            if(!doc) return res.status(404).json({ error: 'data not found' });
+
+            for(var prop in datas) {
+                doc[prop] = datas[prop];
+            }
+
+            doc.save(function(err){
+                if(err) res.status(500).json({error: 'failed to update'});
+                res.json({message: 'book updated'});
+            });
+        });
+    });
+}
+
+module.exports.sendSMS = function(req, res) {
+    request.post(
+        'https://bot.moneybrain.ai/api/messages/sms/send',
+        {json: {callbackPhone: "02-858-5683", phone: req.body.mobile.replace(/-/g, ""), message: req.body.message}},
+        function (error, response, body) {
+            console.log('sms send');
+        }
+    );
     res.end();
 }
 
@@ -363,3 +416,4 @@ exports.uploadImage = function(req, res)
         }
     });
 };
+

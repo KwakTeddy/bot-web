@@ -18,7 +18,7 @@ exports.userCount = function (req, res)
         case "facebook": cond.channel = "facebook"; break;
         case "kakao": cond.channel = "kakao"; break;
         case "navertalk": cond.channel = "navertalk"; break;
-        default : cond.channel = {$ne: "socket"}; break;
+        // default : cond.channel = {$ne: "socket"}; break;
     }
     switch (req.body.userType){
         case  "new": console.log(1); break;

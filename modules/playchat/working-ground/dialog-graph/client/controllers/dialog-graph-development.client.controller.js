@@ -35,6 +35,66 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
+        $scope.$on('makeNewType', function(context, name)
+        {
+            var text = 'var ' + name + ' = {\n' +
+                       '  typeCheck: function (text, type, task, context, callback) {\n' +
+                       '    var matched = true;\n' +
+                       '    \n' +
+                       '    callback(text, task, matched);\n' +
+                       '\t}\n' +
+                       '};\n' +
+                       '\n' +
+                       'bot.setType(\'' + name + '\', ' + name + ');';
+            for(var i=0; i<$scope.fileList.length; i++)
+            {
+                if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
+                {
+                    angular.element('.tab-body .select_tab').removeClass('select_tab');
+                    angular.element('#' + $scope.fileList[i].replace(/\./gi, '\\.')).addClass('select_tab');
+
+                    $location.search().fileName = $scope.fileList[i];
+
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    break;
+                }
+            }
+        });
+
+        $scope.$on('makeNewTask', function(context, name)
+        {
+            var text = 'var ' + name + ' = {\n' +
+                       '  action: function (task,context,callback) {\n' +
+                       '    callback(task,context);\n' +
+                       '\t}\n' +
+                       '};\n' +
+                       '\n' +
+                       'bot.setTask(\'' + name + '\', ' + name + ');';
+            for(var i=0; i<$scope.fileList.length; i++)
+            {
+                if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
+                {
+                    angular.element('.tab-body .select_tab').removeClass('select_tab');
+                    angular.element('#' + $scope.fileList[i].replace(/\./gi, '\\.')).addClass('select_tab');
+
+                    $location.search().fileName = $scope.fileList[i];
+
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    break;
+                }
+            }
+        });
+
+        $scope.$on('moveToTask', function(context, data)
+        {
+            angular.element('.tab-body .select_tab').removeClass('select_tab');
+            angular.element('#' + data.fileName.replace(/\./gi, '\\.')).addClass('select_tab');
+
+            $location.search().fileName = data.fileName;
+
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(data.fileName, { isView: true, target: data.name });
+        });
+
         $scope.$on('$locationChangeStart', function(event, next, current)
         {
             if(DialogGraph.isDirty())
@@ -97,6 +157,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.initialize = function()
         {
             $scope.compactMode = 'Compact';
+            $scope.commonMode = 'Common';
             $scope.zoom = 1;
             $scope.searchedDialogs = [];
             $scope.searchedDialogFocus = 0;
@@ -117,7 +178,12 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 if(fileName)
                 {
                     $scope.currentTabName = fileName;
-                    $scope.loadFile(fileName);
+
+                    if(fileName.endsWith('.graph.js'))
+                    {
+                        angular.element('.dialog-graph-code-editor').hide();
+                        $scope.loadFile(fileName);
+                    }
                 }
                 else
                 {
@@ -160,7 +226,9 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             if(fileName.endsWith('.graph.js'))
             {
                 angular.element('.dialog-graph-code-editor').hide();
-                $scope.loadFile(fileName);
+
+                if(!DialogGraph.isDirty())
+                    $scope.loadFile(fileName);
             }
             else
             {
@@ -187,7 +255,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     var result = DialogGraph.loadFromFile(data, fileName);
                     if(!result)
                     {
-                        angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
+                        angular.element('.graph-body').html($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
                     }
                 }
             },
@@ -195,7 +263,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 if(err.status == 404)
                 {
-                    angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>파일을 찾을 수 없습니다</h1></div>');
+                    angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>' + $scope.lan('File not found') + '</h1></div>');
                 }
             });
         };
@@ -213,6 +281,27 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
             var target = e.currentTarget.parentElement.nextElementSibling;
             DialogGraph.toggleChild(target);
+        };
+
+        $scope.toggleCommonMode = function()
+        {
+            if($scope.commonMode == 'Common')
+            {
+                // to commonDialogs
+                $scope.commonMode = 'Dialog';
+                DialogGraph.changeToCommonDialogs();
+            }
+            else
+            {
+                $scope.commonMode = 'Common';
+                DialogGraph.changeToDialogs();
+            }
+        };
+
+        $scope.viewGraphSource = function()
+        {
+            var fileName = $scope.currentTabName;
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource' });
         };
 
         $scope.toggleCompactMode = function()

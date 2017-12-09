@@ -55,7 +55,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                     }
                 }
 
-                $scope.entities.push({ name: e.currentTarget.value, synonyms: [{ name: '' }] });
+                $scope.entities.push({ name: e.currentTarget.value, synonyms: [{ name: e.currentTarget.value }] });
                 e.currentTarget.value = '';
             }
 
@@ -77,7 +77,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 }
             }
 
-            $scope.entities.push({ name: input.value, synonyms: [] });
+            $scope.entities.push({ name: input.value, synonyms: [{ name: input.value }] });
             input.value = '';
         }
 

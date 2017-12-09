@@ -108,7 +108,7 @@ var surgeImageButton = {
     action: function (task,context,callback) {
         task.buttons = [{text:"바로 예약"}, {text:"시술후기 보기"}];
         // task.buttons = [];
-        task.image = {url: config.host + context.dialog.surgeListType.image};
+        task.image = {url: context.dialog.surgeListType.image};
 
         callback(task,context);
     }
@@ -139,7 +139,7 @@ var reviewButtonImage = {
         task.buttons = [{text:"바로 예약"}, {text:"시술정보 보기"}];
         console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         console.log(config.host);
-        task.image = {url: config.host + context.dialog.surgeListType.image};
+        task.image = {url: context.dialog.surgeListType.image};
 
         callback(task,context);
         callback(task,context);
@@ -188,9 +188,106 @@ bot.setType('eventListType', eventListType);
 
 var addEventImage = {
     action: function (task,context,callback) {
-        task.image = {url: config.host + context.dialog.eventListType.image};
+        task.image = {url: context.dialog.eventListType.image};
         callback(task,context);
     }
 };
 
 bot.setTask('addEventImage', addEventImage);
+
+var reserveRequest2 = {
+    name: 'reserveRequest2',
+    action: reserveRequest2
+};
+bot.setTask("reserveRequest2", reserveRequest2);
+
+
+function reserveRequest2(task, context, callback) {
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@requested");
+
+    var doc = {
+        name: context.dialog.name,
+        mobile: context.dialog.mobile || context.user.mobile,
+        date: context.dialog.date,
+        time: context.dialog.time,
+        // numOfPerson: context.dialog.numOfPerson,
+        status: '예약요청중',
+        botId: context.bot.id,
+        userKey: context.user.userKey
+    };
+
+    var fields = context.bot.reserveFields || [];
+    for(var i = 0; i < fields.length; i++) {
+        var field = fields[i];
+        doc[field.name] = context.dialog[field.name];
+    }
+
+    var TemplateReservation = mongoModule.getModel('hospital-orders');
+    var templateReservation = new TemplateReservation(doc);
+
+    templateReservation.save(function(err) {
+        if(!context.bot.testMode) {
+            var randomNum = '';
+            randomNum += '' + Math.floor(Math.random() * 10);
+            randomNum += '' + Math.floor(Math.random() * 10);
+            randomNum += '' + Math.floor(Math.random() * 10);
+            randomNum += '' + Math.floor(Math.random() * 10);
+
+            var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            context.bot.authKey = randomNum;
+
+            var query = {url: url};
+            var request = require('request');
+
+            request({
+                url: 'https://openapi.naver.com/v1/util/shorturl',
+                method: 'POST',
+                form: query,
+                headers: {
+                    'Host': 'openapi.naver.com',
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'X-Naver-Client-Id': context.bot.naver.clientId,
+                    'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                }
+            }, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var shorturl;
+                    try {shorturl = JSON.parse(body).result.url; } catch(e) {console.log(e);}
+                    var message = '[플레이챗]' + '\n' +
+                        context.dialog.name + '/' +
+                        context.dialog.dateStr + '/';
+                    // context.dialog.numOfPerson + '명\n' +
+                    if (context.dialog.time) {
+                        messages += context.dialog.time + '/';
+                    }
+
+                    for(var i = 0; i < fields.length; i++) {
+                        var field = fields[i];
+                        if(field.name == 'numOfPerson') {
+                            message +=  context.dialog[field.name] + '명/';
+                        } else {
+                            message += context.dialog[field.name] + '/';
+                        }
+                    }
+
+                    message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n' +
+                        '예약접수(클릭) ' + shorturl;
+
+                    request.post(
+                        'https://bot.moneybrain.ai/api/messages/sms/send',
+                        {json: {callbackPhone: context.bot.phone, phone: context.bot.mobile.replace(/,/g, ''), message: message}},
+                        function (error, response, body) {
+                            callback(task, context);
+                        }
+                    );
+                } else {
+                    callback(task, context);
+                }
+            });
+        } else {
+            callback(task, context);
+        }
+    });
+
+}

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('ChannelController', ['$window', '$scope', '$resource', '$cookies', '$location', '$http', 'LanguageService', function ($window, $scope, $resource, $cookies, $location, $http, LanguageService)
+angular.module('playchat').controller('ChannelController', ['$window', '$scope', '$resource', '$cookies', '$location', '$state', '$http', 'LanguageService', function ($window, $scope, $resource, $cookies, $location, $state, $http, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Channel', '/modules/playchat/gnb/client/imgs/channel_grey.png');
 
@@ -9,7 +9,12 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     var FacebookPageService = $resource('/auth/facebook/page');
 
-    $scope.host = 'https://' + $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : $location.port());
+    $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
+    if($location.host() == 'localhost')
+        $scope.host = 'http://' + $scope.host;
+    else
+        $scope.host = 'https://' + $scope.host;
+
     $scope.chatbot = $cookies.getObject('chatbot');
 
     $scope.help = {
@@ -23,6 +28,16 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     (function()
     {
+        $(document).ready(function()
+        {
+            var connection = $cookies.get('facebookconnection');
+            if(connection)
+            {
+                $cookies.remove('facebookconnection');
+                $scope.connectFacebook();
+            }
+        });
+
         $scope.getAccessToken = function(callback)
         {
             FB.getLoginStatus(function(response)
@@ -171,9 +186,8 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
                                     if(!hasPageToken)
                                     { // 페이지 권한 요청
-                                        var url = '/auth/facebook/page';
-                                        if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-                                        $scope.fbLoading = false;
+                                        $cookies.put('facebookconnection', 'true');
+                                        var url = '/auth/facebook/page?redirect_to=' + $scope.host + '/playchat/channel';
                                         $window.location.href = url; //register facebook but No page Token(getting Token)
                                     }
                                     else

@@ -1,6 +1,9 @@
 <div style="margin-top: 28px;">
+    <div ng-if="list.length == 0">
+        <p style="text-align: center;">Empty</p>
+    </div>
     <div class="failed-dialog-training-row" ng-click="focusByClick($event, item)" ng-repeat="item in list">
-        <form ng-submit="save($event, item.id);">
+        <form ng-submit="save($event, item, list);">
             <div class="failed-dialog-training-input">
                 <span class="failed-dialog-question">{{ item._id.dialog }}</span>
                 <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" ng-click="focus($event, item);" ng-keyup="findSimiliarAnswer($event, item);" ng-required="true">
