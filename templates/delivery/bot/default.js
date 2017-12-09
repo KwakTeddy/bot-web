@@ -9,19 +9,22 @@ var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
 var request = require('request');
 var ObjectId = mongoose.Types.ObjectId;
 
-var defaultTask = {
-    name: 'defaultTask',
+var defaultTask2 = {
+    name: 'defaultTask2',
     action: function(task, context, callback) {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + context.bot.address);
+        console.log(context.dialog.address);
+        console.log(context.user.address);
+        console.log(context.bot.address);
         callback(task, context);
     }
 };
-bot.setTask("defaultTask", defaultTask);
+bot.setTask("defaultTask2", defaultTask2);
 
 
 
 var startTask = {
     action: function (task,context,callback) {
-
         // console.log("@@@@@@@@@@@@@@@@@@"+JSON.stringify(context.bot.templateDataIdId));
 
         context.user.cart = [];
@@ -383,7 +386,7 @@ function reserveRequest(task, context, callback) {
 
 
                     message += '번호: ' + (context.dialog.mobile || context.user.mobile) + '\n' +
-                               '예약접수(클릭) ' + shorturl;
+                        '예약접수(클릭) ' + shorturl;
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -536,7 +539,7 @@ var checkCondition = {
         context.dialog.deliveryDistance = true;
         var totalPrice = parseInt(getTotalPrice(context.user.cart));
         console.log("##########################" + totalPrice);
-        context.dialog.priceCond = (totalPrice > context.bot.minPrice);
+        context.dialog.priceCond = (totalPrice >= context.bot.minPrice);
         //context.dialog.priceCond = true;
         context.dialog.totalPrice = totalPrice;
         // callback(task,context);
@@ -707,7 +710,7 @@ var reserveOwnerConfirm = {
                     }
 
                     message += '\n주문접수완료\n'+
-                               '매장전화: ' + context.bot.phone;
+                        '매장전화: ' + context.bot.phone;
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -741,8 +744,8 @@ var reserveOwnerCancel = {
                     var message = '[' + context.bot.name + ']' + '\n';
 
                     message += '\n배달취소: '+
-                               task.inRaw + '\n' +
-                               '매장전화: ' + context.bot.phone;
+                        task.inRaw + '\n' +
+                        '매장전화: ' + context.bot.phone;
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',

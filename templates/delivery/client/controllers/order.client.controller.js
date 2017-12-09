@@ -2,7 +2,7 @@
 
 angular.module('template').controller('orderController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
-    console.log("################################orderControll");
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 주문관리', '/modules/playchat/gnb/client/imgs/order_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/orders', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var SendSMS = $resource('/api/sendSMS');

@@ -2,6 +2,7 @@
 
 angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 메뉴관리', '/modules/playchat/gnb/client/imgs/order_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var chatbot = $cookies.getObject('chatbot');
