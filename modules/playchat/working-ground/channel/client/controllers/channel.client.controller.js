@@ -9,7 +9,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     var FacebookPageService = $resource('/auth/facebook/page');
 
-    $scope.host = 'https://' + $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : $location.port());
+    $scope.host = 'https://' + $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
     $scope.chatbot = $cookies.getObject('chatbot');
 
     $scope.help = {
