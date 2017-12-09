@@ -11,7 +11,7 @@ var dialogs = [
         filename: 'restaurant',
         name: '예약내역',
         input: ['예약 취소', '예약 확인', '예약 내역'],
-        task:   shop.reserveCheck,
+        task:   "reserveCheck",
         output: [
             {if: 'context.botUser.isOwner && context.dialog.reserves != undefined', output: '미처리 예약내역입니다.\n#reserves#+index+. +name+ +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n처리할 예약번호를 말씀해주세요.',
                 children: [
@@ -60,13 +60,13 @@ var dialogs = [
                     }
                 ]},
             {if: 'context.botUser.isOwner && context.dialog.reserves == undefined', output: '미처리 예약내역이 없습니다.'},
-            {if: 'context.dialog.reserves != undefined', output: '고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.',
+            {if: 'context.dialog.reserves != undefined', output: '고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.',
                 children: [
                     {
                         id: 'restaurant32',
                         filename: 'restaurant',
                         input: {types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]},
-                        task:       'reserveCancel',
+                        task:       'reserveCancel2',
                         output: '예약이 취소되었습니다.'
                     },
                     {
@@ -76,13 +76,13 @@ var dialogs = [
                         output: {repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
                     }
                 ]},
-            {if: 'context.dialog.reserve != undefined', output: '고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.',
+            {if: 'context.dialog.reserve != undefined', output: '고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.',
                 children: [
                     {
                         id: 'restaurant34',
                         filename: 'restaurant',
                         input: '취소',
-                        task:       'reserveCancel',
+                        task:       'reserveCancel2',
                         output: '예약이 취소되었습니다.'
                     }
                 ]}, '고객님의 예약내역이 없습니다.']

@@ -60,8 +60,8 @@
                     <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image" />
                 </td>
                 <td>
-                    <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="menu.uploader2" ng-show="!menu.image" />
+                    <img src="{{ menu.reviewImage }}" style="width: 50px;" ng-if="menu.reviewImage" ng-click="editImage($event);">
+                    <input type="file" nv-file-select uploader="menu.uploader2" ng-show="!menu.reviewImage" />
                 </td>
                 <td>
                     <input type="text" ng-model="menu.review">

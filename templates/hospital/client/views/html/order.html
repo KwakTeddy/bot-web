@@ -19,7 +19,7 @@
     }
 </style>
 
-<h1 class="template-demo-title">메뉴관리</h1>
+<h1 class="template-demo-title">예약관리</h1>
 <div ng-controller="reserveController" class="template-demo-menu">
     <form ng-submit="saveMenu($event);">
         <!--<table class="tb02" style="table-layout:fixed;">-->
@@ -53,15 +53,15 @@
                     <p>{{menu.mobile}}</p>
                 </td>
                 <td>
-                    <p>{{menu.date}}</p>
+                    <p>{{menu.date.substring(0,10)}}</p>
                 </td>
                 <td>
                     <p>{{menu.time}}</p>
                 </td>
-                <td>
+                <td ng-show="menu.status == '예약요청중'" >
                     <button type="button" class="default-button" ng-click="accept(menu)">승인</button>
                     <button type="button" class="default-button" ng-click="deny(menu)">거부</button>
-                </td>
+                </td >
             </tr>
             </tbody>
         </table>

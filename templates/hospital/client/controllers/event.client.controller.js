@@ -85,6 +85,7 @@ angular.module('template').controller('hospitalEventController', ['$scope', '$re
             MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
                 {
                     console.log(result);
+                    alert('저장되었습니다');
                 },
                 function(err)
                 {

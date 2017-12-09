@@ -2,6 +2,7 @@ var path = require('path');
 var bot = require(require('path').resolve("engine/bot")).getTemplateBot('hospital');
 
 
+var dateformat = require('dateformat');
 var config = require(path.resolve('./config/config'));
 var messages = require(path.resolve('engine/messages/server/controllers/messages.server.controller'));
 var mongoose = require('mongoose');
@@ -142,11 +143,23 @@ var reviewButtonImage = {
         task.image = {url: context.dialog.surgeListType.image};
 
         callback(task,context);
-        callback(task,context);
     }
 };
 
 bot.setTask('reviewButtonImage', reviewButtonImage);
+
+var reviewButtonImage2 = {
+    action: function (task,context,callback) {
+        task.buttons = [{text:"바로 예약"}, {text:"시술정보 보기"}];
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        console.log(config.host);
+        task.image = {url: context.dialog.surgeListType.reviewImage};
+
+        callback(task,context);
+    }
+};
+
+bot.setTask('reviewButtonImage2', reviewButtonImage2);
 
 
 var selectOneEvent = {
@@ -233,7 +246,7 @@ function reserveRequest2(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
 
-            var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            var url = config.host+"/playchat/templates/contents/order";
             context.bot.authKey = randomNum;
 
             var query = {url: url};
@@ -290,4 +303,104 @@ function reserveRequest2(task, context, callback) {
         }
     });
 
-}
+};
+
+
+var reserveCheck = {
+    action: function (task, context, callback) {
+
+        if(context.botUser.isOwner) {
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@isowner??");
+            var TemplateReservation = mongoModule.getModel('hospital-orders');
+            TemplateReservation.find({
+                botId: context.bot.id,
+                date: {$gte: new Date()}
+            }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
+                if(docs && docs.length > 0) {
+                    for(var i in docs) {
+                        docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
+                    }
+                    context.dialog.reserves = docs;
+                    context.dialog.reserve = undefined;
+                } else {
+                    context.dialog.reserves = undefined;
+                    context.dialog.reserve = undefined;
+                }
+                callback(task, context);
+            });
+        } else {
+            var TemplateReservation = mongoModule.getModel('hospital-orders');
+            TemplateReservation.find({
+                upTemplateId: context.bot.templateDataId,
+                userKey: context.user.userKey,
+                status: {$ne: '취소'},
+                date: {$gte: new Date()}
+            }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
+                if(docs && docs.length > 1) {
+                    for(var i in docs) {
+                        docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
+                    }
+                    context.dialog.reserves = docs;
+                    context.dialog.reserve = undefined;
+                } else if(docs && docs.length > 0) {
+                    docs[0].dateStr = dateformat(docs[0].date + 9 * 60 * 60, 'mm월dd일');
+                    context.dialog.reserve = docs[0];
+                    context.dialog.reserves = undefined;
+                } else {
+                    context.dialog.reserves = undefined;
+                    context.dialog.reserve = undefined;
+                }
+                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                console.log(JSON.stringify(context.dialog.reserve));
+                callback(task, context);
+            })
+        }
+    }
+};
+bot.setTask('reserveCheck', reserveCheck);
+
+
+var reserveCancel2 = {
+    action: function (task, context, callback) {
+        if(context.dialog.reserve) {
+            var TemplateReservation = mongoModule.getModel('hospital-orders');
+            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '취소'}}, function (err) {
+
+                if(!context.bot.testMode) {
+                    var message = '[' + context.bot.name + ']' + '\n' +
+                        context.dialog.reserve.name + '/' +
+                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
+                    // context.dialog.reserve.numOfPerson + '명\n' +
+                    // context.dialog.reserve.mobile + '\n' +
+                    // '예약취소';
+
+                    var fields = context.bot.reserveFields || [];
+                    for(var i = 0; i < fields.length; i++) {
+                        var field = fields[i];
+                        if(field.name == 'numOfPerson') {
+                            message +=  context.dialog[field.name] + '명/';
+                        } else {
+                            message += context.dialog[field.name] + '/';
+                        }
+                    }
+
+                    message += '\n' + context.dialog.reserve.mobile + '\n' +
+                        '예약취소';
+
+                    request.post(
+                        'https://bot.moneybrain.ai/api/messages/sms/send',
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.bot.mobile.replace(/,/g, ''), message: message}},
+                        function (error, response, body) {
+                            callback(task, context);
+                        }
+                    );
+                } else {
+                    callback(task, context);
+                }
+            });
+        } else {
+            callback(task, context);
+        }
+    }
+};
+bot.setTask('reserveCancel2', reserveCancel2);

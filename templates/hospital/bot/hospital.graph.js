@@ -111,7 +111,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "<+hospitalName+>\n\n+introduce+\n\n- 전화번호 : +phone+\n- 주소 : +address+\n- 진료시간 : +startTime+ ~ +endTime+\n- 휴일 : +holiday+",
+                "text": "<+hospitalName+>\n\n+greeting+\n\n- 전화번호 : +phone+\n- 주소 : +address+\n- 진료시간 : +startTime+ ~ +endTime+\n- 휴일 : +holiday+",
                 "kind": "Text"
             }
         ],
@@ -148,7 +148,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[ +surgeListType.name+ ] 시술후기\n\n+surgeListType.description+",
+                        "text": "[ +surgeListType.name+ ] 시술후기\n\n+surgeListType.review+",
                         "kind": "Text"
                     }
                 ],
@@ -187,7 +187,7 @@ var dialogs = [
                     }
                 ],
                 "task": {
-                    "name": "reviewButtonImage"
+                    "name": "reviewButtonImage2"
                 }
             },
             {

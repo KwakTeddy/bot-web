@@ -72,13 +72,18 @@ angular.module('template').controller('hospitalMenuController', ['$scope', '$res
 
             $scope.menus[index].uploader2.onSuccessItem = function(item, response, status, headers)
             {
-                $scope.menus[index].image = response.url;
+                $scope.menus[index].reviewImage = response.url;
             };
 
             $scope.menus[index].uploader2.onProgressItem = function(fileItem, progress)
             {
                 angular.element('.form-box-progress').css('width', progress + '%');
             };
+        };
+
+        $scope.editImage = function(e)
+        {
+            angular.element(e.currentTarget).next().click();
         };
 
         $scope.addMenu = function()
@@ -104,6 +109,7 @@ angular.module('template').controller('hospitalMenuController', ['$scope', '$res
             MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
                 {
                     console.log(result);
+                    alert('저장되었습니다');
                 },
                 function(err)
                 {
