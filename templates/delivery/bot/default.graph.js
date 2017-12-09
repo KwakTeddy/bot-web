@@ -134,7 +134,9 @@ var dialogs = [
                             "options": {
                                 "page": "pre"
                             }
-                        }
+                        },
+                        "id": "default1512795450304",
+                        "name": "생성된 이름 1512795450304"
                     },
                     {
                         "input": {
@@ -145,7 +147,9 @@ var dialogs = [
                             "options": {
                                 "page": "next"
                             }
-                        }
+                        },
+                        "id": "default1512795450305",
+                        "name": "생성된 이름 1512795450305"
                     },
                     {
                         "name": "메뉴재선택",
@@ -845,7 +849,8 @@ var dialogs = [
                 ],
                 "task": {
                     "name": "makeOrderList"
-                }
+                },
+                "id": "default1512795450338"
             },
             {
                 "name": "카테고리보기예외",
@@ -883,32 +888,6 @@ var dialogs = [
             "name": "getCategory",
             "kind": "Text"
         }
-    },
-    {
-        "name": "바로주문",
-        "id": "default29",
-        "filename": "default",
-        "input": [
-            {
-                "types": [
-                    "orderble"
-                ]
-            }
-        ],
-        "output": [
-            {
-                "if": "context.dialog.menu.subMenu.length == 1",
-                "kind": "Action",
-                "call": "바로주문단일",
-                "type": "Call"
-            },
-            {
-                "kind": "Action",
-                "call": "바로주문복수",
-                "type": "Call"
-            }
-        ],
-        "task": "makeOrderList"
     },
     {
         "name": "바로주문단일",
@@ -1405,6 +1384,33 @@ var dialogs = [
         ]
     },
     {
+        "name": "쿠폰",
+        "id": "default82",
+        "filename": "default",
+        "input": [
+            {
+                "text": "쿠폰"
+            },
+            {
+                "text": "6"
+            }
+        ],
+        "output": [
+            {
+                "if": "context.bot.event",
+                "text": "<+resname+> \n쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text",
+                "id": "default0_0"
+            },
+            {
+                "if": "true",
+                "text": "<+resname+> \n지금은 등록된 쿠폰이 없습니다. 다음에 다시 확인해주세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text",
+                "id": "default0_1"
+            }
+        ]
+    },
+    {
         "name": "번호확인",
         "id": "default14",
         "filename": "default",
@@ -1550,61 +1556,13 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "[[+resname+]]\n\n전화번호 : +phone+\n주소: +address+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text"
-            }
-        ]
-    },
-    {
-        "name": "쿠폰",
-        "id": "default82",
-        "filename": "default",
-        "input": [
-            {
-                "text": "쿠폰"
-            },
-            {
-                "text": "6"
-            }
-        ],
-        "output": [
-            {
-                "if": "context.bot.event",
-                "text": "<+resname+> \n쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text",
-                "id": "default0_0"
-            },
-            {
-                "if": "true",
-                "text": "<+resname+> \n지금은 등록된 쿠폰이 없습니다. 다음에 다시 확인해주세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text",
-                "id": "default0_1"
-            }
-        ]
-    },
-    {
-        "id": "default100",
-        "filename": "default",
-        "input": [
-            {
-                "text": "주문 취소"
-            }
-        ],
-        "output": [
-            {
-                "if": "context.dialog.orderHistory && context.dialog.orderHistory.status=='승인대기중'",
-                "kind": "Action",
-                "id": "default0_0",
-                "call": "주문취소확인"
-            },
-            {
-                "if": "",
-                "text": "<+resname+> \n취소가능한 주문이 없습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "<<+resname+>>\n\n전화번호 : +phone+\n주소: +context.bot.address+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text"
             }
         ],
-        "name": "주문취소",
-        "task": "getOrderHistory"
+        "task": {
+            "name": "defaultTask2"
+        }
     },
     {
         "name": "주문취소확인",
@@ -1667,6 +1625,56 @@ var dialogs = [
         ]
     },
     {
+        "id": "default100",
+        "filename": "default",
+        "input": [
+            {
+                "text": "주문 취소"
+            }
+        ],
+        "output": [
+            {
+                "if": "context.dialog.orderHistory && context.dialog.orderHistory.status=='승인대기중'",
+                "kind": "Action",
+                "id": "default0_0",
+                "call": "주문취소확인"
+            },
+            {
+                "if": "",
+                "text": "<+resname+> \n취소가능한 주문이 없습니다. 이미 주문이 승인된 경우 취소가 불가능합니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text"
+            }
+        ],
+        "name": "주문취소",
+        "task": "getOrderHistory"
+    },
+    {
+        "name": "바로주문",
+        "id": "default29",
+        "filename": "default",
+        "input": [
+            {
+                "types": [
+                    "orderble"
+                ]
+            }
+        ],
+        "output": [
+            {
+                "if": "context.dialog.menu.subMenu.length == 1",
+                "kind": "Action",
+                "call": "바로주문단일",
+                "type": "Call"
+            },
+            {
+                "kind": "Action",
+                "call": "바로주문복수",
+                "type": "Call"
+            }
+        ],
+        "task": "makeOrderList"
+    },
+    {
         "id": "default0",
         "filename": "default",
         "input": [
@@ -1682,7 +1690,6 @@ var dialogs = [
             {
                 "text": "예전 처럼"
             }
-
         ],
         "output": [
             {
@@ -1701,6 +1708,10 @@ var dialogs = [
         }
     }
 ];
+
+
+
+
 
 var commonDialogs = [
     {
@@ -1762,6 +1773,10 @@ var commonDialogs = [
         "output": "알아듣지 못했습니다"
     }
 ];
+
+
+
+
 
 
 var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('delivery');

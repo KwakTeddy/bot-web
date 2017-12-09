@@ -2,6 +2,7 @@
 
 angular.module('template').controller('hospitalDashboardController', ['$scope', '$resource', '$cookies', function ($scope, $resource, $cookies)
 {
+
     $scope.$parent.changeWorkingGroundName('Dashboard', '/modules/playchat/gnb/client/imgs/dashboard_grey.png');
 
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
