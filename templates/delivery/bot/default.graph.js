@@ -5,7 +5,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "1"
+                "regexp": "^1"
             },
             {
                 "text": "메뉴"
@@ -110,13 +110,10 @@ var dialogs = [
                         "id": "default87",
                         "filename": "default",
                         "input": [
-                            // {
-                            //     "types": [
-                            //         "orderble"
-                            //     ]
-                            // }
                             {
-                                "if" : "false"
+                                "types": [
+                                    "orderble"
+                                ]
                             }
                         ],
                         "output": [
@@ -823,15 +820,15 @@ var dialogs = [
                         "id": "default88",
                         "filename": "default",
                         "input": [
-                            {
-                                "text": ""
-                            }
+                            {}
                         ],
                         "output": [
                             {
                                 "kind": "Action",
                                 "repeat": "1",
-                                "type": "Repeat"
+                                "options": {
+                                    "output": "목록에서 선택해주세요"
+                                }
                             }
                         ]
                     }
@@ -1103,7 +1100,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "2"
+                "regexp": "^2$"
             },
             {
                 "text": "주소"
@@ -1111,15 +1108,13 @@ var dialogs = [
         ],
         "output": [
             {
-                "if": "context.user.address",
                 "kind": "Action",
                 "call": "주소있음",
-                "type": "Call"
+                "if": "context.user.address"
             },
             {
                 "kind": "Action",
-                "call": "주소없음",
-                "type": "Call"
+                "call": "주소없음"
             }
         ]
     },
@@ -1407,7 +1402,7 @@ var dialogs = [
                 "text": "쿠폰"
             },
             {
-                "text": "6"
+                "regexp": "^6"
             }
         ],
         "output": [
@@ -1431,7 +1426,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "3"
+                "regexp": "^3"
             },
             {
                 "text": "핸드폰"
@@ -1443,14 +1438,12 @@ var dialogs = [
         "output": [
             {
                 "kind": "Action",
-                "if": "context.user.mobile",
                 "call": "번호있음",
-                "type": "Call"
+                "if": "context.user.mobile"
             },
             {
                 "kind": "Action",
-                "call": "번호없음",
-                "type": "Call"
+                "call": "번호없음"
             }
         ]
     },
@@ -1533,7 +1526,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "4"
+                "regexp": "^4"
             },
             {
                 "text": "내 역"
@@ -1560,7 +1553,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "5"
+                "regexp": "^5"
             },
             {
                 "text": "매장"
@@ -1745,6 +1738,7 @@ var dialogs = [
 
 
 
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1805,6 +1799,7 @@ var commonDialogs = [
         "output": "알아듣지 못했습니다"
     }
 ];
+
 
 
 

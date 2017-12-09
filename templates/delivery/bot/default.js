@@ -202,7 +202,8 @@ bot.setType('menuElementText', menuElementText);
 var makeOrderList = {
     action: function (task,context,callback) {
         context.dialog.keyword = context.dialog.inRaw;
-        if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
+        // if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
+        context.dialog.keyword = (context.dialog.inCurRaw || context.dialog.inRaw);
         context.dialog.menu = {};
         context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.menus);
         if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
@@ -216,13 +217,17 @@ bot.setTask('makeOrderList', makeOrderList);
 
 var orderble = {
     typeCheck: function (text, type, task, context, callback) {
-        var matched = false;
+        var matched = true;
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         // console.log(text);
         // console.log(context.dialog);
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        if(context.dialog.inCurRaw.match(/\d/)) callback(text, task, false);
-        if (filter(context.dialog.inCurRaw, context.bot.menus).length) matched =  true;
+        var keyword = (context.dialog.inCurRaw || context.dialog.inRaw);
+        if(keyword.match(/^\d$/)) callback(text, task, false);
+        if (filter(keyword, context.bot.menus).length){
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@filter true!!!");
+            matched =  true;
+        }
 
         callback(text, task, matched);
     }
@@ -486,10 +491,16 @@ function transSynonim(word) {
 }
 
 function matchFun(key, word) {
+    var keys = key.split(' ');
     word = transSynonim(word.replace( /(\s*)/g, ""));
     key = transSynonim(key.replace( /(\s*)/g, ""));
-    if (word.search(key) >=0 ) return true;
-    else return false;
+    for(var i=0; i<keys.length; i++) {
+        console.log(keys[i] + "//" + word);
+        console.log(word.search(keys[i]));
+        if (word.search(keys[i]) >= 0) return true;
+    }
+
+    return false;
 }
 
 
@@ -499,10 +510,12 @@ function filter(key, list) {
         if(list[i].subMenu) result = result.concat(filter(key,list[i].subMenu));
         else {
             if(matchFun(key, list[i].name)) {
+                console.log("matched!!!");
                 result.push(list[i]);
             }
         }
     }
+    console.log(result);
     return result;
 }
 
@@ -835,5 +848,12 @@ var pastHistory = {
 
 bot.setTask('pastHistory', pastHistory);
 
-
+// var makeCurrentItem3 = {
+//     action: function (task,context,callback) {
+//         context.dialog.currentItem = '';
+//         callback(task,context);
+//     }
+// };
+//
+// bot.setTask('makeCurrentItem3', makeCurrentItem3);
 
