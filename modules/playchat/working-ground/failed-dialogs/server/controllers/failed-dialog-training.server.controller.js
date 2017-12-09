@@ -52,41 +52,56 @@ var getJarccardScore = function(question, answer) {
 
 module.exports.findSimiliars = function(req, res)
 {
-    var query = undefined;
-
-    if(req.query.type == 'inputRaw')
+    Dialogset.find({ bot: req.params.botId }).exec(function(err, list)
     {
-        query = { inputRaw: new RegExp(req.query.text) };
-    }
-    else if(req.query.type == 'output')
-    {
-        query = { output: new RegExp(req.query.text) };
-    }
-
-    DialogsetDialog.find(query).exec(function (err, result)
-    {
-        if (err)
+        if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
-        else
+
+        var orList = [];
+        var query = { $or : orList };
+
+        for(var i=0; i<list.length; i++)
         {
-            result = stripArray(result);
-            for (var i=0; i<result.length; i++)
-            {
-                var distance = getJarccardScore(req.query.text, result[i].inputRaw.toLowerCase());
-                result[i]["distance"] = distance;
-            }
-
-            result.sort(function(a, b)
-            {
-                return b.distance - a.distance;
-            });
-
-            result.splice(10, result.length - 10);
-
-            res.jsonp(JSON.parse(JSON.stringify(result)));
+            orList.push({ _id: list[i]._id });
         }
+
+        if(req.query.type == 'inputRaw')
+        {
+            query.inputRaw = new RegExp(req.query.text);
+        }
+        else if(req.query.type == 'output')
+        {
+            query.output = new RegExp(req.query.text);
+        }
+
+        DialogsetDialog.find(query).exec(function (err, result)
+        {
+            if (err)
+            {
+                return res.status(400).send({ message: err.stack || err });
+            }
+            else
+            {
+                result = stripArray(result);
+                for (var i=0; i<result.length; i++)
+                {
+                    var distance = getJarccardScore(req.query.text, result[i].inputRaw.toLowerCase());
+                    result[i]["distance"] = distance;
+                }
+
+                result.sort(function(a, b)
+                {
+                    return b.distance - a.distance;
+                });
+
+                result.splice(10, result.length - 10);
+
+                res.jsonp(JSON.parse(JSON.stringify(result)));
+            }
+        });
     });
 };
 
@@ -104,6 +119,7 @@ module.exports.create = function(req, res)
             return res.status(400).send({ message: err.stack || err });
         }
 
+        console.log('다이얼로그셋 아이디 : ', dialogset._id, dialogset);
         DialogsetDialog.find({ dialogset: dialogset._id }).sort('-id').limit(1).exec(function(err, dialogs)
         {
             if (err)
@@ -113,6 +129,7 @@ module.exports.create = function(req, res)
             }
 
             dialog.id = dialogs && dialogs.length > 0 ? dialogs[0].id + 1 : 0;
+            dialog.dialogset = dialogset._id;
 
             var inputList = [];
 
@@ -120,7 +137,7 @@ module.exports.create = function(req, res)
             {
                 inputRaw = inputRaw.trim();
 
-                var language = 'ko'; //temporary
+                var language = req.body.language || 'ko'; //temporary
                 NLPManager.getNlpedText(inputRaw, language, function(err, result)
                 {
                     if(err)

@@ -29,8 +29,9 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
 
         $scope.getSimiliars = function(text, item, type)
         {
-            SimiliarsService.query({ botId: chatbot.id, text: text, type: type }, function(result)
+            SimiliarsService.query({ botId: chatbot._id, text: text, type: type }, function(result)
             {
+                console.log('시밀러 : ', result);
                 if(type == 'inputRaw')
                 {
                     item.similiarQuestion = result;
@@ -85,15 +86,17 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
             angular.element(e.currentTarget).parent().parent().parent().find('input').val(item.output);
         };
 
-        $scope.save = function(e, id)
+        $scope.save = function(e, item, list)
         {
+            var id = item.id;
             var inputRaw = angular.element(e.currentTarget).find('.failed-dialog-question').text();
             var output = angular.element(e.currentTarget).find('input').val();
 
-            TrainingService.save({ botId: chatbot._id, inputRaw: [ inputRaw ], output: [ output ]}, function()
+            TrainingService.save({ botId: chatbot._id, inputRaw: [ inputRaw ], output: [ output ], language: chatbot.language}, function()
             {
                 FailedDialogService.update({ botId: chatbot._id, _id: id }, function()
                 {
+                    list.splice(item, 1);
                 },
                 function(err)
                 {
