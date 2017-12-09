@@ -41,21 +41,25 @@ var botSocket;
 
 exports.setBotSocket = function(socket) {botSocket = socket};
 
-// console = {};
-// console.log = function(out) {
-//     process.stdout.write(out+'\n');
-//     if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
-// }
-//
-// console.error = function(out) {
-//     process.stderr.write((out.stack ? out.stack : out) +'\n');
-//     if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
-// }
+var consoleLog = console.log;
+var consoleError = console.error;
+var consoleTrace = console.trace;
 
-// console.trace = function(out, t) {
-//   process.stderr.write(out+'\n');
-//   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
-// }
+console = {};
+console.log = function(out) {
+    consoleLog(out);
+    if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+}
+
+console.error = function(out) {
+    consoleError(out);
+    if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
+}
+
+console.trace = function(out, t) {
+  consoleTrace(out);
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+}
 
 function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
     // TODO 개발용

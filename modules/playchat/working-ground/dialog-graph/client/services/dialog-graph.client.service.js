@@ -1389,6 +1389,9 @@
 
             var strings = JSON.stringify(this.userDialogs);
 
+            if(!strings)
+                return name;
+
             for(var i=1;; i++)
             {
                 if(strings.indexOf(name + i) == -1)
