@@ -975,10 +975,7 @@
             dialog.find('.graph-dialog-item').on('dblclick', function(e)
             {
                 var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
-                if(parent && parent.dialog)
-                {
-                    that.editor.open(parent.dialog, dialog.get(0).children[0].dialog);
-                }
+                that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
 
                 e.stopPropagation();
             });
