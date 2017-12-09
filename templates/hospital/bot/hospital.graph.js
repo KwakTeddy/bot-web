@@ -72,25 +72,6 @@ var dialogs = [
                 "task": {
                     "name": "surgeImageButton"
                 }
-            },
-            {
-                "name": "미완처리",
-                "id": "default17",
-                "filename": "default",
-                "input": [
-                    {
-                        "regexp": "(.*) (.*)"
-                    }
-                ],
-                "output": [
-                    {
-                        "text": "아직 \"+1+\"에 관한 데이터가 없습니다.",
-                        "kind": "Text"
-                    }
-                ],
-                "task": {
-                    "name": "addButton"
-                }
             }
         ],
         "task": {
@@ -189,25 +170,6 @@ var dialogs = [
                 "task": {
                     "name": "reviewButtonImage2"
                 }
-            },
-            {
-                "name": "미완처리2",
-                "id": "default18",
-                "filename": "default",
-                "input": [
-                    {
-                        "regexp": "(.*) (.*)"
-                    }
-                ],
-                "output": [
-                    {
-                        "text": "아직 \"+1+\"에 관한 후기가 없습니다.",
-                        "kind": "Text"
-                    }
-                ],
-                "task": {
-                    "name": "addButton"
-                }
             }
         ],
         "task": {
@@ -226,7 +188,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Action",
-                "if": "!context.bot.events",
+                "if": "context.bot.events.length==0",
                 "call": "이벤트 없음"
             },
             {

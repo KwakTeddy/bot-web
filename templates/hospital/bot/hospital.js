@@ -174,6 +174,8 @@ bot.setTask('selectOneEvent', selectOneEvent);
 var makeEvent = {
     action: function (task,context,callback) {
         context.dialog.events = context.bot.events;
+        console.log("@@@@@@@@@@@@@@@@@@@");
+        console.log(context.dialog.events);
         callback(task,context);
     }
 };
