@@ -51,6 +51,7 @@ var mynamesave = {
 };
 bot.setTask("mynamesave", mynamesave);
 
+
 var mynamesave1 = {
     name: 'mynamesave1',
     action: function(task, context, callback){
@@ -64,7 +65,7 @@ var mynamesave1 = {
         context.dialog.dayss=context.dialog.days+1;
       
     var mydate=new Date();
-    mydate.setHours(mydate.getHours()+9);
+    //mydate.setHours(mydate.getHours()+9);
     context.dialog.myall=mydate;
     var ss=mydate;
     context.dialog.todayday=ss.getDate();
@@ -369,7 +370,7 @@ var addorder = {
         context.dialog.days=DateDiff(s1,s2);
         context.dialog.dayss=context.dialog.days+1;
     var mydate=new Date();
-    mydate.setHours(mydate.getHours()+9);
+    //mydate.setHours(mydate.getHours()+9);
     context.dialog.myall=mydate;
     var ss=mydate;
     context.dialog.todayday=ss.getDate();
@@ -450,7 +451,7 @@ var addorder1 = {
         context.dialog.dayss=context.dialog.days+1;
         context.dialog.oneallprice=context.dialog.days*context.dialog.menumatch.room_price;
         var mydate=new Date();
-        mydate.setHours(mydate.getHours()+9);
+        //mydate.setHours(mydate.getHours()+9);
         context.dialog.myall=mydate;
         var ss=mydate;
         context.dialog.todayday=ss.getDate();
@@ -531,7 +532,7 @@ var addorder2 = {
         context.dialog.dayss=context.dialog.days+1;
         context.dialog.oneallprice=context.dialog.days*context.dialog.menumatch.room_price;
         var mydate=new Date();
-        mydate.setHours(mydate.getHours()+9);
+        //mydate.setHours(mydate.getHours()+9);
         context.dialog.myall=mydate;
         var ss=mydate;
         context.dialog.todayday=ss.getDate();
@@ -740,57 +741,105 @@ function IsLeapYear(nYear)
     return (nYear % 400 == 0);
 }
 //-----------------type------------------------------------------------------------------------------------------------------------------------
-var datetype = {
-    name: "datetype",
-    listName: "datetype",
-    typeCheck: "dateTypeCheck"
-};
-bot.setType("datetype", datetype);
+// var datetype = {
+//     name: "datetype",
+//     listName: "datetype",
+//     typeCheck: "dateTypeCheck"
+// };
+// bot.setType("datetype", datetype);
 
-var  dateincheck= {
-    name:'dateincheck',
-    action: function(task, context, callback) {
+// var  dateincheck= {
+//     name:'dateincheck',
+//     action: function(task, context, callback) {
+//         var arr=[];
+//         console.log("=============================");
+//         console.log(task.date[0]+" 111111111111");
+//         console.log(task.date+" 111111111111");
+//         console.log(context.dialog.inRaw+" 222222222222222222");
+//         console.log(context.dialog.inCurRaw+" 33333333333333333");
+//         var str=context.dialog.inCurRaw;
+//         var str1=context.dialog.inRaw;
+//         if(str!==undefined){
+//         context.dialog.date2=task.date;
+//         context.dialog.inputyear=task.date.getFullYear();
+//         context.dialog.inputmonth=task.date.getMonth()+1;
+//         context.dialog.inputday=task.date.getDate();
+//         context.dialog.dateinchecktrue=undefined;
+//
+//             arr[1]=context.dialog.inputyear;
+//             arr[2]=context.dialog.inputmonth ;
+//             arr[3]=context.dialog.inputday;
+//         context.dialog.dateinchecktrue = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
+//         callback(task,callback);
+//         }
+//         else{
+//             context.dialog.date2=task.date[0];
+//             context.dialog.inputyear=task.date[0].getFullYear();
+//             context.dialog.inputmonth=task.date[0].getMonth()+1;
+//             context.dialog.inputday=task.date[0].getDate();
+//             context.dialog.dateinchecktrue=undefined;
+//
+//             arr[1]=context.dialog.inputyear;
+//             arr[2]=context.dialog.inputmonth ;
+//             arr[3]=context.dialog.inputday;
+//             console.log('arr[1]:'+arr[1]);
+//             console.log('arr[2]:'+arr[2]);
+//             console.log('arr[3]:'+arr[3]);
+//             context.dialog.dateinchecktrue = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
+//             console.log('context.dialog.dateinchecktrue:'+context.dialog.dateinchecktrue);
+//             callback(task,callback);
+//         }
+//     }
+// };
 
-        //console.log(task.date[1]+" 111111111111");
-        context.dialog.date2=task.date[1];
-        context.dialog.inputyear=task.date[1].getFullYear();
-        context.dialog.inputmonth=task.date[1].getMonth()+1;
-        context.dialog.inputday=task.date[1].getDate();
-        //console.log(context.dialog.inputyear+" 111111111111");
-        //console.log(context.dialog.inputmonth+" 111111111111");
-        //console.log(context.dialog.inputday+" 111111111111");
-        callback(task,callback);
-    }
-};
-
-bot.setTask('dateincheck', dateincheck);
+// bot.setTask('dateincheck', dateincheck);
 
 var peoplenumbertype = {
     name: "peoplenumbertype",
     listName: "peoplenumbertype",
     typeCheck: function (text, type, task, context, callback) {
         var x=/[ ]?명/g;
-        //search(x);
-        //var str='2017-12-15부터 5명 4555박5일 reserve';
-        var count1=text.search(x);
-        var count2=0;
-        if(count1>=0){
-            context.dialog.peoplenumber='';
-            //console.log(str.search(x));
-            //console.log(str[count1]);
-            for(i=count1-1;i>=0;i--)
-            {
-                if(text[i]===' '){count2=i;break}
-            }
-            var count3=count2+1;
-            for(i=count3;i<count1;i++)
-            {
-                context.dialog.peoplenumber=Number(context.dialog.peoplenumber+text[i]);
+        var str=context.dialog.inCurRaw;
+        var str1=context.dialog.inRaw;
+        var count1=0;
+        count1 = str1.search(x);
 
+        if(count1<0 && str!==undefined) {
+            count1 = str.search(x);
+            if (count1 >= 0) {
+                context.dialog.peoplenumber = '';
+                console.log('count1:'+count1);
+                var ss = 0;
+                for (i = ss; i < count1; i++) {
+                    context.dialog.peoplenumber = Number(context.dialog.peoplenumber + str[i]);
+                }
+                callback(text, task, true);
             }
-            callback(text, task, true);}
-        else{ callback(text, task, false);}
-        //console.log(context.dialog.daynumber);
+            else {
+                callback(text, task, false);
+            }
+        }
+        else{
+            var count2 = 0;
+            if (count1 >= 0) {
+                context.dialog.peoplenumber = '';
+                for (i = count1 - 1; i >= 0; i--) {
+                    if (str1[i] === ' ') {
+                        count2 = i;
+                        break
+                    }
+                }
+                var count3 = count2 + 1;
+                for (i = count3; i < count1; i++) {
+                    context.dialog.peoplenumber = Number(context.dialog.peoplenumber + str1[i]);
+                }
+
+                callback(text, task, true);
+            }
+            else {
+                callback(text, task, false);
+            }
+        }
     }
 };
 bot.setType("peoplenumbertype", peoplenumbertype);
@@ -801,28 +850,48 @@ var daynumbertype = {
     listName: "daynumbertype",
     typeCheck: function (text, type, task, context, callback) {
         var x=/[ ]?박/g;
-         //search(x);
-        //var str='2017-12-15부터 5명 4555박5일 reserve';
-        var count1=text.search(x);
-        var count2=0;
-        if(count1>=0){
-        context.dialog.daynumber='';
-        //console.log(str.search(x));
-        //console.log(str[count1]);
-        for(i=count1-1;i>=0;i--)
-        {
-            if(text[i]===' '){count2=i;break}
+        var str=context.dialog.inCurRaw;
+        var str1=context.dialog.inRaw;
+        var count1=0;
+        count1 = str1.search(x);
+        if(count1<0 && str!==undefined) {
+            count1 = str.search(x);
+            if (count1 >= 0) {
+                context.dialog.daynumber = '';
+               console.log('count1:'+count1);
+                var ss = 0;
+                for (i = ss; i < count1; i++) {
+                    context.dialog.daynumber = Number(context.dialog.daynumber + str[i]);
+                }
+                context.dialog.daynumber1 = context.dialog.daynumber + 1;
+                callback(text, task, true);
+            }
+            else {
+                callback(text, task, false);
+            }
         }
-        var count3=count2+1;
-        for(i=count3;i<count1;i++)
-        {
-            context.dialog.daynumber=Number(context.dialog.daynumber+text[i]);
+        else{
+            var count2 = 0;
+            if (count1 >= 0) {
+                context.dialog.daynumber = '';
+                for (i = count1 - 1; i >= 0; i--) {
+                    if (str1[i] === ' ') {
+                        count2 = i;
+                        break
+                    }
+                }
+                var count3 = count2 + 1;
+                for (i = count3; i < count1; i++) {
+                    context.dialog.daynumber = Number(context.dialog.daynumber + str1[i]);
 
+                }
+                context.dialog.daynumber1 = context.dialog.daynumber + 1;
+                callback(text, task, true);
+            }
+            else {
+                callback(text, task, false);
+            }
         }
-            context.dialog.daynumber1=context.dialog.daynumber+1;
-        callback(text, task, true);}
-        else{ callback(text, task, false);}
-        //console.log(context.dialog.daynumber);
     }
 };
 bot.setType("daynumbertype", daynumbertype);
@@ -855,7 +924,9 @@ var categoryroomisornot = {
     listName: "categoryroomisornot",
     typeCheck: function(text, type, task, context, callback) {
         var matched=false;
-
+        context.dialog.menumatch=undefined;
+        var str1=context.dialog.inCurRaw;
+        var str=context.dialog.inRaw;
         //context.dialog.menumatch=[];
         //var ss=0;
         //var ll='ㄴㅁㅇㄹㅎㄴㅇㄹㅎㅇㅌㄹㅎdddd';
@@ -875,27 +946,26 @@ var categoryroomisornot = {
                     else {
 
                         for (i = 0; i < context.dialog.categorys.length; i++) {
-                            var str = context.dialog.inRaw;
                             var ss=i+1;
-                            //console.log(text+"tttttttttt2222222222222222");
-                            //console.log(i+"tttttttttt2222222222222222");
-                            //console.log(context.dialog.categorys[i].category_name+"2222222222222222");
-                            //console.log(typeof text);
-                            //var regDate =/[context.dialog.inRaw]/;
-                            //if (regDate.test(context.dialog.categorys[i].name)) {context.dialog.menumatch.push(context.dialog.categorys[i]);}
-                            if (str.indexOf(context.dialog.categorys[i].category_name) >= 0 || text == ss) {
+                            if (str.indexOf(context.dialog.categorys[i].category_name) >= 0 || str == ss) {
                                 context.dialog.menumatch = context.dialog.categorys[i];
-                               // console.log(context.dialog.inRaw+"ssssssss2222222222222222");
-                               // console.log((i+1)+"ssssssss2222222222222222");
-                                console.log(context.dialog.menumatch+"ssssssss2222222222222222");
                             }
+                            }
+                        if(context.dialog.menumatch===undefined && str1!==undefined){
+                            for (i = 0; i < context.dialog.categorys.length; i++) {
+                                var mm=i+1;
+                                if (str1.indexOf(context.dialog.categorys[i].category_name) >= 0 || str1 == mm) {
+                                    context.dialog.menumatch = context.dialog.categorys[i];
+                                }
+                            }
+
+                        }
                         }
                         if (context.dialog.menumatch !== undefined) {
                             matched = true;
                             context.dialog.preallprice = context.dialog.daynumber * context.dialog.menumatch.room_price;
                         }
                         callback(task, context,matched);
-                    }
                 }
             });
         }
@@ -948,8 +1018,12 @@ var  isDateIn= {
     var matched=false;
       // 判断年、月、日的取值范围是否正确 
   // 先判断格式上是否正确 
-var regDate =/^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})$/;
-if (!regDate.test(text))
+//var regDate =/^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})$/;
+      var regDate =/(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})/;
+      context.dialog.date2=undefined;
+var ll=text.split("부터");
+//console.log(ll[0]+'++++++++++++++++++');
+if (!regDate.test(ll[0]))
 {
     matched=false;
    callback(text, task, matched);
@@ -957,12 +1031,17 @@ if (!regDate.test(text))
 }
 else{
     // 将年、月、日的值取到数组arr中，其中arr[0]为整个字符串，arr[1]-arr[3]为年、月、日
-    var arr = regDate.exec(text);
+    var arr = regDate.exec(ll[0]);
+    // console.log(arr[1]+'++++++++++++++++++');
+    // console.log(arr[2]+'++++++++++++++++++');
+    // console.log(arr[3]+'++++++++++++++++++');
     if(!context.dialog.outyear && !context.dialog.outmonth && !context.dialog.outday) {
         // 判断年、月、日的取值范围是否正确
         context.dialog.inputyear = arr[1];
         context.dialog.inputmonth = arr[2];
         context.dialog.inputday = arr[3];
+        context.dialog.mm=String(Number(arr[2])-1);
+        context.dialog.date2=new Date(arr[1],context.dialog.mm,arr[3]);
         matched = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
         callback(text, task, matched);
     }
@@ -970,8 +1049,11 @@ else{
         context.dialog.inputyear = arr[1];
         context.dialog.inputmonth = arr[2];
         context.dialog.inputday = arr[3];
+        context.dialog.mm=Number(arr[2])-1;
+        context.dialog.mm=String(Number(arr[2])-1);
+        context.dialog.date2=new Date(arr[1],context.dialog.mm,arr[3]);
         var ss=false;
-        ss = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
+        ss = IsMonthAndDateCorrect(arr[1],arr[2], arr[3]);
         if(ss && context.dialog.inputyear<=context.dialog.outyear && context.dialog.inputmonth<=context.dialog.outmonth && context.dialog.inputday<=context.dialog.outday)
         {
             matched=true;callback(text, task, matched);
