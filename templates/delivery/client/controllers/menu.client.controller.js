@@ -50,6 +50,7 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
 
             MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
             {
+                alert('저장되었습니다.');
                 console.log(result);
             },
             function(err)

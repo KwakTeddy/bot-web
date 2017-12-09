@@ -112,15 +112,18 @@ function menuPreproc(menu) {
         for(var j=0; j<category.length; j++) {
             if (item.category1 == category[j].name) {
                 for (var k=0; k<category[j].subMenu.length; k++) {
+                    console.log(item.category2 + "//" + category[j].subMenu[k].name + k);
                     if (item.category2 == category[j].subMenu[k].name) {
                         category[j].subMenu[k].subMenu.push({name:item.name, price:item.price});
                         added = true;
                         break;
                     }
+                }
+                if(!added){
                     category[j].subMenu.push({name:item.category2, subMenu:[{name:item.name, price:item.price}]});
                     added=true;
-                    break;
                 }
+                break;
             }
         }
         if (!added) category.push({name:item.category1, subMenu:[{name:item.category2, subMenu:[{name:item.name, price:item.price}]}]});
