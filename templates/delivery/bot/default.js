@@ -848,12 +848,12 @@ var pastHistory = {
 
 bot.setTask('pastHistory', pastHistory);
 
-// var makeCurrentItem3 = {
-//     action: function (task,context,callback) {
-//         context.dialog.currentItem = '';
-//         callback(task,context);
-//     }
-// };
-//
-// bot.setTask('makeCurrentItem3', makeCurrentItem3);
+var getLocation = {
+    action: function (task,context,callback) {
+        context.dialog.location = context.bot.address;
+        callback(task,context);
+    }
+};
+
+bot.setTask('getLocation', getLocation);
 

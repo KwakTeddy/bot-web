@@ -133,7 +133,7 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                // "kind": "Action",
+                                "kind": "Action",
                                 "repeat": 1,
                                 "options": {
                                     "page": "pre"
@@ -151,7 +151,7 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                // "kind": "Action",
+                                "kind": "Action",
                                 "repeat": 1,
                                 "options": {
                                     "page": "next"
@@ -1570,12 +1570,12 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "<<+resname+>>\n\n전화번호 : +phone+\n주소: +context.bot.address+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "<<+resname+>>\n\n전화번호 : +phone+\n주소: +location+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text"
             }
         ],
         "task": {
-            "name": "defaultTask2"
+            "name": "getLocation"
         }
     },
     {
