@@ -28,19 +28,25 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
         var sessionCountDataTemplate = {
             labels: [],
             datasets: [{
-                label: '카카오톡',
+                label: LanguageService('Kakaotalk'),
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
                 borderWidth: 1
             }, {
-                label: '페이스북',
+                label: LanguageService('Facebook'),
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
                 borderWidth: 1
             }, {
-                label: '네이버톡톡',
+                label: LanguageService('Naver talk talk'),
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }, {
+                label: LanguageService('Socket'),
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
@@ -51,7 +57,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
         var sessionAverageCountDataTemplate = {
             labels: [],
             datasets: [{
-                label: '세션당 평균 대화량',
+                label: LanguageService('Average amount of traffic per session'),
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
@@ -101,6 +107,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
         {
             SessionAnalysisService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
+                console.log(result);
                 var list = {};
 
                 var check = {};
@@ -117,7 +124,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     {
                         if(!list[year + '-' + month + '-' + dayOfMonth])
                         {
-                            list[year + '-' + month + '-' + dayOfMonth] = { kakao: 0, facebook: 0, navertalk: 0, dialogCount: 0};
+                            list[year + '-' + month + '-' + dayOfMonth] = { kakao: 0, facebook: 0, navertalk: 0, dialogCount: 0, socket: 0};
                         }
 
                         //만약 UserID에 대해 새로운 세션이라면.
@@ -130,6 +137,8 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     // 모든 대화 수
                     list[year + '-' + month + '-' + dayOfMonth].dialogCount++;
                 }
+
+                console.log('세션 : ', list);
 
 
                 var labels = [];

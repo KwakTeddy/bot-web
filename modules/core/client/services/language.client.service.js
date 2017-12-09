@@ -1836,6 +1836,18 @@
                 "en": "Select",
                 "zh": "选择",
                 "jp": "選択"
+            },
+            "Socket": {
+                "ko": "소켓",
+                "en": "Socket",
+                "zh": "插座",
+                "jp": "ソケット"
+            },
+            "Average amount of traffic per session": {
+                "ko": "",
+                "en": "Average amount of traffic per session",
+                "zh": "每个会话的平均通信量",
+                "jp": "セッションあたりの平均会話量"
             }
         };
 
