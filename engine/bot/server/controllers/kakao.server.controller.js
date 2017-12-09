@@ -38,22 +38,17 @@ exports.message = function (req, res) {
 
     if(loadbalancer.isUse() && loadbalancer.isMaster()) {
       loadbalancer.balance('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-          console.log('나간다 : ', serverText, json);
-
           if(json.image)
           {
-              console.log('호스트 : ', req.headers.host);
-              console.log('https://' + req.headers.host + json.image.url);
+              json.image.url = 'https://' + req.headers.host + json.image.url;
           }
         respondMessage(res, serverText, json)
       });
     } else {
       chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-          console.log('나간다 : ', serverText, json);
           if(json.image)
           {
-              console.log('호스트 : ', req.headers.host);
-              console.log('https://' + req.headers.host + json.image.url);
+              json.image.url = 'https://' + req.headers.host + json.image.url;
           }
         respondMessage(res, serverText, json)
       });

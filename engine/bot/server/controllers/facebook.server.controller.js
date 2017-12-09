@@ -64,7 +64,7 @@ exports.message = function (req, res) {
             messagingEvent.botId = req.params.bot;
 
             if (messagingEvent.message) receivedMessage(messagingEvent);
-            else if (messagingEvent.postback) receivedPostback(messagingEvent);
+            else if (messagingEvent.postback) receivedPostback(req, messagingEvent);
             else if (messagingEvent.optin) receivedAuthentication(messagingEvent);
             else if (messagingEvent.delivery) receivedDeliveryConfirmation(messagingEvent);
             else console.log("Webhook received unknown messagingEvent: ", messagingEvent);
@@ -203,7 +203,7 @@ function receivedMessage(event) {
 /*
  * Postback Event
  */
-function receivedPostback(event) {
+function receivedPostback(req, event) {
   var senderID = event.sender.id;
   var payload = event.postback.payload;
   var recipientID = event.recipient.id;
@@ -220,6 +220,10 @@ function receivedPostback(event) {
           botContext = context;
           console.log("Received postback");
           chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+              if(task.image)
+              {
+                  task.image.url = 'https://' + req.headers.host + task.image.url;
+              }
             respondMessage(senderID, retText, event.botId, task);
           });
         });
@@ -234,6 +238,10 @@ function receivedPostback(event) {
             botContext = context;
             if(recipientID == bot.facebook.id) {
               chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+                  if(task.image)
+                  {
+                      task.image.url = 'https://' + req.headers.host + task.image.url;
+                  }
                 respondMessage(senderID, retText, event.botId, task);
               });
             }
@@ -246,6 +254,10 @@ function receivedPostback(event) {
           botContext = context;
           if(recipientID == bot.facebook.id) {
             chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+                if(task.image)
+                {
+                    task.image.url = 'https://' + req.headers.host + task.image.url;
+                }
               respondMessage(senderID, retText, event.botId, task);
             });
           }
