@@ -22,6 +22,8 @@ angular.module('template').controller('restaurantReservationController', ['$scop
                     DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                         {
                             $scope.datas = list;
+
+                           // console.log(list);
                         },
                         function(err)
                         {
