@@ -15,6 +15,7 @@ module.exports =
             env:
             {
                 "PORT": 8443,
+                "HOST": "http://localhost:8443",
                 "NODE_ENV": "development",
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",

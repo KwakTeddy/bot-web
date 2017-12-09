@@ -38,22 +38,10 @@ exports.message = function (req, res) {
 
     if(loadbalancer.isUse() && loadbalancer.isMaster()) {
       loadbalancer.balance('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-          if(json.image)
-          {
-              json.image.url = 'https://' + req.headers.host + json.image.url;
-
-              console.log('머지 : ', json.image);
-          }
         respondMessage(res, serverText, json)
       });
     } else {
       chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-          if(json.image)
-          {
-              json.image.url = 'https://' + req.headers.host + json.image.url;
-
-              console.log('머지 : ', json.image);
-          }
         respondMessage(res, serverText, json)
       });
     }
@@ -154,6 +142,8 @@ function respondMessage(res, text, json) {
   if(json && json.image){
     if (json.image.url.substring(0,4) !== 'http'){
       json.image.url = config.host + json.image.url
+
+        console.log('요기다 이미지 유알엘:', json.image);
     }
     sendMsg.message.photo =
       {
