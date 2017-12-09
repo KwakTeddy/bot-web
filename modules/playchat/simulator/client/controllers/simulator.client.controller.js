@@ -138,8 +138,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             if(e.keyCode == 13)
             {
                 var value = e.currentTarget.value;
-                emitMsg(value, true);
-                e.currentTarget.value = '';
+                if(value)
+                {
+                    emitMsg(value, true);
+                    e.currentTarget.value = '';
+                }
             }
             else if(e.keyCode == 116)
             {
