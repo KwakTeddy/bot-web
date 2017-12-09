@@ -53,7 +53,8 @@ exports.userCount = function (req, res)
                     _id: 1,
                     kakao: {$cond:[{$eq: ["$_id.channel", "kakao"]}, 1,0]},
                     facebook: {$cond:[{$eq: ["$_id.channel", "facebook"]}, 1,0]},
-                    navertalk: {$cond:[{$eq: ["$_id.channel", "navertalk"]}, 1,0]}
+                    navertalk: {$cond:[{$eq: ["$_id.channel", "navertalk"]}, 1,0]},
+                    socket: {$cond:[{$eq: ["$_id.channel", "socket"]}, 1,0]}
                 }
             },
             {$group:
@@ -66,7 +67,8 @@ exports.userCount = function (req, res)
                     total: {$sum: 1},
                     kakao: {$sum: "$kakao"},
                     facebook: {$sum: "$facebook"},
-                    navertalk: {$sum: "$navertalk"}
+                    navertalk: {$sum: "$navertalk"},
+                    socket: {$sum: '$socket'}
                 }
             },
             {$sort: {_id:-1,  date: -1}}

@@ -1844,10 +1844,40 @@
                 "jp": "ソケット"
             },
             "Average amount of traffic per session": {
-                "ko": "",
+                "ko": "세션당 평균 대화량",
                 "en": "Average amount of traffic per session",
                 "zh": "每个会话的平均通信量",
                 "jp": "セッションあたりの平均会話量"
+            },
+            "Ratio": {
+                "ko": "비율",
+                "en": "Ratio",
+                "zh": "比",
+                "jp": "比"
+            },
+            "User Count": {
+                "ko": "이용자수",
+                "en": "User Count",
+                "zh": "用户数",
+                "jp": "ユーザーカウント"
+            },
+            "Daily conversions metrics": {
+                "ko": "일별 대화량 통계",
+                "en": "Daily conversions metrics",
+                "zh": "每日转化指标",
+                "jp": "毎日のコンバージョンメトリック"
+            },
+            "Graph Path" :{
+                "ko": "그래프 경로",
+                "en": "Graph Path",
+                "zh": "图路径",
+                "jp": "グラフパス"
+            },
+            "Usage Count": {
+                "ko": "사용 횟수",
+                "en": "Usage Count",
+                "zh": "使用计数",
+                "jp": "使用回数"
             }
         };
 
