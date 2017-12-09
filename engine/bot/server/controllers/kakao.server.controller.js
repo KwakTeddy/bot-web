@@ -42,8 +42,8 @@ exports.message = function (req, res) {
 
           if(json.image)
           {
-              console.log('호스트 : ', request.headers.host);
-              console.log('https://' + request.headers.host + json.image.url);
+              console.log('호스트 : ', req.headers.host);
+              console.log('https://' + req.headers.host + json.image.url);
           }
         respondMessage(res, serverText, json)
       });
@@ -52,8 +52,8 @@ exports.message = function (req, res) {
           console.log('나간다 : ', serverText, json);
           if(json.image)
           {
-              console.log('호스트 : ', request.headers.host);
-              console.log('https://' + request.headers.host + json.image.url);
+              console.log('호스트 : ', req.headers.host);
+              console.log('https://' + req.headers.host + json.image.url);
           }
         respondMessage(res, serverText, json)
       });
