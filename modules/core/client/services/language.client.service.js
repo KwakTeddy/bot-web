@@ -3,13 +3,21 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('LanguageService', function($cookies)
+    angular.module('playchat').factory('LanguageService', function($cookies, $rootScope)
     {
         var user = $cookies.getObject('user');
         var userLang = navigator.language || navigator.userLanguage;
-        var code = user ? user.language : userLang;
+        var code = user ? user.language : userLang || 'en';
 
         code = code.split('-')[0];
+
+        $rootScope.$on('changeLanguage', function()
+        {
+            user = $cookies.getObject('user');
+            code = user ? user.language : userLang || 'en';
+
+            code = code.split('-')[0];
+        });
 
         var languages = {
             "Welcome to Playchat!": {
