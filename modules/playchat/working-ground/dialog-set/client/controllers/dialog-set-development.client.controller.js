@@ -57,6 +57,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 $scope.dialogs = list;
 
+                angular.element('textarea:first').focus();
+
                 // 로딩 끝.
                 $scope.$parent.loaded('working-ground');
             });
