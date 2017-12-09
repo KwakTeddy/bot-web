@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('ChannelController', ['$window', '$scope', '$resource', '$cookies', '$location', '$state', '$http', 'LanguageService', function ($window, $scope, $resource, $cookies, $location, $state, $http, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Channel', '/modules/playchat/gnb/client/imgs/channel.png');
+    $scope.$parent.changeWorkingGroundName('Channel', '/modules/playchat/gnb/client/imgs/channel_grey.png');
 
     $scope.$parent.loaded('working-ground');
 

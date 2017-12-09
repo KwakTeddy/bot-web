@@ -25,7 +25,7 @@
 
 .dashboard-bot-profile-content > div
 {
-    margin: 15px 0;
+    margin: 0;
 }
 
 .dashboard-bot-profile-image
@@ -35,8 +35,8 @@
 
 .dashboard-bot-profile-image-wrapper
 {
-    width: 144px;
-    height: 144px;
+    width: 142px;
+    height: 142px;
     border-radius: 4px;
     background-color: #dbdbdb;
 
@@ -103,9 +103,8 @@
 .dashboard-dialog-develop
 {
     display: table;
-    padding: 20px 30px;
+    padding: 10px 30px;
     width: 100%;
-
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -194,9 +193,8 @@
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: #f9f9f9;
-    width: 92%;
+    margin: 10px;
     padding: 20px;
-
     position: relative;
 }
 
@@ -218,10 +216,10 @@
 
 .dashboard-dialog-develop.operation > div
 {
-    width: 47%;
+    width: 48.3%;
 }
 
 .dashboard-dialog-develop.analysis > div
 {
-    width: 30%;
+    width: 31.6%;
 }

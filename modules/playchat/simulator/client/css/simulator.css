@@ -266,9 +266,9 @@
     vertical-align: middle;
 }
 
-.simulator .input-box input::-webkit-input-placeholder { color:#aeaeae; }
+.simulator .input-box input::-webkit-input-placeholder { color:#aeaeae; font-size: 14px;}
 
-.simulator .input-box input::-moz-placeholder { color:#aeaeae; }
+.simulator .input-box input::-moz-placeholder { color:#aeaeae; font-size: 14px;}
 
 .simulator .simulator-btn
 {
@@ -290,3 +290,4 @@
     transform: rotate(-90deg);
     text-align: center;
 }
+

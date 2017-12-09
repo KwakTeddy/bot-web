@@ -20,7 +20,7 @@
 .failed-dialog-training-row.selected
 {
     background-color: #d9eefa;
-
+    border: 1px solid #d9eefa;;
     padding-top: 20px;
     height: auto;
 }
@@ -99,7 +99,7 @@
     width: 43%;
     border-radius: 6px;
     background-color: #ecf7fd;
-    padding: 10px;
+    padding: 8px;
 
     font-size: 13px;
 
@@ -132,14 +132,15 @@
     background-color: white;
     border-radius: 6px;
     margin-left: 10px;
-    padding: 6px 25px;
+    padding: 7px 18px;
     box-sizing: border-box;
 }
 
 .failed-dialog-training-row .default-button
 {
-    background-color: gray;
+    background-color: #5c5c5c;
     color: white;
+    border: 0;
 }
 
 .failed-intent
