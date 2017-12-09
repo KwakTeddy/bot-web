@@ -41,6 +41,8 @@ exports.message = function (req, res) {
           if(json.image)
           {
               json.image.url = 'https://' + req.headers.host + json.image.url;
+
+              console.log('머지 : ', json.image);
           }
         respondMessage(res, serverText, json)
       });
@@ -49,6 +51,8 @@ exports.message = function (req, res) {
           if(json.image)
           {
               json.image.url = 'https://' + req.headers.host + json.image.url;
+
+              console.log('머지 : ', json.image);
           }
         respondMessage(res, serverText, json)
       });
