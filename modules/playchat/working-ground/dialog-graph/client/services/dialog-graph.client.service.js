@@ -153,7 +153,20 @@
 
             this.setCurrentDialog(dialog);
 
+            var graphbody = angular.element('.graph-body').get(0);
+
+            console.log('그래프바디 : ', graphbody.offsetWidth);
+
             angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
+
+            var menuDialog = angular.element('.dialog-menu').get(0);
+            console.log('음 : ', menuDialog.offsetWidth);
+
+            // -30은 스크롤바
+            if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+            {
+                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px')
+            }
 
             e.preventDefault();
             e.stopPropagation();
