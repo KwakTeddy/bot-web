@@ -65,7 +65,7 @@
                         <li>{{item.name}}, X{{item.quant}}, {{item.price}}</li>
                     </ul>
                 </td>
-                <td>
+                <td ng-show="menu.status == '승인대기중'">
                     <button type="button" class="default-button" ng-click="accept(menu)">승인</button>
                     <button type="button" class="default-button" ng-click="deny(menu)">거부</button>
                 </td>

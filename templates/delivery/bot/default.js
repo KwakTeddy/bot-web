@@ -12,10 +12,10 @@ var ObjectId = mongoose.Types.ObjectId;
 var defaultTask2 = {
     name: 'defaultTask2',
     action: function(task, context, callback) {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + context.bot.address);
-        console.log(context.dialog.address);
-        console.log(context.user.address);
-        console.log(context.bot.address);
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + context.bot.address);
+        // console.log(context.dialog.address);
+        // console.log(context.user.address);
+        // console.log(context.bot.address);
         callback(task, context);
     }
 };
@@ -112,7 +112,7 @@ function menuPreproc(menu) {
         for(var j=0; j<category.length; j++) {
             if (item.category1 == category[j].name) {
                 for (var k=0; k<category[j].subMenu.length; k++) {
-                    console.log(item.category2 + "//" + category[j].subMenu[k].name + k);
+                    //console.log(item.category2 + "//" + category[j].subMenu[k].name + k);
                     if (item.category2 == category[j].subMenu[k].name) {
                         category[j].subMenu[k].subMenu.push({name:item.name, price:item.price});
                         added = true;
@@ -184,7 +184,7 @@ var menuElementText = {
         var matched = false;
         var array = context.dialog.menuList;
         for(i=0; i<array.length; i++){
-            if (matchFun(context.dialog.inRaw, array[i].name)) {
+            if (matchFun(context.dialog.inCurRaw, array[i].name)) {
                 matched = true;
                 task.menuElement = array[i];
             };
@@ -246,7 +246,7 @@ bot.setTask('addCart', addCart);
 var sendSMSAuth = {
     preCallback: function(task, context, callback) {
         if (task.mobile == undefined) task.mobile = context.dialog['mobile'];
-        console.log('ddd');
+        //console.log('ddd');
         callback(task, context);
     },
     action: messages.sendSMSAuth
@@ -297,9 +297,9 @@ var recentCart = {
                 context.bot.discription = orderHis.discr || '없음';
                 // context.dialog.discription = '없음';
 
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                console.log(orderHis.discr);
-                console.log(context.dialog.discr);
+                // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                // console.log(orderHis.discr);
+                // console.log(context.dialog.discr);
                 callback(task,context);
 
 
@@ -350,7 +350,7 @@ function reserveRequest(task, context, callback) {
         discr: context.dialog.discription,
         created: new Date()
     };
-    console.log("####################################" + JSON.stringify(doc));
+    // console.log("####################################" + JSON.stringify(doc));
 
 
     var TemplateReservation = mongoModule.getModel('delivery-orders');
@@ -365,7 +365,7 @@ function reserveRequest(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
 
             // var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
-            var url = (config.host || "https://chicken.moneybrain.ai") + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            var url = (config.host || "https://remaster.moneybrain.ai") + '/playchat/templates/contents/order';
             context.bot.authKey = randomNum;
 
             var query = {url: url};
@@ -536,13 +536,13 @@ bot.setTask('saveMobile', saveMobile);
 
 var checkCondition = {
     action: function (task,context,callback) {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         context.dialog.ordering = true;
         // context.dialog.deliveryTime = isOpen(context.bot.openTime);
         context.dialog.deliveryTime = true;
         context.dialog.deliveryDistance = true;
         var totalPrice = parseInt(getTotalPrice(context.user.cart));
-        console.log("##########################" + totalPrice);
+        // console.log("##########################" + totalPrice);
         context.dialog.priceCond = (totalPrice >= context.bot.minPrice);
         //context.dialog.priceCond = true;
         context.dialog.totalPrice = totalPrice;
@@ -564,8 +564,8 @@ function sendSMS(phone, message) {
         {json: {callbackPhone: "15777314", phone: phone, message: message}},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log(response);
-                console.log(body);
+                // console.log(response);
+                // console.log(body);
             } else {
                 // task._result = 'FAIL';
                 // task._resultMessage = 'HTTP ERROR';
@@ -781,7 +781,7 @@ var orderCancel = {
         TemplateReservation.update({_id: context.dialog.orderHistory._id}, {$set: {status: '주문자취소'}}, function (err) {
 
             if(!context.bot.testMode) {
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 var message = '[' + context.bot.name + ']' + '\n';
 
                 message += '배달요청이 취소되었습니다.';

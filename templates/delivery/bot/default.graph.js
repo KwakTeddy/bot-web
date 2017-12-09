@@ -110,10 +110,13 @@ var dialogs = [
                         "id": "default87",
                         "filename": "default",
                         "input": [
+                            // {
+                            //     "types": [
+                            //         "orderble"
+                            //     ]
+                            // }
                             {
-                                "types": [
-                                    "orderble"
-                                ]
+                                "if" : "false"
                             }
                         ],
                         "output": [
@@ -126,28 +129,32 @@ var dialogs = [
                         "task": "makeOrderList"
                     },
                     {
-                        "input": {
-                            "regexp": "/^<$/"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "page": "pre"
+                        "input": [
+                            {
+                                "regexp": "^<"
                             }
-                        },
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "repeat": 1
+                            }
+                        ],
                         "id": "default1512795450304",
                         "name": "생성된 이름 1512795450304"
                     },
                     {
-                        "input": {
-                            "regexp": "/^>$/"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "page": "next"
+                        "input": [
+                            {
+                                "regexp": "^>"
                             }
-                        },
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "repeat": 1
+                            }
+                        ],
                         "id": "default1512795450305",
                         "name": "생성된 이름 1512795450305"
                     },
@@ -1031,7 +1038,8 @@ var dialogs = [
                 "name": "New Dialog1",
                 "input": [
                     {
-                        "if": "true"
+                        "if": "true",
+                        "text": "여기"
                     }
                 ],
                 "output": [
@@ -1153,7 +1161,8 @@ var dialogs = [
                 "name": "New Dialog2",
                 "input": [
                     {
-                        "if": "true"
+                        "if": "true",
+                        "text": "여기"
                     }
                 ],
                 "output": [
@@ -1204,7 +1213,8 @@ var dialogs = [
                 "name": "New Dialog3",
                 "input": [
                     {
-                        "if": "true"
+                        "if": "true",
+                        "text": "여기"
                     }
                 ],
                 "output": [
@@ -1532,7 +1542,7 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.orderHistory",
-                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n[주문내용]:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n주문내용:\n#orderHistory.order# - +name+ X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text",
                 "id": "default22_0"
             },
@@ -1733,6 +1743,8 @@ var dialogs = [
 
 
 
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1793,6 +1805,8 @@ var commonDialogs = [
         "output": "알아듣지 못했습니다"
     }
 ];
+
+
 
 
 
