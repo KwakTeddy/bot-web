@@ -46,7 +46,8 @@ module.exports.totalUserCount = function (req, res)
                 fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
                 kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
                 facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
             }
         },
         { $group:
@@ -56,7 +57,8 @@ module.exports.totalUserCount = function (req, res)
                 fail: {$sum: "$fail"},
                 kakao: {$sum: "$kakao"},
                 facebook: {$sum: "$facebook"},
-                navertalk: {$sum: "$navertalk"}
+                navertalk: {$sum: "$navertalk"},
+                socket: {$sum: '$socket'}
             }
         },
     ];
@@ -129,7 +131,8 @@ module.exports.dailyDialogUsage = function (req, res)
                 fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
                 kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
                 facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
             }
         },
         { $group:
@@ -139,7 +142,8 @@ module.exports.dailyDialogUsage = function (req, res)
                 fail: {$sum: "$fail"},
                 kakao: {$sum: "$kakao"},
                 facebook: {$sum: "$facebook"},
-                navertalk: {$sum: "$navertalk"}
+                navertalk: {$sum: "$navertalk"},
+                socket: {$sum: '$socket'}
             }
         },
         { $sort: {_id:-1,  day: -1} }

@@ -10,7 +10,7 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
     $scope.userType = "total";
     $scope.channel = "total";
     $scope.kakao = 0;
-    $scope.facebook = 0;
+    $scope.Facebook = 0;
     $scope.navertalk = 0;
 
     var chatbot = $cookies.getObject('chatbot');
@@ -19,14 +19,16 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
     var color = {
         background:{
             kakao: 'rgba(251, 230, 0, 0.70)',
-            facebook: 'rgba(59, 89, 152, 0.70)',
+            Facebook: 'rgba(59, 89, 152, 0.70)',
             navertalk: 'rgba(0, 199, 60, 0.70)',
+            socket: 'gray',
             success: "rgba(66, 133, 244, 0.70)",
             fail: "rgba(221, 81, 68, 0.70)"
         }, border:{
             kakao: '#ede500',
-            facebook: '#29487d',
+            Facebook: '#29487d',
             navertalk: '#00af35',
+            socket: 'gray',
             success: "rgb(51, 126, 248)",
             fail: "rgb(147, 75, 61)"
         }
@@ -35,19 +37,21 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
     var barChart;
     var isFailBarChart;
     var pieDataTemplate = {
-        labels: ["카카오톡", "페이스북", "네이버톡톡"],
+        labels: [LanguageService('KaKao Talk'), LanguageService('Facebook'), LanguageService('Naver talk talk'), LanguageService('Socket')],
         datasets: [
             {
-                label: "카카오톡",
+                label: LanguageService('KaKao Talk'),
                 backgroundColor: [
                     color.background.kakao,
-                    color.background.facebook,
-                    color.background.navertalk
+                    color.background.Facebook,
+                    color.background.navertalk,
+                    color.background.socket
                 ],
                 borderColor: [
                     color.border.kakao,
-                    color.border.facebook,
-                    color.border.navertalk
+                    color.border.Facebook,
+                    color.border.navertalk,
+                    color.border.socket
                 ],
                 borderWidth: 1,
                 data: []
@@ -57,19 +61,25 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
     var barDataTemplate = {
         labels: [],
         datasets: [{
-            label: '카카오톡',
+            label: LanguageService('KaKao Talk'),
             data: [],
             backgroundColor: [],
             borderColor: [],
             borderWidth: 1
         }, {
-            label: '페이스북',
+            label: LanguageService('Facebook'),
             data: [],
             backgroundColor: [],
             borderColor: [],
             borderWidth: 1
         }, {
-            label: '네이버톡톡',
+            label: LanguageService('Naver talk talk'),
+            data: [],
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 1
+        }, {
+            label: LanguageService('Socket'),
             data: [],
             backgroundColor: [],
             borderColor: [],
@@ -79,13 +89,13 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
     var isFailBarDataTemplate = {
         labels: [],
         datasets: [{
-            label: '성공',
+            label: LanguageService('Success'),
             data: [],
             backgroundColor: [],
             borderColor: [],
             borderWidth: 1
         }, {
-            label: '실패',
+            label: LanguageService('Fail'),
             data: [],
             backgroundColor: [],
             borderColor: [],
@@ -180,8 +190,9 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
                 barData = angular.copy(barDataTemplate);
                 isFailBarData = angular.copy(isFailBarDataTemplate);
                 $scope.kakao = 0;
-                $scope.facebook = 0;
+                $scope.Facebook = 0;
                 $scope.navertalk = 0;
+                $scope.socket = 0;
             }
 
             var array = [];
@@ -227,15 +238,17 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
                     {
                         exist = true;
                         barData.datasets[0].data.push(doc.data[i].kakao);
-                        barData.datasets[1].data.push(doc.data[i].facebook);
+                        barData.datasets[1].data.push(doc.data[i].Facebook);
                         barData.datasets[2].data.push(doc.data[i].navertalk);
+                        barData.datasets[3].data.push(doc.data[i].socket);
 
                         isFailBarData.datasets[0].data.push(doc.data[i].total - doc.data[i].fail);
                         isFailBarData.datasets[1].data.push(doc.data[i].fail);
 
                         $scope.kakao = $scope.kakao + doc.data[i].kakao;
-                        $scope.facebook = $scope.facebook + doc.data[i].facebook;
+                        $scope.Facebook = $scope.Facebook + doc.data[i].Facebook;
                         $scope.navertalk = $scope.navertalk + doc.data[i].navertalk;
+                        $scope.socket = $scope.socket + doc.data[i].socket;
                         break;
                     }
                 }
@@ -245,16 +258,19 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
                     barData.datasets[0].data.push(0);
                     barData.datasets[1].data.push(0);
                     barData.datasets[2].data.push(0);
+                    barData.datasets[3].data.push(0);
                 }
                 else
                 {
                     barData.datasets[0].backgroundColor.push(color.background.kakao);
-                    barData.datasets[1].backgroundColor.push(color.background.facebook);
+                    barData.datasets[1].backgroundColor.push(color.background.Facebook);
                     barData.datasets[2].backgroundColor.push(color.background.navertalk);
+                    barData.datasets[3].backgroundColor.push(color.background.socket);
 
                     barData.datasets[0].borderColor.push(color.border.kakao);
-                    barData.datasets[1].borderColor.push(color.border.facebook);
+                    barData.datasets[1].borderColor.push(color.border.Facebook);
                     barData.datasets[2].borderColor.push(color.border.navertalk);
+                    barData.datasets[3].borderColor.push(color.border.socket);
 
                     isFailBarData.datasets[0].backgroundColor.push(color.background.success);
                     isFailBarData.datasets[1].backgroundColor.push(color.background.fail);
@@ -265,8 +281,9 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
             });
 
             pieData.datasets[0].data.push($scope.kakao);
-            pieData.datasets[0].data.push($scope.facebook);
+            pieData.datasets[0].data.push($scope.Facebook);
             pieData.datasets[0].data.push($scope.navertalk);
+            pieData.datasets[0].data.push($scope.socket);
 
             if(!update)
             {
@@ -394,7 +411,7 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
                         month: month,
                         day: day,
                         kakao: 0,
-                        facebook: 0,
+                        Facebook: 0,
                         navertalk: 0,
                         total: 0,
                         fail: 0
@@ -404,8 +421,8 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
         });
 
         var exelDataTemplate = {
-            sheetName: "일별 대화량 통계",
-            columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total", "fail"],
+            sheetName: LanguageService('Daily conversions metrics'),
+            columnOrder: ["year", "month", "day", "kakao", "Facebook","navertalk", "total", "fail"],
             orderedData: data
         };
         var startYear =  $scope.date.start.getFullYear();
@@ -419,7 +436,7 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
             end: endYear + "/" + endMonth + "/" + endDay
         };
         $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date: date}).then(function (doc) {
-            var fileName = $cookies.get("default_bot") + '_' + "일별 대화량 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+            var fileName = $cookies.get("default_bot") + '_' + LanguageService('Daily conversions metrics') + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
             //엑셀 다운로드 함수-Filesaver.js 모듈 이용
             function s2ab(s) {
                 var buf = new ArrayBuffer(s.length);

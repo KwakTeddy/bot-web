@@ -37,6 +37,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             kakao: 'rgba(251, 230, 0, 0.70)',
             facebook: 'rgba(59, 89, 152, 0.70)',
             navertalk: 'rgba(0, 199, 60, 0.70)',
+            socket: 'gray',
             success: "rgba(66, 133, 244, 0.70)",
             fail: "rgba(221, 81, 68, 0.70)"
         },
@@ -44,6 +45,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             kakao: '#ede500',
             facebook: '#29487d',
             navertalk: '#00af35',
+            socket: 'gray',
             success: "rgb(51, 126, 248)",
             fail: "rgb(147, 75, 61)"
         }
@@ -76,33 +78,36 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
         {
             $scope.data.totalUserCount = result.list.length;
 
-
             var facebook = 0;
             var kakao = 0;
             var naver = 0;
+            var socket = 0;
             var total = 0;
 
             result.list.forEach(function (data) {
                 facebook += data.facebook;
                 kakao += data.kakao ;
                 naver += data.navertalk;
+                socket += data.socket;
                 total += data.total;
             });
 
             var context = document.getElementById("botUserByChannel").getContext('2d');
             var data = {
-                labels: ["KakaoTalk", "Facebook", "NaverTalkTalk"],
+                labels: [LanguageService('KaKao Talk'), LanguageService('Facebook'), LanguageService('Naver talk talk'), LanguageService('Socket')],
                 datasets: [{
                     data: [],
                     backgroundColor: [
                         color.background.kakao,
                         color.background.facebook,
-                        color.background.navertalk
+                        color.background.navertalk,
+                        color.background.socket
                     ],
                     borderColor: [
                         color.border.kakao,
                         color.border.facebook,
-                        color.border.navertalk
+                        color.border.navertalk,
+                        color.border.socket
                     ],
                     borderWidth: 1
                 }]
@@ -112,6 +117,8 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             data.datasets[0].data.push(kakao);
             data.datasets[0].data.push(facebook);
             data.datasets[0].data.push(naver);
+            data.datasets[0].data.push(socket);
+
             var myChart = new Chart(context, {
                 type: 'doughnut',
                 data: data,
@@ -152,7 +159,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                 labels: [],
                 datasets: [
                     {
-                        label: "카카오톡",
+                        label: LanguageService('KaKao Talk'),
                         backgroundColor: color.border.kakao,
                         borderColor: color.background.kakao,
                         data: [],
@@ -160,7 +167,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                         fill:false
                     },
                     {
-                        label: "페이스북",
+                        label: LanguageService('Facebook'),
                         backgroundColor: color.border.facebook,
                         borderColor: color.background.facebook,
                         data: [],
@@ -168,7 +175,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                         fill:false
                     },
                     {
-                        label: "네이버톡톡",
+                        label: LanguageService('Naver talk talk'),
                         backgroundColor: color.border.navertalk,
                         borderColor: color.background.navertalk,
                         data: [],
@@ -176,7 +183,15 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                         fill:false
                     },
                     {
-                        label: "합계",
+                        label: LanguageService('Socket'),
+                        backgroundColor: color.border.socket,
+                        borderColor: color.background.socket,
+                        data: [],
+                        lineTension: 0,
+                        fill:false
+                    },
+                    {
+                        label: LanguageService('Total'),
                         backgroundColor: "#444444",
                         borderColor: "#444444",
                         data: [],
@@ -188,7 +203,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             };
 
             var pieData = {
-                labels: ["성공", "실패"],
+                labels: [LanguageService('Success'), LanguageService('Fail')],
                 datasets: [{
                     data: [],
                     backgroundColor: [
@@ -237,7 +252,8 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                         data.datasets[0].data.push(doc[i].kakao);
                         data.datasets[1].data.push(doc[i].facebook);
                         data.datasets[2].data.push(doc[i].navertalk);
-                        data.datasets[3].data.push(doc[i].total);
+                        data.datasets[3].data.push(doc[i].socket);
+                        data.datasets[4].data.push(doc[i].total);
 
                         isFailDialogCount += doc[i].fail;
                         isSuccessDialogCount += doc[i].total - doc[i].fail;
@@ -250,6 +266,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                     data.datasets[1].data.push(0);
                     data.datasets[2].data.push(0);
                     data.datasets[3].data.push(0);
+                    data.datasets[4].data.push(0);
                 }
             });
 

@@ -1383,6 +1383,21 @@
             this.onLoadCallback = undefined;
         };
 
+        DialogGraph.prototype.getRandomName = function()
+        {
+            var name = 'New Dialog';
+
+            var strings = JSON.stringify(this.userDialogs);
+
+            for(var i=1;; i++)
+            {
+                if(strings.indexOf(name + i) == -1)
+                {
+                    return name + i;
+                }
+            }
+        };
+
         if(!instance)
             instance = new DialogGraph();
 
