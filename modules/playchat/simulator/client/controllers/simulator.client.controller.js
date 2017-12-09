@@ -128,9 +128,15 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         //event handling
         Socket.on('send_msg', function(data)
         {
-            addBotBubble(data);
-
-            $rootScope.$broadcast('onmsg', { message: data });
+            if(data.indexOf(':log') != -1)
+            {
+                $rootScope.$broadcast('onlog', { message: data });
+            }
+            else
+            {
+                addBotBubble(data);
+                $rootScope.$broadcast('onmsg', { message: data });
+            }
         });
 
         $scope.sendMessage = function(e)

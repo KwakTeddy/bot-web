@@ -41,23 +41,34 @@ var botSocket;
 
 exports.setBotSocket = function(socket) {botSocket = socket};
 
+// var consoleLog = console.log;
+// var consoleError = console.error;
+// var consoleTrace = console.trace;
+//
 // console = {};
-// console.log = function(out) {
-//     process.stdout.write(out+'\n');
-//     if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+// console.log = function(out, context) {
+//   process.stdout.write(out+'\n');
+//   if(context && context.botUser && context.botUser.socket && context.botUser.dev === true)
+//     context.botUser.socket.emit('send_msg', ":log \n" + out +"\n");
 // }
 //
 // console.error = function(out) {
-//     process.stderr.write((out.stack ? out.stack : out) +'\n');
+//     consoleError(out);
 //     if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
 // }
-
+//
 // console.trace = function(out, t) {
-//   process.stderr.write(out+'\n');
+//   consoleTrace(out);
 //   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 // }
+//
+console.tlog = function(out, context) {
+    console.log(out+'\n');
+    if(context && context.botUser && context.botUser.socket && context.botUser.dev === true)
+        context.botUser.socket.emit('send_msg', ":log \n" + out +"\n");
+}
 
-function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
+function botProc(botName, channel, user, inTextRaw, json, outCallback, options, socket) {
     // TODO 개발용
     dialog = utils.requireNoCache(path.resolve('engine/bot/action/common/dialog'));
 
@@ -69,7 +80,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         // });
 
         var endTime = new Date();
-        logger.debug("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n");
+        console.tlog("Output (" + (endTime-startTime) + 'ms)>> ' + _out + "\n", context);
 
         // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
         //   _out = out;
@@ -115,7 +126,15 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             contextModule.getContext(botName, channel, user, options, function(_context) {
                 context = _context;
                 if(context.bot.language == undefined) context.bot.language = options.language || 'ko';
-                cb(null);
+                if(socket && options && options.dev === true) {
+                    context.botUser.socket = socket;
+                    context.botUser.dev = true;
+                } else {
+                    context.botUser.socket = undefined;
+                    context.botUser.dev = undefined;
+                }
+
+              cb(null);
             });
         },
         function(cb) {
@@ -146,14 +165,14 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         },
         function(cb) {
             context.botUser.nlu.sentence = inTextRaw;
-            logger.debug("사용자 입력>> " + inTextRaw);
+            console.tlog("Input>> " + inTextRaw, context);
             inTextRaw = inTextRaw.replace(/^\s+|\s+$/g,"");
 
             // 현재 발화에 대한 자연어 처리
             var type = utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
             type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
-                logger.debug("자연어 처리>> " + _inTextNLP);
-                logger.debug(JSON.stringify(context.botUser.nlu));
+                console.tlog("NLP>> " + _inTextNLP, context);
+                console.tlog("NLU>> " + JSON.stringify(context.botUser.nlu), context);
                 inTextNLP = _inTextNLP;
                 context.task = utils.merge(_inDoc, json);
                 cb(null);

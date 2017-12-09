@@ -81,35 +81,12 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
             data.language = 'ko';
         }
 
-        $scope.uploader = new FileUploader({
-            url: '/api/' + chatbot.id + '/template-contents/upload',
-            alias: 'uploadFile',
-            autoUpload: true
-        });
-
-        $scope.uploader.onErrorItem = function(item, response, status, headers)
-        {
-            console.log($scope.modalForm.fileUploadError);
-        };
-
-
-        $scope.datas.uploader.onSuccessItem = function(item, response, status, headers)
-        {
-            $scope.datas.image = response.url;
-        };
-
-        $scope.uploader.onProgressItem = function(fileItem, progress)
-        {
-            angular.element('.form-box-progress').css('width', progress + '%');
-        };
-
-
         $scope.editImage = function(e)
         {
             angular.element(e.currentTarget).next().click();
         };
 
-        ChatbotService.update({ botId: chatbot._id, name: data.restaurantname, language: data.language, description: data.description,uploader: undefined,holiday:data.holiday,startTime:data.startTime,endTime:data.endTime,address:data.address}, function()
+        ChatbotService.update({ botId: chatbot._id, name: data.restaurantname, language: data.language, description: data.description,holiday:data.holiday,startTime:data.startTime,endTime:data.endTime,address:data.address,uploader: undefined}, function()
         {
             ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.templateData._id, data: data }, function(result)
             {

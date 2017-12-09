@@ -200,51 +200,109 @@ var checkTime= {
 
         var day = new Date().getDay();
         var holiday = dateStringToNumber(context.bot.holiday);
-        var str=context.bot.endTime;
-        var str1=context.bot.startTime;
-var str0=str.substring(3,5);
-var str10=str.substring(3,5);
-        var xx=Number(context.dialog.time.substring(0,2));
-if(str.indexOf('오후')>=0){context.dialog.endTime1=Number(str0)+12;}
-if(str1.indexOf('오전')>=0){context.dialog.startTime1=Number(str10);}
-        //console.log(context.dialog.endTime1+'===================11');
-        //console.log(context.dialog.startTime1+'===================12');
-        //console.log(xx+'===================13');
-        if (day == holiday) {
-            context.dialog.check = true;
-            callback(task, context);
-        } else {
-            if (context.dialog.time == 're') {
-                context.dialog.check = 're';
-            } else if (xx < context.dialog.endTime1 && xx > context.dialog.startTime1) {
-                //console.log('===================333');
+        var str = context.bot.endTime;
+        var str1 = context.bot.startTime;
+        var str0 = str.substring(3, 5);
+        var str10 = str1.substring(3, 5);
+        console.log('context.dialog.time==========='+context.dialog.time);
+        var xx = Number(context.dialog.time.substring(0, 1));
+        if (((str.indexOf('오전') >= 0) && (str1.indexOf('오전')>=0))){
+            console.log('===================111');
+
+            context.dialog.endTime1 = Number(str0);
+            context.dialog.startTime1 = Number(str10);
+            console.log('context.dialog.startTime1==========='+context.dialog.startTime1);
+            console.log('context.dialog.endTime1==========='+context.dialog.endTime1);
+            console.log('xx==========='+xx);
+            if (day == holiday) {
                 context.dialog.check = true;
+                callback(task, context);
             } else {
+                if (context.dialog.time == 're') {
+                    context.dialog.check = 're';
+                } else if (xx < context.dialog.endTime1 && xx > 0 || xx >= context.dialog.startTime1 && xx < 24) {
+                    console.log('===================333');
+                    context.dialog.check = true;
+                } else {
 
-                context.dialog.check = false;
+                    context.dialog.check = false;
+                }
+                callback(task, context);
             }
-            callback(task, context);
-        }
 
+        }
+        else if((str.indexOf('오후') >= 0) && (str1.indexOf('오후')>=0)) {
+            console.log('===================222');
+            context.dialog.endTime1 = Number(str0) + 12;
+            context.dialog.startTime1 = Number(str10) + 12;
+            if (day == holiday) {
+                context.dialog.check = true;
+                callback(task, context);
+            } else {
+                if (context.dialog.time == 're') {
+                    context.dialog.check = 're';
+                } else if (xx < context.dialog.endTime1 && xx > 0 || xx > context.dialog.startTime1 && xx < 24) {
+                    console.log('===================333');
+                    context.dialog.check = true;
+                } else {
+
+                    context.dialog.check = false;
+                }
+                callback(task, context);
+            }
+        }
+        else {
+            console.log('===================333');
+            if (str.indexOf('오후') >= 0) {
+                context.dialog.endTime1 = Number(str0) + 12;
+            }
+            if (str1.indexOf('오전') >= 0) {
+                context.dialog.startTime1 = Number(str10);
+            }
+
+            if (day == holiday) {
+                context.dialog.check = true;
+                callback(task, context);
+            } else {
+                if (context.dialog.time == 're') {
+                    context.dialog.check = 're';
+                } else if (xx < context.dialog.endTime1 && xx > context.dialog.startTime1) {
+                    console.log('===================333');
+                    context.dialog.check = true;
+                } else {
+
+                    context.dialog.check = false;
+                }
+                callback(task, context);
+            }
+
+        }
     }
 };
 bot.setTask("checkTime", checkTime);
 
 
+
 var checkDate= {
     name: 'checkDate',
     action: function (task, context, callback) {
+        console.log('====================');
         var day = context.dialog.date.getDay();
 
         var holiday = dateStringToNumber(context.bot.holiday);
-
-        if (day == holiday) {
-            context.dialog.check = true;
-        } else {
+        if (holiday == 7) {
             context.dialog.check = false;
+            callback(task, context);
         }
+        else {
+            if (day == holiday) {
+                context.dialog.check = true;
+            } else {
+                context.dialog.check = false;
+            }
 
-        callback(task, context);
+            callback(task, context);
+        }
     }
 };
 bot.setTask("checkDate", checkDate);
@@ -257,8 +315,8 @@ function dateStringToNumber(dateString) {
     else if(dateString == '목요일' || dateString == '목') return 4;
     else if(dateString == '금요일' || dateString == '금') return 5;
     else if(dateString == '토요일' || dateString == '토') return 6;
+    else if(dateString == '365일 영업' || dateString == '휴일 없다' || dateString == '없다' || dateString == '휴일없음') return 7;
     else return dateString;
-
 }
 
 var menuCategoryAction= {
@@ -687,6 +745,7 @@ var action2 = {
     name:"action2",
     action: function(task, context, callback)
     {
+        console.log('+++++++++++++++++');
         context.dialog.날짜입력최초 = true; callback(task, context);
     }
 };
@@ -707,7 +766,7 @@ var numOfPersonTypeCheck1 = {
         context.dialog.numOfPersonis=undefined;
         var inRaw=context.dialog.inRaw;
         var inCurRaw=context.dialog.inCurRaw;
-        //console.log('++++++++++++++++++++++++++++++++');
+        console.log('++++++++++++++++++++++++++++++++');
         console.log(inRaw+'++++++++++1111111');
         console.log(inCurRaw+'++++++++++1111111');
         var x = /[ ]?명/g;
@@ -715,11 +774,10 @@ var numOfPersonTypeCheck1 = {
         //search(x);
         //var str='2017-12-15부터 5명 4555박5일 reserve';
         var count1 = inRaw.search(x);
-
-        if(inCurRaw!==undefined){
+        var count2;
+        if(count1<0 && inCurRaw!==undefined){
             console.log("count1:"+count1+'++++++++++1111111');
             count1 = inCurRaw.search(x);
-            var count2 = 0;
             if (count1 >= 0) {
                 context.dialog.numOfPersonis=1;
                 context.dialog.numOfPerson = '';
@@ -731,7 +789,7 @@ var numOfPersonTypeCheck1 = {
 
                 }
                 context.dialog.numOfPerson = Number(context.dialog.numOfPerson);
-                //console.log(context.dialog.numOfPersonis+'++++++++++2222222');
+                console.log(context.dialog.numOfPersonis+'++++++++++2222222');
                 callback(task, context);
             }
             else {
@@ -743,7 +801,7 @@ var numOfPersonTypeCheck1 = {
         else {
             console.log("count1:"+count1+'++++++++++222222');
            // console.log("count1:" + count1 + '++++++++++1111111');
-            var count2 = 0;
+            count2 = 0;
             if (count1 >= 0) {
                 context.dialog.numOfPersonis = 1;
                 context.dialog.numOfPerson = '';
@@ -830,9 +888,11 @@ bot.setTask("reserveNameTask", reserveNameTask);
 var smsAuth = {
     name:"smsAuth",
     preCallback: function(task, context, callback) {
-        if (task.mobile == undefined) task.mobile = context.dialog['mobile'];
-        callback(task, context);
-    },
+    //     if (task.mobile == undefined) task.mobile = context.dialog['mobile'];
+        context.user.mobile=undefined;
+         callback(task, context);
+     },
+
     action: messages.sendSMSAuth
 };
 bot.setTask("smsAuth", smsAuth);
@@ -843,7 +903,7 @@ var smsAuthValid = {
 
         context.dialog.matched1=false;
         //console.log(context.dialog.smsAuth+'++++++++++++++++++++++++');
-        if(context.dialog.inCurRaw==context.dialog.smsAuth) {context.dialog.matched1=true;}
+        if(context.dialog.inCurRaw==context.dialog.smsAuth) {context.dialog.matched1=true;context.user.mobile=context.dialog.mobile;}
         else{context.dialog.matched1=false;}
 
         callback(task, context);
@@ -875,6 +935,7 @@ var smsAuthTask = {
             context.user.updates = null;
 
             context.dialog.smsAuth == null;
+
             callback(task, context);
         });
     }

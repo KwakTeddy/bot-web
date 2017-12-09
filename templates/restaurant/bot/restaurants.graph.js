@@ -437,8 +437,12 @@ var dialogs = [
                 "output": "죄송합니다. 해당 일자는 영업일이 아닙니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다."
             },
             {
-                "if": "context.dialog.check == false",
+                "if": "context.dialog.check == false && context.bot.holiday !== '휴일없음'&& context.bot.holiday !== '휴일 없어' && context.bot.holiday !== '없다' && context.bot.holiday !== '365일 영업'",
                 "output": "네 영업일입니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+            },
+            {
+                "if": "context.dialog.check == false && (context.bot.holiday == '휴일없음' || context.bot.holiday == '휴일 없어' || context.bot.holiday == '없다' || context.bot.holiday == '365일 영업')",
+                "output": "네 영업일입니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n휴무일은 없습니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             }
         ]
     },
@@ -463,12 +467,20 @@ var dialogs = [
                 "output": "오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?"
             },
             {
-                "if": "context.dialog.check == true",
+                "if": "context.dialog.check == false && context.bot.holiday !== '휴일없음'&& context.bot.holiday !== '휴일 없어' && context.bot.holiday !== '없다' && context.bot.holiday !== '365일 영업'",
                 "output": "죄송합니다. 영업시간이 아닙니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다."
             },
             {
-                "if": "context.dialog.check == false",
+                "if": "context.dialog.check == false && (context.bot.holiday == '휴일없음' || context.bot.holiday == '휴일 없어' || context.bot.holiday == '없다' || context.bot.holiday == '365일 영업')",
+                "output": "죄송합니다. 영업시간이 아닙니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n휴무일은 없습니다."
+            },
+            {
+                "if": "context.dialog.check == true && context.bot.holiday !== '휴일없음'&& context.bot.holiday !== '휴일 없어' && context.bot.holiday !== '없다' && context.bot.holiday !== '365일 영업'",
                 "output": "네 영업시간 입니다. \n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+            },
+            {
+                "if": "context.dialog.check == true && (context.bot.holiday == '휴일없음' || context.bot.holiday == '휴일 없어' || context.bot.holiday == '없다' || context.bot.holiday == '365일 영업')",
+                "output": "네 영업시간 입니다. \n영업시간은 +startTime+부터\n+endTime+까지이며,\n휴무일은 없습니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             }
         ]
     },
@@ -487,7 +499,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "if": "context.bot.holiday == '휴일없음'",
+                "if": "context.bot.holiday == '휴일없음' || context.bot.holiday == '휴일 없어' || context.bot.holiday == '없다' || context.bot.holiday == '365일 영업'",
                 "output": "영업시간은 +startTime+ 에서 +endTime+ 입니다.\n 휴무일은 없습니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
             },
             "영업시간은 +startTime+ 에서 +endTime+ 입니다.\n+holiday+은 휴무입니다.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
@@ -668,9 +680,21 @@ var dialogs = [
                             ]
                         },
                         "task": "checkDate",
-                        "output": {
-                            "callChild": "시간선택"
-                        }
+                        "output": [
+                            {
+                                "if": "context.dialog.check == false",
+                                "output": {"callChild": "시간선택"}
+                            },
+                            {
+                                "if": "context.dialog.check == true",
+                                "output": {
+                                    "call": "날짜선택",
+                                    "options": {
+                                        "prefix": "+holiday+휴일입니다.\n\n"
+                                    }
+                                }
+                            }
+                        ]
                     },
                     {
                         "id": "restaurant37",
@@ -689,13 +713,12 @@ var dialogs = [
                         "input": {
                             "if": "true"
                         },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "prefix": "날짜가 아닙니다.\n",
-                                "postfix": "\n\n취소하고 처음으로가려면\n\"시작\"이라고 말씀해주세요."
+                        "output": [
+                            {
+                                "text": "날짜가 아닙니다.\n\n* 예약 진행을 계속하시려면 '이전',예약 진행을 취소하시려면 '처음' 또는 0번을 입력해주세요.",
+                                "kind": "Text"
                             }
-                        }
+                        ]
                     }
                 ]
             },
@@ -720,6 +743,10 @@ var dialogs = [
                         "task": "checkTime",
                         "output": [
                             {
+                                "if": "context.dialog.check === true",
+                                "output": {"callChild": "인원선택"}
+                            },
+                            {
                                 "if": "context.dialog.check == 're'",
                                 "output": {
                                     "call": "시간선택",
@@ -729,9 +756,12 @@ var dialogs = [
                                 }
                             },
                             {
-                                "if": "true",
-                                "output": {
-                                    "callChild": "인원선택"
+                                "if": "context.dialog.check === false",
+                               "output": {
+                                    "call": "시간선택",
+                                    "options": {
+                                        "prefix": "영업시간은 +startTime+부터 +endTime+까지입니다.\n\n"
+                                    }
                                 }
                             }
                         ]
@@ -753,13 +783,12 @@ var dialogs = [
                         "input": {
                             "if": "true"
                         },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "prefix": "시간이 아닙니다.\n",
-                                "postfix": "\n\n예약 진행을 취소하시려면\n\"시작\"이라고 말씀해주세요."
+                        "output": [
+                            {
+                                "text": "시간이 아닙니다\n\n* 예약 진행을 계속하시려면 '이전',예약 진행을 취소하시려면 '처음' 또는 0번을 입력해주세요.",
+                                "kind": "Text"
                             }
-                        }
+                        ]
                     }
                 ]
             },
@@ -774,13 +803,7 @@ var dialogs = [
                         "id": "restaurant44",
                         "filename": "restaurants",
                         "input": {
-                            "types": [
-                                {
-                                    "name": "numOfPerson",
-                                    "typeCheck": "numOfPersonTypeCheck",
-                                    "init": true
-                                }
-                            ]
+                            "if": "true"
                         },
                         "task":"numOfPersonTypeCheck1",
                         "output": [
@@ -811,13 +834,12 @@ var dialogs = [
                         "input": {
                             "if": "true"
                         },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "prefix": "인원수가 아닙니다.\n",
-                                "postfix": "\n\n예약 진행을 취소하시려면\n\"시작\"이라고 말씀해주세요."
+                        "output": [
+                            {
+                                "text": "인원수가 아닙니다.\n\n* 예약 진행을 계속하시려면 '이전',예약 진행을 취소하시려면 '시작' 또는 0번을 입력해주세요.",
+                                "kind": "Text"
                             }
-                        }
+                        ]
                     }
                 ]
             },
@@ -899,13 +921,15 @@ var dialogs = [
                             {
                                 "id": "restaurant51",
                                 "filename": "restaurants",
-                                "input": false,
-                                "output": {
+                                "input": "true",
+                                "output": [
+                                    {
                                     "repeat": 1,
                                     "options": {
-                                        "output": "인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n1. 처음"
+                                        "output": "인증번호가 틀렸습니다.\n\n* 예약 진행을 계속하시려면 '이전',예약 진행을 취소하시려면 '시작' 또는 0번을 입력해주세요."
                                     }
                                 }
+                                ]
                             }
                         ]
                     },
@@ -915,13 +939,12 @@ var dialogs = [
                         "input": {
                             "if": "true"
                         },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "prefix": "휴대폰 번호가 아닙니다.\n",
-                                "postfix": "\n\n예약 진행을 취소하시려면\n\"시작\"이라고 말씀해주세요."
+                        "output": [
+                            {
+                                "text": "인증번호가 틀렸습니다.\n\n* 예약 진행을 계속하시려면 '이전',예약 진행을 취소하시려면 '시작' 또는 0번을 입력해주세요.",
+                                "kind": "Text"
                             }
-                        }
+                        ]
                     }
                 ]
             },
@@ -965,7 +988,7 @@ var commonDialogs = [
         "id": "restaurantcommon0",
         "filename": "restaurantcommon",
         "name": "시작",
-        "input": "시작",
+        "input": ["시작","0"],
         "task": "startTask",
         "output": [
             {
@@ -1000,6 +1023,20 @@ var commonDialogs = [
                 "output": "+name+에서는 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다."
             }
         ]
+    },
+    {
+        "name": "이전",
+        "id": "restaurantcommon3330",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "text": "이전"
+            }
+        ],
+        "output": {
+            "kind": "Action",
+            "up": "1"
+        }
     }
 ];
 
