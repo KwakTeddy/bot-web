@@ -64,14 +64,16 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
         var saveFunc = function(modal)
         {
+            var fileName = modal.data.fileName + (modal.data.fileType == '.graph' ? modal.data.fileType + '.js' : modal.data.fileType);
+
             var params = {};
             params.botId = chatbot.id;
-            params.fileName = modal.data.fileName + modal.data.fileType;
+            params.fileName = fileName;
 
             if(modal.data.path)
             {
                 params.path = modal.data.path;
-                params.fileName = modal.data.fileName;
+                params.fileName = fileName;
             }
 
             DialogGraphsService.save(params, function(result)
@@ -83,7 +85,8 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
         $scope.save = function(modal)
         {
-            DialogGraphExistService.get({ botId: chatbot.id, fileName: modal.data.fileName + modal.data.fileType }, function(result)
+            var fileName = modal.data.fileName + (modal.data.fileType == '.graph' ? modal.data.fileType + '.js' : modal.data.fileType);
+            DialogGraphExistService.get({ botId: chatbot.id, fileName: fileName }, function(result)
             {
                 if(result.exist)
                 {
