@@ -128,13 +128,16 @@ var dialogs = [
                     {
                         "input": [
                             {
-                                "regexp": "^<"
+                                "regexp": "<"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Action",
-                                "repeat": 1
+                                // "kind": "Action",
+                                "repeat": 1,
+                                "options": {
+                                    "page": "pre"
+                                }
                             }
                         ],
                         "id": "default1512795450304",
@@ -143,13 +146,16 @@ var dialogs = [
                     {
                         "input": [
                             {
-                                "regexp": "^>"
+                                "regexp": ">"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Action",
-                                "repeat": 1
+                                // "kind": "Action",
+                                "repeat": 1,
+                                "options": {
+                                    "page": "next"
+                                }
                             }
                         ],
                         "id": "default1512795450305",

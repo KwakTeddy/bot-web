@@ -217,7 +217,7 @@ bot.setTask('makeOrderList', makeOrderList);
 
 var orderble = {
     typeCheck: function (text, type, task, context, callback) {
-        var matched = true;
+        var matched = false;
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         // console.log(text);
         // console.log(context.dialog);
