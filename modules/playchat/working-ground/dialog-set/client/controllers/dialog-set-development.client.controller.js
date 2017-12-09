@@ -97,14 +97,12 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 DialogsService.save(data, function(result)
                 {
-                    console.log(result);
-
                     if(callback)
                         callback(result);
                 });
             }
 
-            $rootScope.$broadcast('simulator-build');
+            // $rootScope.$broadcast('simulator-build');
         };
 
         $scope.getDialogFromElement = function(element)
@@ -137,6 +135,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 angular.element(parent).find('textarea').val('');
                 $scope.dialogs.unshift(dialog);
+
+                angular.element('textarea:first').focus();
             });
         };
 

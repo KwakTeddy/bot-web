@@ -48,7 +48,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/\n/gi, '<br>'));
 
                 template = angular.element(template);
-                console.log('ddd : ',text);
                 if(text.image)
                 {
                     var t = '<div class="output-image">';
