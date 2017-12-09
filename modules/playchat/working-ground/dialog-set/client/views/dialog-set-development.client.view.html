@@ -106,7 +106,7 @@
             </form>
         </div>
         <div class="dialog-learning-development-content-row" ng-repeat="dialog in dialogs" data-id="{{ dialog._id }}">
-            <form ng-submit="addDialog($event);">
+            <form ng-submit="addDialog($event);" data-id="{{ dialog._id }}">
                 <div class="topic-area">
                     <div>
                         <div>
