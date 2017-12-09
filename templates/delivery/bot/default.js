@@ -370,7 +370,8 @@ function reserveRequest(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
 
             // var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
-            var url = (config.host || "https://remaster.moneybrain.ai") + '/playchat/templates/contents/order';
+            // var url = (config.host || "https://remaster.moneybrain.ai") + '/playchat/templates/contents/order';
+            var url = ("https://remaster.moneybrain.ai") + '/playchat/templates/contents/order';
             context.bot.authKey = randomNum;
 
             var query = {url: url};
