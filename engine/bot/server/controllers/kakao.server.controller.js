@@ -38,10 +38,12 @@ exports.message = function (req, res) {
 
     if(loadbalancer.isUse() && loadbalancer.isMaster()) {
       loadbalancer.balance('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+          console.log('나간다 : ', serverText, json);
         respondMessage(res, serverText, json)
       });
     } else {
       chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+          console.log('나간다 : ', serverText, json);
         respondMessage(res, serverText, json)
       });
     }
