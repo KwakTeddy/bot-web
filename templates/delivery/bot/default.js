@@ -221,8 +221,8 @@ var orderble = {
         // console.log(text);
         // console.log(context.dialog);
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        if(context.dialog.inRaw.match(/\d/)) callback(text, task, false);
-        if (filter(context.dialog.inRaw, context.bot.menus).length) matched =  true;
+        if(context.dialog.inCurRaw.match(/\d/)) callback(text, task, false);
+        if (filter(context.dialog.inCurRaw, context.bot.menus).length) matched =  true;
 
         callback(text, task, matched);
     }
