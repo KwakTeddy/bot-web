@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', '$rootScope', 'FileUploader', function ($scope, $resource, $cookies, $rootScope, FileUploader)
 {
     $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 메뉴관리', '/modules/playchat/gnb/client/imgs/order_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -52,12 +52,15 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
             {
                 alert('저장되었습니다.');
                 console.log(result);
+                $rootScope.$broadcast('simulator-build');
             },
             function(err)
             {
                 alert(err);
             });
+
         };
+
     })();
 
     $scope.getList();
