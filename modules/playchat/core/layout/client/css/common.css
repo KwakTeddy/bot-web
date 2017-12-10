@@ -1532,5 +1532,5 @@ input.line1{
 input::-webkit-input-placeholder { color:#cacaca; font-size: 12px;}
 input::-moz-input-placeholder { color:#cacaca; font-size: 12px;}
 
-/*margin*/
+textarea:disabled{background: #f2f2f2;border: 1px solid #f2f2f2;}
 

@@ -84,7 +84,15 @@
                     </a>
                 </li>
             </ul>
-            <a style="display: none;" class="notify_silver" href="#" ng-if="isLogin"></a>
+            <span style="margin: 0 15px;">
+                <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
+                    <option value="ko">{{ lan('Korean') }}</option>
+                    <option value="en">{{ lan('English') }}</option>
+                    <option value="zh">{{ lan('Chinese') }}</option>
+                    <option value="jp">{{ lan('Japanese') }}</option>
+                </select>
+            </span>
+            <!--<a style="display: none;" class="notify_silver" href="#" ng-if="isLogin"></a>-->
             <a class="login_silver" href="#" ng-if="isLogin" ng-click="openMenu($event);"></a>
             <ul class="popup-menu user-menu">
                 <ul>

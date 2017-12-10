@@ -21,22 +21,28 @@
 </style>
 
 <div ng-controller="deliveryDashboardController">
-    <div class="dashboard-summary-title">Bot Profile</div>
-    <div class="dashboard-bot-profile">
-        <div class="dashboard-bot-profile-image">
-            <div class="dashboard-bot-profile-image-wrapper">
-                <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
-                <span></span>
+    <div ng-if="isFirst">
+        <h1 style="font-size: 25px; font-weight: 600; margin: 10px; line-height: 45px;">챗봇이 만들어졌습니다! <br> 지금 채널에 연결하면 바로 자동응답이 시작됩니다.</h1>
+    </div>
+
+    <div ng-if="!isFirst">
+        <div class="dashboard-summary-title">Bot Profile</div>
+        <div class="dashboard-bot-profile">
+            <div class="dashboard-bot-profile-image">
+                <div class="dashboard-bot-profile-image-wrapper">
+                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <span></span>
+                </div>
             </div>
-        </div>
-        <div class="dashboard-bot-profile-content">
-            <div>
-                <span>Bot Name</span>
-                <input type="text" value="{{ chatbot.name }}" disabled="true">
-            </div>
-            <div>
-                <p>Description</p>
-                <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+            <div class="dashboard-bot-profile-content">
+                <div>
+                    <span>Bot Name</span>
+                    <input type="text" value="{{ chatbot.name }}" disabled="true">
+                </div>
+                <div>
+                    <p>Description</p>
+                    <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+                </div>
             </div>
         </div>
     </div>

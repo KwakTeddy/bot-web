@@ -37,6 +37,13 @@
     height: 26px;
 }
 
+.simulator .simulator-refresh
+{
+    position: absolute;
+    top: 15px;
+    left: 10px;
+}
+
 .simulator .simulator-close:before, .simulator-close:after
 {
     position: absolute;
