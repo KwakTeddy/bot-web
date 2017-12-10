@@ -47,6 +47,12 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         angular.element(target).addClass('select');
         angular.element('.logcontent > div').hide();
         angular.element(selector).show();
+
+        setTimeout(function()
+        {
+            var logContent = angular.element('.logcontent > div').get(0);
+            logContent.parentElement.scrollTop = logContent.offsetHeight;
+        }, 300);
     };
 
     //굉장히 아름답지 못한 코드들... 내가 이렇게 코드를 짜야하다니

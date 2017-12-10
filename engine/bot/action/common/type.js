@@ -192,6 +192,8 @@ function processInput(context, inRaw, callback) {
                             }
                         });
 
+                        console.tlog('intent: ' + JSON.stringify(_intent), context);
+
                     } else {
                         doc.intent = undefined;
                         context.botUser.intent = undefined;
@@ -205,7 +207,6 @@ function processInput(context, inRaw, callback) {
                         context.botUser.intentDialog = undefined;
                     }
 
-                    console.tlog('intent: ' + JSON.stringify(_intent), context);
                     cb(null);
                 })
             } else {
