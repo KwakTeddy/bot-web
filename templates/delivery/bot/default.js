@@ -498,7 +498,8 @@ function matchFun(key, word) {
     for(var i=0; i<keys.length; i++) {
         console.log(keys[i] + "//" + word);
         console.log(word.search(keys[i]));
-        if (word.search(keys[i]) >= 0) return true;
+        if (word.search(keys[i]) >= 0 && keys[i].length >1) return true;
+        // if (word.search(keys[i]) >= 0) return true;
     }
 
     return false;
