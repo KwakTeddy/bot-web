@@ -194,6 +194,7 @@ header .system .notify_silver
     height: 19px;
     margin-right: 34px;
     padding-top: 10px;
+    vertical-align: middle;
 }
 
 header .system .login_silver
@@ -203,4 +204,5 @@ header .system .login_silver
     width: 34px;
     height: 34px;
     margin-right: 10px;
+    vertical-align: middle;
 }

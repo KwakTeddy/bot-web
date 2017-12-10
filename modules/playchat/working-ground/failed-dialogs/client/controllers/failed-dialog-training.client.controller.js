@@ -31,7 +31,6 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
         {
             SimiliarsService.query({ botId: chatbot._id, text: text, type: type }, function(result)
             {
-                console.log('시밀러 : ', result);
                 if(type == 'inputRaw')
                 {
                     item.similiarQuestion = result;

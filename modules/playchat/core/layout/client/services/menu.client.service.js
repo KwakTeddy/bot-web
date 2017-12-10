@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('MenuService', function($cookies, $resource)
+    angular.module('playchat').factory('MenuService', function($cookies, $resource, LanguageService)
     {
         var TemplateGnbService = $resource('/api/:templateId/gnb', { templateId : '@templateId' });
 
@@ -11,43 +11,43 @@
 
         var Menu = function()
         {
-            this.dashboard = { name: 'Dashboard', url:'/', icon: 'dashboard.png' };
+            this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard.png' };
 
-            this.development = { name: 'Development', url: '/development', icon: 'develop.png', childMenus: [
-                { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech_select_mini.png' },
-                { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenatio_select.png' }
+            this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
             ] };
 
-            this.management = { name: 'Management', url: '/management', icon: 'Managemant.png', childMenus: [
-                { name: 'Dialog Set', url: '/management/dialog-set', icon: 'speech_select_mini.png' },
-                { name: 'Dialog Graph', url: '/management/dialog-graph', icon: 'scenatio_select.png' },
-                { name: 'Entity', url: '/management/entity', icon: 'entity_select_mini.png' },
-                { name: 'Intent', url: '/management/intent', icon: 'intent_select.png' },
-                { name: 'Task', url: '/management/task', icon: 'task_select_mini.png' }
+            this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant.png', childMenus: [
+                { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },
+                { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
+                { name: LanguageService('Entity'), url: '/management/entity', icon: 'entity_select_mini.png' },
+                { name: LanguageService('Intent'), url: '/management/intent', icon: 'intent_select.png' },
+                { name: LanguageService('Task'), url: '/management/task', icon: 'task_select_mini.png' }
             ] };
 
-            this.contents = { name: 'Contents', icon: 'contents.png' };
-            this.channel = { name: 'Channel', url: '/channel', icon: 'channel.png' };
+            this.contents = { name: LanguageService('Contents'), icon: 'contents.png' };
+            this.channel = { name: LanguageService('Channel'), url: '/channel', icon: 'channel.png' };
 
-            this.operation = { name: 'Operation', icon: 'operat.png', url: '/operation', childMenus: [
-                { name: 'User', url: '/operation/user', icon: 'user_mini.png' },
-                { name: 'Human Chat log', url: '/operation/chat-log/human', icon: 'human_select.png' },
-                { name: 'AI Chat log', url: '/operation/chat-log/ai', icon: 'ai_select.png' },
-                { name: 'Failed Chat log', url: '/operation/failed-dialogs', icon: 'failed_select.png' }
+            this.operation = { name: LanguageService('Operation'), icon: 'operat.png', url: '/operation', childMenus: [
+                { name: LanguageService('User'), url: '/operation/user', icon: 'user_mini.png' },
+                { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
+                { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
+                { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
-            this.analysis = { name: 'Analysis', icon: 'analysis.png', url: '/analysis', childMenus: [
-                { name: 'Summery', url : '/analysis/summary', icon: 'summary_select.png' },
-                { name: 'Dialog Traffic', url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
-                { name: 'User', url : '/analysis/user', icon: 'user_mini.png' },
-                { name: 'Session', url : '/analysis/session', icon: 'session_select.png' },
-                { name: 'Dialog Graph Path', url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
-                { name: 'Dialog Training Usage', url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
-                { name: 'Dialog Graph Usage', url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
-                { name: 'Dialog Training Input', url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
-                { name: 'Dialog Graph Input', url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
-                { name: 'Intent', url : '/analysis/intent', icon: 'intent_select.png' },
-                { name: 'Failed Dialogs', url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
+            this.analysis = { name: LanguageService('Analysis'), icon: 'analysis.png', url: '/analysis', childMenus: [
+                { name: LanguageService('Summery'), url : '/analysis/summary', icon: 'summary_select.png' },
+                { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+                { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+                { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+                { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+                { name: LanguageService('Dialog Training Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+                { name: LanguageService('Dialog Graph Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+                { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+                { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+                { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+                { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
             // this.setting = { name: 'Setting', icon: 'setting.png' };
