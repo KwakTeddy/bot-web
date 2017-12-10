@@ -98,6 +98,8 @@ exports.create = function(req, res)
     var dialogset = new Dialogset(req.body);
     dialogset.bot = req.params.botId;
     dialogset.user = req.user;
+    if(dialogset.filename && dialogset.path)
+        dialogset.importState = 'start';
 
     dialogset.save(function(err)
     {
@@ -143,8 +145,11 @@ exports.create = function(req, res)
                 {
                     uploadModule.importFile(req.body.language, dialogset, function()
                     {
-                        res.jsonp(dialogset);
+                        dialogset.importState = '';
+                        dialogset.save(function(){});
                     });
+
+                    res.jsonp(dialogset);
                     // dialogsetModule.convertDialogset1(dialogset, null, function(result)
                     // {
                     //     console.log(dialogset.filename + ' converted');

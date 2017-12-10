@@ -63,6 +63,8 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
             {
                 $scope.dialogsets = list;
 
+                console.log(list);
+
                 var check = false;
                 for(var i=0; i<list.length; i++)
                 {
