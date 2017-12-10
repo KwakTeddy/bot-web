@@ -2,16 +2,40 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('TopBarController', ['$window', '$scope', '$cookies','LanguageService', function ($window, $scope, $cookies, LanguageService)
+angular.module('playchat').controller('TopBarController', ['$window', '$scope', '$cookies', '$rootScope', '$resource', 'LanguageService', function ($window, $scope, $cookies, $rootScope, $resource, LanguageService)
 {
     $scope.$parent.loaded('top-bar');
+
+    var UserLanguageService = $resource('/api/users/language');
 
     angular.element('.user-menu a').on('click', function()
     {
         angular.element('.user-menu').hide();
     });
 
-    $scope.user = $cookies.getObject('user');
+    var user = $scope.user = $cookies.getObject('user');
+
+    var userLang = navigator.language || navigator.userLanguage;
+    var code = user ? user.language : userLang || 'en';
+
+    code = code.split('-')[0];
+
+    $scope.language = code || 'ko';
+
+    $scope.languageChange = function()
+    {
+        UserLanguageService.save({ language: $scope.language }, function(result)
+        {
+            user.language = $scope.language;
+            $cookies.putObject('user', user);
+
+            $rootScope.$broadcast('changeLanguage');
+        },
+        function(err)
+        {
+            alert(err);
+        });
+    };
 
     $scope.openMenu = function(e)
     {
