@@ -272,7 +272,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.restaurantno== 0 && context.dialog.categoryisone==0",
-                "output": "[가격표]\n#categorylength#+index+. +category+\n#번호를 선택해주세요.",
+                "output": "[가격표]\n#categorylength#+index+.+category+\n#번호를 선택해주세요.",
                 "children": [
                     {
                         "id": "restaurant18",
@@ -281,7 +281,7 @@ var dialogs = [
                             "types": [
                                 {
                                     "name": "category",
-                                    "listName": "categorys",
+                                    "listName": "categorylength",
                                     "typeCheck": "listTypeCheck"
                                 }
                             ]

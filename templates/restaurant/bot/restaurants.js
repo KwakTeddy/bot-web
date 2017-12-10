@@ -345,16 +345,19 @@ var menuCategoryAction= {
                 } else {
                     context.dialog.categorys = docs;
                     for(i=0;i<context.dialog.categorys.length;i++){
-                        for(j=0;j<=context.dialog.categorylength.length;j++){
-                            var count1=0;
+                        var count1=0;
+                        for(j=0;j<context.dialog.categorylength.length;j++){
+
                             if(context.dialog.categorylength.length!==0)
                             {
-                                if(context.dialog.categorys[i].category!==context.dialog.categorylength[j]){count1++;}
+                                if(context.dialog.categorys[i].category!==context.dialog.categorylength[j].category){count1++;}
                             }
+                            console.log(count1+'======================count1');
                         }
                         if(count1==context.dialog.categorylength.length)
                         {context.dialog.categorylength.push(context.dialog.categorys[i]);}
                      console.log(JSON.stringify(context.dialog.categorylength)+'======================');
+
                     }
                     if(context.dialog.categorylength.length>1){
                         context.dialog.categoryisone=0;

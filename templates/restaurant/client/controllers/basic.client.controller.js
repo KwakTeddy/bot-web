@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', 'FileUploader', function ($scope, $resource, $cookies, $stateParams, FileUploader)
+angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', ' $rootScope','$stateParams', 'FileUploader', function ($scope, $resource, $cookies, $rootScope, $stateParams, FileUploader)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -91,6 +91,8 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
             ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.templateData._id, data: data }, function(result)
             {
                 console.log(result);
+                alert("저장하였습니다");
+                $rootScope.$broadcast('simulator-build');
             },
             function(err)
             {
