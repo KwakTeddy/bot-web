@@ -206,6 +206,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        $scope.refresh = function()
+        {
+            clearBubble();
+            emitMsg(':build', false);
+        };
+
         $scope.init();
     })();
 
