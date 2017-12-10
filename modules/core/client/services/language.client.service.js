@@ -543,7 +543,7 @@
                 "zh": "话题"
             },
             "Are you sure you want to delete this item?": {
-                    "ko": "정말 삭제하시겠습니까?",
+                "ko": "정말 삭제하시겠습니까?",
                 "en": "Are you sure you want to delete this item?",
                 "jp": "本当に削除しますか",
                 "zh": "您确定要删除吗？"
@@ -830,10 +830,10 @@
                 "jp": "最後のOutputは削除することはできません",
                 "zh": "最后的输出不能被删除。"
             },
-            "\"When editing output with complex structure": {
+            "When editing output with complex structure": {
                 "ko": "복잡한 Output 구조 편집중에는 Basic모드로 전환할 수 없습니다.",
-                "en": "\"When editing output with complex structure",
-                "jp": " it is not possible to switch to the basic mode.\"",
+                "en": "When editing output with complex structure",
+                "jp": " it is not possible to switch to the basic mode.",
                 "zh": "複雑なOutput構造、編集中にはBasicモードに転換できません。"
             },
             "Entity Add": {
@@ -1532,11 +1532,15 @@
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
-                "en": "Entity analysis"
+                "en": "Entity analysis",
+                "zh": "实体分析",
+                "jp": "エンティティ分析"
             },
             "Intent analysis": {
                 "ko": "인텐트 분석",
-                "en": "Intent analysis"
+                "en": "Intent analysis",
+                "zh": "意图分析",
+                "jp": "インテント分析"
             },
             "KaKao Talk": {
                 "ko": "카카오톡",
@@ -1544,23 +1548,33 @@
             },
             "LOG": {
                 "ko": "로그",
-                "en": "LOG"
+                "en": "LOG",
+                "zh": "日志",
+                "jp": "ログ"
             },
             "Line": {
                 "ko": "라인",
-                "en": "Line"
+                "en": "Line",
+                "zh": "线",
+                "jp": "ライン"
             },
             "Messanger": {
                 "ko": "Messanger",
-                "en": "Messanger"
+                "en": "Messanger",
+                "zh": "信使",
+                "jp": "メッセンジャー"
             },
             "Naver Talk Talk": {
                 "ko": "네이버 톡톡",
-                "en": "Naver Talk Talk"
+                "en": "Naver Talk Talk",
+                "jp": "ネイバー、トクトク",
+                "zh": "Naver talk talk"
             },
             "Signout": {
                 "ko": "로그아웃",
-                "en": "Signout"
+                "en": "Signout",
+                "zh": "登出",
+                "jp": "サインアウト"
             },
 
 
@@ -1945,12 +1959,13 @@
                 "zh": "组织",
                 "jp": "組織"
             },
-            "Dialog Graph": {
-                "ko": "대화 그래프",
-                "en": "Dialog Graph",
-                "zh": "对话框图",
-                "jp": "対話グラフ"
+            "WeChat": {
+                "ko": "위챗",
+                "en": "WeChat",
+                "zh": "微信",
+                "jp": "WeChat"
             }
+
         };
 
         var list = {};
