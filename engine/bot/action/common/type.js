@@ -143,7 +143,7 @@ function processInput(context, inRaw, callback) {
                 // doc.entities = doc.entities.concat(_doc.entities)
                 doc.entities = utils.merge(doc.entities, _entities);
 
-                console.log('entities: ' + JSON.stringify(_entities));
+                console.tlog('entities: ' + JSON.stringify(_entities), context);
 
                 cb(null);
             });
@@ -205,7 +205,7 @@ function processInput(context, inRaw, callback) {
                         context.botUser.intentDialog = undefined;
                     }
 
-                    console.log('intent: ' + JSON.stringify(_intent));
+                    console.tlog('intent: ' + JSON.stringify(_intent), context);
                     cb(null);
                 })
             } else {

@@ -8,9 +8,25 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
 
     var expandMode = 0;
     var scrollTimer = undefined;
+
+    $scope.currentTab = 'logcontent';
+
     $scope.$on('onlog', function(context, data)
     {
-        angular.element('.logcontent > div').append('<div>' + data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') + '</div>');
+        var selector = '#logcontent';
+
+        if(data.message.indexOf('entities: ') != -1)
+        {
+            selector = '#entitycontent';
+        }
+        else if(data.message.indexOf('intent: ') != -1)
+        {
+            selector = '#intentcontent';
+        }
+
+        console.log('메시지 : ', data.message);
+
+        angular.element(selector).append('<div>' + data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') + '</div>');
 
         if(scrollTimer)
         {
@@ -23,6 +39,15 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
             logContent.parentElement.scrollTop = logContent.offsetHeight;
         }, 300);
     });
+
+    $scope.selectTab = function(e, selector)
+    {
+        var target = e.currentTarget;
+        angular.element('.logTab.select').removeClass('select');
+        angular.element(target).addClass('select');
+        angular.element('.logcontent > div').hide();
+        angular.element(selector).show();
+    };
 
     //굉장히 아름답지 못한 코드들... 내가 이렇게 코드를 짜야하다니
     $scope.toggleExpand = function()

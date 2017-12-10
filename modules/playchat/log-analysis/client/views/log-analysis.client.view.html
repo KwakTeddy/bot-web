@@ -15,19 +15,24 @@
 {
     padding: 5px 0;
 }
+
+#entitycontent, #intentcontent
+{
+    display: none;
+}
 </style>
 
 <div id="logroom" ng-controller="LogAnalysisController">
     <div class="logHeader">
-        <div class="logTab select">
+        <div class="logTab select" ng-click="selectTab($event, '#logcontent');">
             <a href="#">{{lan('LOG') }}</a>
         </div>
-        <!--<div class="logTab">-->
-            <!--<a href="#">{{lan('Entity analysis') }}</a>-->
-        <!--</div>-->
-        <!--<div class="logTab">-->
-            <!--<a href="#" class="tab">{{lan('Intent analysis') }}</a>-->
-        <!--</div>-->
+        <div class="logTab" ng-click="selectTab($event, '#entitycontent');">
+            <a href="#">{{lan('Entity analysis') }}</a>
+        </div>
+        <div class="logTab" ng-click="selectTab($event, '#intentcontent');">
+            <a href="#">{{lan('Intent analysis') }}</a>
+        </div>
         <div class="logsystem">
             <a href="#" ng-click="toggleExpand();"><img src="modules/playchat/log-analysis/client/imgs/depart.png"></a>
             <!--<a href="#" class="mr1"><img src="modules/playchat/log-analysis/client/imgs/expand.png"></a>-->
@@ -35,6 +40,8 @@
         </div>
     </div>
     <div class="logcontent">
-        <div></div>
+        <div id="logcontent"></div>
+        <div id="entitycontent"></div>
+        <div id="intentcontent"></div>
     </div>
 </div>
