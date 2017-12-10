@@ -268,3 +268,8 @@
     margin: 0 10px;
 }
 
+.excel-download-button
+{
+    width: 150px;
+    padding: 11px;
+}
