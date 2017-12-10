@@ -446,10 +446,10 @@
                 "jp": "対話学習機能は1:1で行われた質問の答弁をチェッボッに学習させる機能です。",
                 "zh": "对话学习功能可以对聊天机器人进行1对1式问题对答案的训练。"
             },
-            "\"Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent": {
+            "Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent": {
                 "ko": "대화 그래프 개발 기능은 단계적인 대화를 개발할 수 있는 기능입니다 이 기능은 이용자와 심도 있는 대화를 구성 하는데 유용하며 인텐트 엔터티 정규식 기능을 활용 할 수 있습니다.",
-                "en": "\"Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent",
-                "jp": " entity and regular expressions.\"",
+                "en": "Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent",
+                "jp": " entity and regular expressions.",
                 "zh": "対話グラフ開発機能は段階的な対話を開発できる機能ですこの機能は利用者と踏み込んだ対話を構成するのに有効かつインテントゥエントティ正規式機能を活用することができます。"
             },
             "Short cut": {
@@ -1944,12 +1944,6 @@
                 "en": "Organization",
                 "zh": "组织",
                 "jp": "組織"
-            },
-            "Dialog Graph": {
-                "ko": "대화 그래프",
-                "en": "Dialog Graph",
-                "zh": "对话框图",
-                "jp": "対話グラフ"
             }
         };
 

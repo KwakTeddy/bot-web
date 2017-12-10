@@ -11,6 +11,8 @@ angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scop
     $scope.date = {};
     $scope.list = [];
 
+    var excelData = undefined;
+
     (function()
     {
         $scope.getList = function()
@@ -19,11 +21,24 @@ angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scop
             {
                 $scope.$parent.loaded('working-ground');
                 $scope.list = result;
+
+                excelData = angular.copy(result.list);
             },
             function(err)
             {
                 alert(err.data.error || err.data.message);
             });
+        };
+
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: LanguageService('Failed Dialog'),
+                columnOrder: ["dialog", "count"],
+                orderedData: excelData
+            };
+
+            ExcelDownloadService.download(chatbot.id, LanguageService('Failed Dialog'), $scope.date, template);
         };
     })();
 

@@ -1,6 +1,6 @@
 "user strict"
 
-angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService','LanguageService', function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService)
+angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService','LanguageService', 'ExcelDownloadService', function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Dialog Graph Path');
 
@@ -10,6 +10,8 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
     var chatbot = $cookies.getObject('chatbot');
 
     $scope.date = {};
+
+    var excelData = undefined;
 
     (function()
     {
@@ -64,11 +66,13 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
                     }
                 }
 
+                excelData = [];
                 $scope.paths = [];
                 for(var key in dialogMap)
                 {
                     var count = dialogMap[key];
                     $scope.paths.push({ list: key.split('-'), count: count });
+                    excelData.push({ count: count, path: key });
                 }
 
                 setTimeout(function()
@@ -105,8 +109,6 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
                                 svg.append(createLine(left + halfOfWidth, top - 10, left + halfOfWidth, top));
                             }
                         }
-
-                        console.log(left, top);
                     });
                 }, 100);
 
@@ -116,6 +118,17 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
             {
                 alert(err.data.error || err.data.message);
             });
+        };
+
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: LanguageService('Dialog Graph Path'),
+                columnOrder: ['count', 'path'],
+                orderedData: excelData
+            };
+
+            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Path'), $scope.date, template);
         };
     })();
 

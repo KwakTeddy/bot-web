@@ -1,6 +1,6 @@
 "user strict"
 
-angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'LanguageService',function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService)
+angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'LanguageService', 'ExcelDownloadService',function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Dialog Graph Usage');
 
@@ -13,6 +13,7 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
 
     $scope.date = {};
 
+    var excelData = undefined;
 
     (function()
     {
@@ -115,6 +116,13 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
                 }
 
                 $scope.list = $scope.senarioUsageList;
+
+
+                excelData = [];
+                for(var i=0; i<$scope.senarioUsageList.length; i++)
+                {
+                    excelData.push({ name: $scope.senarioUsageList[i]._id.dialogName, index: $scope.senarioUsageList[i].index, count: $scope.senarioUsageList[i].total })
+                }
             },
             function(err)
             {
@@ -122,36 +130,15 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
             });
         };
 
-        $scope.excelDownload = function()
+        $scope.exelDownload = function()
         {
-            var startYear =  $scope.date.start.getFullYear();
-            var startMonth = $scope.date.start.getMonth() + 1;
-            var startDay =   $scope.date.start.getDate();
-            var endYear =  $scope.date.end.getFullYear();
-            var endMonth = $scope.date.end.getMonth() + 1;
-            var endDay =   $scope.date.end.getDate();
-            var date = {
-                start: startYear + "/" + startMonth + "/" + startDay,
-                end: endYear + "/" + endMonth + "/" + endDay
+            var template = {
+                sheetName: LanguageService('Dialog Graph Usage'),
+                columnOrder: ['index', 'name', 'count'],
+                orderedData: excelData
             };
 
-            $http.post('/api/analytics/statistics/senario/exel-download/' + chatbot.id, {date: date}).then(function (doc)
-            {
-                var fileName = $cookies.get("default_bot") + '_' + "시나리오 사용 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
-                function s2ab(s)
-                {
-                    var buf = new ArrayBuffer(s.length);
-                    var view = new Uint8Array(buf);
-                    for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-                    return buf;
-                }
-
-                saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
-            },
-            function (err)
-            {
-                alert($scope.lan('error: ') + JSON.stringify(err));
-            });
+            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Usage'), $scope.date, template);
         };
     })();
 
