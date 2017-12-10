@@ -10,7 +10,7 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
     var scrollTimer = undefined;
     $scope.$on('onlog', function(context, data)
     {
-        angular.element('.logcontent > div').append('<div>' + data.message.replace(':log ', '') + '</div>');
+        angular.element('.logcontent > div').append('<div>' + data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') + '</div>');
 
         if(scrollTimer)
         {
