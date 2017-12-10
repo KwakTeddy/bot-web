@@ -32,22 +32,22 @@
             </colgroup>
             <thead>
             <tr>
-                <th>이벤트명</th>
+                <th>이벤트명(필수)</th>
                 <th>설명</th>
-                <th>이미지</th>
+                <th>이미지(필수)</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="menu in menus">
                 <td>
-                    <input type="text" ng-model="menu.name">
+                    <input type="text" ng-model="menu.name" required>
                 </td>
                 <td>
                     <input type="text" ng-model="menu.description">
                 </td>
                 <td>
                     <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image" />
+                    <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image" required/>
                 </td>
                 <td>
                     <button type="button" class="default-button" ng-click="deleteMenu($index)">삭제</button>

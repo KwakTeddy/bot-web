@@ -92,7 +92,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "<+hospitalName+>\n\n+greeting+\n\n- 전화번호 : +phone+\n- 주소 : +address+\n- 진료시간 : +startTime+ ~ +endTime+\n- 휴일 : +holiday+",
+                "text": "<+hospitalName+>\n\n+greeting+\n\n- 전화번호 : +phone+\n- 주소 : +location+\n- 진료시간 : +startTime+ ~ +endTime+\n- 휴일 : +holiday+",
                 "kind": "Text"
             }
         ],

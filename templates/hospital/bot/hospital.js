@@ -129,6 +129,7 @@ bot.setType('surgeListType', surgeListType);
 var mapButton = {
     action: function (task,context,callback) {
         task.buttons = [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.bot.address}];
+        context.dialog.location = context.bot.address;
         callback(task,context);
     }
 };
