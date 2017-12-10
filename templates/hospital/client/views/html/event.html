@@ -33,8 +33,9 @@
             <thead>
             <tr>
                 <th>이벤트명(필수)</th>
-                <th>설명</th>
-                <th>이미지</th>
+                <th>설명(선택)</th>
+                <th>이벤트 기간(선택)</th>
+                <th>이미지(선택)</th>
             </tr>
             </thead>
             <tbody>
@@ -44,6 +45,9 @@
                 </td>
                 <td>
                     <input type="text" ng-model="menu.description">
+                </td>
+                <td>
+                    <input type="text" ng-model="menu.period">
                 </td>
                 <td>
                     <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">

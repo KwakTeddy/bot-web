@@ -32,11 +32,11 @@ bot.setTask('addButton', addButton);
 var startTask = {
     action: function (task,context,callback) {
         task.buttons = [
-            {text:"시술안내"},
-            {text:"병원정보"},
-            {text:"예약하기"},
-            {text:"시술후기 before&after"},
-            {text:"★이벤트★"},
+            {text:"1.시술안내"},
+            {text:"2.병원정보"},
+            {text:"3.예약하기"},
+            {text:"4.시술후기 before&after"},
+            {text:"5.★이벤트★"},
         ];
 
         // var bot = {
@@ -130,6 +130,17 @@ var mapButton = {
     action: function (task,context,callback) {
         task.buttons = [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.bot.address}];
         context.dialog.location = context.bot.address;
+        var holiday = context.bot.holiday;
+        if (holiday == '') context.bot.holiday = '없음';
+        if (holiday == 'monday') context.bot.holiday = '월요일';
+        if (holiday == 'tuesday') context.bot.holiday = '화요일';
+        if (holiday == 'wednesday') context.bot.holiday = '수요일';
+        if (holiday == 'thursday') context.bot.holiday = '목요일';
+        if (holiday == 'friday') context.bot.holiday = '금요일';
+        if (holiday == 'saturday') context.bot.holiday = '토요일';
+        if (holiday == 'sunday') context.bot.holiday = '일요일';
+
+
         callback(task,context);
     }
 };
@@ -205,6 +216,7 @@ bot.setType('eventListType', eventListType);
 var addEventImage = {
     action: function (task,context,callback) {
         task.image = {url: context.dialog.eventListType.image};
+        task.buttons = [{text:'예약 바로가기'}];
         callback(task,context);
     }
 };

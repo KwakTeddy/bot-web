@@ -165,10 +165,13 @@ function numOfPersonTypeCheck(inRaw, _type, inDoc, context, callback) {
 globals.setGlobalTypeCheck('numOfPersonTypeCheck', numOfPersonTypeCheck);
 
 function checkTime(task, context, callback) {
-  var day = new Date().getDay();
-  var holiday = dateStringToNumber(context.bot.holiday);
+  // var day = new Date().getDay();
+  // var holiday = dateStringToNumber(context.bot.holiday);
 
-  if (day == holiday) {
+    if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
+
+  // if (day == holiday) {
+  if (false) {
     context.dialog.check = true;
   } else {
     if (context.dialog.time == 're') {
@@ -179,6 +182,18 @@ function checkTime(task, context, callback) {
       context.dialog.check = false;
     }
   }
+
+    var now = new Date();
+
+    var reserve = context.dialog.date;
+    reserve.setDate(reserve.getDate()-1);
+    reserve.setHours(context.dialog.time.substring(0,2));
+    reserve.setMinutes(context.dialog.time.substring(3,5));
+
+    if(reserve < now) {
+        context.dialog.check = 'past';
+    }
+
   callback(task, context);
 }
 
@@ -189,11 +204,17 @@ function checkDate(task, context, callback) {
 
   var holiday = dateStringToNumber(context.bot.holiday);
 
+
   if (day == holiday) {
     context.dialog.check = true;
   } else {
     context.dialog.check = false;
   }
+  var now = new Date();
+
+    if(context.dialog.date.setDate(context.dialog.date.getDate()+1) < now) {
+        context.dialog.check = 'past';
+    }
 
   callback(task, context);
 }
@@ -202,13 +223,13 @@ exports.checkDate = checkDate;
 
 
 function dateStringToNumber(dateString) {
-  if(dateString == '일요일' || dateString == '일') return 0;
-  else if(dateString == '월요일' || dateString == '월') return 1;
-  else if(dateString == '화요일' || dateString == '화') return 2;
-  else if(dateString == '수요일' || dateString == '수') return 3;
-  else if(dateString == '목요일' || dateString == '목') return 4;
-  else if(dateString == '금요일' || dateString == '금') return 5;
-  else if(dateString == '토요일' || dateString == '토') return 6;
+  if(dateString == '일요일' || dateString == '일' || dateString == 'sunday' ) return 0;
+  else if(dateString == '월요일' || dateString == '월'|| dateString == 'monday' ) return 1;
+  else if(dateString == '화요일' || dateString == '화'|| dateString == 'tuesday' ) return 2;
+  else if(dateString == '수요일' || dateString == '수'|| dateString == 'wednesday' ) return 3;
+  else if(dateString == '목요일' || dateString == '목'|| dateString == 'thursday' ) return 4;
+  else if(dateString == '금요일' || dateString == '금'|| dateString == 'friday' ) return 5;
+  else if(dateString == '토요일' || dateString == '토'|| dateString == 'saturday' ) return 6;
   else return dateString;
 
 }
@@ -234,7 +255,7 @@ function smsAuthValid(dialog, context, callback) {
 exports.smsAuthValid = smsAuthValid;
 
 function smsAuthinValid(dialog, context, callback) {
-  callback(dialog.inRaw.replace(/\s*/g, '') == context.dialog.smsAuth);
+  callback(dialog.inRaw.replace(/\s*/g, '') != context.dialog.smsAuth);
 }
 
 exports.smsAuthinValid = smsAuthinValid;

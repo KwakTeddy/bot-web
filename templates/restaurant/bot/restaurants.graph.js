@@ -743,8 +743,8 @@ var dialogs = [
                         "task": "checkTime",
                         "output": [
                             {
-                                "if": "context.dialog.check === true",
-                                "output": {"callChild": "인원선택"}
+                                "if": "context.dialog.check === false",
+                                "output": {"call": "예약자명"}
                             },
                             {
                                 "if": "context.dialog.check == 're'",
@@ -756,7 +756,7 @@ var dialogs = [
                                 }
                             },
                             {
-                                "if": "context.dialog.check === false",
+                                "if": "context.dialog.check === true",
                                "output": {
                                     "call": "시간선택",
                                     "options": {

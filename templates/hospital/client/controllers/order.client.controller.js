@@ -79,7 +79,7 @@ angular.module('template').controller('reserveController', ['$scope', '$resource
                     alert(err);
                 });
 
-            SendSMS.save({mobile:menu.mobile, message:("<"+chatbot.name + ">\n" + "죄송합니다. 요청하신 시간에 예약이 불가하여, 예약이 거부되었습니다.")}, function(result)
+            SendSMS.save({mobile:menu.mobile, message:("<"+chatbot.name + ">\n" + "죄송합니다. 요청하신 시간에 예약이 불가하여, 예약이 승인되지 못했습니다.")}, function(result)
                 {
                     console.log(result);
                 },

@@ -9,6 +9,9 @@ var dialogs = [
         "input": [
             {
                 "text": "안내"
+            },
+            {
+                "text": "1"
             }
         ],
         "output": [
@@ -88,6 +91,9 @@ var dialogs = [
             },
             {
                 "text": "정보"
+            },
+            {
+                "text": "2"
             }
         ],
         "output": [
@@ -107,6 +113,9 @@ var dialogs = [
         "input": [
             {
                 "text": "후기"
+            },
+            {
+                "text": "4"
             }
         ],
         "output": [
@@ -183,6 +192,9 @@ var dialogs = [
         "input": [
             {
                 "text": "이벤트"
+            },
+            {
+                "text": "5"
             }
         ],
         "output": [
@@ -272,7 +284,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "<+eventListType.name+>\n\n+eventListType.description+",
+                        "text": "<+eventListType.name+>\n\n+eventListType.description+\n+eventListType.period+",
                         "kind": "Text"
                     }
                 ],
@@ -308,19 +320,19 @@ var commonDialogs = [
         ],
         "buttons": [
             {
-                "text": "시술안내"
+                "text": "1. 시술안내"
             },
             {
-                "text": "병원정보"
+                "text": "2. 병원정보"
             },
             {
-                "text": "예약하기"
+                "text": "3. 예약하기"
             },
             {
-                "text": "시술후기 before&after"
+                "text": "4. 시술후기 before&after"
             },
             {
-                "text": "★이벤트★"
+                "text": "5. ★이벤트★"
             }
         ],
         "task": {
@@ -348,7 +360,10 @@ var commonDialogs = [
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
-        "output": "알아듣지 못했습니다"
+        "output": "죄송해요 알아듣지 못했습니다ㅜㅜ 필요하신 내용은 바로 전화로 문의하실 수 있어요!\n\n+hospitalName+) +phone+",
+        "task": {
+            "name": "addButton"
+        }
     }
 ];
 

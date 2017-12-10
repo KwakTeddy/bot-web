@@ -91,7 +91,7 @@ var dialogs = [
         id: 'restaurant57',
         filename: 'restaurant',
         name: "예약하기",
-        input: '예약',
+        input: ['예약', '3'],
         output: {callChild: '날짜선택'},
         children: [
             {
@@ -106,7 +106,30 @@ var dialogs = [
                         filename: 'restaurant',
                         input: {types: [{name: 'date', typeCheck: 'dateTypeCheck'}]},
                         task:           {action: shop.checkDate},
-                        output: {callChild: '시간선택'}
+                        output: [
+                            {
+                                "if": "context.dialog.check == false",
+                                "output": {"callChild": "시간선택"}
+                            },
+                            {
+                                "if": "context.dialog.check == true",
+                                "output": {
+                                    "call": "날짜선택",
+                                    "options": {
+                                        "prefix": "+holiday+은 휴일입니다.\n\n다시 "
+                                    }
+                                }
+                            },
+                            {
+                                "if": "context.dialog.check == 'past'",
+                                "output": {
+                                    "call": "날짜선택",
+                                    "options": {
+                                        "prefix": "이미 지난 날짜입니다.\n\n다시 "
+                                    }
+                                }
+                            }
+                        ]
                     },
                     {
                         id: 'restaurant37',
@@ -139,9 +162,39 @@ var dialogs = [
                         filename: 'restaurant',
                         input: {types: [{name: 'time', typeCheck: 'timeTypeCheck'}]},
                         task:           {action: shop.checkTime},
-                        output: [
-                            {if: 'context.dialog.check == \'re\'', output: {call : '시간선택', options: {prefix: '시간은 오전/오후를 붙여서 이야기 해주세요.\n예시: 오후 2시, 14시\n\n'}}},
-                            {if: 'true', output: {call: '예약자명'}}]
+                        "output": [
+                            {
+                                "if": "context.dialog.check == false",
+                                "output": {"call": "예약자명"}
+                            },
+                            {
+                                "if": "context.dialog.check == 're'",
+                                "output": {
+                                    "call": "시간선택",
+                                    "options": {
+                                        "prefix": "시간은 오전/오후를 붙여서 이야기 해주세요.\n\n"
+                                    }
+                                }
+                            },
+                            {
+                                "if": "context.dialog.check == true",
+                                "output": {
+                                    "call": "시간선택",
+                                    "options": {
+                                        "prefix": "영업시간은 +startTime+부터 +endTime+까지입니다.\n\n다시 "
+                                    }
+                                }
+                            },
+                            {
+                                "if": "context.dialog.check == 'past'",
+                                "output": {
+                                    "call": "시간선택",
+                                    "options": {
+                                        "prefix": "이미 지난 시간입니다.\n\n다시 "
+                                    }
+                                }
+                            }
+                        ]
                     },
                     {
                         id: 'restaurant41',
@@ -230,13 +283,30 @@ var dialogs = [
                                 id: 'restaurant50',
                                 filename: 'restaurant',
                                 input: {regexp: /[\d\s]+/},
-                                output: [{if: shop.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}, {if: shop.smsAuthinValid, repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}]
+                                // output: [{if: shop.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}, {repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}]
+                                output: [{if: shop.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}, {
+                                    "kind": "Action",
+                                    "repeat": 1,
+                                    "options": {
+                                        "output": "인증번호가 틀렸습니다.\n인증번호를 재전송합니다. 발송된 인증번호를 입력해주세요\n\n 처음으로 돌아가려면 '시작'을 입력하세요."
+                                    }
+                                }]
                             },
                             {
                                 id: 'restaurant51',
                                 filename: 'restaurant',
-                                input: {if: 'true'}>{repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}<{if: 'true'},
-                                output: {repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                output: {
+                                    "kind": "Action",
+                                    "repeat": 1,
+                                    "options": {
+                                        "output": "인증번호가 틀렸습니다.\n인증번호를 재전송합니다. 발송된 인증번호를 입력해주세요\n\n 처음으로 돌아가려면 '시작'을 입력하세요."
+                                    }
+                                }
                             }
                         ]
                     },
@@ -254,7 +324,7 @@ var dialogs = [
                 name: '예약내용확인',
                 input: false,
                 task:       {action: 'reserveConfirm'},
-                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?',
+                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?\n\n1.일시 다시 선택\n2.연락처 변경',
                 children: [
                     {
                         id: 'restaurant55',
@@ -262,7 +332,19 @@ var dialogs = [
                         input: '~네',
                         task: "reserveRequest2",
                         output: '예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n확인 후 예약완료 문자를 보내 드리겠습니다.'
-                    }
+                    },
+                    {
+                        id: 'restaurant55',
+                        filename: 'restaurant',
+                        input: '1',
+                        output: {call: '날짜선택'}
+                    },
+                    {
+                        id: 'restaurant55',
+                        filename: 'restaurant',
+                        input: '2',
+                        output: {call: '휴대폰번호입력'}
+                    },
                 ]
             }
         ]

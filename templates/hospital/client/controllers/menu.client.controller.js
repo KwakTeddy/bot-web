@@ -88,6 +88,7 @@ angular.module('template').controller('hospitalMenuController', ['$scope', '$res
 
         $scope.addMenu = function()
         {
+            $scope.menus.push({});
             addUploader($scope.menus.length -1);
         };
 
