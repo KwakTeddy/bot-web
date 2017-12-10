@@ -21,7 +21,7 @@ var TemplateSchema = new Schema(
     id: String,
     name: String,
     description: String,
-    image: String,
+    icon: String,
     category: { type: Schema.ObjectId, ref: 'TemplateCategory' },
     language: String,
     created: { type: Date, default: Date.now },

@@ -1878,6 +1878,18 @@
                 "en": "Usage Count",
                 "zh": "使用计数",
                 "jp": "使用回数"
+            },
+            "Template": {
+                "ko": "템플릿",
+                "en": "Template",
+                "zh": "模板",
+                "jp": "テンプレート"
+            },
+            "Learning": {
+                "ko": "학습중",
+                "en": "Learning",
+                "zh": "在学习",
+                "jp": "学んでいる"
             }
         };
 

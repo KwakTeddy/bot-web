@@ -26,7 +26,8 @@ var DialogsetSchema = new Schema(
     topicKeywords: Schema.Types.Mixed,
     created: { type: Date, default: Date.now },
     bot: { type: Schema.ObjectId, ref: 'Bot' },
-    usable: {type: Boolean }
+    usable: {type: Boolean },
+    importState: String
 });
 
 mongoose.model('Dialogset', DialogsetSchema);
