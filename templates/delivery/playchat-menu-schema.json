@@ -6,7 +6,7 @@
             { "name" : "메뉴관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
             { "name" : "주문관리", "url" : "/templates/contents/order", "icon" : "order.png" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "dgm.png" }
+        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech_select_mini.png" },
+        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario_w.png" }
     ]
 }
