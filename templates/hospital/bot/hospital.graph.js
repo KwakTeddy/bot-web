@@ -72,25 +72,6 @@ var dialogs = [
                 "task": {
                     "name": "surgeImageButton"
                 }
-            },
-            {
-                "name": "미완처리",
-                "id": "default17",
-                "filename": "default",
-                "input": [
-                    {
-                        "regexp": "(.*) (.*)"
-                    }
-                ],
-                "output": [
-                    {
-                        "text": "아직 \"+1+\"에 관한 데이터가 없습니다.",
-                        "kind": "Text"
-                    }
-                ],
-                "task": {
-                    "name": "addButton"
-                }
             }
         ],
         "task": {
@@ -111,7 +92,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "<+hospitalName+>\n\n+introduce+\n\n- 전화번호 : +phone+\n- 주소 : +address+\n- 진료시간 : +startTime+ ~ +endTime+\n- 휴일 : +holiday+",
+                "text": "<+hospitalName+>\n\n+greeting+\n\n- 전화번호 : +phone+\n- 주소 : +location+\n- 진료시간 : +startTime+ ~ +endTime+\n- 휴일 : +holiday+",
                 "kind": "Text"
             }
         ],
@@ -148,7 +129,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[ +surgeListType.name+ ] 시술후기\n\n+surgeListType.description+",
+                        "text": "[ +surgeListType.name+ ] 시술후기\n\n+surgeListType.review+",
                         "kind": "Text"
                     }
                 ],
@@ -187,26 +168,7 @@ var dialogs = [
                     }
                 ],
                 "task": {
-                    "name": "reviewButtonImage"
-                }
-            },
-            {
-                "name": "미완처리2",
-                "id": "default18",
-                "filename": "default",
-                "input": [
-                    {
-                        "regexp": "(.*) (.*)"
-                    }
-                ],
-                "output": [
-                    {
-                        "text": "아직 \"+1+\"에 관한 후기가 없습니다.",
-                        "kind": "Text"
-                    }
-                ],
-                "task": {
-                    "name": "addButton"
+                    "name": "reviewButtonImage2"
                 }
             }
         ],
@@ -226,7 +188,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Action",
-                "if": "!context.bot.events",
+                "if": "context.bot.events.length==0",
                 "call": "이벤트 없음"
             },
             {

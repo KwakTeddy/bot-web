@@ -195,7 +195,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "체크인 하실 날짜를 말씀해주세요.\n(ex: 2017-01-25)",
+                "text": "체크인 하실 날짜를 말씀해주세요.\n(ex: 20170125)",
                 "kind": "Text"
             }
         ],
@@ -208,7 +208,7 @@ var dialogs = [
                 "input": [
                     {
                         "types": [
-                            "datetype"
+                            "isDateIn"
                         ]
                     }
                 ],
@@ -217,8 +217,7 @@ var dialogs = [
                         "kind": "Action",
                         "callChild": "인원수"
                     }
-                ],
-                "task": "dateincheck"
+                ]
             },
             {
                 "name": "체크인날짜2",
@@ -249,7 +248,7 @@ var dialogs = [
                     {
                         "kind": "Action",
                         "options": {
-                            "output": "날짜가 아닙니다.\n다시 체크인 하실 날짜를 말씀해주세요.\n(ex: 2017-01-25)"
+                            "output": "날짜가 아닙니다.\n다시 체크인 하실 날짜를 말씀해주세요.\n(ex: 20170125)"
                         },
                         "call": "체크인날짜"
                     }
@@ -267,7 +266,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "임원수가 어떻게 되나요?\n알려주세요.(ex: 5)",
+                "text": "임원수가 어떻게 되나요?\n알려주세요.(ex: 5명)",
                 "kind": "Text"
             }
         ],
@@ -320,7 +319,7 @@ var dialogs = [
                     {
                         "kind": "Action",
                         "options": {
-                            "output": "인원수가 아닙니다.\n다시 인원수를 말씀해주세요.(ex: 5)"
+                            "output": "인원수가 아닙니다.\n다시 인원수를 말씀해주세요.(ex: 5명)"
                         },
                         "call": "인원수"
                     }
@@ -624,7 +623,7 @@ var dialogs = [
                                         ],
                                         "output": [
                                             {
-                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +daynumber+박+daynumber1+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
+                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +daynumber+박+daynumber1+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                                                 "kind": "Text"
                                             }
                                         ],
@@ -701,7 +700,7 @@ var dialogs = [
                                                         ],
                                                         "output": [
                                                             {
-                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +daynumber+박+daynumber1+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
+                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +daynumber+박+daynumber1+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                                                                 "kind": "Text"
                                                             }
                                                         ],
@@ -781,7 +780,7 @@ var dialogs = [
                                                         ],
                                                         "output": [
                                                             {
-                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
+                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                                                                 "kind": "Text"
                                                             }
                                                         ],
@@ -861,7 +860,7 @@ var dialogs = [
                                                         ],
                                                         "output": [
                                                             {
-                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
+                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                                                                 "kind": "Text"
                                                             }
                                                         ],
@@ -942,7 +941,7 @@ var dialogs = [
                                                         ],
                                                         "output": [
                                                             {
-                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +daynumber+박+daynumber1+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
+                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +daynumber+박+daynumber1+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                                                                 "kind": "Text"
                                                             }
                                                         ],
@@ -1029,7 +1028,7 @@ var dialogs = [
                                                         ],
                                                         "output": [
                                                             {
-                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
+                                                                "text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +menumatch.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +menumatch.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번을 입력해주세요.",
                                                                 "kind": "Text"
                                                             }
                                                         ],
@@ -1161,22 +1160,22 @@ var dialogs = [
                                             }
                                         ]
                                     },
+                            {
+                                "name": "빠른예약 도움",
+                                "id": "default167",
+                                "filename": "default",
+                                "input": [
                                     {
-                                        "name": "빠른예약 도움",
-                                        "id": "default167",
-                                        "filename": "default",
-                                        "input": [
-                                            {
-                                                "if": "true"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
-                                                "kind": "Text"
-                                            }
-                                        ]
+                                        "if": "true"
                                     }
+                                ],
+                                "output": [
+                                    {
+                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                                        "kind": "Text"
+                                    }
+                                ]
+                            }
                         ]
                     },
                     {
@@ -1701,7 +1700,7 @@ var dialogs = [
 										],
 										"output": [
 											{
-												"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+												"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n +bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 												"kind": "Text"
 											}
 										],
@@ -1778,7 +1777,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -1858,7 +1857,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -1938,7 +1937,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -2019,7 +2018,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -2106,7 +2105,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n국민은행 620-186066-484 머니브레인호텔\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobiles+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -2640,7 +2639,7 @@ var dialogs = [
                                         ]
                                     },
                                     {
-                                        "name": "예약 완료2",
+                                        "name": "이전6663",
                                         "id": "default66",
                                         "filename": "default",
                                         "input": [
@@ -2945,7 +2944,7 @@ var commonDialogs = [
 		],
 		"output": [
 			{
-				"text": "안녕하세요. < +hotelname+ > 입니다.\n\n호텔 이용 관련 정보를 확인 하실 수 있습니다.\n\n예시)\n[주소], [주차], [셔틀],\n[예약 확인], [예약 취소]\n[2017-12-15부터 5명 4박5일 싱글룸 예약]\n\n또한 필요하신 메뉴를 직접 선택해셔도 됩니다.\n\n1. [객실]\n2. [다이닝]\n3. [시설]\n4. [이벤트]\n5. [주소 안내]\n6. [셔틀]\n7. [주차]",
+				"text": "안녕하세요. < +hotelname+ > 입니다.\n\n호텔 이용 관련 정보를 확인 하실 수 있습니다.\n\n예시)\n[주소], [주차], [셔틀],\n[예약 확인], [예약 취소]\n[20170215부터 5명 4박5일 싱글룸 예약]\n\n또한 필요하신 메뉴를 직접 선택해셔도 됩니다.\n\n1. [객실]\n2. [다이닝]\n3. [시설]\n4. [이벤트]\n5. [주소 안내]\n6. [셔틀]\n7. [주차]",
 				"kind": "Text"
 			}
 		]

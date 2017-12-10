@@ -20,7 +20,7 @@
     }
 </style>
 
-<h1 class="template-demo-title">시술정보관리</h1>
+<!--<h1 class="template-demo-title">시술정보관리</h1>-->
 <div ng-controller="hospitalEventController" class="template-demo-menu">
     <form ng-submit="saveMenu($event);">
         <table style="table-layout:fixed;">
@@ -33,7 +33,7 @@
             </colgroup>
             <thead>
             <tr>
-                <th>이벤트명</th>
+                <th>이벤트명(필수)</th>
                 <th>설명</th>
                 <th>이미지</th>
             </tr>
@@ -41,14 +41,14 @@
             <tbody>
             <tr ng-repeat="menu in menus">
                 <td>
-                    <input type="text" ng-model="menu.name">
+                    <input type="text" ng-model="menu.name" required>
                 </td>
                 <td>
                     <input type="text" ng-model="menu.description">
                 </td>
                 <td>
                     <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image" />
+                    <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image"/>
                 </td>
                 <td>
                     <button type="button" class="default-button" ng-click="deleteMenu($index)">삭제</button>
@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <td colspan="5">
-                    <button type="button" class="default-button" ng-click="addMenu();">시술 추가</button>
+                    <button type="button" class="default-button" ng-click="addMenu();">이벤트 추가</button>
                 </td>
             </tr>
             </tbody>

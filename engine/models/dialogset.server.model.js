@@ -55,6 +55,7 @@ var DialogsetSchema = new Schema({
   matchCount: {
     type: Number
   },
+    importState: String,
   topicKeywords: Schema.Types.Mixed,
 
   created: {

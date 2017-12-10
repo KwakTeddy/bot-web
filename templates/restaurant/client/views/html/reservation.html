@@ -32,7 +32,6 @@
                 <col style="width: 10%;">
                 <col style="width: 10%;">
                 <col style="width: 10%;">
-                <col style="width: 10%;">
             </colgroup>
             <thead>
             <tr>
@@ -40,8 +39,8 @@
                 <th>예약자 연락처</th>
                 <th>예약 인원</th>
                 <th>예약 메모</th>
-                <th>예약 기간</th>
                 <th>예약 날짜</th>
+                <th>예약 시간</th>
                 <th>예약 상태</th>
                 <th>예약자</th>
             </tr>
@@ -52,19 +51,16 @@
                     <input type="text" ng-model="data.name">
                 </td>
                 <td>
-                    <input type="number" ng-model="data.mobile">
+                    <input type="text" ng-model="data.mobile">
                 </td>
                 <td>
-                    <input type="number" ng-model="data.numOfman">
-                </td>
-                <td>
-                    <input type="text" ng-model="data.memo">
-                </td>
-                <td>
-                    <input type="text" ng-model="data.period">
+                    <input type="text" ng-model="data.numOfPerson">
                 </td>
                 <td>
                     <input type="text" ng-model="data.date">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.time">
                 </td>
                 <td>
                     <input type="text" ng-model="data.status">
@@ -72,6 +68,7 @@
                 <td>
                     <input type="text" ng-model="data.userKey">
                 </td>
+
                 <td>
                     <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
                 </td>

@@ -53,7 +53,7 @@
                 </label>
                 <label class="required" style="width: 130px;">
                     <span class="form-title">휴일</span>
-                    <input type="text" class="data-input" placeholder="휴일(ex:일요일)" name="holiday" required="true" >
+                    <input type="text" class="data-input" placeholder="휴일(ex:일요일 or 휴일없음)" name="holiday" required="true" >
                 </label>
             </div>
             <div class="form-row">
@@ -62,8 +62,8 @@
             <div class="form-row">
                 <label>
                     <span class="form-title">메뉴판 사진</span>
-                        <img src="{{ data.room_image }}" style="width: 50px;" ng-if="data.room_image" ng-click="editImage($event);">
-                        <input type="file" nv-file-select uploader="uploader" ng-show="!data.room_image" />
+                        <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
+                        <input type="file" nv-file-select uploader="uploader" ng-show="!data.image" />
                 </label>
             </div>
             <div class="form-row">

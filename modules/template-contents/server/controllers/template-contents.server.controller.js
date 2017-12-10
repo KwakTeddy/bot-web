@@ -117,7 +117,7 @@ module.exports.updateData = function(req, res)
     var botId = req.params.botId;
     var templateId = req.params.templateId;
     var datasKey = req.params.datas;
-    var datas = req.body.datas;
+    var datas = req.body;
 
     fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
     {
@@ -145,6 +145,7 @@ module.exports.updateData = function(req, res)
         model.findById(req.body._id, function(err, doc){
             if(err) return res.status(500).json({ error: 'database failure' });
             if(!doc) return res.status(404).json({ error: 'data not found' });
+
 
             for(var prop in datas) {
                 doc[prop] = datas[prop];

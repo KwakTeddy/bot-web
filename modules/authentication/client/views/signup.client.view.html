@@ -1,19 +1,24 @@
 <div class="signin-background">
     <div id="logincontents" ng-if="successSignup === false">
         <div class="mt16 mb45">
-            <span class="p1">{{ lan('Create your account') }}</span>
-            <p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>
+            <!--<span class="p1">{{ lan('Create your account') }}</span>-->
+            <span class="p1">{{ lan('Registration for closed beta') }}</span>
+            <!--<p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>-->
         </div>
-        <p class="exclamation pl5" ng-show="signupErrorMessage"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
+        <p class="exclamation pl5" ng-show="signupErrorMessage"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ lan(signupErrorMessage) }}</p>
         <form class="register" ng-submit="signup();">
             <p>{{ lan('Email ID') }}</p>
-            <input type="text" class="input_type09 mb10" ng-model="credentials.email" ng-required="true" autofocus="true">
-            <p>{{ lan('Username') }}</p>
-            <input type="text" class="input_type09 mb10" ng-model="credentials.username" ng-required="true" autofocus="true">
+            <input type="email" class="input_type09 mb10" ng-model="credentials.email" placeholder="example@moneybrain.ai" ng-required="true" autofocus="true">
             <p>{{ lan('Password') }}</p>
             <input type="password" class="input_type09 mb10" ng-model="credentials.password" ng-required="true">
             <p>{{ lan('Password confirm') }}</p>
             <input type="password" class="input_type09 mb20" ng-model="credentials.passwordConfirm" ng-required="true">
+            <p>{{ lan('Username') }}</p>
+            <input type="text" class="input_type09 mb10" ng-model="credentials.displayName" ng-required="true">
+            <p>{{ lan('Phone') }}</p>
+            <input type="text" class="input_type09 mb10" ng-model="credentials.phone" ng-required="true">
+            <p>{{ lan('Organization') }}</p>
+            <input type="text" class="input_type09 mb10" ng-model="credentials.organization" ng-required="true">
 
             <div style="position: relative;">
                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="agree" ng-required="true" style="position: absolute; top: 4px; left: 3px;">
@@ -22,7 +27,8 @@
                 </label>
             </div>
 
-            <button class="loginbtn">{{ lan('Sign up') }}</button>
+            <button class="loginbtn" id="signupButton">{{ lan('Sign up') }}</button>
+            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" style="display: none;">
         </form>
     </div>
     <div class="signup-complete-message" ng-if="successSignup === true">

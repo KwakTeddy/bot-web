@@ -14,35 +14,40 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
     $scope.kakao = 0;
     $scope.facebook = 0;
     $scope.navertalk = 0;
+    $scope.socket = 0;
 
     var dataBackup;
     var color = {
         background:{
             kakao: '#fbe600',
             facebook: '#3b5998',
-            navertalk: '#00c73c'
+            navertalk: '#00c73c',
+            socket: 'gray'
         }, border:{
             kakao: '#ede500',
             facebook: '#29487d',
-            navertalk: '#00af35'
+            navertalk: '#00af35',
+            socket: 'gray'
         }
     };
     var pieChart;
     var barChart;
     var pieDataTemplate = {
-        labels: ["카카오톡", "페이스북", "네이버톡톡"],
+        labels: [LanguageService('KaKao Talk'), LanguageService('Facebook'), LanguageService('Naver talk talk'), LanguageService('Socket')],
         datasets: [
             {
-                label: "카카오톡",
+                label: LanguageService('KaKao Talk'),
                 backgroundColor: [
                     color.background.kakao,
                     color.background.facebook,
-                    color.background.navertalk
+                    color.background.navertalk,
+                    color.background.socket
                 ],
                 borderColor: [
                     color.border.kakao,
                     color.border.facebook,
-                    color.border.navertalk
+                    color.border.navertalk,
+                    color.border.socket
                 ],
                 borderWidth: 1,
                 data: []
@@ -52,19 +57,25 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
     var barDataTemplate = {
         labels: [],
         datasets: [{
-            label: '카카오톡',
+            label: LanguageService('KaKao Talk'),
             data: [],
             backgroundColor: [],
             borderColor: [],
             borderWidth: 1
         }, {
-            label: '페이스북',
+            label: LanguageService('Facebook'),
             data: [],
             backgroundColor: [],
             borderColor: [],
             borderWidth: 1
         }, {
-            label: '네이버톡톡',
+            label: LanguageService('Naver talk talk'),
+            data: [],
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 1
+        }, {
+            label: LanguageService('Socket'),
             data: [],
             backgroundColor: [],
             borderColor: [],
@@ -127,6 +138,7 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
                 $scope.kakao = 0;
                 $scope.facebook = 0;
                 $scope.navertalk = 0;
+                $scope.socket = 0;
             }
             var array = [];
             var startYear =  $scope.date.start.getFullYear();
@@ -162,10 +174,12 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
                         barData.datasets[0].data.push(doc.data[i].kakao);
                         barData.datasets[1].data.push(doc.data[i].facebook);
                         barData.datasets[2].data.push(doc.data[i].navertalk);
+                        barData.datasets[3].data.push(doc.data[i].socket);
 
                         $scope.kakao = $scope.kakao + doc.data[i].kakao;
                         $scope.facebook = $scope.facebook + doc.data[i].facebook;
                         $scope.navertalk = $scope.navertalk + doc.data[i].navertalk;
+                        $scope.socket = $scope.socket + doc.data[i].socket;
                         break;
                     }
                 }
@@ -177,14 +191,17 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
                 barData.datasets[0].backgroundColor.push(color.background.kakao);
                 barData.datasets[1].backgroundColor.push(color.background.facebook);
                 barData.datasets[2].backgroundColor.push(color.background.navertalk);
+                barData.datasets[3].backgroundColor.push(color.background.socket);
 
                 barData.datasets[0].borderColor.push(color.border.kakao);
                 barData.datasets[1].borderColor.push(color.border.facebook);
                 barData.datasets[2].borderColor.push(color.border.navertalk);
+                barData.datasets[3].borderColor.push(color.border.socket);
             });
             pieData.datasets[0].data.push($scope.kakao);
             pieData.datasets[0].data.push($scope.facebook);
             pieData.datasets[0].data.push($scope.navertalk);
+            pieData.datasets[0].data.push($scope.socket);
 
             if(!update) initChart();
             else        updateChart();
@@ -311,7 +328,7 @@ angular.module("playchat").controller("UserStatisticsController", ['$scope', "$h
 
         var exelDataTemplate = {
             sheetName: "사용자 통계",
-            columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk"],
+            columnOrder: ["year", "month", "day", "kakao", "Facebook","navertalk"],
             orderedData: data
         };
         var startYear =  $scope.date.start.getFullYear();

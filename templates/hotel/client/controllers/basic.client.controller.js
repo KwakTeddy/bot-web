@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('hotelBasicController', ['$scope', '$resource', '$cookies', '$stateParams', function ($scope, $resource, $cookies, $stateParams)
+angular.module('template').controller('hotelBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope',function ($scope, $resource, $cookies, $stateParams,$rootScope)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -82,11 +82,13 @@ angular.module('template').controller('hotelBasicController', ['$scope', '$resou
             data.language = 'ko';
         }
 
-        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description }, function()
+        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description,bank:data.bank }, function()
         {
             ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.templateData._id, data: data }, function(result)
             {
                 console.log(result);
+                alert("저장하였습니다");
+                $rootScope.$broadcast('simulator-build');
             },
             function(err)
             {

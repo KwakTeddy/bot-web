@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('hospitalMenuController', ['$scope', '$resource', '$cookies', '$rootScope', 'FileUploader', function ($scope, $resource, $cookies, $rootScope, FileUploader)
 {
-    console.log("################################orderControll");
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 시술정보관리', '/modules/playchat/gnb/client/imgs/info_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var chatbot = $cookies.getObject('chatbot');
@@ -72,7 +72,7 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
 
             $scope.menus[index].uploader2.onSuccessItem = function(item, response, status, headers)
             {
-                $scope.menus[index].image = response.url;
+                $scope.menus[index].reviewImage = response.url;
             };
 
             $scope.menus[index].uploader2.onProgressItem = function(fileItem, progress)
@@ -81,9 +81,15 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
             };
         };
 
+        $scope.editImage = function(e)
+        {
+            angular.element(e.currentTarget).next().click();
+        };
+
         $scope.addMenu = function()
         {
             $scope.menus.push({ category1: '', category2: '', name: '', price: '' });
+            addUploader($scope.menus.length -1);
         };
 
         $scope.deleteMenu = function(index)
@@ -104,11 +110,14 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
             MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
                 {
                     console.log(result);
+                    alert('저장되었습니다');
+                    $rootScope.$broadcast('simulator-build');
                 },
                 function(err)
                 {
                     alert(err);
                 });
+
         };
     })();
 

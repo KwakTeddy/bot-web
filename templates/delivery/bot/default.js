@@ -9,19 +9,22 @@ var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
 var request = require('request');
 var ObjectId = mongoose.Types.ObjectId;
 
-var defaultTask = {
-    name: 'defaultTask',
+var defaultTask2 = {
+    name: 'defaultTask2',
     action: function(task, context, callback) {
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + context.bot.address);
+        // console.log(context.dialog.address);
+        // console.log(context.user.address);
+        // console.log(context.bot.address);
         callback(task, context);
     }
 };
-bot.setTask("defaultTask", defaultTask);
+bot.setTask("defaultTask2", defaultTask2);
 
 
 
 var startTask = {
     action: function (task,context,callback) {
-
         // console.log("@@@@@@@@@@@@@@@@@@"+JSON.stringify(context.bot.templateDataIdId));
 
         context.user.cart = [];
@@ -109,15 +112,18 @@ function menuPreproc(menu) {
         for(var j=0; j<category.length; j++) {
             if (item.category1 == category[j].name) {
                 for (var k=0; k<category[j].subMenu.length; k++) {
+                    //console.log(item.category2 + "//" + category[j].subMenu[k].name + k);
                     if (item.category2 == category[j].subMenu[k].name) {
                         category[j].subMenu[k].subMenu.push({name:item.name, price:item.price});
                         added = true;
                         break;
                     }
+                }
+                if(!added){
                     category[j].subMenu.push({name:item.category2, subMenu:[{name:item.name, price:item.price}]});
                     added=true;
-                    break;
                 }
+                break;
             }
         }
         if (!added) category.push({name:item.category1, subMenu:[{name:item.category2, subMenu:[{name:item.name, price:item.price}]}]});
@@ -178,7 +184,7 @@ var menuElementText = {
         var matched = false;
         var array = context.dialog.menuList;
         for(i=0; i<array.length; i++){
-            if (matchFun(context.dialog.inRaw, array[i].name)) {
+            if (matchFun(context.dialog.inCurRaw, array[i].name)) {
                 matched = true;
                 task.menuElement = array[i];
             };
@@ -196,7 +202,8 @@ bot.setType('menuElementText', menuElementText);
 var makeOrderList = {
     action: function (task,context,callback) {
         context.dialog.keyword = context.dialog.inRaw;
-        if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
+        // if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
+        context.dialog.keyword = (context.dialog.inCurRaw || context.dialog.inRaw);
         context.dialog.menu = {};
         context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.menus);
         if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
@@ -215,7 +222,12 @@ var orderble = {
         // console.log(text);
         // console.log(context.dialog);
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        if (filter(context.dialog.inRaw, context.bot.menus).length) matched =  true;
+        var keyword = (context.dialog.inCurRaw || context.dialog.inRaw);
+        if(keyword.match(/^\d$/)) callback(text, task, false);
+        if (filter(keyword, context.bot.menus).length){
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@filter true!!!");
+            matched =  true;
+        }
 
         callback(text, task, matched);
     }
@@ -239,7 +251,7 @@ bot.setTask('addCart', addCart);
 var sendSMSAuth = {
     preCallback: function(task, context, callback) {
         if (task.mobile == undefined) task.mobile = context.dialog['mobile'];
-        console.log('ddd');
+        //console.log('ddd');
         callback(task, context);
     },
     action: messages.sendSMSAuth
@@ -290,9 +302,9 @@ var recentCart = {
                 context.bot.discription = orderHis.discr || '없음';
                 // context.dialog.discription = '없음';
 
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                console.log(orderHis.discr);
-                console.log(context.dialog.discr);
+                // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                // console.log(orderHis.discr);
+                // console.log(context.dialog.discr);
                 callback(task,context);
 
 
@@ -343,7 +355,7 @@ function reserveRequest(task, context, callback) {
         discr: context.dialog.discription,
         created: new Date()
     };
-    console.log("####################################" + JSON.stringify(doc));
+    // console.log("####################################" + JSON.stringify(doc));
 
 
     var TemplateReservation = mongoModule.getModel('delivery-orders');
@@ -358,7 +370,8 @@ function reserveRequest(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
 
             // var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
-            var url = (config.host || "https://chicken.moneybrain.ai") + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            // var url = (config.host || "https://remaster.moneybrain.ai") + '/playchat/templates/contents/order';
+            var url = ("https://remaster.moneybrain.ai") + '/playchat/templates/contents/order';
             context.bot.authKey = randomNum;
 
             var query = {url: url};
@@ -383,7 +396,7 @@ function reserveRequest(task, context, callback) {
 
 
                     message += '번호: ' + (context.dialog.mobile || context.user.mobile) + '\n' +
-                               '예약접수(클릭) ' + shorturl;
+                        '예약접수(클릭) ' + shorturl;
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -479,10 +492,17 @@ function transSynonim(word) {
 }
 
 function matchFun(key, word) {
+    var keys = key.split(' ');
     word = transSynonim(word.replace( /(\s*)/g, ""));
     key = transSynonim(key.replace( /(\s*)/g, ""));
-    if (word.search(key) >=0 ) return true;
-    else return false;
+    for(var i=0; i<keys.length; i++) {
+        console.log(keys[i] + "//" + word);
+        console.log(word.search(keys[i]));
+        if (word.search(keys[i]) >= 0 && keys[i].length >1) return true;
+        // if (word.search(keys[i]) >= 0) return true;
+    }
+
+    return false;
 }
 
 
@@ -492,10 +512,12 @@ function filter(key, list) {
         if(list[i].subMenu) result = result.concat(filter(key,list[i].subMenu));
         else {
             if(matchFun(key, list[i].name)) {
+                console.log("matched!!!");
                 result.push(list[i]);
             }
         }
     }
+    console.log(result);
     return result;
 }
 
@@ -529,14 +551,14 @@ bot.setTask('saveMobile', saveMobile);
 
 var checkCondition = {
     action: function (task,context,callback) {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         context.dialog.ordering = true;
         // context.dialog.deliveryTime = isOpen(context.bot.openTime);
         context.dialog.deliveryTime = true;
         context.dialog.deliveryDistance = true;
         var totalPrice = parseInt(getTotalPrice(context.user.cart));
-        console.log("##########################" + totalPrice);
-        context.dialog.priceCond = (totalPrice > context.bot.minPrice);
+        // console.log("##########################" + totalPrice);
+        context.dialog.priceCond = (totalPrice >= context.bot.minPrice);
         //context.dialog.priceCond = true;
         context.dialog.totalPrice = totalPrice;
         // callback(task,context);
@@ -557,8 +579,8 @@ function sendSMS(phone, message) {
         {json: {callbackPhone: "15777314", phone: phone, message: message}},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log(response);
-                console.log(body);
+                // console.log(response);
+                // console.log(body);
             } else {
                 // task._result = 'FAIL';
                 // task._resultMessage = 'HTTP ERROR';
@@ -707,7 +729,7 @@ var reserveOwnerConfirm = {
                     }
 
                     message += '\n주문접수완료\n'+
-                               '매장전화: ' + context.bot.phone;
+                        '매장전화: ' + context.bot.phone;
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -741,8 +763,8 @@ var reserveOwnerCancel = {
                     var message = '[' + context.bot.name + ']' + '\n';
 
                     message += '\n배달취소: '+
-                               task.inRaw + '\n' +
-                               '매장전화: ' + context.bot.phone;
+                        task.inRaw + '\n' +
+                        '매장전화: ' + context.bot.phone;
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -774,7 +796,7 @@ var orderCancel = {
         TemplateReservation.update({_id: context.dialog.orderHistory._id}, {$set: {status: '주문자취소'}}, function (err) {
 
             if(!context.bot.testMode) {
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 var message = '[' + context.bot.name + ']' + '\n';
 
                 message += '배달요청이 취소되었습니다.';
@@ -827,3 +849,13 @@ var pastHistory = {
 }
 
 bot.setTask('pastHistory', pastHistory);
+
+var getLocation = {
+    action: function (task,context,callback) {
+        context.dialog.location = context.bot.address;
+        callback(task,context);
+    }
+};
+
+bot.setTask('getLocation', getLocation);
+

@@ -40,15 +40,16 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             if(typeof text != 'object')
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/\n/gi, '<br>'));
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
             }
             else
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/\n/gi, '<br>'));
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
                 template = angular.element(template);
-                if(text.image)
+
+                if(text.image && text.image.url)
                 {
                     var t = '<div class="output-image">';
                     t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
@@ -128,9 +129,15 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         //event handling
         Socket.on('send_msg', function(data)
         {
-            addBotBubble(data);
-
-            $rootScope.$broadcast('onmsg', { message: data });
+            if(data.indexOf(':log') != -1)
+            {
+                $rootScope.$broadcast('onlog', { message: data });
+            }
+            else
+            {
+                addBotBubble(data);
+                $rootScope.$broadcast('onmsg', { message: data });
+            }
         });
 
         $scope.sendMessage = function(e)
@@ -138,8 +145,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             if(e.keyCode == 13)
             {
                 var value = e.currentTarget.value;
-                emitMsg(value, true);
-                e.currentTarget.value = '';
+                if(value)
+                {
+                    emitMsg(value, true);
+                    e.currentTarget.value = '';
+                }
             }
             else if(e.keyCode == 116)
             {

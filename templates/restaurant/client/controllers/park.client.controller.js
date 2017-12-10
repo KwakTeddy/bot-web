@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantParkController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('restaurantParkController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/parks', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
@@ -36,7 +36,7 @@ angular.module('template').controller('restaurantParkController', ['$scope', '$r
                     if(extraRoadAddr !== ''){
                         extraRoadAddr = ' (' + extraRoadAddr + ')';
                     }
-                    // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+                    //도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
                     if(fullRoadAddr !== ''){
                         fullRoadAddr += extraRoadAddr;
                     }
@@ -45,11 +45,14 @@ angular.module('template').controller('restaurantParkController', ['$scope', '$r
                     // document.getElementById('sample4_postcode').value = data.zonecode; //5자리 새우편번호 사용
                     // document.getElementById('sample4_roadAddress').value = fullRoadAddr;
                     // document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
+                    //console.log('address=============== : ', fullRoadAddr);
 
-                    e.currentTarget.previousElementSibling.value = fullRoadAddr + ' ';
+                    //$scope.datas.parkaddress = fullRoadAddr;
+                     e.currentTarget.previousElementSibling.value = fullRoadAddr + ' ';
                     e.currentTarget.previousElementSibling.focus();
 
-                    // // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                    //$scope.datas.parkaddress = fullRoadAddr;
+                    // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
                     // if(data.autoRoadAddress) {
                     //     //예상되는 도로명 주소에 조합형 주소를 추가한다.
                     //     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
@@ -114,6 +117,8 @@ angular.module('template').controller('restaurantParkController', ['$scope', '$r
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
                 {
                     console.log(result);
+                    alert("저장하였습니다");
+                    $rootScope.$broadcast('simulator-build');
                 },
                 function(err)
                 {

@@ -177,6 +177,8 @@ exports.uploadImage = function(req, res)
 {
     var now = new Date().getTime();
 
+    var originalname = '';
+
     var storage = multer.diskStorage(
     {
         destination: function (req, file, cb)
@@ -185,7 +187,8 @@ exports.uploadImage = function(req, res)
         },
         filename: function (req, file, cb)
         {
-            cb(null, req.params.botId + '-' + now);
+            originalname = file.originalname;
+            cb(null, req.params.botId + '-' + now + '-' + file.originalname);
         }
     });
 
@@ -211,7 +214,7 @@ exports.uploadImage = function(req, res)
         {
             var botId = req.params.botId;
 
-            res.jsonp({ url : '/files/' + botId + '-' + now});
+            res.jsonp({ url : '/files/' + botId + '-' + now + '-' + originalname});
         }
     });
 };

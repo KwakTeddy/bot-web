@@ -8,7 +8,7 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 
 module.exports = function (io, socket) {
     logger.systemLog('user connected');
-    // bot.setBotSocket(socket);
+    bot.setBotSocket(socket);
 
     socket.on('disconnect', function() {
         logger.systemLog('user disconnected')

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('template').controller('hospitalEventController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('hospitalEventController', ['$scope', '$resource', '$cookies', '$rootScope', 'FileUploader', function ($scope, $resource, $cookies, $rootScope, FileUploader)
 {
-    console.log("################################orderControll");
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 이벤트관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var MenuService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
     var chatbot = $cookies.getObject('chatbot');
@@ -85,11 +85,14 @@ angular.module('template').controller('hospitalEventController', ['$scope', '$re
             MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
                 {
                     console.log(result);
+                    alert('저장되었습니다');
+                    $rootScope.$broadcast('simulator-build');
                 },
                 function(err)
                 {
                     alert(err);
                 });
+
         };
     })();
 

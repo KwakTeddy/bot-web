@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('SignupController', ['$scope', '$state', '$http', '$cookies', 'LanguageService', function ($scope, $state, $http, $cookies, LanguageService)
+    angular.module('playchat').controller('SignupController', ['$scope', '$state', '$http', '$cookies', '$location', 'LanguageService', function ($scope, $state, $http, $cookies, $location, LanguageService)
     {
         $scope.$parent.loading = false;
 
@@ -25,9 +25,10 @@
 
         $scope.signup = function()
         {
+            angular.element('#signupButton').hide().next().show();
             if($scope.credentials.password && $scope.credentials.passwordConfirm && $scope.credentials.password != $scope.credentials.passwordConfirm)
             {
-                $scope.signupErrorMessage = 'Password is disaccord.';
+                $scope.signupErrorMessage = LanguageService('Password is disaccord');
                 return false;
             }
 
@@ -36,9 +37,11 @@
                 $scope.successSignup = true;
             }).error(function (response)
             {
+                angular.element('#signupButton').show().next().hide();
+
                 if(response.message.match('SNS'))
                 {
-                    $scope.signupErrorMessage = 'You already signed up by ' + response.provider + '.';
+                    $scope.signupErrorMessage = LanguageService('You already signed up by ' + response.provider);
                 }
                 else if(response.message.match('Failure sending email'))
                 {

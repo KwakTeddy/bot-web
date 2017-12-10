@@ -166,7 +166,7 @@ var saveIntentContexts = function(botId, templateId, language, success, error)
 
 var saveIntentContents = function(botId, templateId, language, user, intentId, contents, success, error)
 {
-    IntentContent.remove({ botId: botId, user: user, intentId: intentId }).exec(function(err)
+    IntentContent.remove({ botId: botId, intentId: intentId }).exec(function(err)
     {
         if(err)
         {
@@ -177,9 +177,11 @@ var saveIntentContents = function(botId, templateId, language, user, intentId, c
 
         var list = [];
 
+        console.log('봇 : ', botId, intentId);
+
         async.eachSeries(contents, function(name, done)
         {
-            var intentContent = {};
+            var intentContent = new IntentContent();
             intentContent.botId = botId;
             if(templateId)
                 intentContent.templateId = templateId;
@@ -201,16 +203,18 @@ var saveIntentContents = function(botId, templateId, language, user, intentId, c
             });
         }, function()
         {
-            IntentContent.collection.insert(list, function (err, result)
+            async.eachSeries(list, function(item, next)
             {
-                if(err)
+                item.save(function(err)
                 {
-                    return error(err);
-                }
-                else
-                {
-                    saveIntentContexts(botId, templateId, language, success, error);
-                }
+                    if(err)
+                        console.error(err);
+                    next();
+                });
+            },
+            function()
+            {
+                saveIntentContexts(botId, templateId, language, success, error);
             });
         });
     });

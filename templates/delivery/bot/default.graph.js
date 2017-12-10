@@ -5,7 +5,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "1"
+                "regexp": "^1"
             },
             {
                 "text": "메뉴"
@@ -126,26 +126,40 @@ var dialogs = [
                         "task": "makeOrderList"
                     },
                     {
-                        "input": {
-                            "regexp": "/^<$/"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "page": "pre"
+                        "input": [
+                            {
+                                "regexp": "<"
                             }
-                        }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "repeat": 1,
+                                "options": {
+                                    "page": "pre"
+                                }
+                            }
+                        ],
+                        "id": "default1512795450304",
+                        "name": "생성된 이름 1512795450304"
                     },
                     {
-                        "input": {
-                            "regexp": "/^>$/"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "page": "next"
+                        "input": [
+                            {
+                                "regexp": ">"
                             }
-                        }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "repeat": 1,
+                                "options": {
+                                    "page": "next"
+                                }
+                            }
+                        ],
+                        "id": "default1512795450305",
+                        "name": "생성된 이름 1512795450305"
                     },
                     {
                         "name": "메뉴재선택",
@@ -812,15 +826,15 @@ var dialogs = [
                         "id": "default88",
                         "filename": "default",
                         "input": [
-                            {
-                                "text": ""
-                            }
+                            {}
                         ],
                         "output": [
                             {
                                 "kind": "Action",
                                 "repeat": "1",
-                                "type": "Repeat"
+                                "options": {
+                                    "output": "목록에서 선택해주세요"
+                                }
                             }
                         ]
                     }
@@ -845,7 +859,8 @@ var dialogs = [
                 ],
                 "task": {
                     "name": "makeOrderList"
-                }
+                },
+                "id": "default1512795450338"
             },
             {
                 "name": "카테고리보기예외",
@@ -911,39 +926,134 @@ var dialogs = [
         "task": "makeOrderList"
     },
     {
-        "name": "바로주문단일",
-        "id": "default30",
+        "name": "주소등록",
+        "id": "default18",
         "filename": "default",
         "input": [
             {
-                "if": "false"
+                "text": "주소 등록"
+            },
+            {
+                "text": "주소 변경"
             }
         ],
-        "output": {
-            "kind": "Action",
-            "call": "주문목록",
-            "type": "Call"
-        },
-        "task": {
-            "0": "m",
-            "1": "a",
-            "2": "k",
-            "3": "e",
-            "4": "C",
-            "5": "u",
-            "6": "r",
-            "7": "r",
-            "8": "e",
-            "9": "n",
-            "10": "t",
-            "11": "I",
-            "12": "t",
-            "13": "e",
-            "14": "m",
-            "15": "3",
-            "name": "makeCurrentItem3",
-            "kind": "Text"
-        }
+        "output": [
+            {
+                "text": "지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text"
+            }
+        ],
+        "children": [
+            {
+                "name": "주소입력",
+                "id": "default20",
+                "filename": "default",
+                "input": [
+                    {
+                        "types": [
+                            "address"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": 1,
+                        "if": "context.dialog.address.지번본번 == undefined",
+                        "options": {
+                            "output": "상세주소를 입력해주세요. 이게 주소의 전부라면 '여기까지'라고 입력해주세요."
+                        }
+                    },
+                    {
+                        "kind": "Action",
+                        "repeat": 1,
+                        "if": "context.dialog.address.상세주소 == undefined",
+                        "options": {
+                            "output": "동호수나 몇층인지까지 말씀해주세요. 이게 전부이면 '여기까지' 라고 입력해주세요."
+                        }
+                    },
+                    {
+                        "kind": "Action",
+                        "call": "주소조건만족"
+                    }
+                ]
+            },
+            {
+                "name": "지번본번없음",
+                "id": "default39",
+                "filename": "default",
+                "input": [
+                    {
+                        "if": "false"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": "1",
+                        "options": {
+                            "output": "상세주소를 입력해주세요. 이게 주소의 전부라면 '여기까지' 라고 입력해주세요."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "상세주소없음",
+                "id": "default40",
+                "filename": "default",
+                "input": [
+                    {
+                        "if": "false"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": "1",
+                        "options": {
+                            "output": "동호수나 몇층인지까지 말씀해주세요. 이게 전부이면 '여기까지' 라고 입력해주세요."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "주소조건만족",
+                "id": "default42",
+                "filename": "default",
+                "input": [
+                    {
+                        "if": "false"
+                    }
+                ],
+                "output": [
+                    {
+                        "text": "주소가 \n\n\"+address.지번주소+\"\n\n로 등록되었습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                        "kind": "Text"
+                    },
+                    {
+                        "kind": "Action",
+                        "call": "주문조건확인",
+                        "if": "context.dialog.ordering"
+                    }
+                ]
+            },
+            {
+                "name": "New Dialog1",
+                "input": [
+                    {
+                        "if": "true",
+                        "text": "여기"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "call": "주소조건만족"
+                    }
+                ],
+                "id": "default1"
+            }
+        ]
     },
     {
         "name": "바로주문복수",
@@ -991,157 +1101,12 @@ var dialogs = [
         }
     },
     {
-        "name": "주소등록",
-        "id": "default18",
-        "filename": "default",
-        "input": [
-            {
-                "text": "주소 등록"
-            },
-            {
-                "text": "주소 변경"
-            }
-        ],
-        "output": [
-            {
-                "text": "지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text"
-            }
-        ],
-        "children": [
-            {
-                "name": "주소입력",
-                "id": "default20",
-                "filename": "default",
-                "input": [
-                    {
-                        "types": [
-                            "address"
-                        ]
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "context.dialog.address.지번본번 == undefined",
-                        "call": "지번본번없음",
-                        "type": "Call"
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "context.dialog.address.상세주소 == undefined",
-                        "call": "상세주소없음",
-                        "type": "Call"
-                    },
-                    {
-                        "kind": "Action",
-                        "call": "주소조건만족",
-                        "type": "Call"
-                    }
-                ]
-            },
-            {
-                "name": "지번본번없음",
-                "id": "default39",
-                "filename": "default",
-                "input": [
-                    {
-                        "if": "false"
-                    }
-                ],
-                "output": {
-                    "kind": "Action",
-                    "repeat": "1",
-                    "options": {
-                        "output": "상세주소를 입력해주세요. 이게 주소의 전부라면 '여기까지' 라고 입력해주세요."
-                    }
-                }
-            },
-            {
-                "name": "상세주소없음",
-                "id": "default40",
-                "filename": "default",
-                "input": [
-                    {
-                        "if": "false"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "repeat": "1",
-                        "options": {
-                            "output": "동호수나 몇층인지까지 말씀해주세요. 이게 전부이면 '여기까지' 라고 입력해주세요."
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "주소조건만족",
-                "id": "default42",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "여기",
-                        "if": "context.user.address"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "context.dialog.ordering",
-                        "call": "주문조건확인",
-                        "output": {
-                            "kind": "Action",
-                            "if": "context.dialog.ordering",
-                            "call": "주문조건확인"
-                        },
-                        "task": {
-                            "0": "d",
-                            "1": "e",
-                            "2": "f",
-                            "3": "a",
-                            "4": "u",
-                            "5": "l",
-                            "6": "t",
-                            "7": "T",
-                            "8": "a",
-                            "9": "s",
-                            "10": "k",
-                            "name": "defaultTask",
-                            "inRaw": "서울시 관악구 봉천동 1645-55 201호",
-                            "inNLP": "서울시 관악구 봉천동 1645 55 201 호"
-                        }
-                    },
-                    {
-                        "text": "주소가 \n\n\"+address.지번주소+\"\n\n로 등록되었습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                        "kind": "Text"
-                    }
-                ],
-                "task": {
-                    "0": "d",
-                    "1": "e",
-                    "2": "f",
-                    "3": "a",
-                    "4": "u",
-                    "5": "l",
-                    "6": "t",
-                    "7": "T",
-                    "8": "a",
-                    "9": "s",
-                    "10": "k",
-                    "name": "defaultTask"
-                }
-            }
-        ]
-    },
-    {
         "name": "주소확인",
         "id": "default9",
         "filename": "default",
         "input": [
             {
-                "text": "2"
+                "regexp": "^2$"
             },
             {
                 "text": "주소"
@@ -1149,15 +1114,13 @@ var dialogs = [
         ],
         "output": [
             {
-                "if": "context.user.address",
                 "kind": "Action",
                 "call": "주소있음",
-                "type": "Call"
+                "if": "context.user.address"
             },
             {
                 "kind": "Action",
-                "call": "주소없음",
-                "type": "Call"
+                "call": "주소없음"
             }
         ]
     },
@@ -1194,6 +1157,22 @@ var dialogs = [
                         "call": "주소입력"
                     }
                 ]
+            },
+            {
+                "name": "New Dialog2",
+                "input": [
+                    {
+                        "if": "true",
+                        "text": "여기"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "call": "주소조건만족"
+                    }
+                ],
+                "id": "default2"
             }
         ]
     },
@@ -1230,6 +1209,22 @@ var dialogs = [
                         "call": "주소입력"
                     }
                 ]
+            },
+            {
+                "name": "New Dialog3",
+                "input": [
+                    {
+                        "if": "true",
+                        "text": "여기"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "call": "주소조건만족"
+                    }
+                ],
+                "id": "default4"
             }
         ]
     },
@@ -1405,12 +1400,39 @@ var dialogs = [
         ]
     },
     {
+        "name": "쿠폰",
+        "id": "default82",
+        "filename": "default",
+        "input": [
+            {
+                "text": "쿠폰"
+            },
+            {
+                "regexp": "^6"
+            }
+        ],
+        "output": [
+            {
+                "if": "context.bot.event",
+                "text": "<+resname+> \n쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text",
+                "id": "default0_0"
+            },
+            {
+                "if": "true",
+                "text": "<+resname+> \n지금은 등록된 쿠폰이 없습니다. 다음에 다시 확인해주세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text",
+                "id": "default0_1"
+            }
+        ]
+    },
+    {
         "name": "번호확인",
         "id": "default14",
         "filename": "default",
         "input": [
             {
-                "text": "3"
+                "regexp": "^3"
             },
             {
                 "text": "핸드폰"
@@ -1422,14 +1444,12 @@ var dialogs = [
         "output": [
             {
                 "kind": "Action",
-                "if": "context.user.mobile",
                 "call": "번호있음",
-                "type": "Call"
+                "if": "context.user.mobile"
             },
             {
                 "kind": "Action",
-                "call": "번호없음",
-                "type": "Call"
+                "call": "번호없음"
             }
         ]
     },
@@ -1512,7 +1532,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "4"
+                "regexp": "^4"
             },
             {
                 "text": "내 역"
@@ -1521,7 +1541,7 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.orderHistory",
-                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n[주문내용]:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n주문내용:\n#orderHistory.order# - +name+ X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text",
                 "id": "default22_0"
             },
@@ -1539,7 +1559,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "text": "5"
+                "regexp": "^5"
             },
             {
                 "text": "매장"
@@ -1550,61 +1570,13 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "[[+resname+]]\n\n전화번호 : +phone+\n주소: +address+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text"
-            }
-        ]
-    },
-    {
-        "name": "쿠폰",
-        "id": "default82",
-        "filename": "default",
-        "input": [
-            {
-                "text": "쿠폰"
-            },
-            {
-                "text": "6"
-            }
-        ],
-        "output": [
-            {
-                "if": "context.bot.event",
-                "text": "<+resname+> \n쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text",
-                "id": "default0_0"
-            },
-            {
-                "if": "true",
-                "text": "<+resname+> \n지금은 등록된 쿠폰이 없습니다. 다음에 다시 확인해주세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-                "kind": "Text",
-                "id": "default0_1"
-            }
-        ]
-    },
-    {
-        "id": "default100",
-        "filename": "default",
-        "input": [
-            {
-                "text": "주문 취소"
-            }
-        ],
-        "output": [
-            {
-                "if": "context.dialog.orderHistory && context.dialog.orderHistory.status=='승인대기중'",
-                "kind": "Action",
-                "id": "default0_0",
-                "call": "주문취소확인"
-            },
-            {
-                "if": "",
-                "text": "<+resname+> \n취소가능한 주문이 없습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "<<+resname+>>\n\n전화번호 : +phone+\n주소: +location+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text"
             }
         ],
-        "name": "주문취소",
-        "task": "getOrderHistory"
+        "task": {
+            "name": "getLocation"
+        }
     },
     {
         "name": "주문취소확인",
@@ -1667,6 +1639,65 @@ var dialogs = [
         ]
     },
     {
+        "id": "default100",
+        "filename": "default",
+        "input": [
+            {
+                "text": "주문 취소"
+            }
+        ],
+        "output": [
+            {
+                "if": "context.dialog.orderHistory && context.dialog.orderHistory.status=='승인대기중'",
+                "kind": "Action",
+                "id": "default0_0",
+                "call": "주문취소확인"
+            },
+            {
+                "if": "",
+                "text": "<+resname+> \n취소가능한 주문이 없습니다. 이미 주문이 승인된 경우 취소가 불가능합니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "kind": "Text"
+            }
+        ],
+        "name": "주문취소",
+        "task": "getOrderHistory"
+    },
+    {
+        "name": "바로주문단일",
+        "id": "default30",
+        "filename": "default",
+        "input": [
+            {
+                "if": "false"
+            }
+        ],
+        "output": {
+            "kind": "Action",
+            "call": "주문목록",
+            "type": "Call"
+        },
+        "task": {
+            "0": "m",
+            "1": "a",
+            "2": "k",
+            "3": "e",
+            "4": "C",
+            "5": "u",
+            "6": "r",
+            "7": "r",
+            "8": "e",
+            "9": "n",
+            "10": "t",
+            "11": "I",
+            "12": "t",
+            "13": "e",
+            "14": "m",
+            "15": "3",
+            "name": "makeCurrentItem3",
+            "kind": "Text"
+        }
+    },
+    {
         "id": "default0",
         "filename": "default",
         "input": [
@@ -1682,7 +1713,6 @@ var dialogs = [
             {
                 "text": "예전 처럼"
             }
-
         ],
         "output": [
             {
@@ -1701,6 +1731,19 @@ var dialogs = [
         }
     }
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var commonDialogs = [
     {
@@ -1762,6 +1805,19 @@ var commonDialogs = [
         "output": "알아듣지 못했습니다"
     }
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('delivery');

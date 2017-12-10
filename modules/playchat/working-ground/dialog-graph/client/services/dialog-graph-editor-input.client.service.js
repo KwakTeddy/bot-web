@@ -440,7 +440,7 @@
 
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                     {
-                        // $scope.nlpedTextPrefix = 'nlu: ';
+                        $scope.nlpedTextPrefix = 'nlu: ';
                         $scope.nlpedText[index] = result.text;
 
                         if($scope.showNlpTimeout)
@@ -488,7 +488,7 @@
                 {
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                     {
-                        // $scope.nlpedTextPrefix = 'nlu: ';
+                        $scope.nlpedTextPrefix = 'nlu: ';
                         $scope.dialog.input[index].text = result.text;
 
                         if($scope.showNlpTimeout)
@@ -730,6 +730,8 @@
                             }
 
                             input.text = value;
+
+                            e.currentTarget.value = '';
                         }
                     }
                 }
@@ -940,7 +942,7 @@
 
                             DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                             {
-                                // $scope.nlpedTextPrefix = 'nlu: ';
+                                $scope.nlpedTextPrefix = 'nlu: ';
                                 input.text = $scope.nlpedText[index];
 
                                 if($scope.showNlpTimeout)
@@ -1020,8 +1022,8 @@
 
                         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
-                            // $scope.nlpedTextPrefix = 'nlu: ';
-                            $scope.nlpedText[index] = 'nlu: ' + result.text;
+                            $scope.nlpedTextPrefix = 'nlu: ';
+                            $scope.nlpedText[index] = result.text;
 
                             if($scope.showNlpTimeout)
                                 clearTimeout($scope.showNlpTimeout);
@@ -1031,6 +1033,7 @@
                                 $scope.$apply(function()
                                 {
                                     $scope.nlpedText[index] = '';
+                                    $scope.nlpedTextPrefix = '';
                                 });
                             }, 2000);
                         });

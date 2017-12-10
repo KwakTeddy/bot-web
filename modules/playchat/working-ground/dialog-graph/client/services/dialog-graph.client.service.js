@@ -153,7 +153,20 @@
 
             this.setCurrentDialog(dialog);
 
+            var graphbody = angular.element('.graph-body').get(0);
+
+            console.log('그래프바디 : ', graphbody.offsetWidth);
+
             angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
+
+            var menuDialog = angular.element('.dialog-menu').get(0);
+            console.log('음 : ', menuDialog.offsetWidth);
+
+            // -30은 스크롤바
+            if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+            {
+                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px')
+            }
 
             e.preventDefault();
             e.stopPropagation();
@@ -962,10 +975,7 @@
             dialog.find('.graph-dialog-item').on('dblclick', function(e)
             {
                 var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
-                if(parent && parent.dialog)
-                {
-                    that.editor.open(parent.dialog, dialog.get(0).children[0].dialog);
-                }
+                that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
 
                 e.stopPropagation();
             });
@@ -1371,6 +1381,24 @@
         DialogGraph.prototype.removeOnLoad = function()
         {
             this.onLoadCallback = undefined;
+        };
+
+        DialogGraph.prototype.getRandomName = function()
+        {
+            var name = 'New Dialog';
+
+            var strings = JSON.stringify(this.userDialogs);
+
+            if(!strings)
+                return name;
+
+            for(var i=1;; i++)
+            {
+                if(strings.indexOf(name + i) == -1)
+                {
+                    return name + i;
+                }
+            }
         };
 
         if(!instance)

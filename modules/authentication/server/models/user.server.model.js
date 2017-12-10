@@ -45,6 +45,9 @@ var UserSchema = new Schema({
     lowercase: true,
     trim: true
   },
+    phone: String,
+    organization: String,
+    state: Boolean,
   password: {
     type: String,
     default: ''

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantReservationController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('restaurantReservationController', ['$scope', '$resource', '$cookies', 'FileUploader', '$rootScope',function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/reservations', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
@@ -22,6 +22,8 @@ angular.module('template').controller('restaurantReservationController', ['$scop
                     DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                         {
                             $scope.datas = list;
+
+                           // console.log(list);
                         },
                         function(err)
                         {
@@ -36,7 +38,7 @@ angular.module('template').controller('restaurantReservationController', ['$scop
 
         $scope.add = function()
         {
-            $scope.datas.push({ name: '', mobile: '', numOfman: '', memo: '', period: '', date:'',status:'',userKey:''});
+            $scope.datas.push({ name: '', mobile: '', numOfPerson: '', memo: '', date:'',time:'',status:'',userKey:''});
         };
 
         $scope.delete = function(index)
@@ -53,6 +55,8 @@ angular.module('template').controller('restaurantReservationController', ['$scop
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
                 {
                     console.log(result);
+                    alert("저장하였습니다");
+                    $rootScope.$broadcast('simulator-build');
                 },
                 function(err)
                 {

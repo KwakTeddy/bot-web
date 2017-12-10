@@ -5,9 +5,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var hospital = {
-    reserveFields: [
-        {name: 'memo', title: '서비스명'}
-    ],
+    // reserveFields: [
+    //     {name: 'time', title: '서비스명'}
+    // ],
 
     naver: {
         clientId: 'Aqi_RlMlLRlJnmJptMhD',

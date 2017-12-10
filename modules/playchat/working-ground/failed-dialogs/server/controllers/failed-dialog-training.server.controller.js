@@ -65,7 +65,7 @@ module.exports.findSimiliars = function(req, res)
 
         for(var i=0; i<list.length; i++)
         {
-            orList.push({ _id: list[i]._id });
+            orList.push({ dialogset: list[i]._id });
         }
 
         if(req.query.type == 'inputRaw')
@@ -77,6 +77,8 @@ module.exports.findSimiliars = function(req, res)
             query.output = new RegExp(req.query.text);
         }
 
+        console.log('쿼리 : ', query);
+
         DialogsetDialog.find(query).exec(function (err, result)
         {
             if (err)
@@ -85,6 +87,9 @@ module.exports.findSimiliars = function(req, res)
             }
             else
             {
+                var checkDuplicated = {};
+
+                var pureResult = [];
                 result = stripArray(result);
                 for (var i=0; i<result.length; i++)
                 {
@@ -99,7 +104,16 @@ module.exports.findSimiliars = function(req, res)
 
                 result.splice(10, result.length - 10);
 
-                res.jsonp(JSON.parse(JSON.stringify(result)));
+                for(var i=0; i<result.length; i++)
+                {
+                    if(!checkDuplicated[result[i]._id])
+                    {
+                        checkDuplicated[result[i]._id] = true;
+                        pureResult.push(result[i]);
+                    }
+                }
+
+                res.jsonp(JSON.parse(JSON.stringify(pureResult)));
             }
         });
     });

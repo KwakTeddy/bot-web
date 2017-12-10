@@ -15,18 +15,28 @@
             {
                 ChatbotTemplatesService.query({}, function(result)
                 {
-                    console.log(result);
+                    // 카테고리별로 정리
+                    // for(var i=0; i<result.length; i++)
+                    // {
+                    //     if(result[i].category)
+                    //     {
+                    //         if(!$scope.list[result[i].category.name])
+                    //             $scope.list[result[i].category.name] = [];
+                    //
+                    //         $scope.list[result[i].category.name].push(result[i]);
+                    //     }
+                    // }
+
                     for(var i=0; i<result.length; i++)
                     {
                         if(result[i].category)
                         {
-                            if(!$scope.list[result[i].category.name])
-                                $scope.list[result[i].category.name] = [];
+                            if(!$scope.list[LanguageService('Template')])
+                                $scope.list[LanguageService('Template')] = [];
 
-                            $scope.list[result[i].category.name].push(result[i]);
+                            $scope.list[LanguageService('Template')].push(result[i]);
                         }
                     }
-                    // $scope.list = result;
 
                     console.log($scope.list);
 
