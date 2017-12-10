@@ -123,7 +123,7 @@
                 "zh": "同意使用条款和隐私政策"
             },
             "Sign up": {
-                "ko": "로그인",
+                "ko": "가입신청",
                 "en": "Sign up",
                 "jp": "ログイン",
                 "zh": "登录"
@@ -158,11 +158,23 @@
                 "jp": " but verification e-mail sending is failed. Please contact us.\"",
                 "zh": "会員加入はなったが、E-mail認証メール送ることに失敗しました。 管理者に問い合わせてください。"
             },
-            "You already signed up by facebook.": {
+            "You already signed up by facebook": {
                 "ko": "페이스북을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by facebook.",
                 "jp": "フェイスブックを通じて、すでにログインできている状態です",
                 "zh": "您已经通过Facebook账号进行了登录。"
+            },
+            "You already signed up by kakao": {
+                "ko": "카카오톡을 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "You already signed up by kakao.",
+                "jp": "あなたはすでにカカオによってサインアップしています",
+                "zh": "您已经通过Kakao账号进行了登录。"
+            },
+            "You already signed up by google": {
+                "ko": "구글을 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "You already signed up by google.",
+                "jp": "あなたはすでにGoogleによってサインアップしています。",
+                "zh": "您已经通过Google账号进行了登录。"
             },
             "Invalid email address.": {
                 "ko": "유효한 형식의 이메일이 아니에요",
@@ -1890,6 +1902,48 @@
                 "en": "Learning",
                 "zh": "在学习",
                 "jp": "学んでいる"
+            },
+            "Password is disaccord": {
+                "ko": "비밀번호가 일치하지 않습니다.",
+                "en": "Password is disaccord",
+                "zh": "密码不一致",
+                "jp": "パスワードは不一致です"
+            },
+            "비밀번호가 일치하지 않습니다.": {
+                "ko": "비밀번호가 일치하지 않습니다.",
+                "en": "Password is disaccord",
+                "zh": "密码不一致",
+                "jp": "パスワードは不一致です"
+            },
+            "Register for free closed beta": {
+                "ko": "무료로 클로즈베타 신청하기",
+                "en": "Register for free closed beta",
+                "zh": "注册免费内测",
+                "jp": "無料クローズドベータ版に登録する"
+            },
+            "Registration for closed beta": {
+                "ko": "클로즈베타 신청",
+                "en": "Registration for closed beta",
+                "zh": "注册内测。",
+                "jp": "クローズドベータ版の登録。"
+            },
+            "Email is already signed up.": {
+                "ko": "이미 등록된 이메일 입니다.",
+                "en": "Email is already signed up.",
+                "zh": "电子邮件已经注册。",
+                "jp": "電子メールはすでにサインアップされています。"
+            },
+            "Phone": {
+                "ko": "휴대폰",
+                "en": "Phone",
+                "zh": "电话",
+                "jp": "電話"
+            },
+            "Organization": {
+                "ko": "소속",
+                "en": "Organization",
+                "zh": "组织",
+                "jp": "組織"
             }
         };
 
@@ -1897,6 +1951,9 @@
 
         var lan = function(key)
         {
+            if(!key)
+                return '';
+
             key = key.trim();
             if(!languages[key])
             {
