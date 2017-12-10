@@ -34,7 +34,7 @@
             <tr>
                 <th>이벤트명(필수)</th>
                 <th>설명</th>
-                <th>이미지(필수)</th>
+                <th>이미지</th>
             </tr>
             </thead>
             <tbody>
@@ -47,7 +47,7 @@
                 </td>
                 <td>
                     <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image" required/>
+                    <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image"/>
                 </td>
                 <td>
                     <button type="button" class="default-button" ng-click="deleteMenu($index)">삭제</button>
