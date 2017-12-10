@@ -109,9 +109,11 @@
                 //     return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
                 // }
 
-                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description }, function()
+                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description }, function(chatbot)
                 {
-                    $location.url('/playchat/chatbots');
+                    delete chatbot.user;
+                    $cookies.putObject('chatbot', chatbot);
+                    $location.url('/playchat/?isFirst=true');
                 },
                 function(err)
                 {
@@ -172,7 +174,7 @@
                     $cookies.putObject('chatbot', chatbot);
                     ChatbotTemplateDataService.save({ templateId: $scope.template.id, botId: chatbot.id, data: data }, function(result)
                     {
-                        $location.url('/playchat');
+                        $location.url('/playchat/?isFirst=true');
                     },
                     function(err)
                     {
