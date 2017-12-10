@@ -32,28 +32,28 @@
             </colgroup>
             <thead>
             <tr>
-                <th>시술명칭</th>
-                <th>설명</th>
-                <th>가격</th>
-                <th>회복기간</th>
+                <th>시술명칭(필수)</th>
+                <th>설명(필수)</th>
+                <th>가격(필수)</th>
+                <th>회복기간(필수)</th>
                 <th>시술정보 이미지</th>
                 <th>시술후기 이미지</th>
-                <th>시술후기 설명</th>
+                <th>시술후기 설명(필수)</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="menu in menus">
                 <td>
-                    <input type="text" ng-model="menu.name">
+                    <input type="text" ng-model="menu.name" required>
                 </td>
                 <td>
-                    <input type="text" ng-model="menu.description">
+                    <input type="text" ng-model="menu.description" required>
                 </td>
                 <td>
-                    <input type="number" ng-model="menu.price">
+                    <input type="number" ng-model="menu.price" required>
                 </td>
                 <td>
-                    <input type="text" ng-model="menu.recovery">
+                    <input type="text" ng-model="menu.recovery" required>
                 </td>
                 <td>
                     <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
@@ -64,7 +64,7 @@
                     <input type="file" nv-file-select uploader="menu.uploader2" ng-show="!menu.reviewImage" />
                 </td>
                 <td>
-                    <input type="text" ng-model="menu.review">
+                    <input type="text" ng-model="menu.review" required>
                 </td>
                 <td>
                     <button type="button" class="default-button" ng-click="deleteMenu($index)">삭제</button>
