@@ -830,10 +830,10 @@
                 "jp": "最後のOutputは削除することはできません",
                 "zh": "最后的输出不能被删除。"
             },
-            "When editing output with complex structure": {
+            "\"When editing output with complex structure": {
                 "ko": "복잡한 Output 구조 편집중에는 Basic모드로 전환할 수 없습니다.",
-                "en": "When editing output with complex structure",
-                "jp": " it is not possible to switch to the basic mode.",
+                "en": "\"When editing output with complex structure",
+                "jp": " it is not possible to switch to the basic mode.\"",
                 "zh": "複雑なOutput構造、編集中にはBasicモードに転換できません。"
             },
             "Entity Add": {
@@ -1532,15 +1532,11 @@
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
-                "en": "Entity analysis",
-                "zh": "实体分析",
-                "jp": "エンティティ分析"
+                "en": "Entity analysis"
             },
             "Intent analysis": {
                 "ko": "인텐트 분석",
-                "en": "Intent analysis",
-                "zh": "意图分析",
-                "jp": "インテント分析"
+                "en": "Intent analysis"
             },
             "KaKao Talk": {
                 "ko": "카카오톡",
@@ -1548,33 +1544,23 @@
             },
             "LOG": {
                 "ko": "로그",
-                "en": "LOG",
-                "zh": "日志",
-                "jp": "ログ"
+                "en": "LOG"
             },
             "Line": {
                 "ko": "라인",
-                "en": "Line",
-                "zh": "线",
-                "jp": "ライン"
+                "en": "Line"
             },
             "Messanger": {
                 "ko": "Messanger",
-                "en": "Messanger",
-                "zh": "信使",
-                "jp": "メッセンジャー"
+                "en": "Messanger"
             },
             "Naver Talk Talk": {
                 "ko": "네이버 톡톡",
-                "en": "Naver Talk Talk",
-                "jp": "ネイバー、トクトク",
-                "zh": "Naver talk talk"
+                "en": "Naver Talk Talk"
             },
             "Signout": {
                 "ko": "로그아웃",
-                "en": "Signout",
-                "zh": "登出",
-                "jp": "サインアウト"
+                "en": "Signout"
             },
 
 
@@ -1959,11 +1945,11 @@
                 "zh": "组织",
                 "jp": "組織"
             },
-            "WeChat": {
-                "ko": "위챗",
-                "en": "WeChat",
-                "zh": "微信",
-                "jp": "WeChat"
+            "Dialog Graph": {
+                "ko": "대화 그래프",
+                "en": "Dialog Graph",
+                "zh": "对话框图",
+                "jp": "対話グラフ"
             }
         };
 
