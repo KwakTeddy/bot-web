@@ -8,14 +8,14 @@
 
 .template-demo-basic
 {
-    width: 70%;
-    margin: 0 auto;
+    width: 40%;
+    margin-left: 5%;
 }
 </style>
 
 <h1 class="template-demo-title">기본정보</h1>
 <div> <!-- 템플릿봇 생성시 구조로 인해 반드시 필요한 div -->
-    <div ng-controller="hospitalBasicController" class="template-demo-basic" style="text-align: center;">
+    <div ng-controller="hospitalBasicController" class="template-demo-basic">
         <form ng-submit="saveTemplateBot($event);">
             <div class="form-row">
                 <label class="required">
@@ -42,28 +42,24 @@
                 </label>
             </div>
             <div class="form-row">
-                <label>
+                <label style="width: 90%;">
                     <span class="form-title">주소</span>
-                    <input type="text" class="data-input" name="address" style="width: 90%;">
-                    <button type="button" class="default-button" ng-click="findAddress($event);">검색</button>
+                    <input type="text" class="data-input" name="address" style="width: 80%;">
+                    <button type="button" class="default-button" ng-click="findAddress($event);" style="padding: 8px;width:76px;margin-left: 3px;">검색</button>
                 </label>
             </div>
             <div class="form-row">
-                <label>
+                <label style="width: 130px;margin-right: 2px;">
                     <span class="form-title">시작시간</span>
-                    <input type="time" class="data-input" name="startTime" value="09:00">
+                    <input type="time" class="data-input" name="startTime" value="09:00" style="height: 18px;">
                 </label>
-            </div>
-            <div class="form-row">
-                <label>
+                <label style="width: 130px;margin-right: 2px;">
                     <span class="form-title">종료시간</span>
-                    <input type="time" class="data-input" name="endTime" value="18:00">
+                    <input type="time" class="data-input" name="endTime" value="18:00" style="height: 18px;">
                 </label>
-            </div>
-            <div class="form-row">
                 <label>
                     <span class="form-title">휴일</span>
-                    <select name="holiday">
+                    <select name="holiday" class="jumbo-select">
                         <option value="">휴일없음</option>
                         <option value="monday">일요일</option>
                         <option value="monday">월요일</option>
@@ -87,7 +83,7 @@
                 </label>
             </div>
             <div class="form-row">
-                <label class="required">
+                <label class="required" style="width: 100%;height: 100px;">
                     <span class="form-title">설명</span>
                     <textarea class="data-input" name="description"></textarea>
                 </label>
