@@ -62,6 +62,11 @@
                 {
                     var menus = menu.menus;
 
+                    for(var i=0; i<menus.length; i++)
+                    {
+                        menus[i].name = LanguageService(menus[i].name);
+                    }
+
                     menus.push(that.channel);
                     menus.push(that.operation);
                     menus.push(that.analysis);

@@ -1944,6 +1944,12 @@
                 "en": "Organization",
                 "zh": "组织",
                 "jp": "組織"
+            },
+            "Dialog Graph": {
+                "ko": "대화 그래프",
+                "en": "Dialog Graph",
+                "zh": "对话框图",
+                "jp": "対話グラフ"
             }
         };
 
