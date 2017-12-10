@@ -99,7 +99,7 @@ module.exports.saveIntentContents = function(req, res)
     intentContents.user = req.user;
     intentContents.name = name;
 
-    var language = 'ko'; //temporary
+    var language = req.body.language || 'ko'; //temporary
     NLPManager.getNlpedText(name, language, function(err, result)
     {
         if(err)
