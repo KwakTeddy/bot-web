@@ -1,6 +1,6 @@
 .log-analysis .logHeader
 {
-    height: 39px;
+    height: 34px;
     background:#e8ebf0;
     border-bottom: #e7e7e7 solid 1px;
     border-top: #e7e7e7 solid 1px;
@@ -8,7 +8,7 @@
 
 .log-analysis .logTab
 {
-    line-height: 24px;
+    line-height: 20px;
     padding: 6px 30px;
     cursor: pointer;
     float: left;
@@ -33,7 +33,7 @@
 {
     position: absolute;
     right: 14px;
-    top: 15px;
+    top: 13px;
 }
 
 .log-analysis .logsystem > a

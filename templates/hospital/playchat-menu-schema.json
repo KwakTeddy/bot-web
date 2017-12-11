@@ -7,9 +7,9 @@
             { "name" : "시술정보관리", "url" : "/templates/contents/menu", "icon" : "info.png" },
             { "name" : "이벤트관리", "url" : "/templates/contents/event", "icon" : "event.png" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
+        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech_w.png" },
         { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario_w.png" },
-        { "name" : "인텐트관리", "url": "/management/intent", "icon": "intent.png" },
+        { "name" : "인텐트관리", "url": "/management/intent", "icon": "intent_w.png" },
         { "name" : "엔터티관리", "url": "/management/entity", "icon": "entity_select.png" }
     ]
 }
