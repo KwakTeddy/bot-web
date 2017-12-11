@@ -1,6 +1,3 @@
-
-
-
 var dialogs = [
     {
         "name": "시술안내",
@@ -296,8 +293,28 @@ var dialogs = [
         "task": {
             "name": "addEventButton"
         }
+    },
+    {
+        "name": "New Dialog1",
+        "input": [
+            {
+                "types": [
+                    "orderble"
+                ]
+            }
+        ],
+        "task" : "chooseSurge",
+        // "output": '+hihi+',
+        "output": [
+            {
+                "kind": "Action",
+                "call": "필러"
+            }
+        ],
+        "id": "hospital0"
     }
 ];
+
 
 var commonDialogs = [
     {
@@ -366,6 +383,7 @@ var commonDialogs = [
         }
     }
 ];
+
 
 
 

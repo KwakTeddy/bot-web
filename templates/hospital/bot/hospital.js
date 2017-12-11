@@ -183,6 +183,36 @@ var selectOneEvent = {
 
 bot.setTask('selectOneEvent', selectOneEvent);
 
+var orderble = {
+    typeCheck: function (text, type, task, context, callback) {
+        var matched = false;
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log(text);
+        // console.log(context.dialog);
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        var keyword = (context.dialog.inCurRaw || context.dialog.inRaw);
+        if(keyword.match(/^\d$/)) callback(text, task, false);
+        task.surge=filter(keyword, context.bot.menus);
+        if (task.surge){
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@filter true!!!");
+            matched =  true;
+        }
+        callback(text, task, matched);
+    }
+};
+
+bot.setType('orderble', orderble);
+
+var chooseSurge = {
+    action: function (task,context,callback) {
+        // context.dialog.surgeListType = context.bot.events[0];
+        context.dialog.surgeListType = task.surge;
+        callback(task,context);
+    }
+};
+
+bot.setTask('chooseSurge', chooseSurge);
+
 var makeEvent = {
     action: function (task,context,callback) {
         context.dialog.events = context.bot.events;
@@ -420,3 +450,37 @@ var reserveCancel2 = {
     }
 };
 bot.setTask('reserveCancel2', reserveCancel2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function filter(key, list) {
+    for(var i=0; i<list.length; i++){
+        if(matchFun(key, list[i].name)) {
+            return list[i];
+        }
+    }
+    return false;
+}
+
+function matchFun(key, word) {
+    var keys = key.split(' ');
+    for(var i=0; i<keys.length; i++) {
+        console.log(keys[i] + "//" + word);
+        console.log(word.search(keys[i]));
+        if (word.search(keys[i]) >= 0 && keys[i].length >1) return true;
+        // if (word.search(keys[i]) >= 0) return true;
+    }
+
+    return false;
+}
