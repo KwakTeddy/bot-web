@@ -2,7 +2,7 @@
 
 angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'LanguageService', 'ExcelDownloadService',function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService, ExcelDownloadService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Dialog Graph Usage');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Dialog Graph Usage'), '/modules/playchat/gnb/client/imgs/graphusage.png');
 
     //서비스 선언
     var DialogGraphUsageService = $resource('/api/:botId/analysis/dialog-graph-usage', { botId: '@botId' });

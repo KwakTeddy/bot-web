@@ -2,7 +2,7 @@
 
 angular.module("playchat").controller("DialogTrainingUsageAnalysisController", ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService','LanguageService', function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Dialog Training Usage');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Dialog Training Usage'), '/modules/playchat/gnb/client/imgs/training.png');
 
     //서비스 선언
     var DialogTrainingUsageService = $resource('/api/:botId/analysis/dialog-training-usage', { botId: '@botId' });

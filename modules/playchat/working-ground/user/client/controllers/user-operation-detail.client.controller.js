@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('OperationUserDetailController', ['$window', '$scope', '$rootScope', '$resource', '$cookies', '$location', 'DateService', 'LanguageService',function ($window, $scope, $rootScope, $resource, $cookies, $location, DateService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Operation > User Detail');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Operation') + ' > ' + LanguageService('User Detail'));
 
     var BotUserService = $resource('/api/:botId/operation/users/:id', { botId: '@botId', id: '@id' });
     var MemoService = $resource('/api/:botId/operation/users/:userKey/memo', { botId: '@botId', userKey: '@userKey' });

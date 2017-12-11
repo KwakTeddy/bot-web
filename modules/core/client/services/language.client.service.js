@@ -1466,9 +1466,9 @@
                 "jp": "分析",
                 "zh": "分析"
             },
-            "Summery": {
+            "Summary": {
                 "ko": "요약",
-                "en": "Summery",
+                "en": "Summary",
                 "jp": "要約",
                 "zh": "概括"
             },

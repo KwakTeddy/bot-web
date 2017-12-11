@@ -4,7 +4,7 @@
 
 angular.module('playchat').controller('TaskManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'FileUploader', 'ModalService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $element, FileUploader, ModalService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Task', '/modules/playchat/gnb/client/imgs/task.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Task'), '/modules/playchat/gnb/client/imgs/task.png');
 
     var TaskService = $resource('/api/:botId/tasks/:fileName/:taskName', { botId: '@botId', fileName: '@fileName', taskName: '@taskName' }, { update: { method: 'PUT' } });
     var TaskFilesService = $resource('/api/:botId/taskfiles', { botId: '@botId' }, { update: { method: 'PUT' } });

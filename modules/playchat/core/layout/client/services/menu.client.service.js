@@ -42,7 +42,7 @@
             ] };
 
             this.analysis = { name: LanguageService('Analysis'), icon: 'analysis.png', url: '/analysis', childMenus: [
-                { name: LanguageService('Summery'), url : '/analysis/summary', icon: 'summary_select.png' },
+                { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
                 { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
                 { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
                 { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },

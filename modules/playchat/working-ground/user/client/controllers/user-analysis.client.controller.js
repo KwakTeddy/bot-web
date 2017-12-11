@@ -1,7 +1,7 @@
 'use strict';
 angular.module("playchat").controller("UserStatisticsController", ['$scope', "$http", '$cookies','LanguageService', function ($scope, $http, $cookies, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > User');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('User'), '/modules/playchat/gnb/client/imgs/user.png');
 
     $scope.$parent.loaded('working-ground');
 
