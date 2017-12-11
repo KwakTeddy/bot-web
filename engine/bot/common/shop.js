@@ -189,7 +189,9 @@ function checkTime(task, context, callback) {
     reserve.setDate(reserve.getDate()-1);
     reserve.setHours(context.dialog.time.substring(0,2));
     reserve.setMinutes(context.dialog.time.substring(3,5));
-
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    console.log(reserve);
+    console.log(now);
     if(reserve < now) {
         context.dialog.check = 'past';
     }
