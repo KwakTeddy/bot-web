@@ -89,7 +89,7 @@ exports.findOne = function(req, res)
 
 exports.create = function(req, res)
 {
-    ChatBot.findOne({ id: req.body.id, name: req.body.name }).exec(function(err, bot)
+    ChatBot.findOne({ name: req.body.name }).exec(function(err, bot)
     {
         if(err)
         {

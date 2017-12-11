@@ -117,7 +117,14 @@
                 },
                 function(err)
                 {
-                    alert(err.data.error || err.data.message);
+                    if(err.data.message == 'Duplicated Bot')
+                    {
+                        alert(LanguageService('Name is already using'));
+                    }
+                    else
+                    {
+                        alert(err.data.error || err.data.message);
+                    }
                 });
             };
 
@@ -183,7 +190,14 @@
                 },
                 function(err)
                 {
-                    alert(err.data.error || err.data.message);
+                    if(err.data.message == 'Duplicated Bot')
+                    {
+                        alert(LanguageService('Name is already using'));
+                    }
+                    else
+                    {
+                        alert(err.data.error || err.data.message);
+                    }
                 });
             };
 

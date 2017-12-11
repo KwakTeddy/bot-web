@@ -1950,6 +1950,12 @@
                 "en": "WeChat",
                 "zh": "微信",
                 "jp": "WeChat"
+            },
+            "Name is already using": {
+                "ko": "이미 사용중인 이름입니다.",
+                "en": "Name is already using",
+                "zh": "名称已经在使用",
+                "jp": "名前は既に使用しています"
             }
         };
 
