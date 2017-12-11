@@ -8,7 +8,7 @@ var dialogs = [
                 "text": "안내"
             },
             {
-                "text": "1"
+                "regexp": "^1$"
             }
         ],
         "output": [
@@ -90,7 +90,7 @@ var dialogs = [
                 "text": "정보"
             },
             {
-                "text": "2"
+                "regexp": "^2$"
             }
         ],
         "output": [
@@ -112,7 +112,7 @@ var dialogs = [
                 "text": "후기"
             },
             {
-                "text": "4"
+                "regexp": "^4$"
             }
         ],
         "output": [
@@ -191,7 +191,7 @@ var dialogs = [
                 "text": "이벤트"
             },
             {
-                "text": "5"
+                "regexp": "^5$"
             }
         ],
         "output": [

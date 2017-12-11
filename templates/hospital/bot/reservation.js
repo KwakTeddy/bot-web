@@ -91,7 +91,7 @@ var dialogs = [
         id: 'restaurant57',
         filename: 'restaurant',
         name: "예약하기",
-        input: ['예약', '3'],
+        input: ['예약', {"regexp": "^1$"}],
         output: {callChild: '날짜선택'},
         children: [
             {
