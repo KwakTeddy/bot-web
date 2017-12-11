@@ -630,7 +630,7 @@
                 var template = '<div><div><span>' + output.text + '</span></div>';
                 if(output.image)
                 {
-                    template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                    // template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
                 }
 
                 template += '</div>';
