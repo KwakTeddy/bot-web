@@ -16,7 +16,6 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
         {
             FailedDialogService.query({ botId: chatbot.id, ignoreType: 'qna' }, function(list)
             {
-                console.log(list);
                 $scope.list = list;
 
                 $scope.$parent.loaded('working-ground');
@@ -52,13 +51,8 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
             angular.element(target).parent().parent().parent().parent().find('.selected').removeClass('selected');
             angular.element(target).parent().parent().parent().addClass('selected');
 
-            console.log(angular.element(target).parent().parent().parent());
-
             var text = angular.element(target).prev().text();
-            console.log(text);
-
             $scope.getSimiliars(text, item, 'inputRaw');
-
             e.stopPropagation();
         };
 
@@ -69,8 +63,6 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
             angular.element(target).addClass('selected').find('input').focus();
 
             var text = angular.element(target).addClass('selected').find('input').prev().text();
-            console.log(text);
-
             $scope.getSimiliars(text, item, 'inputRaw');
         };
 
@@ -88,8 +80,8 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
         $scope.save = function(e, item, list)
         {
             var id = item.id;
-            var inputRaw = angular.element(e.currentTarget).find('.failed-dialog-question').text();
-            var output = angular.element(e.currentTarget).find('input').val();
+            var inputRaw = angular.element(e.currentTarget).find('.failed-dialog-question').val();
+            var output = angular.element(e.currentTarget).find('input:last').val();
 
             TrainingService.save({ botId: chatbot._id, inputRaw: [ inputRaw ], output: [ output ], language: chatbot.language}, function()
             {
@@ -110,7 +102,6 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
 
         $scope.ignore = function(item)
         {
-            console.log(item);
             FailedDialogService.update({ botId: chatbot._id, _id: item.id, clear: (item.clear ? item.clear + '|qna' : 'qna') }, function()
             {
                 var index = $scope.list.indexOf(item);
@@ -120,6 +111,22 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
             {
                 alert(err.data.error || err.data.message);
             });
+        };
+
+        $scope.focusQuestion = function(e)
+        {
+            var target = e.currentTarget;
+            var className = angular.element(target).parent().parent().parent().attr('class');
+
+            if(className.indexOf('selected') != -1)
+            {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            else
+            {
+
+            }
         };
     })();
 
