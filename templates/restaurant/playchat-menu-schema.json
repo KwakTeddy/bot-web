@@ -9,7 +9,6 @@
             { "name" : "Manage Shop", "url" : "/templates/contents/preview", "icon" : "preview.png" },
             { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
         ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "Manage Conversation Graph", "url": "/development/dialog-graph", "icon": "dgm.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" }
     ]
 }

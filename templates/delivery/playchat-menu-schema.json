@@ -6,7 +6,6 @@
             { "name" : "Manage Menu", "url" : "/templates/contents/menu", "icon" : "menu.png" },
             { "name" : "Manage orders", "url" : "/templates/contents/order", "icon" : "order.png" }
         ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" },
-        { "name" : "Manage Conversation Graph", "url": "/development/dialog-graph", "icon": "scenario_w.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
     ]
 }

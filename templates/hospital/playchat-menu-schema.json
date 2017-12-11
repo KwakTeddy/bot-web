@@ -7,9 +7,6 @@
             { "name" : "manage procedural information", "url" : "/templates/contents/menu", "icon" : "info.png" },
             { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
         ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "Manage Conversation Graph", "url": "/development/dialog-graph", "icon": "scenario_w.png" },
-        { "name" : "Manage Intent", "url": "/management/intent", "icon": "intent.png" },
-        { "name" : "Manage Entity", "url": "/management/entity", "icon": "entity_select.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" }
     ]
 }
