@@ -1957,6 +1957,102 @@
                 "en": "Name is already using",
                 "zh": "名称已经在使用",
                 "jp": "名前は既に使用しています"
+            },
+            "Manage Contents": {
+                "ko": "컨텐츠 관리",
+                "en": "Manage Contents",
+                "zh": "内容管理",
+                "jp": ""
+            },
+            "manage reservation":{
+                "ko": "예약관리",
+                "en": "manage reservation",
+                "zh": "预约管理",
+                "jp":""
+            },
+            "manage procedural information":{
+                "ko": "시술정보관리",
+                "en": "manage procedural information",
+                "zh": "治疗信息管理",
+                "jp":""
+            },
+            "Manage Event":{
+                "ko": "이벤트관리",
+                "en": "Manage Event",
+                "zh": "活动管理",
+                "jp":""
+            },
+            "Manage Conversation Graph":{
+                "ko": "대화그래프관리",
+                "en": "Manage Conversation Graph",
+                "zh": "对话框图管理",
+                "jp":""
+            },
+            "Manage Intent":{
+                "ko": "인텐트관리",
+                "en": "Manage Intent",
+                "zh": "意向管理",
+                "jp":""
+            },
+            "Manage Entity":{
+                "ko": "엔터티관리",
+                "en": "Manage Entity",
+                "zh": "实体管理",
+                "jp":""
+            },
+            "Manage Menu":{
+                "ko": "메뉴관리",
+                "en": "Manage Menu",
+                "zh": "菜单管理",
+                "jp":""
+            },
+            "Manage orders":{
+                "ko": "주문관리",
+                "en": "Manage orders",
+                "zh": "订单管理",
+                "jp":""
+            },
+            "Manage Parking":{
+                "ko": "주차정보관리",
+                "en": "Manage Parking",
+                "zh": "停车信息管理",
+                "jp":""
+            },
+            "Manage Shuttle":{
+                "ko": "셔틀정보관리",
+                "en": "Manage Shuttle",
+                "zh": "班车信息管理",
+                "jp":""
+            },
+            "Manage Facility":{
+                "ko": "시설정보관리",
+                "en": "Manage Facility",
+                "zh": "设施信息管理",
+                "jp":""
+            },
+            "Manage Room":{
+                "ko": "객실정보관리",
+                "en": "Manage Room",
+                "zh": "房间信息管理",
+                "jp":""
+            },
+            "Manage Dining":{
+                "ko": "다이닝정보관리",
+                "en": "Manage Dining",
+                "zh": "餐饮信息管理",
+                "jp":""
+            },
+            "Manage Booking":{
+                "ko": "예약정보관리",
+                "en": "Manage Booking",
+                "zh": "预订信息管理",
+                "jp":""
+            },
+            "Manage Shop":{
+                "ko": "매장정보관리",
+                "en": "Manage Shop",
+                "zh": "店铺信息管理",
+                "jp":""
             }
         };
 

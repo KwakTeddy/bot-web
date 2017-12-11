@@ -2,6 +2,7 @@
 
 angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', ' $rootScope','$stateParams', 'FileUploader', function ($scope, $resource, $cookies, $rootScope, $stateParams, FileUploader)
 {
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 기본정보', '/modules/playchat/gnb/client/imgs/basic_grey.png');
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateDataService = $resource('/api/:botId/template-data', { botId: '@botId' }, { update: { method: 'PUT' } });
