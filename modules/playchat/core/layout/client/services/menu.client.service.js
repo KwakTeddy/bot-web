@@ -11,6 +11,11 @@
 
         var Menu = function()
         {
+            // this.setting = { name: 'Setting', icon: 'setting.png' };
+        };
+
+        Menu.prototype.initialize = function()
+        {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard.png' };
 
             this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
@@ -49,12 +54,11 @@
                 { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
                 { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
-
-            // this.setting = { name: 'Setting', icon: 'setting.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
         {
+            this.initialize();
             var that = this;
             if(typeof templateId == 'string' && callback)
             {

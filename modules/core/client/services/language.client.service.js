@@ -1944,6 +1944,7 @@
                 "en": "Organization",
                 "zh": "组织",
                 "jp": "組織"
+
             },
             "WeChat": {
                 "ko": "위챗",
