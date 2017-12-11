@@ -16,6 +16,8 @@
 {
     border: 1px solid #ddd;
     padding: 10px 20px;
+    width: 70%;
+    min-width: 95px;
 }
 </style>
 
@@ -28,8 +30,8 @@
                 <col style="width: 15%;">
                 <col style="width: 15%;">
                 <col style="width: 15%;">
-                <col style="width: 30%;">
-                <col style="width: 10%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
             </colgroup>
             <thead>
                 <tr>
@@ -38,21 +40,22 @@
                     <th>주차장 정보</th>
                     <th>주차장 위치</th>
                     <th>주차가능여부</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="data in datas">
                     <td>
-                        <input type="text" ng-model="data.parkname">
+                        <input type="text" ng-model="data.parkname" class="data-input">
                     </td>
                     <td>
-                        <input type="number" ng-model="data.parksize">
+                        <input type="number" ng-model="data.parksize" class="data-input">
                     </td>
                     <td>
-                        <input type="text" ng-model="data.parkdetails">
+                        <input type="text" ng-model="data.parkdetails" class="data-input">
                     </td>
                     <td>
-                        <input type="text" ng-model="data.parkaddress">
+                        <input type="text" ng-model="data.parkaddress" class="data-input">
                         <button type="button" ng-click="findAddress($event);">검색</button>
                     </td>
                     <td>
@@ -63,7 +66,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <button type="button" class="default-button" ng-click="add();">주차장 추가</button>
                     </td>
                 </tr>

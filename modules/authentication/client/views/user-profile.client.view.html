@@ -1,17 +1,17 @@
 <div class="chatbot-body">
-    <form ng-submit="save();" style="width: 600px; margin: 30px auto;">
-        <h2 style="font-size: 20px; font-weight: bold; border-bottom: 1px solid #ddd; padding: 20px 0;">Profile</h2>
-        <div class="form-row">
+    <form ng-submit="save();" style="width: 300px; margin: 30px auto;">
+        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;text-align: center;">Profile</h2>
+        <div class="form-row" >
             <span class="form-title">E-mail</span>
-            <input type="text" ng-model="user.email" disabled="true">
+            <input type="text" ng-model="user.email" disabled="true" class="data-input" style="background: #f2f2f2;margin: 2px;border:#f3f3f3;">
         </div>
-        <div class="form-row">
+        <div class="form-row" >
             <span class="form-title">Provider</span>
-            <input type="text" ng-model="user.provider" disabled="true">
+            <input type="text" ng-model="user.provider" disabled="true" class="data-input" style="background: #f2f2f2;margin: 2px;border:#f3f3f3;">
         </div>
         <div class="form-row">
             <span class="form-title">Username</span>
-            <input type="text" ng-model="user.username" disabled="true">
+            <input type="text" ng-model="user.username" disabled="true" class="data-input" style="background: #f2f2f2;margin: 2px;border:#f3f3f3;">
         </div>
         <!--<div class="form-row">-->
             <!--<label class="required">-->
@@ -34,7 +34,7 @@
         <div class="form-row">
             <label class="required">
                 <span class="form-title">Language</span>
-                <select class="jumbo-select" ng-model="user.language">
+                <select class="jumbo-select" ng-model="user.language" style="height: 33px;">
                     <option value="ko">{{ lan('Korean') }}</option>
                     <option value="en">{{ lan('English') }}</option>
                     <option value="zh">{{ lan('Chinese') }}</option>

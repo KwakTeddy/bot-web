@@ -87,12 +87,12 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
         $scope.exelDownload = function()
         {
             var template = {
-                sheetName: "인텐트 Top 10",
+                sheetName: LanguageService('Top 10 Intent'),
                 columnOrder: ['name', 'count'],
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, '인텐트 Top 10', $scope.date, template);
+            ExcelDownloadService.download(chatbot.id, LanguageService('Top 10 Intent'), $scope.date, template);
         };
     })();
 

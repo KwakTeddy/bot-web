@@ -6,7 +6,7 @@
     font-weight: 600;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px 15px;
+    padding: 8px 15px;
     font-size: 13px;
     color: #919191;
     width: 110px;
@@ -69,7 +69,7 @@
 
 .blue-button:hover, .blue-button:focus
 {
-    background: #129de9;
+    background: #007dc2;
 }
 
 .blue-button img
@@ -268,3 +268,8 @@
     margin: 0 10px;
 }
 
+.excel-download-button
+{
+    width: 150px;
+    padding: 11px;
+}

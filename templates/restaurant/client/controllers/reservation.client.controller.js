@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantReservationController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('restaurantReservationController', ['$scope', '$resource', '$cookies', 'FileUploader', '$rootScope',function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/reservations', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
@@ -55,6 +55,8 @@ angular.module('template').controller('restaurantReservationController', ['$scop
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
                 {
                     console.log(result);
+                    alert("저장하였습니다");
+                    $rootScope.$broadcast('simulator-build');
                 },
                 function(err)
                 {

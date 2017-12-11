@@ -24,6 +24,12 @@ module.exports.signin = function(req, res, next)
             user.password = undefined;
             user.salt = undefined;
 
+            if(user.state === false)
+            {
+                res.status(401).send('not registration');
+                return;
+            }
+
             req.login(user, function (err)
             {
                 if (err)
@@ -60,6 +66,28 @@ module.exports.signout = function (req, res)
     }
 };
 
+var makeUsername = function(index, callback, errorCallback)
+{
+    User.findOne({ username: 'user' + index }).exec(function(err, item)
+    {
+        if(err)
+        {
+            errorCallback(err);
+        }
+        else
+        {
+            if(item)
+            {
+                makeUsername(index+1, callback, errorCallback);
+            }
+            else
+            {
+                callback('user' + index);
+            }
+        }
+    });
+};
+
 module.exports.signup = function(req, res, next)
 {
     // For security measurement we remove the roles from the req.body object
@@ -71,149 +99,159 @@ module.exports.signup = function(req, res, next)
 
     // Add missing user fields
     user.provider = 'local';
-    user.displayName = user.username;
+    user.state = false; // for closed beta
+    // user.displayName = user.username;
 
-    //check whether already signed up by sns
-
-    //Define email search query
-    var emailSearchQuery = {};
-    emailSearchQuery['email'] = user.email;
-
-    User.findOne(emailSearchQuery, function (err, result)
+    makeUsername(0, function(username)
     {
-        if (err)
-        {
-            return res.status(400).send(err);
-        }
-        else
-        {
-            if (result && (result.provider == 'local'))
-            {
-                return res.status(400).send({ message: 'Email is already signed up.' });
-            }
+        //check whether already signed up by sns
 
-            if (result && (result.provider !== 'local'))
-            {
-                return res.status(400).send({ message: 'SNS', provider : result.provider });
-            }
+        user.username = username;
 
-            async.waterfall([
-                // Generate random token
-                function (done)
+        //Define email search query
+        var emailSearchQuery = {};
+        emailSearchQuery['email'] = user.email;
+
+        User.findOne(emailSearchQuery, function (err, result)
+        {
+            if (err)
+            {
+                return res.status(400).send(err);
+            }
+            else
+            {
+                if (result && (result.provider == 'local'))
                 {
-                    crypto.randomBytes(20, function (err, buffer)
+                    return res.status(400).send({ message: 'Email is already signed up.' });
+                }
+
+                if (result && (result.provider !== 'local'))
+                {
+                    return res.status(400).send({ message: 'SNS', provider : result.provider });
+                }
+
+                async.waterfall([
+                    // Generate random token
+                    function (done)
                     {
-                        var token = buffer.toString('hex');
-                        user.localEmailConfirmToken = token;
-                        user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
-                        if (!result)
+                        crypto.randomBytes(20, function (err, buffer)
                         {
-                            // Then save the user
-                            user.save(function (err)
+                            var token = buffer.toString('hex');
+                            user.localEmailConfirmToken = token;
+                            user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
+                            if (!result)
                             {
-                                if (err)
+                                // Then save the user
+                                user.save(function (err)
                                 {
-                                    console.log(err);
-                                    return res.status(400).send({ message: err.stack || err });
-                                }
-                                else
+                                    if (err)
+                                    {
+                                        console.log(err);
+                                        return res.status(400).send({ message: err.stack || err });
+                                    }
+                                    else
+                                    {
+                                        // Remove sensitive data before login
+                                        user.password = undefined;
+                                        user.salt = undefined;
+                                        done(err, token, user);
+                                    }
+                                });
+                            }
+                            else if (result.provider !== user.provider && (!result.additionalProvidersData || !result.additionalProvidersData[user.provider]))
+                            {
+                                // Add the provider data to the additional provider data field
+                                if (!result.additionalProvidersData)
                                 {
-                                    // Remove sensitive data before login
-                                    user.password = undefined;
-                                    user.salt = undefined;
-                                    done(err, token, user);
+                                    result.additionalProvidersData = {};
                                 }
-                            });
+
+                                result.password = JSON.parse(JSON.stringify(user.password));
+                                result['localEmailConfirmToken'] = JSON.parse(JSON.stringify(user.localEmailConfirmToken));
+                                result['localEmailConfirmExpires'] = JSON.parse(JSON.stringify(user.localEmailConfirmExpires));
+
+                                user.password = undefined;
+                                user.roles = undefined;
+                                user.localEmailConfirmToken = undefined;
+                                user.localEmailConfirmExpires = undefined;
+                                result.additionalProvidersData[user.provider] = user;
+
+                                // Then tell mongoose that we've updated the additionalProvidersData field
+                                result.markModified('additionalProvidersData');
+
+                                // And save the result
+                                result.save(function (err)
+                                {
+                                    if (err)
+                                    {
+                                        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+                                    }
+                                    else
+                                    {
+                                        // Remove sensitive data before login
+                                        result.password = undefined;
+                                        result.salt = undefined;
+                                        done(err, token, user);
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    function (token, user, done)
+                    {
+                        var httpTransport = 'http://';
+                        if (config.secure && config.secure.ssl === true)
+                        {
+                            httpTransport = 'https://';
                         }
-                        else if (result.provider !== user.provider && (!result.additionalProvidersData || !result.additionalProvidersData[user.provider]))
-                        {
-                            // Add the provider data to the additional provider data field
-                            if (!result.additionalProvidersData)
+
+                        res.render(path.resolve('modules/authentication/server/templates/email-confirm'),
                             {
-                                result.additionalProvidersData = {};
+                                name: user.displayName,
+                                appName: 'Play Chat',
+                                url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                            }, function (err, emailHTML)
+                            {
+                                done(err, emailHTML, user);
+                            });
+                    },
+                    // If valid email, send reset email using service
+                    function (emailHTML, user, done)
+                    {
+                        var mailOptions = {
+                            to: user.email,
+                            from: config.mailer.from,
+                            subject: 'E-mail 인증',
+                            html: emailHTML
+                        };
+
+                        smtpTransport.sendMail(mailOptions, function (err)
+                        {
+                            if (!err)
+                            {
+                                return res.status(200).send({ message: 'An email has been sent to the provided email with further instructions.' });
+                            }
+                            else
+                            {
+                                return res.status(400).send({ message: 'Failure sending email' });
                             }
 
-                            result.password = JSON.parse(JSON.stringify(user.password));
-                            result['localEmailConfirmToken'] = JSON.parse(JSON.stringify(user.localEmailConfirmToken));
-                            result['localEmailConfirmExpires'] = JSON.parse(JSON.stringify(user.localEmailConfirmExpires));
-
-                            user.password = undefined;
-                            user.roles = undefined;
-                            user.localEmailConfirmToken = undefined;
-                            user.localEmailConfirmExpires = undefined;
-                            result.additionalProvidersData[user.provider] = user;
-
-                            // Then tell mongoose that we've updated the additionalProvidersData field
-                            result.markModified('additionalProvidersData');
-
-                            // And save the result
-                            result.save(function (err)
-                            {
-                                if (err)
-                                {
-                                    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-                                }
-                                else
-                                {
-                                    // Remove sensitive data before login
-                                    result.password = undefined;
-                                    result.salt = undefined;
-                                    done(err, token, user);
-                                }
-                            });
-                        }
-                    });
-                },
-                function (token, user, done)
-                {
-                    var httpTransport = 'http://';
-                    if (config.secure && config.secure.ssl === true)
-                    {
-                        httpTransport = 'https://';
+                            done(err);
+                        });
                     }
-
-                    res.render(path.resolve('modules/authentication/server/templates/email-confirm'),
-                    {
-                        name: user.displayName,
-                        appName: 'Play Chat',
-                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
-                    }, function (err, emailHTML)
-                    {
-                        done(err, emailHTML, user);
-                    });
-                },
-                // If valid email, send reset email using service
-                function (emailHTML, user, done)
+                ], function (err)
                 {
-                    var mailOptions = {
-                        to: user.email,
-                        from: config.mailer.from,
-                        subject: 'E-mail 인증',
-                        html: emailHTML
-                    };
-
-                    smtpTransport.sendMail(mailOptions, function (err)
+                    if (err)
                     {
-                        if (!err)
-                        {
-                            return res.status(200).send({ message: 'An email has been sent to the provided email with further instructions.' });
-                        }
-                        else
-                        {
-                            return res.status(400).send({ message: 'Failure sending email' });
-                        }
-
-                        done(err);
-                    });
-                }
-            ], function (err)
-            {
-                if (err)
-                {
-                    return next(err);
-                }
-            });
-        }
+                        return next(err);
+                    }
+                });
+            }
+        });
+    }, function(err)
+    {
+        console.error(err);
+        return res.status(400).send(err);
     });
 };
 
@@ -253,7 +291,8 @@ module.exports.validateEmailConfirmToken = function(req, res)
                     }
                     else
                     {
-                        res.cookie('login', true);
+                        //for closedbeta
+                        // res.cookie('login', true);
                         res.redirect('/');
                     }
                 });

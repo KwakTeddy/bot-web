@@ -197,6 +197,7 @@ module.exports.initModulesClientRoutes = function (app)
     });
 
      // Setting the app router and static folder
+    app.use('/front', express.static(path.resolve('./modules/front')));
     app.use('/', express.static(path.resolve('./public')));
 
     // Globbing static routing

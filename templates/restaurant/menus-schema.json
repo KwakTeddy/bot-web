@@ -1,7 +1,7 @@
 {
     "category" : "String",
     "name" : "String",
-    "hotmenus" : "String",
+    "hotmenus" : "Boolean",
     "price" : "Number",
     "image" : "String"
 }

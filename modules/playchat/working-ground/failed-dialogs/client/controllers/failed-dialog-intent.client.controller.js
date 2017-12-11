@@ -5,13 +5,34 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
 
     var chatbot = $cookies.getObject('chatbot');
 
+    $scope.list = [];
+
     (function()
     {
         $scope.getFailedIntentList = function()
         {
             FailedIntentService.query({ botId: chatbot.id }, function(result)
             {
+                for(var i=0; i<result.length; i++)
+                {
+                    var check = {};
+                    var intentList = [];
+
+                    for(var j=0; j<result[i].intent.length; j++)
+                    {
+                        if(!check[result[i].intent[j].intent.intentId._id])
+                        {
+                            check[result[i].intent[j].intent.intentId._id] = true;
+                            intentList.push(result[i].intent[j].intent.intentId);
+                        }
+                    }
+
+                    result[i].intent = intentList;
+                }
+
                 $scope.list = result;
+
+                console.log(result)
             },
             function(err)
             {
@@ -19,12 +40,13 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
             });
         };
 
-        $scope.addToIntent = function(dialog, intent, id)
+        $scope.addToIntent = function(id, dialog, intentId, index)
         {
-            FailedIntentService.save({ botId: chatbot.id, intentId: intent[0].intent._id, name: dialog}, function()
+            FailedIntentService.save({ botId: chatbot.id, intentId: intentId, name: dialog, language: chatbot.language}, function(r)
             {
-                FailedDialogService.update({ botId: chatbot._id, _id: id }, function()
+                FailedDialogService.update({ botId: chatbot._id, _id: id }, function(result)
                 {
+                    $scope.list.splice(index, 1);
                 },
                 function(err)
                 {

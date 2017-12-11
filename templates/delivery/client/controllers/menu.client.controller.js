@@ -21,7 +21,9 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
 
                 MenuService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                 {
-                    $scope.menus = list;
+                    // $scope.menus = list;
+                    $scope.menus = [{status : " 승인대기중", mobile : "01092597716", address:"서울시 관악구 봉천동 1645-55 201호", pay:"현금", discr:"문앞에 놔주세요", order:[{name:"양념치킨", quant:1, price:12000}]}];
+
                 },
                 function(err)
                 {
@@ -63,6 +65,6 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
         };
 
     })();
-
+    console.log($scope.menus);
     $scope.getList();
 }]);

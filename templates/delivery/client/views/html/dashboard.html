@@ -21,27 +21,33 @@
 </style>
 
 <div ng-controller="deliveryDashboardController">
-    <div class="dashboard-summary-title">Bot Profile</div>
-    <div class="dashboard-bot-profile">
-        <div class="dashboard-bot-profile-image">
-            <div class="dashboard-bot-profile-image-wrapper">
-                <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
-                <span></span>
+    <div ng-if="isFirst">
+        <h1 style="font-size: 25px; font-weight: 600; margin: 10px; line-height: 45px;">챗봇이 만들어졌습니다! <br> 지금 채널에 연결하면 바로 자동응답이 시작됩니다.</h1>
+    </div>
+
+    <div ng-if="!isFirst">
+        <div class="dashboard-summary-title">Bot Profile</div>
+        <div class="dashboard-bot-profile">
+            <div class="dashboard-bot-profile-image">
+                <div class="dashboard-bot-profile-image-wrapper">
+                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <span></span>
+                </div>
             </div>
-        </div>
-        <div class="dashboard-bot-profile-content">
-            <div>
-                <span>Bot Name</span>
-                <input type="text" value="{{ chatbot.name }}" disabled="true">
-            </div>
-            <div>
-                <p>Description</p>
-                <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+            <div class="dashboard-bot-profile-content">
+                <div>
+                    <span>Bot Name</span>
+                    <input type="text" value="{{ chatbot.name }}" disabled="true">
+                </div>
+                <div>
+                    <p>Description</p>
+                    <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="dashboard-summary-title">기본정보</div>
+    <div class="dashboard-summary-title">Basic Information</div>
     <div class="dashboard-dialog-develop basic">
         <div class="dashboard-dialog-management-card">
             <a href="#" class="dashboard-dialog-cover"></a>
@@ -210,29 +216,29 @@
         <div class="dashboard-dialog-management-card">
             <a href="/playchat/analysis/user" class="dashboard-dialog-cover"></a>
             <div>
-                <div><a href="/playchat/analysis/user"><img src="/modules/playchat/working-ground/dashboard/client/imgs/user.png"></a> 사용자</div>
+                <div><a href="/playchat/analysis/user"><img src="/modules/playchat/working-ground/dashboard/client/imgs/user.png"></a> User</div>
                 <p>나의 챗봇을 이용하는 사용자를 관리 할 수 있습니다.</p>
             </div>
         </div>
         <div class="dashboard-dialog-management-card">
             <a href="/playchat/analysis/dialog-training-usage" class="dashboard-dialog-cover"></a>
             <div>
-                <div><a href="/playchat/analysis/dialog-training-usage"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech.png"></a> 대화량</div>
+                <div><a href="/playchat/analysis/dialog-training-usage"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech.png"></a> Dialog Traffic</div>
                 <p>나의 챗봇을 이용하는 사용자를 관리 할 수 있습니다.</p>
             </div>
         </div>
         <div class="dashboard-dialog-management-card">
             <a href="#" class="dashboard-dialog-cover"></a>
             <div>
-                <div><a href="/playchat/analysis/dialog-training-input"><img src="/modules/playchat/working-ground/dashboard/client/imgs/hat.png"></a> 대화 학습</div>
+                <div><a href="/playchat/analysis/dialog-training-input"><img src="/modules/playchat/working-ground/dashboard/client/imgs/hat.png"></a> Dialog Learning</div>
                 <p>응답하지 못한 사용자의 질문에 대한 답변을 학습시킬 수 있습니다.</p>
             </div>
         </div>
         <div class="dashboard-dialog-management-card">
             <a href="#" class="dashboard-dialog-cover"></a>
             <div class="">
-                <div><a href="/playchat/analysis/dialog-graph-path"><img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_graph_min.png"></a> 대화 그래프</div>
-                <p>학습 시킨 대화 지식을 관리 할 수 있습니다.</p>
+                <div><a href="/playchat/analysis/dialog-graph-path"><img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_graph_min.png"></a> Dialog Graph</div>
+                <p>Manage the trained dialog knowledge.</p>
             </div>
         </div>
         <div class="dashboard-dialog-management-card">

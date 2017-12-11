@@ -33,6 +33,12 @@
                     location.href = $state.previous.href;
                 else
                     location.href = '/playchat/chatbots';
+            }).error(function(err)
+            {
+                if(err == 'not registration' || err.message.startsWith('E-mail 확인절차를'))
+                {
+                    alert('클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.');
+                }
             });
         };
 

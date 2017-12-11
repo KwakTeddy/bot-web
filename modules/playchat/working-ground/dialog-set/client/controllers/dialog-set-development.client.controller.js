@@ -590,6 +590,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 openDialogsets[chatbot.id][result.title] = result._id;
                 $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 
+                $scope.currentDialogsetId = result._id;
+
                 $scope.createTab(result._id, result.title);
                 $scope.selectTab(result._id, result.title);
                 $scope.closeOpenModal();

@@ -126,6 +126,9 @@ var eventlistType = {
 };
 bot.setType("eventlistType", eventlistType);
 
+
+
+
 var mobile = {
     name: 'mobile',
     raw: true,
@@ -326,7 +329,7 @@ var menuCategoryAction= {
         context.dialog.categorylength=[];
 
         
-        if (context.bot.menuImage) {
+        if (context.bot.menuImage!==undefined) {
             var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
             task.result = {
                 image: {url: img},
@@ -345,23 +348,26 @@ var menuCategoryAction= {
                 } else {
                     context.dialog.categorys = docs;
                     for(i=0;i<context.dialog.categorys.length;i++){
-                        for(j=0;j<=context.dialog.categorylength.length;j++){
-                            var count1=0;
+                        var count1=0;
+                        for(j=0;j<context.dialog.categorylength.length;j++){
+
                             if(context.dialog.categorylength.length!==0)
                             {
-                                if(context.dialog.categorys[i].category!==context.dialog.categorylength[j]){count1++;}
+                                if(context.dialog.categorys[i].category!==context.dialog.categorylength[j].category){count1++;}
                             }
+                            console.log(count1+'======================count1');
                         }
                         if(count1==context.dialog.categorylength.length)
                         {context.dialog.categorylength.push(context.dialog.categorys[i]);}
                      console.log(JSON.stringify(context.dialog.categorylength)+'======================');
+
                     }
                     if(context.dialog.categorylength.length>1){
                         context.dialog.categoryisone=0;
                         context.dialog.restaurantno = 0;
                         var ss = 0;
                         for (i = 0; i < context.dialog.categorys.length; i++) {
-                            if (context.dialog.categorys[i].price !== "") {ss++;}
+                            if (context.dialog.categorys[i].price !== " ") {ss++;}
                         }
                         if (ss == context.dialog.categorys.length) {
                             context.dialog.menuprice = 1;
@@ -382,6 +388,7 @@ var menuCategoryAction= {
                         }).lean().exec(function (err, docs) {
 
                             context.dialog.menuss = docs[0];
+                            console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
                             callback(task, context);
                         });
                     }
@@ -622,15 +629,17 @@ var menuImageTask3 = {
             for (i = 0; i < context.dialog.categorys.length; i++) {
                 var str = context.dialog.inCurRaw;
                 var ll=i+1;
-                if (str==ll){
+                if (str==ll) {
                     context.dialog.categorymenu.push(context.dialog.categorys[i]);
-                    var img = context.dialog.categorymenu[0].image.startsWith('http') ? context.dialog.categorymenu[0].imagee : config.host + context.dialog.categorymenu[0].image;
-                    task.result = {
-                        image: {url: context.dialog.categorymenu[0].image},
-                        buttons: [
-                            {text: '자세히보기', url: img}
-                        ]
-                    };
+                    if (context.dialog.categorymenu[0].image!==undefined) {
+                        var img = context.dialog.categorymenu[0].image.startsWith('http') ? context.dialog.categorymenu[0].imagee : config.host + context.dialog.categorymenu[0].image;
+                        task.result = {
+                            image: {url: context.dialog.categorymenu[0].image},
+                            buttons: [
+                                {text: '자세히보기', url: img}
+                            ]
+                        };
+                    }
                 }
             }
             callback(task, context);
@@ -643,7 +652,8 @@ bot.setTask("menuImageTask3", menuImageTask3);
 var menuimagedisplay = {
     name: 'menuimagedisplay',
     action: function(task, context, callback) {
-                if (context.dialog.categorymenu[0].image){
+        //console.log(context.dialog.categorymenu.image+'---------------------');
+                if (context.dialog.categorymenu[0].image!==undefined){
                     var img = context.dialog.categorymenu[0].image.startsWith('http') ? context.dialog.categorymenu[0].imagee : config.host + context.dialog.categorymenu[0].image;
                     task.result = {
                         image: {url: context.dialog.categorymenu[0].image},
@@ -651,8 +661,8 @@ var menuimagedisplay = {
                             {text: '자세히보기', url: img}
                         ]
                     };
-                    callback(task, context);
                 }
+        callback(task, context);
     }
 };
 bot.setTask("menuimagedisplay", menuimagedisplay);
@@ -663,7 +673,7 @@ bot.setTask("menuimagedisplay", menuimagedisplay);
 var categorymenuisornot= {
     action: function(task, context, callback)
     {
-        //console.log("++++++++++++++++++++++++++++++");
+        console.log("++++++++++++++++++++++++++++++");
         context.dialog.menuis = 0;
         context.dialog.categorymenu=[];
         restaurantmenu.find({
@@ -686,8 +696,10 @@ var categorymenuisornot= {
                     // s[i].name)) {context.dialog.menumatch.push(context.dialog.categorys[i]);}
                     if ((str.indexOf(context.dialog.categorys[i].name)>0)||str==ll) {
                         context.dialog.categorymenu.push(context.dialog.categorys[i]);
+                        console.log(JSON.stringify(context.dialog.categorymenu)+"2222222222222222");
                     }
                 }
+                console.log(context.dialog.categorymenu.length+"2222222222222222666");
                 if (context.dialog.categorymenu.length !== 0) {
                     context.dialog.menuis = 1;
                 }
@@ -707,6 +719,7 @@ bot.setTask("categorymenuisornot", categorymenuisornot);
 var menuisornot= {
     action: function(task, context, callback)
     {
+        console.log("1111111111");
 
         context.dialog.menuis = 0;
         context.dialog.categorymenu=[];
@@ -718,14 +731,17 @@ var menuisornot= {
                 console.log(err);
                 callback(task, context);
             } else {
+
                 context.dialog.menus = docs;
+                console.log(JSON.stringify(context.dialog.menus)+"22222222223333333333");
                 var ll=0;
                 for (i = 0; i < context.dialog.menus.length; i++) {
                     var str = context.dialog.inCurRaw;
                     ll=i+1;
-                    if ((str.indexOf(context.dialog.menus[i].name)>0)|| str==ll) {
+                    if ((str.indexOf(context.dialog.menus[i].name)>=0)|| str==ll) {
                         context.dialog.categorymenu.push(context.dialog.menus[i]);
                     }
+                    console.log(JSON.stringify(context.dialog.categorymenu)+"3333333333");
                 }
                 if (context.dialog.categorymenu.length !== 0) {
                     context.dialog.menuis = 1;
@@ -1301,39 +1317,24 @@ var reserveCancel = {
 
 bot.setTask("reserveCancel", reserveCancel);
 
+var previewmenulistType = {
+    name: "previews",
+    listName: "previews",
+    typeCheck: "listTypeCheck"
+};
+bot.setType("previewmenulistType", previewmenulistType);
+
 var previewAction = {
     name: "previewAction",
     action: function (task, context, callback) {
         model = mongoModule.getModel('restaurant-previews');
-        var inCurRaw=Number(context.dialog.inCurRaw)-1;
+        //var inCurRaw=Number(context.dialog.inCurRaw)-1;
         context.dialog.categorys2=[];
-        model.find({botId: context.bot.id}).lean().exec(function (err, docs) {
-            context.dialog.categorys1=docs;
-            //console.log(JSON.stringify(context.dialog.categoryss)+'====================');
+        model.find({botId: context.bot.id,category:context.dialog.previewlistType.category}).lean().exec(function (err, docs) {
+            context.dialog.previews=docs;
 
-            for(i=0;i<context.dialog.categorys1.length;i++){
-                var ss=0;
-                for(j=0;j< context.dialog.categorys2.length;j++)
-                {
-                   if(context.dialog.categorys2.length!==0) {
-                       if(context.dialog.categorys1[i].category!== context.dialog.categorys2[j])
-                       {ss++;}
-                   }
-                }
-
-                if(ss==context.dialog.categorys2.length)
-                {context.dialog.categorys2.push(context.dialog.categorys1[i].category);}
-            }
-
-            context.dialog.categorys2.reverse();
-           // console.log(context.dialog.categorys2[0]+'+++++++++++++++++++++++++++++++');
-           context.dialog.categoryselect=context.dialog.categorys2[inCurRaw];
-            model.find({botId: context.bot.id,category:context.dialog.categoryselect}).lean().exec(function(err, docs) {
-                context.dialog.categoryss=docs;
-              //  console.log(docs+'====================');
                 callback(task, context);
             });
-        });
     }
 };
 bot.setTask("previewAction", previewAction);
@@ -1382,60 +1383,114 @@ function previewAction(task, context, callback) {
     }
 
 
+
+var previewlistType = {
+    name: "categorys",
+    listName: "categorys",
+    typeCheck: "listTypeCheck"
+};
+bot.setType("previewlistType", previewlistType);
+
 var previewCategoryAction = {
     name: "previewCategoryAction",
     action: function (task, context, callback) {
         var model, query, sort;
 
         model = mongoModule.getModel('restaurant-previews');
-        query = {botId: context.bot.id};
-        sort = {'_id': +1};
-
-
-        model.aggregate([
-            {$match: query},
-            {$sort: sort},
-            {
-                $group: {
-                    _id: '$category',
-                    category: {$first: '$category'}
-                }
-            }
-        ], function (err, docs) {
-            if (docs == undefined) {
-                callback(task, context);
-            } else {
-                var categorys = [];
-                for (var i = 0; i < docs.length; i++) {
-                    var doc = docs[i];
-
-                    var category = doc.category;
-                    if (!_.includes(categorys, category)) {
-                        categorys.push({name: category});
-                    }
-
-                    // for (var j = 0; j < doc.category.length; j++) {
-                    //   var category = doc.category[j];
-                    //   if(!_.includes(categorys, category)){
-                    //     categorys.push({name: category});
-                    //   }
-                    // }
-                }
-                if (categorys.length == 1) {
-                    task.doc = categorys;
-                    context.dialog.categorys = categorys;
-                    previewAction(task, context, function (task, context) {
-                        callback(task, context);
-                    });
-                } else if (categorys.length > 1) {
-                    task.doc = categorys;
-                    context.dialog.categorys = categorys;
+        //query = {botId: context.bot.id};
+        //sort = {'_id': +1};
+        context.dialog.categorys = undefined;
+        context.dialog.previewcategorylength=[];
+            model.find({botId: context.bot.id}).lean().exec(function (err, docs) {
+                if (err) {
+                    console.log(err);
                     callback(task, context);
                 } else {
-                    callback(task, context);
+                    context.dialog.categorys = docs;
+                    for(i=0;i<context.dialog.categorys.length;i++){
+                        var count1=0;
+                        for(j=0;j<context.dialog.previewcategorylength.length;j++){
+
+                            if(context.dialog.preview.categorylength.length!==0)
+                            {
+                                if(context.dialog.categorys[i].category!==context.dialog.preview.categorylength[j].category){count1++;}
+                            }
+                            console.log(count1+'======================count1');
+                        }
+                        if(count1==context.dialog.previewcategorylength.length)
+                        {context.dialog.previewcategorylength.push(context.dialog.categorys[i]);}
+                        console.log(JSON.stringify(context.dialog.previewcategorylength)+'======================');
+
+                    }
+                    if(context.dialog.previewcategorylength.length>1){
+                        context.dialog.categoryisone=0;
+                        callback(task, context);
+                        var ss = 0;
+                    }
+                    else if(context.dialog.previewcategorylength.length===1)
+                    {
+                        //console.log(context.dialog.categorylength+'+++++++++++++++++++++++++++++++3');
+                        context.dialog.categoryisone = 1;
+                        model.find({
+                            botId: context.bot.id,
+                            category: context.dialog.previewcategorylength
+                        }).lean().exec(function (err, docs) {
+                            context.dialog.menuss = docs[0];
+                            console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
+                            callback(task, context);
+                        });
+                    }
+                    else {
+                        //console.log(context.dialog.categorylength+'+++++++++++++++++++++++++++++++2');
+                        callback(task, context);
+                    }
                 }
-            }
-        });
+            });
+
+        // model.aggregate([
+        //     {$match: query},
+        //     //{$sort: sort},
+        //     {
+        //         $group: {
+        //             _id: '$category',
+        //             category: {$first: '$category'}
+        //         }
+        //     }
+        // ], function (err, docs) {
+        //     if (docs == undefined) {
+        //         callback(task, context);
+        //     } else {
+        //         var categorys = [];
+        //         for (var i = 0; i < docs.length; i++) {
+        //             var doc = docs[i];
+        //
+        //             var category = doc.category;
+        //             if (!_.includes(categorys, category)) {
+        //                 categorys.push({name: category});
+        //             }
+        //
+        //             // for (var j = 0; j < doc.category.length; j++) {
+        //             //   var category = doc.category[j];
+        //             //   if(!_.includes(categorys, category)){
+        //             //     categorys.push({name: category});
+        //             //   }
+        //             // }
+        //         }
+        //         if (categorys.length == 1) {
+        //             task.doc = categorys;
+        //             context.dialog.categorys = categorys;
+        //             previewAction(task, context, function (task, context) {
+        //                 callback(task, context);
+        //             });
+        //         } else if (categorys.length > 1) {
+        //             task.doc = categorys;
+        //             context.dialog.categorys = categorys;
+        //             callback(task, context);
+        //         } else {
+        //             callback(task, context);
+        //         }
+        //     }
+        // });
     }
 };
 
@@ -1446,49 +1501,19 @@ var menuDetailTask = {
     action: function(task, context, callback) {
         //console.log(context.dialog.menu.name+'=============');
 
-        model = mongoModule.getModel('restaurant-previews');
-        var inCurRaw=Number(context.dialog.inCurRaw)-1;
-        context.dialog.categorysnames2=[];
-        model.find({botId: context.bot.id,category:context.dialog.categoryselect}).lean().exec(function (err, docs) {
-            context.dialog.categorysnames1=docs;
-
-            //console.log(JSON.stringify(docs)+'==========6666==========');
-
-            for(i=0;i<context.dialog.categorysnames1.length;i++){
-                var ss=0;
-                for(j=0;j< context.dialog.categorysnames2.length;j++)
-                {
-                    if(context.dialog.categorysnames2.length!==0) {
-                        if(context.dialog.categorysnames1[i].name!== context.dialog.categorysnames2[j])
-                        {ss++;}
+        if (context.dialog.previewmenulistType.image !== undefined) {
+            task.result = {
+                text: '[' + context.dialog.previewmenulistType.name + ']' + '\n' + context.dialog.previewmenulistType.description + '\n\n처음으로 가려면\n "시작"이라고 입력해주세요.',
+                image: {url: context.dialog.previewmenulistType.image},
+                buttons: [
+                    {
+                        text: '자세히보기',
+                        url: context.dialog.previewmenulistType.image.startsWith('http') ? context.dialog.previewmenulistType.image : config.host + context.dialog.previewmenulistType.image
                     }
-                }
-
-                if(ss==context.dialog.categorysnames2.length)
-                {context.dialog.categorysnames2.push(context.dialog.categorysnames1[i].name);}
-            }
-
-            //context.dialog.categorysnames2.reverse();
-            // console.log(context.dialog.categorysnames2+'+++++++++++++++++++++++++++++++');
-            context.dialog.categorynameselect=context.dialog.categorysnames2[inCurRaw];
-            model.find({botId: context.bot.id,name:context.dialog.categorynameselect}).lean().exec(function(err, docs) {
-                context.dialog.categorynamess=docs;
-               // console.log(context.dialog.categorynamess[0].name+'=========88888888===========');
-                if(context.dialog.categorynamess[0].image) {
-                    task.result = {
-                        text:'['+context.dialog.categorynamess[0].name+']'+ '\n'+ context.dialog.categorynamess[0].description+'\n\n처음으로 가려면\n "시작"이라고 입력해주세요.',
-                        image: {url: context.dialog.categorynamess[0].image},
-                        buttons: [
-                            {text: '자세히보기',
-                                url: context.dialog.categorynamess[0].image.startsWith('http') ? context.dialog.categorynamess[0].image : config.host + context.dialog.categorynamess[0].image}
-                        ]
-                    };
-                }
-                //task.result = {items: context.dialog.menu};
-                //console.log(context.dialog.menu.name+'=============');
-                callback(task, context);
-            });
-        });
+                ]
+            };
+            callback(task, context);
+        }
     }
 };
 
@@ -1501,7 +1526,7 @@ var menuImageTask1 = {
     name: "menuImageTask1",
     action: function(task, context, callback) {
         console.log(context.dialog.menucategory[0].image+'======================');
-        if(context.dialog.menucategory[0].image) {
+        if(context.dialog.menucategory[0].image!==undefined) {
             var img = context.dialog.menucategory[0].image.startsWith('http') ? context.dialog.menucategory[0].imagee : config.host + context.dialog.menucategory[0].image;
             task.result = {
                 image: {url: context.dialog.menucategory[0].image},
@@ -1520,7 +1545,7 @@ var menuImageTask2 = {
     name: "menuImageTask2",
     action: function(task, context, callback) {
         console.log(context.dialog.menumatch[0].image+'======================');
-        if(context.dialog.menumatch[0].image) {
+        if(context.dialog.menumatch[0].image!==undefined) {
             var img = context.dialog.menumatch[0].image.startsWith('http') ? context.dialog.menumatch[0].imagee : config.host + context.dialog.menumatch[0].image;
             task.result = {
                 image: {url: context.dialog.menumatch[0].image},
@@ -1539,7 +1564,7 @@ bot.setTask("menuImageTask2", menuImageTask2);
 var menuImageTask = {
     name: "menuImageTask",
     action: function(task, context, callback) {
-        if(context.bot.menuImage) {
+        if(context.bot.menuImage!==undefined) {
             var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
             task.result = {
                 image: {url: img},
@@ -1560,14 +1585,19 @@ var eventAction = {
         console.log(context.dialog.eventlistType.name+'+++++++++++++++++++++++++++');
         context.dialog.events=context.dialog.eventlistType;
         context.dialog.eventss=context.dialog.events;
-        task.result = {
-            text:'['+context.dialog.eventss.name+']'+'\n'+context.dialog.eventss.description+'\n'+'처음으로 가려면 "시작"이라고 입력해주세요.',
-            image: {url: context.dialog.eventss.image},
-            buttons: [
-                {text: '자세히보기',
-                    url: context.dialog.eventss.image.startsWith('http') ? context.dialog.eventss.image : config.host + context.dialog.eventss.image}
-            ]
-        };
+        if(context.dialog.eventss.image!==undefined) {
+            task.result = {
+                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
+                image: {url: context.dialog.eventss.image},
+                buttons: [
+                    {
+                        text: '자세히보기',
+                        url: context.dialog.eventss.image.startsWith('http') ? context.dialog.eventss.image : config.host + context.dialog.eventss.image
+                    }
+                ]
+            };
+
+        }
         callback(task, context);
     }
 };
