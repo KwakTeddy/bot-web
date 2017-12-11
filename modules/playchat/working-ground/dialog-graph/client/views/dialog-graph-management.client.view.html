@@ -3,13 +3,6 @@
         <form class="inline-block">
             <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
-        <div class="funtionbtn1">
-            <a href="#">
-                <img src="modules/playchat/working-ground/common/client/imgs/import.png">
-                <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
-                <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
-            </a>
-        </div>
     </div>
     <div class="tab01">
         <ul class="tabs1">
@@ -17,8 +10,17 @@
             <!--<li><a href="#">{{lan('Store') }}</a></li>-->
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
-        <div class="btn02 flR" ng-click="modal.mgmtModal.open();" style="width: 110px;">
-            <a href="#" class="">{{lan('Add New') }}</a>
+        <div class="flR" style="position: relative; top: -40px;">
+            <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
+                <a href="#">
+                    <img src="modules/playchat/working-ground/common/client/imgs/import.png">
+                    <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
+                    <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
+                </a>
+            </div>
+            <div class="btn02" ng-click="modal.mgmtModal.open();" style="width: 110px; display: inline-block;">
+                <a href="#" class="">{{lan('Add New') }}</a>
+            </div>
         </div>
     </div>
     <div class="downSide">
