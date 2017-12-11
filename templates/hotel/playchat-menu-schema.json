@@ -1,18 +1,18 @@
 {
     "menus" : [
-        { "name" : "대시보드", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
-        { "name" : "컨텐츠 관리", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
-            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "basic.png" },
-            { "name" : "주차정보관리", "url" : "/templates/contents/park", "icon" : "park.png" },
-            { "name" : "셔틀정보관리", "url" : "/templates/contents/shuttle", "icon" : "shuttle.png" },
-            { "name" : "이벤트정보관리", "url" : "/templates/contents/event", "icon" : "event.png" },
-            { "name" : "시설정보관리", "url" : "/templates/contents/facility", "icon" : "facility.png" },
-            { "name" : "객실정보관리", "url" : "/templates/contents/room", "icon" : "room.png" },
-            { "name" : "다이닝정보관리", "url" : "/templates/contents/restaurant", "icon" : "restaurant.png" },
-            { "name" : "예약정보관리", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "Manage Parking", "url" : "/templates/contents/park", "icon" : "park.png" },
+            { "name" : "Manage Shuttle", "url" : "/templates/contents/shuttle", "icon" : "shuttle.png" },
+            { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" },
+            { "name" : "Manage Facility", "url" : "/templates/contents/facility", "icon" : "facility.png" },
+            { "name" : "Manage Room", "url" : "/templates/contents/room", "icon" : "room.png" },
+            { "name" : "Manage Dining", "url" : "/templates/contents/restaurant", "icon" : "restaurant.png" },
+            { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "dgm.png" },
-        { "name" : "인텐트관리", "url": "/development/intent", "icon": "scenario.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" },
+        { "name" : "Manage Conversation Graph", "url": "/development/dialog-graph", "icon": "dgm.png" },
+        { "name" : "Manage Intent", "url": "/development/intent", "icon": "scenario.png" }
     ]
 }

@@ -1340,47 +1340,47 @@ var previewAction = {
 bot.setTask("previewAction", previewAction);
 
 
-function previewAction(task, context, callback) {
-        var model, query, sort;
-        if (context.dialog.categorys.length == 1) {
-            context.dialog.category = context.dialog.categorys[0];
-        }
-        model = mongoModule.getModel('restaurant-previews');
-        query = {
-            botId: context.bot.id,
-            category: context.dialog.category.name
-        };
-        sort = {'_id': +1};
-
-        model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function (err, docs) {
-            task.doc = docs;
-            context.dialog.menus = docs;
-            var result = [];
-            async.eachSeries(task.doc, function (doc, cb) {
-                var _doc = {};
-                if (doc.name) {
-                    _doc.title = doc.name;
-                }
-                if (doc.description) {
-                    _doc.text = doc.description;
-                }
-                if (doc.price) {
-                    _doc.text = _doc.text + ' ' + doc.title + '원';
-                }
-                if (doc.image) {
-                    _doc.imageUrl = doc.image;
-                }
-                result.push(_doc);
-                cb(null)
-            }, function (err) {
-                task.result = {items: result};
-                if (task.result.items.length == 0) {
-                    task.result = null;
-                }
-                callback(task, context);
-            });
-        });
-    }
+// function previewAction(task, context, callback) {
+//         var model, query, sort;
+//         if (context.dialog.categorys.length == 1) {
+//             context.dialog.category = context.dialog.categorys[0];
+//         }
+//         model = mongoModule.getModel('restaurant-previews');
+//         query = {
+//             botId: context.bot.id,
+//             category: context.dialog.category.name
+//         };
+//         sort = {'_id': +1};
+//
+//         model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function (err, docs) {
+//             task.doc = docs;
+//             context.dialog.menus = docs;
+//             var result = [];
+//             async.eachSeries(task.doc, function (doc, cb) {
+//                 var _doc = {};
+//                 if (doc.name) {
+//                     _doc.title = doc.name;
+//                 }
+//                 if (doc.description) {
+//                     _doc.text = doc.description;
+//                 }
+//                 if (doc.price) {
+//                     _doc.text = _doc.text + ' ' + doc.title + '원';
+//                 }
+//                 if (doc.image) {
+//                     _doc.imageUrl = doc.image;
+//                 }
+//                 result.push(_doc);
+//                 cb(null)
+//             }, function (err) {
+//                 task.result = {items: result};
+//                 if (task.result.items.length == 0) {
+//                     task.result = null;
+//                 }
+//                 callback(task, context);
+//             });
+//         });
+//     }
 
 
 
@@ -1411,9 +1411,9 @@ var previewCategoryAction = {
                         var count1=0;
                         for(j=0;j<context.dialog.previewcategorylength.length;j++){
 
-                            if(context.dialog.preview.categorylength.length!==0)
+                            if(context.dialog.previewcategorylength.length!==0)
                             {
-                                if(context.dialog.categorys[i].category!==context.dialog.preview.categorylength[j].category){count1++;}
+                                if(context.dialog.categorys[i].category!==context.dialog.previewcategorylength[j].category){count1++;}
                             }
                             console.log(count1+'======================count1');
                         }
@@ -1512,8 +1512,9 @@ var menuDetailTask = {
                     }
                 ]
             };
-            callback(task, context);
+
         }
+        callback(task, context);
     }
 };
 
