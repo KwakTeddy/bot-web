@@ -20,6 +20,9 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
 
                     for(var j=0; j<result[i].intent.length; j++)
                     {
+                        if(!result[i].intent[j].intent.intentId)
+                            continue;
+
                         if(!check[result[i].intent[j].intent.intentId._id])
                         {
                             check[result[i].intent[j].intent.intentId._id] = true;

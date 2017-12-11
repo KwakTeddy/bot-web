@@ -146,7 +146,7 @@ var dialogs = [
                         "task": "eventAction",
                         "output":[
                             {
-                            "text": "#eventss#+name+\n+description+#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
+                            "text": "+eventlistType.name+\n+eventlistType.description+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
                             "kind": "Text"
                         }
                         ]
@@ -184,30 +184,32 @@ var dialogs = [
                 "output": "아직 시설 정보를 등록하지 않았습니다."
             },
             {
-                "if": "context.dialog.categorys.length != 1",
+                "if": "context.dialog.categorys.length>0 && context.dialog.categoryisone==0",
                 "output": "[시설정보]\n##+index+. +name+\n#번호를 선택해주세요.",
                 "children": [
                     {
                         "id": "restaurant11",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "category",
-                                    "listName": "categorys",
-                                    "typeCheck": "listTypeCheck"
-                                }
-                            ]
-                        },
-                        "task": "previewAction",
-                        "output": "[+categoryselect+]\n#categoryss#+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
+                        "input": [
+                            {
+                                "types": [
+                                    "previewlistType"
+                                ]
+                            }
+                        ],
+                        //"task": "previewAction",
+                        "output": "[+previewlistType.category+]\n#previewlistType#+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.",
                         "children": [
                             {
                                 "id": "restaurant9",
                                 "filename": "restaurants",
-                                "input": {
-                                    "regexp": /\d/
-                                },
+                                "input": [
+                                    {
+                                        "types": [
+                                            "previewmenulistType"
+                                        ]
+                                    }
+                                ],
                                 "task": "menuDetailTask",
                                 "output": "+menu.name+ +menu.description+"
                             },
@@ -238,6 +240,37 @@ var dialogs = [
                                 "postfix": "\n처음으로 가려면\n \"시작\"이라고 입력해주세요."
                             }
                         }
+                    }
+                ]
+            },
+            {
+                "if": "context.dialog.categorys.length>0 && context.dialog.categoryisone==1",
+                "output": "[#categorys#+name+#]\n#menus#+index+.+name+\n#\n번호나 메뉴명을 입력해주세요.",
+                "children": [
+                    {
+                        "id": "restaurant333",
+                        "filename": "restaurants",
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "task": "menuisornot",
+                        "output": [
+                            {
+                                "if": "context.dialog.menuis == 1",
+                                "output": "#categorymenu#[+name+] +price+원# +hot+\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                            },
+                            {
+                                "if": "context.dialog.menuis == 0",
+                                "output": {
+                                    "repeat": 1,
+                                    "options": {
+                                        "postfix": "\n처음으로 가려면\n \"시작\"이라고 입력해주세요."
+                                    }
+                                }
+                            }
+                        ]
                     }
                 ]
             }
@@ -302,7 +335,7 @@ var dialogs = [
                                     {
                                         "if": "context.dialog.menuis == 1",
                                         "task": "menuimagedisplay",
-                                        "output": "#categorymenu#[+name+] +price+원 #+hot+\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                        "output": "#categorymenu#[+name+] +price+원 #+hot+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                                     },
                                     {
                                         "if": "context.dialog.menuis == 0",
@@ -743,8 +776,8 @@ var dialogs = [
                         "task": "checkTime",
                         "output": [
                             {
-                                "if": "context.dialog.check === true",
-                                "output": {"callChild": "인원선택"}
+                                "if": "context.dialog.check === false",
+                                "output": {"call": "예약자명"}
                             },
                             {
                                 "if": "context.dialog.check == 're'",
@@ -756,7 +789,7 @@ var dialogs = [
                                 }
                             },
                             {
-                                "if": "context.dialog.check === false",
+                                "if": "context.dialog.check === true",
                                "output": {
                                     "call": "시간선택",
                                     "options": {

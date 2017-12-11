@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('deliveryBasicController', ['$scope', '$resource', '$cookies', '$stateParams', function ($scope, $resource, $cookies, $stateParams)
+angular.module('template').controller('deliveryBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope', function ($scope, $resource, $cookies, $stateParams, $rootScope)
 {
     $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 기본정보', '/modules/playchat/gnb/client/imgs/basic_grey.png');
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
@@ -92,6 +92,7 @@ angular.module('template').controller('deliveryBasicController', ['$scope', '$re
             {
                 console.log(result);
                 alert('저장되었습니다');
+                $rootScope.$broadcast('simulator-build');
             },
             function(err)
             {

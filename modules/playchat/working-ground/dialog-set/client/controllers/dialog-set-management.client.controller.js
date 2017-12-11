@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Dialog Set', '/modules/playchat/gnb/client/imgs/speech.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set'), '/modules/playchat/gnb/client/imgs/speech.png');
 
     var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
     var DialogSetsPageService = $resource('/api/:botId/dialogsets/totalpage', { botId: '@botId' });

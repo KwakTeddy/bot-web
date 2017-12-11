@@ -11,6 +11,11 @@
 
         var Menu = function()
         {
+            // this.setting = { name: 'Setting', icon: 'setting.png' };
+        };
+
+        Menu.prototype.initialize = function()
+        {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard.png' };
 
             this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
@@ -37,7 +42,7 @@
             ] };
 
             this.analysis = { name: LanguageService('Analysis'), icon: 'analysis.png', url: '/analysis', childMenus: [
-                { name: LanguageService('Summery'), url : '/analysis/summary', icon: 'summary_select.png' },
+                { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
                 { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
                 { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
                 { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
@@ -49,18 +54,22 @@
                 { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
                 { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
-
-            // this.setting = { name: 'Setting', icon: 'setting.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
         {
+            this.initialize();
             var that = this;
             if(typeof templateId == 'string' && callback)
             {
                 TemplateGnbService.get({ templateId : templateId }, function(menu)
                 {
                     var menus = menu.menus;
+
+                    for(var i=0; i<menus.length; i++)
+                    {
+                        menus[i].name = LanguageService(menus[i].name);
+                    }
 
                     menus.push(that.channel);
                     menus.push(that.operation);

@@ -446,10 +446,10 @@
                 "jp": "対話学習機能は1:1で行われた質問の答弁をチェッボッに学習させる機能です。",
                 "zh": "对话学习功能可以对聊天机器人进行1对1式问题对答案的训练。"
             },
-            "\"Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent": {
+            "Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent": {
                 "ko": "대화 그래프 개발 기능은 단계적인 대화를 개발할 수 있는 기능입니다 이 기능은 이용자와 심도 있는 대화를 구성 하는데 유용하며 인텐트 엔터티 정규식 기능을 활용 할 수 있습니다.",
-                "en": "\"Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent",
-                "jp": " entity and regular expressions.\"",
+                "en": "Dialog Graph can develop a staged conversation. This enables a in-depth communication with users. It also can utilize intent",
+                "jp": " entity and regular expressions.",
                 "zh": "対話グラフ開発機能は段階的な対話を開発できる機能ですこの機能は利用者と踏み込んだ対話を構成するのに有効かつインテントゥエントティ正規式機能を活用することができます。"
             },
             "Short cut": {
@@ -830,10 +830,10 @@
                 "jp": "最後のOutputは削除することはできません",
                 "zh": "最后的输出不能被删除。"
             },
-            "When editing output with complex structure": {
+            "\"When editing output with complex structure": {
                 "ko": "복잡한 Output 구조 편집중에는 Basic모드로 전환할 수 없습니다.",
-                "en": "When editing output with complex structure",
-                "jp": " it is not possible to switch to the basic mode.",
+                "en": "\"When editing output with complex structure",
+                "jp": " it is not possible to switch to the basic mode.\"",
                 "zh": "複雑なOutput構造、編集中にはBasicモードに転換できません。"
             },
             "Entity Add": {
@@ -1466,9 +1466,9 @@
                 "jp": "分析",
                 "zh": "分析"
             },
-            "Summery": {
+            "Summary": {
                 "ko": "요약",
-                "en": "Summery",
+                "en": "Summary",
                 "jp": "要約",
                 "zh": "概括"
             },
@@ -1532,15 +1532,11 @@
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
-                "en": "Entity analysis",
-                "zh": "实体分析",
-                "jp": "エンティティ分析"
+                "en": "Entity analysis"
             },
             "Intent analysis": {
                 "ko": "인텐트 분석",
-                "en": "Intent analysis",
-                "zh": "意图分析",
-                "jp": "インテント分析"
+                "en": "Intent analysis"
             },
             "KaKao Talk": {
                 "ko": "카카오톡",
@@ -1548,33 +1544,23 @@
             },
             "LOG": {
                 "ko": "로그",
-                "en": "LOG",
-                "zh": "日志",
-                "jp": "ログ"
+                "en": "LOG"
             },
             "Line": {
                 "ko": "라인",
-                "en": "Line",
-                "zh": "线",
-                "jp": "ライン"
+                "en": "Line"
             },
             "Messanger": {
                 "ko": "Messanger",
-                "en": "Messanger",
-                "zh": "信使",
-                "jp": "メッセンジャー"
+                "en": "Messanger"
             },
             "Naver Talk Talk": {
                 "ko": "네이버 톡톡",
-                "en": "Naver Talk Talk",
-                "jp": "ネイバー、トクトク",
-                "zh": "Naver talk talk"
+                "en": "Naver Talk Talk"
             },
             "Signout": {
                 "ko": "로그아웃",
-                "en": "Signout",
-                "zh": "登出",
-                "jp": "サインアウト"
+                "en": "Signout"
             },
 
 
@@ -1958,12 +1944,19 @@
                 "en": "Organization",
                 "zh": "组织",
                 "jp": "組織"
+
             },
             "WeChat": {
                 "ko": "위챗",
                 "en": "WeChat",
                 "zh": "微信",
                 "jp": "WeChat"
+            },
+            "Name is already using": {
+                "ko": "이미 사용중인 이름입니다.",
+                "en": "Name is already using",
+                "zh": "名称已经在使用",
+                "jp": "名前は既に使用しています"
             }
         };
 

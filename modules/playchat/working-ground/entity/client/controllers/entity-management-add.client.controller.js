@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$location','LanguageService', function ($scope, $resource, $cookies, $location, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Entity > Add', '/modules/playchat/gnb/client/imgs/entity.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Entity') + ' > ' + (id ? LanguageService('Edit') : LanguageService('Add')), '/modules/playchat/gnb/client/imgs/entity.png');
 
     var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
     var EntityContentService = $resource('/api/:botId/entitys/:entityId/contents', { botId: '@botId', entityId: '@entityId' });

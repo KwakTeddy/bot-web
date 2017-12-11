@@ -32,11 +32,11 @@ bot.setTask('addButton', addButton);
 var startTask = {
     action: function (task,context,callback) {
         task.buttons = [
-            {text:"시술안내"},
-            {text:"병원정보"},
-            {text:"예약하기"},
-            {text:"시술후기 before&after"},
-            {text:"★이벤트★"},
+            {text:"1.시술안내"},
+            {text:"2.병원정보"},
+            {text:"3.예약하기"},
+            {text:"4.시술후기 before&after"},
+            {text:"5.★이벤트★"},
         ];
 
         // var bot = {
@@ -130,6 +130,17 @@ var mapButton = {
     action: function (task,context,callback) {
         task.buttons = [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.bot.address}];
         context.dialog.location = context.bot.address;
+        var holiday = context.bot.holiday;
+        if (holiday == '') context.bot.holiday = '없음';
+        if (holiday == 'monday') context.bot.holiday = '월요일';
+        if (holiday == 'tuesday') context.bot.holiday = '화요일';
+        if (holiday == 'wednesday') context.bot.holiday = '수요일';
+        if (holiday == 'thursday') context.bot.holiday = '목요일';
+        if (holiday == 'friday') context.bot.holiday = '금요일';
+        if (holiday == 'saturday') context.bot.holiday = '토요일';
+        if (holiday == 'sunday') context.bot.holiday = '일요일';
+
+
         callback(task,context);
     }
 };
@@ -172,6 +183,36 @@ var selectOneEvent = {
 
 bot.setTask('selectOneEvent', selectOneEvent);
 
+var orderble = {
+    typeCheck: function (text, type, task, context, callback) {
+        var matched = false;
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log(text);
+        // console.log(context.dialog);
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        var keyword = (context.dialog.inCurRaw || context.dialog.inRaw);
+        if(keyword.match(/^\d$/)) callback(text, task, false);
+        task.surge=filter(keyword, context.bot.menus);
+        if (task.surge){
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@filter true!!!");
+            matched =  true;
+        }
+        callback(text, task, matched);
+    }
+};
+
+bot.setType('orderble', orderble);
+
+var chooseSurge = {
+    action: function (task,context,callback) {
+        // context.dialog.surgeListType = context.bot.events[0];
+        context.dialog.surgeListType = task.surge;
+        callback(task,context);
+    }
+};
+
+bot.setTask('chooseSurge', chooseSurge);
+
 var makeEvent = {
     action: function (task,context,callback) {
         context.dialog.events = context.bot.events;
@@ -205,6 +246,7 @@ bot.setType('eventListType', eventListType);
 var addEventImage = {
     action: function (task,context,callback) {
         task.image = {url: context.dialog.eventListType.image};
+        task.buttons = [{text:'예약 바로가기'}];
         callback(task,context);
     }
 };
@@ -408,3 +450,77 @@ var reserveCancel2 = {
     }
 };
 bot.setTask('reserveCancel2', reserveCancel2);
+
+
+var checkTime = {
+    action:checkTime
+}
+bot.setTask('checkTime', checkTime);
+
+
+function checkTime(task, context, callback) {
+    // var day = new Date().getDay();
+    // var holiday = dateStringToNumber(context.bot.holiday);
+
+    if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
+
+    // if (day == holiday) {
+    if (false) {
+        context.dialog.check = true;
+    } else {
+        if (context.dialog.time == 're') {
+            context.dialog.check = 're';
+        } else if (context.dialog.time > context.bot.endTime || context.dialog.time < context.bot.startTime) {
+            context.dialog.check = true;
+        } else {
+            context.dialog.check = false;
+        }
+    }
+
+    var now = new Date();
+
+    var reserve = context.dialog.date;
+    reserve.setDate(reserve.getDate()-1);
+    reserve.setHours(context.dialog.time.substring(0,2));
+    reserve.setMinutes(context.dialog.time.substring(3,5));
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    console.log(reserve);
+    console.log(now);
+    if(reserve < now) {
+        context.dialog.check = 'past';
+    }
+
+    callback(task, context);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function filter(key, list) {
+    for(var i=0; i<list.length; i++){
+        if(matchFun(key, list[i].name)) {
+            return list[i];
+        }
+    }
+    return false;
+}
+
+function matchFun(key, word) {
+    var keys = key.split(' ');
+    for(var i=0; i<keys.length; i++) {
+        console.log(keys[i] + "//" + word);
+        console.log(word.search(keys[i]));
+        if (word.search(keys[i]) >= 0 && keys[i].length >1) return true;
+        // if (word.search(keys[i]) >= 0) return true;
+    }
+
+    return false;
+}

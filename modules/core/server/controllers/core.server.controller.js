@@ -11,8 +11,14 @@ var mongoose = require('mongoose');
 /**
  * Render the main application page
  */
-exports.renderIndex = function (req, res)
+exports.renderIndex = function (req, res, next)
 {
+    if(req.path == '/')
+    {
+        res.render('modules/front/index');
+        return;
+    }
+
     var path_uri = req.path;
     var path = path_uri.split('/');
 

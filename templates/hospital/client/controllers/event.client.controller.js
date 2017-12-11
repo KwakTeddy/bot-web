@@ -64,7 +64,8 @@ angular.module('template').controller('hospitalEventController', ['$scope', '$re
 
         $scope.addMenu = function()
         {
-            $scope.menus.push({ category1: '', category2: '', name: '', price: '' });
+            $scope.menus.push({});
+            addUploader($scope.menus.length -1);
         };
 
         $scope.deleteMenu = function(index)
@@ -72,12 +73,16 @@ angular.module('template').controller('hospitalEventController', ['$scope', '$re
             $scope.menus.splice(index, 1);
         };
 
+        $scope.editImage = function(e)
+        {
+            angular.element(e.currentTarget).next().click();
+        };
+
         $scope.saveMenu = function()
         {
             for(var i=0; i<$scope.menus.length; i++)
             {
                 delete $scope.menus[i].uploader;
-                delete $scope.menus[i].uploader2;
             }
 
             var menus = JSON.parse(angular.toJson($scope.menus));

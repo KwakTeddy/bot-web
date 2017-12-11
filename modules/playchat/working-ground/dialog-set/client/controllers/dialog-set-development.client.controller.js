@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'LanguageService', 'ModalService', 'FileUploader', function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope, LanguageService, ModalService, FileUploader)
 {
-    $scope.$parent.changeWorkingGroundName('Development > Dialog Learning', '/modules/playchat/gnb/client/imgs/speech.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Dialog Learning'), '/modules/playchat/gnb/client/imgs/speech.png');
 
     var DialogsetsFindService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
     var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
@@ -589,6 +589,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 openDialogsets[chatbot.id][result.title] = result._id;
                 $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+                $scope.currentDialogsetId = result._id;
 
                 $scope.createTab(result._id, result.title);
                 $scope.selectTab(result._id, result.title);

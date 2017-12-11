@@ -84,5 +84,10 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         expandMode = -1;
     };
 
+    $(document).ready(function()
+    {
+        $scope.close();
+    });
+
     $scope.lan=LanguageService;
 }]);

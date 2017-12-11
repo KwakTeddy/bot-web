@@ -38,7 +38,8 @@ angular.module('template').controller('deliveryMenuController', ['$scope', '$res
 
         $scope.addMenu = function()
         {
-            $scope.menus.push({ category1: '', category2: '', name: '', price: '' });
+            var prev = $scope.menus[$scope.menus.length-1];
+            $scope.menus.push({ category1: prev.category1, category2: prev.category2, name: '', price: '' });
         };
 
         $scope.deleteMenu = function(index)

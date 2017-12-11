@@ -38,13 +38,27 @@
 .failed-dialog-question
 {
     display: inline-block;
-    width: 45%;
+    width: 43%;
+    height: 32px;
 
     padding: 10px;
+    margin-right: 20px;
 
     box-sizing: border-box;
 
     font-size: 14px;
+
+    background-color: #f8f8f8 !important;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.selected .failed-dialog-question
+{
+    cursor: text;
+    background-color: white !important;
 }
 
 .failed-dialog-input-raw
@@ -141,6 +155,7 @@
     background-color: #5c5c5c;
     color: white;
     border: 0;
+    height: 35px;
 }
 
 .failed-intent

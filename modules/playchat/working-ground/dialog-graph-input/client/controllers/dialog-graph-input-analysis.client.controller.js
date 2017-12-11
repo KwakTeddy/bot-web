@@ -1,13 +1,15 @@
 "user strict"
 
-angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService','LanguageService', function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService)
+angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'LanguageService', 'ExcelDownloadService', function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService, ExcelDownloadService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Dialog Graph Input');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Dialog Graph Input'), '/modules/playchat/gnb/client/imgs/graphinput.png');
 
 
     var DialogGraphInputService = $resource('/api/:botId/analysis/dialog-graph-input', { botId: '@botId' });
 
     var chatbot = $cookies.getObject('chatbot');
+
+    var excelData = undefined;
 
     $scope.date = {};
 
@@ -51,9 +53,13 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                     list[result.list[i]._id.dialogName].push({ dialog: result.list[i]._id.dialog, count: result.list[i].count});
                 }
 
+                excelData = [];
+
                 var html = '';
                 for(var key in list)
                 {
+                    var data = { graphName: key, graphId: indexList[key] };
+
                     list[key].sort(function(a, b)
                     {
                         return b.count - a.count;
@@ -62,23 +68,25 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                     html += '<tr>';
                     html += '<td rowspan="2">' + indexList[key] + '</td>';
                     html += '<td rowspan="2">' + key + '</td>';
-                    html += '<td>입력내용</td>';
+                    html += '<td>' + LanguageService('Input') + '</td>';
 
                     for(var i=0; i<5; i++)
                     {
                         if(i < list[key].length)
                         {
                             html += '<td>' + list[key][i].dialog + '</td>';
+                            data[(i+1) + 'st'] = list[key][i].dialog + '\n' + list[key][i].count;
                         }
                         else
                         {
                             html += '<td></td>';
+                            data[(i+1) + 'st'] = '';
                         }
                     }
 
                     html += '</tr>';
                     html += '<tr>';
-                    html += '<td>횟수</td>';
+                    html += '<td>' + LanguageService('Count') + '</td>';
 
                     for(var i=0; i<5; i++)
                     {
@@ -93,6 +101,8 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                     }
 
                     html += '</tr>';
+
+                    excelData.push(data);
                 }
 
                 angular.element('tbody').html(html);
@@ -101,6 +111,17 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
             {
                 alert(err.data.error || err.data.message);
             });
+        };
+
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: LanguageService('Dialog Graph Input'),
+                columnOrder: ['graphId', 'graphName', '1st', '2st', '3st', '4st', '5st'],
+                orderedData: excelData
+            };
+
+            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Input'), $scope.date, template);
         };
 
 

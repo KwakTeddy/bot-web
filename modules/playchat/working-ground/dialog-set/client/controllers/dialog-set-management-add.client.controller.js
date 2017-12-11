@@ -3,7 +3,7 @@
 angular.module('playchat').controller('DialogSetManagementAddController', ['$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($scope, $resource, $cookies, $location, LanguageService)
 {
     var id = $location.search()._id;
-    $scope.$parent.changeWorkingGroundName('Management > Dialog Set > ' + (id ? 'Edit' : 'Add'), '/modules/playchat/gnb/client/imgs/speech.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set') + ' > ' + (id ? LanguageService('Edit') : LanguageService('Add')), '/modules/playchat/gnb/client/imgs/speech.png');
 
     var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
 

@@ -9,6 +9,9 @@ var dialogs = [
             },
             {
                 "text": "메뉴"
+            },
+            {
+                "text": "배달"
             }
         ],
         "output": [
@@ -1106,7 +1109,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "regexp": "^2$"
+                "regexp": "^4$"
             },
             {
                 "text": "주소"
@@ -1432,13 +1435,16 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "regexp": "^3"
+                "regexp": "^5"
             },
             {
                 "text": "핸드폰"
             },
             {
                 "text": "번호"
+            },
+            {
+                "text": "연락처"
             }
         ],
         "output": [
@@ -1532,7 +1538,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "regexp": "^4"
+                "regexp": "^2"
             },
             {
                 "text": "내 역"
@@ -1559,7 +1565,7 @@ var dialogs = [
         "filename": "default",
         "input": [
             {
-                "regexp": "^5"
+                "regexp": "^3"
             },
             {
                 "text": "매장"
@@ -1766,7 +1772,7 @@ var commonDialogs = [
                 "type": "Call"
             },
             {
-                "text": "안녕하세요. \n<+resname+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n+notOpen+\n1. 메뉴보기\n2. 배달받을 주소 확인 / 변경\n3. 배달받을 핸드폰번호 확인 / 변경\n4. 주문내역(과거주문 취소, 그대로 주문)\n5. 매장안내",
+                "text": "안녕하세요. \n<+resname+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n+notOpen+\n1. 배달주문\n2. 주문내역(주문취소, 그대로 주문)\n3. 매장안내\n4. 주소 확인/변경\n5. 연락처 확인/변경",
                 "kind": "Text"
             }
         ],

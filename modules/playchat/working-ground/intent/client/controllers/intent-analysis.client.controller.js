@@ -2,7 +2,7 @@
 
 angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', 'LanguageService',function ($scope, $http, $cookies, $resource, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Intent');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Intent'), '/modules/playchat/gnb/client/imgs/intent.png');
 
     //서비스 선언
     var IntentService = $resource('/api/:botId/analysis/intent', {botId: '@botId'});
@@ -87,12 +87,12 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
         $scope.exelDownload = function()
         {
             var template = {
-                sheetName: "인텐트 Top 10",
+                sheetName: LanguageService('Top 10 Intent'),
                 columnOrder: ['name', 'count'],
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, '인텐트 Top 10', $scope.date, template);
+            ExcelDownloadService.download(chatbot.id, LanguageService('Top 10 Intent'), $scope.date, template);
         };
     })();
 

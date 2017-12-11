@@ -89,11 +89,13 @@
 {
     color: #038eda;
     font-weight: 500;
+    vertical-align: middle;
 }
 
 .funtionbtn1 a>img
 {
     margin: 2px 2px 0;
+    vertical-align: middle;
 }
 
 
@@ -268,3 +270,8 @@
     margin: 0 10px;
 }
 
+.excel-download-button
+{
+    width: 150px;
+    padding: 11px;
+}

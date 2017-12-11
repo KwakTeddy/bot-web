@@ -57,6 +57,11 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     $scope.$on('update-topbar-title', function(scope, data)
     {
+        var element = angular.element('.breadcrumbs .menu-name').get(0);
+        while(!element)
+        {
+            element = angular.element('.breadcrumbs .menu-name').get(0);
+        }
         angular.element('.breadcrumbs .menu-name').text(data.name);
         angular.element('.breadcrumbs .menu-name-icon').get(0).src = data.imgUrl;
     });
