@@ -689,6 +689,8 @@
 
         var makeDialogDraggable = function(item)
         {
+            var graphBody = angular.element('.graph-body').get(0);
+
             var clone = undefined;
             var line = document.createElement('div');
             line.className = 'graph-dialog-line';
@@ -717,10 +719,12 @@
                 angular.element(clone).find('.graph-fold').remove();
 
                 var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
-                var top = angular.element('.graph-body').get(0).offsetTop;
+                var top = graphBody.offsetTop;
+                var scrollTop = graphBody.scrollTop;
+                var scrollLeft = graphBody.scrollLeft;
 
-                clone.style.left = e.pageX - left - 50 + 'px';
-                clone.style.top = e.pageY - top - 63 - 30 + 'px';
+                clone.style.left = e.pageX - left - 50 + scrollLeft + 'px';
+                clone.style.top = e.pageY - top - 63 - 30 + scrollTop + 'px';
 
                 e.stopPropagation();
             });
@@ -751,36 +755,72 @@
                 var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
                 var top = angular.element('.graph-body').get(0).offsetTop;
 
-                var target = document.elementFromPoint(e.clientX, e.clientY);
-
-                while(target && !target.dialog)
-                {
-                    target = target.parentElement;
-                }
-
-                if(target && target.parentElement.parentElement == parent)
-                {
-                    target.parentElement.insertBefore(line, target);
-
-                    line.style.top = target.offsetTop - 10 + 'px';
-                    line.style.left = target.offsetLeft + 'px';
-                }
-
-                // while (target && target.className != 'graph-body')
+                // var target = document.elementFromPoint(e.clientX, e.clientY);
+                //
+                // while(target && !target.dialog)
                 // {
-                //     if(target)
-                //     resetList.push(target);
-                //     target.style.pointerEvents = 'none';
-                //     target = document.elementFromPoint(e.clientX, e.clientY);
+                //     target = target.parentElement;
+                // }
+                //
+                // if(target && target.parentElement.parentElement == parent)
+                // {
+                //     target.parentElement.insertBefore(line, target);
+                //
+                //     line.style.top = target.offsetTop - 10 + 'px';
+                //     line.style.left = target.offsetLeft + 'px';
                 // }
 
-                // for(var i=0; i<resetList.length; i++)
-                // {
-                //     resetList[i].style.pointerEvents = 'auto';
-                // }
+                var min = -1;
+                var minTarget = undefined;
+                var siblings = item.parentElement.parentElement.children;
+                for(var i=0; i<siblings.length; i++)
+                {
+                    if(!siblings[i].children[0])
+                        continue;
 
-                clone.style.left = e.pageX - left - 50 + 'px';
-                clone.style.top = e.pageY - top - 63 - 30 + 'px';
+                    var compareTarget = angular.element(siblings[i]).find('.graph-dialog-item').get(0);
+
+                    var rect = compareTarget.getBoundingClientRect();
+                    var half = rect.top + (rect.bottom - rect.top) / 2;
+
+                    if(!minTarget || min > Math.abs(half - e.clientY))
+                    {
+                        min = Math.abs(half - e.clientY);
+                        minTarget = compareTarget;
+                    }
+                }
+
+                minTarget.parentElement.insertBefore(line, minTarget);
+
+                if(angular.element(minTarget).parent().next().attr('class') == 'plus')
+                {
+                    var rect = minTarget.getBoundingClientRect();
+                    var half = rect.top + (rect.bottom - rect.top) / 2;
+
+                    if(half < e.clientY)
+                    {
+                        line.style.top = minTarget.offsetTop + minTarget.offsetHeight + 10 + 'px';
+                        line.isLast = true;
+                    }
+                    else
+                    {
+                        line.style.top = minTarget.offsetTop - 10 + 'px';
+                        line.isLast = false;
+                    }
+                }
+                else
+                {
+                    line.style.top = minTarget.offsetTop - 10 + 'px';
+                    line.isLast = false;
+                }
+
+                line.style.left = minTarget.offsetLeft + 'px';
+
+                var scrollTop = graphBody.scrollTop;
+                var scrollLeft = graphBody.scrollLeft;
+
+                clone.style.left = e.pageX - left - 50 + scrollLeft + 'px';
+                clone.style.top = e.pageY - top - 63 - 30 + scrollTop + 'px';
 
                 e.stopPropagation();
             });
@@ -794,21 +834,37 @@
                         var change = false;
                         if(clone.origin.parentElement != line.parentElement)
                         {
+                            var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
+
+                            //먼저 children에서 index를 빼고
+                            var index = children.indexOf(clone.origin.dialog);
 
                             var prev = clone.origin.parentElement.previousElementSibling;
-                            line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
+                            if(line.isLast)
+                            {
+                                line.parentElement.parentElement.appendChild(clone.origin.parentElement);
+                            }
+                            else
+                            {
+                                line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
+                            }
 
                             change = prev != clone.origin.parentElement.previousElementSibling;
 
                             if(change)
                             {
-                                var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
-                                var index = children.indexOf(clone.origin.dialog);
+                                var source = children.splice(index, 1);
+
                                 var targetIndex = children.indexOf(line.nextElementSibling.dialog);
 
-                                var origin = children[index];
-                                children[index] = children[targetIndex];
-                                children[targetIndex] = origin;
+                                if(line.isLast)
+                                {
+                                    children.push(source[0]);
+                                }
+                                else
+                                {
+                                    children.splice(targetIndex, 0, source[0]);
+                                }
                             }
                         }
 
@@ -817,8 +873,11 @@
 
                         if(change)
                         {
+                            var scrollTop = graphBody.scrollTop;
                             instance.setDirty(true);
                             instance.refresh();
+
+                            graphBody.scrollTop = scrollTop;
 
                             if(instance.$scope.compactMode != 'Compact')
                             {
