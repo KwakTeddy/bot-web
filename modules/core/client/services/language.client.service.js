@@ -1466,9 +1466,9 @@
                 "jp": "分析",
                 "zh": "分析"
             },
-            "Summery": {
+            "Summary": {
                 "ko": "요약",
-                "en": "Summery",
+                "en": "Summary",
                 "jp": "要約",
                 "zh": "概括"
             },
@@ -1944,12 +1944,19 @@
                 "en": "Organization",
                 "zh": "组织",
                 "jp": "組織"
+
             },
             "WeChat": {
                 "ko": "위챗",
                 "en": "WeChat",
                 "zh": "微信",
                 "jp": "WeChat"
+            },
+            "Name is already using": {
+                "ko": "이미 사용중인 이름입니다.",
+                "en": "Name is already using",
+                "zh": "名称已经在使用",
+                "jp": "名前は既に使用しています"
             }
         };
 

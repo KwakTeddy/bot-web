@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService','LanguageService', function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Failed Dialogs');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Failed Dialogs'), '/modules/playchat/gnb/client/imgs/failed.png');
 
     var FailedDialogsService = $resource('/api/:botId/analysis/failed-dialogs', { botId: '@botId' });
 

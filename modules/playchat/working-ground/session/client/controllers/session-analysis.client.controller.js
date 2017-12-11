@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService','LanguageService', function ($scope, $cookies, $resource, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Session Analysis', '/modules/playchat/gnb/client/imgs/analysis.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Session'), '/modules/playchat/gnb/client/imgs/session.png');
 
     var SessionAnalysisService = $resource('/api/:botId/analysis/session-usage', { botId: '@botId' });
 

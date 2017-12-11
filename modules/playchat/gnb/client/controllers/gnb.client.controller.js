@@ -14,29 +14,40 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     (function()
     {
-        var savedMenu = [];
-        ChatbotService.get({ botId: chatbot._id }, function(result)
+        $scope.drawMenu = function()
         {
-            if(result.templateId)
+            var savedMenu = [];
+            ChatbotService.get({ botId: chatbot._id }, function(result)
             {
-                MenuService.get(result.templateId.id, function(menus)
+                if(result.templateId)
                 {
-                    $scope.menus = savedMenu = menus;
-                    $scope.$parent.loaded('side-menu');
-                });
-            }
-            else
+                    MenuService.get(result.templateId.id, function(menus)
+                    {
+                        $scope.menus = savedMenu = menus;
+                        $scope.$parent.loaded('side-menu');
+                    });
+                }
+                else
+                {
+                    MenuService.get(function(menus)
+                    {
+                        $scope.menus = savedMenu = menus;
+                        $scope.$parent.loaded('side-menu');
+                    });
+                }
+            },
+            function(err)
             {
-                MenuService.get(function(menus)
-                {
-                    $scope.menus = savedMenu = menus;
-                    $scope.$parent.loaded('side-menu');
-                });
-            }
-        },
-        function(err)
+                alert(err);
+            });
+        };
+
+        $scope.drawMenu();
+
+        $scope.$on('changeLanguage', function()
         {
-            alert(err);
+            console.log('머냐 : ');
+            $scope.drawMenu();
         });
     })();
 

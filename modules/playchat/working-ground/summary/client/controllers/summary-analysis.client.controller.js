@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService', function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis Dashboard', '/modules/playchat/gnb/client/imgs/analysis.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Summary'), '/modules/playchat/gnb/client/imgs/summary.png');
 
     var TotalDialogService = $resource('/api/:botId/analysis/total-dialog-count', { botId: '@botId' });
     var PeriodDialogService = $resource('/api/:botId/analysis/period-dialog-count', { botId: '@botId' });

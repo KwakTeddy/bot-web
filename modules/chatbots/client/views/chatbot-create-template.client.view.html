@@ -10,7 +10,7 @@
         <div class="form-row">
             <label class="required">
                 <span class="form-title">{{ lan('Name') }}</span>
-                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true">
+                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true" autofocus="true">
             </label>
         </div>
         <div class="form-row">
@@ -32,7 +32,7 @@
         </div>
         <div class="tab-footer" style="border-top: 0;">
             <button class="blue-button mr5">{{ lan('Create') }}</button>
-            <button class="default-button" ng-click="cancel();" style="width: 110px;">{{ lan('Cancel') }}</button>
+            <button type="button" class="default-button" ng-click="cancel();" style="width: 110px; cursor: pointer;">{{ lan('Cancel') }}</button>
         </div>
     </form>
 

@@ -2,7 +2,7 @@
 
 angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', 'LanguageService',function ($scope, $http, $cookies, $resource, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Intent');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Intent'), '/modules/playchat/gnb/client/imgs/intent.png');
 
     //서비스 선언
     var IntentService = $resource('/api/:botId/analysis/intent', {botId: '@botId'});

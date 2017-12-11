@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('DialogTrafficAnalysisController', ['$window', '$scope', '$resource', '$cookies', '$http','LanguageService', function ($window, $scope, $resource, $cookies, $http, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Dialog Traffic');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Dialog Traffic'), '/modules/playchat/gnb/client/imgs/traffic.png');
 
     $scope.$parent.loaded('working-ground');
 

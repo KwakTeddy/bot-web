@@ -3,7 +3,7 @@
 angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($scope, $resource, $cookies, $location, LanguageService)
 {
     var id = $location.search()._id;
-    $scope.$parent.changeWorkingGroundName('Management > Intent > ' + (id ? 'Edit' : 'Add'), '/modules/playchat/gnb/client/imgs/intent.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Intent') + ' > ' + (id ? LanguageService('Edit') : LanguageService('Add')), '/modules/playchat/gnb/client/imgs/intent.png');
 
     var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
     var IntentContentsService = $resource('/api/:botId/intents/:intentId/contents', { botId: '@botId', intentId: '@intentId' });
