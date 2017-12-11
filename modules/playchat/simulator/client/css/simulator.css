@@ -32,32 +32,38 @@
 {
     position: absolute;
     right: 20px;
-    top: 25px;
+    top: 20px;
     width: 28px;
     height: 26px;
+    color: #b0b0b0;
+    opacity: 0.6;
 }
 
 .simulator .simulator-refresh
 {
     position: absolute;
-    top: 15px;
+    top: 13px;
     left: 10px;
+    opacity: 0.3;
 }
-
+.simulator .simulator-refresh:hover{
+    opacity: 1;
+    transition: all 1s cubic-bezier(.25,.8,.25,1);
+}
 .simulator .simulator-close:before, .simulator-close:after
 {
     position: absolute;
     left: 14px;
     content: ' ';
-    height: 18px;
-    width: 1px;
-    background-color: #424242;
+    height: 21px;
+    width: 3px;
+    background-color: #a5a5a5;
     border-radius: 10px;
 }
 
 .simulator .simulator-close:hover
 {
-    opacity: 0.3;
+    opacity: 1;
 }
 
 .simulator .simulator-close:before
