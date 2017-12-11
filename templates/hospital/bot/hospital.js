@@ -452,6 +452,46 @@ var reserveCancel2 = {
 bot.setTask('reserveCancel2', reserveCancel2);
 
 
+var checkTime = {
+    action:checkTime
+}
+bot.setTask('checkTime', checkTime);
+
+
+function checkTime(task, context, callback) {
+    // var day = new Date().getDay();
+    // var holiday = dateStringToNumber(context.bot.holiday);
+
+    if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
+
+    // if (day == holiday) {
+    if (false) {
+        context.dialog.check = true;
+    } else {
+        if (context.dialog.time == 're') {
+            context.dialog.check = 're';
+        } else if (context.dialog.time > context.bot.endTime || context.dialog.time < context.bot.startTime) {
+            context.dialog.check = true;
+        } else {
+            context.dialog.check = false;
+        }
+    }
+
+    var now = new Date();
+
+    var reserve = context.dialog.date;
+    reserve.setDate(reserve.getDate()-1);
+    reserve.setHours(context.dialog.time.substring(0,2));
+    reserve.setMinutes(context.dialog.time.substring(3,5));
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    console.log(reserve);
+    console.log(now);
+    if(reserve < now) {
+        context.dialog.check = 'past';
+    }
+
+    callback(task, context);
+}
 
 
 

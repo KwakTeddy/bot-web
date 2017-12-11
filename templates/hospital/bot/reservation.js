@@ -161,7 +161,8 @@ var dialogs = [
                         id: 'restaurant40',
                         filename: 'restaurant',
                         input: {types: [{name: 'time', typeCheck: 'timeTypeCheck'}]},
-                        task:           {action: shop.checkTime},
+                        // task:           {action: shop.checkTime},
+                        task: "checkTime",
                         "output": [
                             {
                                 "if": "context.dialog.check == false",
