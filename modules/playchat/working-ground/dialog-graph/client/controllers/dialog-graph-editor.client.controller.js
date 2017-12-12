@@ -313,7 +313,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     DialogGraphEditorOutput.make($scope);
     DialogGraphEditorTask.make($scope);
 
-    $scope.save = function()
+    $scope.save = function(e)
     {
         if(!DialogGraph.checkDuplicatedName($scope.dialog))
         {
@@ -418,6 +418,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
 
         $scope.close();
+
+        e.preventDefault();
     };
 
     $scope.close = function()
@@ -492,6 +494,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     }, true);
 
     $scope.initialize();
+
+    $scope.$on('saveDialogGraphEditor', function()
+    {
+        angular.element('.dialog-editor form .blue-button').click();
+    });
 
     DialogGraphEditor.setOpenCallback(function(parent, dialog)
     {

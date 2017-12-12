@@ -187,6 +187,7 @@
 
             this.$compile = undefined;
             this.$scope = undefined;
+            this.$rootScope = undefined;
 
             this.history = [];
             this.historyIndex = 0;
@@ -217,10 +218,11 @@
             return this.userDialogs;
         };
 
-        DialogGraph.prototype.setScope = function($compile, $scope)
+        DialogGraph.prototype.setScope = function($compile, $scope, $rootScope)
         {
             this.$compile = $compile;
             this.$scope = $scope;
+            this.$rootScope = $rootScope;
         };
 
         DialogGraph.prototype.setEditor = function(editor)
@@ -348,7 +350,6 @@
 
         DialogGraph.prototype.moveDownDialog = function(target)
         {
-            console.log('탘게 : ', target);
             var parentDialog = target.parent().prev().get(0).dialog;
             var dialog = target.get(0).children[0].dialog;
             var nextDialog = (target.next().get(0) ? target.next().get(0).children[0].dialog : undefined);
@@ -408,11 +409,21 @@
             {
                 if(e.srcElement.nodeName != 'BODY')
                 {
+                    //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
                         //ESC
                         that.editor.close();
                     }
+                    else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
+                    {
+                        that.$rootScope.$broadcast('saveDialogGraphEditor');
+                    }
+                    else
+                    {
+                        console.log(e.keyCode, e);
+                    }
+
                     return;
                 }
 
