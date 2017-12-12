@@ -2137,11 +2137,11 @@
 
                 console.error('language', key);
 
-                return '언어가 없습니다';
+                return 'no messages';
             }
             else
             {
-                return languages[key][code];
+                return languages[key][code] || languages[key]['en'];
             }
         };
 
