@@ -1528,39 +1528,57 @@
             },
             "Bot Link": {
                 "ko": "Bot Link",
-                "en" : "Bot Link"
+                "en": "Bot Link",
+                "jp": "Bot Link",
+                "zh": "Bot连接"
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
-                "en": "Entity analysis"
+                "en": "Entity analysis",
+                "jp": "Entity analysis",
+                "zh": "实体分析"
             },
             "Intent analysis": {
                 "ko": "인텐트 분석",
-                "en": "Intent analysis"
+                "en": "Intent analysis",
+                "jp": "Intent analysis",
+                "zh": "意图分析"
             },
             "KaKao Talk": {
                 "ko": "카카오톡",
-                "en": "KaKao Talk"
+                "en": "KaKao Talk",
+                "jp": "KaKao Talk",
+                "zh": "KaKao Talk"
             },
             "LOG": {
                 "ko": "로그",
-                "en": "LOG"
+                "en": "LOG",
+                "jp": "LOG",
+                "zh": "日志"
             },
             "Line": {
                 "ko": "라인",
-                "en": "Line"
+                "en": "Line",
+                "jp": "Line",
+                "zh": "Line"
             },
             "Messanger": {
                 "ko": "Messanger",
-                "en": "Messanger"
+                "en": "Messanger",
+                "jp": "Messanger",
+                "zh": "Messanger"
             },
             "Naver Talk Talk": {
                 "ko": "네이버 톡톡",
-                "en": "Naver Talk Talk"
+                "en": "Naver Talk Talk",
+                "jp": "Naver Talk Talk",
+                "zh": "Naver Talk Talk"
             },
             "Signout": {
                 "ko": "로그아웃",
-                "en": "Signout"
+                "en": "Signout",
+                "jp": "Signout",
+                "zh": "注销"
             },
 
 
@@ -1617,8 +1635,8 @@
             "Task name": {
                 "ko": "Task 이름",
                 "en": "Task name",
-                "zh": "",
-                "jp": ""
+                "zh": "任务名称",
+                "jp": "Task name"
             },
             "Type Add": {
                 "ko": "Type 추가",
@@ -1729,10 +1747,10 @@
                 "jp": "ダイアログセット名を入力します。"
             },
             "If you would like to receive the e-mail again, please click on the again button.": {
-                "ko": "",
+                "ko": "If you would like to receive the e-mail again, please click on the again button.",
                 "en": "If you would like to receive the e-mail again, please click on the again button.",
-                "zh": "",
-                "jp": ""
+                "zh": "如果你重新接收邮件，请点击再次发送按钮",
+                "jp": "If you would like to receive the e-mail again, please click on the again button."
             },
             "You do not have any Facebook pages to connect to.": {
                 "ko": "연결가능한 페이스북 페이지가 없습니다.",
@@ -1749,7 +1767,7 @@
             "Connect": {
                 "ko": "연결하기",
                 "en": "Connect",
-                "zh": "连",
+                "zh": "连接",
                 "jp": "接続する"
             },
             "Disconnect": {
@@ -1773,7 +1791,7 @@
             "Human Chat log": {
                 "ko": "상담원 대화 내역",
                 "en": "Human Chat log",
-                "zh" : "座席对话历史。",
+                "zh" : "咨询对话历史记录",
                 "jp" : "エージェントの会話履歴。"
             },
             "Please enter Type name": {
@@ -1798,7 +1816,7 @@
             "Jump": {
                 "ko": "Jump",
                 "en": "Jump",
-                "zh": "跳",
+                "zh": "跳跃",
                 "jp": "ジャンプ"
             },
             "JSON Format Error": {
@@ -1900,16 +1918,10 @@
             "Learning": {
                 "ko": "학습중",
                 "en": "Learning",
-                "zh": "在学习",
+                "zh": "学习中",
                 "jp": "学んでいる"
             },
             "Password is disaccord": {
-                "ko": "비밀번호가 일치하지 않습니다.",
-                "en": "Password is disaccord",
-                "zh": "密码不一致",
-                "jp": "パスワードは不一致です"
-            },
-            "비밀번호가 일치하지 않습니다.": {
                 "ko": "비밀번호가 일치하지 않습니다.",
                 "en": "Password is disaccord",
                 "zh": "密码不一致",
@@ -1924,7 +1936,7 @@
             "Registration for closed beta": {
                 "ko": "클로즈베타 신청",
                 "en": "Registration for closed beta",
-                "zh": "注册内测。",
+                "zh": "申请内测。",
                 "jp": "クローズドベータ版の登録。"
             },
             "Email is already signed up.": {
@@ -1962,98 +1974,152 @@
                 "ko": "컨텐츠 관리",
                 "en": "Manage Contents",
                 "zh": "内容管理",
-                "jp": ""
+                "jp": "Manage Contents"
             },
             "manage reservation":{
                 "ko": "예약관리",
                 "en": "manage reservation",
                 "zh": "预约管理",
-                "jp":""
+                "jp": "manage reservation"
             },
             "manage procedural information":{
                 "ko": "시술정보관리",
                 "en": "manage procedural information",
                 "zh": "治疗信息管理",
-                "jp":""
+                "jp": "manage procedural information"
             },
             "Manage Event":{
                 "ko": "이벤트관리",
                 "en": "Manage Event",
                 "zh": "活动管理",
-                "jp":""
+                "jp": "Manage Event"
             },
             "Manage Conversation Graph":{
                 "ko": "대화그래프관리",
                 "en": "Manage Conversation Graph",
                 "zh": "对话框图管理",
-                "jp":""
+                "jp": "Manage Conversation Graph"
             },
             "Manage Intent":{
                 "ko": "인텐트관리",
                 "en": "Manage Intent",
                 "zh": "意向管理",
-                "jp":""
+                "jp": "Manage Intent"
             },
             "Manage Entity":{
                 "ko": "엔터티관리",
                 "en": "Manage Entity",
                 "zh": "实体管理",
-                "jp":""
+                "jp": "Manage Entity"
             },
             "Manage Menu":{
                 "ko": "메뉴관리",
                 "en": "Manage Menu",
                 "zh": "菜单管理",
-                "jp":""
+                "jp": "Manage Menu"
             },
             "Manage orders":{
                 "ko": "주문관리",
                 "en": "Manage orders",
                 "zh": "订单管理",
-                "jp":""
+                "jp": "Manage orders"
             },
             "Manage Parking":{
                 "ko": "주차정보관리",
                 "en": "Manage Parking",
                 "zh": "停车信息管理",
-                "jp":""
+                "jp": "Manage Parking"
             },
             "Manage Shuttle":{
                 "ko": "셔틀정보관리",
                 "en": "Manage Shuttle",
                 "zh": "班车信息管理",
-                "jp":""
+                "jp": "Manage Shuttle"
             },
             "Manage Facility":{
                 "ko": "시설정보관리",
                 "en": "Manage Facility",
                 "zh": "设施信息管理",
-                "jp":""
+                "jp": "Manage Facility"
             },
             "Manage Room":{
                 "ko": "객실정보관리",
                 "en": "Manage Room",
                 "zh": "房间信息管理",
-                "jp":""
+                "jp": "Manage Room"
             },
             "Manage Dining":{
                 "ko": "다이닝정보관리",
                 "en": "Manage Dining",
                 "zh": "餐饮信息管理",
-                "jp":""
+                "jp": "Manage Dining"
             },
             "Manage Booking":{
                 "ko": "예약정보관리",
                 "en": "Manage Booking",
                 "zh": "预订信息管理",
-                "jp":""
+                "jp": "Manage Booking"
             },
-            "Manage Shop":{
-                "ko": "매장정보관리",
-                "en": "Manage Shop",
-                "zh": "店铺信息管理",
-                "jp":""
-            }
+            "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!":{
+                "ko": "Playchat - 1분만에 만드는 나만의 인공지능 챗봇",
+                "en": "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!",
+                "zh": "Playchat - 1分钟内就可以完成的我的人工智能聊天机器人",
+                "jp": "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!"
+            },
+            "Conversational Artificial Intelligence platform Playchat":{
+                "ko": "대화형 인공지능 플랫폼 Playchat",
+                "en": "Conversational Artificial Intelligence platform Playchat",
+                "zh": "互动式AI平台Playchat",
+                "jp": "Conversational Artificial Intelligence platform Playchat"
+            },
+            "Now, you may make your own conversational artificial intelligence by only entering in the basic information other than develop your own.":{
+                "ko": "이제 직접 개발하지 않고 간단한 정보의 입력만으로 나만의 대화형 인공지능을 만들어 바로 사용 할 수 있습니다.",
+                "en": "Now, you may make your own conversational artificial intelligence by only entering in the basic information other than develop your own.",
+                "zh": "现在您只需简单地输入信息而不需要自己开发，就可以创建自己的交互式人工智能。",
+                "jp": "Now, you may make your own conversational artificial intelligence by only entering in the basic information other than develop your own."
+            },
+            "Able to connect to Facebook and Plus Friends right away.":{
+                "ko": "플러스친구, 페이스북에도 바로 연결 할 수 있습니다.",
+                "en": "Able to connect to Facebook and Plus Friends right away.",
+                "zh": "另外，您还可以连接到您的公众号和Facebook。",
+                "jp": "Able to connect to Facebook and Plus Friends right away."
+            },
+            "start for free":{
+                "ko": "무료로 시작하기",
+                "en": "start for free",
+                "zh": "免费开始",
+                "jp": "start for free"
+            },
+            "playchat is aming to be a natural conversational artificial intelligence with diverse functions":{
+                "ko": "Playchat은 자연스러운 대화형 인공지능을 지향하며 여러가지 기능을 제공합니다.",
+                "en": "playchat is aming to be a natural conversational artificial intelligence with diverse functions",
+                "zh": "Playchat针对自然交互式人工智能可以提供多种功能。",
+                "jp": "playchat is aming to be a natural conversational artificial intelligence with diverse functions"
+            },
+            "Customized Templates due to different types of jobs":{
+                "ko": "업종별 맞춤형 템플릿",
+                "en": "Customized Templates due to different types of jobs",
+                "zh": "以业种来区分的模板",
+                "jp": "Customized Templates due to different types of jobs"
+            },
+            "Make the chat bot<br>which can supply my service on the template.":{
+                "ko": "템플릿에 나의 서비스를 제공할 챗봇을 만들어보세요.",
+                "en": "Make the chat bot which can supply my service on the template.",
+                "zh": "在模板中创建聊天机器人提供我的服务。",
+                "jp": "Make the chat bot which can supply my service on the template."
+            },
+            "There are various templates such as restaurants, shopping and medicals.":{
+                "ko": "요식업, 쇼핑, 의료등 다양한 템플릿이 있습니다.",
+                "en": "There are various templates such as restaurants, shopping and medicals.",
+                "zh": "有各种各样的模板，如食品，购物和医疗。",
+                "jp": "There are various templates such as restaurants, shopping and medicals."
+            },
+            "There are various templates such as restaurants, shopping and medicals.":{
+                "ko": "1:1 대화 학습",
+                "en": "There are various templates such as restaurants, shopping and medicals.",
+                "zh": "1：1对话学习",
+                "jp": "There are various templates such as restaurants, shopping and medicals."
+            },
         };
 
         var list = {};
