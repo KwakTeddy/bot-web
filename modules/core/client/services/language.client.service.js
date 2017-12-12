@@ -366,7 +366,7 @@
                 "ko": "이름",
                 "en": "Name",
                 "jp": "名前",
-                "zh": "名字"
+                "zh": "名称"
             },
             "Language": {
                 "ko": "언어",
@@ -468,7 +468,7 @@
                 "ko": "대화셋",
                 "en": "Dialog Set",
                 "jp": "デファセッ",
-                "zh": "对话框设置"
+                "zh": "问答添加模块"
             },
             "Intent": {
                 "ko": "인텐트",
@@ -882,7 +882,7 @@
                 "ko": "불러오기",
                 "en": "Import",
                 "jp": "呼ぶこと",
-                "zh": "引入"
+                "zh": "上传"
             },
             "Default": {
                 "ko": "기본값",
@@ -912,7 +912,7 @@
                 "ko": "비우기",
                 "en": "empty",
                 "jp": "空にすること",
-                "zh": "空"
+                "zh": "无"
             },
             "File Type": {
                 "ko": "파일 타입",
@@ -966,7 +966,7 @@
                 "ko": "사용하기",
                 "en": "Usable",
                 "jp": "使用すること",
-                "zh": "可用"
+                "zh": "启用"
             },
             "Move to the preivious page": {
                 "ko": "이전페이지이동",
@@ -1164,7 +1164,7 @@
                 "ko": "대화량 (30일)",
                 "en": "Number of Dialogs(30days)",
                 "jp": "デファリャン(30日)",
-                "zh": "对话量（30天）"
+                "zh": "对话量（最近30天）"
             },
             "Number of Cumulated Users": {
                 "ko": "누적 이용자",
@@ -1176,13 +1176,13 @@
                 "ko": "최근 30일 이용자",
                 "en": "Recent(30 days) Users.",
                 "jp": "最近、30日利用者",
-                "zh": "最近（30天）的用户。"
+                "zh": "最近30天的用户"
             },
             "Number of daily Users": {
                 "ko": "일자별 대화량",
                 "en": "Number of daily Users",
                 "jp": "日付別デファリャン",
-                "zh": "日用户数"
+                "zh": "日用户量"
             },
             "User distribution on channels": {
                 "ko": "채널별 이용자 분포",
@@ -1212,19 +1212,19 @@
                 "ko": "사용자 입력 TOP 10",
                 "en": "Top 10 Most Frequently Used Input",
                 "jp": "ユーザ入力TOP 10",
-                "zh": "最常用输入前十"
+                "zh": "最常用的输入前10"
             },
             "Top 10 Failed Dialog": {
                 "ko": "대화 실패 TOP 10",
                 "en": "Top 10 Failed Dialog",
                 "jp": "対話失敗TOP 10",
-                "zh": "对话失败前十"
+                "zh": "对话失败前10"
             },
             "Top 10 scenario usage": {
                 "ko": "시나리오 사용량 TOP 10",
                 "en": "Top 10 scenario usage",
                 "jp": "シナリオの使用量TOP 10",
-                "zh": "场景使用量前十"
+                "zh": "场景使用量前10"
             },
             "Dialog": {
                 "ko": "대화",
@@ -1248,13 +1248,13 @@
                 "ko": "기간별 대화량 (채널)",
                 "en": "Historical amount of dialog(channel)",
                 "jp": "期間別デファリャン(チャネル)",
-                "zh": "分期间对话数量（频道）"
+                "zh": "不同时间段对话量（频道）"
             },
             "Historical amount of dialog(Success/Fail)": {
                 "ko": "기간별 대화량 (성공/실패)",
                 "en": "Historical amount of dialog(Success/Fail)",
                 "jp": "期間別デファリャン(成功/失敗)",
-                "zh": "分期间对话数量（成功/失败）"
+                "zh": "不同时间段对话量（成功/失败）"
             },
             "Ratio of dialog on channels": {
                 "ko": "채널별 대화 비율",
@@ -1350,7 +1350,7 @@
                 "ko": "학습 대화 목록",
                 "en": "Trained Dialog",
                 "jp": "学習対話目録",
-                "zh": "学习过的对话的目录"
+                "zh": "学习过的对话目录"
             },
             "Graph ID": {
                 "ko": "그래프 아이디",
@@ -1410,7 +1410,7 @@
                 "ko": "인텐트 TOP 10",
                 "en": "Top 10 Intent",
                 "jp": "インテントゥTOP 10",
-                "zh": "意图前十"
+                "zh": "意图使用前10"
             },
             "List of Failed Dialog": {
                 "ko": "실패 대화 목록",
@@ -1428,7 +1428,7 @@
                 "ko": "대시보드",
                 "en": "Dashboard",
                 "jp": "ダッシュボード",
-                "zh": "仪表盘"
+                "zh": "我的主页"
             },
             "Development": {
                 "ko": "개발",
@@ -1482,13 +1482,13 @@
                 "ko": "세션",
                 "en": "Session",
                 "jp": "セッション",
-                "zh": "会话"
+                "zh": "对话"
             },
             "Dialog Graph Path": {
                 "ko": "대화 경로",
                 "en": "Dialog Graph Path",
                 "jp": "対話ルート",
-                "zh": "对话图路径"
+                "zh": "对话框图路径"
             },
             "Dialog Training": {
                 "ko": "대화학습",
@@ -1500,13 +1500,13 @@
                 "ko": "대화 학습 이용",
                 "en": "Dialog Training Usage",
                 "jp": "会話学習の利用",
-                "zh": "使用对话学习"
+                "zh": "对话学习的使用"
             },
             "Dialog Graph Usage": {
                 "ko": "대화 그래프 이용",
                 "en": "Dialog Graph Usage",
                 "jp": "対話グラフを利用",
-                "zh": "使用对话框图"
+                "zh": "对话框图的使用"
             },
             "Dialog Training Input": {
                 "ko": "대화 학습 입력값",
@@ -1695,13 +1695,13 @@
             "Dialog Count": {
                 "ko": "대화수",
                 "en": "Dialog Count",
-                "zh": "对话计数",
+                "zh": "对话量",
                 "jp": "ダイアログ数"
             },
             "Use Count": {
                 "ko": "사용횟수",
                 "en": "Use Count",
-                "zh": "使用计数",
+                "zh": "使用量",
                 "jp": "カウントを使用する"
             },
             "Dialog Input": {
@@ -1870,7 +1870,7 @@
             "Socket": {
                 "ko": "소켓",
                 "en": "Socket",
-                "zh": "插座",
+                "zh": "无",
                 "jp": "ソケット"
             },
             "Average amount of traffic per session": {
@@ -1882,7 +1882,7 @@
             "Ratio": {
                 "ko": "비율",
                 "en": "Ratio",
-                "zh": "比",
+                "zh": "比率",
                 "jp": "比"
             },
             "User Count": {
@@ -1900,13 +1900,13 @@
             "Graph Path" :{
                 "ko": "그래프 경로",
                 "en": "Graph Path",
-                "zh": "图路径",
+                "zh": "对话框图路径",
                 "jp": "グラフパス"
             },
             "Usage Count": {
                 "ko": "사용 횟수",
                 "en": "Usage Count",
-                "zh": "使用计数",
+                "zh": "使用量",
                 "jp": "使用回数"
             },
             "Template": {
