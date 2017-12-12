@@ -4,7 +4,6 @@ module.exports = function(code)
         ko: {
             "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!":"Playchat - 1분만에 만드는 나만의 인공지능 챗봇!",
             "Sign in":"로그인",
-            "Forgot Passsword?":"",
             "Forget your password?":"비밀번호를 잊으셨나요?",
             "Click here":"",
             "Don't have an account yet?":"",
