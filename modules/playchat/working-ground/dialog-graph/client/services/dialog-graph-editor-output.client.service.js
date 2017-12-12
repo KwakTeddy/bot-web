@@ -61,6 +61,14 @@
                 };
             };
 
+            $scope.onKeyDownTextArea = function(e)
+            {
+                if(e.keyCode == 45)
+                {
+                    $scope.addOutput();
+                }
+            };
+
             $scope.addOutput = function(e)
             {
                 if(!$scope.useOutput)
@@ -72,7 +80,7 @@
 
                 $scope.isUseOutput = true;
 
-                angular.element(e.currentTarget).prev().find('input:first').prop('checked', true);
+                angular.element('.dialog-editor-subject input:first').prop('checked', true);
             };
 
             $scope.deleteOutput = function(output, index)
