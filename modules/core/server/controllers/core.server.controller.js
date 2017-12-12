@@ -8,6 +8,8 @@ var util = require('util');
 var mongoose = require('mongoose');
 // var OverTextLink = mongoose.model('OverTextLink');
 
+var frontLanguage = require(path.resolve('./modules/core/server/controllers/front.language.js'));
+
 /**
  * Render the main application page
  */
@@ -15,7 +17,11 @@ exports.renderIndex = function (req, res, next)
 {
     if(req.path == '/')
     {
-        res.render('modules/front/index');
+        var code = req.headers["accept-language"];
+        code = code.split('-')[0];
+
+        code = req.query.lan || code || 'en';
+        res.render('modules/front/index', frontLanguage(code));
         return;
     }
 

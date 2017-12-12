@@ -16,7 +16,7 @@ var intentCheck = {
   limit: 10,
   matchRate: 0.4,
   matchCount: 4,
-  exclude: ['하다', '이다'],
+  // exclude: ['하다', '이다'],
   mongo: {
     model: 'intentcontent',
     queryFields: ['input'],

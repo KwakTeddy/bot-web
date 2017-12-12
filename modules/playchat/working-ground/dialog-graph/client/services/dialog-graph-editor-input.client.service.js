@@ -28,7 +28,7 @@
             {
                 var page = 1;
                 var template = '<ul class="dialog-editor-input-list-modal">' +
-                               '<li data-new="true">새로만들기</li>' +
+                               '<li data-new="true">' + this.lan('Add New') + '</li>' +
                                '</ul>';
 
                 var t = angular.element(template);
@@ -223,7 +223,7 @@
         var make = function($scope)
         {
             $scope.nlpedText = {};
-            $scope.nlpedTextPrefix = '';
+            $scope.nlpedTextPrefix = {};
             $scope.showNlpTimeout = undefined;
 
             function addOrPushData(input, key, text)
@@ -438,33 +438,39 @@
                         return;
                     }
 
-                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                    if(value)
                     {
-                        $scope.nlpedTextPrefix = 'nlu: ';
-                        $scope.nlpedText[index] = result.text;
-
-                        if($scope.showNlpTimeout)
-                            clearTimeout($scope.showNlpTimeout);
-
-                        $scope.showNlpTimeout = setTimeout(function()
+                        DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
-                            $scope.$apply(function()
+                            $scope.nlpedTextPrefix[index] = 'nlu: ';
+                            $scope.nlpedText[index] = result.text;
+
+                            if($scope.showNlpTimeout)
+                                clearTimeout($scope.showNlpTimeout);
+
+                            $scope.showNlpTimeout = setTimeout(function()
                             {
-                                $scope.nlpedTextPrefix = '';
-                                $scope.nlpedText[index] = '';
-                            });
-                        }, 2000);
-                    });
+                                $scope.$apply(function()
+                                {
+                                    $scope.nlpedTextPrefix[index] = '';
+                                    $scope.nlpedText[index] = '';
+                                });
+                            }, 2000);
+                        });
+                    }
                 }
             };
 
             $scope.inputOnBlur = function(e, index)
             {
                 var value = e.currentTarget.value;
-                DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                if(value)
                 {
-                    $scope.dialog.input[index].text = result.text;
-                });
+                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                    {
+                        $scope.dialog.input[index].text = result.text;
+                    });
+                }
             };
 
             $scope.inputOnKeyDown = function(e, index)
@@ -486,23 +492,26 @@
                 }
                 else if(e.keyCode == 13)
                 {
-                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                    if(value)
                     {
-                        $scope.nlpedTextPrefix = 'nlu: ';
-                        $scope.dialog.input[index].text = result.text;
-
-                        if($scope.showNlpTimeout)
-                            clearTimeout($scope.showNlpTimeout);
-
-                        $scope.showNlpTimeout = setTimeout(function()
+                        DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
-                            $scope.$apply(function()
+                            $scope.nlpedTextPrefix[index] = 'nlu: ';
+                            $scope.dialog.input[index].text = result.text;
+
+                            if($scope.showNlpTimeout)
+                                clearTimeout($scope.showNlpTimeout);
+
+                            $scope.showNlpTimeout = setTimeout(function()
                             {
-                                $scope.nlpedTextPrefix = '';
-                                $scope.nlpedText[index] = '';
-                            });
-                        }, 2000);
-                    });
+                                $scope.$apply(function()
+                                {
+                                    $scope.nlpedTextPrefix[index] = '';
+                                    $scope.nlpedText[index] = '';
+                                });
+                            }, 2000);
+                        });
+                    }
 
                     e.preventDefault();
                 }
@@ -532,6 +541,11 @@
 
                         return;
                     }
+                }
+                else if(e.keyCode == 45)
+                {
+                    console.log('인서트 누르셧셰여?');
+                    $scope.addInput();
                 }
 
                 if(_this.checkDelete)
@@ -773,6 +787,10 @@
                     ListModal.moveDown();
                     console.log('bottom');
                 }
+                else if(e.keyCode == 45)
+                {
+                    $scope.addInput();
+                }
             };
 
             var checkDuplicateInput = function(target, key)
@@ -940,23 +958,26 @@
                                 return e.preventDefault();
                             }
 
-                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                            if(value)
                             {
-                                $scope.nlpedTextPrefix = 'nlu: ';
-                                input.text = $scope.nlpedText[index];
-
-                                if($scope.showNlpTimeout)
-                                    clearTimeout($scope.showNlpTimeout);
-
-                                $scope.showNlpTimeout = setTimeout(function()
+                                DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                                 {
-                                    $scope.$apply(function()
+                                    $scope.nlpedTextPrefix[index] = 'nlu: ';
+                                    input.text = $scope.nlpedText[index];
+
+                                    if($scope.showNlpTimeout)
+                                        clearTimeout($scope.showNlpTimeout);
+
+                                    $scope.showNlpTimeout = setTimeout(function()
                                     {
-                                        $scope.nlpedTextPrefix = '';
-                                        $scope.nlpedText[index] = '';
-                                    });
-                                }, 2000);
-                            });
+                                        $scope.$apply(function()
+                                        {
+                                            $scope.nlpedTextPrefix[index] = '';
+                                            $scope.nlpedText[index] = '';
+                                        });
+                                    }, 2000);
+                                });
+                            }
 
                             e.currentTarget.value = '';
 
@@ -1004,13 +1025,13 @@
                     {
                         if(value.startsWith('/'))
                         {
-                            $scope.nlpedTextPrefix = '';
+                            $scope.nlpedTextPrefix[index] = '';
                             $scope.nlpedText[index] = LanguageService('Typing the regular expression, press Enter to finish.');
                             return;
                         }
                         else if(value.startsWith('if('))
                         {
-                            $scope.nlpedTextPrefix = '';
+                            $scope.nlpedTextPrefix[index] = '';
                             $scope.nlpedText[index] = LanguageService('Entering conditional statements, press Enter to finish.');
                             return;
                         }
@@ -1020,23 +1041,26 @@
                             return;
                         }
 
-                        DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                        if(value)
                         {
-                            $scope.nlpedTextPrefix = 'nlu: ';
-                            $scope.nlpedText[index] = result.text;
-
-                            if($scope.showNlpTimeout)
-                                clearTimeout($scope.showNlpTimeout);
-
-                            $scope.showNlpTimeout = setTimeout(function()
+                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                             {
-                                $scope.$apply(function()
+                                $scope.nlpedTextPrefix[index] = 'nlu: ';
+                                $scope.nlpedText[index] = result.text;
+
+                                if($scope.showNlpTimeout)
+                                    clearTimeout($scope.showNlpTimeout);
+
+                                $scope.showNlpTimeout = setTimeout(function()
                                 {
-                                    $scope.nlpedText[index] = '';
-                                    $scope.nlpedTextPrefix = '';
-                                });
-                            }, 2000);
-                        });
+                                    $scope.$apply(function()
+                                    {
+                                        $scope.nlpedText[index] = '';
+                                        $scope.nlpedTextPrefix[index] = '';
+                                    });
+                                }, 2000);
+                            });
+                        }
                     }
                 }
             };

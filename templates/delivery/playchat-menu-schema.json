@@ -1,12 +1,11 @@
 {
     "menus" : [
-        { "name" : "대시보드", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
-        { "name" : "컨텐츠 관리", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
-            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "basic.png" },
-            { "name" : "메뉴관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
-            { "name" : "주문관리", "url" : "/templates/contents/order", "icon" : "order.png" }
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "Manage Menu", "url" : "/templates/contents/menu", "icon" : "menu.png" },
+            { "name" : "Manage orders", "url" : "/templates/contents/order", "icon" : "order.png" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech_select_mini.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario_w.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
     ]
 }

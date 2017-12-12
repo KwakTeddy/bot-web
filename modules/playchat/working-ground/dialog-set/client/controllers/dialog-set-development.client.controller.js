@@ -188,10 +188,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             }
         };
 
-        $scope.inputKeydownElement = function(e)
+        $scope.inputKeydownElement = function(e, type)
         {
             var event = e.originalEvent;
-            if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
+
+            if(e.keyCode == 13)
             {
                 var check = false;
                 angular.element(e.currentTarget.parentElement).find('textarea').each(function()
@@ -205,15 +206,45 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                 if(!check)
                 {
-                    angular.element($compile(e.currentTarget.outerHTML)($scope)).insertAfter(e.currentTarget).val('').focus();
+                    if(event.shiftKey)
+                    {
+                        //multi
+                        angular.element($compile(e.currentTarget.outerHTML)($scope)).insertAfter(e.currentTarget).val('').focus();
+
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    else if(event.ctrlKey || event.metaKey)
+                    {
+                        $scope.addDialog({ currentTarget : angular.element(e.currentTarget).parent().parent().get(0) });
+                    }
                 }
+            }
+            else if(e.keyCode == 40)
+            {
+                var target = angular.element('.dialog-learning-development-content-row').get(1);
+                if(target)
+                {
+                    if(type == 'inputRaw')
+                    {
+                        angular.element(target).find('.question-area textarea:first').focus();
+                    }
+                    else if(type == 'output')
+                    {
+                        angular.element(target).find('.answer-area textarea:first').focus();
+                    }
+                }
+            }
+            else
+            {
+                console.log(e.keyCode);
             }
         };
 
         $scope.inputKeydown = function(e, dialog, type, current)
         {
             var event = e.originalEvent;
-            if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
+            if(e.keyCode == 13)
             {
                 var check = false;
                 angular.element(e.currentTarget.parentElement).find('textarea').each(function()
@@ -227,28 +258,98 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                 if(!check)
                 {
-                    if($scope.isArray(dialog[type]))
+                    if(event.ctrlKey || event.metaKey)
                     {
-                        if(current)
+                        //여기는 어차피 편집하면 저장이 되는 구조임.
+                    }
+                    else if(event.shiftKey)
+                    {
+                        console.log('여긴가 : ');
+                        if($scope.isArray(dialog[type]))
                         {
-                            var index = dialog[type].indexOf(current);
-                            dialog[type].splice(index + 1, 0, '');
+                            if(current)
+                            {
+                                var index = dialog[type].indexOf(current);
+                                dialog[type].splice(index + 1, 0, '');
+                            }
+                            else
+                            {
+                                dialog[type].push('');
+                            }
                         }
                         else
                         {
-                            dialog[type].push('');
+                            dialog[type] = [dialog[type], ''];
                         }
-                    }
-                    else
-                    {
-                        dialog[type] = [dialog[type], ''];
-                    }
 
-                    setTimeout(function()
-                    {
-                        angular.element(e.currentTarget.parentElement).find('textarea:last').focus();
-                    }, 10);
+                        setTimeout(function()
+                        {
+                            angular.element(e.currentTarget.parentElement.parentElement).find('textarea:last').focus();
+                        }, 10);
+
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
                 }
+            }
+            else if(e.keyCode == 38)
+            {
+                var target = angular.element(e.currentTarget).parent().parent().parent().parent().prev().get(0);
+                if(target)
+                {
+                    if(type == 'inputRaw')
+                    {
+                        angular.element(target).find('.question-area textarea:first').focus();
+                    }
+                    else if(type == 'output')
+                    {
+                        angular.element(target).find('.answer-area textarea:first').focus();
+                    }
+                }
+            }
+            else if(e.keyCode == 40)
+            {
+                var target = angular.element(e.currentTarget).parent().parent().parent().parent().next().get(0);
+                if(target)
+                {
+                    if(type == 'inputRaw')
+                    {
+                        angular.element(target).find('.question-area textarea:first').focus();
+                    }
+                    else if(type == 'output')
+                    {
+                        angular.element(target).find('.answer-area textarea:first').focus();
+                    }
+                }
+            }
+            else if(e.keyCode == 46)
+            {
+                if(e.shiftKey)
+                {
+                    if(dialog.inputRaw.length > 1)
+                    {
+                        var form = e.currentTarget.parentElement.parentElement.parentElement;
+                        var index = dialog.inputRaw.indexOf(current);
+                        dialog.inputRaw.splice(index, 1);
+
+                        setTimeout(function()
+                        {
+                            $scope.saveModified(type, e, form);
+                        }, 100);
+                    }
+                }
+                else if(confirm($scope.lan('Are you sure you want to delete this item?')))
+                {
+                    DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
+                    {
+                        var index = $scope.dialogs.indexOf(dialog);
+                        $scope.dialogs.splice(index, 1);
+                    });
+                }
+            }
+            else
+            {
+                console.log(e.keyCode);
             }
         };
 
@@ -266,7 +367,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
 
-                    $rootScope.$broadcast('simulator-build');
+                    // $rootScope.$broadcast('simulator-build');
                 });
             }
         };
@@ -285,7 +386,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             setTimeout(function()
             {
-                console.log('깡깡');
                 //delete 이미지 출력
                 angular.element(element).find('.functions-area img').hide();
                 angular.element(element).find('.delete-img').show();
@@ -326,25 +426,30 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             }
         };
 
-        $scope.saveModified = function(type, e)
+        $scope.saveModified = function(type, e, isDelete)
         {
             // 만약 타이핑중 tab을 눌러서 blur처리가 되면 바로 저장.
             if(e.currentTarget.watchTimeout)
                 clearTimeout(e.currentTarget.watchTimeout);
 
-            var element = e.currentTarget.parentElement.parentElement.parentElement;
-
             //만약 값이 변동이 없다면 저장하지 않음.
-            if(e.currentTarget.prevValue == e.currentTarget.value)
+            if(e.currentTarget.prevValue == e.currentTarget.value && !isDelete)
             {
                 return;
             }
+
+            var element = undefined;
+
+            if(isDelete)
+                element = isDelete;
+            else
+                element = e.currentTarget.parentElement.parentElement.parentElement;
 
             var data = $scope.getDialogFromElement(element);
             data._id = element.getAttribute('data-id');
             data.botId = chatbot.id;
 
-            console.log('엘레먼트 : ', element);
+            console.log('데이터 : ', data);
 
             $scope.save(data, function()
             {

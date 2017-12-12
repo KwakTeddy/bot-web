@@ -11,7 +11,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     $scope.failedDialogSaved = false;
 
     // 실제 그래프 로직이 들어있는 서비스
-    DialogGraph.setScope($compile, $scope);
+    DialogGraph.setScope($compile, $scope, $rootScope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     DialogGraph.setCanvas('#graphDialogCanvas');
     DialogGraph.setMenu('.dialog-menu');

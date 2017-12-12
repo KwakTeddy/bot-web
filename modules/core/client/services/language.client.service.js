@@ -72,7 +72,7 @@
                 "ko": "비밀번호를 잊으셨나요?",
                 "en": "Forget your password?",
                 "jp": "秘密番号を探す",
-                "zh": "忘记密码"
+                "zh": "忘记密码？"
             },
             "Sign in": {
                 "ko": "로그인",
@@ -1071,7 +1071,7 @@
                 "zh": "任务名称"
             },
             "Operation": {
-                "ko": "기능",
+                "ko": "운영",
                 "en": "Operation",
                 "jp": "機能",
                 "zh": "功能"
@@ -1528,39 +1528,57 @@
             },
             "Bot Link": {
                 "ko": "Bot Link",
-                "en" : "Bot Link"
+                "en": "Bot Link",
+                "jp": "Bot Link",
+                "zh": "Bot连接"
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
-                "en": "Entity analysis"
+                "en": "Entity analysis",
+                "jp": "Entity analysis",
+                "zh": "实体分析"
             },
             "Intent analysis": {
                 "ko": "인텐트 분석",
-                "en": "Intent analysis"
+                "en": "Intent analysis",
+                "jp": "Intent analysis",
+                "zh": "意图分析"
             },
             "KaKao Talk": {
                 "ko": "카카오톡",
-                "en": "KaKao Talk"
+                "en": "KaKao Talk",
+                "jp": "KaKao Talk",
+                "zh": "KaKao Talk"
             },
             "LOG": {
                 "ko": "로그",
-                "en": "LOG"
+                "en": "LOG",
+                "jp": "LOG",
+                "zh": "日志"
             },
             "Line": {
                 "ko": "라인",
-                "en": "Line"
+                "en": "Line",
+                "jp": "Line",
+                "zh": "Line"
             },
             "Messanger": {
                 "ko": "Messanger",
-                "en": "Messanger"
+                "en": "Messanger",
+                "jp": "Messanger",
+                "zh": "Messanger"
             },
             "Naver Talk Talk": {
                 "ko": "네이버 톡톡",
-                "en": "Naver Talk Talk"
+                "en": "Naver Talk Talk",
+                "jp": "Naver Talk Talk",
+                "zh": "Naver Talk Talk"
             },
             "Signout": {
                 "ko": "로그아웃",
-                "en": "Signout"
+                "en": "Signout",
+                "jp": "Signout",
+                "zh": "注销"
             },
 
 
@@ -1581,7 +1599,7 @@
             "Korean": {
                 "ko": "한국어",
                 "en": "Korean",
-                "zh": "朝鲜的",
+                "zh": "韩语",
                 "jp": "韓国語"
             },
             "English": {
@@ -1617,8 +1635,8 @@
             "Task name": {
                 "ko": "Task 이름",
                 "en": "Task name",
-                "zh": "",
-                "jp": ""
+                "zh": "任务名称",
+                "jp": "Task name"
             },
             "Type Add": {
                 "ko": "Type 추가",
@@ -1729,10 +1747,10 @@
                 "jp": "ダイアログセット名を入力します。"
             },
             "If you would like to receive the e-mail again, please click on the again button.": {
-                "ko": "",
+                "ko": "If you would like to receive the e-mail again, please click on the again button.",
                 "en": "If you would like to receive the e-mail again, please click on the again button.",
-                "zh": "",
-                "jp": ""
+                "zh": "如果你重新接收邮件，请点击再次发送按钮",
+                "jp": "If you would like to receive the e-mail again, please click on the again button."
             },
             "You do not have any Facebook pages to connect to.": {
                 "ko": "연결가능한 페이스북 페이지가 없습니다.",
@@ -1749,7 +1767,7 @@
             "Connect": {
                 "ko": "연결하기",
                 "en": "Connect",
-                "zh": "连",
+                "zh": "连接",
                 "jp": "接続する"
             },
             "Disconnect": {
@@ -1773,7 +1791,7 @@
             "Human Chat log": {
                 "ko": "상담원 대화 내역",
                 "en": "Human Chat log",
-                "zh" : "座席对话历史。",
+                "zh" : "咨询对话历史记录",
                 "jp" : "エージェントの会話履歴。"
             },
             "Please enter Type name": {
@@ -1798,7 +1816,7 @@
             "Jump": {
                 "ko": "Jump",
                 "en": "Jump",
-                "zh": "跳",
+                "zh": "跳跃",
                 "jp": "ジャンプ"
             },
             "JSON Format Error": {
@@ -1900,16 +1918,10 @@
             "Learning": {
                 "ko": "학습중",
                 "en": "Learning",
-                "zh": "在学习",
+                "zh": "学习中",
                 "jp": "学んでいる"
             },
             "Password is disaccord": {
-                "ko": "비밀번호가 일치하지 않습니다.",
-                "en": "Password is disaccord",
-                "zh": "密码不一致",
-                "jp": "パスワードは不一致です"
-            },
-            "비밀번호가 일치하지 않습니다.": {
                 "ko": "비밀번호가 일치하지 않습니다.",
                 "en": "Password is disaccord",
                 "zh": "密码不一致",
@@ -1924,7 +1936,7 @@
             "Registration for closed beta": {
                 "ko": "클로즈베타 신청",
                 "en": "Registration for closed beta",
-                "zh": "注册内测。",
+                "zh": "申请内测。",
                 "jp": "クローズドベータ版の登録。"
             },
             "Email is already signed up.": {
@@ -1957,6 +1969,102 @@
                 "en": "Name is already using",
                 "zh": "名称已经在使用",
                 "jp": "名前は既に使用しています"
+            },
+            "Manage Contents": {
+                "ko": "컨텐츠 관리",
+                "en": "Manage Contents",
+                "zh": "内容管理",
+                "jp": "Manage Contents"
+            },
+            "manage reservation":{
+                "ko": "예약관리",
+                "en": "manage reservation",
+                "zh": "预约管理",
+                "jp": "manage reservation"
+            },
+            "manage procedural information":{
+                "ko": "시술정보관리",
+                "en": "manage procedural information",
+                "zh": "治疗信息管理",
+                "jp": "manage procedural information"
+            },
+            "Manage Event":{
+                "ko": "이벤트관리",
+                "en": "Manage Event",
+                "zh": "活动管理",
+                "jp": "Manage Event"
+            },
+            "Manage Conversation Graph":{
+                "ko": "대화그래프관리",
+                "en": "Manage Conversation Graph",
+                "zh": "对话框图管理",
+                "jp": "Manage Conversation Graph"
+            },
+            "Manage Intent":{
+                "ko": "인텐트관리",
+                "en": "Manage Intent",
+                "zh": "意向管理",
+                "jp": "Manage Intent"
+            },
+            "Manage Entity":{
+                "ko": "엔터티관리",
+                "en": "Manage Entity",
+                "zh": "实体管理",
+                "jp": "Manage Entity"
+            },
+            "Manage Menu":{
+                "ko": "메뉴관리",
+                "en": "Manage Menu",
+                "zh": "菜单管理",
+                "jp": "Manage Menu"
+            },
+            "Manage orders":{
+                "ko": "주문관리",
+                "en": "Manage orders",
+                "zh": "订单管理",
+                "jp": "Manage orders"
+            },
+            "Manage Parking":{
+                "ko": "주차정보관리",
+                "en": "Manage Parking",
+                "zh": "停车信息管理",
+                "jp": "Manage Parking"
+            },
+            "Manage Shuttle":{
+                "ko": "셔틀정보관리",
+                "en": "Manage Shuttle",
+                "zh": "班车信息管理",
+                "jp": "Manage Shuttle"
+            },
+            "Manage Facility":{
+                "ko": "시설정보관리",
+                "en": "Manage Facility",
+                "zh": "设施信息管理",
+                "jp": "Manage Facility"
+            },
+            "Manage Room":{
+                "ko": "객실정보관리",
+                "en": "Manage Room",
+                "zh": "房间信息管理",
+                "jp": "Manage Room"
+            },
+            "Manage Dining":{
+                "ko": "다이닝정보관리",
+                "en": "Manage Dining",
+                "zh": "餐饮信息管理",
+                "jp": "Manage Dining"
+            },
+            "Manage Booking":{
+                "ko": "예약정보관리",
+                "en": "Manage Booking",
+                "zh": "预订信息管理",
+                "jp": "Manage Booking"
+            },
+            "start for free":{
+                "ko": "무료로 시작하기",
+                "en": "start for free",
+                "zh": "免费开始",
+                "jp": "start for free"
             }
         };
 
@@ -1975,11 +2083,11 @@
 
                 console.error('language', key);
 
-                return '언어가 없습니다';
+                return 'no messages';
             }
             else
             {
-                return languages[key][code];
+                return languages[key][code] || languages[key]['en'];
             }
         };
 
