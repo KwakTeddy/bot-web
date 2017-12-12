@@ -34,7 +34,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                     alert($scope.lan('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.'));
                     return;
                 }
-            }
+            }$
 
             $scope.isAdvancedMode = false;
         }

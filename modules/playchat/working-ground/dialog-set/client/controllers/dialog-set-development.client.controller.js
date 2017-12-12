@@ -31,6 +31,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
     {
         angular.element('.dialog-learning-development-content input:first').focus();
 
+        $scope.$on('focusToDialogSet', function()
+        {
+            angular.element('.dialog-learning-development-content textarea:first').focus();
+        });
+
         $scope.search = function(e)
         {
             if(e.keyCode == 13)

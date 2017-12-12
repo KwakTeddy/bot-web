@@ -223,6 +223,18 @@
             this.$compile = $compile;
             this.$scope = $scope;
             this.$rootScope = $rootScope;
+
+            var that = this;
+            //역시나 아름답지 않지만..
+            $scope.$on('focusToDialogGraph', function()
+            {
+                console.dir(that.focusedTarget);
+                that.focusById(that.focusedTarget.dialog.id);
+            });
+
+            $scope.$on('saveDialogGraph', function()
+            {
+            });
         };
 
         DialogGraph.prototype.setEditor = function(editor)
@@ -407,14 +419,6 @@
             var that = this;
             window.addEventListener('keydown', function(e)
             {
-                if(e.keyCode == 191 && e.shiftKey)
-                {
-                    that.$scope.$apply(function()
-                    {
-                        that.$scope.shortCutHelp = true;
-                    });
-                }
-
                 if(e.srcElement.nodeName != 'BODY')
                 {
                     //에디터로 포커스 이동되어있을때
@@ -439,8 +443,6 @@
                     }
                     else if(e.altKey)
                     {
-                        console.log(that.$scope.currentTabName.replace(/\./gi, '\\\\.'));
-
                         var next = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).next();
                         if(next.length == 1)
                         {
