@@ -41,46 +41,48 @@
 
         Menu.prototype.moveUp = function()
         {
-            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
-            var dialog = this.currentDialog.get(0).children[0].dialog;
-            var prevDialog = (this.currentDialog.prev().get(0) ? this.currentDialog.prev().get(0).children[0].dialog : undefined);
-            if(prevDialog)
-            {
-                var prevIndex = parentDialog.children.indexOf(prevDialog);
-                var currentIndex = parentDialog.children.indexOf(dialog);
-
-                var temp = parentDialog.children[prevIndex];
-                parentDialog.children[prevIndex] = dialog;
-                parentDialog.children[currentIndex] = temp;
-
-                //실제 엘리먼트들도 바꾼다.
-                this.currentDialog.insertBefore(this.currentDialog.prev());
-
-                instance.setDirty(true);
-            }
+            instance.moveUpDialog(this.currentDialog);
+            // var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            // var dialog = this.currentDialog.get(0).children[0].dialog;
+            // var prevDialog = (this.currentDialog.prev().get(0) ? this.currentDialog.prev().get(0).children[0].dialog : undefined);
+            // if(prevDialog)
+            // {
+            //     var prevIndex = parentDialog.children.indexOf(prevDialog);
+            //     var currentIndex = parentDialog.children.indexOf(dialog);
+            //
+            //     var temp = parentDialog.children[prevIndex];
+            //     parentDialog.children[prevIndex] = dialog;
+            //     parentDialog.children[currentIndex] = temp;
+            //
+            //     //실제 엘리먼트들도 바꾼다.
+            //     this.currentDialog.insertBefore(this.currentDialog.prev());
+            //
+            //     instance.setDirty(true);
+            // }
 
             this.closeMenu();
         };
 
         Menu.prototype.moveDown = function()
         {
-            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
-            var dialog = this.currentDialog.get(0).children[0].dialog;
-            var nextDialog = (this.currentDialog.next().get(0) ? this.currentDialog.next().get(0).children[0].dialog : undefined);
-            if(nextDialog)
-            {
-                var nextIndex = parentDialog.children.indexOf(nextDialog);
-                var currentIndex = parentDialog.children.indexOf(dialog);
-
-                var temp = parentDialog.children[nextIndex];
-                parentDialog.children[nextIndex] = dialog;
-                parentDialog.children[currentIndex] = temp;
-
-                //실제 엘리먼트들도 바꾼다.
-                this.currentDialog.insertAfter(this.currentDialog.next());
-
-                instance.setDirty(true);
-            }
+            instance.moveDownDialog(this.currentDialog);
+            // var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            // var dialog = this.currentDialog.get(0).children[0].dialog;
+            // var nextDialog = (this.currentDialog.next().get(0) ? this.currentDialog.next().get(0).children[0].dialog : undefined);
+            // if(nextDialog)
+            // {
+            //     var nextIndex = parentDialog.children.indexOf(nextDialog);
+            //     var currentIndex = parentDialog.children.indexOf(dialog);
+            //
+            //     var temp = parentDialog.children[nextIndex];
+            //     parentDialog.children[nextIndex] = dialog;
+            //     parentDialog.children[currentIndex] = temp;
+            //
+            //     //실제 엘리먼트들도 바꾼다.
+            //     this.currentDialog.insertAfter(this.currentDialog.next());
+            //
+            //     instance.setDirty(true);
+            // }
 
             this.closeMenu();
         };
@@ -106,34 +108,7 @@
 
         Menu.prototype.delete = function()
         {
-            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
-            var dialog = this.currentDialog.get(0).children[0].dialog;
-
-            var prev = this.currentDialog.prev().get(0);
-            var next = this.currentDialog.next().get(0);
-
-            var afterFocusId = '';
-            if(prev)
-            {
-                afterFocusId = prev.children[0].dialog.id;
-            }
-            else if(next && next.children[0])
-            {
-                afterFocusId = next.children[0].dialog.id;
-            }
-            else
-            {
-                afterFocusId = parentDialog.id;
-            }
-
-            var index = parentDialog.children.indexOf(dialog);
-
-            parentDialog.children.splice(index, 1);
-
-            instance.focusedDialog = null;
-            instance.refresh();
-            instance.setDirty(true);
-            instance.focusById(afterFocusId);
+            instance.deleteDialog();
 
             this.closeMenu();
         };
@@ -349,25 +324,116 @@
             });
         };
 
+        DialogGraph.prototype.moveUpDialog = function(target)
+        {
+            var parentDialog = target.parent().prev().get(0).dialog;
+            var dialog = target.get(0).children[0].dialog;
+            var prevDialog = (target.prev().get(0) ? target.prev().get(0).children[0].dialog : undefined);
+            if(prevDialog)
+            {
+                var prevIndex = parentDialog.children.indexOf(prevDialog);
+                var currentIndex = parentDialog.children.indexOf(dialog);
+
+                var temp = parentDialog.children[prevIndex];
+                parentDialog.children[prevIndex] = dialog;
+                parentDialog.children[currentIndex] = temp;
+
+                //실제 엘리먼트들도 바꾼다.
+                target.insertBefore(target.prev());
+
+                this.setDirty(true);
+                this.refreshLine();
+            }
+        };
+
+        DialogGraph.prototype.moveDownDialog = function(target)
+        {
+            console.log('탘게 : ', target);
+            var parentDialog = target.parent().prev().get(0).dialog;
+            var dialog = target.get(0).children[0].dialog;
+            var nextDialog = (target.next().get(0) ? target.next().get(0).children[0].dialog : undefined);
+            if(nextDialog)
+            {
+                var nextIndex = parentDialog.children.indexOf(nextDialog);
+                var currentIndex = parentDialog.children.indexOf(dialog);
+
+                var temp = parentDialog.children[nextIndex];
+                parentDialog.children[nextIndex] = dialog;
+                parentDialog.children[currentIndex] = temp;
+
+                //실제 엘리먼트들도 바꾼다.
+                target.insertAfter(target.next());
+
+                this.setDirty(true);
+                this.refreshLine();
+            }
+        };
+
+        DialogGraph.prototype.deleteDialog = function(target)
+        {
+            var parentDialog = target.parent().prev().get(0).dialog;
+            var dialog = target.get(0).children[0].dialog;
+
+            var prev = target.prev().get(0);
+            var next = target.next().get(0);
+
+            var afterFocusId = '';
+            if(prev)
+            {
+                afterFocusId = prev.children[0].dialog.id;
+            }
+            else if(next && next.children[0])
+            {
+                afterFocusId = next.children[0].dialog.id;
+            }
+            else
+            {
+                afterFocusId = parentDialog.id;
+            }
+
+            var index = parentDialog.children.indexOf(dialog);
+
+            parentDialog.children.splice(index, 1);
+
+            instance.focusedDialog = null;
+            instance.refresh();
+            instance.setDirty(true);
+            instance.focusById(afterFocusId);
+        };
+
         DialogGraph.prototype.bindKeyboardEventToCanvas = function()
         {
             var that = this;
             window.addEventListener('keydown', function(e)
             {
                 if(e.srcElement.nodeName != 'BODY')
+                {
+                    if(e.keyCode == 27)
+                    {
+                        //ESC
+                        that.editor.close();
+                    }
                     return;
+                }
 
                 if(e.keyCode == 39) // right
                 {
-                    if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
+                    if(e.ctrlKey || e.metaKey)
                     {
-                        if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+
+                    }
+                    else
+                    {
+                        if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
                         {
-                            that.focus(that.focusedTarget.nextElementSibling.children[0]);
-                        }
-                        else
-                        {
-                            that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
+                            if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+                            {
+                                // that.focus(that.focusedTarget.nextElementSibling.children[0]);
+                            }
+                            else
+                            {
+                                that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
+                            }
                         }
                     }
 
@@ -375,15 +441,39 @@
                 }
                 else if(e.keyCode == 40) // down
                 {
-                    if(that.focusedTarget.parentElement.nextElementSibling)
+                    if(e.ctrlKey || e.metaKey)
                     {
-                        if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
+                        that.moveDownDialog(angular.element(that.focusedTarget.parentElement));
+                    }
+                    else
+                    {
+                        if(that.focusedTarget.parentElement.nextElementSibling)
                         {
-                            that.focus(that.focusedTarget.parentElement.nextElementSibling);
-                        }
-                        else
-                        {
-                            that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
+                            if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
+                            {
+                                if(that.focusedTarget.parentElement.parentElement.parentElement.nextElementSibling)
+                                {
+                                    var parent = that.focusedTarget.parentElement.parentElement.parentElement;
+                                    var target = undefined;
+                                    do
+                                    {
+                                        parent = parent.nextElementSibling;
+                                        if(parent.children.length <= 1)
+                                            return;
+
+                                        target = parent.children[1].children.length > 1 ? parent.children[1].children[0] : undefined;
+
+                                    } while(!target);
+
+                                    that.focus(target.children[0]);
+                                }
+
+                                // that.focus(that.focusedTarget.parentElement.nextElementSibling);
+                            }
+                            else
+                            {
+                                that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
+                            }
                         }
                     }
 
@@ -391,29 +481,98 @@
                 }
                 else if(e.keyCode == 37) // left
                 {
-                    if(that.focusedTarget.className.indexOf('plus') != -1)
+                    if(e.ctrlKey || e.metaKey)
                     {
-                        that.focus(that.focusedTarget.parentElement.previousElementSibling);
+
                     }
-                    else if(that.focusedTarget.parentElement.parentElement.previousElementSibling)
+                    else
                     {
-                        that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
+                        if (that.focusedTarget.className.indexOf('plus') != -1)
+                        {
+                            // that.focus(that.focusedTarget.parentElement.previousElementSibling);
+                        }
+                        else if (that.focusedTarget.parentElement.parentElement.previousElementSibling)
+                        {
+                            that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
+                        }
                     }
 
                     e.preventDefault();
                 }
                 else if(e.keyCode == 38) // up
                 {
-                    if(that.focusedTarget.className.indexOf('plus') != -1)
+                    if(e.ctrlKey || e.metaKey)
                     {
-                        that.focus(that.focusedTarget.previousElementSibling.children[0]);
+                        that.moveUpDialog(angular.element(that.focusedTarget.parentElement));
                     }
-                    else if(that.focusedTarget.parentElement.previousElementSibling)
+                    else
                     {
-                        that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                        if(that.focusedTarget.className.indexOf('plus') != -1)
+                        {
+
+                            // that.focus(that.focusedTarget.previousElementSibling.children[0]);
+                        }
+                        else if(that.focusedTarget.parentElement.previousElementSibling)
+                        {
+                            that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.parentElement.parentElement.parentElement.previousElementSibling)
+                            {
+                                var parent = that.focusedTarget.parentElement.parentElement.parentElement;
+                                var target = undefined;
+                                do
+                                {
+                                    parent = parent.previousElementSibling;
+                                    if(parent.children.length <= 1)
+                                        return;
+
+                                    target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
+
+                                } while(!target);
+
+                                that.focus(target.children[0]);
+                            }
+                        }
                     }
 
                     e.preventDefault();
+                }
+                else if(e.keyCode == 13)
+                {
+                    //ENTER
+                    var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                    var dialog = that.focusedTarget.dialog;
+
+                    that.editor.open(parent ? parent.dialog : undefined, dialog);
+                }
+                else if(e.keyCode == 45)
+                {
+                    //INSERT
+                    if(e.shiftKey)
+                    {
+                        var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                        that.editor.open(parent.dialog, null);
+                    }
+                    else
+                    {
+                        that.editor.open(that.focusedTarget.dialog, null);
+                    }
+                }
+                else if(e.keyCode == 46)
+                {
+                    //DEL
+                    that.deleteDialog(angular.element(that.focusedTarget.parentElement));
+                }
+                else if(e.keyCode == 32)
+                {
+                    var target = that.focusedTarget.nextElementSibling;
+                    that.toggleChild(target);
+                }
+                else
+                {
+                    console.log('키코드 : ', e.keyCode, e);
                 }
             });
         };
