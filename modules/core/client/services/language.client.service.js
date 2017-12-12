@@ -2150,7 +2150,7 @@
                 "zh": "使用情况统计",
                 "jp": "usage statistics"
             },
-            "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.":{
+            "You may search the usage amount by the number of conversations, number  of people logged in by dates and etc.":{
                 "ko": "기간별 접속자수, 대화수, 등 사용량을 조회해 볼 수 있습니다.",
                 "en": "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.",
                 "zh": "您可以查看每个时间周期使用的用户数量，对话数量等使用量。",
@@ -2161,6 +2161,12 @@
                 "en": "Use the template bots to make your own chatbot in a second.",
                 "zh": "请使用下面两种方式轻松地开发聊天机器人。",
                 "jp": "Use the template bots to make your own chatbot in a second."
+            },
+            "Bot Name":{
+                "ko": "챗봇명",
+                "en": "Bot Name",
+                "zh": "机器人名",
+                "jp": "Bot Name"
             }
         };
 
