@@ -2066,6 +2066,102 @@
                 "zh": "免费开始",
                 "jp": "start for free"
             }
+
+
+
+
+
+            //dashboard
+            "Chat bot has been made!":{
+                "ko": "챗봇이 만들어졌습니다!",
+                "en": "Chat bot has been made!",
+                "zh": "聊天机器人创建成功!",
+                "jp": "Chat bot has been made!"
+            },
+            "Let it study conversation":{
+                "ko": "대화 학습 시키기",
+                "en": "Let it study conversation",
+                "zh": "让它学习对话",
+                "jp": "Let it study conversation"
+            },
+            "We may let it learn how to answer accordingly towards the questions guests has asked":{
+                "ko": "고객이 물어본 질문에 어떻게 답변하지 학습시킬 수 있습니다.",
+                "en": "We may let it learn how to answer accordingly towards the questions guests has asked",
+                "zh": "我们可以让它学习如何回答客户提出的问题。",
+                "jp": "We may let it learn how to answer accordingly towards the questions guests has asked"
+            },
+            "Start Learning":{
+                "ko": "학습 시작",
+                "en": "Start Learning",
+                "zh": "开始学习",
+                "jp": "Start Learning"
+            },
+            "Make the Conversational scenario":{
+                "ko": "대화 시나리오 만들기",
+                "en": "Make the Conversational scenario",
+                "zh": "创建一个对话场景",
+                "jp": "Make the Conversational scenario"
+            },
+            "We develop the conversations to answer by phases or scenario other than just a simple question and answer.":{
+                "ko": "단순한 질문 답변이 아닌, 시나리오 또는 단계적으로 답변을 할 수 있도록 대화를 개발합니다.",
+                "en": "We develop the conversations to answer by phases or scenario other than just a simple question and answer.",
+                "zh": "不仅仅是简单的提问和回答，我们还可以开发出具有对话场景或者阶段式回答的对话。",
+                "jp": "We develop the conversations to answer by phases or scenario other than just a simple question and answer."
+            },
+            "Scenario Start":{
+                "ko": "시나리오 시작",
+                "en": "Scenario Start",
+                "zh": "开始场景",
+                "jp": "Scenario Start"
+            },
+            "Connect Channel":{
+                "ko": "채널 연결",
+                "en": "Connect Channel",
+                "zh": "链接频道",
+                "jp": "Connect Channel"
+            },
+            "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.":{
+                "ko": "전화, 카카오톡, 페이스북에 연결해서 챗봇을 서비스합니다.",
+                "en": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.",
+                "zh": "我们提供连接到电话，Kakao Talk和Facebook以提供聊天机器人的服务。",
+                "jp": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook."
+            },
+            "Dialogue Breakdown":{
+                "ko": "대화내역",
+                "en": "Dialogue Breakdown",
+                "zh": "对话历史记录",
+                "jp": "Dialogue Breakdown"
+            },
+            "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.":{
+                "ko": "인공지능이 자동으로 상담한 대화내역을 확인 할 수 있습니다.",
+                "en": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.",
+                "zh": "您可以查看AI自动咨询的对话历史记录。",
+                "jp": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation."
+            },
+            "We can make it learn how to answer to the questions that it was not able to reply.":{
+                "ko": "응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.",
+                "en": "We can make it learn how to answer to the questions that it was not able to reply.",
+                "zh": "您可以学习回答你没有回答的问题。",
+                "jp": "We can make it learn how to answer to the questions that it was not able to reply."
+            },
+            "usage statistics":{
+                "ko": "사용통계",
+                "en": "usage statistics",
+                "zh": "使用情况统计",
+                "jp": "usage statistics"
+            },
+            "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.":{
+                "ko": "기간별 접속자수, 대화수, 등 사용량을 조회해 볼 수 있습니다.",
+                "en": "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.",
+                "zh": "您可以查看每个时间周期使用的用户数量，对话数量等使用量。",
+                "jp": "You may search the usage amount by the number of conversations, number of people logged in by dates and etc."
+            },
+            "Use the template bots to make your own chatbot in a second.":{
+                "ko": "아래 두가지 템플릿을 이용하면 나만의 챗봇을 뚝딱 만들 수 있어요.",
+                "en": "Use the template bots to make your own chatbot in a second.",
+                "zh": "请使用下面两种方式轻松地开发聊天机器人。",
+                "jp": "Use the template bots to make your own chatbot in a second."
+            }
         };
 
         var list = {};
