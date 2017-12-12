@@ -495,6 +495,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             $scope.getDialogs(id);
             angular.element('.dialog-learning-development-content input:first').focus();
 
+            $scope.currentDialogsetId = id;
+
             $location.search('dialogsetId', id);
             $location.search('dialogsetTitle', title);
         };
