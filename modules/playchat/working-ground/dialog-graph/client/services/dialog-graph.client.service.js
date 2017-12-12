@@ -407,6 +407,14 @@
             var that = this;
             window.addEventListener('keydown', function(e)
             {
+                if(e.keyCode == 191 && e.shiftKey)
+                {
+                    that.$scope.$apply(function()
+                    {
+                        that.$scope.shortCutHelp = true;
+                    });
+                }
+
                 if(e.srcElement.nodeName != 'BODY')
                 {
                     //에디터로 포커스 이동되어있을때
@@ -419,10 +427,6 @@
                     {
                         that.$rootScope.$broadcast('saveDialogGraphEditor');
                     }
-                    else
-                    {
-                        console.log(e.keyCode, e);
-                    }
 
                     return;
                 }
@@ -432,6 +436,20 @@
                     if(e.ctrlKey || e.metaKey)
                     {
 
+                    }
+                    else if(e.altKey)
+                    {
+                        console.log(that.$scope.currentTabName.replace(/\./gi, '\\\\.'));
+
+                        var next = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).next();
+                        if(next.length == 1)
+                        {
+                            var id = next.attr('id').replace(/\./gi, '\\\\.');
+
+                            that.$scope.selectTab({ currentTarget: '#' + id}, next.attr('id'));
+
+                            that.$scope.currentTabName = next.attr('id');
+                        }
                     }
                     else
                     {
@@ -495,6 +513,17 @@
                     if(e.ctrlKey || e.metaKey)
                     {
 
+                    }
+                    else if(e.altKey)
+                    {
+                        console.log(that.$scope.currentTabName.replace(/\./gi, '\\\\.'));
+
+                        var prev = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
+                        var id = prev.attr('id').replace(/\./gi, '\\\\.');
+
+                        that.$scope.selectTab({ currentTarget: '#' + id}, prev.attr('id'));
+
+                        that.$scope.currentTabName = prev.attr('id');
                     }
                     else
                     {
@@ -580,6 +609,34 @@
                 {
                     var target = that.focusedTarget.nextElementSibling;
                     that.toggleChild(target);
+                }
+                else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
+                {
+                    that.$scope.save();
+
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                else if(e.keyCode == 90 && (e.metaKey || e.ctrlKey))
+                {
+                    if(e.shiftKey)
+                    {
+                        that.$scope.redo();
+                    }
+                    else
+                    {
+                        that.$scope.undo();
+                    }
+
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                else if(e.keyCode == 186 && e.shiftKey)
+                {
+                    angular.element('#search').focus();
+
+                    e.preventDefault();
+                    e.stopPropagation();
                 }
                 else
                 {
@@ -711,7 +768,7 @@
 
         DialogGraph.prototype.addPlusButton = function(parent, style)
         {
-            var button = angular.element('<button type="button" class="plus"' + (style ? style : '') + '></button>');
+            var button = angular.element('<button type="button" class="plus"' + (style ? style : '') + '>' + this.$scope.lan('Add') + '</button>');
 
             var target = parent.get(0).children[parent.get(0).children.length-1];
 
@@ -877,9 +934,12 @@
                 if(e.which != 1 || dragStart)
                     return;
 
-                dragStart = true;
-
                 parent = item.parentElement.parentElement;
+
+                if(parent.id == 'graphDialogCanvas')
+                    return;
+
+                dragStart = true;
 
                 clone = item.cloneNode(true);
                 clone.origin = item;
@@ -1159,7 +1219,7 @@
                 t.find('.graph-fold').hide();
                 var target = t.find('.graph-dialog-item').get(0);
 
-                var half = (target.offsetHeight / 2);
+                var half = Math.ceil(target.offsetHeight / 2) + 1.4;
                 this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
             }
             else

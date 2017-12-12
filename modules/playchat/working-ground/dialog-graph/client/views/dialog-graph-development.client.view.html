@@ -8,6 +8,15 @@
 {
     overflow-x: hidden;
 }
+
+caption
+{
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    display: table-caption;
+}
 </style>
 
 <script type="text/template" id="dialogGraphTemplate">
@@ -96,6 +105,111 @@
             <li class="dialog-menu-item" data-name="duplicate"><a>{{lan('Duplicate') }}</a></li>
             <li class="dialog-menu-item" data-name="delete"><a>{{lan('Delete') }}</a></li>
         </ul>
+    </div>
+
+    <div class="modal-background" ng-show="shortCutHelp">
+        <div class="modal">
+            <div class="modal-body">
+                <table class="tb02">
+                    <caption>Common</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>ShortCut</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alt ← →</td>
+                            <td>Move focus to next or previous editor</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="tb02">
+                    <caption>Dialog Graph ShortCut</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>ShortCut</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>← ↓ ↑ →</td>
+                            <td>Navigate Dialog</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl + ↑ ↓</td>
+                            <td>Move Dialog Up/Down</td>
+                        </tr>
+                        <tr>
+                            <td>Enter</td>
+                            <td>Open Edit Dialog</td>
+                        </tr>
+                        <tr>
+                            <td>Esc</td>
+                            <td>Cancel Edit</td>
+                        </tr>
+                        <tr>
+                            <td>Insert</td>
+                            <td>Add Child dialog</td>
+                        </tr>
+                        <tr>
+                            <td>Shift+Insert</td>
+                            <td>Add Appending dialog</td>
+                        </tr>
+                        <tr>
+                            <td>Del</td>
+                            <td>Delete Dialog</td>
+                        </tr>
+                        <tr>
+                            <td>Space</td>
+                            <td>Expand/Collapse Child Dialog</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="tb02">
+                    <caption>Dialog Graph Editor ShortCut</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>ShortCut</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tab</td>
+                            <td>Move focus to next input</td>
+                        </tr>
+                        <tr>
+                            <td>Insert</td>
+                            <td>Add input or output</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl + Enter</td>
+                            <td>Save</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeShortCutHelp('naver')">{{ lan('Close') }}</button>
+            </div>
+        </div>
     </div>
 </div>
 
