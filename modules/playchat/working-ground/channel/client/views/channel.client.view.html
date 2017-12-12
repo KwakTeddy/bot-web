@@ -88,7 +88,7 @@
 
     <div class="modal-background" ng-show="help.line">
         <div class="modal">
-            <div class="modal-title">라인</div>
+            <div class="modal-title">{{lan('Line')}}</div>
             <div class="modal-body">
                 <ul class="channel-description">
                     <li>LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요</li>
@@ -115,7 +115,7 @@
 
     <div class="modal-background" ng-show="help.naver">
         <div class="modal">
-            <div class="modal-title">네이버톡톡</div>
+            <div class="modal-title">{{lan('Naver Talk Talk')}}</div>
             <div class="modal-body">
                 <ul class="channel-description">
                     <li>네이버톡톡 파트너센터 접속 (partner.talk.naver.com)</li>
@@ -142,7 +142,7 @@
 
     <div class="modal-background" ng-show="help.wechat">
         <div class="modal">
-            <div class="modal-title">위챗</div>
+            <div class="modal-title">{{lan('WeChat')}}</div>
             <div class="modal-body">
                 <span>Webhook URL : </span>
                 <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}/webhook">
@@ -156,7 +156,7 @@
 
     <div class="modal-background" ng-show="help.facebook">
         <div class="modal" style="min-width: 490px; width: auto;">
-            <div class="modal-title">페이스북</div>
+            <div class="modal-title">{{lan('Facebook')}}</div>
             <div class="modal-body" style="padding: 30px 0;">
                 <table class="tb02">
                     <thead>
@@ -193,7 +193,7 @@
 
     <div class="modal-background" ng-show="help.phone">
         <div class="modal" style="min-width: 490px; width: auto;">
-            <div class="modal-title"><strong class="letterS1">Phone <span class="point">ALPHA</span></strong></div>
+            <div class="modal-title"><strong class="letterS1">{{lan('Phone')}} <span class="point">ALPHA</span></strong></div>
             <div class="modal-body">
                 <span class="inline-block" style="font-size: 15px;font-weight: 700;">신청하기</span>
                 <ul class="input_type01" style="margin-top:10px;width:91.4%; height: auto;">

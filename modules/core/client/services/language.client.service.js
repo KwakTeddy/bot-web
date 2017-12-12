@@ -132,13 +132,13 @@
                 "ko": "이메일로 인증 이메일이 전송되었습니다.",
                 "en": "We sent a verification e-mail to ",
                 "jp": "メールで認証メールが送られました。 ",
-                "zh": "验证电子邮件已经发到您的邮箱了。 "
+                "zh": "验证电子邮件已经发到您的邮箱了 "
             },
             "Please check your e-mail box. The validity time of the certificate is one hour.": {
                 "ko": "이메일을 확인해주세요. 인증가능시간은 한시간 내에 마감됩니다.",
                 "en": "Please check your e-mail box. The validity time of the certificate is one hour.",
                 "jp": "電子メールを確認してください。 認証可能時間は一時間内に締め切られます。",
-                "zh": "请检查您的电子邮箱。证书的有效期为一个小时。"
+                "zh": "请检查您的电子邮箱，验证码的有效期为一个小时。"
             },
             "\"If you would like to receive the e-mail again": {
                 "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
@@ -1731,7 +1731,7 @@
             "New to Playchat?": {
                 "ko": "플레이챗에 처음이십니까?",
                 "en": "New to PlayChat?",
-                "zh": "PlayChat新手？",
+                "zh": "第一次使用PlayChat？",
                 "jp": "PlayChatを初めてお使いですか？"
             },
             "Choose Dialogset": {
@@ -1747,10 +1747,10 @@
                 "jp": "ダイアログセット名を入力します。"
             },
             "If you would like to receive the e-mail again, please click on the again button.": {
-                "ko": "If you would like to receive the e-mail again, please click on the again button.",
+                "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
                 "en": "If you would like to receive the e-mail again, please click on the again button.",
-                "zh": "如果你重新接收邮件，请点击再次发送按钮",
-                "jp": "If you would like to receive the e-mail again, please click on the again button."
+                "zh": "如果你重新接收邮件，请点击再次发送按钮。",
+                "jp": "メールを再受信したい場合は、'再送信'ボタンを押してください。"
             },
             "You do not have any Facebook pages to connect to.": {
                 "ko": "연결가능한 페이스북 페이지가 없습니다.",
@@ -1930,13 +1930,13 @@
             "Register for free closed beta": {
                 "ko": "무료로 클로즈베타 신청하기",
                 "en": "Register for free closed beta",
-                "zh": "注册免费内测",
+                "zh": "申请免费内测",
                 "jp": "無料クローズドベータ版に登録する"
             },
             "Registration for closed beta": {
                 "ko": "클로즈베타 신청",
                 "en": "Registration for closed beta",
-                "zh": "申请内测。",
+                "zh": "申请内测",
                 "jp": "クローズドベータ版の登録。"
             },
             "Email is already signed up.": {
@@ -2108,11 +2108,11 @@
                 "zh": "不仅仅是简单的提问和回答，我们还可以开发出具有对话场景或者阶段式回答的对话。",
                 "jp": "We develop the conversations to answer by phases or scenario other than just a simple question and answer."
             },
-            "Scenario Start":{
+            "Create Scenario":{
                 "ko": "시나리오 시작",
-                "en": "Scenario Start",
+                "en": "Create Scenario",
                 "zh": "开始场景",
-                "jp": "Scenario Start"
+                "jp": "Create Scenario"
             },
             "Connect Channel":{
                 "ko": "채널 연결",
@@ -2174,6 +2174,11 @@
                 "zh": "请使用下面两种方式轻松地开发聊天机器人。",
                 "jp": "Use the template bots to make your own chatbot in a second"
             }
+
+
+
+            //channel
+
         };
 
         var list = {};
