@@ -2065,7 +2065,7 @@
                 "en": "start for free",
                 "zh": "免费开始",
                 "jp": "start for free"
-            }
+            },
 
 
 
