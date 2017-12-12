@@ -614,10 +614,12 @@ var globalEndDialogs = [
           }
 
         } else {
-          task._output = task.typeDoc.output;
-
-          if(Array.isArray(task._output)) {
-            task._output = task._output[Math.floor(Math.random() * task._output.length)];
+          if(Array.isArray(task.typeDoc.output)) {
+            var index = Math.floor(Math.random() * task.typeDoc.output.length);
+            task._output = task.typeDoc.output[index];
+            console.log('index: ' + index + ', ' + task._output)
+          } else {
+            task._output = task.typeDoc.output;
           }
 
           context.dialog.output = '+_output+';

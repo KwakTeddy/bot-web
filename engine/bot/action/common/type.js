@@ -472,13 +472,22 @@ function processOutput(task, context, out) {
                     }
                 } else {
                     if (context.botUser.nlu.matchInfo.qa[0].output) {
-                        if (Array.isArray(context.botUser.nlu.matchInfo.qa[0].output)) {
-                            var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
-                            out = context.botUser.nlu.matchInfo.qa[0].output[result];
+                        if (Array.isArray(context.botUser.nlu.matchInfo.qa)) {
+                            var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa.length) + 1;
+                            out = context.botUser.nlu.matchInfo.qa[result].output;
                         } else {
-                            out = context.botUser.nlu.matchInfo.qa[0].output;
+                            out = context.botUser.nlu.matchInfo.qa.output;
                         }
                     }
+                // 대화학습 output 여러개 있을 때 하나만 나와서 위에것으로 수정함. 원래는 아래 것이 였음 Eric
+                //   if (context.botUser.nlu.matchInfo.qa[0].output) {
+                //     if (Array.isArray(context.botUser.nlu.matchInfo.qa[0].output)) {
+                //       var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
+                //       out = context.botUser.nlu.matchInfo.qa[0].output[result];
+                //     } else {
+                //       out = context.botUser.nlu.matchInfo.qa[0].output;
+                //     }
+                //   }
                 }
             }
         }
