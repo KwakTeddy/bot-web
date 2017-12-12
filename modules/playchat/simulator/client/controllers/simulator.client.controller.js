@@ -29,6 +29,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             else if(e.keyCode == 191 && e.shiftKey)
             {
+                if(e.path[0].nodeName == 'INPUT' || e.path[0].getAttribute('contenteditable'))
+                {
+                    return;
+                }
+
                 $scope.$apply(function()
                 {
                     $scope.shortCutHelp = true;
