@@ -75,7 +75,8 @@
                     <li>앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!</li>
                 </ul>
                 <div>
-                    <input type="text" class="webhook" value="Webhook URL : {{ host }}/kakao/{{ chatbot.id }}">
+                    <span>Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/kakao/{{ chatbot.id }}">
                     <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 </div>
             </div>
@@ -101,7 +102,8 @@
                     <li>다 끝났습니다!</li>
                 </ul>
                 <div>
-                    <input type="text" class="webhook" value="Webhook URL : {{ host }}/line/{{ chatbot.id }}">
+                    <span>Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/line/{{ chatbot.id }}">
                     <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 </div>
             </div>
@@ -127,7 +129,8 @@
                     <li>네이버의 API사용 승인이 된 후 playchat에서 제공하는 URL을 입력하여 연결</li>
                 </ul>
                 <div>
-                    <input type="text" class="webhook" value="Webhook URL : {{ host }}/naver/{{ chatbot.id }}">
+                    <span>Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/naver/{{ chatbot.id }}">
                     <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 </div>
             </div>
@@ -141,7 +144,8 @@
         <div class="modal">
             <div class="modal-title">위챗</div>
             <div class="modal-body">
-                <input type="text" class="webhook" value="Webhook URL : {{ host }}/wechat/{{ chatbot.id }}">
+                <span>Webhook URL : </span>
+                <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}">
                 <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
             </div>
             <div class="tab-footer">
