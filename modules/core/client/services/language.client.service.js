@@ -2075,7 +2075,7 @@
             }
             else
             {
-                return languages[key][code];
+                return languages[key][code] || languages[key]['en'];
             }
         };
 
