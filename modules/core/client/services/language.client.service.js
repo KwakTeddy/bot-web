@@ -72,7 +72,7 @@
                 "ko": "비밀번호를 잊으셨나요?",
                 "en": "Forget your password?",
                 "jp": "秘密番号を探す",
-                "zh": "忘记密码"
+                "zh": "忘记密码？"
             },
             "Sign in": {
                 "ko": "로그인",
@@ -1599,7 +1599,7 @@
             "Korean": {
                 "ko": "한국어",
                 "en": "Korean",
-                "zh": "朝鲜的",
+                "zh": "韩语",
                 "jp": "韓国語"
             },
             "English": {
@@ -2060,66 +2060,12 @@
                 "zh": "预订信息管理",
                 "jp": "Manage Booking"
             },
-            "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!":{
-                "ko": "Playchat - 1분만에 만드는 나만의 인공지능 챗봇",
-                "en": "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!",
-                "zh": "Playchat - 1分钟内就可以完成的我的人工智能聊天机器人",
-                "jp": "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!"
-            },
-            "Conversational Artificial Intelligence platform Playchat":{
-                "ko": "대화형 인공지능 플랫폼 Playchat",
-                "en": "Conversational Artificial Intelligence platform Playchat",
-                "zh": "互动式AI平台Playchat",
-                "jp": "Conversational Artificial Intelligence platform Playchat"
-            },
-            "Now, you may make your own conversational artificial intelligence by only entering in the basic information other than develop your own.":{
-                "ko": "이제 직접 개발하지 않고 간단한 정보의 입력만으로 나만의 대화형 인공지능을 만들어 바로 사용 할 수 있습니다.",
-                "en": "Now, you may make your own conversational artificial intelligence by only entering in the basic information other than develop your own.",
-                "zh": "现在您只需简单地输入信息而不需要自己开发，就可以创建自己的交互式人工智能。",
-                "jp": "Now, you may make your own conversational artificial intelligence by only entering in the basic information other than develop your own."
-            },
-            "Able to connect to Facebook and Plus Friends right away.":{
-                "ko": "플러스친구, 페이스북에도 바로 연결 할 수 있습니다.",
-                "en": "Able to connect to Facebook and Plus Friends right away.",
-                "zh": "另外，您还可以连接到您的公众号和Facebook。",
-                "jp": "Able to connect to Facebook and Plus Friends right away."
-            },
             "start for free":{
                 "ko": "무료로 시작하기",
                 "en": "start for free",
                 "zh": "免费开始",
                 "jp": "start for free"
-            },
-            "playchat is aming to be a natural conversational artificial intelligence with diverse functions":{
-                "ko": "Playchat은 자연스러운 대화형 인공지능을 지향하며 여러가지 기능을 제공합니다.",
-                "en": "playchat is aming to be a natural conversational artificial intelligence with diverse functions",
-                "zh": "Playchat针对自然交互式人工智能可以提供多种功能。",
-                "jp": "playchat is aming to be a natural conversational artificial intelligence with diverse functions"
-            },
-            "Customized Templates due to different types of jobs":{
-                "ko": "업종별 맞춤형 템플릿",
-                "en": "Customized Templates due to different types of jobs",
-                "zh": "以业种来区分的模板",
-                "jp": "Customized Templates due to different types of jobs"
-            },
-            "Make the chat bot<br>which can supply my service on the template.":{
-                "ko": "템플릿에 나의 서비스를 제공할 챗봇을 만들어보세요.",
-                "en": "Make the chat bot which can supply my service on the template.",
-                "zh": "在模板中创建聊天机器人提供我的服务。",
-                "jp": "Make the chat bot which can supply my service on the template."
-            },
-            "There are various templates such as restaurants, shopping and medicals.":{
-                "ko": "요식업, 쇼핑, 의료등 다양한 템플릿이 있습니다.",
-                "en": "There are various templates such as restaurants, shopping and medicals.",
-                "zh": "有各种各样的模板，如食品，购物和医疗。",
-                "jp": "There are various templates such as restaurants, shopping and medicals."
-            },
-            "There are various templates such as restaurants, shopping and medicals.":{
-                "ko": "1:1 대화 학습",
-                "en": "There are various templates such as restaurants, shopping and medicals.",
-                "zh": "1：1对话学习",
-                "jp": "There are various templates such as restaurants, shopping and medicals."
-            },
+            }
         };
 
         var list = {};
