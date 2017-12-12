@@ -9,7 +9,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
-    $scope.shortCutHelp = false;
 
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope, $rootScope);
@@ -105,6 +104,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     event.preventDefault();
                 }
             }
+        });
+
+        $scope.$on('saveDialogGraph', function()
+        {
+            $scope.save();
         });
 
         $scope.checkFailedDialog = function()
@@ -513,11 +517,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 DialogGraph.setDirty(true);
             }
-        };
-
-        $scope.closeShortCutHelp = function()
-        {
-            $scope.shortCutHelp = false;
         };
     })();
 
