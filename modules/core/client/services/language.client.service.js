@@ -2167,6 +2167,12 @@
                 "en": "Bot Name",
                 "zh": "机器人名",
                 "jp": "Bot Name"
+            },
+            "Use the template bots to make your own chatbot in a second":{
+                "ko": "아래 두가지 방식으로 챗봇을 쉽게 개발해 보세요.",
+                "en": "Use the template bots to make your own chatbot in a second",
+                "zh": "请使用下面两种方式轻松地开发聊天机器人。",
+                "jp": "Use the template bots to make your own chatbot in a second"
             }
         };
 
