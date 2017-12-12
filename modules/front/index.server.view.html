@@ -109,11 +109,12 @@
     				</div>
     				<div class="col-md-1 cartCol">
     					<div class="langOpt">
-    						<span class="langIcon"><span class="langCode">{{'ko'}}</span><i class="icofont icofont-caret-down"></i> </span>
+    						<span class="langIcon"><span class="langCode"></span><i class="icofont icofont-caret-down"></i> </span>
     						<ul class="lang">
-    							<li data-code="ko">{{'korean'}}</li>
-    							<li data-code="en">{{'english'}}</li>
-    							<li data-code="ch">{{'chinese'}}</li>
+                                <li data-code="ko"><a href="/?lan=ko">{{'korean'}}</a></li>
+    							<li data-code="en"><a href="/?lan=en">{{'english'}}</a></li>
+    							<li data-code="ch"><a href="/?lan=zh">{{'chinese'}}</a></li>
+                                <li data-code="jp"><a href="/?lan=zh">{{'japanese'}}</a></li>
     						</ul>
     					</div>
     				</div>
@@ -497,6 +498,28 @@
     <script>
         $(document).ready(function()
         {
+            var lan = location.href.split('lan=')[1] || '';
+            if(lan.indexOf('ko') != -1)
+            {
+                $('.langCode').text('{{"korean"}}');
+            }
+            else if(lan.indexOf('en') != -1)
+            {
+                $('.langCode').text('{{"english"}}');
+            }
+            else if(lan.indexOf('zh') != -1)
+            {
+                $('.langCode').text('{{"chinese"}}');
+            }
+            else if(lan.indexOf('jp') != -1)
+            {
+                $('.langCode').text('{{"japanese"}}');
+            }
+            else
+            {
+                $('.langCode').text('{{"english"}}');
+            }
+
             $('#openPolicy').on('click', function()
             {
                 $('#policyModal').modal('show');
