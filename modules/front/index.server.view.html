@@ -89,7 +89,7 @@
     		<div class="container">
     			<div class="row">
     				<div class="col-md-2 col-sm-3 col-xs-9">
-    					<a href="index-1.html" class="logo"><img src="/front/img/logo.png" alt=""></a>
+    					<a href="/" class="logo"><img src="/front/img/logo.png" alt=""></a>
     				</div>
     				<div class="col-md-9 menuCol col-sm-9 col-xs-9">
 						<div class="navbar-header">
@@ -109,11 +109,12 @@
     				</div>
     				<div class="col-md-1 cartCol">
     					<div class="langOpt">
-    						<span class="langIcon"><span class="langCode">{{'ko'}}</span><i class="icofont icofont-caret-down"></i> </span>
+    						<span class="langIcon"><span class="langCode"></span><i class="icofont icofont-caret-down"></i> </span>
     						<ul class="lang">
-    							<li data-code="ko">{{'korean'}}</li>
-    							<li data-code="en">{{'english'}}</li>
-    							<li data-code="ch">{{'chinese'}}</li>
+                                <li data-code="ko"><a href="/?lan=ko">{{'korean'}}</a></li>
+    							<li data-code="en"><a href="/?lan=en">{{'english'}}</a></li>
+    							<li data-code="ch"><a href="/?lan=zh">{{'chinese'}}</a></li>
+                                <li data-code="jp"><a href="/?lan=zh">{{'japanese'}}</a></li>
     						</ul>
     					</div>
     				</div>
@@ -310,7 +311,7 @@
 								<li><i class="icofont icofont-ui-check"></i>{{'Ordering list confirm'}}</li>
 								<li><i class="icofont icofont-ui-check"></i>{{'Ordering request Guide'}}</li>
 							</ul>
-							<a href="/playchat/chatbots/create/5a1cf45653d3ff7b43789c88" class="priceBtn Btn">{{'Create delivery bot'}}</a>
+							<!--<a href="/playchat/chatbots/create/5a1cf45653d3ff7b43789c88" class="priceBtn Btn">{{'Create delivery bot'}}</a>-->
 
 						</div>
 					</div>
@@ -330,7 +331,7 @@
 								<li><i class="icofont icofont-ui-check"></i>{{'out of stock items guide'}}</li>
 								<li><i class="icofont icofont-ui-check"></i>{{'Information regarding restock'}}</li>
 							</ul>
-							<a href="#" class="priceBtn Btn">{{'Create shopping bot'}}</a>
+							<!--<a href="#" class="priceBtn Btn">{{'Create shopping bot'}}</a>-->
 						</div>
 					</div>
 					<div class="col-md-3 priceCol col-sm-5 col-sm-offset-1 col-md-offset-0">
@@ -349,7 +350,7 @@
 								<li><i class="icofont icofont-ui-check"></i>{{'Room Booking'}}</li>
 								<li><i class="icofont icofont-ui-check"></i>{{'Guide in Foreign Language'}}</li>
 							</ul>
-							<a href="/playchat/chatbots/create/5a2936c113bcec106df6bd77" class="priceBtn Btn">{{'Create Hotel bot'}}</a>
+							<!--<a href="/playchat/chatbots/create/5a2936c113bcec106df6bd77" class="priceBtn Btn">{{'Create Hotel bot'}}</a>-->
 						</div>
 					</div>
 					<div class="col-md-3 priceCol col-sm-5">
@@ -368,7 +369,7 @@
 								<li><i class="icofont icofont-ui-check"></i>{{'Medical Treatment Reservation'}}</li>
 								<li><i class="icofont icofont-ui-check"></i>{{'Search Feedbacks information'}}</li>
 							</ul>
-							<a href="/playchat/chatbots/create/5a2936c113bcec106df6bd76" class="priceBtn Btn">{{'Create hospital bot'}}</a>
+							<!--<a href="/playchat/chatbots/create/5a2936c113bcec106df6bd76" class="priceBtn Btn">{{'Create hospital bot'}}</a>-->
 						</div>
 					</div>
 				</div>
@@ -497,6 +498,28 @@
     <script>
         $(document).ready(function()
         {
+            var lan = location.href.split('lan=')[1] || '';
+            if(lan.indexOf('ko') != -1)
+            {
+                $('.langCode').text('{{"korean"}}');
+            }
+            else if(lan.indexOf('en') != -1)
+            {
+                $('.langCode').text('{{"english"}}');
+            }
+            else if(lan.indexOf('zh') != -1)
+            {
+                $('.langCode').text('{{"chinese"}}');
+            }
+            else if(lan.indexOf('jp') != -1)
+            {
+                $('.langCode').text('{{"japanese"}}');
+            }
+            else
+            {
+                $('.langCode').text('{{"english"}}');
+            }
+
             $('#openPolicy').on('click', function()
             {
                 $('#policyModal').modal('show');
