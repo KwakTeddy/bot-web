@@ -103,7 +103,7 @@
                 </ul>
                 <div>
                     <span>Webhook URL : </span>
-                    <input type="text" class="webhook" value="{{ host }}/line/{{ chatbot.id }}">
+                    <input type="text" class="webhook" value="{{ host }}/line/{{ chatbot.id }}/receive">
                     <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 </div>
             </div>
@@ -130,7 +130,7 @@
                 </ul>
                 <div>
                     <span>Webhook URL : </span>
-                    <input type="text" class="webhook" value="{{ host }}/naver/{{ chatbot.id }}">
+                    <input type="text" class="webhook" value="{{ host }}/naver/{{ chatbot.id }}/webhook">
                     <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 </div>
             </div>
@@ -145,7 +145,7 @@
             <div class="modal-title">위챗</div>
             <div class="modal-body">
                 <span>Webhook URL : </span>
-                <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}">
+                <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}/webhook">
                 <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
             </div>
             <div class="tab-footer">
