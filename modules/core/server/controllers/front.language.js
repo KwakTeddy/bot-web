@@ -7,7 +7,7 @@ module.exports = function(code)
             "Forgot Passsword?":"",
             "Forget your password?":"비밀번호를 잊으셨나요?",
             "Click here":"",
-            "Don’t have an account yet?":"",
+            "Don't have an account yet?":"",
             "Click here to sign up.":"",
             "Home":"",
             "Feature":"",
@@ -98,15 +98,14 @@ module.exports = function(code)
             "Homepage":"",
             "Blog":"",
             "Facebook":"페이스북",
-            "contact with us":"",
-            "contact with us":"",
+            "contact with us":""
         },
         en: {
             "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!":"Playchat- Making your own Artificial Intelligent chat bot in 1 minute!",
             "Sign in":"Sign in",
             "Forget your password?":"Forget your password?",
             "Click here":"Click here",
-            "Don’t have an account yet?":"Don’t have an account yet?",
+            "Don't have an account yet?":"Don't have an account yet?",
             "Click here to sign up.":"Click here to sign up.",
             "Home":"Home",
             "Feature":"Feature",
@@ -197,14 +196,14 @@ module.exports = function(code)
             "Homepage":"Homepage",
             "Blog":"Blog",
             "Facebook":"Facebook",
-            "contact with us":"contact with us",
+            "contact with us":"contact with us"
         },
         zh: {
             "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!": "Playchat - 1分钟内就可以完成的我的人工智能聊天机器人!",
             "Sign in": "登录",
             "Forget your password?": "忘记密码？",
             "Click here": "点击",
-            "Don’t have an account yet?": "您还没有注册用户名？",
+            "Don't have an account yet?": "您还没有注册用户名？",
             "Click here to sign up.": "点击注册。",
             "Home": "主页﻿",
             "Feature": "特色",
@@ -295,14 +294,14 @@ module.exports = function(code)
             "Homepage":"主页",
             "Blog":"博客",
             "Facebook":"Facebook",
-            "contact with us":"联系我们",
+            "contact with us":"联系我们"
         },
         jp: {
             "Playchat- Making your own Artificial Intelligent chat bot in 1 minute!":"",
             "Sign in":"ログイン",
             "Forget your password?":"秘密番号を探す",
             "Click here":"",
-            "Don’t have an account yet?":"",
+            "Don't have an account yet?":"",
             "Click here to sign up.":"",
             "Home":"",
             "Feature":"",
@@ -393,7 +392,7 @@ module.exports = function(code)
             "Homepage":"",
             "Blog":"",
             "Facebook":"フェイスブック",
-            "contact with us":"",
+            "contact with us":""
         }
     };
 
