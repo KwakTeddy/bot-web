@@ -5,7 +5,7 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/kakao.png">
-                <span class="channel-content-item-name">{{ lan('KaKao Talk') }}</span>
+                <p class="channel-content-item-name">{{ lan('KaKao Talk') }}</p>
             </div>
             <div class="connect-button">
                 <button type="button" class="blue-button" ng-click="viewHelp('kakao');">{{ lan('Connect') }}</button>
@@ -14,7 +14,7 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/facebook.png">
-                <span class="channel-content-item-name">{{ lan('Facebook') }}</span>
+                <p class="channel-content-item-name">{{ lan('Facebook') }}</p>
             </div>
             <div class="connect-button">
                 <button type="button" class="blue-button" ng-click="connectFacebook();">{{ lan('Connect') }}</button>
@@ -23,7 +23,7 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/naver.png">
-                <span class="channel-content-item-name">{{ lan('Naver Talk Talk') }}</span>
+                <p class="channel-content-item-name">{{ lan('Naver Talk Talk') }}</p>
             </div>
             <div class="connect-button">
                 <button type="button" class="blue-button" ng-click="viewHelp('naver');">{{ lan('Connect') }}</button>
@@ -32,23 +32,37 @@
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/line.png">
-                <span class="channel-content-item-name">{{ lan('Line') }}</span>
+                <p class="channel-content-item-name">{{ lan('Line') }}</p>
             </div>
             <div class="connect-button">
                 <button type="button" class="blue-button" ng-click="viewHelp('line');">{{ lan('Connect') }}</button>
             </div>
         </div>
+    </div>
+    <div class="channel-content-row">
         <div class="channel-content-item">
             <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/wechat.png">
-                <span class="channel-content-item-name">{{ lan('WeChat') }}</span>
+                <p class="channel-content-item-name">{{ lan('WeChat') }}</p>
             </div>
             <div class="connect-button">
                 <button type="button" class="blue-button" ng-click="viewHelp('wechat');">{{ lan('Connect') }}</button>
             </div>
         </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/phone.png">
+                <p class="channel-content-item-name">전화<span class="empha">alpha</span></p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="empty-channel">
+        </div>
+        <div class="empty-channel">
+        </div>
     </div>
-
     <div class="modal-background" ng-show="help.kakao">
         <div class="modal">
             <div class="modal-title">카카오톡</div>
