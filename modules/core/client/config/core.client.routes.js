@@ -18,7 +18,7 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         url: '/',
         controller: function($state, $stateParams)
         {
-            $state.go('chatbots');
+            window.location.href = '/';
         }
     });
 

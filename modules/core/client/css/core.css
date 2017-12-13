@@ -189,7 +189,7 @@ header .system .docs img
 header .system .notify_silver
 {
     display: inline-block;
-    background: url(../imgs/notify_silver.png) no-repeat 0px;
+    background: url(/modules/core/client/imgs/notify_silver.png) no-repeat 0px;
     width: 16px;
     height: 19px;
     margin-right: 34px;
@@ -200,7 +200,7 @@ header .system .notify_silver
 header .system .login_silver
 {
     display: inline-block;
-    background: url(../imgs/log_silver.png) no-repeat 0px;
+    background: url(/modules/core/client/imgs/log_silver.png) no-repeat 0px;
     width: 34px;
     height: 34px;
     margin-right: 10px;
