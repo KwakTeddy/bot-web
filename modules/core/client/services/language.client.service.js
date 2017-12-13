@@ -158,19 +158,19 @@
                 "jp": " but verification e-mail sending is failed. Please contact us.\"",
                 "zh": "会員加入はなったが、E-mail認証メール送ることに失敗しました。 管理者に問い合わせてください。"
             },
-            "You already signed up by facebook.": {
+            "You already signed up by facebook": {
                 "ko": "페이스북을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by facebook.",
                 "jp": "フェイスブックを通じて、すでにログインできている状態です",
                 "zh": "您已经通过Facebook账号进行了登录。"
             },
-            "You already signed up by kakao.": {
+            "You already signed up by kakao": {
                 "ko": "카카오톡을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by kakao.",
                 "jp": "あなたはすでにカカオによってサインアップしています",
                 "zh": "您已经通过Kakao账号进行了登录。"
             },
-            "You already signed up by google.": {
+            "You already signed up by google": {
                 "ko": "구글을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by google.",
                 "jp": "あなたはすでにGoogleによってサインアップしています。",
