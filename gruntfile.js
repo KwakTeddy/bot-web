@@ -123,7 +123,7 @@ module.exports = function (grunt) {
       },
       web: {
         src: defaultAssets.client.js,
-        dest: 'public/dist/application_concat1'
+        dest: 'public/dist/application_concat.js'
       }
       // mobile: {
       //   src: defaultAssets.mobile.js,
@@ -194,29 +194,29 @@ module.exports = function (grunt) {
         }
       }
     },
-    // mochaTest: {
-    //   src: testAssets.tests.server,
-    //   options: {
-    //     reporter: 'spec',
-    //     timeout: 10000
-    //   }
-    // },
-    // mocha_istanbul: {
-    //   coverage: {
-    //     src: testAssets.tests.server,
-    //     options: {
-    //       print: 'detail',
-    //       coverage: true,
-    //       require: 'test.js',
-    //       coverageFolder: 'coverage/server',
-    //       reportFormats: ['cobertura','lcovonly'],
-    //       check: {
-    //         lines: 40,
-    //         statements: 40
-    //       }
-    //     }
-    //   }
-    // },
+    mochaTest: {
+      src: testAssets.tests.server,
+      options: {
+        reporter: 'spec',
+        timeout: 10000
+      }
+    },
+    mocha_istanbul: {
+      coverage: {
+        src: testAssets.tests.server,
+        options: {
+          print: 'detail',
+          coverage: true,
+          require: 'test.js',
+          coverageFolder: 'coverage/server',
+          reportFormats: ['cobertura','lcovonly'],
+          check: {
+            lines: 40,
+            statements: 40
+          }
+        }
+      }
+    },
     protractor: {
       options: {
         configFile: 'protractor.conf.js',
