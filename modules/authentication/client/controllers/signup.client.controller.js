@@ -43,6 +43,8 @@
             {
                 angular.element('#signupButton').show().next().hide();
 
+                console.error('머지 : ', response);
+
                 if(response.message.match('SNS'))
                 {
                     $scope.signupErrorMessage = LanguageService('You already signed up by ' + response.provider);
