@@ -1617,7 +1617,7 @@
             "Japanese": {
                 "ko": "일본어",
                 "en": "Japanese",
-                "zh": "日本",
+                "zh": "日语",
                 "jp": "日本語"
             },
             "Rename": {
