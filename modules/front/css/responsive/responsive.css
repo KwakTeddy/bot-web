@@ -393,87 +393,106 @@ cols    1     2      3      4      5      6      7      8
 px      68    160    252    344    436    528    620    712    */
 
 @media only screen and (min-width: 0px) and (max-width: 767px) {
-	
-	.container{
+
+	.container {
 		width: 320px;
 		position: relative
 	}
-	
-	header .headerBottomArea{
+
+	header .headerBottomArea {
 		padding: 20px 0
 	}
-	nav#navbar{
+
+	nav#navbar {
 		top: 58px
 	}
+
 	header .topInfo li {
 		display: none;
 	}
+
 	header .topInfo li.clientAreaLi {
 		width: auto;
 		display: block
 	}
+
 	header .topInfo li.clientAreaLi span {
 		margin-left: 0;
 	}
-	header .lang{
+
+	header .lang {
 		left: auto;
 		top: 50px
 	}
-	.clientLogin > form{
+
+	.clientLogin > form {
 		top: 100px;
 		left: auto
 	}
-	.navbar-toggle{
+
+	.navbar-toggle {
 		padding: 15px 0
 	}
+
 	.menuCol {
-	  position: absolute;
-	  right: 0;
-	  top: -7px;
+		position: absolute;
+		right: 0;
+		top: -7px;
 	}
-	.homeContent{
+
+	.homeContent {
 		padding: 60px 0;
 		text-align: center
 	}
-	nav#navbar{
+
+	nav#navbar {
 		top: 52px
 	}
-	.homeContent p br{
+
+	.homeContent p br {
 		display: none;
 	}
+
 	.homeContent,
-	.homeContent p{
+	.homeContent p {
 		font-size: 15px;
 		line-height: 20px
 	}
-	.homeContent span.h2{
+
+	.homeContent span.h2 {
 		font-size: 23px;
 		line-height: 30px
 	}
-	.homeImgTable{
-		display: none!important;
+
+	.homeImgTable {
+		display: none !important;
 	}
-	.homeBtn{
+
+	.homeBtn {
 		margin-top: 25px
 	}
-	.domainTxt{
+
+	.domainTxt {
 		text-align: center;
 		width: 100%;
 		margin-bottom: 20px;
-		padding-top: 0!important
+		padding-top: 0 !important
 	}
-	form.domainForm{
+
+	form.domainForm {
 		padding: 0;
 		width: 100%;
 		text-align: center
 	}
-	.domainTop > input[type="search"]{
+
+	.domainTop > input[type="search"] {
 		width: 100%;
 		margin-bottom: 10px;
 		height: 40px;
 		text-align: center
 	}
-	.domainTop > input[type="submit"]{
+
+	.domainTop > input[type="submit"] {
 		width: auto;
 		padding: 0 20px;
 		float: none;
@@ -481,46 +500,59 @@ px      68    160    252    344    436    528    620    712    */
 		height: 40px;
 		font-size: 12px
 	}
-	.domainArea{
+
+	.domainArea {
 		padding: 40px 0
 	}
-	.secPdng{
+
+	.secPdng {
 		padding: 40px 0
 	}
-	.secPdngT{
+
+	.secPdngT {
 		padding-top: 40px
 	}
-	.secPdngB{
+
+	.secPdngB {
 		padding-bottom: 40px
 	}
-	.sectionTitle .h2 br{
+
+	.sectionTitle .h2 br {
 		display: none;
 	}
+
 	.sectionTitle .h2 {
-	  font-size: 20px;
-	  line-height: 24px;
+		font-size: 20px;
+		line-height: 24px;
 	}
-	.sectionTitle{
+
+	.sectionTitle {
 		margin-bottom: 40px;
 		font-weight: 800;
 	}
-	.singleService .serviceIcon{
+
+	.singleService .serviceIcon {
 		height: 50px;
 		margin-bottom: 20px
 	}
-	.serviceContent .h3{
+
+	.serviceContent .h3 {
 		margin-bottom: 10px
 	}
-	.singleService{
+
+	.singleService {
 		margin-bottom: 40px
 	}
-	.col-md-4:last-child .singleService{
+
+	.col-md-4:last-child .singleService {
 		margin-bottom: 0
 	}
+
 	.price {
 		margin: -20px 0;
 		padding: 0 20px;
 	}
+
 	.singlePrice {
 		border-color: #e8e8e8;
 	}
@@ -528,156 +560,197 @@ px      68    160    252    344    436    528    620    712    */
 	.ctaCol {
 		padding: 0 15px;
 	}
+
 	.ctaRight.ctaTxt {
 		height: auto !important;
 		margin-top: 40px;
 	}
+
 	.ctaCol .h2 {
 		font-size: 25px;
 		margin-bottom: 15px;
 	}
+
 	.ctaTxt .Btn {
 		margin-top: 20px;
 		min-width: 130px;
 	}
+
 	.ctaRow {
 		margin-bottom: 0;
 	}
+
 	.ctaColBtm {
 		padding-left: 15px;
 	}
+
 	.ctaLeft.ctaTxt {
-	  height: auto !important;
-	  margin: 40px 0;
+		height: auto !important;
+		margin: 40px 0;
 	}
-	.ctaTxt br{
+
+	.ctaTxt br {
 		display: none;
 	}
-	.singleClient{
+
+	.singleClient {
 		height: 65px;
 		margin-top: 50px
 	}
+
 	.col-xs-6:nth-child(1) .singleClient,
-	.col-xs-6:nth-child(2) .singleClient{
+	.col-xs-6:nth-child(2) .singleClient {
 		margin-top: 0
 	}
+
 	.ctaTwo .ctaTxtTwo {
-	  font-size: 22px;
-	  line-height: 27px;
-	  margin-bottom: 15px;
-	  margin-right: 0;
+		font-size: 22px;
+		line-height: 27px;
+		margin-bottom: 15px;
+		margin-right: 0;
 	}
+
 	.ctaTwo {
-	  padding: 40px 0;
+		padding: 40px 0;
 	}
+
 	footer .col-sm-3 > div {
 		margin-bottom: 30px;
 		text-align: center;
 	}
+
 	.footerLogo {
 		margin-bottom: 20px;
 	}
+
 	.footerTxt {
 		margin-bottom: 15px;
 	}
+
 	.widget .h4, .contactInfo .h4 {
 		margin-bottom: 15px;
 	}
+
 	.footerLink > li a {
 		line-height: 27px;
 	}
+
 	footer .col-sm-3:last-child > div {
 		margin-bottom: 0;
 	}
+
 	.contactBtn.Btn {
 		font-size: 10px;
 		margin-top: 15px;
 		min-width: 0;
 	}
+
 	.copyrightTxt {
 		padding: 25px 0;
 		text-align: center;
 	}
+
 	.v2 .domainArea::before {
-	  display: none;
+		display: none;
 	}
-	.v2 .domainContent{
-		margin: 0px 0 0 
+
+	.v2 .domainContent {
+		margin: 0px 0 0
 	}
 
 	.v2 .domainArea {
 		text-align: center;
 	}
+
 	.v2 .domainTop > input[type="search"] {
 		float: none;
 	}
+
 	.v2 .domainTxt {
 		margin-bottom: 20px;
 	}
+
 	.v2 .domainContent .h3 {
 		margin-top: 40px;
 	}
+
 	.v2 .domainBtn {
 		background: #288feb none repeat scroll 0 0;
 	}
+
 	.v2 .domainArea .container::before, .v2 .domainArea .container::after {
 		display: none;
 	}
-	.v2 .langTxt{
+
+	.v2 .langTxt {
 		display: none;
 	}
-	.v2 .domainTop > input[type="search"]{
+
+	.v2 .domainTop > input[type="search"] {
 		width: 280px
 	}
-	.v2 .domainTop > input[type="submit"]{
+
+	.v2 .domainTop > input[type="submit"] {
 		width: 150px
 	}
-	.v2 .domainContent > p br{
+
+	.v2 .domainContent > p br {
 		display: none;
 	}
-	.aboutImg{
+
+	.aboutImg {
 		display: none;
 	}
-	.aboutTxt p br{
+
+	.aboutTxt p br {
 		display: none;
 	}
-	.aboutTxt, .aboutT p{
+
+	.aboutTxt, .aboutT p {
 		line-height: 24px;
 		margin-bottom: 10px;
 		text-align: center
 	}
-	.aboutContent h2{
+
+	.aboutContent h2 {
 		font-size: 24px;
 		text-align: center
 	}
-	.aboutArea .aboutContent{
+
+	.aboutArea .aboutContent {
 		height: auto;
 		padding: 40px 0
 	}
-	.singleAboutService{
+
+	.singleAboutService {
 		margin-top: 30px
 	}
-	.col-md-3:first-child .singleAboutService{
+
+	.col-md-3:first-child .singleAboutService {
 		margin-top: 0
 	}
 
-.teamImg {
-    height: 60px;
-    width: 60px;
-}
-.teamContent {
-    padding-left: 80px;
-}
-.singleTeam, .col-md-4:nth-child(2) .singleTeam, .col-md-4:nth-child(3) .singleTeam {
-    margin-top: 30px;
-}
-	.inputWrep{
+	.teamImg {
+		height: 60px;
+		width: 60px;
+	}
+
+	.teamContent {
+		padding-left: 80px;
+	}
+
+	.singleTeam, .col-md-4:nth-child(2) .singleTeam, .col-md-4:nth-child(3) .singleTeam {
+		margin-top: 30px;
+	}
+
+	.inputWrep {
 		margin: 0;
 		border: none;
 		border-radius: 0;
 		text-align: center
 	}
-	.inputWrep > input[type="email"]{
+
+	.inputWrep > input[type="email"] {
 		width: 100%;
 		margin-bottom: 10px;
 		border: 2px solid #288feb;
@@ -686,53 +759,64 @@ px      68    160    252    344    436    528    620    712    */
 		text-align: center;
 		padding: 0
 	}
-	.inputWrep > input[type="submit"]{
+
+	.inputWrep > input[type="submit"] {
 		width: 150px;
 		float: none;
 		display: inline-block;
 	}
+
 	.pageTitle {
-	  padding: 20px 0;
-	  text-align: center;
+		padding: 20px 0;
+		text-align: center;
 	}
 
-.aServiceIcon {
-    display: inline-block;
-    float: none;
-    text-align: center;
-}
-.aServiceIcon > img {
-    display: inline-block;
-}
-.aServiceContent {
-    display: block;
-    margin-top: 20px;
-    padding: 0;
-    text-align: center;
-}
-.singleAboutService {
-    margin-bottom: 30px;
-    text-align: center;
-}
-.col-md-3:last-child .singleAboutService {
-    margin-bottom: 0;
-}
-	.boardMenu{
+	.aServiceIcon {
+		display: inline-block;
+		float: none;
+		text-align: center;
+	}
+
+	.aServiceIcon > img {
+		display: inline-block;
+	}
+
+	.aServiceContent {
+		display: block;
+		margin-top: 20px;
+		padding: 0;
+		text-align: center;
+	}
+
+	.singleAboutService {
+		margin-bottom: 30px;
+		text-align: center;
+	}
+
+	.col-md-3:last-child .singleAboutService {
+		margin-bottom: 0;
+	}
+
+	.boardMenu {
 		height: auto;
 		margin-bottom: 35px
 	}
-	.boardMenu ul li{
+
+	.boardMenu ul li {
 		display: block;
 		float: none;
 	}
-	.boardMenu ul li a{
+
+	.boardMenu ul li a {
 		display: block;
 		text-align: center
 	}
-	.boardTitle .h4{
+
+	.boardTitle .h4 {
 		margin-bottom: 0
 	}
-	.accountInput .h5{
+
+	.accountInput .h5 {
 		margin-top: 30px
 	}
 
@@ -740,115 +824,142 @@ px      68    160    252    344    436    528    620    712    */
 		display: block;
 		line-height: 25px;
 	}
+
 	.editDomain {
 		display: block;
 		float: none;
 		padding-left: 20px;
 	}
+
 	.regDomains > li {
 		border-left: 5px solid #288feb;
 		padding: 20px 0;
 	}
+
 	.editDomain > li {
 		line-height: 25px;
 	}
+
 	.regDomains {
 		margin-top: 25px;
 	}
+
 	.contactTxt {
 		text-align: center
 	}
-	.contactForm > div{
+
+	.contactForm > div {
 		width: 100%;
 		margin-right: 0
 	}
-	#googleMap{
+
+	#googleMap {
 		height: 250px
 	}
-	.contactInfoCell{
+
+	.contactInfoCell {
 		margin-left: 0;
 		padding-left: 15px;
 		border-left: none
 	}
-	.singleContactInfo{
+
+	.singleContactInfo {
 		margin-top: 10px
 	}
-	.domainSearchArea .domainSearchForm{
+
+	.domainSearchArea .domainSearchForm {
 		margin: 0 0 50px;
 		text-align: center
 	}
-	.domainSearchArea .domainSearchForm input.serach{
+
+	.domainSearchArea .domainSearchForm input.serach {
 		width: 100%;
 		margin-bottom: 15px
 	}
-	.domainSearchArea .domainSearchForm input.submit{
+
+	.domainSearchArea .domainSearchForm input.submit {
 		width: 170px;
 		display: inline-block;
 		float: none
 	}
+
 	.aDomainLeft.clearfix {
 		min-width: 100%;
 		text-align: center;
 	}
+
 	.aDomainLeft .checkIcon {
 		float: none;
 		vertical-align: top;
 	}
+
 	.domainBtn.clearfix {
 		float: none;
 		margin-right: 0;
 		text-align: center;
 	}
+
 	.domainBtn .Btn.btnCart {
 		margin: 20px 0 5px;
 	}
+
 	li.singleDomain {
 		padding: 20px 0 20px 20px;
 		text-align: left;
 	}
+
 	.h4.singleDomainName {
 		display: block;
 		margin-bottom: 5px;
 		width: 100%;
 	}
+
 	.singleDomainRight {
 		float: none;
 	}
+
 	h4.price {
 		padding: 0;
 	}
+
 	.domainCta .h2 {
 		font-size: 20px;
 		line-height: 24px;
 		margin-bottom: 20px;
 		margin-right: 0;
 	}
-	.stepContent{
+
+	.stepContent {
 		height: auto;
 		margin-bottom: 30px;
 	}
-	.stepContent br{
+
+	.stepContent br {
 		display: none;
 	}
+
 	.stepNo {
-	  border-width: 5px;
-	  height: 70px;
-	  line-height: 60px;
-	  width: 70px;
+		border-width: 5px;
+		height: 70px;
+		line-height: 60px;
+		width: 70px;
 	}
-	
-	.faqArea .col-md-12 .singleFaq,.singleFaq:nth-child(2n){
+
+	.faqArea .col-md-12 .singleFaq, .singleFaq:nth-child(2n) {
 		width: 100%;
 		margin-left: 0;
 		margin-top: 30px
 	}
-	.singleFaq:first-child{
-		margin-top: 0!important
+
+	.singleFaq:first-child {
+		margin-top: 0 !important
 	}
-	.singleDomain a.cartBtn{
+
+	.singleDomain a.cartBtn {
 		float: left
 	}
-	h4.price{
+
+	h4.price {
 		margin-right: 0;
 		margin-left: 10px;
 		line-height: 40px
@@ -860,251 +971,306 @@ px      68    160    252    344    436    528    620    712    */
 		right: 83px;
 		top: auto;
 	}
+
 	.tstSlider .owl-nav div.owl-next {
 		right: 50px;
 	}
 
+	.cartTable > li.cartHead div {
+		padding-left: 10px;
+		width: 33.33%;
+	}
 
-.cartTable > li.cartHead div {
-    padding-left: 10px;
-    width: 33.33%;
-}
-.cartTable .price {
-    margin: 0;
-}
-.cartTable li div.product {
-    border-bottom: 1px solid #eff2f4;
-    padding-left: 25px;
-    text-align: left;
-    width: 100%;
-}
-.cartTable li > div {
-    border: medium none;
-    padding-left: 0;
-    text-align: center;
-    width: 33.33%;
-}
-.cartTable li div.product span.closeIcon {
-    margin-right: 60px;
-}
-.cartTable li div.product div::before {
-    left: 13px;
-}
-.cartTable > li {
-    border: 2px solid #288feb;
-    margin-bottom: 20px;
-}
-	.duration > span{
+	.cartTable .price {
+		margin: 0;
+	}
+
+	.cartTable li div.product {
+		border-bottom: 1px solid #eff2f4;
+		padding-left: 25px;
+		text-align: left;
+		width: 100%;
+	}
+
+	.cartTable li > div {
+		border: medium none;
+		padding-left: 0;
+		text-align: center;
+		width: 33.33%;
+	}
+
+	.cartTable li div.product span.closeIcon {
+		margin-right: 60px;
+	}
+
+	.cartTable li div.product div::before {
+		left: 13px;
+	}
+
+	.cartTable > li {
+		border: 2px solid #288feb;
+		margin-bottom: 20px;
+	}
+
+	.duration > span {
 		text-align: left
 	}
-	.cartOpt{
+
+	.cartOpt {
 		left: 8px;
 		box-shadow: 0 0 8px rgba(0, 0, 0, 0.1)
 	}
-	.cartOpt > li{
+
+	.cartOpt > li {
 		text-align: left;
 		padding-left: 20px
 	}
-	.couponForm > input{
+
+	.couponForm > input {
 		width: 100%;
 		border: 1px solid #288feb;
 		margin-bottom: 10px;
 		text-align: center;
 		padding: 0
 	}
+
 	.couponForm {
 		text-align: center
 	}
-	.couponForm > button{
+
+	.couponForm > button {
 		margin: 0
 	}
-	.cartTotal{
+
+	.cartTotal {
 		margin-left: 0
 	}
-	.totalBtn{
+
+	.totalBtn {
 		width: 100%;
 		text-align: center;
 		padding: 0;
 		line-height: 50px;
 		height: 50px
 	}
-	.totalBtn i{
+
+	.totalBtn i {
 		line-height: 50px
 	}
-	.totalBtn:hover i{
+
+	.totalBtn:hover i {
 		transform: inherit
 	}
-	.checkout .cartTotal{
+
+	.checkout .cartTotal {
 		margin-top: 30px
 	}
 
-	.postExcerpt br{
+	.postExcerpt br {
 		display: none;
 	}
-	.singlePost .postContent{
+
+	.singlePost .postContent {
 		padding: 20px 12px;
 	}
-	.singlePost .postTitle.h4{
+
+	.singlePost .postTitle.h4 {
 		font-size: 18px
 	}
-	.singlePost .postDate{
+
+	.singlePost .postDate {
 		margin-bottom: 15px
 	}
-	.col-md-4:not(:nth-child(1)) .singlePost{
+
+	.col-md-4:not(:nth-child(1)) .singlePost {
 		margin-top: 30px
 	}
-	.pagination{
+
+	.pagination {
 		margin-top: 50px
 	}
-	.pagination a{
+
+	.pagination a {
 		overflow: hidden;
 	}
-	article.singleBlog{
+
+	article.singleBlog {
 		padding: 0
 	}
 
-.postTitle.h3 {
-    font-size: 21px;
-    margin-bottom: 5px;
-    margin-top: 30px;
-}
-.postMeta {
-    margin-bottom: 14px;
-}
-.postText, .postText p {
-    line-height: 24px;
-    margin-bottom: 15px;
-}
-.postText {
-    margin-bottom: 30px;
-}
-.h4.areaTitle {
-    margin-top: 45px;
-}
-.commentLeft {
-    display: block;
-    float: none;
-    margin-bottom: 15px;
-    text-align: center;
-}
-.commentImg {
-    display: inline-block;
-}
-.commentRight {
-    padding: 0;
-    text-align: center;
-}
-.commentInput {
-    margin-top: 45px;
-    padding-right: 0;
-}
-.commentInput > input:first-child {
-    margin-right: 0;
-}
-.commentInput > input {
-    display: block;
-    float: none;
-    width: 100%;
-}
+	.postTitle.h3 {
+		font-size: 21px;
+		margin-bottom: 5px;
+		margin-top: 30px;
+	}
+
+	.postMeta {
+		margin-bottom: 14px;
+	}
+
+	.postText, .postText p {
+		line-height: 24px;
+		margin-bottom: 15px;
+	}
+
+	.postText {
+		margin-bottom: 30px;
+	}
+
+	.h4.areaTitle {
+		margin-top: 45px;
+	}
+
+	.commentLeft {
+		display: block;
+		float: none;
+		margin-bottom: 15px;
+		text-align: center;
+	}
+
+	.commentImg {
+		display: inline-block;
+	}
+
+	.commentRight {
+		padding: 0;
+		text-align: center;
+	}
+
+	.commentInput {
+		margin-top: 45px;
+		padding-right: 0;
+	}
+
+	.commentInput > input:first-child {
+		margin-right: 0;
+	}
+
+	.commentInput > input {
+		display: block;
+		float: none;
+		width: 100%;
+	}
+
 	.supportForm {
 		border-bottom: 1px solid #e8e8e8;
 		margin-bottom: 35px;
 		padding-bottom: 35px;
 	}
 
-.serachForm > input[type="search"] {
-    font-size: 12px;
-    margin-bottom: 40px;
-}
-.supportInput > input:first-child, .supportInput .supportSelect {
-    margin-right: 0;
-}
-.supportInput > input, .supportInput > .supportSelect {
-    padding-left: 15px;
-    width: 100%;
-}
-.supportSelect select {
-    padding-left: 15px;
-}
-.supportInput .supportSelect {
-    padding-left: 0;
-}
-.supportInput > textarea {
-    height: 100px;
-    padding-left: 15px;
-}
-.fileInput {
-    float: none;
-    font-size: 12px;
-    padding-left: 17px;
-    text-align: center;
-    width: 100%;
-}
-.fileInput::before {
-    left: 15px;
-}
-.captcha {
-    margin-left: 0;
-    width: 100%;
-}
-.supportInput > input[type="submit"] {
-    width: 100%;
-}
+	.serachForm > input[type="search"] {
+		font-size: 12px;
+		margin-bottom: 40px;
+	}
 
-.comingContent {
-    padding-top: 0;
-    text-align: center;
-}
-.comingContent .h1 {
-    font-size: 40px;
-    line-height: 35px;
-    margin: 10px 0 20px;
-}
-.comingContent span {
-    font-size: 14px;
-}
-.comingContent span br {
-    display: none;
-}
-.subsForm > input, .eSearchForm > input {
-    float: none;
-    margin: 0 0 20px;
-    width: 100%;
-}
-.eSearchForm > input[type="submit"], .subsForm > input[type="submit"]{
-    display: inline-block;
-    float: none;
-    margin: 0 0 20px;
-}
-.subsForm, .eSearchForm {
-    text-align: center;
-}
-.sicleImg {
-    height: auto;
-    margin-right: 0;
-}
+	.supportInput > input:first-child, .supportInput .supportSelect {
+		margin-right: 0;
+	}
 
-.h1.errorTitle {
-    font-size: 40px;
-    line-height: 30px;
-    margin-bottom: 20px;
-}
-.subsForm, .eSearchForm {
-    margin-top: 35px;
-}
-.eSearchImg {
-    display: none;
-}
-.errorContent > a {
-    display: block;
-    margin-top: 0;
-    text-align: center;
-}
-	.contactForm .contactSubmit + div{
+	.supportInput > input, .supportInput > .supportSelect {
+		padding-left: 15px;
+		width: 100%;
+	}
+
+	.supportSelect select {
+		padding-left: 15px;
+	}
+
+	.supportInput .supportSelect {
+		padding-left: 0;
+	}
+
+	.supportInput > textarea {
+		height: 100px;
+		padding-left: 15px;
+	}
+
+	.fileInput {
+		float: none;
+		font-size: 12px;
+		padding-left: 17px;
+		text-align: center;
+		width: 100%;
+	}
+
+	.fileInput::before {
+		left: 15px;
+	}
+
+	.captcha {
+		margin-left: 0;
+		width: 100%;
+	}
+
+	.supportInput > input[type="submit"] {
+		width: 100%;
+	}
+
+	.comingContent {
+		padding-top: 0;
+		text-align: center;
+	}
+
+	.comingContent .h1 {
+		font-size: 40px;
+		line-height: 35px;
+		margin: 10px 0 20px;
+	}
+
+	.comingContent span {
+		font-size: 14px;
+	}
+
+	.comingContent span br {
+		display: none;
+	}
+
+	.subsForm > input, .eSearchForm > input {
+		float: none;
+		margin: 0 0 20px;
+		width: 100%;
+	}
+
+	.eSearchForm > input[type="submit"], .subsForm > input[type="submit"] {
+		display: inline-block;
+		float: none;
+		margin: 0 0 20px;
+	}
+
+	.subsForm, .eSearchForm {
+		text-align: center;
+	}
+
+	.sicleImg {
+		height: auto;
+		margin-right: 0;
+	}
+
+	.h1.errorTitle {
+		font-size: 40px;
+		line-height: 30px;
+		margin-bottom: 20px;
+	}
+
+	.subsForm, .eSearchForm {
+		margin-top: 35px;
+	}
+
+	.eSearchImg {
+		display: none;
+	}
+
+	.errorContent > a {
+		display: block;
+		margin-top: 0;
+		text-align: center;
+	}
+
+	.contactForm .contactSubmit + div {
 		display: block;
 		margin-left: 0
 	}
-	
+}
 
 
 

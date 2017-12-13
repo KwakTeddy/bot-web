@@ -161,6 +161,11 @@
 {
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    word-wrap: break-word;
 }
 
 .dashboard-dialog-cover:hover + div{
@@ -256,4 +261,14 @@
 .dashboard-dialog-management-card-first > div > div a>img{
     margin-right: 5px;
     margin-top: -2px;
+}
+
+.dashboard-dialog-management-card-first > div > p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    word-wrap: break-word;
 }
