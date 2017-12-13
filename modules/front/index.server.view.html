@@ -138,7 +138,7 @@
                             {{L018}}
 						</p>
     					<div class="homeBtn">
-    						<a href="#" class="btnOne Btn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
+    						<a href="/playchat/chatbots" class="btnOne Btn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
     						<!--<a href="#" class="btnTwo Btn">check pricing</a>-->
     					</div>
     				</div>
@@ -509,6 +509,10 @@
                 {
                     $('#policyModal').modal('show');
                 });
+            }
+            else
+            {
+                $('#openPolicy').parent().parent().parent().remove();
             }
         });
     </script>
