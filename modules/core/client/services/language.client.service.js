@@ -1749,7 +1749,7 @@
             "If you would like to receive the e-mail again, please click on the again button.": {
                 "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
                 "en": "If you would like to receive the e-mail again, please click on the again button.",
-                "zh": "如果你重新接收邮件，请点击再次发送按钮。",
+                "zh": "如果您想重新接收邮件，请点击再次发送按钮。",
                 "jp": "メールを再受信したい場合は、'再送信'ボタンを押してください。"
             },
             "You do not have any Facebook pages to connect to.": {
@@ -1840,7 +1840,7 @@
             "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
                 "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
                 "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
-                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 你想保存吗？",
+                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
             "Typing the regular expression, press Enter to finish.": {
@@ -2141,7 +2141,7 @@
             "We can make it learn how to answer to the questions that it was not able to reply.":{
                 "ko": "응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.",
                 "en": "We can make it learn how to answer to the questions that it was not able to reply.",
-                "zh": "您可以学习回答你没有回答的问题。",
+                "zh": "您可以让它学习回答它回答不了的问题。",
                 "jp": "We can make it learn how to answer to the questions that it was not able to reply."
             },
             "usage statistics":{
