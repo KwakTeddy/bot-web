@@ -62,7 +62,7 @@ exports.forgot = function (req, res, next) {
         httpTransport = 'https://';
       }
 
-      res.render(path.resolve('modules/users/server/templates/reset-password-email'), {
+      res.render(path.resolve('modules/users/server/templates/reset-password-email' + (user.language ? '-'+user.language: '-en')), {
         name: user.displayName,
         appName: config.app.title,
         url: httpTransport + req.headers.host + '/api/auth/reset/' + token + '/' + req.body.from
@@ -75,7 +75,7 @@ exports.forgot = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: '비밀번호 재설정',
+        subject: '[playchat.ai] Password reset.',
         html: emailHTML
       };
       smtpTransport.sendMail(mailOptions, function (err) {
@@ -177,7 +177,7 @@ exports.reset = function (req, res, next) {
       });
     },
     function (user, done) {
-      res.render('modules/users/server/templates/reset-password-confirm-email', {
+      res.render('modules/users/server/templates/reset-password-confirm-email' + (user.language ? '-'+user.language: '-en'), {
         name: user.displayName,
         appName: config.app.title
       }, function (err, emailHTML) {
@@ -189,7 +189,7 @@ exports.reset = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: '비밀번호가 변경되었습니다.',
+        subject: '[playchat.ai] Password has been changed.',
         html: emailHTML
       };
 

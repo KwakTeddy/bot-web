@@ -4,7 +4,7 @@ module.exports = function(code)
         ko: {
             "L001":"Playchat - 1분만에 만드는 나만의 인공지능 챗봇!",
             "L002":"로그인",
-            "L003?":"비밀번호를 잊으셨나요?",
+            "L003":"비밀번호를 잊으셨나요?",
             "L004":"",
             "L005":"",
             "L006":"",
@@ -26,7 +26,7 @@ module.exports = function(code)
             "L021":"템플릿에 나의 서비스를 제공할 챗봇을 만들어보세요.",
             "L022":"요식업, 쇼핑, 의료등 다양한 템플릿이 있습니다.",
             "L023":"1:1 대화 학습",
-            "L024.":"챗봇에 간단하게 질문과 답변을 학습시키면 챗봇이 대답해줍니다.",
+            "L024":"챗봇에 간단하게 질문과 답변을 학습시키면 챗봇이 대답해줍니다.",
             "L025":"엑셀 파일에 정리하여 한번에 학습시킬수 있습니다.",
             "L026":"시나리오 대화 관리",
             "L027":"사람이 대화하는 것처럼 단계적인 대화를 구성할 수도 있고 시나리오 기반의 대화를 구성하면 더 많은 컨텐츠를 만들 수 있어요.",
@@ -104,7 +104,7 @@ module.exports = function(code)
         en: {
             "L001":"Playchat- Making your own Artificial Intelligent chat bot in 1 minute!",
             "L002":"Sign in",
-            "L003?":"Forget your password?",
+            "L003":"Forget your password?",
             "L004":"Click here",
             "L005":"Don't have an account yet?",
             "L006":"Click here to sign up.",
@@ -126,7 +126,7 @@ module.exports = function(code)
             "L021":"Make the chat bot which can supply my service on the template.",
             "L022":"There are various templates such as restaurants, shopping and medicals.",
             "L023":"1:1 Conversation Learning",
-            "L024.":"Chat bot will reply if you let it learn short questions and answers.",
+            "L024":"Chat bot will reply if you let it learn short questions and answers.",
             "L025":"You may make it learn at once if you organize the Q&A on excel file.",
             "L026":"Manage Conversational Scenario",
             "L027":"You may form the conversations with phases as if the real conversation between human or if you could make the scenario based conversations you are able to make even more contents.",
@@ -204,7 +204,7 @@ module.exports = function(code)
         zh: {
             "L001": "Playchat - 1分钟内就可以完成的我的人工智能聊天机器人!",
             "L002": "登录",
-            "L003?": "忘记密码？",
+            "L003": "忘记密码？",
             "L004": "点击",
             "L005": "您还没有注册用户名？",
             "L006": "点击注册。",
@@ -226,7 +226,7 @@ module.exports = function(code)
             "L021": "在模板中创建聊天机器人提供我的服务。",
             "L022": "有各种各样的模板，如食品，购物和医疗。",
             "L023": "1:1对话学习",
-            "L024.": "在Chatbot中只需让聊天机器人学习简单的问题和答案,它就可以回答相应的问题了。",
+            "L024": "在Chatbot中只需让聊天机器人学习简单的问题和答案,它就可以回答相应的问题了。",
             "L025": "您可以将问答整理成一个Excel文件，让它一次性学习。",
             "L026": "场景会话管理",
             "L027": "它可以像人一样进行对话由阶段式对话,或者当它是由基于一个场景的对话构成时你可以创建更多的内容。",
@@ -304,7 +304,7 @@ module.exports = function(code)
         jp: {
             "L001":"",
             "L002":"",
-            "L003?":"",
+            "L003":"",
             "L004":"",
             "L005":"",
             "L006":"",
@@ -326,7 +326,7 @@ module.exports = function(code)
             "L021":"",
             "L022":"",
             "L023":"",
-            "L024.":"",
+            "L024":"",
             "L025":"",
             "L026":"",
             "L027":"",
@@ -403,6 +403,15 @@ module.exports = function(code)
         }
     };
 
+    var result = lan[code];
+
+    for(var key in result)
+    {
+        if(!result[key])
+        {
+            result[key] = lan['en'][key];
+        }
+    }
 
     return lan[code];
 };

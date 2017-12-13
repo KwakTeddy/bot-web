@@ -32,6 +32,10 @@
                 return false;
             }
 
+            var user = $cookies.getObject('user');
+
+            if(user && user.language) $scope.credentials.language = user.language;
+            else $scope.credentials.language = 'en';
             $http.post('/api/auth/signup', $scope.credentials).success(function (response)
             {
                 $scope.successSignup = true;

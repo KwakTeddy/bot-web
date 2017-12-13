@@ -127,7 +127,7 @@ exports.signup = function (req, res) {
                     if (config.secure && config.secure.ssl === true) {
                         httpTransport = 'https://';
                     }
-                    res.render(path.resolve('modules/users/server/templates/email-confirm'), {
+                    res.render(path.resolve('modules/users/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')), {
                         name: user.displayName,
                         appName: 'Play Chat',
                         url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
@@ -140,7 +140,7 @@ exports.signup = function (req, res) {
                     var mailOptions = {
                         to: user.email,
                         from: config.mailer.from,
-                        subject: 'E-mail 인증',
+                        subject: '[playchat.ai] e-mail confirm',
                         html: emailHTML
                     };
                     smtpTransport.sendMail(mailOptions, function (err) {
@@ -206,7 +206,7 @@ exports.signin = function (req, res, next) {
                     if (config.secure && config.secure.ssl === true) {
                         httpTransport = 'https://';
                     }
-                    res.render(path.resolve('modules/users/server/templates/email-confirm'), {
+                    res.render(path.resolve('modules/users/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')), {
                         name: user.displayName,
                         appName: 'Play Chat',
                         url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
@@ -219,7 +219,7 @@ exports.signin = function (req, res, next) {
                     var mailOptions = {
                         to: user.email,
                         from: config.mailer.from,
-                        subject: 'E-mail 인증',
+                        subject: '[playchat.ai] e-mail confirm',
                         html: emailHTML
                     };
                     smtpTransport.sendMail(mailOptions, function (err) {
