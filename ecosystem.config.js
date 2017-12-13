@@ -42,7 +42,7 @@ module.exports =
                 "KAKAO_KEY": "25009b49de426e1ad0b8da2631b52cc5",
                 "KAKAO_JSID": "f1eb73f3491e5c1e1178b3b8c12b10e5",
                 "HOST": "https://dev.moneybrain.ai",
-                "MONGOLAB_URI": "mongodb://localhost:27017/bot",
+                "MONGOLAB_URI": "mongodb://172.31.14.78:27017/bot",
                 "MONGO_RSNAME": "rs1",
                 "REDIS": "172.31.26.141",
                 "LB_USE": "false",
