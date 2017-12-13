@@ -10,10 +10,10 @@ var commonDialogs = [
                 "text": "start"
             },
             {
-                "text": "入门"
+                "text": "开始"
             },
             {
-                "text": "入門"
+                "text": "最开始"
             }
         ],
         "output": "您好, 我是{name}。\n需要什么帮助？"
