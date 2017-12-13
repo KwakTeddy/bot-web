@@ -1344,7 +1344,7 @@
                 "ko": "적용",
                 "en": "Apply",
                 "jp": "適用",
-                "zh": "申请"
+                "zh": "使用"
             },
             "Trained Dialog": {
                 "ko": "학습 대화 목록",
@@ -2397,8 +2397,139 @@
                 "en": "Intent Usage",
                 "zh": "意图使用量",
                 "jp": "Intent Usage"
+            },
+            "from":{
+                "ko": "부터",
+                "en": "from",
+                "zh": "开始",
+                "jp": "from"
+            },
+            "to":{
+                "ko": "까지",
+                "en": "to",
+                "zh": "结束",
+                "jp": "to"
+            },
+            "week":{
+                "ko": "주",
+                "en": "week",
+                "zh": "周",
+                "jp": "週間"
+            },
+            "Sunday":{
+                "ko": "일",
+                "en": "Sun",
+                "zh": "周日",
+                "jp": "日曜日"
+            },
+            "Monday":{
+                "ko": "월",
+                "en": "Mon",
+                "zh": "周一",
+                "jp": "月曜日"
+            },
+            "Tuesday":{
+                "ko": "화",
+                "en": "Tue",
+                "zh": "周二",
+                "jp": "火曜日"
+            },
+            "Wednesday":{
+                "ko": "수",
+                "en": "Wed",
+                "zh": "周三",
+                "jp": "水曜日"
+            },
+            "Thursday":{
+                "ko": "목",
+                "en": "Thu",
+                "zh": "周四",
+                "jp": "木曜日"
+            },
+            "Friday":{
+                "ko": "금",
+                "en": "Fri",
+                "zh": "周五",
+                "jp": "金曜日"
+            },
+            "Saturday":{
+                "ko": "토",
+                "en": "Sat",
+                "zh": "周六",
+                "jp": "土曜日"
+            },
+            "January":{
+                "ko": "1월",
+                "en": "Jan",
+                "zh": "1月",
+                "jp": "1月"
+            },
+            "February":{
+                "ko": "2월",
+                "en": "Feb",
+                "zh": "2月",
+                "jp": "2月"
+            },
+            "March":{
+                "ko": "3월",
+                "en": "Mar",
+                "zh": "3月",
+                "jp": "3月"
+            },
+            "April":{
+                "ko": "4월",
+                "en": "Apr",
+                "zh": "4月",
+                "jp": "4月"
+            },
+            "May":{
+                "ko": "5월",
+                "en": "May",
+                "zh": "5月",
+                "jp": "5月"
+            },
+            "June":{
+                "ko": "6월",
+                "en": "Jun",
+                "zh": "6月",
+                "jp": "6月"
+            },
+            "July":{
+                "ko": "7월",
+                "en": "Jul",
+                "zh": "7月",
+                "jp": "7月"
+            },
+            "August":{
+                "ko": "8월",
+                "en": "Aug",
+                "zh": "8月",
+                "jp": "8月"
+            },
+            "September":{
+                "ko": "9월",
+                "en": "Sep",
+                "zh": "9月",
+                "jp": "9月"
+            },
+            "October":{
+                "ko": "10월",
+                "en": "Oct",
+                "zh": "10月",
+                "jp": "10月"
+            },
+            "November":{
+                "ko": "11월",
+                "en": "Nov",
+                "zh": "11月",
+                "jp": "11月"
+            },
+            "December":{
+                "ko": "12월",
+                "en": "Dec",
+                "zh": "12月",
+                "jp": "12月"
             }
-
         };
 
         var list = {};
