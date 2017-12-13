@@ -520,6 +520,10 @@
 
                 lan = user.language;
             }
+            else
+            {
+                $.cookie('user', JSON.stringify({ language: lan }));
+            }
 
             var text = $('.lang li[data-id="' + lan + '"] a').text();
             $('.langCode').text(text);
