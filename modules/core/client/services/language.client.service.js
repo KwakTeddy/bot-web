@@ -2150,11 +2150,12 @@
                 "zh": "使用情况统计",
                 "jp": "usage statistics"
             },
-            "You may search the usage amount by the number of conversations, number  of people logged in by dates and etc.":{
+            "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.":{
                 "ko": "기간별 접속자수, 대화수, 등 사용량을 조회해 볼 수 있습니다.",
-                "en": "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.",
+                "en": "You may search the usage amount by the number of conversations, number  of people logged in by dates and etc.",
                 "zh": "您可以查看每个时间周期使用的用户数量，对话数量等使用量。",
-                "jp": "You may search the usage amount by the number of conversations, number of people logged in by dates and etc."
+                "jp": "You may search the usage amount by the number of conversations, number  of people logged in by dates and etc."
+
             },
             "Use the template bots to make your own chatbot in a second.":{
                 "ko": "아래 두가지 템플릿을 이용하면 나만의 챗봇을 뚝딱 만들 수 있어요.",
@@ -2388,7 +2389,16 @@
                 "en": "Create a new Facebook Page",
                 "zh": "新建Facebook页面",
                 "jp": "Create a new Facebook Page"
+            },
+
+            //추가하는 거
+            "Intent Usage":{
+                "ko": "페이스북 페이지 새로 만들기",
+                "en": "Intent Usage",
+                "zh": "意图使用量",
+                "jp": "Intent Usage"
             }
+
         };
 
         var list = {};
