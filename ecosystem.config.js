@@ -37,12 +37,12 @@ module.exports =
             env_production:
             {
                 "PORT": 443,
-                "FACEBOOK_ID": "1600126966671702",
-                "FACEBOOK_SECRET": "8b9f96fa9974280b576647df96c03890",
-                "KAKAO_KEY": "482579e97a7f46badd2c88a3a66ba862",
-                "KAKAO_JSID": "ca71056a613942b6ebcf53801a7abb65",
+                "FACEBOOK_ID": "1557169960967403",
+                "FACEBOOK_SECRET": "282b2a30ec8115f364833a5d48b60cf6",
+                "KAKAO_KEY": "25009b49de426e1ad0b8da2631b52cc5",
+                "KAKAO_JSID": "f1eb73f3491e5c1e1178b3b8c12b10e5",
                 "HOST": "https://dev.moneybrain.ai",
-                "MONGOLAB_URI": "mongodb://localhost:27017/bot",
+                "MONGOLAB_URI": "mongodb://172.31.14.78:27017/bot",
                 "MONGO_RSNAME": "rs1",
                 "REDIS": "172.31.26.141",
                 "LB_USE": "false",

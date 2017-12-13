@@ -158,19 +158,19 @@
                 "jp": " but verification e-mail sending is failed. Please contact us.\"",
                 "zh": "会員加入はなったが、E-mail認証メール送ることに失敗しました。 管理者に問い合わせてください。"
             },
-            "You already signed up by facebook.": {
+            "You already signed up by facebook": {
                 "ko": "페이스북을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by facebook.",
                 "jp": "フェイスブックを通じて、すでにログインできている状態です",
                 "zh": "您已经通过Facebook账号进行了登录。"
             },
-            "You already signed up by kakao.": {
+            "You already signed up by kakao": {
                 "ko": "카카오톡을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by kakao.",
                 "jp": "あなたはすでにカカオによってサインアップしています",
                 "zh": "您已经通过Kakao账号进行了登录。"
             },
-            "You already signed up by google.": {
+            "You already signed up by google": {
                 "ko": "구글을 통해 이미 로그인 되어 있는 상태입니다.",
                 "en": "You already signed up by google.",
                 "jp": "あなたはすでにGoogleによってサインアップしています。",
@@ -1344,7 +1344,7 @@
                 "ko": "적용",
                 "en": "Apply",
                 "jp": "適用",
-                "zh": "申请"
+                "zh": "使用"
             },
             "Trained Dialog": {
                 "ko": "학습 대화 목록",
@@ -1749,7 +1749,7 @@
             "If you would like to receive the e-mail again, please click on the again button.": {
                 "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
                 "en": "If you would like to receive the e-mail again, please click on the again button.",
-                "zh": "如果你重新接收邮件，请点击再次发送按钮。",
+                "zh": "如果您想重新接收邮件，请点击再次发送按钮。",
                 "jp": "メールを再受信したい場合は、'再送信'ボタンを押してください。"
             },
             "You do not have any Facebook pages to connect to.": {
@@ -1840,7 +1840,7 @@
             "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
                 "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
                 "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
-                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 你想保存吗？",
+                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
             "Typing the regular expression, press Enter to finish.": {
@@ -2141,7 +2141,7 @@
             "We can make it learn how to answer to the questions that it was not able to reply.":{
                 "ko": "응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.",
                 "en": "We can make it learn how to answer to the questions that it was not able to reply.",
-                "zh": "您可以学习回答你没有回答的问题。",
+                "zh": "您可以让它学习回答它回答不了的问题。",
                 "jp": "We can make it learn how to answer to the questions that it was not able to reply."
             },
             "usage statistics":{
@@ -2363,7 +2363,7 @@
             "* This service is free during the beta service period and the contents of the service are subject to change.":{
                 "ko": "* 본 서비스는 베타 서비스 기간동안 무료로 제공되며, 서비스 내용은 변경 될 수 있습니다.",
                 "en": "* This service is free during the beta service period and the contents of the service are subject to change.",
-                "zh": "*本服务只免费提供给内测服务使用期间，同时服务内容可以变更。",
+                "zh": "* 本服务只免费提供给内测服务使用期间，同时服务内容可以变更。",
                 "jp": "* This service is free during the beta service period and the contents of the service are subject to change."
             },
             "Inquiry: tel) 02-858-5683":{
@@ -2390,15 +2390,194 @@
                 "zh": "新建Facebook页面",
                 "jp": "Create a new Facebook Page"
             },
+            "wechatScription1":{
+                "ko": "Wechat 개인 계정번호가 있어야 합니다. 없으면 휴대폰에서 wechat app 다운로드 후 신청해주세요.",
+                "en": "You must have a personal Wechat account number. If you do not have it, please apply after downloading the wechat app from your mobile phone.",
+                "zh": "首先您要有微信个人账号，如果没有的话先在手机上下载微信，然后申请。",
+                "jp": "You must have a personal Wechat account number. If you do not have it, please apply after downloading the wechat app from your mobile phone."
+            },
+            "wechatScription2":{
+                "ko": "https://mp.weixin.qq.com/ 에 가서  상단의 “WeChat Official Accounts“을 신청하세요.",
+                "en": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top.",
+                "zh": "然后到https://mp.weixin.qq.com/里申请微信公众号（申请的过程中需要用到微信号）",
+                "jp": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top."
+            },
+            "wechatScription3":{
+                "ko": "신청 후 \"Basic configuration“라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
+                "en": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\".",
+                "zh": "申请以后点击“基本配置”按钮，然后在左边画面里点击“我同意”后，点击“成为开发者”按钮。",
+                "jp": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\"."
+            },
+            "wechatScription4":{
+                "ko": "“Change Configuration” 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
+                "en": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token.",
+                "zh": "然后点击左下方的“基本配置”按钮，输入URL（从playchat里面的频道里点击微信下方的链接获得），然后在Token中输入“moneybrain_token”。",
+                "jp": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token."
+            },
+            "wechatScription5":{
+                "ko": "그리고 Encoding AESKey는  Encoding AESKey 뒤에 있는 “Random Generation“라는 버튼을 클릭하면 자동적으로 생성됩니다. 그 후, “Change Configuration” 라는 버튼 옆에 있는 “Enable“라는 버튼을 클릭하세요.",
+                "en": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\".",
+                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。",
+                "jp": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\"."
+            },
+            "wechatScription6":{
+                "ko": "휴대폰 WeChat 어플리케이션을 실행한 후, \"Add Contact\" 에 있는 “Official Accounts “버튼을 클릭하세요. 검색창에 Wechat에서 주어진 나의 “WeChat Official Accounts “를 찾으면 완료!",
+                "en": "Open WeChat application in your cell phone and click \"click the \"Official Accounts\" button in \"Add Contact\" If you find \"Wechat Official Accounts given, it's all done!",
+                "zh": "立即打开手机在添加朋友里选择添加“公众号”，找到自己设定的公众号名称即可开始使用您的聊天机器人啦~",
+                "jp": "Open WeChat application in your cell phone and click \"click the \"Official Accounts\" button in \"Add Contact\" If you find \"Wechat Official Accounts given, it's all done!"
+            },
 
             //추가하는 거
             "Intent Usage":{
-                "ko": "페이스북 페이지 새로 만들기",
+                "ko": "인텐트 사용량",
                 "en": "Intent Usage",
                 "zh": "意图使用量",
                 "jp": "Intent Usage"
+            },
+            "from":{
+                "ko": "부터",
+                "en": "from",
+                "zh": "开始",
+                "jp": "from"
+            },
+            "to":{
+                "ko": "까지",
+                "en": "to",
+                "zh": "结束",
+                "jp": "to"
+            },
+            "week":{
+                "ko": "주",
+                "en": "week",
+                "zh": "周",
+                "jp": "週間"
+            },
+            "Sunday":{
+                "ko": "일",
+                "en": "Sun",
+                "zh": "周日",
+                "jp": "日曜日"
+            },
+            "Monday":{
+                "ko": "월",
+                "en": "Mon",
+                "zh": "周一",
+                "jp": "月曜日"
+            },
+            "Tuesday":{
+                "ko": "화",
+                "en": "Tue",
+                "zh": "周二",
+                "jp": "火曜日"
+            },
+            "Wednesday":{
+                "ko": "수",
+                "en": "Wed",
+                "zh": "周三",
+                "jp": "水曜日"
+            },
+            "Thursday":{
+                "ko": "목",
+                "en": "Thu",
+                "zh": "周四",
+                "jp": "木曜日"
+            },
+            "Friday":{
+                "ko": "금",
+                "en": "Fri",
+                "zh": "周五",
+                "jp": "金曜日"
+            },
+            "Saturday":{
+                "ko": "토",
+                "en": "Sat",
+                "zh": "周六",
+                "jp": "土曜日"
+            },
+            "January":{
+                "ko": "1월",
+                "en": "Jan",
+                "zh": "1月",
+                "jp": "1月"
+            },
+            "February":{
+                "ko": "2월",
+                "en": "Feb",
+                "zh": "2月",
+                "jp": "2月"
+            },
+            "March":{
+                "ko": "3월",
+                "en": "Mar",
+                "zh": "3月",
+                "jp": "3月"
+            },
+            "April":{
+                "ko": "4월",
+                "en": "Apr",
+                "zh": "4月",
+                "jp": "4月"
+            },
+            "May":{
+                "ko": "5월",
+                "en": "May",
+                "zh": "5月",
+                "jp": "5月"
+            },
+            "June":{
+                "ko": "6월",
+                "en": "Jun",
+                "zh": "6月",
+                "jp": "6月"
+            },
+            "July":{
+                "ko": "7월",
+                "en": "Jul",
+                "zh": "7月",
+                "jp": "7月"
+            },
+            "August":{
+                "ko": "8월",
+                "en": "Aug",
+                "zh": "8月",
+                "jp": "8月"
+            },
+            "September":{
+                "ko": "9월",
+                "en": "Sep",
+                "zh": "9月",
+                "jp": "9月"
+            },
+            "October":{
+                "ko": "10월",
+                "en": "Oct",
+                "zh": "10月",
+                "jp": "10月"
+            },
+            "November":{
+                "ko": "11월",
+                "en": "Nov",
+                "zh": "11月",
+                "jp": "11月"
+            },
+            "December":{
+                "ko": "12월",
+                "en": "Dec",
+                "zh": "12月",
+                "jp": "12月"
+            },
+            "This e-mail is under screening process. Please wait for results.": {
+                "ko": "클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.",
+                "en": "This e-mail is under screening process. Please wait for results.",
+                "zh": "这个邮箱正在审查中，请等待结果",
+                "jp": "この電子メールは審査中です。 結果を待ってください。"
+            },
+            "This e-mail is not registered or the password is wrong.": {
+                "ko": "가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다",
+                "en": "This e-mail is not registered or the password is wrong.",
+                "zh": "这个邮箱暂时还没有注册或者密码错误",
+                "jp": "この電子メールは登録されていないか、パスワードが間違っています。"
             }
-
         };
 
         var list = {};

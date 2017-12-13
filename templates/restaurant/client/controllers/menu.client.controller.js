@@ -69,7 +69,7 @@ angular.module('template').controller('restaurantMenuController', ['$scope', '$r
 
         $scope.add = function()
         {
-            $scope.datas.push({ categor: '',name:'', hotmenus:'',price:'',uploader: undefined });
+            $scope.datas.push({ categor: '',name:'', hotmenus:'',price:'',description:'',uploader: undefined });
             addUploader($scope.datas.length-1);
         };
 
