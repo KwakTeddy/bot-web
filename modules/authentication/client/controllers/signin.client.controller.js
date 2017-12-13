@@ -26,6 +26,9 @@
         {
             $http.post('/api/auth/signin', $scope.credentials).success(function (response)
             {
+                var user = $cookies.getObject('user');
+                if(user.language)
+                    response.language = user.language;
                 $cookies.putObject('user', response);
                 $cookies.put('login', true);
 
