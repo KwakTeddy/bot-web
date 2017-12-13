@@ -2,7 +2,7 @@ module.exports = function(code)
 {
     var lan = {
         ko: {
-            "L001":"Playchat - 1분만에 만드는 나만의 인공지능 챗봇!",
+            "L001":"플레이챗 - 챗봇 개발, 대화형 인공지능 플랫폼, 머니브레인",
             "L002":"로그인",
             "L003":"비밀번호를 잊으셨나요?",
             "L004":"",
@@ -102,7 +102,7 @@ module.exports = function(code)
             "L090":""
         },
         en: {
-            "L001":"Playchat- Making your own Artificial Intelligent chat bot in 1 minute!",
+            "L001":"Playchat - Develop a Chatbot, Conversational AI platform, Moneybrain",
             "L002":"Sign in",
             "L003":"Forget your password?",
             "L004":"Click here",
