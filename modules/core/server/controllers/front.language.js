@@ -202,7 +202,7 @@ module.exports = function(code)
             "L090":"contact with us"
         },
         zh: {
-            "L001": "Playchat - 1分钟内就可以完成的我的人工智能聊天机器人!",
+            "L001": "Playchat - 聊天机器人开发，对话型人工智能平台，Moneybrain",
             "L002": "登录",
             "L003": "忘记密码？",
             "L004": "点击",
