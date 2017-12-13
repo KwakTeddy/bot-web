@@ -28,7 +28,18 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
         },
         function(err)
         {
-            alert(err);
+            if(err.status == 401)
+            {
+                var user = {};
+                user.language = $scope.language;
+                $cookies.putObject('user', user);
+
+                $rootScope.$broadcast('changeLanguage');
+            }
+            else
+            {
+                alert(err);
+            }
         });
     };
 
