@@ -34,7 +34,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.parkno===0",
-                "output": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소객: +parkdetails+\n-주차장 위치: +parkaddress+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                "output": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소개: +parkdetails+\n-주차장 위치: +parkaddress+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
             }
         ]
     },
@@ -80,7 +80,7 @@ var dialogs = [
                             {
                                 "if": "context.dialog.menuprice===1",
                                 'task':"menuImageTask1",
-                                "output": "#menucategory#[+name+] +price+원#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                "output": "#menucategory#[+name+] +price+원\n+description+#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                             }
                         ]
                     },
@@ -335,7 +335,7 @@ var dialogs = [
                                     {
                                         "if": "context.dialog.menuis == 1",
                                         "task": "menuimagedisplay",
-                                        "output": "#categorymenu#[+name+] +price+원 #+hot+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                        "output": "#categorymenu#[+name+] +price+원 #+hot+#categorymenu#\n+description+#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                                     },
                                     {
                                         "if": "context.dialog.menuis == 0",
@@ -381,7 +381,7 @@ var dialogs = [
                         "output": [
                             {
                                 "if": "context.dialog.menuis == 1",
-                                "output": "#categorymenu#[+name+] +price+원# +hot+\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                                "output": "#categorymenu#[+name+] +price+원# +hot+#categorymenu#\n+description+#\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
                             },
                             {
                                 "if": "context.dialog.menuis == 0",
@@ -417,7 +417,7 @@ var dialogs = [
             {
                 "if": "context.dialog.menuis===1",
                 'task':"menuImageTask2",
-                "output": "찾으시는 메뉴가 아래와 같이 있습니다.\n\n#menumatch#+index+.[+name+] +price+원\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                "output": "찾으시는 메뉴가 아래와 같이 있습니다.\n\n#menumatch#+index+.[+name+] +price+원\n+description+#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
             },
             {
                 "if":"context.dialog.categoryis===1",
@@ -430,7 +430,7 @@ var dialogs = [
                             regex:/\d/
                         },
                         "task": "menuImageTask3",
-                        "output": "#categorymenu#+index+.[+name+] +price+원\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                        "output": "#categorymenu#+index+.[+name+] +price+원\n+description+#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                     },
                     {
                         "id": "restaurant187",
