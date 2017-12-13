@@ -2173,12 +2173,222 @@
                 "en": "Use the template bots to make your own chatbot in a second",
                 "zh": "请使用下面两种方式轻松地开发聊天机器人。",
                 "jp": "Use the template bots to make your own chatbot in a second"
-            }
+            },
+
 
 
 
             //channel
-
+            "Create a Kakao YellowID(https://yellowid.kakao.com/login)":{
+                "ko": "카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)",
+                "en": "Create a Kakao YellowID(https://yellowid.kakao.com/login)",
+                "zh": "注册Kakao Talk Yellow账号(https://yellowid.kakao.com/login)",
+                "jp": "Create a Kakao YellowID(https://yellowid.kakao.com/login)"
+            },
+            "Make a Yellow ID profile.":{
+                "ko": "옐로아이디 프로필을 만들어요.",
+                "en": "Make a Yellow ID profile.",
+                "zh": "填写完Yellow账号的个人资料",
+                "jp": "Make a Yellow ID profile."
+            },
+            "Go to the Auto ID page.":{
+                "ko": "옐로아이디 페이지 자동응답 탭으로 들어가요",
+                "en": "Go to the Auto ID page.",
+                "zh": "个人资料会自动转到相应Yellow账号的主页上",
+                "jp": "Go to the Auto ID page."
+            },
+            "Go to API auto-response setup page.":{
+                "ko": "API 자동응답 설정하기로 들어가요",
+                "en": "Go to API auto-response setup page.",
+                "zh": "然后进入API自动回复设置",
+                "jp": "Go to API auto-response setup page."
+            },
+            "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!":{
+                "ko": "앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!",
+                "en": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!",
+                "zh": "设置应用名称，URL，说明，电话号码。这时可以利用下面的URL对URL进行设置！",
+                "jp": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!"
+            },
+            "You must be a member of Line. Please log in first with Lind application or Web.":{
+                "ko": "LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요",
+                "en": "You must be a member of Line. Please log in first with Lind application or Web.",
+                "zh": "只有LINE的会员才可以使用LINE的应用或者网页",
+                "jp": "You must be a member of Line. Please log in first with Lind application or Web."
+            },
+            "If you signed up, please register your email to be used in LINE Business Center":{
+                "ko": "가입이 됐다면 LINE Business Center에서 사용할 이메일을 등록해요",
+                "en": "If you signed up, please register your email to be used in LINE Business Center",
+                "zh": "如果您已经加入了LINE的会员可以在LINE Business Center里面用邮箱进行登录",
+                "jp": "If you signed up, please register your email to be used in LINE Business Center"
+            },
+            "On the Services tab, click the Start Messaging API button and enter the information.":{
+                "ko": "서비스 탭에서 Messaging API 시작하기 버튼을 누르고 정보를 입력해요",
+                "en": "On the Services tab, click the Start Messaging API button and enter the information.",
+                "zh": "在服务选项卡上点击Messaging API开始按钮并输入信息",
+                "jp": "On the Services tab, click the Start Messaging API button and enter the information."
+            },
+            "In LINE Manager, press the API ON button and allow the use of Webhook, then save.":{
+                "ko": "LINE Manager에서 API 켜기 버튼을 누르고 Webhook 사용을 허용하고 저장해요",
+                "en": "In LINE Manager, press the API ON button and allow the use of Webhook, then save.",
+                "zh": "在LINE Manager中点击打开API按钮然后允许Webhook的使用并保存",
+                "jp": "In LINE Manager, press the API ON button and allow the use of Webhook, then save."
+            },
+            "Go to Account List tab in LINE Business Center":{
+                "ko": "LINE Business Center에서 계정 목록 탭으로 이동해요",
+                "en": "Go to Account List tab in LINE Business Center",
+                "zh": "在LINE Business Center中打开账号目录",
+                "jp": "Go to Account List tab in LINE Business Center"
+            },
+            "Press the LINE Developers button in the Messaging API.":{
+                "ko": "Messaging API에 있는 LINE Developers 버튼을 눌러요",
+                "en": "Press the LINE Developers button in the Messaging API.",
+                "zh": "点击在Messaging API中有的LINE Developers按钮",
+                "jp": "Press the LINE Developers button in the Messaging API."
+            },
+            "Press the ISSUE button to get a Channel access token.":{
+                "ko": "ISSUE 버튼을 눌러 Channel access token을 발급받아요",
+                "en": "Press the ISSUE button to get a Channel access token.",
+                "zh": "点击ISSUE按钮得到Channel access token",
+                "jp": "Press the ISSUE button to get a Channel access token."
+            },
+            "Press the EDIT button to copy the Webhook URL below, save it and verify it":{
+                "ko": "EDIT 버튼을 눌러 Webhook URL을 아래의 Webhook URL을 복사해 넣고 저장 및 확인해요",
+                "en": "Press the EDIT button to copy the Webhook URL below, save it and verify it",
+                "zh": "点击EDIT按钮，然后把Webhook URL下面有的Webhook URL复制并粘贴上，在进行保存和确认",
+                "jp": "Press the EDIT button to copy the Webhook URL below, save it and verify it"
+            },
+            "It's done!":{
+                "ko": "다 끝났습니다!",
+                "en": "It's done!",
+                "zh": "完成！",
+                "jp": "It's done!"
+            },
+            "Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)":{
+                "ko": "네이버톡톡 파트너센터 접속 (partner.talk.naver.com)",
+                "en": "Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)",
+                "zh": "打开Naver Talk Talk (partner.talk.naver.com)",
+                "jp": "Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)"
+            },
+            "Sign in with a corporate ID or a representative personal ID":{
+                "ko": "회사 단체아이디 또는 대표성있는 개인아이디로 로그인",
+                "en": "Sign in with a corporate ID or a representative personal ID",
+                "zh": "用团体账号或者是CEO的个人账号登录",
+                "jp": "Sign in with a corporate ID or a representative personal ID"
+            },
+            "Manage My Account> Create New Chat Account":{
+                "ko": "내 계정관리 > 새로운 톡톡 계정 만들기 클릭",
+                "en": "Manage My Account> Create New Chat Account",
+                "zh": "我的账号管理>点击注册新的Talk Talk账号",
+                "jp": "Manage My Account> Create New Chat Account"
+            },
+            "Click on 'Link to Service Later' without selecting a service from the list.":{
+                "ko": "서비스 선택하기에서 서비스 선택없이 서비스 연결 나중에 하기 클릭!",
+                "en": "Click on 'Link to Service Later' without selecting a service from the list.",
+                "zh": "在服务选择中点击不选择服务以后再连接",
+                "jp": "Click on 'Link to Service Later' without selecting a service from the list."
+            },
+            "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.":{
+                "ko": "테스트 계정생성시 개인을 선택, 서비스 계정생성시 사업자 또는 기관/단체을 선택 후 다음 대표이미지, 프로필명, 휴대폰 번호 등 정보를 입력 후 사용신청하세요.",
+                "en": "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.",
+                "zh": "创建测试账户时，选择个人，创建服务账户时选择企业或者是机关/团体，然后输入代表人的姓名，个人资料和联系人信息等。",
+                "jp": "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact."
+            },
+            "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS":{
+                "ko": "생성된 계정은 검수중 상태이며, 검수가 완료되면 사용중상태로 변경되고 SMS로 알림 전송됩니다.",
+                "en": "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS",
+                "zh": "申请的账号在审查状态，等审查完后您会收到审查状态变更短信",
+                "jp": "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS"
+            },
+            "In Account Management, click Account Home under Account Management in the list of registered accounts.":{
+                "ko": "내 계정관리의 등록된 계정 리스트에서 계정관리로 계정 홈을 클릭하세요.",
+                "en": "In Account Management, click Account Home under Account Management in the list of registered accounts.",
+                "zh": "在我的账号管理里点击注册账号的账号主页",
+                "jp": "In Account Management, click Account Home under Account Management in the list of registered accounts."
+            },
+            "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)":{
+                "ko": "좌측 메뉴 챗봇 API 하위 API 설정 메뉴를 통해 이용약관동의 및 챗봇을 설정하세요. (beta기간에는 등록신청 필요)",
+                "en": "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)",
+                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要注册申请beta时间）",
+                "jp": "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)"
+            },
+            "After Naver has approved the use of API, please enter the URL provided by playchat.":{
+                "ko": "네이버의 API사용 승인이 된 후 playchat에서 제공하는 URL을 입력하여 연결하세요.",
+                "en": "After Naver has approved the use of API, please enter the URL provided by playchat.",
+                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要注册申请beta时间）",
+                "jp": "After Naver has approved the use of API, please enter the URL provided by playchat."
+            },
+            "Page name":{
+                "ko": "페이지 이름",
+                "en": "Page name",
+                "zh": "页面名称",
+                "jp": "Page name"
+            },
+            "Page link":{
+                "ko": "페이지 링크",
+                "en": "Page link",
+                "zh": "页面链接",
+                "jp": "Page link"
+            },
+            "Register":{
+                "ko": "신청하기",
+                "en": "Register",
+                "zh": "申请",
+                "jp": "Register"
+            },
+            "You can also use the service on your phone to serve customers with the same content used in messenger.":{
+                "ko": "메신져를 통해서 고객에게 서비스하는 내용을 전화에서도 사용 하실 수 있습니다.",
+                "en": "You can also use the service on your phone to serve customers with the same content used in messenger.",
+                "zh": "通过聊天软件，向用户提供的服务在电话上也一样可以实现。",
+                "jp": "You can also use the service on your phone to serve customers with the same content used in messenger."
+            },
+            "If you want to use the Playchat phone, please click the button to apply after filling in the form below.":{
+                "ko": "Playchat 전화를 사용하시고자 하시는 회원님께서는 아래 양식을 게제후 신청하기 버튼을 눌러주세요.",
+                "en": "If you want to use the Playchat phone, please click the button to apply after filling in the form below.",
+                "zh": "想使用playchat电话的用户请按照下面的样式录入点击申请按钮。",
+                "jp": "If you want to use the Playchat phone, please click the button to apply after filling in the form below."
+            },
+            "An Internet phone number will be issued when the application is received.":{
+                "ko": "신청이 접수되면 인터넷 전화번호가 발급됩니다.",
+                "en": "An Internet phone number will be issued when the application is received.",
+                "zh": "我们会给申请通过的用户发网络电话。",
+                "jp": "An Internet phone number will be issued when the application is received."
+            },
+            "It may take 3-4 business days.":{
+                "ko": "영업일자로 3~4일이 소요될 수 있습니다.",
+                "en": "It may take 3-4 business days.",
+                "zh": "大概需要3~4个工作日。",
+                "jp": "It may take 3-4 business days."
+            },
+            "* This service is free during the beta service period and the contents of the service are subject to change.":{
+                "ko": "* 본 서비스는 베타 서비스 기간동안 무료로 제공되며, 서비스 내용은 변경 될 수 있습니다.",
+                "en": "* This service is free during the beta service period and the contents of the service are subject to change.",
+                "zh": "*本服务只免费提供给内测服务使用期间，同时服务内容可以变更。",
+                "jp": "* This service is free during the beta service period and the contents of the service are subject to change."
+            },
+            "Inquiry: tel) 02-858-5683":{
+                "ko": "신청문의 : tel)02-858-5683",
+                "en": "Inquiry: tel) 02-858-5683",
+                "zh": "申请电话：电话）02-858-5683",
+                "jp": "Inquiry: tel) 02-858-5683"
+            },
+            "Contact":{
+                "ko": "전화번호",
+                "en": "Contact",
+                "zh": "电话号码",
+                "jp": "Contact"
+            },
+            "No phone number. If you would like to receive a Playchat phone number, please contact us with the number above.":{
+                "ko": "전화번호가 없습니다. Playchat 전화 번호를 발급받으시려면 위 전화번호로 신청을 문의해주시기 바랍니다.",
+                "en": "No phone number. If you would like to receive a Playchat phone number, please contact us with the number above.",
+                "zh": "没有电话号码，如果您想使用playchat电话号码，请和上面的电话号码联系并进行咨询。",
+                "jp": "No phone number. If you would like to receive a Playchat phone number, please contact us with the number above."
+            },
+            "Create a new Facebook Page":{
+                "ko": "페이스북 페이지 새로 만들기",
+                "en": "Create a new Facebook Page",
+                "zh": "新建Facebook页面",
+                "jp": "Create a new Facebook Page"
+            }
         };
 
         var list = {};
