@@ -138,11 +138,14 @@ exports.create = function(req, res)
                         fs.mkdirSync(dir);
                     }
 
+채                    var language = req.body.language;
+                    if(language === undefined) language = 'en';
+
                     // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
                     // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
                     var botjs = fs.readFileSync(__dirname + '/bot.template');
                     var defaultjs = fs.readFileSync(__dirname + '/default.template');
-                    var graphjs = fs.readFileSync(__dirname + '/graph.template');
+                    var graphjs = fs.readFileSync(__dirname + '/graph.' + language + '.template');
 
                     fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                     fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
