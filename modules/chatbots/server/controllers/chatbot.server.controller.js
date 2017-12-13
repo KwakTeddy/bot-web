@@ -138,7 +138,7 @@ exports.create = function(req, res)
                         fs.mkdirSync(dir);
                     }
 
-채                    var language = req.body.language;
+                    var language = req.body.language;
                     if(language === undefined) language = 'en';
 
                     // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
