@@ -2,14 +2,6 @@
 
 module.exports = {
     client: {
-        css: [
-        ],
-        less: [
-        ],
-        sass: [
-        ],
-        js: [
-        ],
         views: ['modules/*/client/views/**/*.html'],
         templates: ['build/templates.js']
     },
