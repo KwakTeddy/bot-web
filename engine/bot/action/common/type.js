@@ -1629,6 +1629,14 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
     var nlps = context.botUser.nlu.nlp;
 
+    // TODO 현재 중국어 자연어 처리 안되는 듯 com2best
+    if(nlps === undefined) {
+        nlps = [];
+        var _s = text.split(' ');
+        for(var i = 0; i < _s.length; i++) {
+            nlps.push({text: _s[i], pos: 'Noun'});
+        }
+    }
     var nlpMatchLength = 0;
     for(var i = 0; i < nlps.length; i++) {
         if(nlps[i].pos == 'Noun') nlpMatchLength+=2;

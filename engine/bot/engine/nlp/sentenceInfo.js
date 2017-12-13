@@ -283,6 +283,7 @@ SentenceInfo.prototype.analyzeZH = function (nlu) {
     var str = nlu.sentence;
     var morphemes = nlu.nlp;
 
+    if(morphemes === undefined) return this.type.declarative;
     // 1. 의문문
     // 체크1. 서술문 + 吗
     if (morphemes.length > 1) {
