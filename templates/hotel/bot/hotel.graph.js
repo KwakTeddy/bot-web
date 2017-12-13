@@ -1541,7 +1541,7 @@ var dialogs = [
             },
 			{
 				"if": "context.dialog.parkno===0",
-				"text": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소객: +parkdetails+\n-주차장 위치: +parkaddress+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+				"text": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소개: +parkdetails+\n-주차장 위치: +parkaddress+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
 				"kind": "Text"
 			}
 

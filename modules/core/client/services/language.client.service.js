@@ -2363,7 +2363,7 @@
             "* This service is free during the beta service period and the contents of the service are subject to change.":{
                 "ko": "* 본 서비스는 베타 서비스 기간동안 무료로 제공되며, 서비스 내용은 변경 될 수 있습니다.",
                 "en": "* This service is free during the beta service period and the contents of the service are subject to change.",
-                "zh": "*本服务只免费提供给内测服务使用期间，同时服务内容可以变更。",
+                "zh": "* 本服务只免费提供给内测服务使用期间，同时服务内容可以变更。",
                 "jp": "* This service is free during the beta service period and the contents of the service are subject to change."
             },
             "Inquiry: tel) 02-858-5683":{
