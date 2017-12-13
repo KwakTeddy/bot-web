@@ -7,7 +7,13 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
-                "text": "시작"
+                "text": "start"
+            },
+            {
+                "text": "入门"
+            },
+            {
+                "text": "入門"
             }
         ],
         "output": "您好, 我是{name}。\n需要什么帮助？"
@@ -17,6 +23,12 @@ var commonDialogs = [
         "filename": "defaultcommon",
         "name": "상위",
         "input": [
+            {
+                "text": "up"
+            },
+            {
+                "text": "back"
+            },
             {
                 "text": "上一页"
             },

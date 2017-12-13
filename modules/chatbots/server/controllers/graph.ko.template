@@ -7,7 +7,13 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
+              "text": "start"
+            },
+            {
                 "text": "시작"
+            },
+            {
+                "text": "처음"
             }
         ],
         "output": "안녕하세요, {name} 입니다.\n무엇을 도와드릴까요?"
@@ -17,6 +23,12 @@ var commonDialogs = [
         "filename": "defaultcommon",
         "name": "상위",
         "input": [
+            {
+              "text": "up"
+            },
+            {
+              "text": "back"
+            },
             {
                 "text": "상위"
             },
