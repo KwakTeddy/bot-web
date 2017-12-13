@@ -2,7 +2,7 @@ module.exports = function(code)
 {
     var lan = {
         ko: {
-            "L001":"Playchat - 1분만에 만드는 나만의 인공지능 챗봇!",
+            "L001":"플레이챗 - 챗봇 개발, 대화형 인공지능 플랫폼, 머니브레인",
             "L002":"로그인",
             "L003":"비밀번호를 잊으셨나요?",
             "L004":"",
@@ -10,7 +10,7 @@ module.exports = function(code)
             "L006":"",
             "L007":"",
             "L008":"",
-            "L009":"템플릿",
+            "L009":"",
             "L010":"",
             "ko":"한국어",
             "L011":"한국어",
@@ -102,7 +102,7 @@ module.exports = function(code)
             "L090":""
         },
         en: {
-            "L001":"Playchat- Making your own Artificial Intelligent chat bot in 1 minute!",
+            "L001":"Playchat - Develop a Chatbot, Conversational AI platform, Moneybrain",
             "L002":"Sign in",
             "L003":"Forget your password?",
             "L004":"Click here",
@@ -202,7 +202,7 @@ module.exports = function(code)
             "L090":"contact with us"
         },
         zh: {
-            "L001": "Playchat - 1分钟内就可以完成的我的人工智能聊天机器人!",
+            "L001": "Playchat - 聊天机器人开发，对话型人工智能平台，Moneybrain",
             "L002": "登录",
             "L003": "忘记密码？",
             "L004": "点击",

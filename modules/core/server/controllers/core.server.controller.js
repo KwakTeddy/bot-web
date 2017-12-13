@@ -18,6 +18,9 @@ exports.renderIndex = function (req, res, next)
     if(req.path == '/')
     {
         var code = req.headers["accept-language"];
+        if(!code)
+            code = '';
+
         code = code.split('-')[0];
 
         code = req.query.lan || code || 'en';
