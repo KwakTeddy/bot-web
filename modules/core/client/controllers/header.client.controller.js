@@ -9,13 +9,13 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
     var UserLanguageService = $resource('/api/users/language');
 
     var user = $scope.user = $cookies.getObject('user');
-
+    
     var userLang = navigator.language || navigator.userLanguage;
     var code = user ? user.language : userLang || 'en';
 
     code = code.split('-')[0];
 
-    $scope.language = code || 'ko';
+    $scope.language = code || 'en';
 
     $scope.languageChange = function()
     {

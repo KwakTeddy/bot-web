@@ -65,7 +65,8 @@ angular.module('playchat').controller('MainController', ['$scope', '$location', 
     {
         if(location.href.indexOf('/signin') == -1 && location.href.indexOf('/password/forgot') == -1 && location.href.indexOf('/signup') == -1)
         {
-            $cookies.putObject('user', null);
+            var user = $cookies.getObject('user');
+            $cookies.putObject('user', { language: user.language });
             $cookies.put('login', false);
             location.href = '/signin';
         }
