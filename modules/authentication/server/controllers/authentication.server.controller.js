@@ -354,7 +354,7 @@ module.exports.forgot = function (req, res, next)
                 httpTransport = 'https://';
             }
 
-            res.render(path.resolve('modules/authentication/server/templates/reset-password-email' + user.language ? '-'+user.language: '-en'),
+            res.render(path.resolve('modules/authentication/server/templates/reset-password-email' + (user.language ? '-'+user.language: '-en')),
             {
                 name: user.displayName,
                 appName: config.app.title,

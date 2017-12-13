@@ -127,7 +127,7 @@ exports.signup = function (req, res) {
                     if (config.secure && config.secure.ssl === true) {
                         httpTransport = 'https://';
                     }
-                    res.render(path.resolve('modules/users/server/templates/email-confirm' + user.language ? '-'+user.language: '-en'), {
+                    res.render(path.resolve('modules/users/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')), {
                         name: user.displayName,
                         appName: 'Play Chat',
                         url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
@@ -206,7 +206,7 @@ exports.signin = function (req, res, next) {
                     if (config.secure && config.secure.ssl === true) {
                         httpTransport = 'https://';
                     }
-                    res.render(path.resolve('modules/users/server/templates/email-confirm' + user.language ? '-'+user.language: '-en'), {
+                    res.render(path.resolve('modules/users/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')), {
                         name: user.displayName,
                         appName: 'Play Chat',
                         url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
