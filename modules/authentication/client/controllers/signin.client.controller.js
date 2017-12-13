@@ -29,6 +29,7 @@
                 var user = $cookies.getObject('user');
                 if(user && user.language)
                     response.language = user.language;
+
                 $cookies.putObject('user', response);
                 $cookies.put('login', true);
 

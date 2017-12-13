@@ -483,6 +483,7 @@
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="/front/js/jquery.1.11.3.min.js"></script> <!-- jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 		<script src="/front/js/bootstrap.min.js"></script> <!-- Bootstrap -->
 		<script src="/front/js/owl.carousel.min.js"></script> <!-- owlCarousel -->
 		<script src="/front/js/waypoints.min.js"></script> <!-- waypoint -->
@@ -493,13 +494,37 @@
     <script>
         $(document).ready(function()
         {
+            var user = $.cookie('user');
+
+            user = user ? JSON.parse(user) : {};
+
             $('.lang li').on('click', function()
             {
+                var code = $(this).attr('data-id');
+
+                user.language = code;
+
+                $.cookie('user', JSON.stringify(user));
+
                 var href = $(this).find('a').attr('href');
                 location.href = href;
             });
 
             var lan = location.href.split('lan=')[1] || '';
+            if(user.language)
+            {
+                if(lan != user.language)
+                {
+                    return location.href = '/?lan=' + user.language;
+                }
+
+                lan = user.language;
+            }
+            else
+            {
+                $.cookie('user', JSON.stringify({ language: lan }));
+            }
+
             var text = $('.lang li[data-id="' + lan + '"] a').text();
             $('.langCode').text(text);
 
