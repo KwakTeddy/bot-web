@@ -5,7 +5,7 @@
             <span class="p1">{{ lan('Registration for closed beta') }}</span>
             <!--<p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>-->
         </div>
-        <p class="exclamation pl5" ng-show="signupErrorMessage"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ lan(signupErrorMessage) }}</p>
+        <p class="exclamation pl5" ng-show="signupErrorMessage"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
         <form class="register" ng-submit="signup();">
             <p>{{ lan('Email ID') }}</p>
             <input type="email" class="input_type09 mb10" ng-model="credentials.email" placeholder="example@moneybrain.ai" ng-required="true" autofocus="true">
