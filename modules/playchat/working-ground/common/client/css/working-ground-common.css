@@ -26,7 +26,7 @@
 
 .operation-search-area
 {
-    margin-top: 14px;
+    margin-top: 34px;
 }
 
 .operation-search-area > input, .search-area > button
@@ -58,7 +58,7 @@
 {
     position: absolute;
     right: 20px;
-    bottom: 20px;
+    bottom: 14px;
     width: 80px;
 }
 
@@ -66,8 +66,9 @@
 {
     position: absolute;
     right: 110px;
-    bottom: 20px;
+    bottom: 15px;
     width: 80px;
+    height: 32px;
 }
 
 .operation-search-area th

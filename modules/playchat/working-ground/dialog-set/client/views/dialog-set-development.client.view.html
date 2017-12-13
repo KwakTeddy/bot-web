@@ -55,19 +55,18 @@
             <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
     </div>
-    <div class="topicswitch">
-        <span class="mr10">{{lan('Topic') }}</span>
-        <div class="slide inline-block">
-            <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
-            <label for="topicOpen"></label>
-        </div>
-    </div>
-
     <div class="dialog-learning-development-title">
         <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">{{lan('Topic') }}</span>
         <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">{{lan('Question') }}</span>
         <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">{{lan('Answer') }}</span>
-    </span>
+        <div class="topicswitch">
+            <span class="mr10" style="font-size: 13px;font-weight: 600;">{{lan('Topic') }}</span>
+            <div class="slide inline-block" style="vertical-align: top;">
+                <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
+                <label for="topicOpen"></label>
+            </div>
+        </div>
+    </div>
     <div class="dialog-learning-development-content">
         <div class="dialog-learning-development-content-row">
             <p class="new-dialog-title">{{lan('New Dialog') }}</p>
