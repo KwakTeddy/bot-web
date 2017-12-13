@@ -21,6 +21,9 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
     {
         UserLanguageService.save({ language: $scope.language }, function(result)
         {
+            if(!user)
+                user = {};
+
             user.language = $scope.language;
             $cookies.putObject('user', user);
 
