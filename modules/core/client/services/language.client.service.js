@@ -2390,6 +2390,42 @@
                 "zh": "新建Facebook页面",
                 "jp": "Create a new Facebook Page"
             },
+            "wechatScription1":{
+                "ko": "Wechat 개인 계정번호가 있어야 합니다. 없으면 휴대폰에서 wechat app 다운로드 후 신청해주세요.",
+                "en": "You must have a personal Wechat account number. If you do not have it, please apply after downloading the wechat app from your mobile phone.",
+                "zh": "首先您要有微信个人账号，如果没有的话先在手机上下载微信，然后申请。",
+                "jp": "You must have a personal Wechat account number. If you do not have it, please apply after downloading the wechat app from your mobile phone."
+            },
+            "wechatScription2":{
+                "ko": "https://mp.weixin.qq.com/ 에 가서  상단의 “WeChat Official Accounts“을 신청하세요.",
+                "en": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top.",
+                "zh": "然后到https://mp.weixin.qq.com/里申请微信公众号（申请的过程中需要用到微信号）",
+                "jp": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top."
+            },
+            "wechatScription3":{
+                "ko": "신청 후 \"Basic configuration“라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
+                "en": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\".",
+                "zh": "申请以后点击“基本配置”按钮，然后在左边画面里点击“我同意”后，点击“成为开发者”按钮。",
+                "jp": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\"."
+            },
+            "wechatScription4":{
+                "ko": "“Change Configuration” 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
+                "en": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token.",
+                "zh": "然后点击左下方的“基本配置”按钮，输入URL（从playchat里面的频道里点击微信下方的链接获得），然后在Token中输入“moneybrain_token”。",
+                "jp": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token."
+            },
+            "wechatScription5":{
+                "ko": "그리고 Encoding AESKey는  Encoding AESKey 뒤에 있는 “Random Generation“라는 버튼을 클릭하면 자동적으로 생성됩니다. 그 후, “Change Configuration” 라는 버튼 옆에 있는 “Enable“라는 버튼을 클릭하세요.",
+                "en": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\".",
+                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。",
+                "jp": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\"."
+            },
+            "wechatScription6":{
+                "ko": "휴대폰 WeChat 어플리케이션을 실행한 후, \"Add Contact\" 에 있는 “Official Accounts “버튼을 클릭하세요. 검색창에 Wechat에서 주어진 나의 “WeChat Official Accounts “를 찾으면 완료!",
+                "en": "Open WeChat application in your cell phone and click \"click the \"Official Accounts\" button in \"Add Contact\" If you find \"Wechat Official Accounts given, it's all done!",
+                "zh": "立即打开手机在添加朋友里选择添加“公众号”，找到自己设定的公众号名称即可开始使用您的聊天机器人啦~",
+                "jp": "Open WeChat application in your cell phone and click \"click the \"Official Accounts\" button in \"Add Contact\" If you find \"Wechat Official Accounts given, it's all done!"
+            },
 
             //추가하는 거
             "Intent Usage":{

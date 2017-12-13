@@ -144,6 +144,14 @@
         <div class="modal">
             <div class="modal-title">{{lan('WeChat')}}</div>
             <div class="modal-body">
+                <ul class="channel-description">
+                    <li>{{lan('wechatScription1')}}</li>
+                    <li>{{lan('wechatScription2')}}</li>
+                    <li>{{lan('wechatScription3')}}</li>
+                    <li>{{lan("wechatScription4")}}</li>
+                    <li>{{lan('wechatScription5')}}</li>
+                    <li>{{lan('wechatScription6')}}</li>
+                </ul>
                 <span>Webhook URL : </span>
                 <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}/webhook">
                 <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
