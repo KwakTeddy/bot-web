@@ -62,7 +62,7 @@ exports.forgot = function (req, res, next) {
         httpTransport = 'https://';
       }
 
-      res.render(path.resolve('modules/users/server/templates/reset-password-email' + user.language ? '-'+user.language: '-en'), {
+      res.render(path.resolve('modules/users/server/templates/reset-password-email' + (user.language ? '-'+user.language: '-en')), {
         name: user.displayName,
         appName: config.app.title,
         url: httpTransport + req.headers.host + '/api/auth/reset/' + token + '/' + req.body.from
@@ -177,7 +177,7 @@ exports.reset = function (req, res, next) {
       });
     },
     function (user, done) {
-      res.render('modules/users/server/templates/reset-password-confirm-email' + user.language ? '-'+user.language: '-en', {
+      res.render('modules/users/server/templates/reset-password-confirm-email' + (user.language ? '-'+user.language: '-en'), {
         name: user.displayName,
         appName: config.app.title
       }, function (err, emailHTML) {
