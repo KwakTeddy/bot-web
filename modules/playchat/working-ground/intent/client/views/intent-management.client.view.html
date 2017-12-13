@@ -60,11 +60,11 @@
         <div class="tablePaging">
             <div class="tablePagingC">
                 <a href="/playchat/management/intent?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
                 <a ng-repeat="page in pageOptions.pages" href="/playchat/management/intent?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
                 <a href="/playchat/management/intent?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>
             </div>
         </div>
@@ -76,7 +76,7 @@
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">{{lan('Name') }}</span>
-                        <input type="text" placeholder="인텐트 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="intent-title data-input" ng-required="true">
+                        <input type="text" placeholder="{{lan('Type the Intent Name.')}}" name="name" ng-model="modal.importModal.data.name" class="intent-title data-input" ng-required="true">
                     </label>
                 </div>
                 <!--<div class="form-row">-->
