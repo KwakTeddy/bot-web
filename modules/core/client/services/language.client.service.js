@@ -2393,7 +2393,7 @@
 
             //추가하는 거
             "Intent Usage":{
-                "ko": "페이스북 페이지 새로 만들기",
+                "ko": "인텐트 사용량",
                 "en": "Intent Usage",
                 "zh": "意图使用量",
                 "jp": "Intent Usage"
@@ -2529,6 +2529,18 @@
                 "en": "Dec",
                 "zh": "12月",
                 "jp": "12月"
+            },
+            "This e-mail is under screening process. Please wait for results.": {
+                "ko": "클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.",
+                "en": "This e-mail is under screening process. Please wait for results.",
+                "zh": "",
+                "jp": "この電子メールは審査中です。 結果を待ってください。"
+            },
+            "This e-mail is not registered or the password is wrong.": {
+                "ko": "가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다",
+                "en": "This e-mail is not registered or the password is wrong.",
+                "zh": "",
+                "jp": "この電子メールは登録されていないか、パスワードが間違っています。"
             }
         };
 
