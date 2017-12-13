@@ -3,7 +3,7 @@
     'use strict';
     angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService', function ($window, $scope, $resource, $cookies, LanguageService)
     {
-        $scope.$parent.changeWorkingGroundName('Bot Profile');
+        $scope.$parent.changeWorkingGroundName(LanguageService('Bot Profile'), '/modules/playchat/working-ground/chatbot-edit/client/imgs/botsetting.png');
 
         var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
         var ChatbotEditService = $resource('/api/:botId/chatbot-edit', { botId: '@botId' }, { update: { method: 'PUT' } });

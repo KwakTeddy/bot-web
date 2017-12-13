@@ -15,20 +15,22 @@ var TurnTaking = function (language) {
 TurnTaking.prototype.parse = function (language) {
     var dicFileName = path.resolve("./external_modules/resources/"+language+"/turnTaking.dic");
 
-    var data = fs.readFileSync(path.resolve(dicFileName), 'utf8');
-    var entries = data.split('\n');
-    for (var i in entries) {
+    try {
+      var data = fs.readFileSync(path.resolve(dicFileName), 'utf8');
+      var entries = data.split('\n');
+      for (var i in entries) {
         var entry = entries[i].split('\t');
-        if (entry.length==2) {
-            if (entry[0] != '' && entry[1] != '') {
-                this.dictionary[entry[0]] = entry[1];
-            }
+        if (entry.length == 2) {
+          if (entry[0] != '' && entry[1] != '') {
+            this.dictionary[entry[0]] = entry[1];
+          }
         } else {
-            if (entry[0] != '' && entry[3] != '') {
-                this.dictionary[entry[0]] = entry[3];
-            }
+          if (entry[0] != '' && entry[3] != '') {
+            this.dictionary[entry[0]] = entry[3];
+          }
         }
-    }
+      }
+    } catch(e) {}
 }
 
 TurnTaking.prototype.analyze = function (language, nlu) {

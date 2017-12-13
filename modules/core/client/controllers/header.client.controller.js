@@ -9,18 +9,21 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
     var UserLanguageService = $resource('/api/users/language');
 
     var user = $scope.user = $cookies.getObject('user');
-
+    
     var userLang = navigator.language || navigator.userLanguage;
     var code = user ? user.language : userLang || 'en';
 
     code = code.split('-')[0];
 
-    $scope.language = code || 'ko';
+    $scope.language = code || 'en';
 
     $scope.languageChange = function()
     {
         UserLanguageService.save({ language: $scope.language }, function(result)
         {
+            if(!user)
+                user = {};
+
             user.language = $scope.language;
             $cookies.putObject('user', user);
 
@@ -28,7 +31,18 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
         },
         function(err)
         {
-            alert(err);
+            if(err.status == 401)
+            {
+                var user = {};
+                user.language = $scope.language;
+                $cookies.putObject('user', user);
+
+                $rootScope.$broadcast('changeLanguage');
+            }
+            else
+            {
+                alert(err);
+            }
         });
     };
 

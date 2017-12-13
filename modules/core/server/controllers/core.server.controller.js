@@ -21,6 +21,20 @@ exports.renderIndex = function (req, res, next)
         code = code.split('-')[0];
 
         code = req.query.lan || code || 'en';
+
+        if(!req.query.lan)
+        {
+            res.redirect('/?lan=' + code);
+            return;
+        }
+
+        if(code.indexOf(',') != -1)
+        {
+            code = code.split(',')[0];
+            res.redirect('/?lan=' + code);
+            return;
+        }
+
         res.render('modules/front/index', frontLanguage(code));
         return;
     }

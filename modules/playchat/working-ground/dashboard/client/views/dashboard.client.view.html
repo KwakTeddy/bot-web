@@ -8,25 +8,25 @@
 <div ng-controller="DashboardController" style="min-width: 800px;">
 
     <div ng-if="isFirst">
-        <h1 style="font-size: 26px;font-weight: 600;margin: 20px 0px 70px;line-height: 45px;text-align: center;">챗봇이 만들어졌습니다! <br> 아래 두가지 방식으로 챗봇을 쉽게 개발해 보세요.</h1>
+        <h1 style="font-size: 26px;font-weight: 600;margin: 20px 0px 70px;line-height: 45px;text-align: center;">{{lan('Chat bot has been made!')}} <br> {{lan('Use the template bots to make your own chatbot in a second')}}</h1>
         <div class="dashboard-dialog-develop" style="margin-top: 20px;">
             <div class="dashboard-dialog-learning">
                 <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_learning.png" style="height: 138px;">
                 <div>
-                    <p>대화 학습 시키기</p>
-                    <p>고객이 물어본 질문에 어떻게 답변하지 학습시킬 수 있습니다.</p>
+                    <p>{{lan('Let it study conversation') }}</p>
+                    <p>{{lan('We may let it learn how to answer accordingly towards the questions guests has asked') }}</p>
                     <div style="display: flex;">
-                        <a href="/playchat/development/dialog-set" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">학습 시작</a>
+                        <a href="/playchat/development/dialog-set" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">{{lan('Start Learning')}}</a>
                     </div>
                 </div>
             </div>
             <div class="dashboard-dialog-graph">
                 <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_graph.png" style="height: 138px;">
                 <div>
-                    <p>대화 시나리오 만들기</p>
-                    <p style="margin: 15px 0 12px 0;">단순한 질문 답변이 아닌, 시나리오 또는 단계적으로 답변을 할 수 있도록 대화를 개발합니다.</p>
+                    <p>{{lan('Make the Conversational scenario')}}</p>
+                    <p style="margin: 15px 0 12px 0;">{{lan('We develop the conversations to answer by phases or scenario other than just a simple question and answer.')}}</p>
                     <div style="display: flex;">
-                        <a href="/playchat/development/dialog-graph" class="blue-button" style="height: 34px;line-height: 34px;width: 120px;">시나리오 시작</a>
+                        <a href="/playchat/development/dialog-graph" class="blue-button" style="height: 34px;line-height: 34px;width: 120px;">aaa</a>
                     </div>
                 </div>
             </div>
@@ -35,36 +35,36 @@
             <div class="dashboard-dialog-management-card-first">
                 <a href="/playchat/channel" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/channel"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a>채널 연결</div>
-                    <p>전화, 카카오톡, 페이스북에 연결해서 챗봇을 서비스합니다.</p>
+                    <div><a href="/playchat/channel"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a>{{lan('Connect Channel')}}</div>
+                    <p>{{lan('We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.')}}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card-first">
                 <a href="/playchat/operation/chat-log/ai" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a>대화내역</div>
-                    <p>인공지능이 자동으로 상담한 대화내역을 확인 할 수 있습니다.</p>
+                    <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a>{{lan('Dialogue Breakdown')}}</div>
+                    <p>{{lan('Artificial Intelligence may automatically review the dialogue breakdown of the conversation.')}}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card-first">
                 <a href="/playchat/operation/failed-dialogs" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/operation/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed-dialog.png"></a>실패대화</div>
-                    <p>응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.</p>
+                    <div><a href="/playchat/operation/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed-dialog.png"></a>{{lan('Failed Dialog')}}</div>
+                    <p>{{lan('We can make it learn how to answer to the questions that it was not able to reply.')}}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card-first">
                 <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a>사용통계</div>
-                    <p>기간별 접속자수, 대화수, 등 사용량을 조회해 볼 수 있습니다.</p>
+                    <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a>{{lan('usage statistics')}}</div>
+                    <p>{{lan('You may search the usage amount by the number of conversations, number of people logged in by dates and etc.')}}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div ng-if="!isFirst">
-        <div class="dashboard-summary-title">Bot Profile</div>
+        <div class="dashboard-summary-title">{{lan('Bot Profile')}}</div>
         <div class="dashboard-bot-profile">
             <div class="dashboard-bot-profile-image">
                 <div class="dashboard-bot-profile-image-wrapper">
@@ -74,11 +74,11 @@
             </div>
             <div class="dashboard-bot-profile-content">
                 <div>
-                    <span>Bot Name</span>
+                    <span>{{lan('Bot Name')}}</span>
                     <input type="text" value="{{ chatbot.name }}" disabled="true">
                 </div>
                 <div>
-                    <p>Description</p>
+                    <p>{{lan('Description')}}</p>
                     <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
                 </div>
             </div>
@@ -87,20 +87,20 @@
             <div class="dashboard-dialog-learning">
                 <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_learning.png" style="height: 138px;">
                 <div>
-                    <p>대화 학습 시키기</p>
-                    <p>고객이 물어본 질문에 어떻게 답변하지 학습시킬 수 있습니다.</p>
+                    <p>{{lan('Let it study conversation') }}</p>
+                    <p>{{lan('We may let it learn how to answer accordingly towards the questions guests has asked') }}</p>
                     <div style="display: flex;">
-                        <a href="/playchat/development/dialog-set" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">학습 시작</a>
+                        <a href="/playchat/development/dialog-set" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">{{lan('Start Learning') }}</a>
                     </div>
                 </div>
             </div>
             <div class="dashboard-dialog-graph">
                 <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_graph.png" style="height: 138px;">
                 <div>
-                    <p>대화 시나리오 만들기</p>
-                    <p style="margin: 15px 0 12px 0;">단순한 질문 답변이 아닌, 시나리오 또는 단계적으로 답변을 할 수 있도록 대화를 개발합니다.</p>
+                    <p>{{lan('Make the Conversational scenario') }}</p>
+                    <p style="margin: 15px 0 12px 0;">{{lan('We develop the conversations to answer by phases or scenario other than just a simple question and answer.') }}</p>
                     <div style="display: flex;">
-                        <a href="/playchat/development/dialog-graph" class="blue-button" style="height: 34px;line-height: 34px;width: 120px;">시나리오 시작</a>
+                        <a href="/playchat/development/dialog-graph" class="blue-button" style="height: 34px;line-height: 34px;width: 120px;">{{lan('Create Scenario') }}</a>
                     </div>
                 </div>
             </div>
@@ -109,29 +109,29 @@
             <div class="dashboard-dialog-management-card">
                 <a href="/playchat/channel" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/channel"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a>채널 연결</div>
-                    <p>전화, 카카오톡, 페이스북에 연결해서 챗봇을 서비스합니다.</p>
+                    <div><a href="/playchat/channel"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a>{{lan('Connect Channel') }}</div>
+                    <p>{{lan('We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.') }}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card">
                 <a href="/playchat/operation/chat-log/ai" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a>대화내역</div>
-                    <p>인공지능이 자동으로 상담한 대화내역을 확인 할 수 있습니다.</p>
+                    <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a>{{lan('Dialogue Breakdown') }}</div>
+                    <p>{{lan('Artificial Intelligence may automatically review the dialogue breakdown of the conversation.') }}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card">
                 <a href="/playchat/operation/failed-dialogs" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/operation/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed-dialog.png"></a>실패대화</div>
-                    <p>응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.</p>
+                    <div><a href="/playchat/operation/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed-dialog.png"></a>{{lan('Failed Dialog') }}</div>
+                    <p>{{lan('We can make it learn how to answer to the questions that it was not able to reply.') }}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card">
                 <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
                 <div>
-                    <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a>사용통계</div>
-                    <p>기간별 접속자수, 대화수, 등 사용량을 조회해 볼 수 있습니다.</p>
+                    <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a>{{lan('usage statistics') }}</div>
+                    <p>{{lan('You may search the usage amount by the number of conversations, number of people logged in by dates and etc.') }}</p>
                 </div>
             </div>
         </div>

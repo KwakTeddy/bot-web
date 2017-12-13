@@ -1,7 +1,7 @@
 var ko = require('./processor_ko.js');
 var en = require('./processor_en.js');
 var zh = require('./processor_zh.js');
-var jp = require('./processor_ja.js');
+var ja = require('./processor_ja.js');
 
 (function()
 {

@@ -205,7 +205,7 @@ module.exports.signup = function(req, res, next)
                             httpTransport = 'https://';
                         }
 
-                        res.render(path.resolve('modules/authentication/server/templates/email-confirm'),
+                        res.render(path.resolve('modules/authentication/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')),
                             {
                                 name: user.displayName,
                                 appName: 'Play Chat',
@@ -221,7 +221,7 @@ module.exports.signup = function(req, res, next)
                         var mailOptions = {
                             to: user.email,
                             from: config.mailer.from,
-                            subject: 'E-mail 인증',
+                            subject: '[palychat.ai] e-mail confirm',
                             html: emailHTML
                         };
 
@@ -233,6 +233,7 @@ module.exports.signup = function(req, res, next)
                             }
                             else
                             {
+                                console.log(err);
                                 return res.status(400).send({ message: 'Failure sending email' });
                             }
 
@@ -354,7 +355,7 @@ module.exports.forgot = function (req, res, next)
                 httpTransport = 'https://';
             }
 
-            res.render(path.resolve('modules/authentication/server/templates/reset-password-email'),
+            res.render(path.resolve('modules/authentication/server/templates/reset-password-email' + (req.body.language ? '-'+req.body.language: '-en')),
             {
                 name: user.displayName,
                 appName: config.app.title,
@@ -371,7 +372,7 @@ module.exports.forgot = function (req, res, next)
             var mailOptions = {
                 to: user.email,
                 from: config.mailer.from,
-                subject: '비밀번호 재설정',
+                subject: '[Playchat.ai] Password reset.',
                 html: emailHTML
             };
 

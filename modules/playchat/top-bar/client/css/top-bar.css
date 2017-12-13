@@ -76,7 +76,7 @@
     position: relative;
     display: inline-block;
     vertical-align: top;
-    background: url(../imgs/notify.png) no-repeat 0px;
+    background: url(/modules/core/client/imgs/notify.png) no-repeat 0px;
     width: 16px;
     height: 19px;
     margin-right:34px;
@@ -88,7 +88,7 @@
     position: relative;
     display: inline-block;
     vertical-align: top;
-    background: url(../imgs/log.png) no-repeat 0px;
+    background: url(/modules/core/client/imgs/log.png) no-repeat 0px;
     width: 16px;
     height: 19px;
     padding-top:10px;

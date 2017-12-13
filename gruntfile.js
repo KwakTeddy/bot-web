@@ -124,16 +124,16 @@ module.exports = function (grunt) {
       web: {
         src: defaultAssets.client.js,
         dest: 'public/dist/application_concat.js'
-      },
-      mobile: {
-        src: defaultAssets.mobile.js,
-        dest: 'public/dist/application_mobile_concat.js'
       }
+      // mobile: {
+      //   src: defaultAssets.mobile.js,
+      //   dest: 'public/dist/application_mobile_concat.js'
+      // }
     },
     ngAnnotate: {
       production: {
         files: {
-          'public/dist/application_mobile.js': 'public/dist/application_mobile_concat.js',
+          // 'public/dist/application_mobile.js': 'public/dist/application_mobile_concat.js',
           'public/dist/application.js': 'public/dist/application_concat.js'
         }
       }
@@ -144,7 +144,7 @@ module.exports = function (grunt) {
           mangle: false
         },
         files: {
-          'public/dist/application_mobile.min.js': 'public/dist/application_mobile.js',
+          // 'public/dist/application_mobile.min.js': 'public/dist/application_mobile.js',
           'public/dist/application.min.js': 'public/dist/application.js'
         }
       }
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
     cssmin: {
       combine: {
         files: {
-          'public/dist/application_mobile.min.css': defaultAssets.mobile.css,
+          // 'public/dist/application_mobile.min.css': defaultAssets.mobile.css,
           'public/dist/application.min.css': defaultAssets.client.css
         }
       }
