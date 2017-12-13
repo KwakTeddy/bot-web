@@ -17,10 +17,6 @@ module.exports = {
             'modules/playchat/working-ground/common/client/css/working-ground-common.css',
             'modules/playchat/working-ground/!(common)/client/css/*.css'
         ],
-        less: [
-        ],
-        sass: [
-        ],
         js: [
             'modules/core/client/config/config.js',
             'modules/core/client/config/init.js',
@@ -41,7 +37,5 @@ module.exports = {
             'modules/playchat/working-ground/*/client/*/*.js',
             'templates/*/client/controllers/*.js'
         ]
-    },
-    server: {
     }
 };
