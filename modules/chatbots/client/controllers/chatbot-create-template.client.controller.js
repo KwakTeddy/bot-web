@@ -12,8 +12,9 @@
 
         $scope.templateId = $stateParams.templateId;
 
+        var user = $cookies.getObject('user');
         $scope.bot = {
-            language: 'ko'
+            language: user.language !== undefined ? user.language: 'en'
         };
 
         var user = $cookies.getObject('user');
