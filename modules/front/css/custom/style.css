@@ -1788,8 +1788,7 @@ form.domainForm {
 	border-radius: 50%;
 }
 .singleClient p{
-	text-align: left;
-	text-indent: 34px;
+	text-align: center;
 	font-size: 13px;
 	font-weight: 600;
 	margin-bottom: 7px;

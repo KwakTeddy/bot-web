@@ -140,7 +140,7 @@
                 "jp": "電子メールを確認してください。 認証可能時間は一時間内に締め切られます。",
                 "zh": "请检查您的电子邮箱，验证码的有效期为一个小时。"
             },
-            "\"If you would like to receive the e-mail again": {
+            "If you would like to receive the e-mail again": {
                 "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
                 "en": "\"If you would like to receive the e-mail again",
                 "jp": " please click on the again button.\"",
@@ -152,9 +152,9 @@
                 "jp": "再送信",
                 "zh": "再次发送"
             },
-            "\"Signning is successfuly done": {
+            "Signning is successfuly done": {
                 "ko": "회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.",
-                "en": "\"Signning is successfuly done",
+                "en": "Signning is successfuly done",
                 "jp": " but verification e-mail sending is failed. Please contact us.\"",
                 "zh": "会員加入はなったが、E-mail認証メール送ることに失敗しました。 管理者に問い合わせてください。"
             },

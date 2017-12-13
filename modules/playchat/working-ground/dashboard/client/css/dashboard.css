@@ -68,6 +68,7 @@
 .dashboard-bot-profile-content
 {
     padding: 0 40px;
+    min-width: 698px;
 }
 
 .dashboard-bot-profile-content span, .dashboard-bot-profile-content p
@@ -138,6 +139,7 @@
     background: #e7f1f7;
     transition: all 1s cubic-bezier(.25,.8,.25,1);
 }
+
 .dashboard-dialog-cover
 {
     position: absolute;
@@ -155,10 +157,12 @@
 {
     width: 215px;
 }
-.dashboard-dialog-management-card > div
+.dashboard-dialog-management-card > div > p
 {
-
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
+
 .dashboard-dialog-cover:hover + div{
 
 }

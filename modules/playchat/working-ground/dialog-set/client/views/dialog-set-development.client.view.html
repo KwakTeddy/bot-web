@@ -55,19 +55,18 @@
             <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
     </div>
-    <div class="topicswitch">
-        <span class="mr10">topic</span>
-        <div class="slide inline-block">
-            <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
-            <label for="topicOpen"></label>
-        </div>
-    </div>
-
     <div class="dialog-learning-development-title">
         <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">{{lan('Topic') }}</span>
         <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">{{lan('Question') }}</span>
         <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">{{lan('Answer') }}</span>
-    </span>
+        <div class="topicswitch">
+            <span class="mr10" style="font-size: 13px;font-weight: 600;">{{lan('Topic') }}</span>
+            <div class="slide inline-block" style="vertical-align: top;">
+                <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
+                <label for="topicOpen"></label>
+            </div>
+        </div>
+    </div>
     <div class="dialog-learning-development-content">
         <div class="dialog-learning-development-content-row">
             <p class="new-dialog-title">{{lan('New Dialog') }}</p>
@@ -186,7 +185,7 @@
                 <div class="form-row">
                     <label style="width: 100%;">
                         <span>{{lan('Content') }}</span>
-                        <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="openModal.data.content" class="data-input"></textarea>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="openModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">
@@ -203,7 +202,7 @@
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="{{lan('Enter dialogset name')}}" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
+                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
                     </label>
                 </div>
                 <!--<div class="form-row" style="display: none;">-->
@@ -226,7 +225,7 @@
                 <div class="form-row">
                     <label style="width: 100%;">
                         <span>{{lan('Content') }}</span>
-                        <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">

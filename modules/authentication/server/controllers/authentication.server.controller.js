@@ -233,6 +233,7 @@ module.exports.signup = function(req, res, next)
                             }
                             else
                             {
+                                console.log(err);
                                 return res.status(400).send({ message: 'Failure sending email' });
                             }
 

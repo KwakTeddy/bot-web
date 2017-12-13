@@ -1,13 +1,10 @@
 .topicswitch
 {
-    width:100%;
-    display: block;
-    text-align: right;
-    margin-top: 10px;
+    display: inline;
+    float: right;
 }
 .topicswitch >span{
-    font-size: 13px;
-    font-weight: 600;
+
     text-transform: uppercase;
     color: #626262;
 }
