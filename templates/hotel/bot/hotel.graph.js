@@ -156,7 +156,7 @@ var dialogs = [
         "name":"빠른예약(체크인날짜,인원수,투숙 기간,객실명,예약)",
         "id": "default118",
         "filename": "default",
-        "input": "예약",
+        "input": ["예약","8"],
         "output": [
             {
                 "if":"context.dialog.roomno===undefined",
@@ -1185,9 +1185,27 @@ var dialogs = [
                         ]
                     }
                 ],
-                "task": {
-                    "name": "SMSAuth"
-                }
+                "task": "SMSAuth"
+            },
+            {
+                "name": "901",
+                "id": "default901",
+                "filename": "default",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": "1",
+                        "options": {
+                            "output": "전화번호를 틀렸습니다.\n\n다시 보내드렸습니다.\n\n새로운 인증번호를 디시 입력해주세요!"
+                        },
+                        "type": "Repeat"
+                    }
+                ]
             }
         ]
     },
@@ -2284,10 +2302,28 @@ var dialogs = [
 						]
 					}
 				],
-				"task": {
-					"name": "SMSAuth"
-				}
-			}
+				"task": "SMSAuth"
+			},
+            {
+                "name": "902",
+                "id": "default902",
+                "filename": "default",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": "1",
+                        "options": {
+                            "output": "전화번호를 틀렸습니다.\n\n다시 보내드렸습니다.\n\n새로운 인증번호를 디시 입력해주세요!"
+                        },
+                        "type": "Repeat"
+                    }
+                ]
+            }
 		]
 	},
     {
@@ -2810,7 +2846,7 @@ var dialogs = [
                                                 "if": "!context.user.mobile",
                                                 "kind": "Action",
                                                 "options": {
-                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n\n총 금액:+preallprice+원\n\n예약자의 휴대폰 번호를 입력해주세요."
+                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n\n총 금액:+preallprice+원\n\n예약자의 휴대폰 번호를 입력해주세요.1111"
                                                 },
                                                 "call": "휴대폰번호 인증"
                                             }
@@ -2942,9 +2978,6 @@ var commonDialogs = [
 		"input": [
 			{
 				"text": "처음"
-			},
-			{
-				"text": "0"
 			}
 		],
 		"output": [
