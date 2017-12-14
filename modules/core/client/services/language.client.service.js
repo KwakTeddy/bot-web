@@ -327,13 +327,13 @@
                 "zh": "取消"
             },
             "New Chatbot": {
-                "ko": "New Chatbot",
+                "ko": "새봇",
                 "en": "New Chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
             },
             "Blank Bot": {
-                "ko": "Blank Bot",
+                "ko": "빈봇",
                 "en": "Blank Bot",
                 "jp": "空いたボット",
                 "zh": "空白机器人"
