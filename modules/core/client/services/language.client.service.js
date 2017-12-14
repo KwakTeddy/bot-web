@@ -269,7 +269,7 @@
             "Share chatbot": {
                 "ko": "챗봇 공유하기",
                 "en": "Share chatbot",
-                "zh": "分享chatbot",
+                "zh": "分享聊天机器人",
                 "jp": "チャットボットを共有する"
             },
             "New chatbot": {
@@ -316,9 +316,9 @@
             },
             "Flow chatbots are tree-based. The user is driven down a specific path": {
                 "ko": "플로우 챗봇은 트리구조입니다. 사용자는 개발자가 지정한 특정 대화 구조에 맞게 대화를 진행하게 됩니다.",
-                "en": "\"Flow chatbots are tree-based. The user is driven down a specific path",
-                "jp": " a path previously defined by the chatbot's developer\"",
-                "zh": "フローチェッボッはツリー構造です。 使用者は開発者が指定した特定対話構造に合わせて対話を進めるようになります。"
+                "en": "Flow chatbots are tree-based. The user is driven down a specific path, a path previously defined by the chatbot's developer",
+                "jp": "フローチャットボットはツリー構造です。 使用者は開発者が指定した特定対話構造に合わせて対話を進めるようになります。",
+                "zh": "流程聊天机器人是树形结构的。用户要根据开发人员特定的对话结构来进行对话。"
             },
             "Cancel": {
                 "ko": "취소",
@@ -1840,7 +1840,7 @@
             "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
                 "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
                 "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
-                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 您想保存吗？",
+                "zh": "检测到JSON格式错误。 聊天机器人可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
             "Typing the regular expression, press Enter to finish.": {
