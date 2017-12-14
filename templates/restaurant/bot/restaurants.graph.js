@@ -58,7 +58,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.restaurantno===0",
-                "output": "[인기메뉴판]\n#categorys#+index+.+name+\n\n#번호를 선택해주세요.",
+                "output": "[인기메뉴판]\n#categorys#+index+.+name+\n#\n\n번호를 선택해주세요.",
                 "children": [
                     {
                         "filename": "restaurants",
@@ -146,7 +146,7 @@ var dialogs = [
                         "task": "eventAction",
                         "output":[
                             {
-                            "text": "+eventlistType.name+\n+eventlistType.description+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
+                            "text": "[+eventlistType.name+]\n+eventlistType.description+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
                             "kind": "Text"
                         }
                         ]
@@ -777,7 +777,7 @@ var dialogs = [
                         "output": [
                             {
                                 "if": "context.dialog.check === false",
-                                "output": {"call": "예약자명"}
+                                "output": {"callChild": "인원선택"}
                             },
                             {
                                 "if": "context.dialog.check == 're'",
@@ -1021,7 +1021,7 @@ var commonDialogs = [
         "id": "restaurantcommon0",
         "filename": "restaurantcommon",
         "name": "시작",
-        "input": ["시작","0"],
+        "input": ["시작","0","처음"],
         "task": "startTask",
         "output": [
             {
@@ -1033,7 +1033,7 @@ var commonDialogs = [
                     }
                 }
             },
-            "<+name+> 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시)\n위치, 영업시간, 메뉴\n주차, 매장사진, 이벤트\n내일 저녁 7시에 4명 예약"
+            "<+name+> 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시)\n위치,  영업시간,  메뉴(메뉴,인기메뉴)\n주차,  매장사진,  이벤트\n예약확인,  예약취소\n내일 저녁 7시에 4명 예약"
         ]
     },
     {
@@ -1061,11 +1061,7 @@ var commonDialogs = [
         "name": "이전",
         "id": "restaurantcommon3330",
         "filename": "restaurantcommon",
-        "input": [
-            {
-                "text": "이전"
-            }
-        ],
+        "input": ["이전","상위"],
         "output": {
             "kind": "Action",
             "up": "1"

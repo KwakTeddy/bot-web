@@ -44,6 +44,8 @@ bot.setTask('mapButton', mapButton);
 var mynamesave = {
     name: 'mynamesave',
     action: function(task, context, callback){
+        console.log('+++++++++++++++++++++:'+context.user.mobile);
+        console.log('======================:'+context.dialog.mobile);
         context.dialog.myname = context.dialog.inCurRaw;
          context.user.myname=context.dialog.myname;
         callback(task, context);
@@ -78,7 +80,7 @@ var mynamesave1 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobiles,
+            order_phone:context.user.mobile,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -93,7 +95,7 @@ var mynamesave1 = {
             __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -138,7 +140,7 @@ var categoryroomlist = {
     name: 'categoryroomlist',
     action: function(task, context, callback) {
         //context.dialog.roomss=context.bot.rooms;
-        //console.log(context.bot.rooms+"============================");
+        console.log(context.bot.rooms+"============================");
         if(context.bot.rooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
         else {
             context.dialog.roomno = 0;
@@ -166,7 +168,11 @@ bot.setTask("categoryroomlist", categoryroomlist);
 var orderlist = {
     name: 'orderlist',
     action: function(task, context, callback) {
-         order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
+        console.log('context.user.mobile:'+context.user.mobile);
+        console.log('context.bot.id:'+context.bot.id);
+        console.log('context.user.myname:'+context.user.myname);
+
+         order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -194,11 +200,11 @@ var saveinputdate = {
 bot.setTask("saveinputdate", saveinputdate);
 
 
-
 var saveMobile = {
   action: function (task,context,callback) {
+      console.log('========================');
     if(context.dialog.mobile)
-    {context.user.mobiles = context.dialog.mobile;}
+    {context.user.mobile = context.dialog.mobile;}
      var mydate=new Date().toLocaleDateString();
         var x=mydate.split("/");
         context.dialog.myyear=x[2];
@@ -383,7 +389,7 @@ var addorder = {
 
                 var neworder={
                 order_user: context.dialog.myname,
-                order_phone:context.user.mobiles,
+                order_phone:context.user.mobile,
                 order_price:context.dialog.oneallprice,
                 order_date: context.dialog.todaydate,
                 order_paydate: context.dialog.tomorrowdate,
@@ -398,7 +404,7 @@ var addorder = {
                     __v:0
                             };
                 order.collection.insert(neworder,function(err,docs){
-                  order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+                  order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                                                         context.dialog.order= docs;
                                                         //console.log(context.dialog.order[0]);
                                                         context.dialog.allprice=0;
@@ -464,7 +470,7 @@ var addorder1 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobiles,
+            order_phone:context.user.mobile,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -479,7 +485,7 @@ var addorder1 = {
             __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -545,7 +551,7 @@ var addorder2 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobiles,
+            order_phone:context.user.mobile,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -560,7 +566,7 @@ var addorder2 = {
             __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -608,7 +614,7 @@ var deleteorder = {
 
                 order.find({_id:context.dialog.orderlistType._id}).update({order_status:"예약취소"}).exec(function(err){
 
-                   order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
+                   order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -635,6 +641,7 @@ var mobile = {
     typeCheck: regexpTypeCheck,
     regexp: /\b((?:010[-. ]?\d{4}|01[1|6|7|8|9][-. ]?\d{3,4})[-. ]?\d{4})\b/g,
     checkRequired: function(text, type, inDoc, context) {
+        console.log('+++++++++++++++++++++++++++');
         if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
         else if(text.length < 13) return '자리수가 맞지 않습니다';
         else return '휴대폰전화번호 형식으로 입력해 주세요';

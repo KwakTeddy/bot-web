@@ -201,6 +201,7 @@ var checkTime= {
     name: 'checkTime',
     action: function (task, context, callback) {
 
+
         var day = new Date().getDay();
         var holiday = dateStringToNumber(context.bot.holiday);
         var str = context.bot.endTime;
@@ -703,7 +704,7 @@ var categorymenuisornot= {
                 if (context.dialog.categorymenu.length !== 0) {
                     context.dialog.menuis = 1;
                 }
-                if(context.dialog.categorymenu[0].hotmenus==='true'){context.dialog.hot='인기';}
+                if(context.dialog.categorymenu[0].hotmenus===true){context.dialog.hot='인기';}
                 else{context.dialog.hot='';}
                 callback(task, context);
             }
@@ -746,7 +747,7 @@ var menuisornot= {
                 if (context.dialog.categorymenu.length !== 0) {
                     context.dialog.menuis = 1;
                 }
-                if(context.dialog.categorymenu.hotmenus==='true'){context.dialog.hot='인기';}
+                if(context.dialog.categorymenu.hotmenus===true){context.dialog.hot='인기';}
                 else{context.dialog.hot='';}
                 callback(task, context);
             }
@@ -771,6 +772,7 @@ var action3 = {
     name:"action3",
     action: function(task, context, callback)
     {
+        console.log('++++++++++++++++++++++++++++++++action3');
         context.dialog.시간입력최초 = true; callback(task, context);
     }
 };
@@ -1588,7 +1590,7 @@ var eventAction = {
         context.dialog.eventss=context.dialog.events;
         if(context.dialog.eventss.image!==undefined) {
             task.result = {
-                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
+                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
                 image: {url: context.dialog.eventss.image},
                 buttons: [
                     {
