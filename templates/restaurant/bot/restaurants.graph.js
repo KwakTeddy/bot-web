@@ -1021,7 +1021,17 @@ var commonDialogs = [
         "id": "restaurantcommon0",
         "filename": "restaurantcommon",
         "name": "시작",
-        "input": ["시작","0","처음"],
+        "input": [
+            {
+                "text": "처음"
+            },
+            {
+                "regexp":"^0$"
+            },
+            {
+                "regexp":"^시작$"
+            }
+        ],
         "task": "startTask",
         "output": [
             {
@@ -1061,7 +1071,14 @@ var commonDialogs = [
         "name": "이전",
         "id": "restaurantcommon3330",
         "filename": "restaurantcommon",
-        "input": ["이전","상위"],
+        "input": [
+            {
+                "regexp":"^이전$"
+            },
+            {
+                "regexp":"^상위$"
+            }
+        ],
         "output": {
             "kind": "Action",
             "up": "1"

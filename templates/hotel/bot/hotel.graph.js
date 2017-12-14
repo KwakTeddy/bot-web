@@ -2961,7 +2961,7 @@ var commonDialogs = [
 		"name": "시작",
 		"input": [
 			{
-				"text": "시작"
+                "regexp":"^사작$"
 			}
 		],
 		"output": [
@@ -2977,8 +2977,11 @@ var commonDialogs = [
 		"name": "처음",
 		"input": [
 			{
-				"text": "처음"
-			}
+                "regexp":"^처음$"
+			},
+            {
+                "regexp":"^0$"
+            }
 		],
 		"output": [
 			{
@@ -2993,7 +2996,7 @@ var commonDialogs = [
 		"filename": "defaultcommon",
 		"input": [
 			{
-				"text": "이전"
+                "regexp":"^이전$"
 			}
 		],
 		"output": {
