@@ -2072,11 +2072,11 @@
 
 
             //dashboard
-            "Chat bot has been made!":{
+            "Chatbot has been made!":{
                 "ko": "챗봇이 만들어졌습니다!",
-                "en": "Chat bot has been made!",
+                "en": "Chatbot has been made!",
                 "zh": "聊天机器人创建成功!",
-                "jp": "Chat bot has been made!"
+                "jp": "Chatbot has been made!"
             },
             "Let it study conversation":{
                 "ko": "대화 학습 시키기",
