@@ -1,15 +1,14 @@
 {
     "menus" : [
-        { "name" : "대시보드", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
-        { "name" : "컨텐츠 관리", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
-            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "basic.png" },
-            { "name" : "이벤트정보관리", "url" : "/templates/contents/event", "icon" : "event.png" },
-            { "name" : "메뉴정보관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
-            { "name" : "주차정보관리", "url" : "/templates/contents/park", "icon" : "park.png" },
-            { "name" : "매장정보관리", "url" : "/templates/contents/preview", "icon" : "preview.png" },
-            { "name" : "예약정보관리", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" },
+            { "name" : "Manage Menu", "url" : "/templates/contents/menu", "icon" : "menu.png" },
+            { "name" : "Manage Parking", "url" : "/templates/contents/park", "icon" : "park.png" },
+            { "name" : "Manage Shop", "url" : "/templates/contents/preview", "icon" : "preview.png" },
+            { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "dgm.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" }
     ]
 }

@@ -142,7 +142,7 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
             console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
             // print('학습되어 있지 않은 대화 입니다.');
             // callback(true, context.bot.noDialog);
-            var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
+            var dialog = {id: -1, name: 'no_dialog', input: 'false', output: 'I do not understand.'};
             executeDialog(dialog, context, print, callback);
           }
         }

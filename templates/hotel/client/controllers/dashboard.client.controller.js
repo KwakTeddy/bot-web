@@ -17,6 +17,7 @@ angular.module('template').controller('hotelDashboardController', ['$scope', '$r
         ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
         {
             $scope.template = result;
+            $rootScope.$broadcast('simulator-build');
         },
         function(err)
         {

@@ -34,7 +34,10 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         scrollTimer = setTimeout(function()
         {
             var logContent = angular.element('.logcontent > div').get(0);
-            logContent.parentElement.scrollTop = logContent.offsetHeight;
+            if(logContent)
+            {
+                logContent.parentElement.scrollTop = logContent.offsetHeight;
+            }
         }, 300);
     });
 
@@ -72,7 +75,7 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         else if(expandMode == -1)
         {
             expandMode = 0;
-
+            angular.element('.working-ground').css('bottom', '211px');
             angular.element('.log-analysis').css('height', '').css('top', '');
         }
     };

@@ -9,6 +9,11 @@
 
         $scope.findPassword = function()
         {
+          var user = $cookies.getObject('user');
+
+          if(user && user.language) $scope.credentials.language = user.language;
+          else $scope.credentials.language = 'en';
+
             $http.post('/api/auth/forgot', $scope.credentials).success(function (response)
             {
                 alert('We sent email to you for reset password.');

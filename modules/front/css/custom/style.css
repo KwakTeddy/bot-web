@@ -68,7 +68,8 @@ body {
 	font-family: 'proxima_nova_rgregular';
 	font-size: 15px;
 	line-height: 20px;
-	color: #738191
+	color: #738191;
+	min-width: 1024px;
 }
 
 .floatleft {
@@ -467,9 +468,9 @@ header nav#navbar ul.sub-menu > li.subPar > a:after {
 .sub-menu {
 	z-index: 9999999999!important
 }
-
+/*
 @media only screen and (min-width: 992px) and (max-width: 6000px) {
-	/*for dropdown*/
+	/*for dropdown
 	
 	.subPar > a {
 	position: relative;
@@ -630,7 +631,7 @@ header nav#navbar ul.sub-menu > li.subPar > a:after {
 	#nav > li ul.sub-menu li:last-child {
 		border-bottom: 2px solid !important
 	}
-}
+}*/
 
 
 /*mega menu*/
@@ -1788,8 +1789,7 @@ form.domainForm {
 	border-radius: 50%;
 }
 .singleClient p{
-	text-align: left;
-	text-indent: 34px;
+	text-align: center;
 	font-size: 13px;
 	font-weight: 600;
 	margin-bottom: 7px;

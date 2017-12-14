@@ -18,7 +18,7 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
         var intentDataTemplate = {
             labels: [],
             datasets: [{
-                label: '인텐트 사용량',
+                label: LanguageService('Intent Usage'),
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
@@ -56,7 +56,7 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
                 var labels = [];
 
                 var dataset = [{
-                    label: '인텐트 사용량',
+                    label: LanguageService('Intent Usage'),
                     data: [],
                     backgroundColor: [],
                     borderColor: [],

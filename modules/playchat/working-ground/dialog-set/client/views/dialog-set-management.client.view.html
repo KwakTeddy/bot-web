@@ -67,11 +67,11 @@
         <div class="tablePaging">
             <div class="tablePagingC">
                 <a href="/playchat/management/dialog-set?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
                 <a ng-repeat="page in pageOptions.pages" href="/playchat/management/dialog-set?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
                 <a href="/playchat/management/dialog-set?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>
             </div>
         </div>
@@ -84,13 +84,13 @@
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true" >
+                        <input type="text" placeholder="{{lan('Enter dialogset name')}}" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true" >
                     </label>
                 </div>
                 <div class="form-row">
                     <label style="width: 100%;">
                         <span style="display: block;">{{lan('Content') }}</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input" style="height: 90px;"></textarea>
+                        <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="modal.mgmtModal.data.content" class="data-input" style="height: 90px;"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">
@@ -107,7 +107,7 @@
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
+                        <input type="text" placeholder="{{lan('Enter dialogset name')}}" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
                     </label>
                 </div>
                 <!--<div class="form-row" style="display: none;">-->
@@ -130,7 +130,7 @@
                 <div class="form-row">
                     <label style="width: 100%;">
                         <span>{{lan('Content') }}</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
+                        <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">

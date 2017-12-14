@@ -472,13 +472,22 @@ function processOutput(task, context, out) {
                     }
                 } else {
                     if (context.botUser.nlu.matchInfo.qa[0].output) {
-                        if (Array.isArray(context.botUser.nlu.matchInfo.qa[0].output)) {
-                            var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
-                            out = context.botUser.nlu.matchInfo.qa[0].output[result];
+                        if (Array.isArray(context.botUser.nlu.matchInfo.qa)) {
+                            var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa.length) + 1;
+                            out = context.botUser.nlu.matchInfo.qa[result].output;
                         } else {
-                            out = context.botUser.nlu.matchInfo.qa[0].output;
+                            out = context.botUser.nlu.matchInfo.qa.output;
                         }
                     }
+                // 대화학습 output 여러개 있을 때 하나만 나와서 위에것으로 수정함. 원래는 아래 것이 였음 Eric
+                //   if (context.botUser.nlu.matchInfo.qa[0].output) {
+                //     if (Array.isArray(context.botUser.nlu.matchInfo.qa[0].output)) {
+                //       var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
+                //       out = context.botUser.nlu.matchInfo.qa[0].output[result];
+                //     } else {
+                //       out = context.botUser.nlu.matchInfo.qa[0].output;
+                //     }
+                //   }
                 }
             }
         }
@@ -1620,6 +1629,14 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
     var nlps = context.botUser.nlu.nlp;
 
+    // TODO 현재 중국어 자연어 처리 안되는 듯 com2best
+    if(nlps === undefined) {
+        nlps = [];
+        var _s = text.split(' ');
+        for(var i = 0; i < _s.length; i++) {
+            nlps.push({text: _s[i], pos: 'Noun'});
+        }
+    }
     var nlpMatchLength = 0;
     for(var i = 0; i < nlps.length; i++) {
         if(nlps[i].pos == 'Noun') nlpMatchLength+=2;

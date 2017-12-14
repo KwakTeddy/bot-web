@@ -1,6 +1,6 @@
 <div ng-controller="ChatbotEditController">
     <form ng-submit="save();">
-        <div class="dashboard-bot-profile">
+        <div class="dashboard-bot-profile" >
             <div class="dashboard-bot-profile-image">
                 <div class="dashboard-bot-profile-image-wrapper">
                     <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
@@ -8,13 +8,13 @@
                 </div>
             </div>
             <div class="dashboard-bot-profile-content">
-                <div>
+                <div style="display: inline-block;">
                     <span>Bot Name</span>
                     <input type="text" ng-model="chatbot.name">
                 </div>
-                <div>
+                <div style="display: inline-block;margin-left: 30px;">
                     <span class="form-title">{{ lan('Language') }}</span>
-                    <select class="jumbo-select" ng-model="chatbot.language" style="margin-left: 55px;">
+                    <select class="jumbo-select" ng-model="chatbot.language" style="margin-left: 15px;">
                         <option value="ko">{{ lan('Korean') }}</option>
                         <option value="en">{{ lan('English') }}</option>
                         <option value="zh">{{ lan('Chinese') }}</option>
@@ -24,15 +24,16 @@
                 <div>
                     <p>Description</p>
                     <textarea ng-model="chatbot.description">{{ chatbot.description }}</textarea>
+
+                        <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;margin-bottom: 30px;margin-left: 62px;">Save</button>
+
                 </div>
             </div>
-            <div style="display: flex; padding-bottom: 20px;">
-                <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;">Save</button>
-            </div>
+
         </div>
     </form>
     <form>
-        <table class="tb02">
+        <table class="tb02" style="margin-top: 0px;">
             <colgroup>
                 <col style="width: 25%;">
                 <col style="width: 20%;">

@@ -10,7 +10,7 @@ angular.module('template').controller('hotelParkController', ['$scope', '$resour
     console.log(chatbot);
 
     $scope.datas = [];
-    $scope.findAddress = function(e)
+    $scope.findAddress = function(e, index)
     {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -46,6 +46,7 @@ angular.module('template').controller('hotelParkController', ['$scope', '$resour
                     // document.getElementById('sample4_roadAddress').value = fullRoadAddr;
                     // document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
 
+                    $scope.datas[index].parkaddress = fullRoadAddr;
                     e.currentTarget.previousElementSibling.value = fullRoadAddr + ' ';
                     e.currentTarget.previousElementSibling.focus();
 

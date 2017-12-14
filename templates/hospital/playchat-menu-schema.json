@@ -1,15 +1,12 @@
 {
     "menus" : [
-        { "name" : "대시보드", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
-        { "name" : "컨텐츠 관리", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
-            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "basic.png" },
-            { "name" : "예약관리", "url" : "/templates/contents/order", "icon" : "reservation.png" },
-            { "name" : "시술정보관리", "url" : "/templates/contents/menu", "icon" : "info.png" },
-            { "name" : "이벤트관리", "url" : "/templates/contents/event", "icon" : "event.png" }
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "manage reservation", "url" : "/templates/contents/order", "icon" : "reservation.png" },
+            { "name" : "manage procedural information", "url" : "/templates/contents/menu", "icon" : "info.png" },
+            { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario_w.png" },
-        { "name" : "인텐트관리", "url": "/management/intent", "icon": "intent.png" },
-        { "name" : "엔터티관리", "url": "/management/entity", "icon": "entity_select.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" }
     ]
 }

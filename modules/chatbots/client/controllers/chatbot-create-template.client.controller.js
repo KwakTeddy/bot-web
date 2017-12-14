@@ -12,8 +12,9 @@
 
         $scope.templateId = $stateParams.templateId;
 
+        var user = $cookies.getObject('user');
         $scope.bot = {
-            language: 'ko'
+            language: user.language !== undefined ? user.language: 'en'
         };
 
         var user = $cookies.getObject('user');
@@ -101,7 +102,7 @@
             {
                 if(!$scope.bot.id)
                 {
-                    $scope.bot.id = 'blank_' + user.username + '_' + new Date().getTime();
+                    $scope.bot.id = 'blank_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
                 }
 
                 // if(!$scope.bot.id.match(/^[a-zA-Z]+/))
@@ -175,7 +176,7 @@
 
                 data.name = angular.element('input[data-bot-name="true"]').val();
 
-                ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
+                ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username.replace(/\s/gi, '') + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
                 {
                     delete chatbot.user;
                     $cookies.putObject('chatbot', chatbot);

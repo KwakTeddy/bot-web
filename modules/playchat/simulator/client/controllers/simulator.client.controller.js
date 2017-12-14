@@ -12,6 +12,35 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         var simulatorBody = undefined;
 
+        $scope.shortCutHelp = false;
+        $scope.isClosed = false;
+
+        window.addEventListener('keydown', function(e)
+        {
+            if(e.keyCode == 121)
+            {
+                if($scope.isClosed)
+                {
+                    $scope.toggle(true);
+                }
+
+                angular.element('.simulator-background input').focus();
+                e.preventDefault();
+            }
+            else if(e.keyCode == 191 && e.shiftKey)
+            {
+                if(e.path[0].nodeName == 'INPUT' || e.path[0].getAttribute('contenteditable'))
+                {
+                    return;
+                }
+
+                $scope.$apply(function()
+                {
+                    $scope.shortCutHelp = true;
+                });
+            }
+        });
+
         var getCurrentTime = function()
         {
             var date = new Date();
@@ -156,6 +185,25 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 clearBubble();
                 emitMsg(':build', false);
             }
+            else if(e.keyCode == 27)
+            {
+                var dialogsetElement = angular.element('.dialog-learning-development-content-row').get(0);
+                var dialoggraphElement = angular.element('.graph-body').get(0);
+
+                e.currentTarget.blur();
+                if(dialoggraphElement)
+                    $rootScope.$broadcast('focusToDialogGraph');
+                else if(dialogsetElement)
+                    $rootScope.$broadcast('focusToDialogSet');
+            }
+            else if(e.keyCode == 118)
+            {
+                var dialoggraphElement = angular.element('.graph-body').get(0);
+                if(dialoggraphElement)
+                {
+                    $rootScope.$broadcast('saveDialogGraph');
+                }
+            }
         };
 
         $scope.init = function()
@@ -212,6 +260,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             emitMsg(':build', false);
         };
 
+        $scope.closeShortCutHelp = function()
+        {
+            $scope.shortCutHelp = false;
+        };
+
         $scope.init();
     })();
 
@@ -219,9 +272,9 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
     (function()
     {
         $scope.isClosed = false;
-        $scope.toggle = function(e)
+        $scope.toggle = function()
         {
-            $scope.isClosed = angular.element('.simulator-btn').is(':visible');
+            console.log('흠 : ', $scope.isClosed);
 
             var link = angular.element('#simulator-responsive-css');
             if(!$scope.isClosed)
@@ -234,6 +287,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 //시뮬레이터가 보이게 하는 부분
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
             }
+
+            $scope.isClosed = !$scope.isClosed;
         };
     })();
 

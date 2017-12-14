@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('template').controller('restaurantDashboardController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
+
+
 {
+    $scope.$parent.changeWorkingGroundName('Dashboard', '/modules/playchat/gnb/client/imgs/dashboard_grey.png');
+
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
 
@@ -15,6 +19,7 @@ angular.module('template').controller('restaurantDashboardController', ['$scope'
         ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
         {
             $scope.template = result;
+            $rootScope.$broadcast('simulator-build');
         },
         function(err)
         {

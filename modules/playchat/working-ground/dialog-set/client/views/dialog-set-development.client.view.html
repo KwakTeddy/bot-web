@@ -55,19 +55,18 @@
             <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
     </div>
-    <div class="topicswitch">
-        <span class="mr10">topic</span>
-        <div class="slide inline-block">
-            <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
-            <label for="topicOpen"></label>
-        </div>
-    </div>
-
     <div class="dialog-learning-development-title">
         <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">{{lan('Topic') }}</span>
         <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">{{lan('Question') }}</span>
         <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">{{lan('Answer') }}</span>
-    </span>
+        <div class="topicswitch">
+            <span class="mr10" style="font-size: 13px;font-weight: 600;">{{lan('Topic') }}</span>
+            <div class="slide inline-block" style="vertical-align: top;">
+                <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
+                <label for="topicOpen"></label>
+            </div>
+        </div>
+    </div>
     <div class="dialog-learning-development-content">
         <div class="dialog-learning-development-content-row">
             <p class="new-dialog-title">{{lan('New Dialog') }}</p>
@@ -89,11 +88,11 @@
                     </div>
                 </div>
                 <div class="question-area">
-                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event);"></textarea>
+                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
                     <span class="plus-button" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="answer-area">
-                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event);"></textarea>
+                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
                     <span class="plus-button" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="functions-area" style="margin-top: 5px;">
@@ -134,7 +133,7 @@
                         <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw', input);" ng-if="isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
                         <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
                     </div>
-                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw');" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ dialog.inputRaw }}</textarea>
+                    <!--<textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw');" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">vvv</textarea>-->
                     <span class="plus-button" ng-click="addInput($event, dialog, 'inputRaw');" ng-required="true"></span>
                 </div>
                 <div class="answer-area">
@@ -142,7 +141,7 @@
                         <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output', output);" ng-if="isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
                         <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
                     </div>
-                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output');" ng-if="!isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>
+                    <!--<textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output');" ng-if="!isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>-->
                     <span class="plus-button" ng-click="addInput($event, dialog, 'output');" ng-required="true" ></span>
                 </div>
                 <div class="functions-area" style="margin-top: 5px;">
@@ -161,7 +160,7 @@
     <div class="modal-background open-modal" ng-show="openModal.isOpened">
         <div class="modal">
             <div>
-                <h2 style="border-bottom: 1px solid #ddd; padding: 10px 0;">Open Dialogset</h2>
+                <h2 style="border-bottom: 1px solid #ddd; padding: 10px 0;">{{lan('Open Dialogset') }}</h2>
             </div>
             <div ng-show="!openModal.isCreate">
                 <div style="padding: 30px 0;">

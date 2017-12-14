@@ -11,7 +11,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     $scope.failedDialogSaved = false;
 
     // 실제 그래프 로직이 들어있는 서비스
-    DialogGraph.setScope($compile, $scope);
+    DialogGraph.setScope($compile, $scope, $rootScope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     DialogGraph.setCanvas('#graphDialogCanvas');
     DialogGraph.setMenu('.dialog-menu');
@@ -104,6 +104,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     event.preventDefault();
                 }
             }
+        });
+
+        $scope.$on('saveDialogGraph', function()
+        {
+            $scope.save();
         });
 
         $scope.checkFailedDialog = function()
@@ -244,6 +249,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             DialogGraphsService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
             {
                 angular.element('.graph-body .dialog-graph-error').remove();
+                angular.element('#graphDialogCanvas').html('');
 
                 var data = result.data;
                 if(data)
@@ -255,7 +261,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     var result = DialogGraph.loadFromFile(data, fileName);
                     if(!result)
                     {
-                        angular.element('.graph-body').html($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
+                        angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
                     }
                 }
             },
@@ -263,7 +269,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 if(err.status == 404)
                 {
-                    angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>' + $scope.lan('File not found') + '</h1></div>');
+                    angular.element('.graph-body').append('<div class="dialog-graph-error"><h1>' + $scope.lan('File not found') + '</h1></div>');
                 }
             });
         };
@@ -423,6 +429,9 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.save = function()
         {
+            if(!$scope.isDirty)
+                return;
+
             var data = DialogGraph.getCompleteData();
 
             var fileName = $location.search().fileName || 'default.graph.js';

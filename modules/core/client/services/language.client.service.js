@@ -72,7 +72,7 @@
                 "ko": "비밀번호를 잊으셨나요?",
                 "en": "Forget your password?",
                 "jp": "秘密番号を探す",
-                "zh": "忘记密码"
+                "zh": "忘记密码？"
             },
             "Sign in": {
                 "ko": "로그인",
@@ -132,15 +132,15 @@
                 "ko": "이메일로 인증 이메일이 전송되었습니다.",
                 "en": "We sent a verification e-mail to ",
                 "jp": "メールで認証メールが送られました。 ",
-                "zh": "验证电子邮件已经发到您的邮箱了。 "
+                "zh": "验证电子邮件已经发到您的邮箱了 "
             },
             "Please check your e-mail box. The validity time of the certificate is one hour.": {
                 "ko": "이메일을 확인해주세요. 인증가능시간은 한시간 내에 마감됩니다.",
                 "en": "Please check your e-mail box. The validity time of the certificate is one hour.",
                 "jp": "電子メールを確認してください。 認証可能時間は一時間内に締め切られます。",
-                "zh": "请检查您的电子邮箱。证书的有效期为一个小时。"
+                "zh": "请检查您的电子邮箱，验证码的有效期为一个小时。"
             },
-            "\"If you would like to receive the e-mail again": {
+            "If you would like to receive the e-mail again": {
                 "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
                 "en": "\"If you would like to receive the e-mail again",
                 "jp": " please click on the again button.\"",
@@ -152,9 +152,9 @@
                 "jp": "再送信",
                 "zh": "再次发送"
             },
-            "\"Signning is successfuly done": {
+            "Signning is successfuly done": {
                 "ko": "회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.",
-                "en": "\"Signning is successfuly done",
+                "en": "Signning is successfuly done",
                 "jp": " but verification e-mail sending is failed. Please contact us.\"",
                 "zh": "会員加入はなったが、E-mail認証メール送ることに失敗しました。 管理者に問い合わせてください。"
             },
@@ -366,7 +366,7 @@
                 "ko": "이름",
                 "en": "Name",
                 "jp": "名前",
-                "zh": "名字"
+                "zh": "名称"
             },
             "Language": {
                 "ko": "언어",
@@ -468,7 +468,7 @@
                 "ko": "대화셋",
                 "en": "Dialog Set",
                 "jp": "デファセッ",
-                "zh": "对话框设置"
+                "zh": "问答添加模块"
             },
             "Intent": {
                 "ko": "인텐트",
@@ -882,7 +882,7 @@
                 "ko": "불러오기",
                 "en": "Import",
                 "jp": "呼ぶこと",
-                "zh": "引入"
+                "zh": "上传"
             },
             "Default": {
                 "ko": "기본값",
@@ -912,7 +912,7 @@
                 "ko": "비우기",
                 "en": "empty",
                 "jp": "空にすること",
-                "zh": "空"
+                "zh": "无"
             },
             "File Type": {
                 "ko": "파일 타입",
@@ -966,7 +966,7 @@
                 "ko": "사용하기",
                 "en": "Usable",
                 "jp": "使用すること",
-                "zh": "可用"
+                "zh": "启用"
             },
             "Move to the preivious page": {
                 "ko": "이전페이지이동",
@@ -1071,7 +1071,7 @@
                 "zh": "任务名称"
             },
             "Operation": {
-                "ko": "기능",
+                "ko": "운영",
                 "en": "Operation",
                 "jp": "機能",
                 "zh": "功能"
@@ -1164,7 +1164,7 @@
                 "ko": "대화량 (30일)",
                 "en": "Number of Dialogs(30days)",
                 "jp": "デファリャン(30日)",
-                "zh": "对话量（30天）"
+                "zh": "对话量（最近30天）"
             },
             "Number of Cumulated Users": {
                 "ko": "누적 이용자",
@@ -1176,13 +1176,13 @@
                 "ko": "최근 30일 이용자",
                 "en": "Recent(30 days) Users.",
                 "jp": "最近、30日利用者",
-                "zh": "最近（30天）的用户。"
+                "zh": "最近30天的用户"
             },
             "Number of daily Users": {
                 "ko": "일자별 대화량",
                 "en": "Number of daily Users",
                 "jp": "日付別デファリャン",
-                "zh": "日用户数"
+                "zh": "日用户量"
             },
             "User distribution on channels": {
                 "ko": "채널별 이용자 분포",
@@ -1212,19 +1212,19 @@
                 "ko": "사용자 입력 TOP 10",
                 "en": "Top 10 Most Frequently Used Input",
                 "jp": "ユーザ入力TOP 10",
-                "zh": "最常用输入前十"
+                "zh": "最常用的输入前10"
             },
             "Top 10 Failed Dialog": {
                 "ko": "대화 실패 TOP 10",
                 "en": "Top 10 Failed Dialog",
                 "jp": "対話失敗TOP 10",
-                "zh": "对话失败前十"
+                "zh": "对话失败前10"
             },
             "Top 10 scenario usage": {
                 "ko": "시나리오 사용량 TOP 10",
                 "en": "Top 10 scenario usage",
                 "jp": "シナリオの使用量TOP 10",
-                "zh": "场景使用量前十"
+                "zh": "场景使用量前10"
             },
             "Dialog": {
                 "ko": "대화",
@@ -1248,13 +1248,13 @@
                 "ko": "기간별 대화량 (채널)",
                 "en": "Historical amount of dialog(channel)",
                 "jp": "期間別デファリャン(チャネル)",
-                "zh": "分期间对话数量（频道）"
+                "zh": "不同时间段对话量（频道）"
             },
             "Historical amount of dialog(Success/Fail)": {
                 "ko": "기간별 대화량 (성공/실패)",
                 "en": "Historical amount of dialog(Success/Fail)",
                 "jp": "期間別デファリャン(成功/失敗)",
-                "zh": "分期间对话数量（成功/失败）"
+                "zh": "不同时间段对话量（成功/失败）"
             },
             "Ratio of dialog on channels": {
                 "ko": "채널별 대화 비율",
@@ -1344,13 +1344,13 @@
                 "ko": "적용",
                 "en": "Apply",
                 "jp": "適用",
-                "zh": "申请"
+                "zh": "使用"
             },
             "Trained Dialog": {
                 "ko": "학습 대화 목록",
                 "en": "Trained Dialog",
                 "jp": "学習対話目録",
-                "zh": "学习过的对话的目录"
+                "zh": "学习过的对话目录"
             },
             "Graph ID": {
                 "ko": "그래프 아이디",
@@ -1410,7 +1410,7 @@
                 "ko": "인텐트 TOP 10",
                 "en": "Top 10 Intent",
                 "jp": "インテントゥTOP 10",
-                "zh": "意图前十"
+                "zh": "意图使用前10"
             },
             "List of Failed Dialog": {
                 "ko": "실패 대화 목록",
@@ -1428,7 +1428,7 @@
                 "ko": "대시보드",
                 "en": "Dashboard",
                 "jp": "ダッシュボード",
-                "zh": "仪表盘"
+                "zh": "我的主页"
             },
             "Development": {
                 "ko": "개발",
@@ -1482,13 +1482,13 @@
                 "ko": "세션",
                 "en": "Session",
                 "jp": "セッション",
-                "zh": "会话"
+                "zh": "对话"
             },
             "Dialog Graph Path": {
                 "ko": "대화 경로",
                 "en": "Dialog Graph Path",
                 "jp": "対話ルート",
-                "zh": "对话图路径"
+                "zh": "对话框图路径"
             },
             "Dialog Training": {
                 "ko": "대화학습",
@@ -1500,13 +1500,13 @@
                 "ko": "대화 학습 이용",
                 "en": "Dialog Training Usage",
                 "jp": "会話学習の利用",
-                "zh": "使用对话学习"
+                "zh": "对话学习的使用"
             },
             "Dialog Graph Usage": {
                 "ko": "대화 그래프 이용",
                 "en": "Dialog Graph Usage",
                 "jp": "対話グラフを利用",
-                "zh": "使用对话框图"
+                "zh": "对话框图的使用"
             },
             "Dialog Training Input": {
                 "ko": "대화 학습 입력값",
@@ -1528,39 +1528,57 @@
             },
             "Bot Link": {
                 "ko": "Bot Link",
-                "en" : "Bot Link"
+                "en": "Bot Link",
+                "jp": "Bot Link",
+                "zh": "Bot连接"
             },
             "Entity analysis": {
                 "ko": "엔터티 분석",
-                "en": "Entity analysis"
+                "en": "Entity analysis",
+                "jp": "Entity analysis",
+                "zh": "实体分析"
             },
             "Intent analysis": {
                 "ko": "인텐트 분석",
-                "en": "Intent analysis"
+                "en": "Intent analysis",
+                "jp": "Intent analysis",
+                "zh": "意图分析"
             },
             "KaKao Talk": {
                 "ko": "카카오톡",
-                "en": "KaKao Talk"
+                "en": "KaKao Talk",
+                "jp": "KaKao Talk",
+                "zh": "KaKao Talk"
             },
             "LOG": {
                 "ko": "로그",
-                "en": "LOG"
+                "en": "LOG",
+                "jp": "LOG",
+                "zh": "日志"
             },
             "Line": {
                 "ko": "라인",
-                "en": "Line"
+                "en": "Line",
+                "jp": "Line",
+                "zh": "Line"
             },
             "Messanger": {
                 "ko": "Messanger",
-                "en": "Messanger"
+                "en": "Messanger",
+                "jp": "Messanger",
+                "zh": "Messanger"
             },
             "Naver Talk Talk": {
                 "ko": "네이버 톡톡",
-                "en": "Naver Talk Talk"
+                "en": "Naver Talk Talk",
+                "jp": "Naver Talk Talk",
+                "zh": "Naver Talk Talk"
             },
             "Signout": {
                 "ko": "로그아웃",
-                "en": "Signout"
+                "en": "Signout",
+                "jp": "Signout",
+                "zh": "注销"
             },
 
 
@@ -1581,7 +1599,7 @@
             "Korean": {
                 "ko": "한국어",
                 "en": "Korean",
-                "zh": "朝鲜的",
+                "zh": "韩语",
                 "jp": "韓国語"
             },
             "English": {
@@ -1599,7 +1617,7 @@
             "Japanese": {
                 "ko": "일본어",
                 "en": "Japanese",
-                "zh": "日本",
+                "zh": "日语",
                 "jp": "日本語"
             },
             "Rename": {
@@ -1617,8 +1635,8 @@
             "Task name": {
                 "ko": "Task 이름",
                 "en": "Task name",
-                "zh": "",
-                "jp": ""
+                "zh": "任务名称",
+                "jp": "Task name"
             },
             "Type Add": {
                 "ko": "Type 추가",
@@ -1677,13 +1695,13 @@
             "Dialog Count": {
                 "ko": "대화수",
                 "en": "Dialog Count",
-                "zh": "对话计数",
+                "zh": "对话量",
                 "jp": "ダイアログ数"
             },
             "Use Count": {
                 "ko": "사용횟수",
                 "en": "Use Count",
-                "zh": "使用计数",
+                "zh": "使用量",
                 "jp": "カウントを使用する"
             },
             "Dialog Input": {
@@ -1713,7 +1731,7 @@
             "New to Playchat?": {
                 "ko": "플레이챗에 처음이십니까?",
                 "en": "New to PlayChat?",
-                "zh": "PlayChat新手？",
+                "zh": "第一次使用PlayChat？",
                 "jp": "PlayChatを初めてお使いですか？"
             },
             "Choose Dialogset": {
@@ -1729,10 +1747,10 @@
                 "jp": "ダイアログセット名を入力します。"
             },
             "If you would like to receive the e-mail again, please click on the again button.": {
-                "ko": "",
+                "ko": "이메일 재전송을 원하시면 '재전송' 버튼을 눌러주세요.",
                 "en": "If you would like to receive the e-mail again, please click on the again button.",
-                "zh": "",
-                "jp": ""
+                "zh": "如果您想重新接收邮件，请点击再次发送按钮。",
+                "jp": "メールを再受信したい場合は、'再送信'ボタンを押してください。"
             },
             "You do not have any Facebook pages to connect to.": {
                 "ko": "연결가능한 페이스북 페이지가 없습니다.",
@@ -1749,7 +1767,7 @@
             "Connect": {
                 "ko": "연결하기",
                 "en": "Connect",
-                "zh": "连",
+                "zh": "连接",
                 "jp": "接続する"
             },
             "Disconnect": {
@@ -1773,7 +1791,7 @@
             "Human Chat log": {
                 "ko": "상담원 대화 내역",
                 "en": "Human Chat log",
-                "zh" : "座席对话历史。",
+                "zh" : "咨询对话历史记录",
                 "jp" : "エージェントの会話履歴。"
             },
             "Please enter Type name": {
@@ -1798,7 +1816,7 @@
             "Jump": {
                 "ko": "Jump",
                 "en": "Jump",
-                "zh": "跳",
+                "zh": "跳跃",
                 "jp": "ジャンプ"
             },
             "JSON Format Error": {
@@ -1822,7 +1840,7 @@
             "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
                 "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
                 "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
-                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 你想保存吗？",
+                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
             "Typing the regular expression, press Enter to finish.": {
@@ -1852,7 +1870,7 @@
             "Socket": {
                 "ko": "소켓",
                 "en": "Socket",
-                "zh": "插座",
+                "zh": "无",
                 "jp": "ソケット"
             },
             "Average amount of traffic per session": {
@@ -1864,7 +1882,7 @@
             "Ratio": {
                 "ko": "비율",
                 "en": "Ratio",
-                "zh": "比",
+                "zh": "比率",
                 "jp": "比"
             },
             "User Count": {
@@ -1882,13 +1900,13 @@
             "Graph Path" :{
                 "ko": "그래프 경로",
                 "en": "Graph Path",
-                "zh": "图路径",
+                "zh": "对话框图路径",
                 "jp": "グラフパス"
             },
             "Usage Count": {
                 "ko": "사용 횟수",
                 "en": "Usage Count",
-                "zh": "使用计数",
+                "zh": "使用量",
                 "jp": "使用回数"
             },
             "Template": {
@@ -1900,7 +1918,7 @@
             "Learning": {
                 "ko": "학습중",
                 "en": "Learning",
-                "zh": "在学习",
+                "zh": "学习中",
                 "jp": "学んでいる"
             },
             "Password is disaccord": {
@@ -1909,22 +1927,16 @@
                 "zh": "密码不一致",
                 "jp": "パスワードは不一致です"
             },
-            "비밀번호가 일치하지 않습니다.": {
-                "ko": "비밀번호가 일치하지 않습니다.",
-                "en": "Password is disaccord",
-                "zh": "密码不一致",
-                "jp": "パスワードは不一致です"
-            },
             "Register for free closed beta": {
                 "ko": "무료로 클로즈베타 신청하기",
                 "en": "Register for free closed beta",
-                "zh": "注册免费内测",
+                "zh": "申请免费内测",
                 "jp": "無料クローズドベータ版に登録する"
             },
             "Registration for closed beta": {
                 "ko": "클로즈베타 신청",
                 "en": "Registration for closed beta",
-                "zh": "注册内测。",
+                "zh": "申请内测",
                 "jp": "クローズドベータ版の登録。"
             },
             "Email is already signed up.": {
@@ -1957,6 +1969,614 @@
                 "en": "Name is already using",
                 "zh": "名称已经在使用",
                 "jp": "名前は既に使用しています"
+            },
+            "Manage Contents": {
+                "ko": "컨텐츠 관리",
+                "en": "Manage Contents",
+                "zh": "内容管理",
+                "jp": "Manage Contents"
+            },
+            "manage reservation":{
+                "ko": "예약관리",
+                "en": "manage reservation",
+                "zh": "预约管理",
+                "jp": "manage reservation"
+            },
+            "manage procedural information":{
+                "ko": "시술정보관리",
+                "en": "manage procedural information",
+                "zh": "治疗信息管理",
+                "jp": "manage procedural information"
+            },
+            "Manage Event":{
+                "ko": "이벤트관리",
+                "en": "Manage Event",
+                "zh": "活动管理",
+                "jp": "Manage Event"
+            },
+            "Manage Conversation Graph":{
+                "ko": "대화그래프관리",
+                "en": "Manage Conversation Graph",
+                "zh": "对话框图管理",
+                "jp": "Manage Conversation Graph"
+            },
+            "Manage Intent":{
+                "ko": "인텐트관리",
+                "en": "Manage Intent",
+                "zh": "意向管理",
+                "jp": "Manage Intent"
+            },
+            "Manage Entity":{
+                "ko": "엔터티관리",
+                "en": "Manage Entity",
+                "zh": "实体管理",
+                "jp": "Manage Entity"
+            },
+            "Manage Menu":{
+                "ko": "메뉴관리",
+                "en": "Manage Menu",
+                "zh": "菜单管理",
+                "jp": "Manage Menu"
+            },
+            "Manage orders":{
+                "ko": "주문관리",
+                "en": "Manage orders",
+                "zh": "订单管理",
+                "jp": "Manage orders"
+            },
+            "Manage Parking":{
+                "ko": "주차정보관리",
+                "en": "Manage Parking",
+                "zh": "停车信息管理",
+                "jp": "Manage Parking"
+            },
+            "Manage Shuttle":{
+                "ko": "셔틀정보관리",
+                "en": "Manage Shuttle",
+                "zh": "班车信息管理",
+                "jp": "Manage Shuttle"
+            },
+            "Manage Facility":{
+                "ko": "시설정보관리",
+                "en": "Manage Facility",
+                "zh": "设施信息管理",
+                "jp": "Manage Facility"
+            },
+            "Manage Room":{
+                "ko": "객실정보관리",
+                "en": "Manage Room",
+                "zh": "房间信息管理",
+                "jp": "Manage Room"
+            },
+            "Manage Dining":{
+                "ko": "다이닝정보관리",
+                "en": "Manage Dining",
+                "zh": "餐饮信息管理",
+                "jp": "Manage Dining"
+            },
+            "Manage Booking":{
+                "ko": "예약정보관리",
+                "en": "Manage Booking",
+                "zh": "预订信息管理",
+                "jp": "Manage Booking"
+            },
+            "start for free":{
+                "ko": "무료로 시작하기",
+                "en": "start for free",
+                "zh": "免费开始",
+                "jp": "start for free"
+            },
+
+
+
+
+
+            //dashboard
+            "Chat bot has been made!":{
+                "ko": "챗봇이 만들어졌습니다!",
+                "en": "Chat bot has been made!",
+                "zh": "聊天机器人创建成功!",
+                "jp": "Chat bot has been made!"
+            },
+            "Let it study conversation":{
+                "ko": "대화 학습 시키기",
+                "en": "Let it study conversation",
+                "zh": "让它学习对话",
+                "jp": "Let it study conversation"
+            },
+            "We may let it learn how to answer accordingly towards the questions guests has asked":{
+                "ko": "고객이 물어본 질문에 어떻게 답변하지 학습시킬 수 있습니다.",
+                "en": "We may let it learn how to answer accordingly towards the questions guests has asked",
+                "zh": "我们可以让它学习如何回答客户提出的问题。",
+                "jp": "We may let it learn how to answer accordingly towards the questions guests has asked"
+            },
+            "Start Learning":{
+                "ko": "학습 시작",
+                "en": "Start Learning",
+                "zh": "开始学习",
+                "jp": "Start Learning"
+            },
+            "Make the Conversational scenario":{
+                "ko": "대화 시나리오 만들기",
+                "en": "Make the Conversational scenario",
+                "zh": "创建一个对话场景",
+                "jp": "Make the Conversational scenario"
+            },
+            "We develop the conversations to answer by phases or scenario other than just a simple question and answer.":{
+                "ko": "단순한 질문 답변이 아닌, 시나리오 또는 단계적으로 답변을 할 수 있도록 대화를 개발합니다.",
+                "en": "We develop the conversations to answer by phases or scenario other than just a simple question and answer.",
+                "zh": "不仅仅是简单的提问和回答，我们还可以开发出具有对话场景或者阶段式回答的对话。",
+                "jp": "We develop the conversations to answer by phases or scenario other than just a simple question and answer."
+            },
+            "Create Scenario":{
+                "ko": "시나리오 시작",
+                "en": "Create Scenario",
+                "zh": "开始场景",
+                "jp": "Create Scenario"
+            },
+            "Connect Channel":{
+                "ko": "채널 연결",
+                "en": "Connect Channel",
+                "zh": "链接频道",
+                "jp": "Connect Channel"
+            },
+            "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.":{
+                "ko": "전화, 카카오톡, 페이스북에 연결해서 챗봇을 서비스합니다.",
+                "en": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.",
+                "zh": "我们提供连接到电话，Kakao Talk和Facebook以提供聊天机器人的服务。",
+                "jp": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook."
+            },
+            "Dialogue Breakdown":{
+                "ko": "대화내역",
+                "en": "Dialogue Breakdown",
+                "zh": "对话历史记录",
+                "jp": "Dialogue Breakdown"
+            },
+            "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.":{
+                "ko": "인공지능이 자동으로 상담한 대화내역을 확인 할 수 있습니다.",
+                "en": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.",
+                "zh": "您可以查看AI自动咨询的对话历史记录。",
+                "jp": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation."
+            },
+            "We can make it learn how to answer to the questions that it was not able to reply.":{
+                "ko": "응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.",
+                "en": "We can make it learn how to answer to the questions that it was not able to reply.",
+                "zh": "您可以让它学习回答它回答不了的问题。",
+                "jp": "We can make it learn how to answer to the questions that it was not able to reply."
+            },
+            "usage statistics":{
+                "ko": "사용통계",
+                "en": "usage statistics",
+                "zh": "使用情况统计",
+                "jp": "usage statistics"
+            },
+            "You may search the usage amount by the number of conversations, number of people logged in by dates and etc.":{
+                "ko": "기간별 접속자수, 대화수, 등 사용량을 조회해 볼 수 있습니다.",
+                "en": "You may search the usage amount by the number of conversations, number  of people logged in by dates and etc.",
+                "zh": "您可以查看每个时间周期使用的用户数量，对话数量等使用量。",
+                "jp": "You may search the usage amount by the number of conversations, number  of people logged in by dates and etc."
+
+            },
+            "Use the template bots to make your own chatbot in a second.":{
+                "ko": "아래 두가지 템플릿을 이용하면 나만의 챗봇을 뚝딱 만들 수 있어요.",
+                "en": "Use the template bots to make your own chatbot in a second.",
+                "zh": "请使用下面两种方式轻松地开发聊天机器人。",
+                "jp": "Use the template bots to make your own chatbot in a second."
+            },
+            "Bot Name":{
+                "ko": "챗봇명",
+                "en": "Bot Name",
+                "zh": "机器人名",
+                "jp": "Bot Name"
+            },
+            "Use the template bots to make your own chatbot in a second":{
+                "ko": "아래 두가지 방식으로 챗봇을 쉽게 개발해 보세요.",
+                "en": "Use the template bots to make your own chatbot in a second",
+                "zh": "请使用下面两种方式轻松地开发聊天机器人。",
+                "jp": "Use the template bots to make your own chatbot in a second"
+            },
+
+
+
+
+            //channel
+            "Create a Kakao YellowID(https://yellowid.kakao.com/login)":{
+                "ko": "카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)",
+                "en": "Create a Kakao YellowID(https://yellowid.kakao.com/login)",
+                "zh": "注册Kakao Talk Yellow账号(https://yellowid.kakao.com/login)",
+                "jp": "Create a Kakao YellowID(https://yellowid.kakao.com/login)"
+            },
+            "Make a Yellow ID profile.":{
+                "ko": "옐로아이디 프로필을 만들어요.",
+                "en": "Make a Yellow ID profile.",
+                "zh": "填写完Yellow账号的个人资料",
+                "jp": "Make a Yellow ID profile."
+            },
+            "Go to the Auto ID page.":{
+                "ko": "옐로아이디 페이지 자동응답 탭으로 들어가요",
+                "en": "Go to the Auto ID page.",
+                "zh": "个人资料会自动转到相应Yellow账号的主页上",
+                "jp": "Go to the Auto ID page."
+            },
+            "Go to API auto-response setup page.":{
+                "ko": "API 자동응답 설정하기로 들어가요",
+                "en": "Go to API auto-response setup page.",
+                "zh": "然后进入API自动回复设置",
+                "jp": "Go to API auto-response setup page."
+            },
+            "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!":{
+                "ko": "앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!",
+                "en": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!",
+                "zh": "设置应用名称，URL，说明，电话号码。这时可以利用下面的URL对URL进行设置！",
+                "jp": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!"
+            },
+            "You must be a member of Line. Please log in first with Lind application or Web.":{
+                "ko": "LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요",
+                "en": "You must be a member of Line. Please log in first with Lind application or Web.",
+                "zh": "只有LINE的会员才可以使用LINE的应用或者网页",
+                "jp": "You must be a member of Line. Please log in first with Lind application or Web."
+            },
+            "If you signed up, please register your email to be used in LINE Business Center":{
+                "ko": "가입이 됐다면 LINE Business Center에서 사용할 이메일을 등록해요",
+                "en": "If you signed up, please register your email to be used in LINE Business Center",
+                "zh": "如果您已经加入了LINE的会员可以在LINE Business Center里面用邮箱进行登录",
+                "jp": "If you signed up, please register your email to be used in LINE Business Center"
+            },
+            "On the Services tab, click the Start Messaging API button and enter the information.":{
+                "ko": "서비스 탭에서 Messaging API 시작하기 버튼을 누르고 정보를 입력해요",
+                "en": "On the Services tab, click the Start Messaging API button and enter the information.",
+                "zh": "在服务选项卡上点击Messaging API开始按钮并输入信息",
+                "jp": "On the Services tab, click the Start Messaging API button and enter the information."
+            },
+            "In LINE Manager, press the API ON button and allow the use of Webhook, then save.":{
+                "ko": "LINE Manager에서 API 켜기 버튼을 누르고 Webhook 사용을 허용하고 저장해요",
+                "en": "In LINE Manager, press the API ON button and allow the use of Webhook, then save.",
+                "zh": "在LINE Manager中点击打开API按钮然后允许Webhook的使用并保存",
+                "jp": "In LINE Manager, press the API ON button and allow the use of Webhook, then save."
+            },
+            "Go to Account List tab in LINE Business Center":{
+                "ko": "LINE Business Center에서 계정 목록 탭으로 이동해요",
+                "en": "Go to Account List tab in LINE Business Center",
+                "zh": "在LINE Business Center中打开账号目录",
+                "jp": "Go to Account List tab in LINE Business Center"
+            },
+            "Press the LINE Developers button in the Messaging API.":{
+                "ko": "Messaging API에 있는 LINE Developers 버튼을 눌러요",
+                "en": "Press the LINE Developers button in the Messaging API.",
+                "zh": "点击在Messaging API中有的LINE Developers按钮",
+                "jp": "Press the LINE Developers button in the Messaging API."
+            },
+            "Press the ISSUE button to get a Channel access token.":{
+                "ko": "ISSUE 버튼을 눌러 Channel access token을 발급받아요",
+                "en": "Press the ISSUE button to get a Channel access token.",
+                "zh": "点击ISSUE按钮得到Channel access token",
+                "jp": "Press the ISSUE button to get a Channel access token."
+            },
+            "Press the EDIT button to copy the Webhook URL below, save it and verify it":{
+                "ko": "EDIT 버튼을 눌러 Webhook URL을 아래의 Webhook URL을 복사해 넣고 저장 및 확인해요",
+                "en": "Press the EDIT button to copy the Webhook URL below, save it and verify it",
+                "zh": "点击EDIT按钮，然后把Webhook URL下面有的Webhook URL复制并粘贴上，在进行保存和确认",
+                "jp": "Press the EDIT button to copy the Webhook URL below, save it and verify it"
+            },
+            "It's done!":{
+                "ko": "다 끝났습니다!",
+                "en": "It's done!",
+                "zh": "完成！",
+                "jp": "It's done!"
+            },
+            "Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)":{
+                "ko": "네이버톡톡 파트너센터 접속 (partner.talk.naver.com)",
+                "en": "Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)",
+                "zh": "打开Naver Talk Talk (partner.talk.naver.com)",
+                "jp": "Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)"
+            },
+            "Sign in with a corporate ID or a representative personal ID":{
+                "ko": "회사 단체아이디 또는 대표성있는 개인아이디로 로그인",
+                "en": "Sign in with a corporate ID or a representative personal ID",
+                "zh": "用团体账号或者是CEO的个人账号登录",
+                "jp": "Sign in with a corporate ID or a representative personal ID"
+            },
+            "Manage My Account> Create New Chat Account":{
+                "ko": "내 계정관리 > 새로운 톡톡 계정 만들기 클릭",
+                "en": "Manage My Account> Create New Chat Account",
+                "zh": "我的账号管理>点击注册新的Talk Talk账号",
+                "jp": "Manage My Account> Create New Chat Account"
+            },
+            "Click on 'Link to Service Later' without selecting a service from the list.":{
+                "ko": "서비스 선택하기에서 서비스 선택없이 서비스 연결 나중에 하기 클릭!",
+                "en": "Click on 'Link to Service Later' without selecting a service from the list.",
+                "zh": "在服务选择中点击不选择服务以后再连接",
+                "jp": "Click on 'Link to Service Later' without selecting a service from the list."
+            },
+            "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.":{
+                "ko": "테스트 계정생성시 개인을 선택, 서비스 계정생성시 사업자 또는 기관/단체을 선택 후 다음 대표이미지, 프로필명, 휴대폰 번호 등 정보를 입력 후 사용신청하세요.",
+                "en": "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.",
+                "zh": "创建测试账户时，选择个人，创建服务账户时选择企业或者是机关/团体，然后输入代表人的姓名，个人资料和联系人信息等。",
+                "jp": "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact."
+            },
+            "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS":{
+                "ko": "생성된 계정은 검수중 상태이며, 검수가 완료되면 사용중상태로 변경되고 SMS로 알림 전송됩니다.",
+                "en": "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS",
+                "zh": "申请的账号在审查状态，等审查完后您会收到审查状态变更短信",
+                "jp": "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS"
+            },
+            "In Account Management, click Account Home under Account Management in the list of registered accounts.":{
+                "ko": "내 계정관리의 등록된 계정 리스트에서 계정관리로 계정 홈을 클릭하세요.",
+                "en": "In Account Management, click Account Home under Account Management in the list of registered accounts.",
+                "zh": "在我的账号管理里点击注册账号的账号主页",
+                "jp": "In Account Management, click Account Home under Account Management in the list of registered accounts."
+            },
+            "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)":{
+                "ko": "좌측 메뉴 챗봇 API 하위 API 설정 메뉴를 통해 이용약관동의 및 챗봇을 설정하세요. (beta기간에는 등록신청 필요)",
+                "en": "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)",
+                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要注册申请beta时间）",
+                "jp": "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)"
+            },
+            "After Naver has approved the use of API, please enter the URL provided by playchat.":{
+                "ko": "네이버의 API사용 승인이 된 후 playchat에서 제공하는 URL을 입력하여 연결하세요.",
+                "en": "After Naver has approved the use of API, please enter the URL provided by playchat.",
+                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要注册申请beta时间）",
+                "jp": "After Naver has approved the use of API, please enter the URL provided by playchat."
+            },
+            "Page name":{
+                "ko": "페이지 이름",
+                "en": "Page name",
+                "zh": "页面名称",
+                "jp": "Page name"
+            },
+            "Page link":{
+                "ko": "페이지 링크",
+                "en": "Page link",
+                "zh": "页面链接",
+                "jp": "Page link"
+            },
+            "Register":{
+                "ko": "신청하기",
+                "en": "Register",
+                "zh": "申请",
+                "jp": "Register"
+            },
+            "You can also use the service on your phone to serve customers with the same content used in messenger.":{
+                "ko": "메신져를 통해서 고객에게 서비스하는 내용을 전화에서도 사용 하실 수 있습니다.",
+                "en": "You can also use the service on your phone to serve customers with the same content used in messenger.",
+                "zh": "通过聊天软件，向用户提供的服务在电话上也一样可以实现。",
+                "jp": "You can also use the service on your phone to serve customers with the same content used in messenger."
+            },
+            "If you want to use the Playchat phone, please click the button to apply after filling in the form below.":{
+                "ko": "Playchat 전화를 사용하시고자 하시는 회원님께서는 아래 양식을 게제후 신청하기 버튼을 눌러주세요.",
+                "en": "If you want to use the Playchat phone, please click the button to apply after filling in the form below.",
+                "zh": "想使用playchat电话的用户请按照下面的样式录入点击申请按钮。",
+                "jp": "If you want to use the Playchat phone, please click the button to apply after filling in the form below."
+            },
+            "An Internet phone number will be issued when the application is received.":{
+                "ko": "신청이 접수되면 인터넷 전화번호가 발급됩니다.",
+                "en": "An Internet phone number will be issued when the application is received.",
+                "zh": "我们会给申请通过的用户发网络电话。",
+                "jp": "An Internet phone number will be issued when the application is received."
+            },
+            "It may take 3-4 business days.":{
+                "ko": "영업일자로 3~4일이 소요될 수 있습니다.",
+                "en": "It may take 3-4 business days.",
+                "zh": "大概需要3~4个工作日。",
+                "jp": "It may take 3-4 business days."
+            },
+            "* This service is free during the beta service period and the contents of the service are subject to change.":{
+                "ko": "* 본 서비스는 베타 서비스 기간동안 무료로 제공되며, 서비스 내용은 변경 될 수 있습니다.",
+                "en": "* This service is free during the beta service period and the contents of the service are subject to change.",
+                "zh": "* 本服务只免费提供给内测服务使用期间，同时服务内容可以变更。",
+                "jp": "* This service is free during the beta service period and the contents of the service are subject to change."
+            },
+            "Inquiry: tel) 02-858-5683":{
+                "ko": "신청문의 : tel)02-858-5683",
+                "en": "Inquiry: tel) 02-858-5683",
+                "zh": "申请电话：电话）02-858-5683",
+                "jp": "Inquiry: tel) 02-858-5683"
+            },
+            "Contact":{
+                "ko": "전화번호",
+                "en": "Contact",
+                "zh": "电话号码",
+                "jp": "Contact"
+            },
+            "No phone number. If you would like to receive a Playchat phone number, please contact us with the number above.":{
+                "ko": "전화번호가 없습니다. Playchat 전화 번호를 발급받으시려면 위 전화번호로 신청을 문의해주시기 바랍니다.",
+                "en": "No phone number. If you would like to receive a Playchat phone number, please contact us with the number above.",
+                "zh": "没有电话号码，如果您想使用playchat电话号码，请和上面的电话号码联系并进行咨询。",
+                "jp": "No phone number. If you would like to receive a Playchat phone number, please contact us with the number above."
+            },
+            "Create a new Facebook Page":{
+                "ko": "페이스북 페이지 새로 만들기",
+                "en": "Create a new Facebook Page",
+                "zh": "新建Facebook页面",
+                "jp": "Create a new Facebook Page"
+            },
+            "wechatScription1":{
+                "ko": "Wechat 개인 계정번호가 있어야 합니다. 없으면 휴대폰에서 wechat app 다운로드 후 신청해주세요.",
+                "en": "You must have a personal Wechat account number. If you do not have it, please apply after downloading the wechat app from your mobile phone.",
+                "zh": "首先您要有微信个人账号，如果没有的话先在手机上下载微信，然后申请。",
+                "jp": "You must have a personal Wechat account number. If you do not have it, please apply after downloading the wechat app from your mobile phone."
+            },
+            "wechatScription2":{
+                "ko": "https://mp.weixin.qq.com/ 에 가서  상단의 “WeChat Official Accounts“을 신청하세요.",
+                "en": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top.",
+                "zh": "然后到https://mp.weixin.qq.com/里申请微信公众号（申请的过程中需要用到微信号）",
+                "jp": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top."
+            },
+            "wechatScription3":{
+                "ko": "신청 후 \"Basic configuration“라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
+                "en": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\".",
+                "zh": "申请以后点击“基本配置”按钮，然后在左边画面里点击“我同意”后，点击“成为开发者”按钮。",
+                "jp": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\"."
+            },
+            "wechatScription4":{
+                "ko": "“Change Configuration” 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
+                "en": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token.",
+                "zh": "然后点击左下方的“基本配置”按钮，输入URL（从playchat里面的频道里点击微信下方的链接获得），然后在Token中输入“moneybrain_token”。",
+                "jp": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token."
+            },
+            "wechatScription5":{
+                "ko": "그리고 Encoding AESKey는  Encoding AESKey 뒤에 있는 “Random Generation“라는 버튼을 클릭하면 자동적으로 생성됩니다. 그 후, “Change Configuration” 라는 버튼 옆에 있는 “Enable“라는 버튼을 클릭하세요.",
+                "en": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\".",
+                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。",
+                "jp": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\"."
+            },
+            "wechatScription6":{
+                "ko": "휴대폰 WeChat 어플리케이션을 실행한 후, \"Add Contact\" 에 있는 “Official Accounts “버튼을 클릭하세요. 검색창에 Wechat에서 주어진 나의 “WeChat Official Accounts “를 찾으면 완료!",
+                "en": "Open WeChat application in your cell phone and click \"click the \"Official Accounts\" button in \"Add Contact\" If you find \"Wechat Official Accounts given, it's all done!",
+                "zh": "立即打开手机在添加朋友里选择添加“公众号”，找到自己设定的公众号名称即可开始使用您的聊天机器人啦~",
+                "jp": "Open WeChat application in your cell phone and click \"click the \"Official Accounts\" button in \"Add Contact\" If you find \"Wechat Official Accounts given, it's all done!"
+            },
+
+            //추가하는 거
+            "Intent Usage":{
+                "ko": "인텐트 사용량",
+                "en": "Intent Usage",
+                "zh": "意图使用量",
+                "jp": "Intent Usage"
+            },
+            "from":{
+                "ko": "부터",
+                "en": "from",
+                "zh": "开始",
+                "jp": "from"
+            },
+            "to":{
+                "ko": "까지",
+                "en": "to",
+                "zh": "结束",
+                "jp": "to"
+            },
+            "week":{
+                "ko": "주",
+                "en": "week",
+                "zh": "周",
+                "jp": "週間"
+            },
+            "Sunday":{
+                "ko": "일",
+                "en": "Sun",
+                "zh": "周日",
+                "jp": "日曜日"
+            },
+            "Monday":{
+                "ko": "월",
+                "en": "Mon",
+                "zh": "周一",
+                "jp": "月曜日"
+            },
+            "Tuesday":{
+                "ko": "화",
+                "en": "Tue",
+                "zh": "周二",
+                "jp": "火曜日"
+            },
+            "Wednesday":{
+                "ko": "수",
+                "en": "Wed",
+                "zh": "周三",
+                "jp": "水曜日"
+            },
+            "Thursday":{
+                "ko": "목",
+                "en": "Thu",
+                "zh": "周四",
+                "jp": "木曜日"
+            },
+            "Friday":{
+                "ko": "금",
+                "en": "Fri",
+                "zh": "周五",
+                "jp": "金曜日"
+            },
+            "Saturday":{
+                "ko": "토",
+                "en": "Sat",
+                "zh": "周六",
+                "jp": "土曜日"
+            },
+            "January":{
+                "ko": "1월",
+                "en": "Jan",
+                "zh": "1月",
+                "jp": "1月"
+            },
+            "February":{
+                "ko": "2월",
+                "en": "Feb",
+                "zh": "2月",
+                "jp": "2月"
+            },
+            "March":{
+                "ko": "3월",
+                "en": "Mar",
+                "zh": "3月",
+                "jp": "3月"
+            },
+            "April":{
+                "ko": "4월",
+                "en": "Apr",
+                "zh": "4月",
+                "jp": "4月"
+            },
+            "May":{
+                "ko": "5월",
+                "en": "May",
+                "zh": "5月",
+                "jp": "5月"
+            },
+            "June":{
+                "ko": "6월",
+                "en": "Jun",
+                "zh": "6月",
+                "jp": "6月"
+            },
+            "July":{
+                "ko": "7월",
+                "en": "Jul",
+                "zh": "7月",
+                "jp": "7月"
+            },
+            "August":{
+                "ko": "8월",
+                "en": "Aug",
+                "zh": "8月",
+                "jp": "8月"
+            },
+            "September":{
+                "ko": "9월",
+                "en": "Sep",
+                "zh": "9月",
+                "jp": "9月"
+            },
+            "October":{
+                "ko": "10월",
+                "en": "Oct",
+                "zh": "10月",
+                "jp": "10月"
+            },
+            "November":{
+                "ko": "11월",
+                "en": "Nov",
+                "zh": "11月",
+                "jp": "11月"
+            },
+            "December":{
+                "ko": "12월",
+                "en": "Dec",
+                "zh": "12月",
+                "jp": "12月"
+            },
+            "This e-mail is under screening process. Please wait for results.": {
+                "ko": "클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.",
+                "en": "This e-mail is under screening process. Please wait for results.",
+                "zh": "这个邮箱正在审查中，请等待结果",
+                "jp": "この電子メールは審査中です。 結果を待ってください。"
+            },
+            "This e-mail is not registered or the password is wrong.": {
+                "ko": "가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다",
+                "en": "This e-mail is not registered or the password is wrong.",
+                "zh": "这个邮箱暂时还没有注册或者密码错误",
+                "jp": "この電子メールは登録されていないか、パスワードが間違っています。"
             }
         };
 
@@ -1975,11 +2595,11 @@
 
                 console.error('language', key);
 
-                return '언어가 없습니다';
+                return 'no messages';
             }
             else
             {
-                return languages[key][code];
+                return languages[key][code] || languages[key]['en'];
             }
         };
 

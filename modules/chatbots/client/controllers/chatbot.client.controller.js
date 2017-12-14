@@ -97,7 +97,11 @@
             var x = e.currentTarget.offsetLeft;
             var y = e.currentTarget.offsetTop;
 
-            angular.element('.chatbot-menu').css('left', x).css('top', y).show();
+            var rect = e.currentTarget.getBoundingClientRect();
+
+            console.log(rect);
+
+            angular.element('.chatbot-menu').css('left', rect.left).css('top', rect.top).show();
 
             e.stopPropagation();
             e.preventDefault();

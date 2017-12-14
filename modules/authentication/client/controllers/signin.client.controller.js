@@ -26,6 +26,10 @@
         {
             $http.post('/api/auth/signin', $scope.credentials).success(function (response)
             {
+                var user = $cookies.getObject('user');
+                if(user && user.language)
+                    response.language = user.language;
+
                 $cookies.putObject('user', response);
                 $cookies.put('login', true);
 
@@ -37,7 +41,14 @@
             {
                 if(err == 'not registration' || err.message.startsWith('E-mail 확인절차를'))
                 {
-                    alert('클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.');
+                    alert(LanguageService('This e-mail is under screening process. Please wait for results.'));
+                }
+                else if(err.message.startsWith('가입되지 않은'))
+                {
+                    alert(LanguageService('This e-mail is not registered or the password is wrong.'));
+                }
+                else {
+                    alert(err.message);
                 }
             });
         };
