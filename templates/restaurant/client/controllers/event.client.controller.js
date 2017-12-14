@@ -69,7 +69,7 @@ angular.module('template').controller('restaurantEventController', ['$scope', '$
 
         $scope.add = function()
         {
-            $scope.datas.push({ name: '',description:'', uploader: undefined });
+            $scope.datas.push({ name: '',date:'',description:'', uploader: undefined });
             addUploader($scope.datas.length-1);
         };
 

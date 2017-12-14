@@ -1590,7 +1590,7 @@ var eventAction = {
         context.dialog.eventss=context.dialog.events;
         if(context.dialog.eventss.image!==undefined) {
             task.result = {
-                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
+                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n' + context.dialog.eventss.date + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
                 image: {url: context.dialog.eventss.image},
                 buttons: [
                     {

@@ -146,7 +146,7 @@ var dialogs = [
                         "task": "eventAction",
                         "output":[
                             {
-                            "text": "[+eventlistType.name+]\n+eventlistType.description+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
+                            "text": "[+eventlistType.name+]\n+eventlistType.description+\n+eventlistType.date+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
                             "kind": "Text"
                         }
                         ]
