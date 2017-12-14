@@ -6,7 +6,7 @@
             { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" },
             { "name" : "Manage Menu", "url" : "/templates/contents/menu", "icon" : "menu.png" },
             { "name" : "Manage Parking", "url" : "/templates/contents/park", "icon" : "park.png" },
-            { "name" : "Manage Shop", "url" : "/templates/contents/preview", "icon" : "preview.png" },
+            { "name" : "Manage Shop Picture", "url" : "/templates/contents/preview", "icon" : "preview.png" },
             { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
         ] },
         { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" }

@@ -333,7 +333,7 @@
                 "zh": "新的聊天机器人"
             },
             "Blank Bot": {
-                "ko": "빈봇",
+                "ko": "빈 봇",
                 "en": "Blank Bot",
                 "jp": "空いたボット",
                 "zh": "空白机器人"
@@ -2065,6 +2065,12 @@
                 "en": "start for free",
                 "zh": "免费开始",
                 "jp": "start for free"
+            },
+            "Manage Shop Picture":{
+                "ko": "매장사진관리",
+                "en": "Manage Shop Picture",
+                "zh": "店面图片管理",
+                "jp": "Manage Shop Picture"
             },
 
 
