@@ -60,7 +60,7 @@
         <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">{{lan('Question') }}</span>
         <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">{{lan('Answer') }}</span>
         <div class="topicswitch">
-            <span class="mr10" style="font-size: 13px;font-weight: 600;">{{lan('Topic') }}</span>
+            <span style="font-size: 12px;font-weight: 600;line-height: 23px;margin-right: 7px;">{{lan('Topic') }}</span>
             <div class="slide inline-block" style="vertical-align: top;">
                 <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
                 <label for="topicOpen"></label>
@@ -163,7 +163,7 @@
                 <h2 style="border-bottom: 1px solid #ddd; padding: 10px 0;">{{lan('Open Dialogset') }}</h2>
             </div>
             <div ng-show="!openModal.isCreate">
-                <div style="padding: 30px 0;">
+                <div style="padding: 30px 0;text-align: center;">
                     <select class="jumbo-select" style="font-size: 12px; width: 150px;" ng-change="createNewDialogset();" ng-model="openModal.selectedDialogset">
                         <option value="" disabled>{{lan('Choose Dialogset')}}</option>
                         <option value="create-new">{{lan('Add New')}}</option>
@@ -171,7 +171,7 @@
                     </select>
                 </div>
 
-                <div>
+                <div style="text-align: center;">
                     <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
                 </div>
             </div>
