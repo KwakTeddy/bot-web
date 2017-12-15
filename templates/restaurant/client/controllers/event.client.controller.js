@@ -69,13 +69,31 @@ angular.module('template').controller('restaurantEventController', ['$scope', '$
 
         $scope.add = function()
         {
-            $scope.datas.push({ name: '',description:'', uploader: undefined });
+            $scope.datas.push({ name: '',date:'',description:'', uploader: undefined });
             addUploader($scope.datas.length-1);
         };
 
         $scope.delete = function(index)
         {
             $scope.datas.splice(index, 1);
+
+                for(var i=0; i<$scope.datas.length; i++)
+                {
+                    delete $scope.datas[i].uploader;
+                }
+
+                var datas = JSON.parse(angular.toJson($scope.datas));
+                DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
+                    {
+                        console.log(result);
+                        alert("삭제하였습니다");
+                        $rootScope.$broadcast('simulator-build');
+
+                    },
+                    function(err)
+                    {
+                        alert(err);
+                    });
         };
 
         $scope.save = function()
