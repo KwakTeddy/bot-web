@@ -112,13 +112,8 @@ exports.validateResetToken = function (req, res) {
     if (!user) {
       return res.redirect('/password/reset/invalid');
     }
-    if (req.params.from == "user-bots-web"){
-      res.redirect('//password/reset/' + req.params.token);
-    } else if (req.params.from == "mobilePassword"){
-      res.redirect('/mobile#/password/reset/' + req.params.token);
-    } else {
-      res.redirect('/developer/password/reset/' + req.params.token);
-    }
+
+    res.redirect('/password/reset/' + req.params.token);
   });
 };
 
