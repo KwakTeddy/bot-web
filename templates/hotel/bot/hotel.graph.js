@@ -277,7 +277,7 @@ var dialogs = [
                 ]
             },
             {
-                "name": "체크인날짜2",
+                "name": "인원수2",
                 "id": "default125",
                 "filename": "default",
                 "input": [
@@ -293,7 +293,7 @@ var dialogs = [
                 ]
             },
             {
-                "name": "체크인날짜3",
+                "name": "인원수3",
                 "id": "default126",
                 "filename": "default",
                 "input": [
@@ -2990,6 +2990,204 @@ var commonDialogs = [
 			}
 		]
 	},
+    {
+        "id": "defaultcommon2",
+        "filename": "defaultcommon",
+        "name": "예약확인default",
+        "input": [
+            {
+                "regexp":"^예약[ ]?확인$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "예약 정보 확인"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon3",
+        "filename": "defaultcommon",
+        "name": "예약취소default",
+        "input": [
+            {
+                "regexp":"^예약[ ]?취소$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "예약 취소 확인"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon4",
+        "filename": "defaultcommon",
+        "name": "빠른예약default",
+        "input": [
+            {
+                "regexp":"^빠른[ ]?예약$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "빠른예약"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon5",
+        "filename": "defaultcommon",
+        "name": "바로예약default",
+        "input": [
+            {
+                "regexp":"^바로[ ]?예약$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "바로 예약"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon6",
+        "filename": "defaultcommon",
+        "name": "예약default",
+        "input": [
+            {
+                "regexp":"^[ ]?예약$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "빠른예약(체크인날짜,인원수,투숙 기간,객실명,예약)"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon7",
+        "filename": "defaultcommon",
+        "name": "객실정보default",
+        "input": [
+            {
+                "regexp":"^[ ]?객실[정]?[보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "객실 정보"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon8",
+        "filename": "defaultcommon",
+        "name": "다이닝정보default",
+        "input": [
+            {
+                "regexp":"^[ ]?다이닝[정]?[보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "다이닝"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon9",
+        "filename": "defaultcommon",
+        "name": "이벤트정보default",
+        "input": [
+            {
+                "regexp":"^[ ]?이벤트[정]?[보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "이벤트"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon10",
+        "filename": "defaultcommon",
+        "name": "주소안내default",
+        "input": [
+            {
+                "regexp":"^주소[정]?[보]?$"
+            },
+            {
+                "regexp":"^취치[정[?]보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "주소 안내"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon11",
+        "filename": "defaultcommon",
+        "name": "셔틀default",
+        "input": [
+            {
+                "regexp":"^셔틀[정]?[보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "6.셔틀"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon12",
+        "filename": "defaultcommon",
+        "name": "주차default",
+        "input": [
+            {
+                "regexp":"^주차[정]?[보]?$"
+            },
+            {
+                "regexp":"^주차장[정]?[보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "7.주차"
+            }
+        ]
+    },
+    {
+        "id": "defaultcommon13",
+        "filename": "defaultcommon",
+        "name": "시설default",
+        "input": [
+            {
+                "regexp":"^시설[정]?[보]?$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "시설"
+            }
+        ]
+    },
 	{
 		"name": "이전",
 		"id": "commondefault30",

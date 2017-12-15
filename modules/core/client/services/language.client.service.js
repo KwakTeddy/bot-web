@@ -306,7 +306,7 @@
                 "ko": "읽기",
                 "en": "Read",
                 "jp": "読むこと",
-                "zh": "阅读"
+                "zh": "读"
             },
             "Write": {
                 "ko": "쓰기",
@@ -2071,6 +2071,12 @@
                 "en": "Manage Shop Picture",
                 "zh": "店面图片管理",
                 "jp": "Manage Shop Picture"
+            },
+            "Authorization":{
+                "ko": "권한",
+                "en": "Authorization",
+                "zh": "权限",
+                "jp": "認証"
             },
 
 

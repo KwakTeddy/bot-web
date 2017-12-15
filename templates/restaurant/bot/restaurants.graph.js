@@ -8,6 +8,7 @@ var dialogs = [
     {
         "id": "restaurant0",
         "filename": "restaurants",
+        "name": "전화번호",
         "input": [
             "전화",
             "전화번호"
@@ -17,6 +18,7 @@ var dialogs = [
     {
         "id": "restaurant97",
         "filename": "restaurants",
+        "name": "주차",
         "input": [
             "주차",
             "주차장",
@@ -41,6 +43,7 @@ var dialogs = [
     {
         "id": "restaurant90",
         "filename": "restaurants",
+        "name": "인기메뉴",
         "input": [
             "인기메뉴",
             "인기",
@@ -104,6 +107,7 @@ var dialogs = [
     {
         "id": "restaurant1",
         "filename": "restaurants",
+        "name": "위치",
         "input": [
             "위치",
             "찾아가다",
@@ -118,6 +122,7 @@ var dialogs = [
     {
         "id": "restaurant8",
         "filename": "restaurants",
+        "name": "이벤트",
         "input": [
             "세일",
             "행사",
@@ -171,6 +176,7 @@ var dialogs = [
     {
         "id": "restaurant15",
         "filename": "restaurants",
+        "name": "시설",
         "input": [
             "시설",
             "장비",
@@ -279,6 +285,7 @@ var dialogs = [
     {
         "id": "restaurant22",
         "filename": "restaurants",
+        "name": "서비스",
         "input": [
             "무엇 서비스",
             "서비스 알리다",
@@ -401,6 +408,7 @@ var dialogs = [
     {
         "id": "restaurant95",
         "filename": "restaurants",
+        "name": "추천",
         "input": [
             "있어",
             "있다",
@@ -520,6 +528,7 @@ var dialogs = [
     {
         "id": "restaurant25",
         "filename": "restaurants",
+        "name": "영업 시간",
         "input": [
             "영업 시간",
             "몇 시",
@@ -689,6 +698,7 @@ var dialogs = [
     {
         "id": "restaurant57",
         "filename": "restaurants",
+        "name": "예약하기",
         "input": "예약",
         "output": {
             "callChild": "날짜선택"
@@ -1047,20 +1057,20 @@ var commonDialogs = [
         ]
     },
     {
-        "id": "restaurantcommon3",
+        "id": "restaurantcommon1",
         "filename": "restaurantcommon",
         "name": "답변없음",
         "input": "",
         "output": "불편을 끼쳐드려 죄송합니다. 현재 고객님께서 무슨 말씀을 하시는지 이해를 못하였습니다.\n 매장으로 전화하여 안내받으시겠습니까?",
         "children": [
             {
-                "id": "restaurantcommon1",
+                "id": "restaurantcommon2",
                 "filename": "restaurantcommon",
                 "input": "~네",
                 "output": "매장 전화번호는 +phone+ 입니다."
             },
             {
-                "id": "restaurantcommon2",
+                "id": "restaurantcommon3",
                 "filename": "restaurantcommon",
                 "input": "~아니요",
                 "output": "<+name+>에서는 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다."
@@ -1069,7 +1079,7 @@ var commonDialogs = [
     },
     {
         "name": "이전",
-        "id": "restaurantcommon3330",
+        "id": "restaurantcommon4",
         "filename": "restaurantcommon",
         "input": [
             {
@@ -1083,7 +1093,232 @@ var commonDialogs = [
             "kind": "Action",
             "up": "1"
         }
+    },
+    {
+        "name": "전화번호common",
+        "id": "restaurantcommon5",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "전화[번]?[호]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "전화번호"
+            }
+        ]
+    },
+    {
+        "name": "주차common",
+        "id": "restaurantcommon6",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "주차[장]?[정]?[보]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "주차"
+            }
+        ]
+    },
+    {
+        "name": "인기메뉴common",
+        "id": "restaurantcommon7",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "인기[메]?[뉴]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "인기메뉴"
+            }
+        ]
+    },
+    {
+        "name": "위치common",
+        "id": "restaurantcommon8",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "^위치[정]?[보]?"
+            },
+            {
+                "regexp": "^주소[정]?[보]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "위치"
+            }
+        ]
+    },
+    {
+        "name": "이벤트common",
+        "id": "restaurantcommon9",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "이벤트[정]?[보]?"
+            },
+            {
+                "regexp": "행사[정]?[보]?"
+            },
+            {
+                "regexp": "세일[정]?[보]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "이벤트"
+            }
+        ]
+    },
+    {
+        "name": "시설common",
+        "id": "restaurantcommon10",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "시설[정]?[보]?"
+            },
+            {
+                "regexp": "장비[정]?[보]?"
+            },
+            {
+                "regexp": "기구[정]?[보]?"
+            },
+            {
+                "regexp": "매장[정]?[보]?"
+            },
+            {
+                "regexp": "매장[ ]?사진[정]?[보]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "시설"
+            }
+        ]
+    },
+    {
+        "name": "서비스common",
+        "id": "restaurantcommon11",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "서비스[정]?[보]?"
+            },
+            {
+                "regexp": "^메뉴[판]?[정]?[보]?"
+            },
+            {
+                "regexp": "가격[정]?[보]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "서비스"
+            }
+        ]
+    },
+    {
+        "name": "추천common",
+        "id": "restaurantcommon12",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "메뉴있[다]?$"
+            },
+            {
+                "regexp": "메뉴있[어]?[요]?$"
+            },
+            {
+                "regexp": "있어[요]?$"
+            },
+            {
+                "regexp": "있다$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "추천"
+            }
+        ]
+    },
+    {
+        "name": "영업 시간common",
+        "id": "restaurantcommon13",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "영업[하]?[다]?$"
+            },
+            {
+                "regexp": "영업[하]?[나]?[요]?$"
+            },
+            {
+                "regexp": "영업[시]?[가]?"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "영업 시간"
+            }
+        ]
+    },
+    {
+        "name": "예약내역common",
+        "id": "restaurantcommon14",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "예약[ ]?취소"
+            },
+            {
+                "regexp": "예약[ ]?확인"
+            },
+            {
+                "regexp": "예약[ ]?내역"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "예약내역"
+            }
+        ]
+    },
+    {
+        "name": "예약하기common",
+        "id": "restaurantcommon15",
+        "filename": "restaurantcommon",
+        "input": [
+            {
+                "regexp": "^예약$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "날짜선택"
+            }
+        ]
     }
+
 ];
 
 

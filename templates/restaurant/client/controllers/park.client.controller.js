@@ -107,6 +107,23 @@ angular.module('template').controller('restaurantParkController', ['$scope', '$r
         $scope.delete = function(index)
         {
             $scope.datas.splice(index, 1);
+            for(var i=0; i<$scope.datas.length; i++)
+            {
+                delete $scope.datas[i].uploader;
+            }
+
+            var datas = JSON.parse(angular.toJson($scope.datas));
+            DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
+                {
+                    console.log(result);
+                    alert("삭제하였습니다");
+                    $rootScope.$broadcast('simulator-build');
+
+                },
+                function(err)
+                {
+                    alert(err);
+                });
         };
 
         $scope.save = function()
