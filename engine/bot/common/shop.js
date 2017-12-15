@@ -213,8 +213,10 @@ function checkDate(task, context, callback) {
     context.dialog.check = false;
   }
   var now = new Date();
+  var reserve = new Date(context.dialog.date.getTime());
+  reserve.setDate(reserve.getDate()+1);
 
-    if(context.dialog.date.setDate(context.dialog.date.getDate()+1) < now) {
+    if(reserve.setDate(reserve.getDate()+1) < now) {
         context.dialog.check = 'past';
     }
 
