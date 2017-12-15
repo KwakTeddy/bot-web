@@ -240,6 +240,33 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
+            else if(e.keyCode == 45)
+            {
+                var check = false;
+                angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+                {
+                    if(!this.value)
+                    {
+                        check = true;
+                        this.focus();
+                    }
+                });
+
+                if(!check)
+                {
+                    // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
+                    var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
+                    angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus();
+                }
+            }
+            else if(e.keyCode == 46)
+            {
+                if(e.shiftKey)
+                {
+                    angular.element(e.currentTarget).prev().focus();
+                    angular.element(e.currentTarget).remove();
+                }
+            }
             else
             {
                 console.log(e.keyCode);
@@ -269,7 +296,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                     else if(event.shiftKey)
                     {
-                        console.log('여긴가 : ');
                         if($scope.isArray(dialog[type]))
                         {
                             if(current)
@@ -350,6 +376,36 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                         var index = $scope.dialogs.indexOf(dialog);
                         $scope.dialogs.splice(index, 1);
                     });
+                }
+            }
+            else if(e.keyCode == 45)
+            {
+                var check = false;
+                angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+                {
+                    if(!this.value)
+                    {
+                        check = true;
+                        this.focus();
+                    }
+                });
+
+                if(!check)
+                {
+                    if(!$scope.isArray(dialog[type]))
+                    {
+                        dialog[type] = [dialog[type], ''];
+                    }
+                    else
+                    {
+                        dialog[type].push('');
+                    }
+
+                    setTimeout(function()
+                    {
+                        console.log(angular.element(e.currentTarget.parentElement.parentElement).find('textarea:last'));
+                        angular.element(e.currentTarget.parentElement.parentElement).find('textarea:last').focus();
+                    }, 50);
                 }
             }
             else

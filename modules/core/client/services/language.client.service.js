@@ -2577,6 +2577,12 @@
                 "en": "This e-mail is not registered or the password is wrong.",
                 "zh": "这个邮箱暂时还没有注册或者密码错误",
                 "jp": "この電子メールは登録されていないか、パスワードが間違っています。"
+            },
+            "Open Dialogset": {
+                "ko": "대화셋 열기",
+                "en": "Open Dialogset",
+                "zh": "打开对话框",
+                "jp": "開くダイアログセット"
             }
         };
 

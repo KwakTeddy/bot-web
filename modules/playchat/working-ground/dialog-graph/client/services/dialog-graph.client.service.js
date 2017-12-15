@@ -108,7 +108,7 @@
 
         Menu.prototype.delete = function()
         {
-            instance.deleteDialog();
+            instance.deleteDialog(this.currentDialog);
 
             this.closeMenu();
         };
@@ -130,12 +130,9 @@
 
             var graphbody = angular.element('.graph-body').get(0);
 
-            console.log('그래프바디 : ', graphbody.offsetWidth);
-
             angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
 
             var menuDialog = angular.element('.dialog-menu').get(0);
-            console.log('음 : ', menuDialog.offsetWidth);
 
             // -30은 스크롤바
             if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
@@ -419,6 +416,9 @@
             var that = this;
             window.addEventListener('keydown', function(e)
             {
+                if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
+                    return;
+
                 if(e.srcElement.nodeName != 'BODY')
                 {
                     //에디터로 포커스 이동되어있을때
@@ -426,10 +426,14 @@
                     {
                         //ESC
                         that.editor.close();
+                        if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
+                            e.target.blur();
                     }
                     else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
                     {
                         that.$rootScope.$broadcast('saveDialogGraphEditor');
+                        if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
+                            e.target.blur();
                     }
 
                     return;
