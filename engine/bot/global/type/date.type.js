@@ -213,13 +213,10 @@ function dateTypeCheck(text, type, task, context, callback) {
 
     if (_dayStr === '오늘') {
       _day = _date.getDate();
-    } else if (_dayStr === '그저께') {
+    } else if (_dayStr === '그저께' || _dayStr === '그제' ) {
       _date.setDate(_date.getDate() - 2);
       _day = _date.getDate();
-    } else if (_dayStr === '어저께') {
-      _date.setDate(_date.getDate() - 1);
-      _day = _date.getDate();
-    } else if (_dayStr === '어제') {
+    } else if (_dayStr === '어저께' || _dayStr === '어제') {
       _date.setDate(_date.getDate() - 1);
       _day = _date.getDate();
     } else if (_dayStr === '내일') {
@@ -495,56 +492,3 @@ function dateTypeCheck(text, type, task, context, callback) {
 exports.dateTypeCheck = dateTypeCheck;
 globals.setGlobalTypeCheck('dateTypeCheck', dateTypeCheck);
 
-function timeTypeCheck(text, type, task, context, callback) {
-  var name = 'time';
-  var re = /(?:(오전|오후|새벽|아침|낮|저녁|밤))\s*(?:(\d{1,2})\s*시)|(?:(am|pm|a.m|p.m))\s*(?:(\d{1,2})\s*시)|(?:(\d{1,2})\s*시)|(?:(\d{2}:\d{2}))/g;
-  var matched = false;
-
-
-  text = text.replace(re, function(match, p1, p2, p3, p4, p5, p6){
-    matched = true;
-    var time;
-    var timeform = ':00';
-
-    var matchTime = function(_name, _task, _time) {
-      if(_task[_name]) {
-        if(Array.isArray(_task[_name])) _task[_name].push(_time);
-        else _task[_name] = [_task[_name], _time];
-      } else {
-        _task[_name] = _time;
-      }
-    };
-
-    if (p6) {
-      time = p6.toString();
-    }
-    if (p5) {
-      if (p5 >= 13) {
-        time = p5.toString() + timeform;
-        // console.log(time);
-      } else {
-        time = 're';
-      }
-    }
-    if (p1 == '오전' || p1 == '새벽' || p1 == '아침') {
-      time = p2.toString() + timeform;
-    } else if (p1 == '오후' || p1 == '낮' || p1 == '저녁' || p1 == '밤') {
-      var p6 = p2*1 + 12;
-      time = p6.toString() + timeform;
-    }
-    if (p3 == 'am' || p3 == 'a.m') {
-      time = p4.toString() + timeform;
-    } else if (p3 == 'pm' || p3 == 'p.m') {
-      var p6 = p4*1 + 12;
-      time = p6.toString() + timeform;
-    }
-
-
-
-    return matchTime(name, task, time);
-  });
-
-  callback(text, task, matched);
-}
-exports.timeTypeCheck = timeTypeCheck;
-globals.setGlobalTypeCheck('timeTypeCheck', timeTypeCheck);

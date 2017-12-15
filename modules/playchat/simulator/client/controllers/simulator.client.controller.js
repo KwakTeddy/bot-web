@@ -17,6 +17,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         window.addEventListener('keydown', function(e)
         {
+            console.log('하하호호 : ', e.keyCode);
             if(e.keyCode == 121)
             {
                 if($scope.isClosed)
@@ -29,7 +30,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             else if(e.keyCode == 191 && e.shiftKey)
             {
-                if(e.path[0].nodeName == 'INPUT' || e.path[0].getAttribute('contenteditable'))
+                if(e.path[0].value || e.path[0].nodeName == 'TEXTAREA' || e.path[0].nodeName == 'INPUT' || e.path[0].getAttribute('contenteditable'))
                 {
                     return;
                 }
@@ -37,6 +38,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 $scope.$apply(function()
                 {
                     $scope.shortCutHelp = true;
+                });
+            }
+            else if(e.keyCode == 27)
+            {
+                $scope.$apply(function()
+                {
+                    $scope.shortCutHelp = false;
                 });
             }
         });
@@ -188,10 +196,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else if(e.keyCode == 27)
             {
                 var dialogsetElement = angular.element('.dialog-learning-development-content-row').get(0);
+                var codeEditor = angular.element('.dialog-graph-code-editor').is(':visible');
                 var dialoggraphElement = angular.element('.graph-body').get(0);
 
                 e.currentTarget.blur();
-                if(dialoggraphElement)
+                if(codeEditor)
+                    $rootScope.$broadcast('focusToCodeEditor');
+                else if(dialoggraphElement)
                     $rootScope.$broadcast('focusToDialogGraph');
                 else if(dialogsetElement)
                     $rootScope.$broadcast('focusToDialogSet');
@@ -199,7 +210,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else if(e.keyCode == 118)
             {
                 var dialoggraphElement = angular.element('.graph-body').get(0);
-                if(dialoggraphElement)
+                var codeEditor = angular.element('.dialog-graph-code-editor').is(':visible');
+                if(codeEditor)
+                {
+                    $rootScope.$broadcast('saveCodeEditor');
+                }
+                else if(dialoggraphElement)
                 {
                     $rootScope.$broadcast('saveDialogGraph');
                 }
@@ -265,6 +281,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             $scope.shortCutHelp = false;
         };
 
+        $scope.focusToInput = function()
+        {
+            angular.element('#simulatorInput').focus();
+        };
+
         $scope.init();
     })();
 
@@ -274,8 +295,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         $scope.isClosed = false;
         $scope.toggle = function()
         {
-            console.log('흠 : ', $scope.isClosed);
-
             var link = angular.element('#simulator-responsive-css');
             if(!$scope.isClosed)
             {

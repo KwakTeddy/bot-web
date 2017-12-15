@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService)
+angular.module('playchat').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', 'LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Entity'), '/modules/playchat/gnb/client/imgs/entity.png');
 
@@ -384,6 +384,24 @@ angular.module('playchat').controller('EntityManagementController', ['$window', 
             importModal.data.filename = response.filename;
 
             console.log(importModal);
+        };
+
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: LanguageService('Entity'),
+                columnOrder: ['Name(required)', 'Synonym(required)'],
+                orderedData: [{
+                    'Name(required)': 'Example',
+                    'Synonym(required)': 'Example'
+                },
+                {
+                    'Name(required)': '',
+                    'Synonym(required)': 'Sample'
+                }]
+            };
+
+            ExcelDownloadService.download(chatbot.id, LanguageService('Entity'), null, template);
         };
 
         $scope.uploader.onProgressItem = function(fileItem, progress)

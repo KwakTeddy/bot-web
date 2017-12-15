@@ -269,7 +269,7 @@
             "Share chatbot": {
                 "ko": "챗봇 공유하기",
                 "en": "Share chatbot",
-                "zh": "分享chatbot",
+                "zh": "分享聊天机器人",
                 "jp": "チャットボットを共有する"
             },
             "New chatbot": {
@@ -306,7 +306,7 @@
                 "ko": "읽기",
                 "en": "Read",
                 "jp": "読むこと",
-                "zh": "阅读"
+                "zh": "读"
             },
             "Write": {
                 "ko": "쓰기",
@@ -316,9 +316,9 @@
             },
             "Flow chatbots are tree-based. The user is driven down a specific path": {
                 "ko": "플로우 챗봇은 트리구조입니다. 사용자는 개발자가 지정한 특정 대화 구조에 맞게 대화를 진행하게 됩니다.",
-                "en": "\"Flow chatbots are tree-based. The user is driven down a specific path",
-                "jp": " a path previously defined by the chatbot's developer\"",
-                "zh": "フローチェッボッはツリー構造です。 使用者は開発者が指定した特定対話構造に合わせて対話を進めるようになります。"
+                "en": "Flow chatbots are tree-based. The user is driven down a specific path, a path previously defined by the chatbot's developer",
+                "jp": "フローチャットボットはツリー構造です。 使用者は開発者が指定した特定対話構造に合わせて対話を進めるようになります。",
+                "zh": "流程聊天机器人是树形结构的。用户要根据开发人员特定的对话结构来进行对话。"
             },
             "Cancel": {
                 "ko": "취소",
@@ -327,13 +327,13 @@
                 "zh": "取消"
             },
             "New Chatbot": {
-                "ko": "New Chatbot",
+                "ko": "새봇",
                 "en": "New Chatbot",
                 "jp": "新しいチェッボッ",
                 "zh": "新的聊天机器人"
             },
             "Blank Bot": {
-                "ko": "Blank Bot",
+                "ko": "빈 봇",
                 "en": "Blank Bot",
                 "jp": "空いたボット",
                 "zh": "空白机器人"
@@ -711,7 +711,7 @@
                 "zh": "请在这里写URL地址。"
             },
             " #인텐트": {
-                "ko": "\"키워드",
+                "ko": "키워드",
                 "en": " #인텐트",
                 "jp": " @엔티티",
                 "zh": " $타입"
@@ -1840,7 +1840,7 @@
             "JSON Format error detected. The chatbot may not work properly. Do you want to save it?": {
                 "ko": "JSON Format 오류가 발견되었습니다. 챗봇이 정상적으로 동작하지 않을 수 있습니다. 저장하시겠습니까?",
                 "en": "JSON Format error detected. The chatbot may not work properly. Do you want to save it?",
-                "zh": "检测到JSON格式错误。 chatbot可能无法正常工作。 您想保存吗？",
+                "zh": "检测到JSON格式错误。 聊天机器人可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
             "Typing the regular expression, press Enter to finish.": {
@@ -2066,17 +2066,29 @@
                 "zh": "免费开始",
                 "jp": "start for free"
             },
+            "Manage Shop Picture":{
+                "ko": "매장사진관리",
+                "en": "Manage Shop Picture",
+                "zh": "店面图片管理",
+                "jp": "Manage Shop Picture"
+            },
+            "Authorization":{
+                "ko": "권한",
+                "en": "Authorization",
+                "zh": "权限",
+                "jp": "認証"
+            },
 
 
 
 
 
             //dashboard
-            "Chat bot has been made!":{
+            "Chatbot has been made!":{
                 "ko": "챗봇이 만들어졌습니다!",
-                "en": "Chat bot has been made!",
+                "en": "Chatbot has been made!",
                 "zh": "聊天机器人创建成功!",
-                "jp": "Chat bot has been made!"
+                "jp": "Chatbot has been made!"
             },
             "Let it study conversation":{
                 "ko": "대화 학습 시키기",
@@ -2577,6 +2589,24 @@
                 "en": "This e-mail is not registered or the password is wrong.",
                 "zh": "这个邮箱暂时还没有注册或者密码错误",
                 "jp": "この電子メールは登録されていないか、パスワードが間違っています。"
+            },
+            "Open Dialogset": {
+                "ko": "대화셋 열기",
+                "en": "Open Dialogset",
+                "zh": "打开对话框",
+                "jp": "開くダイアログセット"
+            },
+            "Template Download": {
+                "ko": "양식 다운로드",
+                "en": "Template Download",
+                "zh": "模板下载",
+                "jp": "テンプレートのダウンロード"
+            },
+            "Type the Entity Name": {
+                "ko": "엔터티 이름을 입력해주세요",
+                "en": "Type the Entity Name",
+                "jp": "エンティティ名を入力します。",
+                "zh": "输入实体名称"
             }
         };
 

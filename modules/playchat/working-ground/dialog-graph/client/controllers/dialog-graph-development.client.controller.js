@@ -239,6 +239,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName);
             }
+
+            $scope.currentTabName = fileName;
         };
 
         $scope.loadFile = function(fileName)

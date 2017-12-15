@@ -17,11 +17,11 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.drawMenu = function()
         {
             var savedMenu = [];
-            ChatbotService.get({ botId: chatbot._id }, function(result)
-            {
-                if(result.templateId)
+            // ChatbotService.get({ botId: chatbot._id }, function(result)
+            // {
+                if(chatbot.templateId)
                 {
-                    MenuService.get(result.templateId.id, function(menus)
+                    MenuService.get(chatbot.templateId.id, function(menus)
                     {
                         $scope.menus = savedMenu = menus;
                         $scope.$parent.loaded('side-menu');
@@ -35,11 +35,11 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
                         $scope.$parent.loaded('side-menu');
                     });
                 }
-            },
-            function(err)
-            {
-                alert(err);
-            });
+            // },
+            // function(err)
+            // {
+            //     alert(err);
+            // });
         };
 
         $scope.drawMenu();

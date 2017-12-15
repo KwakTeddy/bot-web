@@ -3,13 +3,6 @@
         <form class="inline-block">
             <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
-        <div class="funtionbtn1">
-            <a href="#">
-                <img src="modules/playchat/working-ground/common/client/imgs/import.png">
-                <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
-                <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
-            </a>
-        </div>
     </div>
     <div class="tab01">
         <ul class="tabs1">
@@ -17,8 +10,17 @@
             <!--<li><a href="#">{{lan('Store') }}</a></li>-->
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
-        <div class="btn02 flR" style="width: 110px;">
-            <a href="/playchat/management/entity/add" class="">{{lan('Add New') }}</a>
+        <div class="flR" style="position: relative; top: -40px;">
+            <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
+                <a href="#">
+                    <img src="modules/playchat/working-ground/common/client/imgs/import.png">
+                    <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
+                    <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
+                </a>
+            </div>
+            <div class="btn02" style="width: 110px; display: inline-block;">
+                <a href="/playchat/management/entity/add" class="">{{lan('Add New') }}</a>
+            </div>
         </div>
     </div>
     <div class="downSide">
@@ -122,25 +124,26 @@
         <div class="modal">
             <form name="modalFormDefault" ng-submit="saveByImport(modal.importModal);">
                 <div class="form-row">
-                    <label class="required">
+                    <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('Name') }}</span>
-                        <input type="text" placeholder="엔티티 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="entity-title data-input" ng-required="true">
+                        <input type="text" placeholder="{{ lan('Type the Entity Name') }}" name="name" ng-model="modal.importModal.data.name" class="entity-title data-input" ng-required="true">
                     </label>
                 </div>
-                <div class="form-row" style="display: none;">
-                    <label class="required">
-                        <span>{{lan('Type') }}</span>
-                        <div class="form-box">
-                            <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> (csv, xlsx, txt)</span>
-                        </div>
-                    </label>
-                </div>
+                <!--<div class="form-row" style="display: none;">-->
+                    <!--<label class="required">-->
+                        <!--<span>{{lan('Type') }}</span>-->
+                        <!--<div class="form-box">-->
+                            <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
+                            <!--<span> (csv, xlsx, txt)</span>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
                 <div class="form-row">
-                    <label class="required">
+                    <label class="required" style="width: 100%;">
                         <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                            <button type="button" class="default-button" style="float: right; width: 200px;" ng-click="exelDownload();">{{ lan('Template Download') }}</button>
                         </div>
                     </label>
                 </div>

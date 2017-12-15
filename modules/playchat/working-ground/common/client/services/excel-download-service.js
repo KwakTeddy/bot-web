@@ -7,21 +7,24 @@
     {
         var f = function(botId, fileName, dateObject, template)
         {
-            var startYear =  dateObject.start.getFullYear();
-            var startMonth = dateObject.start.getMonth() + 1;
-            var startDay =   dateObject.start.getDate();
-            var endYear =  dateObject.end.getFullYear();
-            var endMonth = dateObject.end.getMonth() + 1;
-            var endDay =   dateObject.end.getDate();
-
-            var date = {
-                start: startYear + "/" + startMonth + "/" + startDay,
-                end: endYear + "/" + endMonth + "/" + endDay
-            };
-
-            $http.post('/api/analytics/statistics/exel-download/' + botId, {data: template, date: date, transpose: true}).then(function (doc)
+            $http.post('/api/analytics/statistics/exel-download/' + botId, {data: template, transpose: true}).then(function (doc)
             {
-                fileName = botId + '_' + fileName + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+                if(dateObject)
+                {
+                    var startYear =  dateObject.start.getFullYear();
+                    var startMonth = dateObject.start.getMonth() + 1;
+                    var startDay =   dateObject.start.getDate();
+                    var endYear =  dateObject.end.getFullYear();
+                    var endMonth = dateObject.end.getMonth() + 1;
+                    var endDay =   dateObject.end.getDate();
+
+                    fileName = botId + '_' + fileName + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+                }
+                else
+                {
+                    fileName += '.xlsx';
+                }
+
                 function s2ab(s)
                 {
                     var buf = new ArrayBuffer(s.length);

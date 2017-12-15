@@ -106,6 +106,8 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                 }
 
                 angular.element('tbody').html(html);
+
+                $scope.$parent.loaded('working-ground');
             },
             function(err)
             {
@@ -123,10 +125,6 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
 
             ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Input'), $scope.date, template);
         };
-
-
-        $scope.$parent.loaded('working-ground');
-
     })();
 
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);

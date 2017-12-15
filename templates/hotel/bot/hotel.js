@@ -44,6 +44,8 @@ bot.setTask('mapButton', mapButton);
 var mynamesave = {
     name: 'mynamesave',
     action: function(task, context, callback){
+        //console.log('+++++++++++++++++++++:'+context.user.mobile);
+        //console.log('======================:'+context.dialog.mobile);
         context.dialog.myname = context.dialog.inCurRaw;
          context.user.myname=context.dialog.myname;
         callback(task, context);
@@ -78,7 +80,7 @@ var mynamesave1 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobiles,
+            order_phone:context.user.mobile,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -93,7 +95,7 @@ var mynamesave1 = {
             __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -166,7 +168,11 @@ bot.setTask("categoryroomlist", categoryroomlist);
 var orderlist = {
     name: 'orderlist',
     action: function(task, context, callback) {
-         order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
+        //console.log('context.user.mobile:'+context.user.mobile);
+        //console.log('context.bot.id:'+context.bot.id);
+        //console.log('context.user.myname:'+context.user.myname);
+
+         order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -194,11 +200,11 @@ var saveinputdate = {
 bot.setTask("saveinputdate", saveinputdate);
 
 
-
 var saveMobile = {
   action: function (task,context,callback) {
+      //console.log('========================');
     if(context.dialog.mobile)
-    {context.user.mobiles = context.dialog.mobile;}
+    {context.user.mobile = context.dialog.mobile;}
      var mydate=new Date().toLocaleDateString();
         var x=mydate.split("/");
         context.dialog.myyear=x[2];
@@ -297,7 +303,10 @@ var inforshuttle = {
             var img = context.bot.shuttles[0].shuttleimage[0]=='h' ? context.bot.shuttles[0].shuttleimage : config.host + context.bot.shuttles[0].shuttleimage;
             //console.log(img+"222222222222");
             task.buttons = [{text:"자세히보기",url:img}];
-            task.image = {url: context.bot.shuttles[0].shuttleimage};
+            if(context.bot.shuttles[0].shuttleimage!==undefined)
+            {
+                task.image = {url: context.bot.shuttles[0].shuttleimage};
+            }
 
             callback(task,context);}
     }
@@ -330,11 +339,14 @@ bot.setTask("inforpark", inforpark);
 var imageroom = {
     name: 'imageroom',
     action: function(task, context, callback) {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        console.log(JSON.stringify(context.dialog.roomlistType));
+       // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@");
+       // console.log(JSON.stringify(context.dialog.roomlistType));
 
         //var img = context.dialog.roomlistType.room_image[0]=='h' ? context.dialog.roomlistType.room_image : config.host + context.dialog.roomlistType.room_image;
+        if(context.dialog.roomlistType.room_image!==undefined)
+        {
         task.image = {url: context.dialog.roomlistType.room_image};
+        }
         callback(task,context);
     }
 };
@@ -344,7 +356,10 @@ var imagerestaurant = {
     name: 'imagerestaurant',
     action: function(task, context, callback) {
         //var img = context.dialog.restaurantlistType.restaurant_image[0]=='h' ? context.dialog.restaurantlistType.restaurant_image : config.host + context.dialog.restaurantlistType.restaurant_image;
-        task.image = {url: context.dialog.restaurantlistType.restaurant_image};
+        if(context.dialog.restaurantlistType.restaurant_image!==undefined)
+        {
+            task.image = {url: context.dialog.restaurantlistType.restaurant_image};
+        }
         callback(task,context);
     }
 };
@@ -354,7 +369,10 @@ var imagefacility = {
     name: 'imagefacility',
     action: function(task, context, callback) {
         //var img = context.dialog.restaurantlistType.restaurant_image[0]=='h' ? context.dialog.facilitylistType.facility_image : config.host + context.dialog.facilitylistType.facility_image;
-        task.image = {url: context.dialog.facilitylistType.facility_image};
+        if(context.dialog.facilitylistType.facility_image!==undefined)
+        {
+            task.image = {url: context.dialog.facilitylistType.facility_image};
+        }
         callback(task,context);
     }
 };
@@ -383,7 +401,7 @@ var addorder = {
 
                 var neworder={
                 order_user: context.dialog.myname,
-                order_phone:context.user.mobiles,
+                order_phone:context.user.mobile,
                 order_price:context.dialog.oneallprice,
                 order_date: context.dialog.todaydate,
                 order_paydate: context.dialog.tomorrowdate,
@@ -398,7 +416,7 @@ var addorder = {
                     __v:0
                             };
                 order.collection.insert(neworder,function(err,docs){
-                  order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+                  order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                                                         context.dialog.order= docs;
                                                         //console.log(context.dialog.order[0]);
                                                         context.dialog.allprice=0;
@@ -464,7 +482,7 @@ var addorder1 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobiles,
+            order_phone:context.user.mobile,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -479,7 +497,7 @@ var addorder1 = {
             __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -545,7 +563,7 @@ var addorder2 = {
 
         var neworder={
             order_user: context.dialog.myname,
-            order_phone:context.user.mobiles,
+            order_phone:context.user.mobile,
             order_price:context.dialog.oneallprice,
             order_date: context.dialog.todaydate,
             order_paydate: context.dialog.tomorrowdate,
@@ -560,7 +578,7 @@ var addorder2 = {
             __v:0
         };
         order.collection.insert(neworder,function(err,docs){
-            order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
+            order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err,docs) {
                 context.dialog.order= docs;
                 //console.log(context.dialog.order[0]);
                 context.dialog.allprice=0;
@@ -608,7 +626,7 @@ var deleteorder = {
 
                 order.find({_id:context.dialog.orderlistType._id}).update({order_status:"예약취소"}).exec(function(err){
 
-                   order.find({order_user:context.user.myname,order_phone:context.user.mobiles,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
+                   order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);
@@ -642,7 +660,6 @@ var mobile = {
 };
 
 bot.setType("mobile", mobile);
-
 
 function regexpTypeCheck (text, type, task, context, callback) {
     var re = type.regexp;
@@ -808,7 +825,7 @@ var peoplenumbertype = {
             count1 = str.search(x);
             if (count1 >= 0) {
                 context.dialog.peoplenumber = '';
-                console.log('count1:'+count1);
+                //console.log('count1:'+count1);
                 var ss = 0;
                 for (i = ss; i < count1; i++) {
                     context.dialog.peoplenumber = Number(context.dialog.peoplenumber + str[i]);
@@ -858,7 +875,7 @@ var daynumbertype = {
             count1 = str.search(x);
             if (count1 >= 0) {
                 context.dialog.daynumber = '';
-               console.log('count1:'+count1);
+               //console.log('count1:'+count1);
                 var ss = 0;
                 for (i = ss; i < count1; i++) {
                     context.dialog.daynumber = Number(context.dialog.daynumber + str[i]);
@@ -1205,7 +1222,7 @@ var SMSAuth = {
     name: 'SMSAuth',
     preCallback: function(task, context, callback) {
         if (task.mobile === undefined) task.mobile = context.dialog.mobile;
-        console.log('ddd');
+        //console.log('ddd');
         callback(task, context);
     },
     action: messages.sendSMSAuth

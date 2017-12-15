@@ -189,9 +189,9 @@ function checkTime(task, context, callback) {
     reserve.setDate(reserve.getDate()-1);
     reserve.setHours(context.dialog.time.substring(0,2));
     reserve.setMinutes(context.dialog.time.substring(3,5));
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    console.log(reserve);
-    console.log(now);
+    // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    // console.log(reserve);
+    // console.log(now);
     if(reserve < now) {
         context.dialog.check = 'past';
     }
@@ -213,8 +213,10 @@ function checkDate(task, context, callback) {
     context.dialog.check = false;
   }
   var now = new Date();
+  var reserve = new Date(context.dialog.date.getTime());
+  reserve.setDate(reserve.getDate()+1);
 
-    if(context.dialog.date.setDate(context.dialog.date.getDate()+1) < now) {
+    if(reserve.setDate(reserve.getDate()+1) < now) {
         context.dialog.check = 'past';
     }
 

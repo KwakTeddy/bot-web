@@ -462,15 +462,17 @@ function checkTime(task, context, callback) {
     // var day = new Date().getDay();
     // var holiday = dateStringToNumber(context.bot.holiday);
 
-    if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
+    // if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
 
     // if (day == holiday) {
+    var time = task.time;
+
     if (false) {
         context.dialog.check = true;
     } else {
-        if (context.dialog.time == 're') {
+        if (time == 're') {
             context.dialog.check = 're';
-        } else if (context.dialog.time > context.bot.endTime || context.dialog.time < context.bot.startTime) {
+        } else if (time > context.bot.endTime || time < context.bot.startTime) {
             context.dialog.check = true;
         } else {
             context.dialog.check = false;
@@ -480,12 +482,9 @@ function checkTime(task, context, callback) {
     var now = new Date();
 
     var reserve = context.dialog.date;
-    reserve.setDate(reserve.getDate()-1);
-    reserve.setHours(context.dialog.time.substring(0,2));
-    reserve.setMinutes(context.dialog.time.substring(3,5));
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    console.log(reserve);
-    console.log(now);
+    console.log(time);
+    reserve.setHours(time.substring(0,2));
+    reserve.setMinutes(time.substring(3,5));
     if(reserve < now) {
         context.dialog.check = 'past';
     }
@@ -494,6 +493,46 @@ function checkTime(task, context, callback) {
 }
 
 
+
+
+var checkDate = {
+    action:checkDate
+}
+bot.setTask('checkDate', checkDate);
+
+function checkDate(task, context, callback) {
+    var day = context.dialog.date.getDay();
+
+    var holiday = dateStringToNumber(context.bot.holiday);
+
+
+    if (day == holiday) {
+        context.dialog.check = true;
+    } else {
+        context.dialog.check = false;
+    }
+    var now = new Date();
+    var reserve = new Date(context.dialog.date.getTime());
+    reserve.setDate(reserve.getDate()+1);
+
+    if(reserve < now) {
+        context.dialog.check = 'past';
+    }
+
+    callback(task, context);
+}
+
+function dateStringToNumber(dateString) {
+    if(dateString == '일요일' || dateString == '일' || dateString == 'sunday' ) return 0;
+    else if(dateString == '월요일' || dateString == '월'|| dateString == 'monday' ) return 1;
+    else if(dateString == '화요일' || dateString == '화'|| dateString == 'tuesday' ) return 2;
+    else if(dateString == '수요일' || dateString == '수'|| dateString == 'wednesday' ) return 3;
+    else if(dateString == '목요일' || dateString == '목'|| dateString == 'thursday' ) return 4;
+    else if(dateString == '금요일' || dateString == '금'|| dateString == 'friday' ) return 5;
+    else if(dateString == '토요일' || dateString == '토'|| dateString == 'saturday' ) return 6;
+    else return dateString;
+
+}
 
 
 

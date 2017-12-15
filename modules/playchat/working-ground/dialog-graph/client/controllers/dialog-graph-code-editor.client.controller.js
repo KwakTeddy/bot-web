@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', '$location','LanguageService', function ($window, $scope, $resource, $cookies, $element, $timeout, $location, LanguageService)
+    angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', '$location','LanguageService', 'DialogGraph', 'CaretService', function ($window, $scope, $resource, $cookies, $element, $timeout, $location, LanguageService, DialogGraph, CaretService)
     {
         var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
@@ -17,6 +17,76 @@
         $scope.saveError = '';
 
         var fileName = $location.search().fileName;
+
+        (function()
+        {
+            window.addEventListener('keydown', function(e)
+            {
+                if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == false)
+                    return;
+
+                console.log(e.keyCode);
+
+                console.log(e);
+
+                if(e.path[0].nodeName == 'TEXTAREA')
+                {
+                    var check = false;
+                    for(var i=0; i<e.path.length; i++)
+                    {
+                        if(e.path[i].className.indexOf('CodeMirror') != -1)
+                        {
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    if(!check)
+                    {
+                        return;
+                    }
+
+
+                    if(e.altKey && e.keyCode == 37)
+                    {
+                        console.log(DialogGraph.$scope.currentTabName.replace(/\./gi, '\\\\.'));
+
+                        var prev = angular.element('#' + DialogGraph.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
+                        var id = prev.attr('id').replace(/\./gi, '\\\\.');
+
+                        DialogGraph.$scope.selectTab({ currentTarget: '#' + id}, prev.attr('id'));
+                        DialogGraph.$scope.currentTabName = prev.attr('id');
+                    }
+                    else if(e.altKey && e.keyCode == 39)
+                    {
+                        var next = angular.element('#' + DialogGraph.$scope.currentTabName.replace(/\./gi, '\\.')).next();
+                        if(next.length == 1)
+                        {
+                            var id = next.attr('id').replace(/\./gi, '\\\\.');
+                            DialogGraph.$scope.selectTab({ currentTarget: '#' + id}, next.attr('id'));
+                            DialogGraph.$scope.currentTabName = next.attr('id');
+                        }
+                    }
+                    else if(e.keyCode == 83 && (e.ctrlKey || e.metaKey))
+                    {
+                        $scope.save();
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    else
+                    {
+                        console.log(e.keyCode);
+                    }
+                }
+            });
+
+            $scope.$on('saveCodeEditor', function()
+            {
+                $scope.save();
+            });
+        })();
+
+
         function openCodeEditor(fileName, options)
         {
             $scope.mode = '';
@@ -66,6 +136,8 @@
                     editor.setValue(result.data);
                 }
 
+                editor.focus();
+
                 $scope.currentFileName = fileName;
             },
             function(err)
@@ -110,11 +182,9 @@
             }
             catch(err)
             {
-                console.error(err);
-
                 $scope.saveError = err.message;
 
-                if(confirm('JSON Format error detected. The chatbot may not work properly. Do you want to save it?'))
+                if(confirm(LanguageService('JSON Format error detected. The chatbot may not work properly. Do you want to save it?')))
                 {
 
                 }
