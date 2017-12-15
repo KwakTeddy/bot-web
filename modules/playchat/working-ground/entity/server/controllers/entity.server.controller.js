@@ -269,7 +269,7 @@ function parseXlsx(filepath)
     var range = XLSX.utils.decode_range(ws['!ref']);
 
     var entity = undefined;
-    for(var r=0; r<=range.e.r; r++)
+    for(var r=1; r<=range.e.r; r++)
     {
         var name = ws[XLSX.utils.encode_cell({ c:0, r:r })];
         var synonym = ws[XLSX.utils.encode_cell({ c:1, r:r })];

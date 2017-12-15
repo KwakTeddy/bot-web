@@ -711,7 +711,7 @@
                 "zh": "请在这里写URL地址。"
             },
             " #인텐트": {
-                "ko": "\"키워드",
+                "ko": "키워드",
                 "en": " #인텐트",
                 "jp": " @엔티티",
                 "zh": " $타입"
@@ -2595,6 +2595,18 @@
                 "en": "Open Dialogset",
                 "zh": "打开对话框",
                 "jp": "開くダイアログセット"
+            },
+            "Template Download": {
+                "ko": "양식 다운로드",
+                "en": "Template Download",
+                "zh": "模板下载",
+                "jp": "テンプレートのダウンロード"
+            },
+            "Type the Entity Name": {
+                "ko": "엔터티 이름을 입력해주세요",
+                "en": "Type the Entity Name",
+                "jp": "エンティティ名を入力します。",
+                "zh": "输入实体名称"
             }
         };
 

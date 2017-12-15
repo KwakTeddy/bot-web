@@ -1,13 +1,6 @@
 var XLSX = require('xlsx');
 
 module.exports.exelDownload = function (req, res) {
-    var startYear =  parseInt(req.body.date.start.split('/')[0]);
-    var startMonth = parseInt(req.body.date.start.split('/')[1]);
-    var startDay =   parseInt(req.body.date.start.split('/')[2]);
-    var endYear =  parseInt(req.body.date.end.split('/')[0]);
-    var endMonth = parseInt(req.body.date.end.split('/')[1]);
-    var endDay =   parseInt(req.body.date.end.split('/')[2]);
-
     function datenum(v, date1904) {
         if(date1904) v+=1462;
         var epoch = Date.parse(v);

@@ -244,7 +244,7 @@ function parseXlsx(filepath)
 
     var range = XLSX.utils.decode_range(ws['!ref']);
 
-    for(var r=0; r<=range.e.r; r++)
+    for(var r=1; r<=range.e.r; r++)
     {
         var cell = ws[XLSX.utils.encode_cell({ c:0, r:r })];
 

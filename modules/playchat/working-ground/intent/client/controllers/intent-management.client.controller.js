@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService)
+angular.module('playchat').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Intent'), '/modules/playchat/gnb/client/imgs/intent.png');
 
@@ -255,6 +255,22 @@ angular.module('playchat').controller('IntentManagementController', ['$window', 
             }
 
             tr.parentElement.removeChild(tr);
+        };
+
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: LanguageService('Intent'),
+                columnOrder: ['Content(required)'],
+                orderedData: [{
+                    'Content(required)': 'Example',
+                },
+                {
+                    'Content(required)': 'Sample',
+                }]
+            };
+
+            ExcelDownloadService.download(chatbot.id, LanguageService('Intent'), null, template);
         };
     })();
 

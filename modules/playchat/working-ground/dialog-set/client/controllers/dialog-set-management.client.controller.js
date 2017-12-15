@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService)
+angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set'), '/modules/playchat/gnb/client/imgs/speech.png');
 
@@ -219,6 +219,23 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
         $scope.uploader.onProgressItem = function(fileItem, progress)
         {
             angular.element('.form-box-progress').css('width', progress + '%');
+        };
+
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: LanguageService('Dialog Set'),
+                columnOrder: ['Context1', 'Context2', 'Context3', 'Question(required)', 'Answer(required)'],
+                orderedData: [{
+                    Context1: '',
+                    Context2: '',
+                    Context3: '',
+                    Question: '',
+                    Answer: ''
+                }]
+            };
+
+            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Set'), null, template);
         };
     })();
 
