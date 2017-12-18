@@ -79,6 +79,12 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
             DialogGraphsService.save(params, function(result)
             {
                 $scope.dialogGraphs.unshift(result.fileName);
+                var inputs = document.querySelectorAll( '.inputfiles' );
+                Array.prototype.forEach.call( inputs, function( input ) {
+                    var label = input.nextElementSibling,
+                        labelVal = LanguageService('Choose a file');
+                    label.innerHTML = labelVal;
+                });
                 modal.close();
             });
         };
@@ -92,6 +98,7 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
                 {
                     if(confirm($scope.lan('Filename is duplicated. Keep going?')))
                     {
+
                         saveFunc(modal);
                     }
                     else
@@ -135,6 +142,27 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
                 });
             }
         };
+
+        var inputs = document.querySelectorAll( '.inputfiles' );
+        Array.prototype.forEach.call( inputs, function( input ) {
+            var label = input.nextElementSibling,
+                labelVal = LanguageService('Choose a file');
+            label.innerHTML = labelVal;
+            input.addEventListener( 'change', function( e ) {
+                var fileName = '';
+                if( this.files && this.files.length > 1 )
+                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else
+                    fileName = e.target.value.split( '\\' ).pop();
+
+                if( fileName )
+                {
+                    label.innerHTML = fileName;
+                }
+                else label.innerHTML = labelVal;
+            });
+        });
+
 
         $scope.uploader = new FileUploader({
             url: '/api/' + chatbot.id + '/dialog-graphs/uploadfile',

@@ -2688,7 +2688,14 @@
                 "en": "Add input or output",
                 "jp": "Add input or output",
                 "zh": "添加输入/输出"
+            },
+            "Choose a file": {
+                "ko": "파일 선택",
+                "en": "Choose a file",
+                "jp": "ファイルを選択する",
+                "zh": "选择文件"
             }
+
         };
 
         var list = {};

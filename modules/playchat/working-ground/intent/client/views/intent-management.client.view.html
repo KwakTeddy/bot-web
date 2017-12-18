@@ -94,7 +94,8 @@
                     <label class="required" style="width: 100%;">
                         <span>File</span>
                         <div class="form-box">
-                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                            <input type="file" name="file" id="file" ng-required="true" class="inputfile" data-multiple-caption="{count} files selected" nv-file-select uploader="uploader"/>
+                            <label for="file">{{lan('Choose a file')}}</label>
                             <button type="button" class="default-button" style="float: right; width: 200px;" ng-click="exelDownload();">{{ lan('Template Download') }}</button>
                         </div>
                     </label>

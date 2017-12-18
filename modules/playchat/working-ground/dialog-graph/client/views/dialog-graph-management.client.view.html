@@ -85,7 +85,8 @@
                     <label class="required">
                         <span>File</span>
                         <div class="form-box">
-                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                            <input type="file" name="file" id="file" ng-required="true" class="inputfiles" data-multiple-caption="{count} files selected" nv-file-select uploader="uploader"/>
+                            <label for="file">{{lan('Choose a file')}}</label>
                         </div>
                     </label>
                 </div>
