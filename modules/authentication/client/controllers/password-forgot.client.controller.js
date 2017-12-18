@@ -9,23 +9,29 @@
 
         $scope.findPassword = function()
         {
-          var user = $cookies.getObject('user');
+            var user = $cookies.getObject('user');
 
-          if(user && user.language) $scope.credentials.language = user.language;
-          else $scope.credentials.language = 'en';
+            if(user && user.language)
+            {
+                $scope.credentials.language = user.language;
+            }
+            else
+            {
+                $scope.credentials.language = 'en';
+            }
 
             $http.post('/api/auth/forgot', $scope.credentials).success(function (response)
             {
-                alert($scope.lan('We sent email to you for reset password.'));
+                alert(LanguageService('We sent email to you for reset password.'));
             }).error(function (response)
             {
                 if(response.message == 'SNS')
                 {
-                    alert('Your account is signed up from ' + response.provider + '.');
+                    alert(LanguageService('Your account is signed up from ' + response.provider + '.'));
                 }
                 else
                 {
-                    alert($scope.lan('Email is not found.'));
+                    alert(LanguageService('Email is not found.'));
                 }
             });
         };
