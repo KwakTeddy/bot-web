@@ -15,6 +15,12 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         controller: 'PasswordForgotController'
     });
 
+    $stateProvider.state('password-reset', {
+        url: '/password/reset/:token',
+        templateUrl: 'modules/authentication/client/views/password-reset.client.view.html',
+        controller: 'PasswordResetController'
+    })
+
     $stateProvider.state('signup', {
         url: '/signup',
         templateUrl: 'modules/authentication/client/views/signup.client.view.html',

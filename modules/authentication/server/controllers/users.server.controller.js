@@ -2,6 +2,12 @@
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var path = require('path');
+
+var nodemailer = require('nodemailer');
+var config = require(path.resolve('./config/config'));
+var smtpTransport = nodemailer.createTransport(config.mailer.options);
+
 module.exports.saveLanguage = function(req, res)
 {
     User.update({ _id: req.user._id }, {$set: { language: req.body.language }}).exec(function(err, result)
@@ -166,77 +172,72 @@ exports.reset = function (req, res, next) {
     // Init Variables
     var passwordDetails = req.body;
     var message = null;
-    async.waterfall([
 
-        function (done) {
-            User.findOne({
-                resetPasswordToken: req.params.token,
-                resetPasswordExpires: {
-                    $gt: Date.now()
-                }
-            }, function (err, user) {
-                if (!err && user) {
-                    if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
-                        user.password = passwordDetails.newPassword;
-                        user.resetPasswordToken = undefined;
-                        user.resetPasswordExpires = undefined;
 
-                        user.save(function (err) {
-                            if (err) {
-                                return res.status(400).send({
-                                    message: errorHandler.getErrorMessage(err)
-                                });
-                            } else {
-                                req.login(user, function (err) {
-                                    if (err) {
-                                        res.status(400).send(err);
-                                    } else {
-                                        // Remove sensitive data before return authenticated user
-                                        user.password = undefined;
-                                        user.salt = undefined;
-                                        res.cookie('login', true);
-                                        res.json(user);
-                                        done(err, user);
-                                    }
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }).exec(function(err, user)
+    {
+        if(!err && user)
+        {
+            if (passwordDetails.newPassword === passwordDetails.verifyPassword)
+            {
+                user.password = passwordDetails.newPassword;
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExpires = undefined;
+
+                user.save(function (err)
+                {
+                    if (err)
+                    {
+                        return res.status(400).send({ error: err });
+                    }
+                    else
+                    {
+                        req.login(user, function (err)
+                        {
+                            if (err)
+                            {
+                                res.status(400).send(err);
+                            }
+                            else
+                            {
+                                // Remove sensitive data before return authenticated user
+                                user.password = undefined;
+                                user.salt = undefined;
+                                res.cookie('login', true);
+                                res.json(user);
+
+                                res.render('modules/users/server/templates/reset-password-confirm-email' + (user.language ? '-'+user.language: '-en'),
+                                {
+                                    name: user.displayName,
+                                    appName: config.app.title
+                                },
+                                function (err, emailHTML)
+                                {
+                                    var mailOptions = {
+                                        to: user.email,
+                                        from: config.mailer.from,
+                                        subject: '[playchat.ai] Password has been changed.',
+                                        html: emailHTML
+                                    };
+
+                                    smtpTransport.sendMail(mailOptions, function (err)
+                                    {
+                                        res.status(200).end();
+                                    });
                                 });
                             }
                         });
-                    } else {
-                        return res.status(400).send({
-                            message: '비밀번호가 일치하지 않아요'
-                        });
                     }
-                } else {
-                    return res.status(400).send({
-                        message: '비밀번호 변경 URL의 제한시간(1시간)이 지났어요'
-                    });
-                }
-            });
-        },
-        function (user, done) {
-            res.render('modules/users/server/templates/reset-password-confirm-email' + (user.language ? '-'+user.language: '-en'), {
-                name: user.displayName,
-                appName: config.app.title
-            }, function (err, emailHTML) {
-                done(err, emailHTML, user);
-            });
-        },
-        // If valid email, send reset email using service
-        function (emailHTML, user, done) {
-            var mailOptions = {
-                to: user.email,
-                from: config.mailer.from,
-                subject: '[playchat.ai] Password has been changed.',
-                html: emailHTML
-            };
-
-            smtpTransport.sendMail(mailOptions, function (err) {
-                done(err, 'done');
-            });
+                });
+            }
+            else
+            {
+                return res.status(400).send({ message: 'Password is disaccord' });
+            }
         }
-    ], function (err) {
-        if (err) {
-            return next(err);
+        else
+        {
+            return res.status(400).send({ message: 'expired' });
         }
     });
 };
