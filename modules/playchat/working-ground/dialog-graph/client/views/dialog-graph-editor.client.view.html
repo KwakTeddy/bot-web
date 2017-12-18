@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">Input<a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject">Input</p>
                     <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
                         <p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>
                         <div ng-repeat="input in dialog.input">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">Task<a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject">Task</p>
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
                         <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
                         <ul class="dialog-editor-select-options">
