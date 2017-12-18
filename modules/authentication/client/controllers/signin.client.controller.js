@@ -17,7 +17,7 @@
             return;
         }
 
-        $scope.fotgotPassword = function()
+        $scope.forgotPassword = function()
         {
             location.href = '/password/forgot';
         };

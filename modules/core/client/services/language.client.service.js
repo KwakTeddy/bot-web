@@ -2607,6 +2607,24 @@
                 "en": "Type the Entity Name",
                 "jp": "エンティティ名を入力します。",
                 "zh": "输入实体名称"
+            },
+            "Change your password": {
+                "ko": "비밀번호를 변경해주세요",
+                "en": "Change your password",
+                "jp": "パスワードを変更してください",
+                "zh": "更改您的密码"
+            },
+            "Password Confirm": {
+                "ko": "비밀번호 확인",
+                "en": "Password Confirm",
+                "jp": "パスワード確認",
+                "zh": "确认密码"
+            },
+            "Change": {
+                "ko": "변경하기",
+                "en": "Change",
+                "jp": "変化する",
+                "zh": "更改"
             }
         };
 
