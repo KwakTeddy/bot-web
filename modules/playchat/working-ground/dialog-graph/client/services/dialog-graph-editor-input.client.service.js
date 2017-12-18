@@ -720,7 +720,7 @@
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'if')
                             {
-                                return e.currentTarget.blur();
+                                return alert(LanguageService('Conditional Expression is applied as the form of input.'));
                             }
 
                             input.if = value.replace('if(', '').replace(')', '');
