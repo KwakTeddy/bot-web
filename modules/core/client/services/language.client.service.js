@@ -1164,7 +1164,7 @@
                 "ko": "대화량 (30일)",
                 "en": "Number of Dialogs(30days)",
                 "jp": "デファリャン(30日)",
-                "zh": "对话量（最近30天）"
+                "zh": "对话量(近30天)"
             },
             "Number of Cumulated Users": {
                 "ko": "누적 이용자",
@@ -1208,9 +1208,9 @@
                 "jp": "失敗",
                 "zh": "失败"
             },
-            "Top 10 Most Frequently Used Input": {
+            "Most Frequently Used Input": {
                 "ko": "사용자 입력 TOP 10",
-                "en": "Top 10 Most Frequently Used Input",
+                "en": "Most Frequently Used Input",
                 "jp": "ユーザ入力TOP 10",
                 "zh": "最常用的输入前10"
             },
@@ -2607,6 +2607,87 @@
                 "en": "Type the Entity Name",
                 "jp": "エンティティ名を入力します。",
                 "zh": "输入实体名称"
+            },
+
+
+            //guide
+            "Move to next or previous editor": {
+                "ko": "다음이나 이전으로 이동하기",
+                "en": "Move to next or previous editor",
+                "jp": "Move to next or previous editor",
+                "zh": "把光标移动到下一个/上一个输入框"
+            },
+            "Move to Dialog Graph": {
+                "ko": "대화 그래프로 이동하기",
+                "en": "Move to Dialog Graph",
+                "jp": "Move to Dialog Graph",
+                "zh": "转到对话框图"
+            },
+            "Navigate Dialog": {
+                "ko": "다이얼로그 네이게이션",
+                "en": "Navigate Dialog",
+                "jp": "Navigate Dialog",
+                "zh": "导航对话框"
+            },
+            "Move Dialog Up/Down": {
+                "ko": "다이얼로그 위/아래로 옮기기",
+                "en": "Move Dialog Up/Down",
+                "jp": "Move Dialog Up/Down",
+                "zh": "向上/向下移动对话框"
+            },
+            "Open Edit Dialog": {
+                "ko": "다이얼로그 수정하기",
+                "en": "Open Edit Dialog",
+                "jp": "Open Edit Dialog",
+                "zh": "打开编辑对话"
+            },
+            "Cancel Edit": {
+                "ko": "수정 취소",
+                "en": "Cancel Edit",
+                "jp": "Cancel Edit",
+                "zh": "取消修改"
+            },
+            "Add Child dialog": {
+                "ko": "Child 다이얼로그 추가하기",
+                "en": "Add Child dialog",
+                "jp": "Add Child dialog",
+                "zh": "添加子对话框"
+            },
+            "Add Sibling dialog": {
+                "ko": "Sibling 다이얼로그 추가하기",
+                "en": "Add Sibling dialog",
+                "jp": "Add Sibling dialog",
+                "zh": "添加姊妹对话框"
+            },
+            "Delete Dialog": {
+                "ko": "다이얼로그 삭제",
+                "en": "Delete Dialog",
+                "jp": "Delete Dialog",
+                "zh": "删除对话框"
+            },
+            "Expand/Collapse Child Dialog": {
+                "ko": "Child 다이얼로그 늘이기/줄이기",
+                "en": "Expand/Collapse Child Dialog",
+                "jp": "Expand/Collapse Child Dialog",
+                "zh": "展开/折叠子对话框"
+            },
+            "Dialog Graph Editor ShortCut": {
+                "ko": "대화 그래프 수정 바로가기",
+                "en": "Dialog Graph Editor ShortCut",
+                "jp": "Dialog Graph Editor ShortCut",
+                "zh": "对话框图编辑快捷方式"
+            },
+            "Move focus to next input": {
+                "ko": "다음 인풋으로 이동하기",
+                "en": "Move focus to next input",
+                "jp": "Move focus to next input",
+                "zh": "把光标移动到下一个输入框"
+            },
+            "Add input or output": {
+                "ko": "인풋과 아웃풋 추가하기",
+                "en": "Add input or output",
+                "jp": "Add input or output",
+                "zh": "添加输入/输出"
             }
         };
 

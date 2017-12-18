@@ -16,7 +16,7 @@
 
             $http.post('/api/auth/forgot', $scope.credentials).success(function (response)
             {
-                alert('We sent email to you for reset password.');
+                alert($scope.lan('We sent email to you for reset password.'));
             }).error(function (response)
             {
                 if(response.message == 'SNS')
@@ -25,7 +25,7 @@
                 }
                 else
                 {
-                    alert('Email is not found.');
+                    alert($scope.lan('Email is not found.'));
                 }
             });
         };
