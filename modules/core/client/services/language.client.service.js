@@ -212,6 +212,18 @@
                 "jp": "カカオトークを通じてすでにログインできている状態です。",
                 "zh": "您已经通过Kakaotalk账号进行了登录。"
             },
+            "Your account is signed up from google.": {
+                "ko": "구글을 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "Your account is signed up from google.",
+                "jp": "あなたのアカウントはGoogleからサインアップされています。",
+                "zh": "您已经通过Google账号进行了登录。"
+            },
+            "Your account is signed up from facebook.": {
+                "ko": "페이스북 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "Your account is signed up from facebook.",
+                "jp": "あなたのアカウントはFacebookからサインアップされています。",
+                "zh": "您已经通过Facebook账号进行了登录。"
+            },
             "Email is not found.": {
                 "ko": "등록된 이메일이 없습니다.",
                 "en": "Email is not found.",
@@ -2608,6 +2620,7 @@
                 "jp": "エンティティ名を入力します。",
                 "zh": "输入实体名称"
             },
+
             "Change your password": {
                 "ko": "비밀번호를 변경해주세요",
                 "en": "Change your password",
