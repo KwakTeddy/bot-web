@@ -11,8 +11,6 @@
         var split = url.split('/');
         var token = split[split.length-1];
 
-        console.log(token);
-
         $scope.newPassword = '';
         $scope.verifyPassword = '';
 
