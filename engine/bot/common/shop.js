@@ -168,7 +168,7 @@ function checkTime(task, context, callback) {
   // var day = new Date().getDay();
   // var holiday = dateStringToNumber(context.bot.holiday);
 
-    if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
+    // if (context.dialog.time.length == 4) context.dialog.time = "0" + context.dialog.time;
 
   // if (day == holiday) {
   if (false) {
@@ -584,6 +584,7 @@ globals.setGlobalTask('reserveOwnerConfirm', reserveOwnerConfirm);
 var reserveNameTask = {
   action: function (task, context, callback) {
     context.dialog.name = task.inRaw;
+    context.user.reserveName = task.inRaw;
     callback(task, context);
   }
 };

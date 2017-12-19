@@ -166,6 +166,10 @@ var dialogs = [
                         task: "checkTime",
                         "output": [
                             {
+                                "if": "context.user.reserveName && context.user.mobile",
+                                "output": {"call": "예약내용확인"}
+                            },
+                            {
                                 "if": "context.dialog.check == false",
                                 "output": {"call": "예약자명"}
                             },
@@ -326,7 +330,7 @@ var dialogs = [
                 name: '예약내용확인',
                 input: false,
                 task:       {action: 'reserveConfirm'},
-                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?\n\n1.일시 다시 선택\n2.연락처 변경',
+                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n성함: +reserveName+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?\n\n1.일시 다시 선택\n2.이름 변경\n3.연락처 변경',
                 children: [
                     {
                         id: 'restaurant55',
@@ -345,8 +349,14 @@ var dialogs = [
                         id: 'restaurant55',
                         filename: 'restaurant',
                         input: '2',
-                        output: {call: '휴대폰번호입력'}
+                        output: {call: '예약자명'}
                     },
+                    {
+                        id: 'restaurant55',
+                        filename: 'restaurant',
+                        input: '3',
+                        output: {call: '휴대폰번호입력'}
+                    }
                 ]
             }
         ]
