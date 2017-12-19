@@ -7,9 +7,6 @@
             { "name" : "manage procedural information", "url" : "/templates/contents/menu", "icon" : "info.png" },
             { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
         ] },
-
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
-        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "dgm.png" },
-        { "name" : "인텐트관리", "url": "/development/intent", "icon": "scenario.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
     ]
 }
