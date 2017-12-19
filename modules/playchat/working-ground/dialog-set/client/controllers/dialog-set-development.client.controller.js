@@ -123,12 +123,14 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             for(var i=0, l=inputList.length; i<l; i++)
             {
-                data.inputRaw.push(inputList[i].value);
+                if(inputList[i].value)
+                    data.inputRaw.push(inputList[i].value);
             }
 
             for(var i=0, l=outputList.length; i<l; i++)
             {
-                data.output.push(outputList[i].value);
+                if(outputList[i].value)
+                    data.output.push(outputList[i].value);
             }
 
             return data;
