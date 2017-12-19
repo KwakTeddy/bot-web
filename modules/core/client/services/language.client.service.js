@@ -212,6 +212,18 @@
                 "jp": "カカオトークを通じてすでにログインできている状態です。",
                 "zh": "您已经通过Kakaotalk账号进行了登录。"
             },
+            "Your account is signed up from google.": {
+                "ko": "구글을 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "Your account is signed up from google.",
+                "jp": "あなたのアカウントはGoogleからサインアップされています。",
+                "zh": "您已经通过Google账号进行了登录。"
+            },
+            "Your account is signed up from facebook.": {
+                "ko": "페이스북 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "Your account is signed up from facebook.",
+                "jp": "あなたのアカウントはFacebookからサインアップされています。",
+                "zh": "您已经通过Facebook账号进行了登录。"
+            },
             "Email is not found.": {
                 "ko": "등록된 이메일이 없습니다.",
                 "en": "Email is not found.",
@@ -2694,8 +2706,85 @@
                 "en": "Choose a file",
                 "jp": "ファイルを選択する",
                 "zh": "选择文件"
+            },
+            "Change your password": {
+                "ko": "비밀번호를 변경해주세요",
+                "en": "Change your password",
+                "jp": "パスワードを変更してください",
+                "zh": "更改您的密码"
+            },
+            "Password Confirm": {
+                "ko": "비밀번호 확인",
+                "en": "Password Confirm",
+                "jp": "パスワード確認",
+                "zh": "确认密码"
+            },
+            "Change": {
+                "ko": "변경하기",
+                "en": "Change",
+                "jp": "変化する",
+                "zh": "更改"
+            },
+            "Dialog Graph Code Editor Shortcut": {
+                "ko": "Dialog Graph Code Editor Shortcut",
+                "en": "Dialog Graph Code Editor Shortcut",
+                "jp": "Dialog Graph Code Editor Shortcut",
+                "zh": "转到对话框图代码"
+            },
+            "Move to previous or next tab": {
+                "ko": "Move to previous or next tab",
+                "en": "Move to previous or next tab",
+                "jp": "Move to previous or next tab",
+                "zh": "移动到之前或者下一个tab"
+            },
+            "Dialog Set Shortcut": {
+                "ko": "Dialog Set Shortcut",
+                "en": "Dialog Set Shortcut",
+                "jp": "Dialog Set Shortcut",
+                "zh": "对话框设置快捷方式"
+            },
+            "Add Multi Input or Output": {
+                "ko": "multi input/output 추가",
+                "en": "Add Multi Input or Output",
+                "jp": "Add Multi Input or Output",
+                "zh": "对话框设置快捷方式"
+            },
+            "Move focus to upper or lower input": {
+                "ko": "Move focus to upper or lower input",
+                "en": "Move focus to upper or lower input",
+                "jp": "Move focus to upper or lower input",
+                "zh": "将光标移动到上一个或者下一个输入"
+            },
+            "Delete multi Input or Output": {
+                "ko": "Delete multi Input or Output",
+                "en": "Delete multi Input or Output",
+                "jp": "Delete multi Input or Output",
+                "zh": "删除多输入或者输出"
+            },
+            "Move focus to simulator input": {
+                "ko": "Move focus to simulator input",
+                "en": "Move focus to simulator input",
+                "jp": "Move focus to simulator input",
+                "zh": "将光标移动到模拟输入"
+            },
+            "Move focus to dialog graph or dialog set": {
+                "ko": "Move focus to dialog graph or dialog set",
+                "en": "Move focus to dialog graph or dialog set",
+                "jp": "Move focus to dialog graph or dialog set",
+                "zh": "将光标移动到对话框图或者对话集处"
+            },
+            "Reset simulator": {
+                "ko": "Reset simulator",
+                "en": "Reset simulator",
+                "jp": "Reset simulator",
+                "zh": "重置模拟器"
+            },
+            "Save & Reset simulator": {
+                "ko": "Save & Reset simulator",
+                "en": "Save & Reset simulator",
+                "jp": "Save & Reset simulator",
+                "zh": "保存并重置模拟器"
             }
-
         };
 
         var list = {};
