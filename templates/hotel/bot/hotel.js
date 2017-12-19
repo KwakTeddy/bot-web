@@ -302,7 +302,7 @@ var inforshuttle = {
             //console.log(ss+"000000000000");
             var img = context.bot.shuttles[0].shuttleimage[0]=='h' ? context.bot.shuttles[0].shuttleimage : config.host + context.bot.shuttles[0].shuttleimage;
             //console.log(img+"222222222222");
-            task.buttons = [{text:"자세히보기",url:img}];
+            task.buttons = [{text:"자세히 보기",url:img}];
             if(context.bot.shuttles[0].shuttleimage!==undefined)
             {
                 task.image = {url: context.bot.shuttles[0].shuttleimage};
