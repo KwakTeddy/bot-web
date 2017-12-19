@@ -510,8 +510,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             data._id = element.getAttribute('data-id');
             data.botId = chatbot.id;
 
-            console.log('데이터 : ', data);
-
             $scope.save(data, function()
             {
                 //saved 이미지 출력
