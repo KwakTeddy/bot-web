@@ -14,12 +14,14 @@
                 </div>
                 <div style="display: inline-block;margin-left: 30px;">
                     <span class="form-title">{{ lan('Language') }}</span>
-                    <select class="jumbo-select" ng-model="chatbot.language" style="margin-left: 15px;">
-                        <option value="ko">{{ lan('Korean') }}</option>
-                        <option value="en">{{ lan('English') }}</option>
-                        <option value="zh">{{ lan('Chinese') }}</option>
-                        <option value="jp">{{ lan('Japanese') }}</option>
-                    </select>
+                    <div class="select-wrapper">
+                        <select class="jumbo-select" ng-model="chatbot.language" style="margin-left: 15px;">
+                            <option value="ko">{{ lan('Korean') }}</option>
+                            <option value="en">{{ lan('English') }}</option>
+                            <option value="zh">{{ lan('Chinese') }}</option>
+                            <option value="jp">{{ lan('Japanese') }}</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <p>Description</p>

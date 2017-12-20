@@ -247,6 +247,23 @@
     opacity: 0.7;
 }
 
+.select-wrapper
+{
+    display: inline-block;
+    position: relative;
+}
+
+.select-wrapper::after
+{
+    content: url(/modules/core/client/imgs/default_select_arrow.png);
+    width: 20px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    background-color: white;
+    top: 1px;
+}
+
 .jumbo-select
 {
     border-radius: 6px;
@@ -254,11 +271,6 @@
     width: 100px;
     height: 35px;
     outline: 0;
-}
-
-.jumbo-select::after
-{
-    background-image: url('/modules/core/client/imgs/default_select_arrow.png');
 }
 
 .codebtn

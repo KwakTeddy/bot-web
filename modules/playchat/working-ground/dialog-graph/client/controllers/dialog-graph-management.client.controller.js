@@ -11,7 +11,6 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
     (function()
     {
-        var updateTarget = undefined;
         var mgmtModal = new ModalService('mgmtModal', $scope);
         mgmtModal.setOpenCallback(function()
         {
