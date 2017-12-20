@@ -353,7 +353,7 @@ var imageroom = {
         }
         if(context.dialog.roomlistType.room_price!==null)
         {
-            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 가격 :'+context.dialog.roomlistType.room_price;
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 가격 :'+context.dialog.roomlistType.room_price+'원';
         }
         if(context.dialog.roomlistType.room_kind!=='')
         {
