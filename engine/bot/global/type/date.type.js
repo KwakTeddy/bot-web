@@ -114,7 +114,7 @@ globals.setGlobalTypeCheck('dateRangeTypeCheck', dateRangeTypeCheck);
 
 function dateTypeCheck(text, type, task, context, callback) {
   var name = 'date';
-  var re = /(?:(올해|이번 년|작년|내년|\d{4}\s*[-/.년])?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*[-/.월])\s?(오늘|어저께|그저께|어제|내일|모레|글피|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*[일]?)|(올해|이번 년|작년|내년|\d{4}\s*[-/.년])?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*월)|(이번주|저번주|다음주|다다음주)|(?:(?:(오늘|어저께|그저께|어제|내일|모레|글피|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9]))\s*일)|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*[년해]|((?:[0-9]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두))\s*(?:개월|달)|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*주[일]?|(하루|이틀|며칠|(?:[0-9]+|삼|사|오|육|칠|팔|구|십)\s*일))\s*(전|후|뒤)?)|(오늘|어저께|그저께|어제|내일|모레|글피)/g;
+  var re = /(?:(올해|이번 년|작년|내년|20[12]\d{1}\s*[-/.년]?)?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*[-/.월]?)\s?(오늘|어저께|그저께|어제|내일|모레|글피|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*[일]?)|(올해|이번 년|작년|내년|\d{4}\s*[-/.년])?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*월)|(?:(?:(오늘|어저께|그저께|어제|내일|모레|글피|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9]))\s*일)|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*[년해]|((?:[0-9]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두))\s*(?:개월|달)|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*주[일]?|(하루|이틀|며칠|(?:[0-9]+|삼|사|오|육|칠|팔|구|십)\s*일))\s*(전|후|뒤)?)|(오늘|어저께|그저께|어제|내일|모레|글피)|(이\s?번\s?주|저\s?번\s?주|지\s?난\s?주|다\s?음\s?주|다\s?다\s?음\s?주)\s*([월화수목금토일])요?일?/g;
   var matched = false;
   var date;
 
@@ -236,7 +236,7 @@ function dateTypeCheck(text, type, task, context, callback) {
   };
 
 
-  text = text.replace(re, function(match, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13){
+  text = text.replace(re, function(match, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14){
     matched = true;
     var year, month, day;
     var unit;
@@ -264,147 +264,147 @@ function dateTypeCheck(text, type, task, context, callback) {
       today.setMonth(month + 1);
       today.setDate(0);
       day = today.getDate();
-    } else if (p6) {
-      if(p6 === '이번주') {
-        task.range = '이번주';
-        var first = today.getDate() - today.getDay() + 7;
-        today.setDate(first);
-        day = today.getDate();
-        year = today.getFullYear();
-        month = today.getMonth();
-      } else if (p6 === '저번주') {
-        var first = today.getDate() - today.getDay() - 6;
-        today.setDate(first);
-        day = today.getDate();
-        year = today.getFullYear();
-        month = today.getMonth();
-      } else if (p6 === '다음주'){
-        task.range = '다음주';
-        var first = today.getDate() - today.getDay() + 14;
-        today.setDate(first);
-        day = today.getDate();
-        year = today.getFullYear();
-        month = today.getMonth();
-      } else if (p6 === '다다음주') {
-        var first = today.getDate() - today.getDay() + 21;
-        today.setDate(first);
-        day = today.getDate();
-        year = today.getFullYear();
-        month = today.getMonth();
-      }
-    } else if (p12) {
+    // } else if (p6) {
+    //   if(p6 === '이번주') {
+    //     task.range = '이번주';
+    //     var first = today.getDate() - today.getDay() + 7;
+    //     today.setDate(first);
+    //     day = today.getDate();
+    //     year = today.getFullYear();
+    //     month = today.getMonth();
+    //   } else if (p6 === '저번주') {
+    //     var first = today.getDate() - today.getDay() - 6;
+    //     today.setDate(first);
+    //     day = today.getDate();
+    //     year = today.getFullYear();
+    //     month = today.getMonth();
+    //   } else if (p6 === '다음주'){
+    //     task.range = '다음주';
+    //     var first = today.getDate() - today.getDay() + 14;
+    //     today.setDate(first);
+    //     day = today.getDate();
+    //     year = today.getFullYear();
+    //     month = today.getMonth();
+    //   } else if (p6 === '다다음주') {
+    //     var first = today.getDate() - today.getDay() + 21;
+    //     today.setDate(first);
+    //     day = today.getDate();
+    //     year = today.getFullYear();
+    //     month = today.getMonth();
+    //   }
+    } else if (p11) {
 
-      if(p12 === '전') {
-        if(p7) {
-          if (p7 === '오늘' || p7 === '그저께' || p7 === '어제' || p7 === '어저께' || p7 === '내일' || p7 === '모레' || p7 === '글피') {
+      if(p11 === '전') {
+        if(p6) {
+          if (p6 === '오늘' || p6 === '그저께' || p6 === '어제' || p6 === '어저께' || p6 === '내일' || p6 === '모레' || p6 === '글피') {
             year = today.getFullYear();
             month = today.getMonth();
-            if(p7) day = getDay(p7);
+            if(p6) day = getDay(p6);
             else day = today.getDate();
           } else {
-            p7 = Number(p7);
-            today.setDate(today.getDate() - p7);
+            p6 = Number(p6);
+            today.setDate(today.getDate() - p6);
             day = today.getDate();
             year = today.getFullYear();
             month = today.getMonth();
           }
-        } else if (p9) {
-          today.setMonth(today.getMonth() - getMonth(p9));
+        } else if (p8) {
+          today.setMonth(today.getMonth() - getMonth(p8));
           year = today.getFullYear();
           month = today.getMonth();
           day = today.getDate();
-        } else if (p11) {
-          if (p11 === '일') {
+        } else if (p10) {
+          if (p10 === '일') {
             today.setDate(today.getDate() - 7);
             day = today.getDate();
-          } else if (p11 === '이') {
+          } else if (p10 === '이') {
             today.setDate(today.getDate() - 14);
             day = today.getDate();
-          } else if (p11 === '삼') {
+          } else if (p10 === '삼') {
             today.setDate(today.getDate() - 21);
             day = today.getDate();
-          } else if (p11 === '사') {
+          } else if (p10 === '사') {
             today.setDate(today.getDate() - 28);
             day = today.getDate();
-          } else if (p11 === '오') {
+          } else if (p10 === '오') {
             today.setDate(today.getDate() - 35);
             day = today.getDate();
-          } else if (p11 === '육') {
+          } else if (p10 === '육') {
             today.setDate(today.getDate() - 42);
             day = today.getDate();
-          } else if (p11 === '칠') {
+          } else if (p10 === '칠') {
             today.setDate(today.getDate() - 49);
             day = today.getDate();
-          } else if (p11 === '팔') {
+          } else if (p10 === '팔') {
             today.setDate(today.getDate() - 56);
             day = today.getDate();
-          } else if (p11 === '구') {
+          } else if (p10 === '구') {
             today.setDate(today.getDate() - 63);
             day = today.getDate();
-          } else if (p11 === '십') {
+          } else if (p10 === '십') {
             today.setDate(today.getDate() - 70);
             day = today.getDate();
           } else {
-            p11 = Number(p11);
-            today.setDate(today.getDate() - p11*7);
+            p10 = Number(p10);
+            today.setDate(today.getDate() - p10*7);
             day = today.getDate();
           }
           year = today.getFullYear();
           month = today.getMonth();
         }
-      } else if (p12 === '후' || p12 === '뒤') {
-        if(p7) {
-          if (p7 === '오늘' || p7 === '그저께' || p7 === '어제' || p7 === '어저께' || p7 === '내일' || p7 === '모레' || p7 === '글피') {
+      } else if (p11 === '후' || p11 === '뒤') {
+        if(p6) {
+          if (p6 === '오늘' || p6 === '그저께' || p6 === '어제' || p6 === '어저께' || p6 === '내일' || p6 === '모레' || p6 === '글피') {
             year = today.getFullYear();
             month = today.getMonth();
-            if(p7) day = getDay(p7);
+            if(p6) day = getDay(p6);
             else day = today.getDate();
           } else {
-            p7 = Number(p7);
-            today.setDate(today.getDate() + p7);
+            p6 = Number(p6);
+            today.setDate(today.getDate() + p6);
             day = today.getDate();
             year = today.getFullYear();
             month = today.getMonth();
           }
-        } else if (p9) {
-          today.setMonth(today.getMonth() + getMonth(p9));
+        } else if (p8) {
+          today.setMonth(today.getMonth() + getMonth(p8));
           day = today.getDate();
           year = today.getFullYear();
           month = today.getMonth();
-        } else if (p11) {
-          if (p11 === '일') {
+        } else if (p10) {
+          if (p10 === '일') {
             today.setDate(today.getDate() + 7);
             day = today.getDate();
-          } else if (p11 === '이') {
+          } else if (p10 === '이') {
             today.setDate(today.getDate() + 14);
             day = today.getDate();
-          } else if (p11 === '삼') {
+          } else if (p10 === '삼') {
             today.setDate(today.getDate() + 21);
             day = today.getDate();
-          } else if (p11 === '사') {
+          } else if (p10 === '사') {
             today.setDate(today.getDate() + 28);
             day = today.getDate();
-          } else if (p11 === '오') {
+          } else if (p10 === '오') {
             today.setDate(today.getDate() + 35);
             day = today.getDate();
-          } else if (p11 === '육') {
+          } else if (p10 === '육') {
             today.setDate(today.getDate() + 42);
             day = today.getDate();
-          } else if (p11 === '칠') {
+          } else if (p10 === '칠') {
             today.setDate(today.getDate() + 49);
             day = today.getDate();
-          } else if (p11 === '팔') {
+          } else if (p10 === '팔') {
             today.setDate(today.getDate() + 56);
             day = today.getDate();
-          } else if (p11 === '구') {
+          } else if (p10 === '구') {
             today.setDate(today.getDate() + 63);
             day = today.getDate();
-          } else if (p11 === '십') {
+          } else if (p10 === '십') {
             today.setDate(today.getDate() + 70);
             day = today.getDate();
           } else {
-            p11 = Number(p11);
-            today.setDate(today.getDate() + p11*7);
+            p10 = Number(p10);
+            today.setDate(today.getDate() + p10*7);
             day = today.getDate();
           }
           year = today.getFullYear();
@@ -412,70 +412,90 @@ function dateTypeCheck(text, type, task, context, callback) {
         }
       }
 
-    } else if(p7) {
+    } else if(p6) {
       unit = 'd';
 
       year = today.getFullYear();
       month = today.getMonth();
-      if(p7) day = getDay(p7);
+      if(p6) day = getDay(p6);
       else day = today.getDate();
-    } else if(p8) {
+    } else if(p7) {
       unit = 'y';
 
-      if(p8) year = getYear(p8);
+      if(p7) year = getYear(p7);
       else year = today.getFullYear();
-    } else if(p9) {
+    } else if(p8) {
       unit = 'm';
 
       year = today.getFullYear();
-      if(p9) month = getMonth(p9);
+      if(p8) month = getMonth(p8);
       else month = today.getMonth();
-    } else if(p11) {
+    } else if(p10) {
       unit = 'd';
 
-      if (p11 === '일') {
+      if (p10 === '일') {
         task.range = '이번주';
         today.setDate(today.getDate() + 7);
         day = today.getDate();
-      } else if (p11 === '이') {
+      } else if (p10 === '이') {
         today.setDate(today.getDate() + 14);
         day = today.getDate();
-      } else if (p11 === '삼') {
+      } else if (p10 === '삼') {
         today.setDate(today.getDate() + 21);
         day = today.getDate();
-      } else if (p11 === '사') {
+      } else if (p10 === '사') {
         today.setDate(today.getDate() + 28);
         day = today.getDate();
-      } else if (p11 === '오') {
+      } else if (p10 === '오') {
         today.setDate(today.getDate() + 35);
         day = today.getDate();
-      } else if (p11 === '육') {
+      } else if (p10 === '육') {
         today.setDate(today.getDate() + 42);
         day = today.getDate();
-      } else if (p11 === '칠') {
+      } else if (p10 === '칠') {
         today.setDate(today.getDate() + 49);
         day = today.getDate();
-      } else if (p11 === '팔') {
+      } else if (p10 === '팔') {
         today.setDate(today.getDate() + 56);
         day = today.getDate();
-      } else if (p11 === '구') {
+      } else if (p10 === '구') {
         today.setDate(today.getDate() + 63);
         day = today.getDate();
-      } else if (p11 === '십') {
+      } else if (p10 === '십') {
         today.setDate(today.getDate() + 70);
         day = today.getDate();
       } else {
-        p11 = Number(p11);
-        today.setDate(today.getDate() + p11*7);
+        p10 = Number(p10);
+        today.setDate(today.getDate() + p10*7);
         day = today.getDate();
       }
       year = today.getFullYear();
       month = today.getMonth();
+    } else if (p12) {
+        year = today.getFullYear();
+        month = today.getMonth();
+        if(p12) day = getDay(p12);
+        else day = today.getDate();
     } else if (p13) {
-      year = today.getFullYear();
-      month = today.getMonth();
-      if(p13) day = getDay(p13);
-      else day = today.getDate();
+        year = today.getFullYear();
+        month = today.getMonth();
+        var weekDay;
+        if(p14 == "월") weekDay = 1;
+        if(p14 == "화") weekDay = 2;
+        if(p14 == "수") weekDay = 3;
+        if(p14 == "목") weekDay = 4;
+        if(p14 == "금") weekDay = 5;
+        if(p14 == "토") weekDay = 6;
+        if(p14 == "일") weekDay = 7;
+
+        var week;
+        if(p13.replace(/ /g, "") == "이번주") week = 0;
+        if(p13.replace(/ /g, "") == "지난주" || p13 == "저번주") week = -7;
+        if(p13.replace(/ /g, "") == "다음주") week = 7;
+        if(p13.replace(/ /g, "") == "다다음주") week = 14;
+
+        today.setDate(today.getDate() + week - today.getDay() + weekDay);
+        day = today.getDate();
     }
 
     if(!month) month = 0;

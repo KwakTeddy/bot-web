@@ -57,11 +57,11 @@
                     <input type="text" ng-model="menu.recovery" required>
                 </td>
                 <td>
-                    <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
+                    <img src="{{ menu.image }}" style="width: 50px;cursor:pointer;" ng-if="menu.image" ng-click="editImage($event);">
                     <input type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image" />
                 </td>
                 <td>
-                    <img src="{{ menu.reviewImage }}" style="width: 50px;" ng-if="menu.reviewImage" ng-click="editImage($event);">
+                    <img src="{{ menu.reviewImage }}" style="width: 50px;cursor:pointer;" ng-if="menu.reviewImage" ng-click="editImage($event);">
                     <input type="file" nv-file-select uploader="menu.uploader2" ng-show="!menu.reviewImage" />
                 </td>
                 <td>

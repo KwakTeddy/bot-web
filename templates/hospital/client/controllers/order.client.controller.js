@@ -55,7 +55,7 @@ angular.module('template').controller('reserveController', ['$scope', '$resource
                     alert(err);
                 });
 
-            SendSMS.save({mobile:menu.mobile, message:"<"+chatbot.name + ">\n" + "예약이 확정되었습니다.\n" + menu.date.substring(0,10) + " / " + menu.time}, function(result)
+            SendSMS.save({mobile:menu.mobile, message:"< "+chatbot.name + " >\n" + "예약이 확정되었습니다.\n" + menu.date.substring(0,10) + " / " + menu.time}, function(result)
                 {
                     alert('예약이 승인되었습니다');
                     console.log(result);

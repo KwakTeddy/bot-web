@@ -302,7 +302,7 @@ var inforshuttle = {
             //console.log(ss+"000000000000");
             var img = context.bot.shuttles[0].shuttleimage[0]=='h' ? context.bot.shuttles[0].shuttleimage : config.host + context.bot.shuttles[0].shuttleimage;
             //console.log(img+"222222222222");
-            task.buttons = [{text:"자세히보기",url:img}];
+            task.buttons = [{text:"자세히 보기",url:img}];
             if(context.bot.shuttles[0].shuttleimage!==undefined)
             {
                 task.image = {url: context.bot.shuttles[0].shuttleimage};
@@ -341,8 +341,73 @@ var imageroom = {
     action: function(task, context, callback) {
        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@");
        // console.log(JSON.stringify(context.dialog.roomlistType));
+        context.dialog.roomlistType1='';
 
-        //var img = context.dialog.roomlistType.room_image[0]=='h' ? context.dialog.roomlistType.room_image : config.host + context.dialog.roomlistType.room_image;
+        if(context.dialog.roomlistType.room_introduction!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n'+context.dialog.roomlistType.room_introduction;
+        }
+        if(context.dialog.roomlistType.room_form!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 구성 :'+context.dialog.roomlistType.room_form;
+        }
+        if(context.dialog.roomlistType.room_price!==null)
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 가격 :'+context.dialog.roomlistType.room_price+'원';
+        }
+        if(context.dialog.roomlistType.room_kind!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 전망 :'+context.dialog.roomlistType.room_kind;
+        }
+        if(context.dialog.roomlistType.room_bed!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 침대 :'+context.dialog.roomlistType.room_bed;
+        }
+        if(context.dialog.roomlistType.room_size!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 크기 :'+context.dialog.roomlistType.room_size;
+        }
+        if(context.dialog.roomlistType.room_checkin!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 체크인 :'+context.dialog.roomlistType.room_checkin;
+        }
+        if(context.dialog.roomlistType.room_checkout!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- 체크아웃 :'+context.dialog.roomlistType.room_checkout;
+        }
+        if(context.dialog.roomlistType.room_facility1!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility1;
+        }
+        if(context.dialog.roomlistType.room_facility2!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility2;
+        }
+        if(context.dialog.roomlistType.room_facility3!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility3;
+        }
+        if(context.dialog.roomlistType.room_facility4!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility4;
+        }
+        if(context.dialog.roomlistType.room_facility5!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility5;
+        }
+        if(context.dialog.roomlistType.room_facility6!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility6;
+        }
+        if(context.dialog.roomlistType.room_facility7!=='')
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n- '+context.dialog.roomlistType.room_facility7;
+        }
+        if(context.dialog.roomlistType.room_image!==undefined)
+        {
+            context.dialog.roomlistType1=context.dialog.roomlistType1+'\n\n[객실 이미지]';
+        }
+
         if(context.dialog.roomlistType.room_image!==undefined)
         {
         task.image = {url: context.dialog.roomlistType.room_image};

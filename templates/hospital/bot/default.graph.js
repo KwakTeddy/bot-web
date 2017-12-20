@@ -104,6 +104,29 @@ var dialogs = [
         }
     },
     {
+        "name": "New Dialog1",
+        "input": [
+            {
+                "types": [
+                    "orderble"
+                ]
+            }
+        ],
+        "task": "chooseSurge",
+        "output": [
+            {
+                "kind": "Action",
+                "call": "후기",
+                "if": "context.dialog.review"
+            },
+            {
+                "kind": "Action",
+                "call": "필러"
+            }
+        ],
+        "id": "hospital0"
+    },
+    {
         "name": "시술후기",
         "id": "default10",
         "filename": "default",
@@ -293,27 +316,10 @@ var dialogs = [
         "task": {
             "name": "addEventButton"
         }
-    },
-    {
-        "name": "New Dialog1",
-        "input": [
-            {
-                "types": [
-                    "orderble"
-                ]
-            }
-        ],
-        "task" : "chooseSurge",
-        // "output": '+hihi+',
-        "output": [
-            {
-                "kind": "Action",
-                "call": "필러"
-            }
-        ],
-        "id": "hospital0"
     }
 ];
+
+
 
 
 var commonDialogs = [
@@ -383,6 +389,8 @@ var commonDialogs = [
         }
     }
 ];
+
+
 
 
 

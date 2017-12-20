@@ -207,6 +207,9 @@ var chooseSurge = {
     action: function (task,context,callback) {
         // context.dialog.surgeListType = context.bot.events[0];
         context.dialog.surgeListType = task.surge;
+        if(context.dialog.inRaw.search(/후기/g)>-1) {
+            context.dialog.review = true;
+        } else context.dialog.review = false;
         callback(task,context);
     }
 };
@@ -264,7 +267,7 @@ function reserveRequest2(task, context, callback) {
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@requested");
 
     var doc = {
-        name: context.dialog.name,
+        name: context.dialog.name || context.user.reserveName,
         mobile: context.dialog.mobile || context.user.mobile,
         date: context.dialog.date,
         time: context.dialog.time,
@@ -467,6 +470,8 @@ function checkTime(task, context, callback) {
     // if (day == holiday) {
     var time = task.time;
 
+    context.dialog.time = time;
+
     if (false) {
         context.dialog.check = true;
     } else {
@@ -481,7 +486,7 @@ function checkTime(task, context, callback) {
 
     var now = new Date();
 
-    var reserve = context.dialog.date;
+    var reserve = new Date(context.dialog.date.getTime());
     console.log(time);
     reserve.setHours(time.substring(0,2));
     reserve.setMinutes(time.substring(3,5));
@@ -518,6 +523,8 @@ function checkDate(task, context, callback) {
     if(reserve < now) {
         context.dialog.check = 'past';
     }
+
+    context.dialog.시간입력최초 = undefined;
 
     callback(task, context);
 }
