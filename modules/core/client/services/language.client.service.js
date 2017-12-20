@@ -398,11 +398,11 @@
                 "jp": "作り",
                 "zh": "创建"
             },
-            " 머니브레인 MoneyBrain\"": {
-                "ko": "\"아테나 Athena - 인공지능 챗봇 플랫폼",
-                "en": " 머니브레인 MoneyBrain\"",
-                "jp": "\"Athena - Conversational A.I. Platform",
-                "zh": " MoneyBrain\""
+            " 머니브레인 MoneyBrain": {
+                "ko": "아테나 Athena - 인공지능 챗봇 플랫폼",
+                "en": " 머니브레인 MoneyBrain",
+                "jp": "Athena - Conversational A.I. Platform",
+                "zh": " MoneyBrain"
             },
             "Docs": {
                 "ko": "Docs",
@@ -495,7 +495,7 @@
                 "zh": "实体"
             },
             "Task": {
-                "ko": "테스크",
+                "ko": "태스크",
                 "en": "Task",
                 "jp": "タスク",
                 "zh": "任务"
@@ -1077,7 +1077,7 @@
                 "zh": "删除"
             },
             "Task Name": {
-                "ko": "테스크 이름",
+                "ko": "태스크 이름",
                 "en": "Task Name",
                 "jp": "タスクの名前",
                 "zh": "任务名称"
@@ -2784,6 +2784,12 @@
                 "en": "Save & Reset simulator",
                 "jp": "Save & Reset simulator",
                 "zh": "保存并重置模拟器"
+            },
+            "Only Javascript files are allowed!": {
+                "ko": "자바스크립트 파일만 업로드 할 수 있습니다!",
+                "en": "Only Javascript files are allowed!",
+                "zh": "请不要上传非Javascript格式的文件！",
+                "jp": "Javascriptファイルのみが許可されています！"
             }
         };
 

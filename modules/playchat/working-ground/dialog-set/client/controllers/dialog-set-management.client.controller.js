@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
+angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$rootScope', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, $rootScope, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set'), '/modules/playchat/gnb/client/imgs/speech.png');
 
@@ -200,6 +200,7 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
         {
             DialogSetsUsableService.update({ botId: chatbot._id, _id: item._id, usable: item.usable ? false : true }, function(result)
             {
+                $rootScope.$broadcast('simulator-build');
             });
         };
 
