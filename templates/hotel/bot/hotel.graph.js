@@ -2534,7 +2534,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[객실 정보 - +roomlistType.category_name+]\n+roomlistType.room_introduction+\n\n싱글룸 구성 \n- +roomlistType.room_form+\n- 전망 : +roomlistType.room_kind+\n- 침대 :  +roomlistType.room_bed+\n- 크기 : +roomlistType.room_size+\n- 체크인 : +roomlistType.room_checkin+\n- 체크아웃 : +roomlistType.room_checkout+\n- +roomlistType.room_facility1+\n- +roomlistType.room_facility2+\n- +roomlistType.room_facility3+\n- +roomlistType.room_facility4+\n- +roomlistType.room_facility5+\n- +roomlistType.room_facility6+\n- +roomlistType.room_facility7+\n\n[객실 이미지]\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
+                        "text": "[객실 정보 - +roomlistType.category_name+]+roomlistType1+",
                         "kind": "Text"
                     }
                 ],
