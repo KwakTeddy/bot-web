@@ -1,40 +1,74 @@
 'use strict';
 
-angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', ' $rootScope','$stateParams', 'FileUploader', function ($scope, $resource, $cookies, $rootScope, $stateParams, FileUploader)
+angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope','FileUploader','LanguageService',function ($scope, $resource, $cookies, $stateParams,$rootScope, FileUploader, LanguageService)
+// angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope','LanguageService',function ($scope, $resource, $cookies, $stateParams,$rootScope, LanguageService)
 {
+
     $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 기본정보', '/modules/playchat/gnb/client/imgs/basic_grey.png');
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateDataService = $resource('/api/:botId/template-data', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
+
+
     (function()
     {
-        ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
+        $scope.data={};
+        var addUploader = function()
         {
-            $scope.template = result;
-            ChatbotTemplateDataService.get({ botId: chatbot.id, templateId: result.id }, function(result)
+            $scope.data.uploader = new FileUploader({
+                url: '/api/' + chatbot.id + '/template-contents/upload',
+                alias: 'uploadImage',
+                autoUpload: true
+            });
+
+            $scope.data.uploader.onErrorItem = function(item, response, status, headers)
             {
-                result = JSON.parse(JSON.stringify(result));
+            };
 
-                $scope.templateData = result;
+            $scope.data.uploader.onSuccessItem = function(item, response, status, headers)
+            {
+                $scope.data.image = response.url;
+            };
 
-                for(var key in result)
-                {
-                    angular.element('*[name="' + key + '"]').val(result[key]);
-                }
+            $scope.data.uploader.onProgressItem = function(fileItem, progress)
+            {
+                angular.element('.form-box-progress').css('width', progress + '%');
+            };
+        };
 
-                console.log('리절트 : ', result);
+        $scope.editImage = function(e)
+        {
+            angular.element(e.currentTarget).next().click();
+        };
+        addUploader();
+        ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
+            {
+                $scope.template = result;
+                ChatbotTemplateDataService.get({ botId: chatbot.id, templateId: result.id }, function(result)
+                    {
+
+                        result = JSON.parse(angular.toJson(result));
+
+                        console.log(result);
+                        for(var key in result)
+                        {
+                            $scope.data[key] = result[key];
+                            angular.element('*[name="' + key + '"]').val(result[key]);
+                        }
+
+                        console.log('리절트 : ', result);
+                    },
+                    function(err)
+                    {
+                        alert(err);
+                    });
             },
             function(err)
             {
                 alert(err);
             });
-        },
-        function(err)
-        {
-            alert(err);
-        });
     })();
 
     var getValue = function(target)
@@ -52,6 +86,7 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
 
     $scope.saveTemplateBot = function(e)
     {
+
         var data = {};
         angular.element(e.currentTarget).find('*[name]').each(function()
         {
@@ -76,37 +111,38 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
                 data[key] = getValue(this);
             }
         });
+        if(!$scope.data.image)
+        {
+            data.image = undefined;
+        }
+        else
+            {
+                data.image=$scope.data.image;
+            }
 
         if(!data.language)
         {
             data.language = 'ko';
         }
 
-        $scope.editImage = function(e)
-        {
-            angular.element(e.currentTarget).next().click();
-        };
-
-        ChatbotService.update({ botId: chatbot._id, name: data.restaurantname, language: data.language, description: data.description,holiday:data.holiday,startTime:data.startTime,endTime:data.endTime,address:data.address,uploader: undefined}, function()
-        {
-            ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.templateData._id, data: data }, function(result)
+        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description,bank:data.bank }, function()
             {
-                console.log(result);
-                alert("저장하였습니다");
-                $rootScope.$broadcast('simulator-build');
+                ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.data._id, data: data }, function(result)
+                    {
+                        console.log(result);
+                        alert("저장하였습니다");
+                        $rootScope.$broadcast('simulator-build');
+                    },
+                    function(err)
+                    {
+                        alert(err.data.error || err.data.message);
+                    });
             },
             function(err)
             {
                 alert(err.data.error || err.data.message);
             });
-        },
-        function(err)
-        {
-            alert(err.data.error || err.data.message);
-        });
     };
-
-
 
     $scope.findAddress = function(e)
     {

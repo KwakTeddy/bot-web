@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotCreateTemplateController', ['$scope', '$resource', '$stateParams', '$location', '$compile', '$cookies', 'LanguageService', function ($scope, $resource, $stateParams, $location, $compile, $cookies,LanguageService)
+    angular.module('playchat').controller('ChatbotCreateTemplateController', ['$scope', '$resource', '$stateParams', '$location', '$compile', '$cookies','FileUploader', 'LanguageService', function ($scope, $resource, $stateParams, $location, $compile, $cookies, FileUploader,LanguageService)
     {
         var ChatbotService = $resource('/api/chatbots');
         var ChatbotTemplatesService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' });
@@ -98,6 +98,39 @@
                 }).open();
             };
 
+            $scope.data={};
+
+            var addUploader = function()
+            {
+                $scope.data.uploader = new FileUploader({
+                    url: '/api/' + $scope.bot.id + '/template-contents/upload',
+                    alias: 'uploadImage',
+                    autoUpload: true
+                });
+
+                $scope.data.uploader.onErrorItem = function(item, response, status, headers)
+                {
+                };
+
+                $scope.data.uploader.onSuccessItem = function(item, response, status, headers)
+                {
+                    $scope.data.image = response.url;
+                };
+
+                $scope.data.uploader.onProgressItem = function(fileItem, progress)
+                {
+                    angular.element('.form-box-progress').css('width', progress + '%');
+                };
+            };
+
+            $scope.editImage = function(e)
+            {
+                angular.element(e.currentTarget).next().click();
+            };
+            addUploader();
+            console.log('-----------------------'+$scope.data.image);
+
+
             $scope.save = function()
             {
                 if(!$scope.bot.id)
@@ -109,8 +142,8 @@
                 // {
                 //     return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
                 // }
-
-                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description }, function(chatbot)
+                //var data={};
+                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description}, function(chatbot)
                 {
                     delete chatbot.user;
                     $cookies.putObject('chatbot', chatbot);
@@ -144,6 +177,7 @@
 
             $scope.saveTemplateBot = function(e)
             {
+
                 var data = {};
                 angular.element(e.currentTarget).find('*[name]').each(function()
                 {
@@ -169,6 +203,15 @@
                     }
                 });
 
+                if(!$scope.data.image)
+                {
+                    data.image = undefined;
+                }
+                else
+                {
+                    data.image=$scope.data.image;
+                }
+
                 if(!data.language)
                 {
                     data.language = 'ko';
@@ -180,6 +223,8 @@
                 {
                     delete chatbot.user;
                     $cookies.putObject('chatbot', chatbot);
+
+
                     ChatbotTemplateDataService.save({ templateId: $scope.template.id, botId: chatbot.id, data: data }, function(result)
                     {
                         $location.url('/playchat/?isFirst=true');

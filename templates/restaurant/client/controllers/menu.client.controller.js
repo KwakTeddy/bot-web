@@ -2,6 +2,7 @@
 
 angular.module('template').controller('restaurantMenuController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 메뉴정보관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -22,6 +23,8 @@ angular.module('template').controller('restaurantMenuController', ['$scope', '$r
                     DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                         {
                             $scope.datas = list;
+                            // console.log('00000000006666666'+JSON.stringify(list));
+                            //console.log(JSON.stringify(list)+'-----------------------------');
                             console.log(list);
                             for(var i=0; i<list.length; i++)
                             {
