@@ -139,7 +139,8 @@
                             {{L018}}
 						</p>
     					<div class="homeBtn">
-    						<a href="/playchat/chatbots" class="btnOne Btn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
+    						<a href="/playchat/chatbots" class="btnOne Btn" id="apply"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
+                            <a class="btnOne Btn" href="https://docs.google.com/forms/d/e/1FAIpQLScrv-_ZDFIwXQfWt2kK3k6O5oplSjiDxxyJYUpUDd9biXx7Mw/viewform" target="_blank" style="display: none;">무료로 교육 신청하기</a>
     						<!--<a href="#" class="btnTwo Btn">check pricing</a>-->
     					</div>
     				</div>
@@ -535,9 +536,13 @@
                 {
                     $('#policyModal').modal('show');
                 });
+
+                console.log('모지');
+                $('#apply').hide().next().show();
             }
             else
             {
+                $('#apply').show().next().hide();
                 $('#openPolicy').parent().parent().parent().remove();
             }
         });
