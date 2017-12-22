@@ -1,26 +1,49 @@
 <div class="signin-background">
-    <div id="logincontents" ng-if="successSignup === false">
-        <div class="mt16 mb45">
+    <div id="logincontents" ng-if="successSignup === false" style="padding-top: 50px;">
+        <div class="mt16" style="margin-bottom: 20px;">
             <!--<span class="p1">{{ lan('Create your account') }}</span>-->
             <span class="p1">{{ lan('Registration for closed beta') }}</span>
             <!--<p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>-->
         </div>
-        <p class="exclamation pl5" ng-show="signupErrorMessage"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
-        <form class="register" ng-submit="signup();">
-            <p>{{ lan('Email ID') }}</p>
-            <input type="email" class="input_type09 mb10" ng-model="credentials.email" placeholder="example@moneybrain.ai" ng-required="true" autofocus="true">
-            <p>{{ lan('Password') }}</p>
-            <input type="password" class="input_type09 mb10" ng-model="credentials.password" ng-required="true">
-            <p>{{ lan('Password confirm') }}</p>
-            <input type="password" class="input_type09 mb20" ng-model="credentials.passwordConfirm" ng-required="true">
-            <p>{{ lan('Username') }}</p>
-            <input type="text" class="input_type09 mb10" ng-model="credentials.displayName" ng-required="true">
-            <p>{{ lan('Phone') }}</p>
-            <input type="text" class="input_type09 mb10" ng-model="credentials.phone" ng-required="true">
-            <p>{{ lan('Organization') }}</p>
-            <input type="text" class="input_type09 mb10" ng-model="credentials.organization" ng-required="true">
+        <p class="exclamation pl5" ng-show="signupErrorMessage" style="margin-bottom: 20px;"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
+        <p class="noticebox">
+            초간단 대화형 인공지능 챗봇 플랫폼 Playchat!<br>
+            코딩 없이도 개발 가능한 인공지능 챗봇 플랫폼 Playchat의 클로즈 베타 서비스를 시작합니다.<br><br>
+            <span style="background: #eaf5fc;color: #2d9ee0; padding: 2px 6px;border-radius: 4px;">가입자 제공 혜택</span><br>
+            1. 지금 신청하면 무료로 이용 가능합니다. (선착순 50명)<br>
+            2. 무료 인공지능 챗봇 개발 교육 (20명 선착순)<br>
+            3. 챗봇 대회 입상시 상금 지급! 1등 100만원, 2등 50만원! </p>
+        <form class="register" ng-submit="signup();" style="width: 100%;margin: 32px auto;">
+            <div class="leftbox">
+                <div class="leftboxinput">
+                    <p>{{ lan('Email ID') }}</p>
+                    <input type="email" class="input_type09 mb10" ng-model="credentials.email" placeholder="example@moneybrain.ai" ng-required="true" autofocus="true">
+                </div>
+                <div class="leftboxinput">
+                    <p>{{ lan('Password') }}</p>
+                    <input type="password" class="input_type09 mb10" ng-model="credentials.password" ng-required="true">
+                </div>
+                <div class="leftboxinput">
+                    <p>{{ lan('Password confirm') }}</p>
+                    <input type="password" class="input_type09 mb20" ng-model="credentials.passwordConfirm" ng-required="true">
+                </div>
+            </div>
+            <div style="display: inline-block;">
+                <div class="leftboxinput">
+                    <p>{{ lan('Username') }}</p>
+                    <input type="text" class="input_type09 mb10" ng-model="credentials.displayName" ng-required="true">
+                </div>
+                <div class="leftboxinput">
+                    <p>{{ lan('Phone') }}</p>
+                    <input type="text" class="input_type09 mb10" ng-model="credentials.phone" ng-required="true">
+                </div>
+                <div class="leftboxinput">
+                    <p>{{ lan('Organization') }}</p>
+                    <input type="text" class="input_type09 mb10" ng-model="credentials.organization" ng-required="true">
+                </div>
 
-            <div style="position: relative;">
+            </div>
+            <div style="clear: both;margin: 20px 0 10px;">
                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="agree" ng-required="true" style="position: absolute; top: 4px; left: 3px;">
                 <label for="checkBox1" class="label">
                     <span class="agree v_line_t"><span class="fontblue">{{ lan('Agree to Terms of Use and Privacy Policy') }}</span></span>
@@ -31,7 +54,7 @@
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" style="display: none;">
         </form>
     </div>
-    <div class="signup-complete-message" ng-if="successSignup === true">
+    <div class="signup-complete-message" ng-if="successSignup === true" style="text-align: center;">
         <p class="p2">{{ lan('We sent a verification e-mail to') }} {{ credentials.email }}</p>
         <p class="p2">{{ lan('Please check your e-mail box. The validity time of the certificate is one hour.') }}</p>
         <p class="p2">{{ lan('If you would like to receive the e-mail again, please click on the again button.') }}</p>

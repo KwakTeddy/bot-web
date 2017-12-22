@@ -8,14 +8,18 @@
 
     .template-demo-data
     {
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
     }
 
     .template-demo-data input
     {
         border: 1px solid #ddd;
-        padding: 10px 20px;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 90%;
     }
 </style>
 
@@ -24,22 +28,23 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width: 15%;">
+                <col style="width: 18%;">
                 <col style="width: 20%;">
+                <col style="width: 7%;">
+                <col style="width: 7%;">
+                <col style="width: 25%;">
                 <col style="width: 15%;">
-                <col style="width: 15%;">
-                <col style="width: 15%;">
-                <col style="width: 15%;">
-                <col style="width: 10%;">
+                <col style="width: 8%;">
             </colgroup>
             <thead>
             <tr>
                 <th>메뉴 종류</th>
                 <th>메뉴 이름</th>
-                <th>인기메뉴여부</th>
+                <th>인기메뉴<br>여부</th>
                 <th>메뉴 가격</th>
                 <th>메뉴 설명</th>
                 <th>메뉴 이미지</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -54,27 +59,27 @@
                     <input type="checkbox" ng-model="data.hotmenus">
                 </td>
                 <td>
-                    <input type="number" ng-model="data.price">
+                    <input type="number" ng-model="data.price" style="width: 77%;">
                 </td>
                 <td>
                     <input type="text" ng-model="data.description">
                 </td>
                 <td>
                     <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                    <input style="border: none;" type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
                 </td>
                 <td>
-                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                    <button style="width: 70px;" type="button" class="default-button" ng-click="delete($index)">삭제</button>
                 </td>
             </tr>
             <tr>
-                <td colspan="5">
+                <td colspan="7">
                     <button type="button" class="default-button" ng-click="add();">메뉴 추가</button>
                 </td>
             </tr>
             </tbody>
         </table>
-  <div class="tab-footer" style="border-top: 0;">
+  <div class="tab-footer" style="border-top: 0;float: right;">
     <button class="blue-button">Save</button>
 </div>
 </form>

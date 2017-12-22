@@ -2624,7 +2624,7 @@ pre code {
         margin-left: 0
     }
 }
-/*
+
 @media (min-width:1200px) {
     .col-lg-1,
     .col-lg-10,
@@ -2793,7 +2793,7 @@ pre code {
     .col-lg-offset-0 {
         margin-left: 0
     }
-}*/
+}
 
 table {
     background-color: transparent
@@ -7818,7 +7818,7 @@ button.close {
 .visible-xs-inline-block {
     display: none!important
 }
-/*
+
 @media (max-width:767px) {
     .visible-xs {
         display: block!important
@@ -7978,7 +7978,7 @@ button.close {
         display: none!important
     }
 }
-*/
+
 .visible-print {
     display: none!important
 }
@@ -8034,5 +8034,6 @@ button.close {
         display: none!important
     }
 }
+
 
 

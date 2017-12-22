@@ -200,3 +200,33 @@ a.policy{
 {
     margin-top: 20px;
 }
+.noticebox{
+    border: 1px solid #d3e4ee;
+    border-radius: 6px;
+    width: 560px;
+    margin: 0 auto;
+    padding: 18px;
+    text-align: left;
+    line-height: 20px;
+    font-weight: 700;
+}
+.leftbox{
+    display: inline-block;
+    margin-right: 60px;
+    vertical-align: top;
+}
+.leftboxinput{
+    width: 270px;
+    margin: 0 auto;
+}
+@media only screen and (max-width: 925px) {
+    .leftbox{
+        margin: 0 auto;
+        display: block;
+    }
+    .noticebox{
+        width: 97%;
+        margin: 0 auto;
+        min-width: 230px;
+    }
+}
