@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanssc.css);
+
 .signin-background
 {
     position: relative;
@@ -201,6 +203,7 @@ a.policy{
     margin-top: 20px;
 }
 .noticebox{
+    font-family: 'Noto Sans SC', sans-serif;
     border: 1px solid #d3e4ee;
     border-radius: 6px;
     width: 560px;
