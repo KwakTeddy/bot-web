@@ -7,12 +7,12 @@
         </div>
         <p class="exclamation pl5" ng-show="signupErrorMessage" style="margin-bottom: 20px;"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
         <p class="noticebox">
-            초간단 대화형 인공지능 챗봇 플랫폼 Playchat!<br>
-            코딩 없이도 개발 가능한 인공지능 챗봇 플랫폼 Playchat의 클로즈 베타 서비스를 시작합니다.<br><br>
-            <span style="background: #eaf5fc;color: #2d9ee0; padding: 2px 6px;border-radius: 4px;">가입자 제공 혜택</span><br>
-            1. 지금 신청하면 무료로 이용 가능합니다. (선착순 50명)<br>
-            2. 무료 인공지능 챗봇 개발 교육 (20명 선착순)<br>
-            3. 챗봇 대회 입상시 상금 지급! 1등 100만원, 2등 50만원! </p>
+            {{lan('Playchat, Super-Simple Conversational A.I. Platform')}}<br>
+            {{lan('Start creating your own chatbot without a single line of coding but with PlayChat Closed Beta Service.')}}<br><br>
+            <span style="background: #eaf5fc;color: #2d9ee0; padding: 2px 6px;border-radius: 4px;">{{lan('Special Offer ONLY for the PlayChat Beta Service Users')}}</span><br>
+            {{lan('One, Apply now and use for free (for the first 50 applicants)')}}<br>
+            {{lan('Two, Apply now for Free Chatbot Development Training Course (for the first 20 applicants)')}}<br>
+            {{lan('Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!')}}</p>
         <form class="register" ng-submit="signup();" style="width: 100%;margin: 32px auto;">
             <div class="leftbox">
                 <div class="leftboxinput">

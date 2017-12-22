@@ -2790,6 +2790,48 @@
                 "en": "Only Javascript files are allowed!",
                 "zh": "请不要上传非Javascript格式的文件！",
                 "jp": "Javascriptファイルのみが許可されています！"
+            },
+            "Playchat, Super-Simple Conversational A.I. Platform": {
+                "ko": "초간단 대화형 인공지능 챗봇 플랫폼 Playchat",
+                "en": "Playchat, Super-Simple Conversational A.I. Platform",
+                "zh": "Playchat，超级简单的对话人工智能聊天机器人平台",
+                "jp": "Playchat, Super-Simple Conversational A.I. Platform"
+            },
+            "Start creating your own chatbot without a single line of coding but with PlayChat Closed Beta Service.": {
+                "ko": "코딩 없이도 개발 가능한 인공지능 챗봇 플랫폼 Playchat의 클로즈 베타 서비스를 시작합니다. ",
+                "en": "Start creating your own chatbot without a single line of coding but with PlayChat Closed Beta Service.",
+                "zh": "开始使用PlayChat测试版服务，不需要任何代码，就能创建自己的聊天机器人。",
+                "jp": "Start creating your own chatbot without a single line of coding but with PlayChat Closed Beta Service."
+            },
+            "Apply Now and get special offer": {
+                "ko": "지금 바로 신청하세요.",
+                "en": "Apply Now and get special offer",
+                "zh": "立即申请",
+                "jp": "Apply Now and get special offer"
+            },
+            "Special Offer ONLY for the PlayChat Beta Service Users": {
+                "ko": "가입자 제공 혜택",
+                "en": "Special Offer ONLY for the PlayChat Beta Service Users",
+                "zh": "加入PlayChat内测用户的特别优惠",
+                "jp": "Special Offer ONLY for the PlayChat Beta Service Users"
+            },
+            "One, Apply now and use for free (for the first 50 applicants)": {
+                "ko": "하나, 지금 신청하면 무료로 이용 가능합니다. (선착순 50명)",
+                "en": "One, Apply now and use for free (for the first 50 applicants)",
+                "zh": "一. 现在申请可免费使用（前50名）",
+                "jp": "One, Apply now and use for free (for the first 50 applicants)"
+            },
+            "Two, Apply now for Free Chatbot Development Training Course (for the first 20 applicants)": {
+                "ko": "둘, 무료 인공지능 챗봇 개발 교육 (20명 선착순)",
+                "en": "Two, Apply now for Free Chatbot Development Training Course (for the first 20 applicants)",
+                "zh": "二. 免费聊天机器人开发培训课程（前20名）",
+                "jp": "Two, Apply now for Free Chatbot Development Training Course (for the first 20 applicants)"
+            },
+            "Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!": {
+                "ko": "셋, 챗봇 대회 입상시 상금 지급! 1등 100만원, 2등 50만원!",
+                "en": "Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!",
+                "zh": "三. 参加聊天机器人开发大赛，一等奖100万韩元，二等奖50万韩元！",
+                "jp": "Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!"
             }
         };
 

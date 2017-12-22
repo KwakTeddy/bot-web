@@ -329,12 +329,11 @@ var menuCategoryAction= {
         context.dialog.categoryisone=undefined;
         context.dialog.categorylength=[];
         console.log(context.bot.image+'+++++++++++++++++++++++++++++11');
-        console.log(context.bot.menuImage+'+++++++++++++++++++++++++++++22');
-        
-        if (context.bot.menuImage!==undefined) {
-            var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
+
+        if (context.bot.image!==undefined) {
+            var img = context.bot.image.startsWith('http') ? context.bot.image : config.host + context.bot.image;
             task.result = {
-                image: {url: img},
+                image: {url: context.bot.image},
                 buttons: [
                     {text: '메뉴판 사진 보기', url: img}
                 ]
