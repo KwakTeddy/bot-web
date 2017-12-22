@@ -155,50 +155,50 @@
 
         $scope.save = function()
         {
-            var code = editor.getValue();
-
-            try
-            {
-                var dialogsMatch = code.match(/var dialogs[^;]*/gi);
-                var commonDialogsMatch = code.match(/var commonDialogs[^;]*/gi);
-
-                if(dialogsMatch)
-                {
-                    JSON.parse(dialogsMatch[0].replace(/var dialogs[^=]*=/gi, '').replace(';', ''));
-                }
-                else
-                {
-                    throw new Error('Dialogs is not defined.');
-                }
-
-                if(commonDialogsMatch)
-                {
-                    JSON.parse(commonDialogsMatch[0].replace(/var commonDialogs[^=]*=/gi, '').replace(';', ''));
-                }
-                else
-                {
-                    throw new Error('Dialogs is not defined.');
-                }
-            }
-            catch(err)
-            {
-                $scope.saveError = err.message;
-
-                if(confirm(LanguageService('JSON Format error detected. The chatbot may not work properly. Do you want to save it?')))
-                {
-
-                }
-                else
-                {
-                    angular.element('.dialog-graph-code-editor .alert-error').show();
-                    $timeout(function()
-                    {
-                        angular.element('.dialog-graph-code-editor .alert-error').css('opacity', 1);
-                    }, 5);
-
-                    return;
-                }
-            }
+            // 코드검사용인데 function이 들어가는 코드들도 있고 해서 고도화 필요함.
+            // var code = editor.getValue();
+            // try
+            // {
+            //     var dialogsMatch = code.match(/var dialogs[^;]*/gi);
+            //     var commonDialogsMatch = code.match(/var commonDialogs[^;]*/gi);
+            //
+            //     if(dialogsMatch)
+            //     {
+            //         JSON.parse(dialogsMatch[0].replace(/var dialogs[^=]*=/gi, '').replace(';', ''));
+            //     }
+            //     else
+            //     {
+            //         throw new Error('Dialogs is not defined.');
+            //     }
+            //
+            //     if(commonDialogsMatch)
+            //     {
+            //         JSON.parse(commonDialogsMatch[0].replace(/var commonDialogs[^=]*=/gi, '').replace(';', ''));
+            //     }
+            //     else
+            //     {
+            //         throw new Error('Dialogs is not defined.');
+            //     }
+            // }
+            // catch(err)
+            // {
+            //     $scope.saveError = err.message;
+            //
+            //     if(confirm(LanguageService('JSON Format error detected. The chatbot may not work properly. Do you want to save it?')))
+            //     {
+            //
+            //     }
+            //     else
+            //     {
+            //         angular.element('.dialog-graph-code-editor .alert-error').show();
+            //         $timeout(function()
+            //         {
+            //             angular.element('.dialog-graph-code-editor .alert-error').css('opacity', 1);
+            //         }, 5);
+            //
+            //         return;
+            //     }
+            // }
 
             DialogGraphsService.save({ botId: chatbot.id, fileName: $scope.currentFileName, data: editor.getValue() }, function()
             {

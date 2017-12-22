@@ -166,6 +166,10 @@ var dialogs = [
                         task: "checkTime",
                         "output": [
                             {
+                                "if": "context.user.reserveName && context.user.mobile",
+                                "output": {"call": "예약내용확인"}
+                            },
+                            {
                                 "if": "context.dialog.check == false",
                                 "output": {"call": "예약자명"}
                             },
@@ -326,27 +330,39 @@ var dialogs = [
                 name: '예약내용확인',
                 input: false,
                 task:       {action: 'reserveConfirm'},
-                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?\n\n1.일시 다시 선택\n2.연락처 변경',
+                output: '예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n성함: +reserveName+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?\n(네/아니오)\n\n1.일시 다시 선택\n2.이름 변경\n3.연락처 변경',
                 children: [
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
                         input: '~네',
                         task: "reserveRequest2",
-                        output: '예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n확인 후 예약완료 문자를 보내 드리겠습니다.'
+                        output: '예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n확인 후 예약완료 문자를 보내 드리겠습니다.\n\n 처음으로 돌아가려면 "시작"을 입력하세요.'
                     },
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
-                        input: '1',
+                        input: '~아니요',
+                        output: '예약이 취소되었습니다.\n\n 처음으로 돌아가려면 "시작"을 입력하세요.'
+                    },
+                    {
+                        id: 'restaurant55',
+                        filename: 'restaurant',
+                        input: ['1','일시','일 시','날짜'],
                         output: {call: '날짜선택'}
                     },
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
-                        input: '2',
-                        output: {call: '휴대폰번호입력'}
+                        input: ['2','이름'],
+                        output: {call: '예약자명'}
                     },
+                    {
+                        id: 'restaurant55',
+                        filename: 'restaurant',
+                        input: ['3','연락처'],
+                        output: {call: '휴대폰번호입력'}
+                    }
                 ]
             }
         ]

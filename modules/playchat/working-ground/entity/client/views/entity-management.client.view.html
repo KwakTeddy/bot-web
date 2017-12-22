@@ -62,11 +62,11 @@
         <div class="tablePaging">
             <div class="tablePagingC">
                 <a href="/playchat/management/entity?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
                 <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
                 <a href="/playchat/management/entity?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>
             </div>
         </div>
@@ -142,7 +142,8 @@
                     <label class="required" style="width: 100%;">
                         <span>File</span>
                         <div class="form-box">
-                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                            <input type="file" name="file" id="file" ng-required="true" class="inputfile" data-multiple-caption="{count} files selected" nv-file-select uploader="uploader"/>
+                            <label for="file">{{lan('Choose a file')}}</label>
                             <button type="button" class="default-button" style="float: right; width: 200px;" ng-click="exelDownload();">{{ lan('Template Download') }}</button>
                         </div>
                     </label>

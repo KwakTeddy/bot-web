@@ -21,6 +21,9 @@ module.exports = function(app)
     app.post('/api/auth/forgot', authentication.forgot);
     app.get('/api/auth/emailconfirm/:token', authentication.validateEmailConfirmToken);
     app.post('/api/users/language', UserController.saveLanguage);
+
+    app.route('/auth/reset/:token/:from').get(UserController.validateResetToken);
+    app.route('/auth/reset/:token').post(UserController.reset);
 };
 
 /**

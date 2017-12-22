@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
+angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$rootScope', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, $rootScope, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set'), '/modules/playchat/gnb/client/imgs/speech.png');
 
@@ -136,6 +136,13 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                 DialogSetsService.save(params, function(result)
                 {
                     $scope.dialogsets.unshift(result);
+                    var inputs = document.querySelectorAll( '.inputfile' );
+                    Array.prototype.forEach.call( inputs, function( input ) {
+                        var label = input.nextElementSibling,
+                            labelVal = LanguageService('Choose a file');
+                        label.innerHTML = labelVal;
+                    });
+
                     modal.close();
                 });
             }
@@ -193,8 +200,30 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
         {
             DialogSetsUsableService.update({ botId: chatbot._id, _id: item._id, usable: item.usable ? false : true }, function(result)
             {
+                $rootScope.$broadcast('simulator-build');
             });
         };
+
+        var inputs = document.querySelectorAll( '.inputfile' );
+        Array.prototype.forEach.call( inputs, function( input ) {
+            var label = input.nextElementSibling,
+                labelVal = LanguageService('Choose a file');
+            label.innerHTML = labelVal;
+            input.addEventListener( 'change', function( e ) {
+                var fileName = '';
+                if( this.files && this.files.length > 1 )
+                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else
+                    fileName = e.target.value.split( '\\' ).pop();
+
+                if( fileName )
+                {
+                    label.innerHTML = fileName;
+                }
+                else label.innerHTML = labelVal;
+            });
+        });
+
 
         $scope.uploader = new FileUploader({
             url: '/api/dialogsets/uploadfile',

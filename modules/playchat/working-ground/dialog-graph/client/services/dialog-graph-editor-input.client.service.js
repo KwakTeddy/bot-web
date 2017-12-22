@@ -647,7 +647,7 @@
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'entities')
                         {
-                            return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            return alert(LanguageService('Input cannot be changed to other forms of input.'));
                         }
 
                         // addOrPushData(input, 'entities', value);
@@ -658,14 +658,14 @@
                         if(checkDuplicateInput(e.currentTarget, 'intent'))
                         {
                             //이미 추가된게 있으면 추가 할 수 없게 함.
-                            return alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
+                            return alert(LanguageService('Intent is applied as the form of input.'));
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'intent')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return alert(LanguageService('Input cannot be changed to other forms of input.'));
                             }
 
                             input.intent = value == '#' ? '' : value;
@@ -679,7 +679,7 @@
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'types')
                         {
-                            return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            return alert(LanguageService('Input cannot be changed to other forms of input.'));
                         }
 
                         // addOrPushData(input, 'types', value.replace('$', ''));
@@ -691,7 +691,7 @@
                         {
                             e.preventDefault();
                             e.stopPropagation();
-                            alert('이미 정규식 형태의 Input이 추가되어 있습니다');
+                            alert(LanguageService('Regular Expression is applied as the form of input.'));
                             return;
                         }
                         else
@@ -699,7 +699,7 @@
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'regexp')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return alert(LanguageService('Input cannot be changed to other forms of input.'));
                             }
 
                             input.regexp = value.replace(/\//gi, '');
@@ -712,7 +712,7 @@
                     {
                         if (checkDuplicateInput(e.currentTarget, 'if'))
                         {
-                            alert('이미 조건식 형태의 Input이 추가되어 있습니다');
+                            alert(LanguageService('Conditional Expression is applied as the form of input.'));
                             e.preventDefault();
                         }
                         else
@@ -720,7 +720,7 @@
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'if')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return alert(LanguageService('Conditional Expression is applied as the form of input.'));
                             }
 
                             input.if = value.replace('if(', '').replace(')', '');
@@ -733,14 +733,17 @@
                     {
                         if(input.text && key != 'text')
                         {
-                            return alert('이미 텍스트 형태의 Input이 추가되어 있습니다');
+                            e.stopPropagation();
+                            e.preventDefault();
+
+                            return alert(LanguageService('Text is applied as the form of input.'));
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'text')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return alert(LanguageService('Input cannot be changed to other forms of input.'));
                             }
 
                             input.text = value;
@@ -767,7 +770,7 @@
                     if(input.intent && key != 'intent')
                     {
                         //이미 추가된게 있으면 추가 할 수 없게 함.
-                        alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
+                        alert(LanguageService('Intent is applied as the form of input.'));
                         e.preventDefault();
                         e.stopPropagation();
                         return;
@@ -854,8 +857,9 @@
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'entities')
                         {
-                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                            return e.preventDefault();
+                            // alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            // return e.preventDefault();
+                            return e.currentTarget.blur();
                         }
 
                         addOrPushData(input, 'entities', value);
@@ -866,16 +870,18 @@
                         if(checkDuplicateInput(e.currentTarget, 'intent'))
                         {
                             //이미 추가된게 있으면 추가 할 수 없게 함.
-                            alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
-                            e.preventDefault();
+                            // alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
+                            // e.preventDefault();
+                            e.currentTarget.blur();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'intent')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                // return e.preventDefault();
+                                return e.currentTarget.blur();
                             }
 
                             input.intent = value;
@@ -889,8 +895,9 @@
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'types')
                         {
-                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                            return e.preventDefault();
+                            // alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            // return e.preventDefault();
+                            e.currentTarget.blur();
                         }
 
                         addOrPushData(input, 'types', value.replace('$', ''));
@@ -900,18 +907,20 @@
                     {
                         if(checkDuplicateInput(e.currentTarget, 'regexp'))
                         {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            alert('이미 정규식 형태의 Input이 추가되어 있습니다');
-                            return;
+                            // e.preventDefault();
+                            // e.stopPropagation();
+                            // alert('이미 정규식 형태의 Input이 추가되어 있습니다');
+                            // return;
+                            return e.currentTarget.blur();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'regexp')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                // return e.preventDefault();
+                                return e.currentTarget.blur();
                             }
 
                             input.regexp = value.replace(/\//gi, '');
@@ -924,16 +933,18 @@
                     {
                         if (checkDuplicateInput(e.currentTarget, 'if'))
                         {
-                            alert('이미 조건식 형태의 Input이 추가되어 있습니다');
-                            e.preventDefault();
+                            // alert('이미 조건식 형태의 Input이 추가되어 있습니다');
+                            // e.preventDefault();
+                            e.currentTarget.blur();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'if')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                // return e.preventDefault();
+                                return e.currentTarget.blur();
                             }
 
                             input.if = value.replace('if(', '').replace(')', '');
@@ -946,16 +957,16 @@
                     {
                         if(input.text && key != 'text')
                         {
-                            alert('이미 텍스트 형태의 Input이 추가되어 있습니다');
-                            e.preventDefault();
+                            e.currentTarget.blur();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'text')
                             {
-                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                return e.preventDefault();
+                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                // return e.preventDefault();
+                                return e.currentTarget.blur();
                             }
 
                             if(value)

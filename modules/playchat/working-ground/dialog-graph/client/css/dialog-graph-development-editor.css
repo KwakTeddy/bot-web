@@ -479,9 +479,19 @@
     height: 150px;
 }
 
+.dialog-editor-row .select-wrapper::after
+{
+    right: 20px;
+    top: 2px;
+}
+
+.dialog-editor-row .select-wrapper.disabled::after
+{
+    background-color: #ddd;
+}
+
 .dialog-editor-action-type
 {
-    width: 30%;
     margin-right: 16px;
 }
 

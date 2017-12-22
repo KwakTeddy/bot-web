@@ -34,12 +34,14 @@
         <div class="form-row">
             <label class="required">
                 <span class="form-title">Language</span>
-                <select class="jumbo-select" ng-model="user.language" style="height: 33px;">
-                    <option value="ko">{{ lan('Korean') }}</option>
-                    <option value="en">{{ lan('English') }}</option>
-                    <option value="zh">{{ lan('Chinese') }}</option>
-                    <option value="jp">{{ lan('Japanese') }}</option>
-                </select>
+                <div class="select-wrapper">
+                    <select class="jumbo-select" ng-model="user.language" style="height: 33px;">
+                        <option value="ko">{{ lan('Korean') }}</option>
+                        <option value="en">{{ lan('English') }}</option>
+                        <option value="zh">{{ lan('Chinese') }}</option>
+                        <option value="jp">{{ lan('Japanese') }}</option>
+                    </select>
+                </div>
             </label>
         </div>
         <div class="tab-footer" style="border-top: 0;">

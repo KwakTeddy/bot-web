@@ -163,12 +163,14 @@
                 <h2 style="border-bottom: 1px solid #ddd; padding: 10px 0;">{{lan('Open Dialogset') }}</h2>
             </div>
             <div ng-show="!openModal.isCreate">
-                <div style="padding: 30px 0;text-align: center;">
-                    <select class="jumbo-select" style="font-size: 12px; width: 150px;" ng-change="createNewDialogset();" ng-model="openModal.selectedDialogset">
-                        <option value="" disabled>{{lan('Choose Dialogset')}}</option>
-                        <option value="create-new">{{lan('Add New')}}</option>
-                        <option ng-repeat="dialogset in openModal.dialogsetList" value="{{ dialogset._id }}">{{ dialogset.title }}</option>
-                    </select>
+                <div style="padding: 30px 0;">
+                    <div class="select-wrapper">
+                        <select class="jumbo-select" style="font-size: 12px; width: 150px;" ng-change="createNewDialogset();" ng-model="openModal.selectedDialogset">
+                            <option value="" disabled>{{lan('Choose Dialogset')}}</option>
+                            <option value="create-new">{{lan('Add New')}}</option>
+                            <option ng-repeat="dialogset in openModal.dialogsetList" value="{{ dialogset._id }}">{{ dialogset.title }}</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div style="text-align: center;">

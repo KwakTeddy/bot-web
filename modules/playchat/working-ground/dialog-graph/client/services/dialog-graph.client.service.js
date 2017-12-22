@@ -1678,18 +1678,57 @@
             this.onLoadCallback = undefined;
         };
 
+        var deleteCircular = function(list)
+        {
+            for(var index=0; index<list.length; index++)
+            {
+                var json = list[index];
+                for(var key in json)
+                {
+                    if(typeof json[key] == 'function')
+                    {
+                        delete json[key];
+                    }
+                    else if(json[key].length > 0)
+                    {
+                        for(var i=0; i<json[key].length; i++)
+                        {
+                            deleteCircular(json[key][i]);
+                        }
+                    }
+                }
+            }
+        };
+
+        var checkDuplicateName = function(name, list)
+        {
+            for(var i=0; i<list.length; i++)
+            {
+                var dialog = list[i];
+
+                if(dialog.name == name)
+                {
+                    return true;
+                }
+                else if(dialog.children)
+                {
+                    return checkDuplicateName(name, dialog.children);
+                }
+            }
+
+            return false;
+        };
+
         DialogGraph.prototype.getRandomName = function()
         {
             var name = 'New Dialog';
 
-            var strings = JSON.stringify(this.userDialogs);
-
-            if(!strings)
+            if(!checkDuplicateName(name, this.userDialogs))
                 return name;
 
             for(var i=1;; i++)
             {
-                if(strings.indexOf(name + i) == -1)
+                if(!checkDuplicateName(name + i, this.userDialogs))
                 {
                     return name + i;
                 }

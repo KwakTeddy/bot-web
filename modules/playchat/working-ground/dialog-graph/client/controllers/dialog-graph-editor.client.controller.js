@@ -126,6 +126,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 $scope.dialog.output = [];
                 $scope.dialog.task = dialog.task;
 
+                if(dialog.task)
+                {
+                    $scope.isAdvancedMode = true;
+                }
+
                 if(!$scope.dialog.input.length)
                 {
                     for(var key in $scope.dialog.input)

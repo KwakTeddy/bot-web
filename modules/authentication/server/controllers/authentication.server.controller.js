@@ -359,7 +359,7 @@ module.exports.forgot = function (req, res, next)
             {
                 name: user.displayName,
                 appName: config.app.title,
-                url: httpTransport + req.headers.host + '/api/auth/reset/' + token + '/password'
+                url: httpTransport + req.headers.host + '/auth/reset/' + token + '/password'
             },
             function (err, emailHTML)
             {

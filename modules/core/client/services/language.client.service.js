@@ -212,6 +212,18 @@
                 "jp": "カカオトークを通じてすでにログインできている状態です。",
                 "zh": "您已经通过Kakaotalk账号进行了登录。"
             },
+            "Your account is signed up from google.": {
+                "ko": "구글을 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "Your account is signed up from google.",
+                "jp": "あなたのアカウントはGoogleからサインアップされています。",
+                "zh": "您已经通过Google账号进行了登录。"
+            },
+            "Your account is signed up from facebook.": {
+                "ko": "페이스북 통해 이미 로그인 되어 있는 상태입니다.",
+                "en": "Your account is signed up from facebook.",
+                "jp": "あなたのアカウントはFacebookからサインアップされています。",
+                "zh": "您已经通过Facebook账号进行了登录。"
+            },
             "Email is not found.": {
                 "ko": "등록된 이메일이 없습니다.",
                 "en": "Email is not found.",
@@ -386,11 +398,11 @@
                 "jp": "作り",
                 "zh": "创建"
             },
-            " 머니브레인 MoneyBrain\"": {
-                "ko": "\"아테나 Athena - 인공지능 챗봇 플랫폼",
-                "en": " 머니브레인 MoneyBrain\"",
-                "jp": "\"Athena - Conversational A.I. Platform",
-                "zh": " MoneyBrain\""
+            " 머니브레인 MoneyBrain": {
+                "ko": "아테나 Athena - 인공지능 챗봇 플랫폼",
+                "en": " 머니브레인 MoneyBrain",
+                "jp": "Athena - Conversational A.I. Platform",
+                "zh": " MoneyBrain"
             },
             "Docs": {
                 "ko": "Docs",
@@ -483,7 +495,7 @@
                 "zh": "实体"
             },
             "Task": {
-                "ko": "테스크",
+                "ko": "태스크",
                 "en": "Task",
                 "jp": "タスク",
                 "zh": "任务"
@@ -1065,7 +1077,7 @@
                 "zh": "删除"
             },
             "Task Name": {
-                "ko": "테스크 이름",
+                "ko": "태스크 이름",
                 "en": "Task Name",
                 "jp": "タスクの名前",
                 "zh": "任务名称"
@@ -1164,7 +1176,7 @@
                 "ko": "대화량 (30일)",
                 "en": "Number of Dialogs(30days)",
                 "jp": "デファリャン(30日)",
-                "zh": "对话量（最近30天）"
+                "zh": "对话量(近30天)"
             },
             "Number of Cumulated Users": {
                 "ko": "누적 이용자",
@@ -1208,9 +1220,9 @@
                 "jp": "失敗",
                 "zh": "失败"
             },
-            "Top 10 Most Frequently Used Input": {
+            "Most Frequently Used Input": {
                 "ko": "사용자 입력 TOP 10",
-                "en": "Top 10 Most Frequently Used Input",
+                "en": "Most Frequently Used Input",
                 "jp": "ユーザ入力TOP 10",
                 "zh": "最常用的输入前10"
             },
@@ -2607,6 +2619,177 @@
                 "en": "Type the Entity Name",
                 "jp": "エンティティ名を入力します。",
                 "zh": "输入实体名称"
+            },
+
+
+            //guide
+            "Move to next or previous editor": {
+                "ko": "다음이나 이전으로 이동하기",
+                "en": "Move to next or previous editor",
+                "jp": "Move to next or previous editor",
+                "zh": "把光标移动到下一个/上一个输入框"
+            },
+            "Move to Dialog Graph": {
+                "ko": "대화 그래프로 이동하기",
+                "en": "Move to Dialog Graph",
+                "jp": "Move to Dialog Graph",
+                "zh": "转到对话框图"
+            },
+            "Navigate Dialog": {
+                "ko": "다이얼로그 네이게이션",
+                "en": "Navigate Dialog",
+                "jp": "Navigate Dialog",
+                "zh": "导航对话框"
+            },
+            "Move Dialog Up/Down": {
+                "ko": "다이얼로그 위/아래로 옮기기",
+                "en": "Move Dialog Up/Down",
+                "jp": "Move Dialog Up/Down",
+                "zh": "向上/向下移动对话框"
+            },
+            "Open Edit Dialog": {
+                "ko": "다이얼로그 수정하기",
+                "en": "Open Edit Dialog",
+                "jp": "Open Edit Dialog",
+                "zh": "打开编辑对话"
+            },
+            "Cancel Edit": {
+                "ko": "수정 취소",
+                "en": "Cancel Edit",
+                "jp": "Cancel Edit",
+                "zh": "取消修改"
+            },
+            "Add Child dialog": {
+                "ko": "Child 다이얼로그 추가하기",
+                "en": "Add Child dialog",
+                "jp": "Add Child dialog",
+                "zh": "添加子对话框"
+            },
+            "Add Sibling dialog": {
+                "ko": "Sibling 다이얼로그 추가하기",
+                "en": "Add Sibling dialog",
+                "jp": "Add Sibling dialog",
+                "zh": "添加姊妹对话框"
+            },
+            "Delete Dialog": {
+                "ko": "다이얼로그 삭제",
+                "en": "Delete Dialog",
+                "jp": "Delete Dialog",
+                "zh": "删除对话框"
+            },
+            "Expand/Collapse Child Dialog": {
+                "ko": "Child 다이얼로그 늘이기/줄이기",
+                "en": "Expand/Collapse Child Dialog",
+                "jp": "Expand/Collapse Child Dialog",
+                "zh": "展开/折叠子对话框"
+            },
+            "Dialog Graph Editor ShortCut": {
+                "ko": "대화 그래프 수정 바로가기",
+                "en": "Dialog Graph Editor ShortCut",
+                "jp": "Dialog Graph Editor ShortCut",
+                "zh": "对话框图编辑快捷方式"
+            },
+            "Move focus to next input": {
+                "ko": "다음 인풋으로 이동하기",
+                "en": "Move focus to next input",
+                "jp": "Move focus to next input",
+                "zh": "把光标移动到下一个输入框"
+            },
+            "Add input or output": {
+                "ko": "인풋과 아웃풋 추가하기",
+                "en": "Add input or output",
+                "jp": "Add input or output",
+                "zh": "添加输入/输出"
+            },
+            "Choose a file": {
+                "ko": "파일 선택",
+                "en": "Choose a file",
+                "jp": "ファイルを選択する",
+                "zh": "选择文件"
+            },
+            "Change your password": {
+                "ko": "비밀번호를 변경해주세요",
+                "en": "Change your password",
+                "jp": "パスワードを変更してください",
+                "zh": "更改您的密码"
+            },
+            "Password Confirm": {
+                "ko": "비밀번호 확인",
+                "en": "Password Confirm",
+                "jp": "パスワード確認",
+                "zh": "确认密码"
+            },
+            "Change": {
+                "ko": "변경하기",
+                "en": "Change",
+                "jp": "変化する",
+                "zh": "更改"
+            },
+            "Dialog Graph Code Editor Shortcut": {
+                "ko": "Dialog Graph Code Editor Shortcut",
+                "en": "Dialog Graph Code Editor Shortcut",
+                "jp": "Dialog Graph Code Editor Shortcut",
+                "zh": "转到对话框图代码"
+            },
+            "Move to previous or next tab": {
+                "ko": "Move to previous or next tab",
+                "en": "Move to previous or next tab",
+                "jp": "Move to previous or next tab",
+                "zh": "移动到之前或者下一个tab"
+            },
+            "Dialog Set Shortcut": {
+                "ko": "Dialog Set Shortcut",
+                "en": "Dialog Set Shortcut",
+                "jp": "Dialog Set Shortcut",
+                "zh": "对话框设置快捷方式"
+            },
+            "Add Multi Input or Output": {
+                "ko": "multi input/output 추가",
+                "en": "Add Multi Input or Output",
+                "jp": "Add Multi Input or Output",
+                "zh": "对话框设置快捷方式"
+            },
+            "Move focus to upper or lower input": {
+                "ko": "Move focus to upper or lower input",
+                "en": "Move focus to upper or lower input",
+                "jp": "Move focus to upper or lower input",
+                "zh": "将光标移动到上一个或者下一个输入"
+            },
+            "Delete multi Input or Output": {
+                "ko": "Delete multi Input or Output",
+                "en": "Delete multi Input or Output",
+                "jp": "Delete multi Input or Output",
+                "zh": "删除多输入或者输出"
+            },
+            "Move focus to simulator input": {
+                "ko": "Move focus to simulator input",
+                "en": "Move focus to simulator input",
+                "jp": "Move focus to simulator input",
+                "zh": "将光标移动到模拟输入"
+            },
+            "Move focus to dialog graph or dialog set": {
+                "ko": "Move focus to dialog graph or dialog set",
+                "en": "Move focus to dialog graph or dialog set",
+                "jp": "Move focus to dialog graph or dialog set",
+                "zh": "将光标移动到对话框图或者对话集处"
+            },
+            "Reset simulator": {
+                "ko": "Reset simulator",
+                "en": "Reset simulator",
+                "jp": "Reset simulator",
+                "zh": "重置模拟器"
+            },
+            "Save & Reset simulator": {
+                "ko": "Save & Reset simulator",
+                "en": "Save & Reset simulator",
+                "jp": "Save & Reset simulator",
+                "zh": "保存并重置模拟器"
+            },
+            "Only Javascript files are allowed!": {
+                "ko": "자바스크립트 파일만 업로드 할 수 있습니다!",
+                "en": "Only Javascript files are allowed!",
+                "zh": "请不要上传非Javascript格式的文件！",
+                "jp": "Javascriptファイルのみが許可されています！"
             }
         };
 

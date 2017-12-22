@@ -11,7 +11,6 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
     (function()
     {
-        var updateTarget = undefined;
         var mgmtModal = new ModalService('mgmtModal', $scope);
         mgmtModal.setOpenCallback(function()
         {
@@ -75,12 +74,22 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
                 params.path = modal.data.path;
                 params.fileName = fileName;
             }
-
-            DialogGraphsService.save(params, function(result)
+            else if($scope.uploadError)
             {
-                $scope.dialogGraphs.unshift(result.fileName);
-                modal.close();
-            });
+                return alert(LanguageService($scope.uploadError));
+            }
+
+            // DialogGraphsService.save(params, function(result)
+            // {
+            //     $scope.dialogGraphs.unshift(result.fileName);
+            //     var inputs = document.querySelectorAll( '.inputfiles' );
+            //     Array.prototype.forEach.call( inputs, function( input ) {
+            //         var label = input.nextElementSibling,
+            //             labelVal = LanguageService('Choose a file');
+            //         label.innerHTML = labelVal;
+            //     });
+            //     modal.close();
+            // });
         };
 
         $scope.save = function(modal)
@@ -92,6 +101,7 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
                 {
                     if(confirm($scope.lan('Filename is duplicated. Keep going?')))
                     {
+
                         saveFunc(modal);
                     }
                     else
@@ -136,6 +146,27 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
             }
         };
 
+        var inputs = document.querySelectorAll( '.inputfiles' );
+        Array.prototype.forEach.call( inputs, function( input ) {
+            var label = input.nextElementSibling,
+                labelVal = LanguageService('Choose a file');
+            label.innerHTML = labelVal;
+            input.addEventListener( 'change', function( e ) {
+                var fileName = '';
+                if( this.files && this.files.length > 1 )
+                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else
+                    fileName = e.target.value.split( '\\' ).pop();
+
+                if( fileName )
+                {
+                    label.innerHTML = fileName;
+                }
+                else label.innerHTML = labelVal;
+            });
+        });
+
+
         $scope.uploader = new FileUploader({
             url: '/api/' + chatbot.id + '/dialog-graphs/uploadfile',
             alias: 'uploadFile',
@@ -144,12 +175,13 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
         $scope.uploader.onErrorItem = function(item, response, status, headers)
         {
-            $scope.modalForm.fileUploadError = response.message;
-            console.log($scope.modalForm.fileUploadError);
+            $scope.uploadError = response.message;
+            alert(LanguageService(response.message));
         };
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers)
         {
+            $scope.uploadError = '';
             importModal.data.path = response.path;
             importModal.data.fileName = response.fileName;
         };

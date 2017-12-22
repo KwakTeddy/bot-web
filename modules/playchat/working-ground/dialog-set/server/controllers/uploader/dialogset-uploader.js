@@ -239,9 +239,9 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     dialogset: dialogset,
                     id: countId,
                     tag: [],
-                    inputRaw: input,
-                    input: result,
-                    output: output,
+                    inputRaw: [input],
+                    input: [result],
+                    output: [output],
                     context: context
                 });
 

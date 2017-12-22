@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', 'LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
+angular.module('playchat').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', 'LanguageService', 'ExcelDownloadService','$rootScope', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService,$rootScope)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Entity'), '/modules/playchat/gnb/client/imgs/entity.png');
 
@@ -201,6 +201,13 @@ angular.module('playchat').controller('EntityManagementController', ['$window', 
             EntityService.save(params, function(result)
             {
                 $scope.entitys.unshift(result);
+                var inputs = document.querySelectorAll( '.inputfile' );
+                Array.prototype.forEach.call( inputs, function( input ) {
+                    var label = input.nextElementSibling,
+                        labelVal = LanguageService('Choose a file');
+                    label.innerHTML = labelVal;
+                });
+
                 modal.close();
             },
             function(err)
@@ -364,6 +371,27 @@ angular.module('playchat').controller('EntityManagementController', ['$window', 
             tr.parentElement.removeChild(tr);
         };
 
+
+        var inputs = document.querySelectorAll( '.inputfile' );
+        Array.prototype.forEach.call( inputs, function( input ) {
+            var label = input.nextElementSibling,
+                labelVal = LanguageService('Choose a file');
+                label.innerHTML = labelVal;
+            input.addEventListener( 'change', function( e ) {
+                var fileName = '';
+                if( this.files && this.files.length > 1 )
+                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else
+                    fileName = e.target.value.split( '\\' ).pop();
+
+                if( fileName )
+                {
+                    label.innerHTML = fileName;
+                    }
+                else label.innerHTML = labelVal;
+            });
+        });
+
         $scope.uploader = new FileUploader({
             url: '/api/dialogsets/uploadfile',
             alias: 'uploadFile',
@@ -378,12 +406,14 @@ angular.module('playchat').controller('EntityManagementController', ['$window', 
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers)
         {
-            console.log('성공 : ', item, response, status, headers);
+                console.log('성공 : ', item, response, status, headers);
 
             importModal.data.path = response.path;
             importModal.data.filename = response.filename;
 
             console.log(importModal);
+            console.log("fileItemfilename:"+response.filename);
+
         };
 
         $scope.exelDownload = function()
@@ -407,8 +437,30 @@ angular.module('playchat').controller('EntityManagementController', ['$window', 
         $scope.uploader.onProgressItem = function(fileItem, progress)
         {
             angular.element('.form-box-progress').css('width', progress + '%');
+
         };
     })();
+
+    //file name
+    // var inputs = document.querySelectorAll( '.inputfile' );
+    // Array.prototype.forEach.call( inputs, function( input ) {
+    //     var label = input.nextElementSibling,
+    //         labelVal = label.innerHTML;
+    //     input.addEventListener( 'change', function( e ) {
+    //         var fileName = '';
+    //         if( this.files && this.files.length > 1 )
+    //             fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+    //         else
+    //             fileName = e.target.value.split( '\\' ).pop();
+    //
+    //         if( fileName )
+    //         {
+    //             label.innerHTML = fileName;
+    //             }
+    //         else label.innerHTML = labelVal;
+    //     });
+    // });
+
 
     // initialize
     $scope.getList();

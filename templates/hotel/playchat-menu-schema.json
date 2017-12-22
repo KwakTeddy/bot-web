@@ -11,6 +11,6 @@
             { "name" : "Manage Dining", "url" : "/templates/contents/restaurant", "icon" : "restaurant.png" },
             { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
         ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
     ]
 }
