@@ -36,7 +36,17 @@
     margin-bottom: 5px;
 }
 
-.topic-area > div > div > select
+.topic-area > div > div .select-wrapper
+{
+    width: 100%;
+}
+
+.topic-area > div > div .select-wrapper::after
+{
+    right: 10px;
+}
+
+.topic-area > div > div select
 {
     width: 100%;
     border-radius: 6px;
