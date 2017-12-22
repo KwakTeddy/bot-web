@@ -69,7 +69,6 @@ body {
 	font-size: 15px;
 	line-height: 20px;
 	color: #738191;
-	min-width: 1024px;
 }
 
 .floatleft {
@@ -468,9 +467,9 @@ header nav#navbar ul.sub-menu > li.subPar > a:after {
 .sub-menu {
 	z-index: 9999999999!important
 }
-/*
+
 @media only screen and (min-width: 992px) and (max-width: 6000px) {
-	/*for dropdown
+	/*for dropdown*/
 	
 	.subPar > a {
 	position: relative;
@@ -631,7 +630,7 @@ header nav#navbar ul.sub-menu > li.subPar > a:after {
 	#nav > li ul.sub-menu li:last-child {
 		border-bottom: 2px solid !important
 	}
-}*/
+}
 
 
 /*mega menu*/
@@ -774,12 +773,14 @@ header nav#navbar ul > li.dropdown-megamenu:hover::before {
 @media only screen and (min-width: 0px) and (max-width: 991px) {
 	.menuCol {
 		position: relative;
+		float: right;
+		width: 4%;
 	}
 	.navbar-header {
 		position: absolute;
-		right: 75px;
+		right: 0;
 		top: 0;
-		z-index: 9
+		z-index: 9;
 	}
 	header nav#navbar {
 		background: #233141;
@@ -862,6 +863,7 @@ header nav#navbar ul > li.dropdown-megamenu:hover::before {
 		display: none;
 	}
 }
+
 
 header a.cart {
 	color: #8697aa;
@@ -1643,13 +1645,14 @@ form.domainForm {
 	border-right-color: #e8e8e8;
 }
 
-.singlePrice.active,
-.priceCol:last-child .singlePrice.active {
+.singlePrice:hover,
+.priceCol:last-child .singlePrice:hover {
 	padding: 40px 0;
 	z-index: 1;
 	margin-top: -20px;
 	margin: 0;
-	border: 1px solid;
+	border:#288feb 1px solid;
+	box-shadow: 0 0 2px #288feb;
 }
 
 .priceTitle {
@@ -4002,8 +4005,6 @@ span.closeIcon,
 	color: #288feb
 }
 
-.singlePrice.active,
-.priceCol:last-child .singlePrice.active,
 .checkoutWrep .row > div input:focus,
 .commentInput > *:focus,
 .fileInput:hover,
@@ -4018,8 +4019,8 @@ span.closeIcon,
 
 /*border color*/
 
-.singlePrice.active,
-.priceCol:last-child .singlePrice.active,
+
+
 #nav > li > ul.sub-menu li,
 #nav > li ul.sub-menu li:first-child,
 #nav > li ul.sub-menu li:last-child,
@@ -4125,8 +4126,7 @@ header .topInfo li.clientAreaLi span,
 	transition: .4s;
 }
 .clientwidth{
-	width: 25.3%;
-    margin: 0 47px;
+	width: 295px;
 }
 
 .startBtn {
@@ -4156,4 +4156,117 @@ header .topInfo li.clientAreaLi span,
 .startBtn:hover{
 	-webkit-transition: .4s;
 	transition: .4s;
+}
+@media screen and (min-width:1200px) {
+	.clientwidth{
+
+		margin: 0 47px;
+	}
+}
+@media screen and (max-width:1199px) and (min-width:990px) {
+	.clientwidth{
+		margin: 0 14px;
+	}
+	.menuCol{
+		width: 520px;
+	}
+	.sectionTitle .h2{
+		line-height: 44px;
+	}
+}
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+	.sectionTitle .h2{
+		font-size: 29px;
+		line-height: 40px;
+	}
+	.clientwidth{
+		margin: 0 5px;
+		padding: 0px;
+		width: 240px;
+	}
+	.cartCol{
+		width: 116px;
+		float: left;
+		margin-left: 30%;
+		line-height: 40px;
+	}
+	.startBtn{
+		float: right;
+		margin-right: 10px;
+	}
+	.ctaCol .h2{
+		font-size: 28px;
+		width: auto;
+	}
+	}
+@media only screen and (max-width: 767px) and (min-width: 480px){
+	.clientwidth{
+		margin: 8px 100px;
+		padding: 0px;
+		width: 260px;
+	}
+	.col-md-2{
+		width: 39%;
+	}
+	.singleClient{
+		width: 260px;
+	}
+	.cartCol{
+		margin-left: 5%;
+		line-height: 34px;
+		width: 116px;
+		float: left;
+	}
+	.startBtn{
+		line-height: 36px;
+		min-width: 132px;
+		float: right;
+	}
+	.ctaCol .h2{
+		font-size: 23px;
+		width: inherit;
+	}
+	.ctaTxt p{
+		font-size: 15px;
+		line-height: 25px;
+	}
+	.singleService{
+		padding: 40px 0;
+		margin: 0;
+	}
+}
+
+@media only screen and (max-width: 479px) {
+	.clientwidth {
+		margin: 8px 12px;
+	}
+	.startBtn{
+		line-height: 37px;
+		min-width: 124px;
+		float: right;
+		font-size: 12px;
+	}
+	.cartCol{
+		margin-left: 5%;
+		line-height: 34px;
+		width: 116px;
+		float: left;
+	}
+	.logo-stable{
+		width: 54%;
+	}
+	.menuCol{
+		display: none;
+	}
+	.cartCol{
+		display: none;
+	}
+	.ctaCol .h2{
+		font-size: 23px;
+		width: inherit;
+	}
+	.ctaTxt p{
+		font-size: 15px;
+		line-height: 25px;
+	}
 }

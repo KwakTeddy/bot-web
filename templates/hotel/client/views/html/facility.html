@@ -8,14 +8,18 @@
 
     .template-body
     {
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
     }
 
     .template-body input
     {
         border: 1px solid #ddd;
-        padding: 10px 20px;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 80%;
     }
 </style>
 
@@ -25,11 +29,11 @@
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
                 <col style="width: 10%;">
+                <col style="width: 12%;">
+                <col style="width: 30%;">
                 <col style="width: 10%;">
                 <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
+                <col style="width: 18%;">
                 <col style="width: 10%;">
             </colgroup>
             <thead>
@@ -40,6 +44,7 @@
                 <th>규모</th>
                 <th>수용 가능 인원수</th>
                 <th>시설 이미지</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -48,10 +53,10 @@
                     <input type="text" ng-model="data.category_name">
                 </td>
                 <td>
-                    <input type="text" ng-model="data.facility_introduction">
+                    <input type="text" ng-model="data.facility_introduction" style="width: 83%;">
                 </td>
                 <td>
-                    <input type="text" ng-model="data.facility_location">
+                    <input type="text" ng-model="data.facility_location" style="width: 93%;">
                 </td>
                 <td>
                     <input type="text" ng-model="data.facility_size">
@@ -61,20 +66,20 @@
                 </td>
                 <td>
                     <img src="{{ data.facility_image }}" style="width: 50px;" ng-if="data.facility_image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.facility_image" />
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.facility_image" style="border: none;"/>
                 </td>
                 <td>
-                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                    <button type="button" class="default-button" ng-click="delete($index)" style="width: 70px;">삭제</button>
                 </td>
             </tr>
             <tr>
-                <td colspan="5">
+                <td colspan="7">
                     <button type="button" class="default-button" ng-click="add();">시설 추가</button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="tab-footer" style="border-top: 0;">
+        <div class="tab-footer" style="border-top: 0;float: right;">
             <button class="blue-button">Save</button>
         </div>
     </form>

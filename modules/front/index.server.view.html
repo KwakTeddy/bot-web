@@ -3,7 +3,6 @@
     <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <meta name="viewport" content="width=1400px,target-densitydpi=device-dpi">
     <title>{{L001}}</title>
 
@@ -21,14 +20,15 @@
 
     <!-- main css file -->
     <link rel="stylesheet" href="/front/css/custom/style.css">
-	<!-- responsive css file
-    <link rel="stylesheet" href="/front/css/responsive/responsive.css">-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- responsive css file-->
+    <link rel="stylesheet" href="/front/css/responsive/responsive.css">
     <!-- favicon -->
     <link rel="icon" type="image/png" href="/front/img/favicon.png">
 	<link rel="stylesheet" href="/front/css/header.css">
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Facebook Pixel Code -->
     <script>
@@ -40,11 +40,11 @@
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '874201392715500');
+        fbq('init', '353642205046277');
         fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=874201392715500&ev=PageView&noscript=1"
-    /></noscript>
+
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=353642205046277&ev=PageView&noscript=1"/></noscript>
     <!-- End Facebook Pixel Code -->
     </head>
     <body class="home">
@@ -89,7 +89,7 @@
     	<div class="headerBottomArea stick-fixed">
     		<div class="container">
     			<div class="row">
-    				<div class="col-md-2 col-sm-3 col-xs-9">
+    				<div class="col-md-2 col-sm-3 col-xs-9 logo-stable">
     					<a href="/" class="logo"><img src="/front/img/logo.png" alt=""></a>
     				</div>
     				<div class="col-md-7 menuCol col-sm-9 col-xs-9">
@@ -139,8 +139,7 @@
                             {{L018}}
 						</p>
     					<div class="homeBtn">
-    						<a href="/playchat/chatbots" class="btnOne Btn" id="apply"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
-                            <a class="btnOne Btn" href="https://docs.google.com/forms/d/e/1FAIpQLScrv-_ZDFIwXQfWt2kK3k6O5oplSjiDxxyJYUpUDd9biXx7Mw/viewform" target="_blank" style="display: none;">무료로 교육 신청하기</a>
+    						<a href="/playchat/chatbots" class="btnOne Btn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
     						<!--<a href="#" class="btnTwo Btn">check pricing</a>-->
     					</div>
     				</div>
@@ -462,11 +461,11 @@
     			</div>
     			<div class="col-sm-3">
     				<div class="widget">
-    					<div class="h4">{{L085}}</div>
+    					<div class="h4">Company</div>
 						<ul class="footerLink">
 							<li><a href="http://moneybrain.ai/" target="_blank">{{L086}}</a></li>
 							<li><a href="javascript:alert( '{{L087}}' );">{{L088}}</a></li>
-							<li><a href="https://business.facebook.com/Playchatai/?business_id=1772927272964426&ref=bookmarks">{{L089}}</a></li>
+							<li><a href="https://business.facebook.com/Playchatai/?business_id=1772927272964426&ref=bookmarks">Facebook</a></li>
 						</ul>
     				</div>
     			</div>
@@ -536,13 +535,9 @@
                 {
                     $('#policyModal').modal('show');
                 });
-
-                console.log('모지');
-                $('#apply').hide().next().show();
             }
             else
             {
-                $('#apply').show().next().hide();
                 $('#openPolicy').parent().parent().parent().remove();
             }
         });

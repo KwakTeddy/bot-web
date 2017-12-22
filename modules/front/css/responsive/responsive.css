@@ -279,7 +279,7 @@
 		padding: 60px 0;
 	}
 	.sectionTitle .h2 {
-		line-height: 30px;
+
 	}
 	.singleAboutService,.singleTeam,.col-md-4:nth-child(3) .singleTeam {
 		margin-top: 40px;
@@ -522,8 +522,8 @@ px      68    160    252    344    436    528    620    712    */
 	}
 
 	.sectionTitle .h2 {
-		font-size: 20px;
-		line-height: 24px;
+		font-size: 22px;
+		line-height: 29px;
 	}
 
 	.sectionTitle {
@@ -594,8 +594,8 @@ px      68    160    252    344    436    528    620    712    */
 	}
 
 	.singleClient {
-		height: 65px;
-		margin-top: 50px
+
+
 	}
 
 	.col-xs-6:nth-child(1) .singleClient,

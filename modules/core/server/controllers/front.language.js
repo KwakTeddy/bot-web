@@ -94,11 +94,11 @@ module.exports = function(code)
             "Terms":"",
             "Conditions":"",
             "Licenses":"",
-            "L085":"회사",
+            "L085":"Company",
             "L086":"",
             "L087":"",
             "L088":"",
-            "L089":"페이스북",
+            "L089":"",
             "L090":""
         },
         en: {

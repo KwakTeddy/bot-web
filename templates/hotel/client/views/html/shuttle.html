@@ -24,8 +24,8 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width: 45%;">
-                <col style="width: 45%;">
+                <col style="width: 40%;">
+                <col style="width: 50%;">
                 <col style="width: 10%;">
             </colgroup>
             <thead>
@@ -42,10 +42,10 @@
                 </td>
                 <td>
                     <img src="{{ data.shuttleimage }}" style="width: 50px;" ng-if="data.shuttleimage" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.shuttleimage" />
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.shuttleimage" style="border: none;"/>
                 </td>
                 <td>
-                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                    <button type="button" class="default-button" ng-click="delete($index)" style="width: 70px;" >삭제</button>
                 </td>
             </tr>
             <tr>
@@ -55,7 +55,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="tab-footer" style="border-top: 0;">
+        <div class="tab-footer" style="border-top: 0;float: right;">
             <button class="blue-button">Save</button>
         </div>
     </form>

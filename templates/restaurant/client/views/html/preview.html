@@ -8,14 +8,18 @@
 
     .template-demo-data
     {
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
     }
 
     .template-demo-data input
     {
         border: 1px solid #ddd;
-        padding: 10px 20px;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 90%;
     }
 </style>
 
@@ -25,10 +29,10 @@
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
                 <col style="width: 20%;">
+                <col style="width: 10%;">
+                <col style="width: 40%;">
                 <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
+                <col style="width: 10%;">
             </colgroup>
             <thead>
             <tr>
@@ -36,6 +40,7 @@
                 <th>이름</th>
                 <th>설명</th>
                 <th>이미지</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -51,10 +56,10 @@
                 </td>
                 <td>
                     <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
-                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                    <input style="border: none;" type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
                 </td>
                 <td>
-                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                    <button style="width: 70px;" type="button" class="default-button" ng-click="delete($index)">삭제</button>
                 </td>
             </tr>
             <tr>
@@ -64,7 +69,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="tab-footer" style="border-top: 0;">
+        <div class="tab-footer" style="border-top: 0;float: right;">
             <button class="blue-button">Save</button>
         </div>
     </form>

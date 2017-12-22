@@ -301,12 +301,12 @@ var dialogs = [
         ],
         "task": "menuCategoryAction",
         "output": [
+            // {
+            //     "if": "context.dialog.restaurantno == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == \"\")",
+            //     "output": "아직 메뉴를 등록하지 않았습니다."
+            // },
             {
-                "if": "context.dialog.restaurantno == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == \"\")",
-                "output": "아직 메뉴를 등록하지 않았습니다."
-            },
-            {
-                "if": "context.dialog.restaurantno == 1 && context.bot.menuImage != undefined",
+                "if": "context.dialog.restaurantno == 1 && context.bot.image != undefined",
                 "task": "menuImageTask",
                 "output": "[메뉴판보기]"
             },
