@@ -161,7 +161,7 @@
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
                     <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="(dialog.output.length == 1 && dialog.output[0].kind == 'Action') || isUseOutput === false" ng-click="useAction($event);" tabindex="-1"> Action</p>
                     <div style="padding: 8px 12px;">
-                        <div class="select-wrapper">
+                        <div class="select-wrapper" ng-class="isUseOutput === true ? 'disabled': ''">
                             <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type" ng-change="actionValueChanged(dialog.actionOutput);">
                                 <option value="">none</option>
                                 <option value="call">Call</option>
