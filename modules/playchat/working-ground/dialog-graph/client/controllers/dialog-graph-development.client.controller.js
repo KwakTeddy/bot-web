@@ -520,6 +520,36 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 DialogGraph.setDirty(true);
             }
         };
+
+
+
+        $scope.openVideo = function(e)
+        {
+            $cookies.put('openVideoGraph', 'true');
+
+            var target = e.currentTarget;
+            angular.element(target).hide().prev().show().prev().show();
+        };
+
+        $scope.closeVideo = function(e)
+        {
+            $cookies.put('openVideoGraph', 'false');
+
+            var target = e.currentTarget;
+            angular.element(target).parent().hide().next().hide().next().show();
+        };
+
+        var isOpen = $cookies.get('openVideoGraph');
+        if(!isOpen || isOpen == 'true')
+        {
+            angular.element('.video-popup > div').show();
+            angular.element('.video-popup > img').hide();
+        }
+        else
+        {
+            angular.element('.video-popup > div').hide();
+            angular.element('.video-popup > img').show();
+        }
     })();
 
     $scope.checkFailedDialog();

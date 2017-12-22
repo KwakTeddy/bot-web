@@ -10,6 +10,12 @@ var BotAuth = mongoose.model('BotAuth');
 var Template = mongoose.model('Template');
 var User = mongoose.model('User');
 
+var Intent = mongoose.model('Intent');
+var Entity = mongoose.model('Entity');
+
+var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
+var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
+
 exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
@@ -141,15 +147,79 @@ exports.create = function(req, res)
                     var language = req.body.language;
                     if(language === undefined) language = 'en';
 
-                    // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
-                    // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
-                    var botjs = fs.readFileSync(__dirname + '/bot.template');
-                    var defaultjs = fs.readFileSync(__dirname + '/default.template');
-                    var graphjs = fs.readFileSync(__dirname + '/graph.' + language + '.template');
+                    if(req.body.isSample)
+                    {
+                        var botjs = fs.readFileSync(__dirname + '/sample/bot.template');
+                        var defaultjs = fs.readFileSync(__dirname + '/sample/default.template');
+                        var graphjs = fs.readFileSync(__dirname + '/sample/graph.' + language + '.template');
 
-                    fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                    fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                    fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+
+                        var contents = IntentController.parseXlsx(__dirname + '/sample/intent.' + language + '.xlsx');
+                        if(contents.length > 0)
+                        {
+                            var intent = new Intent();
+                            intent.botId = req.body.id;
+                            intent.name = 'sample';
+                            intent.user = req.user;
+
+                            intent.save(function(err)
+                            {
+                                if(err)
+                                {
+                                    console.error(err);
+                                }
+                                else
+                                {
+                                    IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function()
+                                    {
+                                    },
+                                    function(err)
+                                    {
+                                        console.error(err);
+                                    });
+                                }
+                            });
+                        }
+
+                        var entities = EntityController.parseXlsx(__dirname + '/sample/entity.' + language + '.xlsx');
+                        if(entities.length > 0)
+                        {
+                            var entity = new Entity();
+                            entity.botId = req.body.id;
+                            entity.name = 'sample';
+                            entity.user = req.user;
+
+                            entity.save(function(err)
+                            {
+                                if(err)
+                                {
+                                    console.error(err);
+                                }
+                                else
+                                {
+                                    EntityController.saveEntityContents(req.body.id, '', req.user, entity._id, entities, function(){}, function(err)
+                                    {
+                                        console.error(err);
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
+                        // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
+                        var botjs = fs.readFileSync(__dirname + '/bot.template');
+                        var defaultjs = fs.readFileSync(__dirname + '/default.template');
+                        var graphjs = fs.readFileSync(__dirname + '/graph.' + language + '.template');
+
+                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                    }
                 }
                 // }
 

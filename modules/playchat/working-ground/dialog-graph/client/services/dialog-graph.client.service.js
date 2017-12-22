@@ -292,6 +292,8 @@
                 if(e.which != 1)
                     return;
 
+                console.log('adf?');
+
                 menuInstance.closeMenu(e);
 
                 isDragStart = true;

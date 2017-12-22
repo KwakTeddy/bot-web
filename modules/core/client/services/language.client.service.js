@@ -2790,6 +2790,12 @@
                 "en": "Only Javascript files are allowed!",
                 "zh": "请不要上传非Javascript格式的文件！",
                 "jp": "Javascriptファイルのみが許可されています！"
+            },
+            "Sample Bot": {
+                "ko": "샘플로 만들기",
+                "en": "Create by sample",
+                "zh": "按样品创建",
+                "jp": "サンプルで作成"
             }
         };
 

@@ -21,7 +21,7 @@
 
         (function()
         {
-            if($scope.templateId != 'blank')
+            if($scope.templateId != 'blank' && $scope.templateId != 'sample')
             {
                 ChatbotTemplatesService.get({ templateId: $stateParams.templateId }, function(template)
                 {
@@ -143,7 +143,7 @@
                 //     return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
                 // }
                 //var data={};
-                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description}, function(chatbot)
+                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, isSample: $scope.templateId == 'sample' }, function(chatbot)
                 {
                     delete chatbot.user;
                     $cookies.putObject('chatbot', chatbot);

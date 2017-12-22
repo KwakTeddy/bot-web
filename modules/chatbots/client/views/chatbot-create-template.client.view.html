@@ -1,5 +1,5 @@
 <div class="chatbot-body">
-    <form ng-submit="save();" style="width: 600px; margin: 30px auto;text-align: center;" ng-if="templateId == 'blank'">
+    <form ng-submit="save();" style="width: 600px; margin: 30px auto;text-align: center;" ng-if="templateId == 'blank' || templateId == 'sample'">
         <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">Create Bot</h2>
         <!--<div class="form-row">-->
             <!--<label class="required">-->
@@ -38,7 +38,7 @@
         </div>
     </form>
 
-    <div style="width: 600px; margin: 30px auto;" ng-if="templateId != 'blank'">
+    <div style="width: 600px; margin: 30px auto;" ng-if="templateId != 'blank' && templateId != 'sample'">
         <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">{{ template.name }} - {{ lan('Basic Information') }}</h2>
         <div id="templateCreateHtml"></div>
     </div>

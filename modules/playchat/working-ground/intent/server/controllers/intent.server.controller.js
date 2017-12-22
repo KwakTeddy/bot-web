@@ -220,6 +220,8 @@ var saveIntentContents = function(botId, templateId, language, user, intentId, c
     });
 };
 
+module.exports.saveIntentContents = saveIntentContents;
+
 function parseText(text)
 {
     var intentContents = [];
@@ -256,6 +258,8 @@ function parseXlsx(filepath)
 
     return intentContents;
 }
+
+module.exports.parseXlsx = parseXlsx;
 
 function parseCsv(filepath, callback)
 {

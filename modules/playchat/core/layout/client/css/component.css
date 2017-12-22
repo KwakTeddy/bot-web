@@ -351,3 +351,33 @@
     background-color: GhostWhite;
 }
 
+.video-popup
+{
+    position: fixed;
+    bottom: 45px;
+    left: 255px;
+
+    width: 200px;
+}
+
+.video-controller
+{
+    height: 15px;
+    text-align: right;
+}
+
+.video-controller img
+{
+    cursor: pointer;
+}
+
+.video-wrapper
+{
+    height: 200px;
+}
+
+.video-popup iframe
+{
+    width: 100%;
+    height: 100%;
+}

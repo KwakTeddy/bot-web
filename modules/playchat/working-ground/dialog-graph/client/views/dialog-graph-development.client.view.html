@@ -106,6 +106,17 @@ caption
             <li class="dialog-menu-item" data-name="delete"><a>{{lan('Delete') }}</a></li>
         </ul>
     </div>
+
+    <div class="video-popup">
+        <div class="video-controller">
+            <img src="modules/playchat/log-analysis/client/imgs/logclose.png" ng-click="closeVideo($event);">
+        </div>
+        <div class="video-wrapper">
+            <iframe width="854" height="480" src="https://www.youtube.com/embed/hKUJmA9O6iA" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+        </div>
+        <img src="modules/playchat/working-ground/common/client/imgs/Q.png" style="display:none; cursor: pointer;" ng-click="openVideo($event);">
+    </div>
+
 </div>
 
 <div id="graphDialogEditor" ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-editor.client.view.html'"></div>

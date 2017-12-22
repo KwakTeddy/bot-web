@@ -111,7 +111,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.initialize = function(parent, dialog)
     {
-        console.log('다이얼로그 : ', dialog);
         $timeout(function()
         {
             $scope.parentDialog = parent;
@@ -290,9 +289,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             }
             else
             {
-                console.log('페런트 : ', parent);
-
-                $scope.dialog.name = DialogGraph.getRandomName();
+                if(parent)
+                {
+                    $scope.dialog.name = DialogGraph.getRandomName();
+                }
 
                 $scope.dialog.input = [{ text: '' }];
                 $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];

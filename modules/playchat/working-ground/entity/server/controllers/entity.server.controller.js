@@ -222,6 +222,8 @@ function saveEntityContents(botId, templateId, user, entityId, contents, callbac
     });
 };
 
+module.exports.saveEntityContents = saveEntityContents;
+
 function parseText(text)
 {
     var contents = [];
@@ -305,6 +307,8 @@ function parseXlsx(filepath)
 
     return contents;
 };
+
+module.exports.parseXlsx = parseXlsx;
 
 function parseCsv(filepath, callback)
 {
