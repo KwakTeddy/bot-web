@@ -74,6 +74,11 @@
             })
         };
 
+        $scope.moveToFront = function()
+        {
+            location.href = '/';
+        };
+
         $scope.lan = LanguageService;
     }]);
 })();
