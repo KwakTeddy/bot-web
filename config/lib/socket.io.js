@@ -20,7 +20,7 @@ module.exports = function (app, db)
         var privateKey = fs.readFileSync(path.resolve(config.secure.privateKey), 'utf8');
         var certificate = fs.readFileSync(path.resolve(config.secure.certificate), 'utf8');
         var ca = fs.readFileSync(path.resolve(config.secure.ca), 'utf8');
-        var options =ㅊ
+        var options =
         {
             key: privateKey,
             cert: certificate,
