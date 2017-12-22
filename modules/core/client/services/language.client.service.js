@@ -2796,6 +2796,12 @@
                 "en": "Create by sample",
                 "zh": "按样品创建",
                 "jp": "サンプルで作成"
+            },
+            "Email has been sent again.": {
+                "ko": "이메일이 다시 전송되었습니다.",
+                "en": "Email has been sent again.",
+                "zh": "邮件已重新发送。",
+                "jp": "emailこの再送信されました。"
             }
         };
 

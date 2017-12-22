@@ -12,38 +12,115 @@ var User = mongoose.model('User');
 
 module.exports.signin = function(req, res, next)
 {
-    passport.authenticate('local', function (err, user, info)
+    if (req.body.resendEmail)
     {
-        if (err || !user)
+        User.findOne({email: req.body.resendEmail}, function (err, user)
         {
-            res.status(400).send(info);
-        }
-        else
-        {
-            // Remove sensitive data before login
-            user.password = undefined;
-            user.salt = undefined;
-
-            if(user.state === false)
+            if(err)
             {
-                res.status(401).send('not registration');
-                return;
+                console.log(err);
+                return err;
             }
 
-            req.login(user, function (err)
+            async.waterfall([
+                // Generate random token
+                function (done) {
+                    crypto.randomBytes(20, function (err, buffer) {
+                        var token = buffer.toString('hex');
+                        user.localEmailConfirmToken = token;
+                        user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
+                        // Then save the user
+                        user.save(function (err) {
+                            if (err) {
+                                return res.status(400).send({
+                                    message: errorHandler.getErrorMessage(err)
+                                });
+                            } else {
+                                // Remove sensitive data before login
+                                user.password = undefined;
+                                user.salt = undefined;
+                                done(err, token, user);
+                            }
+                        });
+                    });
+                },
+                function (token, user, done) {
+
+                    var httpTransport = 'http://';
+                    if (config.secure && config.secure.ssl === true) {
+                        httpTransport = 'https://';
+                    }
+                    res.render(path.resolve('modules/authentication/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')),
+                    {
+                        name: user.displayName,
+                        appName: 'Play Chat',
+                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                    }, function (err, emailHTML)
+                    {
+                        done(err, emailHTML, user);
+                    });
+                },
+                // If valid email, send reset email using service
+                function (emailHTML, user, done)
+                {
+                    var mailOptions = {
+                        to: user.email,
+                        from: config.mailer.from,
+                        subject: '[palychat.ai] e-mail confirm',
+                        html: emailHTML
+                    };
+
+                    smtpTransport.sendMail(mailOptions, function (err)
+                    {
+                        if (!err)
+                        {
+                            return res.status(200).send({ message: 'An email has been sent to the provided email with further instructions.' });
+                        }
+                        else
+                        {
+                            console.log(err);
+                            return res.status(400).send({ message: 'Failure sending email' });
+                        }
+                    });
+                }
+            ]);
+        })
+    }
+    else
+    {
+        passport.authenticate('local', function (err, user, info)
+        {
+            if (err || !user)
             {
-                if (err)
+                res.status(400).send(info);
+            }
+            else
+            {
+                // Remove sensitive data before login
+                user.password = undefined;
+                user.salt = undefined;
+
+                if(user.state === false)
                 {
-                    res.status(400).send(err);
+                    res.status(401).send('not registration');
+                    return;
                 }
-                else
+
+                req.login(user, function (err)
                 {
-                    res.cookie('login', true);
-                    res.json(user);
-                }
-            });
-        }
-    })(req, res, next);
+                    if (err)
+                    {
+                        res.status(400).send(err);
+                    }
+                    else
+                    {
+                        res.cookie('login', true);
+                        res.json(user);
+                    }
+                });
+            }
+        })(req, res, next);
+    }
 };
 
 module.exports.signout = function (req, res)
@@ -206,14 +283,14 @@ module.exports.signup = function(req, res, next)
                         }
 
                         res.render(path.resolve('modules/authentication/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')),
-                            {
-                                name: user.displayName,
-                                appName: 'Play Chat',
-                                url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
-                            }, function (err, emailHTML)
-                            {
-                                done(err, emailHTML, user);
-                            });
+                        {
+                            name: user.displayName,
+                            appName: 'Play Chat',
+                            url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                        }, function (err, emailHTML)
+                        {
+                            done(err, emailHTML, user);
+                        });
                     },
                     // If valid email, send reset email using service
                     function (emailHTML, user, done)

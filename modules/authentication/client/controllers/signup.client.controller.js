@@ -63,6 +63,16 @@
             });
         };
 
+        $scope.receiveAgain = function()
+        {
+            $http.post('/api/auth/signin', {resendEmail: $scope.credentials.email}).success(function (response)
+            {
+                alert(LanguageService('Email has been sent again.'));
+            }).error(function (response)
+            {
+                console.log(response)
+            })
+        };
 
         $scope.lan = LanguageService;
     }]);
