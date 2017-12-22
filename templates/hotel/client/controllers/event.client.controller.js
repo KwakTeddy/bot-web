@@ -2,6 +2,7 @@
 
 angular.module('template').controller('hotelEventController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 이벤트정보관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 

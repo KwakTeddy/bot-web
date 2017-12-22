@@ -28,6 +28,7 @@
             angular.element('#signupButton').hide().next().show();
             if($scope.credentials.password && $scope.credentials.passwordConfirm && $scope.credentials.password != $scope.credentials.passwordConfirm)
             {
+                angular.element('#signupButton').show().next().hide();
                 $scope.signupErrorMessage = LanguageService('Password is disaccord');
                 return false;
             }

@@ -13,7 +13,7 @@
 }
 </style>
 
-<h1 class="template-demo-title">기본정보</h1>
+<!--<h1 class="template-demo-title">기본정보</h1>-->
 <div> <!-- 템플릿봇 생성시 구조로 인해 반드시 필요한 div -->
     <div ng-controller="restaurantBasicController" class="template-demo-basic">
         <form ng-submit="saveTemplateBot($event);">
@@ -64,10 +64,6 @@
                         <option value="토요일">토요일</option>
                     </select>
                 </label>
-                <!--<label class="required" style="width: 130px;">-->
-                    <!--<span class="form-title">휴일</span>-->
-                    <!--<input type="text" class="data-input" placeholder="휴일(ex:일요일 or 휴일없음)" name="holiday" required="true" >-->
-                <!--</label>-->
             </div>
             <div class="form-row">
 
@@ -75,8 +71,8 @@
             <div class="form-row">
                 <label>
                     <span class="form-title">메뉴판 사진</span>
-                        <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
-                        <input type="file" nv-file-select uploader="uploader" ng-show="!data.image" />
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                    <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
                 </label>
             </div>
             <div class="form-row">

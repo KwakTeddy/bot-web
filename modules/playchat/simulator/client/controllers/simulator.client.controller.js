@@ -17,7 +17,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         window.addEventListener('keydown', function(e)
         {
-            console.log('하하호호 : ', e.keyCode);
             if(e.keyCode == 121)
             {
                 if($scope.isClosed)

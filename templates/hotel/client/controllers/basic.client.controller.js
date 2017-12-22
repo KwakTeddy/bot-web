@@ -12,7 +12,7 @@ angular.module('template').controller('hotelBasicController', ['$scope', '$resou
     (function()
     {
         ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
-        {
+        {   console.log('==============='+JSON.stringify(result));
             $scope.template = result;
             ChatbotTemplateDataService.get({ botId: chatbot.id, templateId: result.id }, function(result)
             {

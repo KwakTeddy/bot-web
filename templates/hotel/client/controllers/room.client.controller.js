@@ -2,6 +2,7 @@
 
 angular.module('template').controller('hotelRoomController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
+    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 객실정보관리', '/modules/playchat/gnb/client/imgs/room_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/rooms', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 

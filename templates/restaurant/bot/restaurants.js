@@ -328,7 +328,8 @@ var menuCategoryAction= {
     action: function (task, context, callback) {
         context.dialog.categoryisone=undefined;
         context.dialog.categorylength=[];
-
+        console.log(context.bot.image+'+++++++++++++++++++++++++++++11');
+        console.log(context.bot.menuImage+'+++++++++++++++++++++++++++++22');
         
         if (context.bot.menuImage!==undefined) {
             var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
@@ -340,7 +341,7 @@ var menuCategoryAction= {
             };
         }
         //console.log(context.bot.menus[0]+'+++++++++++++++++++++++++++++');
-        if(context.bot.menus.length===0){context.dialog.restaurantno=undefined;callback(task,context);}
+        if(context.bot.menus.length===0){context.dialog.restaurantno=1;callback(task,context);}
         else {
             restaurantmenu.find({botId: context.bot.id}).lean().exec(function (err, docs) {
                 if (err) {

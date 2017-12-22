@@ -128,15 +128,17 @@
                             </div>
                             <div class="dialog-editor-output-action-row">
                                 <p class="dialog-editor-output-label">Action Type</p>
-                                <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-required="true" ng-change="actionValueChanged(output);">
-                                    <option value="">none</option>
-                                    <option value="call">Call</option>
-                                    <option value="callChild">Call Child</option>
-                                    <option value="returnCall">Return Call</option>
-                                    <option value="up">Up</option>
-                                    <option value="repeat">Repeat</option>
-                                    <option value="return">Return</option>
-                                </select>
+                                <div class="select-wrapper">
+                                    <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-required="true" ng-change="actionValueChanged(output);">
+                                        <option value="">none</option>
+                                        <option value="call">Call</option>
+                                        <option value="callChild">Call Child</option>
+                                        <option value="returnCall">Return Call</option>
+                                        <option value="up">Up</option>
+                                        <option value="repeat">Repeat</option>
+                                        <option value="return">Return</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="dialog-editor-output-action-row">
                                 <p class="dialog-editor-output-label">{{lan('Dialog Select') }}</p>
@@ -159,15 +161,17 @@
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
                     <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="(dialog.output.length == 1 && dialog.output[0].kind == 'Action') || isUseOutput === false" ng-click="useAction($event);" tabindex="-1"> Action</p>
                     <div style="padding: 8px 12px;">
-                        <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type" ng-change="actionValueChanged(dialog.actionOutput);">
-                            <option value="">none</option>
-                            <option value="call">Call</option>
-                            <option value="callChild">Call Child</option>
-                            <option value="returnCall">Return Call</option>
-                            <option value="up">Up</option>
-                            <option value="repeat">Repeat</option>
-                            <option value="return">Return</option>
-                        </select>
+                        <div class="select-wrapper" ng-class="isUseOutput === true ? 'disabled': ''">
+                            <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type" ng-change="actionValueChanged(dialog.actionOutput);">
+                                <option value="">none</option>
+                                <option value="call">Call</option>
+                                <option value="callChild">Call Child</option>
+                                <option value="returnCall">Return Call</option>
+                                <option value="up">Up</option>
+                                <option value="repeat">Repeat</option>
+                                <option value="return">Return</option>
+                            </select>
+                        </div>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
                             <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false" ng-keyup="findActionDialogs($event);">
                             <ul class="dialog-editor-select-options">

@@ -1139,7 +1139,7 @@ var dialogs = [
                                                 ],
                                                 "output": [
                                                     {
-                                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                                                         "kind": "Text"
                                                     }
                                                 ]
@@ -1157,7 +1157,7 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                                         "kind": "Text"
                                     }
                                 ]
@@ -1304,13 +1304,13 @@ var dialogs = [
 				"output": [
 					{
 						"if": "context.dialog.orders.length!==0",
-						"text": "[예약 정보]\n#orders#+index+.+order_room+\n- 예약 기간: \n     +order_period+\n- 예약 시간: +order_daynumbers+박\n- 예약 일자: \n      +order_date+\n- 입금 일자: \n      +order_paydate+까지\n- 가격: +order_oneprice+원\n- 인원수: +order_peoplenumber+명\n- 총 금액: +order_price+원\n\n#\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+						"text": "[예약 정보]\n#orders#+index+.+order_room+\n- 예약 기간: \n     +order_period+\n- 예약 시간: +order_daynumbers+박\n- 예약 일자: \n      +order_date+\n- 입금 일자: \n      +order_paydate+까지\n- 가격: +order_oneprice+원\n- 인원수: +order_peoplenumber+명\n- 총 금액: +order_price+원\n\n#\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 						"kind": "Text",
 						"id": "default85_0"
 					},
 					{
 						"if": "context.dialog.orders.length===0",
-						"text": "고객님이 아직 예약한 적이 없네요. 바로 예약하로 가시려면 \"예약\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+						"text": "고객님이 아직 예약한 적이 없네요. 바로 예약하로 가시려면 \"예약\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 						"kind": "Text",
 						"id": "default85_1"
 					}
@@ -1341,7 +1341,7 @@ var dialogs = [
 					},
 					{
 						"if": "context.dialog.orders.length===0",
-						"text": "고객님이 아직 예약한 적이 없네요. 바로 예약하로 가시려면 \"예약\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+						"text": "고객님이 아직 예약한 적이 없네요. 바로 예약하로 가시려면 \"예약\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 						"kind": "Text"
 					}
 				],
@@ -1468,7 +1468,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "[위치안내]\n<+hotelname+>입니다. 편안한 휴식을 제공하기 위해서 최선을 다하겠습니다. \n\n- 주소 : +address+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+				"text": "[위치안내]\n<+hotelname+>입니다. 편안한 휴식을 제공하기 위해서 최선을 다하겠습니다. \n\n- 주소 : +address+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 				"kind": "Text"
 			}
 		],
@@ -1508,7 +1508,7 @@ var dialogs = [
             },
             {
                 "if": "context.dialog.shuttleno===0",
-                "text": "[셔틀 정보]\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.\n",
+                "text": "[셔틀 정보]\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.\n",
                 "kind": "Text"
             }
 		],
@@ -1545,7 +1545,7 @@ var dialogs = [
             },
 			{
 				"if": "context.dialog.parkno===0",
-				"text": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소개: +parkdetails+\n-주차장 위치: +parkaddress+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+				"text": "[주차 정보]\n- 주차장 이름: +parkname+\n- 주차장 자리수: +parksize+\n- 주차장 소개: +parkdetails+\n-주차장 위치: +parkaddress+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 				"kind": "Text"
 			}
 
@@ -1582,7 +1582,7 @@ var dialogs = [
 				],
 				"output": [
 					{
-						"text": "취소 완료!\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+						"text": "취소 완료!\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 						"kind": "Text"
 					}
 				],
@@ -1704,7 +1704,7 @@ var dialogs = [
 										],
 										"output": [
 											{
-												"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n +bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+												"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n +bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 												"kind": "Text"
 											}
 										],
@@ -1781,7 +1781,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -1861,7 +1861,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -1941,7 +1941,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear1+년+outmonth1+월+outday1+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -2022,7 +2022,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -2109,7 +2109,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																"text": "[객실예약 완료]\n객실 예약 완료 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear1+년+inputmonth1+월+inputday1+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n- 인원수: +peoplenumber1+명\n\n*+myname+* 님의 명의로 예약이 신청되었습니다. 아래 계좌로 숙박요금 *+preallprice+원*을 입금하시면 예약이 완료됩니다.\n\n+bank+\n\n- 예약 신청시간: \n      +todaydate+\n- 입금 시간: \n      +tomorrowdate+까지\n\n예약 목록을 보시려면 \"목록\"을 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -2165,7 +2165,7 @@ var dialogs = [
 												],
 												"output": [
 													{
-														"text": "#orders#+index+.+order_room+\n- 예약 기간: \n     +order_period+\n- 예약 시간: +order_daynumbers+박\n- 예약 일자: \n      +order_date+\n- 입금 일자: \n      +order_paydate+까지\n- 가격: +order_oneprice+원\n- 인원수: +order_peoplenumber+명\n- 총 금액: +order_price+원\n\n#\n취소하시려면 '취소'라고 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+														"text": "#orders#+index+.+order_room+\n- 예약 기간: \n     +order_period+\n- 예약 시간: +order_daynumbers+박\n- 예약 일자: \n      +order_date+\n- 입금 일자: \n      +order_paydate+까지\n- 가격: +order_oneprice+원\n- 인원수: +order_peoplenumber+명\n- 총 금액: +order_price+원\n\n#\n취소하시려면 '취소'라고 입력해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 														"kind": "Text"
 													}
 												],
@@ -2213,7 +2213,7 @@ var dialogs = [
 																],
 																"output": [
 																	{
-																		"text": "취소 완료!\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+																		"text": "취소 완료!\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 																		"kind": "Text"
 																	}
 																],
@@ -2234,7 +2234,7 @@ var dialogs = [
 												],
 												"output": [
 													{
-														"text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+														"text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 														"kind": "Text"
 													}
 												]
@@ -2252,7 +2252,7 @@ var dialogs = [
 										],
 										"output": [
 											{
-												"text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+												"text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 												"kind": "Text"
 											}
 										]
@@ -2355,7 +2355,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[다이닝 - +restaurantlistType.category_name+]\n+restaurantlistType.restaurant_introduction+\n\n- 위치 : +restaurantlistType.restaurant_location+\n- 운영 시간\n아침 : +restaurantlistType.restaurant_mopentime+\n점심 : +restaurantlistType.restaurant_mopentime+\n저녁 : +restaurantlistType.restaurant_nopentime+\n- 좌석수 : 총 +restaurantlistType.restaurant_seat+좌석\n- +restaurantlistType.restaurant_room+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                        "text": "[다이닝 - +restaurantlistType.category_name+]\n+restaurantlistType.restaurant_introduction+\n\n- 위치 : +restaurantlistType.restaurant_location+\n- 운영 시간\n아침 : +restaurantlistType.restaurant_mopentime+\n점심 : +restaurantlistType.restaurant_mopentime+\n저녁 : +restaurantlistType.restaurant_nopentime+\n- 좌석수 : 총 +restaurantlistType.restaurant_seat+좌석\n- +restaurantlistType.restaurant_room+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                         "kind": "Text"
                     }
                 ],
@@ -2415,7 +2415,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[시설 - +facilitylistType.category_name+]\n+facilitylistType.facility_introduction+\n\n- 위치 : +facilitylistType.facility_location+\n- 시설 규모: +facilitylistType.facility_size+ \n- 시설 수용 가능 인원: +facilitylistType.facility_number+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                        "text": "[시설 - +facilitylistType.category_name+]\n+facilitylistType.facility_introduction+\n\n- 위치 : +facilitylistType.facility_location+\n- 시설 규모: +facilitylistType.facility_size+ \n- 시설 수용 가능 인원: +facilitylistType.facility_number+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                         "kind": "Text",
                         "id": "default20_0"
                     }
@@ -2476,7 +2476,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[이벤트 - +eventlistType.category_name+]\n+eventlistType.event_introduction+\n\n- 장소 : +eventlistType.event_location+\n- 시간 : +eventlistType.event_opentime+\n- 기간 : +eventlistType.event_date+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                        "text": "[이벤트 - +eventlistType.category_name+]\n+eventlistType.event_introduction+\n\n- 장소 : +eventlistType.event_location+\n- 시간 : +eventlistType.event_opentime+\n- 기간 : +eventlistType.event_date+\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                         "kind": "Text",
                         "id": "default25_0"
                     }
@@ -2534,7 +2534,7 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "text": "[객실 정보 - +roomlistType.category_name+]\n+roomlistType.room_introduction+\n\n싱글룸 구성 \n- +roomlistType.room_form+\n- 전망 : +roomlistType.room_kind+\n- 침대 :  +roomlistType.room_bed+\n- 크기 : +roomlistType.room_size+\n- 체크인 : +roomlistType.room_checkin+\n- 체크아웃 : +roomlistType.room_checkout+\n- +roomlistType.room_facility1+\n- +roomlistType.room_facility2+\n- +roomlistType.room_facility3+\n- +roomlistType.room_facility4+\n- +roomlistType.room_facility5+\n- +roomlistType.room_facility6+\n- +roomlistType.room_facility7+\n\n[객실 이미지]\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                        "text": "[객실 정보 - +roomlistType.category_name+]+roomlistType1+",
                         "kind": "Text"
                     }
                 ],
@@ -2671,7 +2671,7 @@ var dialogs = [
                                         ],
                                         "output": [
                                             {
-                                                "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                                                "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                                                 "kind": "Text"
                                             }
                                         ]
@@ -2883,7 +2883,7 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+                                        "text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
                                         "kind": "Text"
                                     }
                                 ]
@@ -2947,7 +2947,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 을 입력해주세요.",
+				"text": "고객님, 무엇을 도와드릴까요?\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시려면 '이전' 을 입력해주세요.",
 				"kind": "Text"
 			}
 		]
@@ -2966,7 +2966,7 @@ var commonDialogs = [
 		],
 		"output": [
 			{
-				"text": "안녕하세요. < +hotelname+ > 입니다.\n\n호텔 이용 관련 정보를 확인 하실 수 있습니다.\n\n예시)\n주소, 주차, 셔틀,\n예약 확인, 예약 취소\n20170215부터 5명 4박5일 싱글룸 예약\n\n또한 필요하신 메뉴를 직접 선택해셔도 됩니다.\n\n1. 객실\n2. 다이닝\n3. 시설\n4. 이벤트\n5. 주소 안내\n6. 셔틀\n7. 주차",
+				"text": "안녕하세요. < +hotelname+ > 입니다.\n\n호텔 이용 관련 정보를 확인 하실 수 있습니다.\n\n예시)\n주소, 주차, 셔틀,\n예약 확인, 예약 취소\n20170215부터 5명 4박5일 싱글룸 예약\n\n또한 필요하신 메뉴를 직접 선택해셔도 됩니다.\n\n1. 객실\n2. 다이닝\n3. 시설\n4. 이벤트\n5. 주소 안내\n6. 셔틀 안내\n7. 주차 정보",
 				"kind": "Text"
 			}
 		]

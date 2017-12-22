@@ -80,10 +80,12 @@
                 <div class="form-row">
                     <label class="required" ng-if="!modal.mgmtModal.isNewFile">
                         <span class="form-title">{{lan('File Name') }}</span>
-                        <select ng-model="modal.mgmtModal.data.fileName" ng-required="true" class="task-file-select jumbo-select" ng-change="selectedFileName();">
-                            <option>[{{lan('Create File') }}]</option>
-                            <option ng-repeat="option in taskFiles" value="{{ option }}">{{ option }}</option>
-                        </select>
+                        <div class="select-wrapper">
+                            <select ng-model="modal.mgmtModal.data.fileName" ng-required="true" class="task-file-select jumbo-select" ng-change="selectedFileName();">
+                                <option>[{{lan('Create File') }}]</option>
+                                <option ng-repeat="option in taskFiles" value="{{ option }}">{{ option }}</option>
+                            </select>
+                        </div>
                     </label>
                     <label class="required" ng-if="modal.mgmtModal.isNewFile">
                         <span class="form-title">{{lan('File Name') }}</span>
