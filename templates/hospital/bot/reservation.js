@@ -342,25 +342,25 @@ var dialogs = [
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
-                        input: '~아니오',
+                        input: '~아니요',
                         output: '예약이 취소되었습니다.\n\n 처음으로 돌아가려면 "시작"을 입력하세요.'
                     },
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
-                        input: '1',
+                        input: ['1','일시','일 시','날짜'],
                         output: {call: '날짜선택'}
                     },
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
-                        input: '2',
+                        input: ['2','이름'],
                         output: {call: '예약자명'}
                     },
                     {
                         id: 'restaurant55',
                         filename: 'restaurant',
-                        input: '3',
+                        input: ['3','연락처'],
                         output: {call: '휴대폰번호입력'}
                     }
                 ]
