@@ -6,4 +6,6 @@ module.exports = function(app)
     app.all('/api/admin/*', AdminController.core);
     app.get('/api/template-categories', TemplateAdminController.findTemplateCategories);
     app.post('/api/admin/templates', TemplateAdminController.createTemplate);
+    app.get('/api/admin/users/closed-beta', AdminController.findCloseBetaUser);
+    app.post('/api/admin/users/closed-beta', AdminController.approveCloseBetaUser);
 };
