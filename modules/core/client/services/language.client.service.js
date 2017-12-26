@@ -2844,6 +2844,24 @@
                 "en": "Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!",
                 "zh": "三. 参加聊天机器人开发大赛，一等奖100万韩元，二等奖50万韩元！",
                 "jp": "Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!"
+            },
+            "Error reporting and suggestions for improvement": {
+                "ko": "오류보고 및 개선제안",
+                "en": "Error reporting and suggestions for improvement",
+                "zh": "错误报告和改进建议",
+                "jp": "エラー報告と改善のための提案"
+            },
+            "Send" : {
+                "ko": "보내기",
+                "en": "Send",
+                "zh": "发送",
+                "jp": "送信"
+            },
+            "Successfully transferred!": {
+                "ko": "성공적으로 전송되었습니다!",
+                "en": "Successfully transferred!",
+                "zh": "成功转移！",
+                "jp": "転送に成功しました！"
             }
         };
 

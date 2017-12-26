@@ -1,50 +1,50 @@
 <style>
-    .popup-menu
-    {
-        position: absolute;
+.popup-menu
+{
+    position: absolute;
 
-        top: 0;
-        left: 0;
+    top: 0;
+    left: 0;
 
-        width: 150px;
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid #ebebeb;
-        box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
 
-        background-color: white;
+    background-color: white;
 
-        z-index: 1000;
+    z-index: 1000;
 
-        display: none;
-    }
+    display: none;
+}
 
-    .popup-menu li a
-    {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
+.popup-menu li a
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
 
-        padding: 5px;
-        box-sizing: border-box;
-        border-radius: 6px;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 6px;
 
-        cursor: pointer;
-    }
+    cursor: pointer;
+}
 
-    .popup-menu li:hover a
-    {
-        background-color: #038eda;
+.popup-menu li:hover a
+{
+    background-color: #038eda;
 
-        color: white;
-    }
+    color: white;
+}
 
-    .popup-menu .popup-menu-divider
-    {
-        height: 1px;
-        background-color: #ebebeb;
-        margin: 12px 0;
-    }
+.popup-menu .popup-menu-divider
+{
+    height: 1px;
+    background-color: #ebebeb;
+    margin: 12px 0;
+}
 </style>
 
 <div ng-controller="TopBarController">
@@ -63,6 +63,9 @@
             <!--<span>{{lan('Store') }}</span>-->
         <!--</a>-->
         <!--<a class="notify" href="#"></a>-->
+        <span>
+            <button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
+        </span>
         <span style="margin: 0 15px;">
             <div class="select-wrapper">
                 <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
@@ -76,10 +79,25 @@
         <a class="login" href="#" ng-click="openMenu($event);"></a>
         <ul class="popup-menu user-menu">
             <ul>
-                <li class="popup-title"">{{ user.username }}</a></li>
+                <li class="popup-title">{{ user.username }}</a></li>
                 <li><a href="/playchat/user-profile">{{lan('Profile') }}</a></li>
                 <li><a href="#" ng-click="signout();">{{lan('Signout') }}</a></li>
             </ul>
         </ul>
+    </div>
+
+    <div class="modal-background import-modal" ng-show="openReporting">
+        <div class="modal">
+            <form ng-submit="sendReporting();">
+                <div class="modal-header">{{ lan('Error reporting and suggestions for improvement') }}</div>
+                <div>
+                    <textarea class="reporting-content" required="true" ng-model="reportContent"></textarea>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{ lan('Send') }}</button>
+                    <button type="button" class="default-button" ng-click="closeReporting();">{{ lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

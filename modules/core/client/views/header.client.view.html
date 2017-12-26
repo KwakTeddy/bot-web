@@ -64,6 +64,9 @@
             </a>
         </div>
         <div class="system">
+            <span>
+                <button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
+            </span>
             <ul class="docs" style="display: none;">
                 <li>
                     <a href="#" class="mr20">
@@ -103,6 +106,20 @@
                     <li><a href="#" ng-click="signout();">Signout</a></li>
                 </ul>
             </ul>
+        </div>
+    </div>
+    <div class="modal-background import-modal" ng-show="openReporting">
+        <div class="modal">
+            <form ng-submit="sendReporting();">
+                <div class="modal-header">{{ lan('Error reporting and suggestions for improvement') }}</div>
+                <div>
+                    <textarea class="reporting-content" required="true" ng-model="reportContent"></textarea>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{ lan('Send') }}</button>
+                    <button type="button" class="default-button" ng-click="closeReporting();">{{ lan('Close') }}</button>
+                </div>
+            </form>
         </div>
     </div>
 </header>

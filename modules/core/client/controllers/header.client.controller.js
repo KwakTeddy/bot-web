@@ -2,11 +2,12 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('HeaderController', ['$scope', '$location', '$timeout', '$cookies', '$window', '$rootScope', '$resource', 'Authentication', function ($scope, $location, $timeout, $cookies, $window, $rootScope, $resource, Authentication)
+angular.module('playchat').controller('HeaderController', ['$scope', '$location', '$timeout', '$cookies', '$window', '$rootScope', '$resource', 'LanguageService', function ($scope, $location, $timeout, $cookies, $window, $rootScope, $resource, LanguageService)
 {
     $scope.isLogin = $cookies.get('login') == 'true';
 
     var UserLanguageService = $resource('/api/users/language');
+    var ReportingService = $resource('/api/reporting');
 
     var user = $scope.user = $cookies.getObject('user');
     
@@ -16,6 +17,10 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
     code = code.split('-')[0];
 
     $scope.language = code || 'en';
+
+    $scope.openReporting = false;
+
+    $scope.reportContent = '';
 
     $scope.languageChange = function()
     {
@@ -69,6 +74,34 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
     $scope.signout = function()
     {
         $window.location.href = '/api/auth/signout';
+    };
+
+    $scope.reporting = function()
+    {
+        $scope.openReporting = true;
+        setTimeout(function()
+        {
+            angular.element('.reporting-content').focus();
+        }, 100);
+    };
+
+    $scope.sendReporting = function()
+    {
+        ReportingService.save({ content: $scope.reportContent }, function(result)
+        {
+            alert(LanguageService('Successfully transferred!'));
+            $scope.reportContent = '';
+            $scope.closeReporting();
+        },
+        function(err)
+        {
+            console.log('에러 : ', err);
+        });
+    };
+
+    $scope.closeReporting = function()
+    {
+        $scope.openReporting = false;
     };
 
     window.addEventListener('click', function(e)

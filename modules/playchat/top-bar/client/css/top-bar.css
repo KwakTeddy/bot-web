@@ -163,3 +163,14 @@
 }
 
 
+.reporting-content
+{
+    width: 100%; min-height: 150px; border: 1px solid #ddd; box-sizing: border-box; padding: 10px;
+    transition: border-color 0.5s;
+}
+
+.reporting-content:focus
+{
+    outline: 0;
+    border-color: #aaa;
+}

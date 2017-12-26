@@ -2,6 +2,7 @@ var path = require('path');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Report = mongoose.model('Report');
 
 var nodemailer = require('nodemailer');
 var config = require(path.resolve('./config/config'));
@@ -76,5 +77,24 @@ module.exports.approveCloseBetaUser = function(req, res, next)
         {
             res.status(404).send();
         }
+    });
+};
+
+
+module.exports.saveReporting = function(req, res)
+{
+    var report = new Report();
+
+    report.content = req.body.content;
+
+    report.save(function(err)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ error: err });
+        }
+
+        res.jsonp(report);
     });
 };

@@ -8,4 +8,6 @@ module.exports = function(app)
     app.post('/api/admin/templates', TemplateAdminController.createTemplate);
     app.get('/api/admin/users/closed-beta', AdminController.findCloseBetaUser);
     app.post('/api/admin/users/closed-beta', AdminController.approveCloseBetaUser);
+
+    app.post('/api/reporting', AdminController.saveReporting);
 };

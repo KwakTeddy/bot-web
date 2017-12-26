@@ -7,6 +7,7 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
     $scope.$parent.loaded('top-bar');
 
     var UserLanguageService = $resource('/api/users/language');
+    var ReportingService = $resource('/api/reporting');
 
     angular.element('.user-menu a').on('click', function()
     {
@@ -21,6 +22,10 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
     code = code.split('-')[0];
 
     $scope.language = code || 'ko';
+
+    $scope.openReporting = false;
+
+    $scope.reportContent = '';
 
     $scope.languageChange = function()
     {
@@ -53,6 +58,34 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
     $scope.signout = function()
     {
         $window.location.href = '/api/auth/signout';
+    };
+
+    $scope.reporting = function()
+    {
+        $scope.openReporting = true;
+        setTimeout(function()
+        {
+            angular.element('.reporting-content').focus();
+        }, 100);
+    };
+
+    $scope.sendReporting = function()
+    {
+        ReportingService.save({ content: $scope.reportContent }, function(result)
+        {
+            alert(LanguageService('Successfully transferred!'));
+            $scope.reportContent = '';
+            $scope.closeReporting();
+        },
+        function(err)
+        {
+            console.log('에러 : ', err);
+        });
+    };
+
+    $scope.closeReporting = function()
+    {
+        $scope.openReporting = false;
     };
 
     $scope.$on('update-topbar-title', function(scope, data)

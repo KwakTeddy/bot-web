@@ -125,6 +125,15 @@
     width: 590px;
 }
 
+.modal-background .modal-header
+{
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
 .data-input, .form-box
 {
     position: relative;
