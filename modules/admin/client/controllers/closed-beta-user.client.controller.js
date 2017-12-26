@@ -31,8 +31,7 @@
 
                 ClosedBetaUserService.save({ email: user.email }, function(result)
                 {
-                    var index = $scope.users.indexOf(user);
-                    $scope.users.splice(index, 1);
+                    user.state = true;
                     alert('승인완료');
                 },
                 function(error)

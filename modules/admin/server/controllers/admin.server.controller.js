@@ -8,6 +8,8 @@ var nodemailer = require('nodemailer');
 var config = require(path.resolve('./config/config'));
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
 
+var fs = require('fs');
+
 module.exports.core = function(req, res, next)
 {
     if(req.user.roles.indexOf('admin') == -1)
@@ -18,7 +20,7 @@ module.exports.core = function(req, res, next)
 
 module.exports.findCloseBetaUser = function(req, res, next)
 {
-    User.find({ username: /user/ }, {username: true, email: true, displayName: true, created: true}).sort({ state: -1, created: -1 }).lean().exec(function(err, list)
+    User.find({ username: /user/ }, {username: true, email: true, displayName: true, created: true, state: true}).sort({ state: -1, created: -1 }).lean().exec(function(err, list)
     {
         if(err)
         {
@@ -56,7 +58,7 @@ module.exports.approveCloseBetaUser = function(req, res, next)
                     to: user.email,
                     from: config.mailer.from,
                     subject: '[palychat.ai] 클로즈베타 승인 완료',
-                    html: '테스트'
+                    html: fs.readFileSync(path.resolve('./modules/admin/server/controllers/template/approve.ko.server.view.html')).toString()
                 };
 
                 smtpTransport.sendMail(mailOptions, function (err)
@@ -86,6 +88,7 @@ module.exports.saveReporting = function(req, res)
     var report = new Report();
 
     report.content = req.body.content;
+    report.email = req.user.email;
 
     report.save(function(err)
     {
