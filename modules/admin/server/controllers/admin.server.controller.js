@@ -54,11 +54,18 @@ module.exports.approveCloseBetaUser = function(req, res, next)
                     return res.status(400).send({ error: err });
                 }
 
+                var subject = {
+                    ko: "클로즈베타 승인 완료",
+                    en: "Play Chat Closed Beta Approved",
+                    zh: "PlayChat封闭测试版批准",
+                    jp: "PlayChatクローズドベータ承認済み"
+                }
+
                 var mailOptions = {
                     to: user.email,
                     from: config.mailer.from,
-                    subject: '[palychat.ai] 클로즈베타 승인 완료',
-                    html: fs.readFileSync(path.resolve('./modules/admin/server/controllers/template/approve.ko.server.view.html')).toString()
+                    subject: subject[req.user.language],
+                    html: fs.readFileSync(path.resolve('./modules/admin/server/controllers/template/approve.' + req.user.language + '.server.view.html')).toString()
                 };
 
                 smtpTransport.sendMail(mailOptions, function (err)
