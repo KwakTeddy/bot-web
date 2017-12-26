@@ -204,7 +204,6 @@ a.policy{
 }
 .noticebox{
     font-family: 'Noto Sans SC', sans-serif;
-    border: 1px solid #d3e4ee;
     border-radius: 6px;
     width: 560px;
     margin: 0 auto;
@@ -212,6 +211,8 @@ a.policy{
     text-align: left;
     line-height: 20px;
     font-weight: 700;
+    background: #2f6587;
+    color: #fff;
 }
 .leftbox{
     display: inline-block;
