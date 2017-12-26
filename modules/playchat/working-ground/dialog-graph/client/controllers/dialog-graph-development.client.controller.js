@@ -544,12 +544,28 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         {
             angular.element('.video-popup > div').show();
             angular.element('.video-popup > img').hide();
+            angular.element('.video-wrapper').hide();
+            setTimeout(function()
+            {
+                angular.element('.video-wrapper').show('slow');
+            }, 1000);
         }
         else
         {
             angular.element('.video-popup > div').hide();
             angular.element('.video-popup > img').show();
         }
+
+        $scope.isOpenVideoPopup = false;
+        $scope.openVideoPopup = function()
+        {
+            $scope.isOpenVideoPopup = true;
+        };
+
+        $scope.closeVideoPopup = function()
+        {
+            $scope.isOpenVideoPopup = false;
+        };
     })();
 
     $scope.checkFailedDialog();

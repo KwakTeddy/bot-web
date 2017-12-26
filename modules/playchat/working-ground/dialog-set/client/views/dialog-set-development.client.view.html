@@ -255,8 +255,18 @@
             <img src="modules/playchat/log-analysis/client/imgs/logclose.png" ng-click="closeVideo($event);">
         </div>
         <div class="video-wrapper">
+            <div class="video-cover" ng-click="openVideoPopup();"></div>
             <iframe width="560" height="315" src="https://www.youtube.com/embed/1epM6DBUypY" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
         </div>
         <img src="modules/playchat/working-ground/common/client/imgs/Q.png" style="display:none; cursor: pointer;" ng-click="openVideo($event);">
+    </div>
+
+    <div class="modal-background import-modal" ng-show="isOpenVideoPopup" style="background-color: rgba(0, 0, 0, 0.7);">
+        <div class="modal" style="width: auto;">
+            <iframe width="854" height="480" src="https://www.youtube.com/embed/1epM6DBUypY" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeVideoPopup();">{{ lan('Close') }}</button>
+            </div>
+        </div>
     </div>
 </div>
