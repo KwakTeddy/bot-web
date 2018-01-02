@@ -2,6 +2,19 @@
 
 
 var dialogs = [
+    // {
+    //     "name": "test2222",
+    //     "id": "default131313",
+    //     "filename": "test",
+    //     "input": ["예약"],
+    //     "output": [
+    //         {
+    //             "if":"context.dialog.roomnoii===undefined",
+    //             "text":"아직 객실 정보를 등록하지 않았습니다.",
+    //             "kind": "Text"
+    //         }
+    //     ]
+    // },
 	{
 		"name": "빠른예약",
 		"id": "default29",

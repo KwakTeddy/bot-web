@@ -53,15 +53,18 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.restaurantno===undefined",
-                "ouput": "아직 인기 정보를 등록하지 않았습니다."
+                "ouput": "아직 인기 정보를 등록하지 않았습니다.",
+                "task": "categoryrestaurantlist"
             },
             {
                 "if": "context.dialog.restaurantno===1",
-                "ouput": "아직 인기 정보가 없습니다."
+                "ouput": "아직 인기 정보가 없습니다.",
+                "task": "categoryrestaurantlist"
             },
             {
                 "if": "context.dialog.restaurantno===0",
                 "output": "[인기메뉴판]\n#categorys#+index+.+name+\n#\n\n번호를 선택해주세요.",
+                "task": "categoryrestaurantlist",
                 "children": [
                     {
                         "filename": "restaurants",
@@ -187,11 +190,13 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.categorys == undefined",
-                "output": "아직 시설 정보를 등록하지 않았습니다."
+                "output": "아직 시설 정보를 등록하지 않았습니다.",
+                "task": "previewCategoryAction"
             },
             {
                 "if": "context.dialog.categorys.length>0 && context.dialog.categoryisone==0",
                 "output": "[시설정보]\n#previewcategorylength#+index+. +category+\n#번호를 선택해주세요.",
+                "task": "previewCategoryAction",
                 "children": [
                     {
                         "id": "restaurant11",
@@ -252,6 +257,7 @@ var dialogs = [
             {
                 "if": "context.dialog.categorys.length>0 && context.dialog.categoryisone==1",
                 "output": "[+previewcategorylength+]\n#menuss#+index+.+name+\n#\n번호나 메뉴명을 입력해주세요.",
+                "task": "previewCategoryAction",
                 "children": [
                     {
                         "id": "restaurant333",
@@ -313,6 +319,7 @@ var dialogs = [
             {
                 "if": "context.dialog.restaurantno== 0 && context.dialog.categoryisone==0",
                 "output": "[가격표]\n#categorylength#+index+.+category+\n#번호를 선택해주세요.",
+                "task": "menuCategoryAction",
                 "children": [
                     {
                         "id": "restaurant18",
@@ -351,7 +358,8 @@ var dialogs = [
                                             "options": {
                                                 "postfix": "\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                                             }
-                                        }
+                                        },
+                                        "task": "categorymenuisornot"
                                     }
                                 ]
                             }
@@ -714,14 +722,26 @@ var dialogs = [
                     {
                         "id": "restaurant36",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "date",
-                                    "typeCheck": "dateTypeCheck"
-                                }
-                            ]
-                        },
+                        // "input": {
+                        //     "types": [
+                        //         {
+                        //             "name": "date",
+                        //             "typeCheck": "dateTypeCheck"
+                        //         }
+                        //     ]
+                        // },
+                        "input": [
+                            {
+                                "types": "dateTypeCheck"
+                            }
+                        ],
+                        // "input": [
+                        //     {
+                        //         "types": [
+                        //             "date"
+                        //         ]
+                        //     }
+                        // ],
                         "task": "checkDate",
                         "output": [
                             {
@@ -775,14 +795,19 @@ var dialogs = [
                     {
                         "id": "restaurant40",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "time",
-                                    "typeCheck": "timeTypeCheck"
-                                }
-                            ]
-                        },
+                        // "input": {
+                        //     "types": [
+                        //         {
+                        //             "name": "time",
+                        //             "typeCheck": "timeTypeCheck"
+                        //         }
+                        //     ]
+                        // },
+                        "input": [
+                            {
+                                "types": "timeTypeCheck"
+                            }
+                        ],
                         "task": "checkTime",
                         "output": [
                             {
@@ -1090,8 +1115,7 @@ var commonDialogs = [
             }
         ],
         "output": {
-            "kind": "Action",
-            "up": "1"
+            "up": 1
         }
     },
     {
