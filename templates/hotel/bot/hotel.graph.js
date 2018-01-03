@@ -3057,22 +3057,22 @@ var commonDialogs = [
             }
         ]
     },
-    {
-        "id": "defaultcommon6",
-        "filename": "defaultcommon",
-        "name": "예약default",
-        "input": [
-            {
-                "regexp":"^[ ]?예약$"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Action",
-                "call": "빠른예약(체크인날짜,인원수,투숙 기간,객실명,예약)"
-            }
-        ]
-    },
+    // {
+    //     "id": "defaultcommon6",
+    //     "filename": "defaultcommon",
+    //     "name": "예약default",
+    //     "input": [
+    //         {
+    //             "regexp":"^예약$"
+    //         }
+    //     ],
+    //     "output": [
+    //         {
+    //             "kind": "Action",
+    //             "call": "빠른예약(체크인날짜,인원수,투숙 기간,객실명,예약)"
+    //         }
+    //     ]
+    // },
     {
         "id": "defaultcommon7",
         "filename": "defaultcommon",

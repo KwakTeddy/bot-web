@@ -125,6 +125,20 @@ var mynamesave1 = {
   
                 context.dialog.peoplenumber1=context.dialog.peoplenumber;
 
+                context.dialog.myyear=undefined;
+                context.dialog.mymonth=undefined;
+                context.dialog.myday=undefined;
+
+                context.dialog.inputyear=undefined;
+                context.dialog.inputmonth=undefined;
+                context.dialog.inputday=undefined;
+
+                context.dialog.outyear=undefined;
+                context.dialog.outmonth=undefined;
+                context.dialog.outday=undefined;
+
+                context.dialog.peoplenumber=undefined;
+
                 if (!context.bot.testMode) {
                     var randomNum = '';
                     randomNum += '' + Math.floor(Math.random() * 10);
@@ -176,6 +190,8 @@ var mynamesave1 = {
                                     }
                                 },
                                 function (error, response, body) {
+
+                                    console.log('ㅁㅇㄴㄹㄴㅇㄹㄴㄹㅁㄴㅇㅁㄹ', error);
                                     callback(task, context);
                                 }
                             );
@@ -186,20 +202,7 @@ var mynamesave1 = {
                 } else {
                     callback(task, context);
                 }
-              
-                context.dialog.myyear=undefined;
-                context.dialog.mymonth=undefined;
-                context.dialog.myday=undefined;
 
-                context.dialog.inputyear=undefined;
-                context.dialog.inputmonth=undefined;
-                context.dialog.inputday=undefined;
-
-                context.dialog.outyear=undefined;
-                context.dialog.outmonth=undefined;
-                context.dialog.outday=undefined;
-              
-               context.dialog.peoplenumber=undefined;
 
                 callback(task,context);
             });
@@ -586,6 +589,21 @@ var addorder = {
                                                         context.dialog.peoplenumber1=context.dialog.peoplenumber;
 
 
+                      context.dialog.myyear=undefined;
+                      context.dialog.mymonth=undefined;
+                      context.dialog.myday=undefined;
+
+                      context.dialog.inputyear=undefined;
+                      context.dialog.inputmonth=undefined;
+                      context.dialog.inputday=undefined;
+
+                      context.dialog.outyear=undefined;
+                      context.dialog.outmonth=undefined;
+                      context.dialog.outday=undefined;
+
+                      context.dialog.peoplenumber=undefined;
+
+
                       if (!context.bot.testMode) {
                           var randomNum = '';
                           randomNum += '' + Math.floor(Math.random() * 10);
@@ -627,6 +645,7 @@ var addorder = {
                                   message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약';
                                      // '예약접수(클릭) ' + shorturl;
 
+                                  console.log(message+'------------------------------');
                                   request.post(
                                       'https://bot.moneybrain.ai/api/messages/sms/send',
                                       {
@@ -647,20 +666,6 @@ var addorder = {
                       } else {
                           callback(task, context);
                       }
-
-                                                        context.dialog.myyear=undefined;
-                                                        context.dialog.mymonth=undefined;
-                                                        context.dialog.myday=undefined;
-
-                                                        context.dialog.inputyear=undefined;
-                                                        context.dialog.inputmonth=undefined;
-                                                        context.dialog.inputday=undefined;
-
-                                                        context.dialog.outyear=undefined;
-                                                        context.dialog.outmonth=undefined;
-                                                        context.dialog.outday=undefined;
-
-                                                        context.dialog.peoplenumber=undefined;
 
                                                         callback(task,context);
                          });
@@ -742,6 +747,21 @@ var addorder1 = {
 
                 context.dialog.peoplenumber1=context.dialog.peoplenumber;
 
+
+                context.dialog.myyear=undefined;
+                context.dialog.mymonth=undefined;
+                context.dialog.myday=undefined;
+
+                context.dialog.inputyear=undefined;
+                context.dialog.inputmonth=undefined;
+                context.dialog.inputday=undefined;
+
+                context.dialog.outyear=undefined;
+                context.dialog.outmonth=undefined;
+                context.dialog.outday=undefined;
+
+                context.dialog.peoplenumber=undefined;
+
                 if (!context.bot.testMode) {
                     var randomNum = '';
                     randomNum += '' + Math.floor(Math.random() * 10);
@@ -768,12 +788,12 @@ var addorder1 = {
                         }
                     }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
-                            // var shorturl;
-                            // try {
-                            //     shorturl = JSON.parse(body).result.url;
-                            // } catch (e) {
-                            //     console.log(e);
-                            // }
+                            var shorturl;
+                            try {
+                                shorturl = JSON.parse(body).result.url;
+                            } catch (e) {
+                                console.log(e);
+                            }
                             var message = '[플레이챗]' + '\n' +
                                 context.user.mynameorder + '/' +
                                 context.user.dateorder + '/'
@@ -790,7 +810,8 @@ var addorder1 = {
 
                             message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약';
                                 //'예약접수(클릭) ' + shorturl;
-
+                            console.log(message+context.bot.mobile+'------------------------------');
+                            console.log(context.bot.phone, '모바일----');
                             request.post(
                                 'https://bot.moneybrain.ai/api/messages/sms/send',
                                 {
@@ -801,6 +822,8 @@ var addorder1 = {
                                     }
                                 },
                                 function (error, response, body) {
+                                    console.log('ㅁㅇㄴㄹㄴㅇㄹㄴㄹㅁㄴㅇㅁㄹ', body);
+                                    console.log(message+'------------------------------');
                                     callback(task, context);
                                 }
                             );
@@ -812,19 +835,6 @@ var addorder1 = {
                     callback(task, context);
                 }
 
-                context.dialog.myyear=undefined;
-                context.dialog.mymonth=undefined;
-                context.dialog.myday=undefined;
-
-                context.dialog.inputyear=undefined;
-                context.dialog.inputmonth=undefined;
-                context.dialog.inputday=undefined;
-
-                context.dialog.outyear=undefined;
-                context.dialog.outmonth=undefined;
-                context.dialog.outday=undefined;
-
-                context.dialog.peoplenumber=undefined;
 
                 callback(task,context);
             });
@@ -904,6 +914,20 @@ var addorder2 = {
 
                 context.dialog.peoplenumber1=context.dialog.peoplenumber;
 
+                context.dialog.myyear=undefined;
+                context.dialog.mymonth=undefined;
+                context.dialog.myday=undefined;
+
+                context.dialog.inputyear=undefined;
+                context.dialog.inputmonth=undefined;
+                context.dialog.inputday=undefined;
+
+                context.dialog.outyear=undefined;
+                context.dialog.outmonth=undefined;
+                context.dialog.outday=undefined;
+
+                context.dialog.peoplenumber=undefined;
+
                 if (!context.bot.testMode) {
                     var randomNum = '';
                     randomNum += '' + Math.floor(Math.random() * 10);
@@ -930,12 +954,12 @@ var addorder2 = {
                         }
                     }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
-                            // var shorturl;
-                            // try {
-                            //     shorturl = JSON.parse(body).result.url;
-                            // } catch (e) {
-                            //     console.log(e);
-                            // }
+                            var shorturl;
+                            try {
+                                shorturl = JSON.parse(body).result.url;
+                            } catch (e) {
+                                console.log(e);
+                            }
                             var message = '[플레이챗]' + '\n' +
                                 context.user.mynameorder + '/' +
                                 context.user.dateorder + '/'
@@ -963,7 +987,7 @@ var addorder2 = {
                                     }
                                 },
                                 function (error, response, body) {
-                                    callback(task, context);
+                                   callback(task, context);
                                 }
                             );
                         } else {
@@ -974,19 +998,6 @@ var addorder2 = {
                     callback(task, context);
                 }
 
-                context.dialog.myyear=undefined;
-                context.dialog.mymonth=undefined;
-                context.dialog.myday=undefined;
-
-                context.dialog.inputyear=undefined;
-                context.dialog.inputmonth=undefined;
-                context.dialog.inputday=undefined;
-
-                context.dialog.outyear=undefined;
-                context.dialog.outmonth=undefined;
-                context.dialog.outday=undefined;
-
-                context.dialog.peoplenumber=undefined;
 
                 callback(task,context);
             });
