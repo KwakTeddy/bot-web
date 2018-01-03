@@ -18,7 +18,7 @@ var utils = require(path.resolve('engine/bot/action/common/utils'));
 var typelib = require(path.resolve('engine/bot/action/common/type'));
 var globals = require(path.resolve('engine/bot/engine/common/globals'));
 var _ = require('lodash');
-var intent = require(path.resolve('./engine/bot/engine/nlu/intent'))
+var intent = require(path.resolve('./engine/bot/engine/nlu/intent'));
 
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
@@ -78,6 +78,18 @@ var mynamesave1 = {
     var tomorrowday = Number(context.dialog.todayday)+1;
     context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
 
+        context.user.mynameorder='';
+        context.user.mynameorder=context.dialog.myname;
+        context.user.room_priceorder=0;
+        context.user.room_priceorder=context.dialog.roomlistType.room_price;
+        context.user.dateorder='';
+        context.user.dateorder=context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
+        context.user.peoplenumberorder='';
+        context.user.peoplenumberorder=context.dialog.peoplenumber;
+        context.user.roomrorder='';
+        context.user.roomrorder=context.dialog.roomlistType.category_name;
+        context.user.priceorder=0;
+        context.user.priceorder=context.dialog.oneallprice;
         var neworder={
             order_user: context.dialog.myname,
             order_phone:context.user.mobile,
@@ -112,7 +124,7 @@ var mynamesave1 = {
                 context.dialog.outday1=context.dialog.outday;
   
                 context.dialog.peoplenumber1=context.dialog.peoplenumber;
-              
+
                 context.dialog.myyear=undefined;
                 context.dialog.mymonth=undefined;
                 context.dialog.myday=undefined;
@@ -124,8 +136,73 @@ var mynamesave1 = {
                 context.dialog.outyear=undefined;
                 context.dialog.outmonth=undefined;
                 context.dialog.outday=undefined;
-              
-               context.dialog.peoplenumber=undefined;
+
+                context.dialog.peoplenumber=undefined;
+
+                if (!context.bot.testMode) {
+                    var randomNum = '';
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+
+                    var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+                    context.bot.authKey = randomNum;
+
+                    var query = {url: url};
+                    var request = require('request');
+
+                    request({
+                        url: 'https://openapi.naver.com/v1/util/shorturl',
+                        method: 'POST',
+                        form: query,
+                        headers: {
+                            'Host': 'openapi.naver.com',
+                            'Accept': '*/*',
+                            'Content-Type': 'application/json',
+                            'X-Naver-Client-Id': context.bot.naver.clientId,
+                            'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                        }
+                    }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var shorturl;
+                            try {
+                                shorturl = JSON.parse(body).result.url;
+                            } catch (e) {
+                                console.log(e);
+                            }
+                            var message = '[플레이챗]' + '\n' +
+                                context.user.mynameorder + '/' +
+                                context.user.dateorder + '/'
+                                +context.user.peoplenumberorder + "명/"+context.user.roomrorder+'/'+ '총'+context.user.priceorder+'원/';
+
+
+                            message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약';
+                                //'예약접수(클릭) ' + shorturl;
+
+                            request.post(
+                                'https://bot.moneybrain.ai/api/messages/sms/send',
+                                {
+                                    json: {
+                                        callbackPhone: context.bot.phone,
+                                        phone: context.bot.mobile.replace(/,/g, ''),
+                                        message: message
+                                    }
+                                },
+                                function (error, response, body) {
+
+                                    console.log('ㅁㅇㄴㄹㄴㅇㄹㄴㄹㅁㄴㅇㅁㄹ', error);
+                                    callback(task, context);
+                                }
+                            );
+                        } else {
+                            callback(task, context);
+                        }
+                    });
+                } else {
+                    callback(task, context);
+                }
+
 
                 callback(task,context);
             });
@@ -463,7 +540,18 @@ var addorder = {
     context.dialog.todaydate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+context.dialog.todayday+" "+context.dialog.todaytime;
     var tomorrowday = Number(context.dialog.todayday)+1;
     context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
-
+        context.user.mynameorder='';
+        context.user.mynameorder=context.dialog.myname;
+        context.user.room_priceorder=0;
+        context.user.room_priceorder=context.dialog.roomlistType.room_price;
+        context.user.dateorder='';
+        context.user.dateorder=context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
+        context.user.peoplenumberorder='';
+        context.user.peoplenumberorder=context.dialog.peoplenumber;
+        context.user.roomrorder='';
+        context.user.roomrorder=context.dialog.roomlistType.category_name;
+        context.user.priceorder=0;
+        context.user.priceorder=context.dialog.oneallprice;
                 var neworder={
                 order_user: context.dialog.myname,
                 order_phone:context.user.mobile,
@@ -500,19 +588,84 @@ var addorder = {
 
                                                         context.dialog.peoplenumber1=context.dialog.peoplenumber;
 
-                                                        context.dialog.myyear=undefined;
-                                                        context.dialog.mymonth=undefined;
-                                                        context.dialog.myday=undefined;
 
-                                                        context.dialog.inputyear=undefined;
-                                                        context.dialog.inputmonth=undefined;
-                                                        context.dialog.inputday=undefined;
+                      context.dialog.myyear=undefined;
+                      context.dialog.mymonth=undefined;
+                      context.dialog.myday=undefined;
 
-                                                        context.dialog.outyear=undefined;
-                                                        context.dialog.outmonth=undefined;
-                                                        context.dialog.outday=undefined;
+                      context.dialog.inputyear=undefined;
+                      context.dialog.inputmonth=undefined;
+                      context.dialog.inputday=undefined;
 
-                                                        context.dialog.peoplenumber=undefined;
+                      context.dialog.outyear=undefined;
+                      context.dialog.outmonth=undefined;
+                      context.dialog.outday=undefined;
+
+                      context.dialog.peoplenumber=undefined;
+
+
+                      if (!context.bot.testMode) {
+                          var randomNum = '';
+                          randomNum += '' + Math.floor(Math.random() * 10);
+                          randomNum += '' + Math.floor(Math.random() * 10);
+                          randomNum += '' + Math.floor(Math.random() * 10);
+                          randomNum += '' + Math.floor(Math.random() * 10);
+
+                          var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+                          context.bot.authKey = randomNum;
+
+                          var query = {url: url};
+                          var request = require('request');
+
+                          request({
+                              url: 'https://openapi.naver.com/v1/util/shorturl',
+                              method: 'POST',
+                              form: query,
+                              headers: {
+                                  'Host': 'openapi.naver.com',
+                                  'Accept': '*/*',
+                                  'Content-Type': 'application/json',
+                                  'X-Naver-Client-Id': context.bot.naver.clientId,
+                                  'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                              }
+                          }, function (error, response, body) {
+                              if (!error && response.statusCode == 200) {
+                                  var shorturl;
+                                  try {
+                                      shorturl = JSON.parse(body).result.url;
+                                  } catch (e) {
+                                      console.log(e);
+                                  }
+                                  var message = '[플레이챗]' + '\n' +
+                                      context.user.mynameorder + '/' +
+                                      context.user.dateorder + '/'
+                                  +context.user.peoplenumberorder + "명/"+context.user.roomrorder+'/'+ '총'+context.user.priceorder+'원/';
+
+
+                                  message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약';
+                                     // '예약접수(클릭) ' + shorturl;
+
+                                  console.log(message+'------------------------------');
+                                  request.post(
+                                      'https://bot.moneybrain.ai/api/messages/sms/send',
+                                      {
+                                          json: {
+                                              callbackPhone: context.bot.phone,
+                                              phone: context.bot.mobile.replace(/,/g, ''),
+                                              message: message
+                                          }
+                                      },
+                                      function (error, response, body) {
+                                          callback(task, context);
+                                      }
+                                  );
+                              } else {
+                                  callback(task, context);
+                              }
+                          });
+                      } else {
+                          callback(task, context);
+                      }
 
                                                         callback(task,context);
                          });
@@ -545,6 +698,19 @@ var addorder1 = {
         var tomorrowday = Number(context.dialog.todayday)+1;
         context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
 
+        context.user.mynameorder='';
+        context.user.mynameorder=context.dialog.myname;
+        context.user.room_priceorder=0;
+        context.user.room_priceorder=context.dialog.menumatch.room_price;
+        context.user.dateorder='';
+        context.user.dateorder=context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
+        context.user.peoplenumberorder='';
+        context.user.peoplenumberorder=context.dialog.peoplenumber;
+        context.user.roomrorder='';
+        context.user.roomrorder=context.dialog.menumatch.category_name;
+        context.user.priceorder=0;
+        context.user.priceorder=context.dialog.oneallprice;
+
         var neworder={
             order_user: context.dialog.myname,
             order_phone:context.user.mobile,
@@ -581,6 +747,7 @@ var addorder1 = {
 
                 context.dialog.peoplenumber1=context.dialog.peoplenumber;
 
+
                 context.dialog.myyear=undefined;
                 context.dialog.mymonth=undefined;
                 context.dialog.myday=undefined;
@@ -594,6 +761,80 @@ var addorder1 = {
                 context.dialog.outday=undefined;
 
                 context.dialog.peoplenumber=undefined;
+
+                if (!context.bot.testMode) {
+                    var randomNum = '';
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+
+                    var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+                    context.bot.authKey = randomNum;
+
+                    var query = {url: url};
+                    var request = require('request');
+
+                    request({
+                        url: 'https://openapi.naver.com/v1/util/shorturl',
+                        method: 'POST',
+                        form: query,
+                        headers: {
+                            'Host': 'openapi.naver.com',
+                            'Accept': '*/*',
+                            'Content-Type': 'application/json',
+                            'X-Naver-Client-Id': context.bot.naver.clientId,
+                            'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                        }
+                    }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var shorturl;
+                            try {
+                                shorturl = JSON.parse(body).result.url;
+                            } catch (e) {
+                                console.log(e);
+                            }
+                            var message = '[플레이챗]' + '\n' +
+                                context.user.mynameorder + '/' +
+                                context.user.dateorder + '/'
+                                +context.user.peoplenumberorder + "명/"+context.user.roomrorder+'/'+ '총'+context.user.priceorder+'원/';
+
+                            // for (var i = 0; i < fields.length; i++) {
+                            //     var field = fields[i];
+                            //     if (field.name == 'numOfPerson') {
+                            //         message += context.dialog[field.name] + '명/';
+                            //     } else {
+                            //         message += context.dialog[field.name] + '/';
+                            //     }
+                            // }
+
+                            message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약';
+                                //'예약접수(클릭) ' + shorturl;
+                            console.log(message+context.bot.mobile+'------------------------------');
+                            console.log(context.bot.phone, '모바일----');
+                            request.post(
+                                'https://bot.moneybrain.ai/api/messages/sms/send',
+                                {
+                                    json: {
+                                        callbackPhone: context.bot.phone,
+                                        phone: context.bot.mobile.replace(/,/g, ''),
+                                        message: message
+                                    }
+                                },
+                                function (error, response, body) {
+                                    console.log('ㅁㅇㄴㄹㄴㅇㄹㄴㄹㅁㄴㅇㅁㄹ', body);
+                                    console.log(message+'------------------------------');
+                                    callback(task, context);
+                                }
+                            );
+                        } else {
+                            callback(task, context);
+                        }
+                    });
+                } else {
+                    callback(task, context);
+                }
+
 
                 callback(task,context);
             });
@@ -625,7 +866,18 @@ var addorder2 = {
         context.dialog.todaydate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+context.dialog.todayday+" "+context.dialog.todaytime;
         var tomorrowday = Number(context.dialog.todayday)+1;
         context.dialog.tomorrowdate=context.dialog.todayyear+"-"+context.dialog.todaymonth+"-"+tomorrowday+" "+context.dialog.todaytime;
-
+        context.user.mynameorder='';
+        context.user.mynameorder=context.dialog.myname;
+        context.user.room_priceorder=0;
+        context.user.room_priceorder=context.dialog.menumatch.room_price;
+        context.user.dateorder='';
+        context.user.dateorder=context.dialog.inputyear+"-"+context.dialog.inputmonth+"-"+context.dialog.inputday+"~"+context.dialog.outyear+"-"+context.dialog.outmonth+"-"+context.dialog.outday;
+        context.user.peoplenumberorder='';
+        context.user.peoplenumberorder=context.dialog.peoplenumber;
+        context.user.roomrorder='';
+        context.user.roomrorder=context.dialog.menumatch.category_name;
+        context.user.priceorder=0;
+        context.user.priceorder=context.dialog.oneallprice;
         var neworder={
             order_user: context.dialog.myname,
             order_phone:context.user.mobile,
@@ -676,6 +928,77 @@ var addorder2 = {
 
                 context.dialog.peoplenumber=undefined;
 
+                if (!context.bot.testMode) {
+                    var randomNum = '';
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+
+                    var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+                    context.bot.authKey = randomNum;
+
+                    var query = {url: url};
+                    var request = require('request');
+
+                    request({
+                        url: 'https://openapi.naver.com/v1/util/shorturl',
+                        method: 'POST',
+                        form: query,
+                        headers: {
+                            'Host': 'openapi.naver.com',
+                            'Accept': '*/*',
+                            'Content-Type': 'application/json',
+                            'X-Naver-Client-Id': context.bot.naver.clientId,
+                            'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                        }
+                    }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var shorturl;
+                            try {
+                                shorturl = JSON.parse(body).result.url;
+                            } catch (e) {
+                                console.log(e);
+                            }
+                            var message = '[플레이챗]' + '\n' +
+                                context.user.mynameorder + '/' +
+                                context.user.dateorder + '/'
+                                +context.user.peoplenumberorder + "명/"+context.user.roomrorder+'/'+ '총'+context.user.priceorder+'원/';
+
+                            // for (var i = 0; i < fields.length; i++) {
+                            //     var field = fields[i];
+                            //     if (field.name == 'numOfPerson') {
+                            //         message += context.dialog[field.name] + '명/';
+                            //     } else {
+                            //         message += context.dialog[field.name] + '/';
+                            //     }
+                            // }
+
+                            message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약';
+                            //'예약접수(클릭) ' + shorturl;
+
+                            request.post(
+                                'https://bot.moneybrain.ai/api/messages/sms/send',
+                                {
+                                    json: {
+                                        callbackPhone: context.bot.phone,
+                                        phone: context.bot.mobile.replace(/,/g, ''),
+                                        message: message
+                                    }
+                                },
+                                function (error, response, body) {
+                                   callback(task, context);
+                                }
+                            );
+                        } else {
+                            callback(task, context);
+                        }
+                    });
+                } else {
+                    callback(task, context);
+                }
+
+
                 callback(task,context);
             });
         });
@@ -691,7 +1014,78 @@ var deleteorder = {
 
                 order.find({_id:context.dialog.orderlistType._id}).update({order_status:"예약취소"}).exec(function(err){
 
-                   order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
+                    if (!context.bot.testMode) {
+                        var randomNum = '';
+                        randomNum += '' + Math.floor(Math.random() * 10);
+                        randomNum += '' + Math.floor(Math.random() * 10);
+                        randomNum += '' + Math.floor(Math.random() * 10);
+                        randomNum += '' + Math.floor(Math.random() * 10);
+
+                        var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+                        context.bot.authKey = randomNum;
+
+                        var query = {url: url};
+                        var request = require('request');
+
+                        request({
+                            url: 'https://openapi.naver.com/v1/util/shorturl',
+                            method: 'POST',
+                            form: query,
+                            headers: {
+                                'Host': 'openapi.naver.com',
+                                'Accept': '*/*',
+                                'Content-Type': 'application/json',
+                                'X-Naver-Client-Id': context.bot.naver.clientId,
+                                'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                            }
+                        }, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                // var shorturl;
+                                // try {
+                                //     shorturl = JSON.parse(body).result.url;
+                                // } catch (e) {
+                                //     console.log(e);
+                                // }
+                                var message = '[플레이챗]' + '\n' +
+                                    context.dialog.orderlistType.order_user + '/' +
+                                    context.dialog.orderlistType.order_period + '/'
+                                    +context.dialog.orderlistType.order_peoplenumber + "명/"+context.dialog.orderlistType.order_room+'/'+ '총'+context.dialog.orderlistType.order_price+'원/';
+
+                                // for (var i = 0; i < fields.length; i++) {
+                                //     var field = fields[i];
+                                //     if (field.name == 'numOfPerson') {
+                                //         message += context.dialog[field.name] + '명/';
+                                //     } else {
+                                //         message += context.dialog[field.name] + '/';
+                                //     }
+                                // }
+
+                                message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n'+'예약취소';
+                                //'예약접수(클릭) ' + shorturl;
+
+                                request.post(
+                                    'https://bot.moneybrain.ai/api/messages/sms/send',
+                                    {
+                                        json: {
+                                            callbackPhone: context.bot.phone,
+                                            phone: context.bot.mobile.replace(/,/g, ''),
+                                            message: message
+                                        }
+                                    },
+                                    function (error, response, body) {
+                                        callback(task, context);
+                                    }
+                                );
+                            } else {
+                                callback(task, context);
+                            }
+                        });
+                    } else {
+                        callback(task, context);
+                    }
+
+
+                    order.find({order_user:context.user.myname,order_phone:context.user.mobile,order_status:"예약",botId:context.bot.id}).lean().exec(function(err, docs) {
             if(err) {
                 console.log(err);
                 callback(task, context);

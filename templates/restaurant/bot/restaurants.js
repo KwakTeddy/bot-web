@@ -38,11 +38,11 @@ var startTask = {
         //     // context.bot.authKey = null;
         // }
         context.botUser.isOwner = false;
-        console.log('context.bot.authKey: '+ context.bot.authKey);
-        console.log('context.botUser.options: '+ context.botUser.options);
-        console.log('context.bot.authKey: '+ context.bot.authKey);
-        console.log('context.botUser.options.authKey: '+ context.botUser.options.authKey);
-        console.log('context.botUser.isOwner: '+ context.botUser.isOwner);
+        //console.log('context.bot.authKey: '+ context.bot.authKey);
+       // console.log('context.botUser.options: '+ context.botUser.options);
+       // console.log('context.bot.authKey: '+ context.bot.authKey);
+       // console.log('context.botUser.options.authKey: '+ context.botUser.options.authKey);
+        //console.log('context.botUser.isOwner: '+ context.botUser.isOwner);
         task.result = {smartReply: ['예약', '위치', '영업시간', '메뉴']};
 
         context.dialog.날짜입력최초 = undefined;
@@ -110,7 +110,7 @@ var eventCategoryAction = {
                // console.log('ㅑㅐ너랴ㅐㄴ어래쟈 결과 : ', list);
                 context.dialog.events = docs;
 
-                console.log('context.dialog.events.length : ', context.dialog.events.length);
+                //console.log('context.dialog.events.length : ', context.dialog.events.length);
                 //task.doc = docs;
                 callback(task,context);
             }
@@ -637,8 +637,8 @@ function dateTypeCheck1(text, type, task, context, callback) {
         return matchDate(name, task, date);
     });
     context.dialog.date=date;
-    console.log(date+'====================0');
-    console.log(matched+'====================0');
+   // console.log(date+'====================0');
+   // console.log(matched+'====================0');
     callback(text, task, matched);
 }
 
@@ -694,7 +694,7 @@ function timeTypeCheck1(text, type, task, context, callback) {
             if (g2.length == 1) g2 = '0'+g2;
             return g1 + ":" + g2;
         });
-        console.log(time+"===================99");
+       // console.log(time+"===================99");
         context.dialog.time=time;
         return matchTime(name, task, time);
     });
@@ -782,16 +782,16 @@ var checkTime= {
         var str1 = context.bot.startTime;
         var str0 = str.substring(3, 5);
         var str10 = str1.substring(3, 5);
-        console.log('context.dialog.time==========='+context.dialog.time);
+       // console.log('context.dialog.time==========='+context.dialog.time);
         var xx = Number(context.dialog.time.substring(0, 1));
         if (((str.indexOf('오전') >= 0) && (str1.indexOf('오전')>=0))){
-            console.log('===================111');
+           // console.log('===================111');
 
             context.dialog.endTime1 = Number(str0);
             context.dialog.startTime1 = Number(str10);
-            console.log('context.dialog.startTime1==========='+context.dialog.startTime1);
-            console.log('context.dialog.endTime1==========='+context.dialog.endTime1);
-            console.log('xx==========='+xx);
+            //console.log('context.dialog.startTime1==========='+context.dialog.startTime1);
+           // console.log('context.dialog.endTime1==========='+context.dialog.endTime1);
+           // console.log('xx==========='+xx);
             if (day == holiday) {
                 context.dialog.check = true;
                 callback(task, context);
@@ -799,7 +799,7 @@ var checkTime= {
                 if (context.dialog.time == 're') {
                     context.dialog.check = 're';
                 } else if (xx < context.dialog.endTime1 && xx > 0 || xx >= context.dialog.startTime1 && xx < 24) {
-                    console.log('===================333');
+                  //  console.log('===================333');
                     context.dialog.check = true;
                 } else {
 
@@ -810,7 +810,7 @@ var checkTime= {
 
         }
         else if((str.indexOf('오후') >= 0) && (str1.indexOf('오후')>=0)) {
-            console.log('===================222');
+           // console.log('===================222');
             context.dialog.endTime1 = Number(str0) + 12;
             context.dialog.startTime1 = Number(str10) + 12;
             if (day == holiday) {
@@ -820,7 +820,7 @@ var checkTime= {
                 if (context.dialog.time == 're') {
                     context.dialog.check = 're';
                 } else if (xx < context.dialog.endTime1 && xx > 0 || xx > context.dialog.startTime1 && xx < 24) {
-                    console.log('===================333');
+                   // console.log('===================333');
                     context.dialog.check = true;
                 } else {
 
@@ -830,7 +830,7 @@ var checkTime= {
             }
         }
         else {
-            console.log('===================333');
+          //  console.log('===================333');
             if (str.indexOf('오후') >= 0) {
                 context.dialog.endTime1 = Number(str0) + 12;
             }
@@ -845,7 +845,7 @@ var checkTime= {
                 if (context.dialog.time == 're') {
                     context.dialog.check = 're';
                 } else if (xx < context.dialog.endTime1 && xx > context.dialog.startTime1) {
-                    console.log('===================333');
+                  //  console.log('===================333');
                     context.dialog.check = true;
                 } else {
 
@@ -864,8 +864,8 @@ bot.setTask("checkTime", checkTime);
 var checkDate= {
     name: 'checkDate',
     action: function (task, context, callback) {
-        console.log('====================1');
-        console.log(context.dialog.date+'====================2');
+      //  console.log('====================1');
+       // console.log(context.dialog.date+'====================2');
         var day = context.dialog.date.getDay();
 
         var holiday = dateStringToNumber(context.bot.holiday);
@@ -903,7 +903,7 @@ var menuCategoryAction= {
     action: function (task, context, callback) {
         context.dialog.categoryisone=undefined;
         context.dialog.categorylength=[];
-        console.log(context.bot.image+'+++++++++++++++++++++++++++++11');
+      //  console.log(context.bot.image+'+++++++++++++++++++++++++++++11');
 
         if (context.bot.image!==undefined) {
             var img = context.bot.image.startsWith('http') ? context.bot.image : config.host + context.bot.image;
@@ -931,11 +931,11 @@ var menuCategoryAction= {
                             {
                                 if(context.dialog.categorys[i].category!==context.dialog.categorylength[j].category){count1++;}
                             }
-                            console.log(count1+'======================count1');
+                           // console.log(count1+'======================count1');
                         }
                         if(count1==context.dialog.categorylength.length)
                         {context.dialog.categorylength.push(context.dialog.categorys[i]);}
-                     console.log(JSON.stringify(context.dialog.categorylength)+'======================');
+                    // console.log(JSON.stringify(context.dialog.categorylength)+'======================');
 
                     }
                     if(context.dialog.categorylength.length>1){
@@ -964,7 +964,7 @@ var menuCategoryAction= {
                         }).lean().exec(function (err, docs) {
 
                             context.dialog.menuss = docs[0];
-                            console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
+                           // console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
                             callback(task, context);
                         });
                     }
@@ -1058,7 +1058,7 @@ var categoryrestaurantlist= {
     name: 'categoryrestaurantlist',
     action:function(task, context, callback) {
 
-        console.log('+++++++++++++++++++++++++++++');
+      //  console.log('+++++++++++++++++++++++++++++');
         if(context.bot.menus.length===0){context.dialog.restaurantno=undefined;callback(task,context);}
         else {
             restaurantmenu.find({botId: context.bot.id,hotmenus:"true"}).lean().exec(function (err, docs) {
@@ -1253,7 +1253,7 @@ bot.setTask("menuimagedisplay", menuimagedisplay);
 var categorymenuisornot= {
     action: function(task, context, callback)
     {
-        console.log("++++++++++++++++++++++++++++++");
+        //console.log("++++++++++++++++++++++++++++++");
         context.dialog.menuis = 0;
         context.dialog.categorymenu=[];
         restaurantmenu.find({
@@ -1276,10 +1276,10 @@ var categorymenuisornot= {
                     // s[i].name)) {context.dialog.menumatch.push(context.dialog.categorys[i]);}
                     if ((str.indexOf(context.dialog.categorys[i].name)>0)||str==ll) {
                         context.dialog.categorymenu.push(context.dialog.categorys[i]);
-                        console.log(JSON.stringify(context.dialog.categorymenu)+"2222222222222222");
+                        //console.log(JSON.stringify(context.dialog.categorymenu)+"2222222222222222");
                     }
                 }
-                console.log(context.dialog.categorymenu.length+"2222222222222222666");
+               // console.log(context.dialog.categorymenu.length+"2222222222222222666");
                 if (context.dialog.categorymenu.length !== 0) {
                     context.dialog.menuis = 1;
                 }
@@ -1299,7 +1299,7 @@ bot.setTask("categorymenuisornot", categorymenuisornot);
 var menuisornot= {
     action: function(task, context, callback)
     {
-        console.log("1111111111");
+       // console.log("1111111111");
 
         context.dialog.menuis = 0;
         context.dialog.categorymenu=[];
@@ -1313,7 +1313,7 @@ var menuisornot= {
             } else {
 
                 context.dialog.menus = docs;
-                console.log(JSON.stringify(context.dialog.menus)+"22222222223333333333");
+               // console.log(JSON.stringify(context.dialog.menus)+"22222222223333333333");
                 var ll=0;
                 for (i = 0; i < context.dialog.menus.length; i++) {
                     var str = context.dialog.inCurRaw;
@@ -1321,7 +1321,7 @@ var menuisornot= {
                     if ((str.indexOf(context.dialog.menus[i].name)>=0)|| str==ll) {
                         context.dialog.categorymenu.push(context.dialog.menus[i]);
                     }
-                    console.log(JSON.stringify(context.dialog.categorymenu)+"3333333333");
+                   // console.log(JSON.stringify(context.dialog.categorymenu)+"3333333333");
                 }
                 if (context.dialog.categorymenu.length !== 0) {
                     context.dialog.menuis = 1;
@@ -1341,7 +1341,7 @@ var action2 = {
     name:"action2",
     action: function(task, context, callback)
     {
-        console.log('+++++++++++++++++');
+        //console.log('+++++++++++++++++');
         context.dialog.날짜입력최초 = true; callback(task, context);
     }
 };
@@ -1351,7 +1351,7 @@ var action3 = {
     name:"action3",
     action: function(task, context, callback)
     {
-        console.log('++++++++++++++++++++++++++++++++action3');
+        //console.log('++++++++++++++++++++++++++++++++action3');
         context.dialog.시간입력최초 = true; callback(task, context);
     }
 };
@@ -1363,9 +1363,9 @@ var numOfPersonTypeCheck1 = {
         context.dialog.numOfPersonis=undefined;
         var inRaw=context.dialog.inRaw;
         var inCurRaw=context.dialog.inCurRaw;
-        console.log('++++++++++++++++++++++++++++++++');
-        console.log(inRaw+'++++++++++1111111');
-        console.log(inCurRaw+'++++++++++1111111');
+       // console.log('++++++++++++++++++++++++++++++++');
+        //console.log(inRaw+'++++++++++1111111');
+       // console.log(inCurRaw+'++++++++++1111111');
         var x = /[ ]?명/g;
 
         //search(x);
@@ -1373,7 +1373,7 @@ var numOfPersonTypeCheck1 = {
         var count1 = inRaw.search(x);
         var count2;
         if(count1<0 && inCurRaw!==undefined){
-            console.log("count1:"+count1+'++++++++++1111111');
+           // console.log("count1:"+count1+'++++++++++1111111');
             count1 = inCurRaw.search(x);
             if (count1 >= 0) {
                 context.dialog.numOfPersonis=1;
@@ -1386,17 +1386,17 @@ var numOfPersonTypeCheck1 = {
 
                 }
                 context.dialog.numOfPerson = Number(context.dialog.numOfPerson);
-                console.log(context.dialog.numOfPersonis+'++++++++++2222222');
+              //  console.log(context.dialog.numOfPersonis+'++++++++++2222222');
                 callback(task, context);
             }
             else {
                 context.dialog.numOfPersonis=0;
-                console.log(context.dialog.numOfPersonis+'++++++++++333333');
+               // console.log(context.dialog.numOfPersonis+'++++++++++333333');
                 callback(task, context);
             }
         }
         else {
-            console.log("count1:"+count1+'++++++++++222222');
+           // console.log("count1:"+count1+'++++++++++222222');
            // console.log("count1:" + count1 + '++++++++++1111111');
             count2 = 0;
             if (count1 >= 0) {
@@ -1753,15 +1753,19 @@ bot.setTask("action1", action1);
 var reserveOwnerConfirm = {
     name: "reserveOwnerConfirm",
     action: function (task, context, callback) {
-        if(context.dialog.reserve) {
+        if(context.dialog.reserve!==undefined){
+            context.user.reserve=[];
+            context.user.reserve=context.dialog.reserve;
+        }
+        if(context.user.reserve) {
             var TemplateReservation = mongoModule.getModel('restaurant-reservations');
-            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
+            TemplateReservation.update({_id: context.user.reserve._id}, {$set: {status: '확정'}}, function (err) {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.name + ']' + '\n' +
-                        context.dialog.reserve.name + '/' +
-                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // context.dialog.reserve.numOfPerson + '명\n' +
+                        context.user.reserve.name + '/' +
+                        context.user.reserve.dateStr + '/' + context.user.reserve.time + '/';
+                    // context.user.reserve.numOfPerson + '명\n' +
                     // '예약확정\n'+
                     // '매장전화: ' + context.bot.phone;
 
@@ -1769,9 +1773,9 @@ var reserveOwnerConfirm = {
                     for(var i = 0; i < fields.length; i++) {
                         var field = fields[i];
                         if(field.name == 'numOfPerson') {
-                            message += context.dialog.reserve[field.name] + '명/';
+                            message += context.user.reserve[field.name] + '명/';
                         } else {
-                            message += context.dialog.reserve[field.name] + '/';
+                            message += context.user.reserve[field.name] + '/';
                         }
                     }
 
@@ -1780,7 +1784,7 @@ var reserveOwnerConfirm = {
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
-                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.user.reserve.mobile.replace(/,/g, ''), message: message}},
                         function (error, response, body) {
                             reserveCheck.action(task, context, function(_task, context) {
                                 callback(task, context);
@@ -1802,15 +1806,19 @@ bot.setTask("reserveOwnerConfirm", reserveOwnerConfirm);
 var reserveOwnerCancel = {
     name: "reserveOwnerCancel",
     action: function (task, context, callback) {
-        if(context.dialog.reserve) {
+        if(context.dialog.reserve!==undefined){
+            context.user.reserve=[];
+            context.user.reserve=context.dialog.reserve;
+        }
+        if(context.user.reserve) {
             var TemplateReservation = mongoModule.getModel('restaurant-reservations');
-            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
+            TemplateReservation.update({_id: context.user.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.name + ']' + '\n' +
-                        context.dialog.reserve.name + '/' +
-                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // context.dialog.reserve.numOfPerson + '명\n' +
+                        context.user.reserve.name + '/' +
+                        context.user.reserve.dateStr + '/' + context.user.reserve.time + '/';
+                    // context.user.reserve.numOfPerson + '명\n' +
                     // '예약취소: '+
                     // task.inRaw + '\n' +
                     // '매장전화: ' + context.bot.phone;
@@ -1819,9 +1827,9 @@ var reserveOwnerCancel = {
                     for(var i = 0; i < fields.length; i++) {
                         var field = fields[i];
                         if(field.name == 'numOfPerson') {
-                            message += context.dialog.reserve[field.name] + '명/';
+                            message += context.user.reserve[field.name] + '명/';
                         } else {
-                            message += context.dialog.reserve[field.name] + '/';
+                            message += context.user.reserve[field.name] + '/';
                         }s
                     }
 
@@ -1831,7 +1839,7 @@ var reserveOwnerCancel = {
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
-                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.user.reserve.mobile.replace(/,/g, ''), message: message}},
                         function (error, response, body) {
                             reserveCheck.action(task, context, function(_task, context) {
                                 callback(task, context);
@@ -1854,29 +1862,33 @@ bot.setTask("reserveOwnerCancel", reserveOwnerCancel);
 var reserveCancel = {
     name: "reserveCancel",
     action: function (task, context, callback) {
-        if(context.dialog.reserve) {
+        if(context.dialog.reserve!==undefined){
+            context.user.reserve=[];
+            context.user.reserve=context.dialog.reserve;
+        }
+        if(context.user.reserve) {
             var TemplateReservation = mongoModule.getModel('restaurant-reservations');
-            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '취소'}}, function (err) {
+            TemplateReservation.update({_id: context.user.reserve._id}, {$set: {status: '취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.name + ']' + '\n' +
-                        context.dialog.reserve.name + '/' +
-                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // context.dialog.reserve.numOfPerson + '명\n' +
-                    // context.dialog.reserve.mobile + '\n' +
+                        context.user.reserve.name + '/' +
+                        context.user.reserve.dateStr + '/' + context.user.reserve.time + '/'+ context.user.reserve.numOfPerson + '명/';
+                    // context.user.reserve.mobile + '\n' +
                     // '예약취소';
 
-                    var fields = context.bot.reserveFields || [];
-                    for(var i = 0; i < fields.length; i++) {
-                        var field = fields[i];
-                        if(field.name == 'numOfPerson') {
-                            message +=  context.dialog[field.name] + '명/';
-                        } else {
-                            message += context.dialog[field.name] + '/';
-                        }
-                    }
+                    // console.log(context.bot.reserveFields.numOfPerson+'--------------------------');
+                    // var fields = context.bot.reserveFields || [];
+                    // for(var i = 0; i < fields.length; i++) {
+                    //     var field = fields[i];
+                    //     if(field.name == "numOfPerson") {
+                    //         message +=  context.dialog[field.name] + '명/';
+                    //     } else {
+                    //         message += context.dialog[field.name] + '/';
+                    //     }
+                    // }
 
-                    message += '\n' + context.dialog.reserve.mobile + '\n' +
+                    message += '\n' + context.user.reserve.mobile + '\n' +
                         '예약취소';
 
                     request.post(
@@ -1912,7 +1924,7 @@ var previewAction = {
             context.user.previewlistType=[];
             context.user.previewlistType=context.dialog.previewlistType;
         }
-        console.log(context.user.previewlistType+'----------------');
+        //console.log(context.user.previewlistType+'----------------');
         model = mongoModule.getModel('restaurant-previews');
         //var inCurRaw=Number(context.dialog.inCurRaw)-1;
         context.dialog.categorys2=[];
@@ -2001,11 +2013,11 @@ var previewCategoryAction = {
                             {
                                 if(context.dialog.categorys[i].category!==context.dialog.previewcategorylength[j].category){count1++;}
                             }
-                            console.log(count1+'======================count1');
+                           // console.log(count1+'======================count1');
                         }
                         if(count1==context.dialog.previewcategorylength.length)
                         {context.dialog.previewcategorylength.push(context.dialog.categorys[i]);}
-                        console.log(JSON.stringify(context.dialog.previewcategorylength)+'======================');
+                        //console.log(JSON.stringify(context.dialog.previewcategorylength)+'======================');
 
                     }
                     if(context.dialog.previewcategorylength.length>1){
@@ -2022,7 +2034,7 @@ var previewCategoryAction = {
                             category: context.dialog.previewcategorylength
                         }).lean().exec(function (err, docs) {
                             context.dialog.menuss = docs[0];
-                            console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
+                           // console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
                             callback(task, context);
                         });
                     }
@@ -2112,7 +2124,7 @@ bot.setTask("menuDetailTask", menuDetailTask);
 var menuImageTask1 = {
     name: "menuImageTask1",
     action: function(task, context, callback) {
-        console.log(context.dialog.menucategory[0].image+'======================');
+       // console.log(context.dialog.menucategory[0].image+'======================');
         if(context.dialog.menucategory[0].image!==undefined) {
             var img = context.dialog.menucategory[0].image.startsWith('http') ? context.dialog.menucategory[0].imagee : config.host + context.dialog.menucategory[0].image;
             task.result = {
@@ -2131,7 +2143,7 @@ bot.setTask("menuImageTask1", menuImageTask1);
 var menuImageTask2 = {
     name: "menuImageTask2",
     action: function(task, context, callback) {
-        console.log(context.dialog.menumatch[0].image+'======================');
+       // console.log(context.dialog.menumatch[0].image+'======================');
         if(context.dialog.menumatch[0].image!==undefined) {
             var img = context.dialog.menumatch[0].image.startsWith('http') ? context.dialog.menumatch[0].imagee : config.host + context.dialog.menumatch[0].image;
             task.result = {
@@ -2153,7 +2165,7 @@ var menuImageTask = {
     action: function(task, context, callback) {
         context.dialog.categoryisone=undefined;
         context.dialog.categorylength=[];
-        console.log(context.bot.image+'+++++++++++++++++++++++++++++11');
+       // console.log(context.bot.image+'+++++++++++++++++++++++++++++11');
 
         if (context.bot.image!==undefined) {
             var img = context.bot.image.startsWith('http') ? context.bot.image : config.host + context.bot.image;
@@ -2181,11 +2193,11 @@ var menuImageTask = {
                             {
                                 if(context.dialog.categorys[i].category!==context.dialog.categorylength[j].category){count1++;}
                             }
-                            console.log(count1+'======================count1');
+                           // console.log(count1+'======================count1');
                         }
                         if(count1==context.dialog.categorylength.length)
                         {context.dialog.categorylength.push(context.dialog.categorys[i]);}
-                        console.log(JSON.stringify(context.dialog.categorylength)+'======================');
+                        //console.log(JSON.stringify(context.dialog.categorylength)+'======================');
 
                     }
                     if(context.dialog.categorylength.length>1){
@@ -2214,7 +2226,7 @@ var menuImageTask = {
                         }).lean().exec(function (err, docs) {
 
                             context.dialog.menuss = docs[0];
-                            console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
+                           // console.log(JSON.stringify(context.dialog.menuss)+'+++++++++++++++++++++++++++++++3');
                             callback(task, context);
                         });
                     }
@@ -2243,17 +2255,17 @@ bot.setTask("menuImageTask", menuImageTask);
 var eventAction = {
     name: "eventAction",
     action: function (task, context, callback) {
-        console.log(context.dialog.eventlistType.name+'+++++++++++++++++++++++++++');
+       // console.log(context.dialog.eventlistType.name+'+++++++++++++++++++++++++++');
         context.dialog.events=context.dialog.eventlistType;
-        context.dialog.eventss=context.dialog.events;
-        if(context.dialog.eventss.image!==undefined) {
+        context.user.eventss=context.dialog.events;
+        if(context.user.eventss.image!==undefined) {
             task.result = {
-                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n' + context.dialog.eventss.date + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
-                image: {url: context.dialog.eventss.image},
+                text: '[' + context.user.eventss.name + ']' + '\n' + context.user.eventss.description + '\n' + context.user.eventss.date + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
+                image: {url: context.user.eventss.image},
                 buttons: [
                     {
                         text: '자세히보기',
-                        url: context.dialog.eventss.image.startsWith('http') ? context.dialog.eventss.image : config.host + context.dialog.eventss.image
+                        url: context.user.eventss.image.startsWith('http') ? context.user.eventss.image : config.host + context.user.eventss.image
                     }
                 ]
             };
