@@ -1753,15 +1753,19 @@ bot.setTask("action1", action1);
 var reserveOwnerConfirm = {
     name: "reserveOwnerConfirm",
     action: function (task, context, callback) {
-        if(context.dialog.reserve) {
+        if(context.dialog.reserve!==undefined){
+            context.user.reserve=[];
+            context.user.reserve=context.dialog.reserve;
+        }
+        if(context.user.reserve) {
             var TemplateReservation = mongoModule.getModel('restaurant-reservations');
-            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
+            TemplateReservation.update({_id: context.user.reserve._id}, {$set: {status: '확정'}}, function (err) {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.name + ']' + '\n' +
-                        context.dialog.reserve.name + '/' +
-                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // context.dialog.reserve.numOfPerson + '명\n' +
+                        context.user.reserve.name + '/' +
+                        context.user.reserve.dateStr + '/' + context.user.reserve.time + '/';
+                    // context.user.reserve.numOfPerson + '명\n' +
                     // '예약확정\n'+
                     // '매장전화: ' + context.bot.phone;
 
@@ -1769,9 +1773,9 @@ var reserveOwnerConfirm = {
                     for(var i = 0; i < fields.length; i++) {
                         var field = fields[i];
                         if(field.name == 'numOfPerson') {
-                            message += context.dialog.reserve[field.name] + '명/';
+                            message += context.user.reserve[field.name] + '명/';
                         } else {
-                            message += context.dialog.reserve[field.name] + '/';
+                            message += context.user.reserve[field.name] + '/';
                         }
                     }
 
@@ -1780,7 +1784,7 @@ var reserveOwnerConfirm = {
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
-                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.user.reserve.mobile.replace(/,/g, ''), message: message}},
                         function (error, response, body) {
                             reserveCheck.action(task, context, function(_task, context) {
                                 callback(task, context);
@@ -1802,15 +1806,19 @@ bot.setTask("reserveOwnerConfirm", reserveOwnerConfirm);
 var reserveOwnerCancel = {
     name: "reserveOwnerCancel",
     action: function (task, context, callback) {
-        if(context.dialog.reserve) {
+        if(context.dialog.reserve!==undefined){
+            context.user.reserve=[];
+            context.user.reserve=context.dialog.reserve;
+        }
+        if(context.user.reserve) {
             var TemplateReservation = mongoModule.getModel('restaurant-reservations');
-            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
+            TemplateReservation.update({_id: context.user.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.name + ']' + '\n' +
-                        context.dialog.reserve.name + '/' +
-                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // context.dialog.reserve.numOfPerson + '명\n' +
+                        context.user.reserve.name + '/' +
+                        context.user.reserve.dateStr + '/' + context.user.reserve.time + '/';
+                    // context.user.reserve.numOfPerson + '명\n' +
                     // '예약취소: '+
                     // task.inRaw + '\n' +
                     // '매장전화: ' + context.bot.phone;
@@ -1819,9 +1827,9 @@ var reserveOwnerCancel = {
                     for(var i = 0; i < fields.length; i++) {
                         var field = fields[i];
                         if(field.name == 'numOfPerson') {
-                            message += context.dialog.reserve[field.name] + '명/';
+                            message += context.user.reserve[field.name] + '명/';
                         } else {
-                            message += context.dialog.reserve[field.name] + '/';
+                            message += context.user.reserve[field.name] + '/';
                         }s
                     }
 
@@ -1831,7 +1839,7 @@ var reserveOwnerCancel = {
 
                     request.post(
                         'https://bot.moneybrain.ai/api/messages/sms/send',
-                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.user.reserve.mobile.replace(/,/g, ''), message: message}},
                         function (error, response, body) {
                             reserveCheck.action(task, context, function(_task, context) {
                                 callback(task, context);
@@ -1854,29 +1862,33 @@ bot.setTask("reserveOwnerCancel", reserveOwnerCancel);
 var reserveCancel = {
     name: "reserveCancel",
     action: function (task, context, callback) {
-        if(context.dialog.reserve) {
+        if(context.dialog.reserve!==undefined){
+            context.user.reserve=[];
+            context.user.reserve=context.dialog.reserve;
+        }
+        if(context.user.reserve) {
             var TemplateReservation = mongoModule.getModel('restaurant-reservations');
-            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '취소'}}, function (err) {
+            TemplateReservation.update({_id: context.user.reserve._id}, {$set: {status: '취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.name + ']' + '\n' +
-                        context.dialog.reserve.name + '/' +
-                        context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // context.dialog.reserve.numOfPerson + '명\n' +
-                    // context.dialog.reserve.mobile + '\n' +
+                        context.user.reserve.name + '/' +
+                        context.user.reserve.dateStr + '/' + context.user.reserve.time + '/'+ context.user.reserve.numOfPerson + '명/';
+                    // context.user.reserve.mobile + '\n' +
                     // '예약취소';
 
-                    var fields = context.bot.reserveFields || [];
-                    for(var i = 0; i < fields.length; i++) {
-                        var field = fields[i];
-                        if(field.name == 'numOfPerson') {
-                            message +=  context.dialog[field.name] + '명/';
-                        } else {
-                            message += context.dialog[field.name] + '/';
-                        }
-                    }
+                    // console.log(context.bot.reserveFields.numOfPerson+'--------------------------');
+                    // var fields = context.bot.reserveFields || [];
+                    // for(var i = 0; i < fields.length; i++) {
+                    //     var field = fields[i];
+                    //     if(field.name == "numOfPerson") {
+                    //         message +=  context.dialog[field.name] + '명/';
+                    //     } else {
+                    //         message += context.dialog[field.name] + '/';
+                    //     }
+                    // }
 
-                    message += '\n' + context.dialog.reserve.mobile + '\n' +
+                    message += '\n' + context.user.reserve.mobile + '\n' +
                         '예약취소';
 
                     request.post(
@@ -2245,15 +2257,15 @@ var eventAction = {
     action: function (task, context, callback) {
         console.log(context.dialog.eventlistType.name+'+++++++++++++++++++++++++++');
         context.dialog.events=context.dialog.eventlistType;
-        context.dialog.eventss=context.dialog.events;
-        if(context.dialog.eventss.image!==undefined) {
+        context.user.eventss=context.dialog.events;
+        if(context.user.eventss.image!==undefined) {
             task.result = {
-                text: '[' + context.dialog.eventss.name + ']' + '\n' + context.dialog.eventss.description + '\n' + context.dialog.eventss.date + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
-                image: {url: context.dialog.eventss.image},
+                text: '[' + context.user.eventss.name + ']' + '\n' + context.user.eventss.description + '\n' + context.user.eventss.date + '\n\n' + '처음으로 가려면 "시작"이라고 입력해주세요.',
+                image: {url: context.user.eventss.image},
                 buttons: [
                     {
                         text: '자세히보기',
-                        url: context.dialog.eventss.image.startsWith('http') ? context.dialog.eventss.image : config.host + context.dialog.eventss.image
+                        url: context.user.eventss.image.startsWith('http') ? context.user.eventss.image : config.host + context.user.eventss.image
                     }
                 ]
             };
