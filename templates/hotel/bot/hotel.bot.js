@@ -10,6 +10,10 @@ var hotel = {
     kakao: {
         keyboard: { type :"buttons", buttons:["대화 시작"]}
     },
+    naver: {
+        clientId: 'Aqi_RlMlLRlJnmJptMhD',
+        clientSecret: '0AKq2NoNgn'
+    },
     commonButtons: [{"text": "이전"}, {"text": "처음"}],
     commonQuickReplies: [{"text": "이전"}, {"text": "처음"}],
     reserveFields: [

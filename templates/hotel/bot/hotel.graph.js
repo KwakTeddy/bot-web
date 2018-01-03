@@ -1,20 +1,7 @@
 
-
+var path = require('path');
 
 var dialogs = [
-    // {
-    //     "name": "test2222",
-    //     "id": "default131313",
-    //     "filename": "test",
-    //     "input": ["예약"],
-    //     "output": [
-    //         {
-    //             "if":"context.dialog.roomnoii===undefined",
-    //             "text":"아직 객실 정보를 등록하지 않았습니다.",
-    //             "kind": "Text"
-    //         }
-    //     ]
-    // },
 	{
 		"name": "빠른예약",
 		"id": "default29",
@@ -72,7 +59,10 @@ var dialogs = [
 			},
 			{
 				"text": "취소"
-			}
+			},
+            {
+                "text": "9"
+            }
 		],
 		"output": [
 			{
@@ -2859,7 +2849,7 @@ var dialogs = [
                                                 "if": "!context.user.mobile",
                                                 "kind": "Action",
                                                 "options": {
-                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n\n총 금액:+preallprice+원\n\n예약자의 휴대폰 번호를 입력해주세요.1111"
+                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n\n총 금액:+preallprice+원\n\n예약자의 휴대폰 번호를 입력해주세요."
                                                 },
                                                 "call": "휴대폰번호 인증"
                                             }
