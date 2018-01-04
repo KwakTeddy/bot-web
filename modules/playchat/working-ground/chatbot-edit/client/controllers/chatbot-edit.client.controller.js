@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService', function ($window, $scope, $resource, $cookies, LanguageService)
+    angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService', '$rootScope', function ($window, $scope, $resource, $cookies, LanguageService, $rootScope)
     {
         $scope.$parent.changeWorkingGroundName(LanguageService('Bot Profile'), '/modules/playchat/working-ground/chatbot-edit/client/imgs/botsetting.png');
 
@@ -30,9 +30,12 @@
 
             $scope.saveChatbot = function()
             {
-                ChatbotEditService.update({ botId: chatbot._id, name: $scope.chatbot.name, description: $scope.chatbot.description, language: $scope.chatbot.language }, function()
+                ChatbotEditService.update({ botId: chatbot._id, name: $scope.chatbot.name, description: $scope.chatbot.description, language: $scope.chatbot.language }, function(editedBot)
                 {
+                    $cookies.putObject("chatbot", editedBot);
                     angular.element("#gnb-bot-name").html($scope.chatbot.name);
+                    angular.element("#simulator-bot-name").html($scope.chatbot.name);
+                    $rootScope.$broadcast('editChatbotInfo');
                     alert($scope.lan('Saved.'));
                 },
                 function(err)

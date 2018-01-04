@@ -16,6 +16,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         $scope.shortCutHelp = false;
         $scope.isClosed = false;
 
+        $scope.$on('editChatbotInfo', function () {
+            chatbot = $cookies.getObject('chatbot');
+            $scope.refresh();
+        });
+
         window.addEventListener('keydown', function(e)
         {
             if(e.keyCode == 121) //F10
