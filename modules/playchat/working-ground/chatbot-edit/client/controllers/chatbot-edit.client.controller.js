@@ -32,6 +32,7 @@
             {
                 ChatbotEditService.update({ botId: chatbot._id, name: $scope.chatbot.name, description: $scope.chatbot.description, language: $scope.chatbot.language }, function()
                 {
+                    angular.element("#gnb-bot-name").html($scope.chatbot.name);
                     alert($scope.lan('Saved.'));
                 },
                 function(err)
