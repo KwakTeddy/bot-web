@@ -50,8 +50,8 @@
                     <th>전망</th>
                     <th>침대</th>
                     <th>크기</th>
-                    <th>체크인 시간(ex:오후 3시)</th>
-                    <th>체크인 시간(ex:낮 12시)</th>
+                    <th>체크인 시간</th>
+                    <th>체크인 시간</th>
                     <th>가격[필수]</th>
                     <th>TV정보</th>
                     <th>위성채널정보</th>
@@ -60,7 +60,7 @@
                     <th>음료제공정보</th>
                     <th>엑스트라 베드 요금정보</th>
                     <th>베이비 그립 제공정보</th>
-                    <th>객실 소개(한 마디)</th>
+                    <th>객실 소개</th>
                     <th>객실 이미지</th>
                     <th></th>
                 </tr>
@@ -83,10 +83,10 @@
                         <input type="text"  ng-model="data.room_size">
                     </td>
                     <td>
-                        <input type="text" ng-model="data.room_checkin">
+                        <input type="text" placeholder="오후 3시" ng-model="data.room_checkin">
                     </td>
                     <td>
-                        <input type="text" ng-model="data.room_checkout">
+                        <input type="text" placeholder="낮 12시" ng-model="data.room_checkout">
                     </td>
                     <td>
                         <input type="number" ng-model="data.room_price">
@@ -113,7 +113,7 @@
                         <input type="text"  ng-model="data.room_facility7">
                     </td>
                     <td>
-                        <input type="text"  ng-model="data.room_introduction">
+                        <input type="text"  placeholder="한 마디로" ng-model="data.room_introduction">
                     </td>
                     <td>
                         <img src="{{ data.room_image }}" style="width: 50px;" ng-if="data.room_image" ng-click="editImage($event);">

@@ -37,39 +37,39 @@
             </colgroup>
             <thead>
             <tr>
-                <th>다이닝 종류</th>
+                <th>이름</th>
                 <th>위치</th>
-                <th>아침운영시간(ex:07:00~09:00)</th>
-                <th>점심운영시간(ex:12:00~14:30)</th>
-                <th>저녁운영시간(ex:18:00~22:00)</th>
-                <th>좌석수(ex:40)</th>
-                <th>룸 몇실(ex:룸 6실)</th>
-                <th>식당 소개</th>
-                <th>다이닝 이미지</th>
+                <th>아침시간</th>
+                <th>점심시간</th>
+                <th>저녁시간</th>
+                <th>좌석수</th>
+                <th>룸 몇실</th>
+                <th>소개</th>
+                <th>이미지</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="data in datas">
                 <td>
-                    <input type="text" ng-model="data.category_name">
+                    <input type="text" placeholder="한식당" ng-model="data.category_name">
                 </td>
                 <td>
-                    <input type="text" ng-model="data.restaurant_location">
+                    <input type="text" placeholder="머니브레인 3층" ng-model="data.restaurant_location">
                 </td>
                 <td>
-                    <input type="text" ng-model="data.restaurant_mopentime">
+                    <input type="text" placeholder="07:00~09:00" ng-model="data.restaurant_mopentime">
                 </td>
                 <td>
-                    <input type="text" ng-model="data.restaurant_aopentime">
+                    <input type="text" placeholder="12:00~14:30" ng-model="data.restaurant_aopentime">
                 </td>
                 <td>
-                    <input type="text"  ng-model="data.restaurant_nopentime">
+                    <input type="text"  placeholder="18:00~22:00" ng-model="data.restaurant_nopentime">
                 </td>
                 <td>
-                    <input type="number" ng-model="data.restaurant_seat">
+                    <input type="number" placeholder="40" ng-model="data.restaurant_seat">
                 </td>
                 <td>
-                    <input type="text" ng-model="data.restaurant_room">
+                    <input type="text" placeholder="룸 6실" ng-model="data.restaurant_room">
                 </td>
                 <td>
                     <input type="text"  ng-model="data.restaurant_introduction">
