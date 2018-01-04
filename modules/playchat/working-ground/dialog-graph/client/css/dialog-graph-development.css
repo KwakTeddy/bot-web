@@ -94,6 +94,8 @@
     border-radius: inherit;
     background: #f8f8f8;
     height: 35px;
+
+    margin: 2px 0;
 }
 
 .graph-zoom-controller .graph-zoom-in
@@ -216,6 +218,8 @@
     letter-spacing: 0.3px;
 
     border: 1px solid #ddd;
+
+    margin: 2px 0;
 }
 
 .graph-controller .graph-button:hover
@@ -840,4 +844,17 @@
 .CodeMirror-code > div
 {
     font-size: 13px;
+}
+
+@media screen and (max-width: 1450px)
+{
+    .graph-controller
+    {
+        height: 80px;
+    }
+
+    .graph-body
+    {
+        top: 160px;
+    }
 }
