@@ -80,8 +80,8 @@ module.exports.start = function start(callback)
             {
                 if(config.loadBalance.isMaster)
                 {
-                        var master = require(path.resolve('./engine/loadbalancer/master.js'));
-                        master.init(app.io);
+                    var master = require(path.resolve('./engine/loadbalancer/master.js'));
+                    master.init(app.io);
                 }
                 else
                 {

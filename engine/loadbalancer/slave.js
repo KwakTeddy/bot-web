@@ -1,7 +1,7 @@
 var os = require('os');
 var osUtils = require('os-utils');
 
-var SERVER_HOST = 'localhost';
+var SERVER_HOST = '13.125.132.231';
 
 function getLocalIPAddress() {
 
