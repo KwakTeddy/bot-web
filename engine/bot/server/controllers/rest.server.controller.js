@@ -2,9 +2,9 @@ var path = require('path');
 var engine = require(path.resolve('engine/bot/server/controllers/bot.server.controller.js'));
 var master = require(path.resolve('engine/loadbalancer/master.js'));
 
-var isMaster = process.env.isMaster;
+var isMaster = process.env.IS_MASTER;
 
-var callback = function (serverText, json)
+var callback = function (res, serverText, json)
 {
     console.log('왔습니다');
     if(json == undefined || (json.result == undefined && json.image == undefined && json.buttons == undefined && json.items == undefined)) {
@@ -31,11 +31,17 @@ exports.message = function (req, res)
     {
         if(isMaster)
         {
-            master.routing(msg.channel, msg.user, msg.bot, msg.text, msg, callback);
+            master.routing(msg.channel, msg.user, msg.bot, msg.text, msg, function(serverText, json)
+            {
+                callback(res, serverText, json);
+            });
         }
         else
         {
-            engine.write(msg.channel, msg.user, msg.bot, msg.text, msg, callback);
+            engine.write(msg.channel, msg.user, msg.bot, msg.text, msg, function(serverText, json)
+            {
+                callback(res, serverText, json);
+            });
         }
     }
     catch(e)
