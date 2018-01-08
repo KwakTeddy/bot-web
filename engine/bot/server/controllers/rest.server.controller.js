@@ -27,6 +27,7 @@ exports.message = function (req, res)
     }
     catch(e)
     {
+        console.error('에러 : ', e);
         res.write('');
         res.end();
     }
