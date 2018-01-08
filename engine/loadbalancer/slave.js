@@ -51,7 +51,7 @@ function getLocalIPAddress() {
                 that.checkCpuUsage();
             });
 
-        }, 30 * 1000);
+        }, 5 * 1000);
     };
 
     Slave.prototype.init = function()
