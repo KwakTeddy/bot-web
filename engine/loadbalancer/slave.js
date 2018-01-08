@@ -47,6 +47,7 @@ function getLocalIPAddress() {
         {
             osUtils.cpuUsage(function(v)
             {
+                console.log('시피유 : ', v);
                 that.socket.emit('lb_cpu', v * 100);
                 that.checkCpuUsage();
             });

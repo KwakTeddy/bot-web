@@ -2,7 +2,7 @@ var request = require('request');
 
 setInterval(function()
 {
-    for(var i=0; i<150; i++)
+    for(var i=0; i<50; i++)
     {
         (function(index)
         {
@@ -12,4 +12,4 @@ setInterval(function()
             });
         })(i);
     }
-}, 5000);
+}, 1000);
