@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
 var fs = require('fs');
 var config = require(path.resolve('config/config'));
-var loadbalancer = require(path.resolve('engine/bot/engine/loadbalancer/loadbalancer'));
+var master = require(path.resolve('engine/loadbalancer/master.js'));
 
 
 var util = require('util');
@@ -24,29 +24,26 @@ exports.keyboard = function (req, res) {
   });
 };
 
-exports.message = function (req, res) {
-  if(req.body && req.body.user_key && req.body.content) {
-    var from = req.body.user_key;
-    var type = req.body.type;
-    var text = req.body.content;
-    if (type == "photo" || type == "video" || type == 'audio') {
-      req.body.inputType = req.body.type;
-      delete req.body.type;
-      req.body.url = req.body.content;
-      delete req.body.content;
-    }
+exports.message = function (req, res)
+{
+    if(req.body && req.body.user_key && req.body.content)
+    {
+        var from = req.body.user_key;
+        var type = req.body.type;
+        var text = req.body.content;
+        if (type == "photo" || type == "video" || type == 'audio')
+        {
+            req.body.inputType = req.body.type;
+            delete req.body.type;
+            req.body.url = req.body.content;
+            delete req.body.content;
+        }
 
-    if(loadbalancer.isUse() && loadbalancer.isMaster()) {
-      loadbalancer.balance('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-        respondMessage(res, serverText, json)
-      });
-    } else {
-      chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-        respondMessage(res, serverText, json)
-      });
+        master.routing('kakao', from, req.params.bot, text, req.body, function (serverText, json)
+        {
+            respondMessage(res, serverText, json)
+        });
     }
-
-  }
 };
 
 

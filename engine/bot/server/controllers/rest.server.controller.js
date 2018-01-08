@@ -1,29 +1,33 @@
 var path = require('path');
-var chat = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
+var master = require(path.resolve('engine/loadbalancer/master.js'));
 
-exports.message = function (req, res) {
-  console.log(JSON.stringify(req.body));
+exports.message = function (req, res)
+{
+    console.log(JSON.stringify(req.body));
 
-  var msg = req.body;
-  try {
-    chat.write(msg.channel, msg.user, msg.bot, msg.text, msg, function (_out, _task) {
-
-      if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined)) {
-        res.write(_out);
+    var msg = req.body;
+    try
+    {
+        master.routing(msg.channel, msg.user, msg.bot, msg.text, msg, function (serverText, json)
+        {
+            if(json == undefined || (json.result == undefined && json.image == undefined && json.buttons == undefined && json.items == undefined)) {
+                res.write(serverText);
+                res.end();
+            } else if(json.result) {
+                if(json.result.text == undefined) json.result.text = serverText;
+                res.write(JSON.stringify(json.result));
+                res.end();
+            } else {
+                json.text = serverText;
+                json.topTask = undefined;
+                res.write(JSON.stringify(json));
+                res.end();
+            }
+        });
+    }
+    catch(e)
+    {
+        res.write('');
         res.end();
-      } else if(_task.result) {
-        if(_task.result.text == undefined) _task.result.text = _out;
-        res.write(JSON.stringify(_task.result));
-        res.end();
-      } else {
-        _task.text = _out;
-        _task.topTask = undefined;
-        res.write(JSON.stringify(_task));
-        res.end();
-      }
-    });
-  } catch(e) {
-    res.write('');
-    res.end();
-  }
+    }
 };

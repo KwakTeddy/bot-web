@@ -6,10 +6,11 @@ module.exports.start = function() {
   var app = express();
   var http = require('http');
   var bodyParser = require('body-parser');
-  var rest = require('../../modules/bot/server/controllers/rest.server.controller');
-  var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
-  var wechat = require('../../modules/bot/server/controllers/wechat.server.controller');
-  var action = require('../../modules/bot/server/controllers/_action.server.controller');
+  var path = require('path');
+  var rest = require(path.resolve('./engine/bot/server/controllers/rest.server.controller'));
+  var kakao = require(path.resolve('./engine/bot/server/controllers/kakao.server.controller'));
+  var wechat = require(path.resolve('./engine/bot/server/controllers/wechat.server.controller'));
+  var action = require(path.resolve('./engine/bot/server/controllers/_action.server.controller'));
   var path = require('path');
 
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
