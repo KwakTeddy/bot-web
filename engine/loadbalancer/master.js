@@ -34,10 +34,6 @@ var request = require('request');
                 {
                     that.createInstance();
                 }
-                else if(usage >= 50)
-                {
-                    // that.routing();
-                }
             });
 
             client.on('disconnect', function()
@@ -50,6 +46,7 @@ var request = require('request');
     Master.prototype.createInstance = function()
     {
         //생성하고 next를 Ready로 기록한다.
+        console.log('인스턴스 생성해야해');
     };
 
     Master.prototype.routing = function(channel, user, bot, text, json, callback)
