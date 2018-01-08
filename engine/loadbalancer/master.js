@@ -55,6 +55,8 @@ var engine = require(path.resolve('engine/bot/server/controllers/bot.server.cont
     {
         var targetHost = undefined;
 
+        console.log('마스터입니다 : ', this.userMap, this.slaves);
+
         if(this.userMap[user])
         {
             //만약 이 유저를 처리하고 있던 서버가 있다면. 해당 서버로 넘긴다.
@@ -82,6 +84,8 @@ var engine = require(path.resolve('engine/bot/server/controllers/bot.server.cont
             //만약 최초 유저의 경우 모든 슬레이브에서 처리가 불가능하다면 마스터로 세팅한다.
             this.userMap[user] = targetHost ? targetHost : 'master';
         }
+
+        console.log('마스터가 명한다 : ', targetHost);
 
         if(!targetHost)
         {
