@@ -1,5 +1,6 @@
 var path = require('path');
 var engine = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
+var request = require('request');
 
 (function()
 {
