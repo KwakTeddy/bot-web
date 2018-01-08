@@ -36,7 +36,7 @@ var request = require('request');
                 }
                 else if(usage >= 50)
                 {
-                    that.routing();
+                    // that.routing();
                 }
             });
 
