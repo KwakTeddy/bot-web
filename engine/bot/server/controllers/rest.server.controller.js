@@ -6,7 +6,6 @@ var isMaster = process.env.LB_MASTER;
 
 var callback = function (res, serverText, json)
 {
-    console.log('왔습니다', isMaster);
     if(json == undefined || (json.result == undefined && json.image == undefined && json.buttons == undefined && json.items == undefined)) {
         res.write(serverText);
         res.end();
@@ -24,8 +23,6 @@ var callback = function (res, serverText, json)
 
 exports.message = function (req, res)
 {
-    console.log('여기지? : ', JSON.stringify(req.body));
-
     var msg = req.body;
     try
     {

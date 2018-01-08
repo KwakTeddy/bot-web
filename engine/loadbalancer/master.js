@@ -56,8 +56,6 @@ var request = require('request');
     {
         var targetHost = undefined;
 
-        console.log('마스터입니다 : ', this.userMap, this.slaves);
-
         if(this.userMap[user])
         {
             //만약 이 유저를 처리하고 있던 서버가 있다면. 해당 서버로 넘긴다.
@@ -86,8 +84,6 @@ var request = require('request');
             this.userMap[user] = targetHost ? targetHost : 'master';
         }
 
-        console.log('마스터가 명한다 : ', targetHost);
-
         if(!targetHost)
         {
             //슬레이브가 없다면 마스터가 처리한다.
@@ -103,12 +99,10 @@ var request = require('request');
                 text: text
             };
 
-            console.log('로드밸런싱 라우팅 : ', 'http://' + targetHost + ':3000/chat/' + bot + '/message');
             request({ uri: 'http://' + targetHost + ':3000/chat/' + bot + '/message', method: 'POST', json: query }, function (error, response, body)
             {
                 if (!error && response.statusCode == 200)
                 {
-                    console.log('라우팅 성공 : ', body);
                     callback(body.text? body.text:body, body);
                 }
                 else
