@@ -6,7 +6,7 @@ var isMaster = process.env.IS_MASTER;
 
 var callback = function (res, serverText, json)
 {
-    console.log('왔습니다');
+    console.log('왔습니다', isMaster);
     if(json == undefined || (json.result == undefined && json.image == undefined && json.buttons == undefined && json.items == undefined)) {
         res.write(serverText);
         res.end();
