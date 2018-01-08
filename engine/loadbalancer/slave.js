@@ -31,7 +31,7 @@ function getLocalIPAddress() {
     Slave.prototype.connection = function()
     {
         console.log('연결');
-        this.socket.emit('initialize', getLocalIPAddress());
+        this.socket.emit('lb_initialize', getLocalIPAddress());
         this.checkCpuUsage();
     };
 
@@ -47,7 +47,7 @@ function getLocalIPAddress() {
         {
             osUtils.cpuUsage(function(v)
             {
-                that.socket.emit('cpu', v * 100);
+                that.socket.emit('lb_cpu', v * 100);
                 that.checkCpuUsage();
             });
 
