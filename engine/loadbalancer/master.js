@@ -98,10 +98,12 @@ var engine = require(path.resolve('engine/bot/server/controllers/bot.server.cont
                 text: text
             };
 
-            request({ uri: targetHost + ':3000/chat/' + bot + '/message', method: 'POST', json: query }, function (error, response, body)
+            console.log('로드밸런싱 라우팅 : ', 'http://' + targetHost + ':3000/chat/' + bot + '/message');
+            request({ uri: 'http://' + targetHost + ':3000/chat/' + bot + '/message', method: 'POST', json: query }, function (error, response, body)
             {
                 if (!error && response.statusCode == 200)
                 {
+                    console.log('라우팅 성공 : ', body);
                     callback(body.text? body.text:body, body);
                 }
                 else
