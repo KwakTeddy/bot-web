@@ -12,7 +12,7 @@ module.exports =
             merge_logs : true,
             log_date_format : "YYYY-MM-DD HH:mm Z",
             watch: false,
-            env_localhost:
+            env:
             {
                 "PORT": 8443,
                 "HOST": "http://localhost:8443",
@@ -21,6 +21,8 @@ module.exports =
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
+                "LB_MASTER": true,
+                "LB_USE": true,
                 "NODE_ENV": "development"
             },
             env_development:
