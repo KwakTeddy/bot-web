@@ -19,7 +19,10 @@ var request = require('request');
             that.slaves.push(slaveObject);
             console.log('새로운 슬레이브가 연결되었습니다 : ', host);
             console.log('=========== 모든 슬레이브 ===========');
-            console.log(that.slaves.join('\n'));
+            for(var i=0; i<that.slaves.length; i++)
+            {
+                console.log(that.slaves[i].host);
+            }
             console.log('=====================================');
 
             client.on('lb_cpu', function(usage)
@@ -43,13 +46,14 @@ var request = require('request');
 
     Master.prototype.disconnect = function(slaveObject)
     {
-        delete this.slaves[host];
+        var index = this.slaves.indexOf(slaveObject);
+        this.slaves.splice(index, 1);
 
         console.log('슬레이브 연결이 해제되었습니다 : ', slaveObject.host);
         console.log('=========== 모든 슬레이브 ===========');
-        for(var key in this.slaves)
+        for(var i=0; i<this.slaves.length; i++)
         {
-            console.log(key);
+            console.log(this.slaves[i].host);
         }
         console.log('=====================================');
     };
