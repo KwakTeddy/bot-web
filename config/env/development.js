@@ -9,7 +9,7 @@ module.exports = {
 //          //ca: './config/sslcerts/ca.pem',
 //          privateKey: './config/sslcerts/ssl.key',
 //          certificate: './config/sslcerts/ssl.crt'
-      },
+//},
   db: {
     uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bot-dev',
     options: {
