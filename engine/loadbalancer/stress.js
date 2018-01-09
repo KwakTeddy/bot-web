@@ -3,7 +3,7 @@ var request = require('request');
 var errCount = 0;
 setInterval(function()
 {
-    for(var i=0; i<50; i++)
+    for(var i=0; i<30; i++)
     {
         (function(index)
         {

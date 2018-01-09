@@ -6,7 +6,7 @@ var request = require('request');
 {
     var Master = function()
     {
-        this.slaves = {};
+        this.slaves = [];
         this.userMap = {};
     };
 
@@ -15,38 +15,56 @@ var request = require('request');
         var that = this;
         client.on('lb_initialize', function(host)
         {
-            that.slaves[host] = {};
+            var slaveObject = { host: host };
+            that.slaves.push(slaveObject);
             console.log('새로운 슬레이브가 연결되었습니다 : ', host);
             console.log('=========== 모든 슬레이브 ===========');
-            for(var key in that.slaves)
-            {
-                console.log(key);
-            }
+            console.log(that.slaves.join('\n'));
             console.log('=====================================');
 
             client.on('lb_cpu', function(usage)
             {
-                that.slaves[host].cpuUsage = usage;
+                slaveObject.cpuUsage = usage;
 
                 console.log('CPU Usage [' + host + ']', usage + '%');
 
                 if(usage >= 40)
                 {
-                    that.createInstance();
+                    that.createInstance(slaveObject);
                 }
             });
 
             client.on('disconnect', function()
             {
-                that.disconnect.call(that, host);
+                that.disconnect.call(that, slaveObject);
             });
         });
     };
 
-    Master.prototype.createInstance = function()
+    Master.prototype.disconnect = function(slaveObject)
+    {
+        delete this.slaves[host];
+
+        console.log('슬레이브 연결이 해제되었습니다 : ', slaveObject.host);
+        console.log('=========== 모든 슬레이브 ===========');
+        for(var key in this.slaves)
+        {
+            console.log(key);
+        }
+        console.log('=====================================');
+    };
+
+    Master.prototype.createInstance = function(slaveObject)
     {
         //생성하고 next를 Ready로 기록한다.
+        if(slaveObject.next)
+            return;
+
         console.log('인스턴스 생성해야해');
+
+        //생성하고 난 다음에 생성중 플래그 선언.
+        //this.slaves[host].next = true;
+        //만약 나중에 생성된 슬레이브가 자체 종료를 선언하게 되면?
     };
 
     Master.prototype.routing = function(channel, user, bot, text, json, callback)
@@ -109,19 +127,6 @@ var request = require('request');
                 }
             });
         }
-    };
-
-    Master.prototype.disconnect = function(host)
-    {
-        delete this.slaves[host];
-
-        console.log('슬레이브 연결이 해제되었습니다 : ', host);
-        console.log('=========== 모든 슬레이브 ===========');
-        for(var key in this.slaves)
-        {
-            console.log(key);
-        }
-        console.log('=====================================');
     };
 
     Master.prototype.init = function(io)
