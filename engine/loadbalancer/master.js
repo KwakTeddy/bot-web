@@ -7,7 +7,11 @@ var request = require('request');
     var Master = function()
     {
         this.slaves = [];
+        this.slaveMap = {};
         this.userMap = {};
+        this.master = { host: 'localhost', users: {} };
+        this.awsEc2Creator = undefined;
+        this.isCreating = false;
     };
 
     Master.prototype.connection = function(client)
@@ -15,27 +19,36 @@ var request = require('request');
         var that = this;
         client.on('lb_initialize', function(host)
         {
-            var slaveObject = { host: host };
+            var slaveObject = { host: host, cpuUsage: -1, users: {} };
             that.slaves.push(slaveObject);
-            console.log('새로운 슬레이브가 연결되었습니다 : ', host);
+            console.log('새로운 슬레이브가 연결되었습니다 : ' + host);
             console.log('=========== 모든 슬레이브 ===========');
             for(var i=0; i<that.slaves.length; i++)
             {
                 console.log(that.slaves[i].host);
             }
+
+            if(that.slaveMap[host])
+            {
+                slaveObject.instanceId = that.slaveMap[host].instanceId;
+                console.log('연결되었다 : ' + that.slaveMap[host].instanceId);
+            }
+
             console.log('=====================================');
 
-            client.on('lb_cpu', function(usage)
-            {
-                slaveObject.cpuUsage = usage;
+            that.isCreating = false;
 
-                console.log('CPU Usage [' + host + ']', usage + '%');
-
-                if(usage >= 40)
-                {
-                    that.createInstance(slaveObject);
-                }
-            });
+            // client.on('lb_cpu', function(usage)
+            // {
+            //     slaveObject.cpuUsage = parseFloat(usage);
+            //
+            //     console.log('CPU Usage [' + host + ']  ' + usage + '% ' + (usage >= 40));
+            //
+            //     if(usage >= 40)
+            //     {
+            //         that.createInstance(slaveObject);
+            //     }
+            // });
 
             client.on('disconnect', function()
             {
@@ -49,7 +62,7 @@ var request = require('request');
         var index = this.slaves.indexOf(slaveObject);
         this.slaves.splice(index, 1);
 
-        console.log('슬레이브 연결이 해제되었습니다 : ', slaveObject.host);
+        console.log('슬레이브 연결이 해제되었습니다 : ' + slaveObject.host);
         console.log('=========== 모든 슬레이브 ===========');
         for(var i=0; i<this.slaves.length; i++)
         {
@@ -58,52 +71,148 @@ var request = require('request');
         console.log('=====================================');
     };
 
-    Master.prototype.createInstance = function(slaveObject)
+    Master.prototype.createInstance = function()
     {
-        //생성하고 next를 Ready로 기록한다.
-        if(slaveObject.next)
-            return;
+        this.isCreating = true;
+        // var index = this.slaves.indexOf(slaveObject);
+        // if(index < this.slaves.length-1)
+        //     return;
 
+        var that = this;
         console.log('인스턴스 생성해야해');
+        this.awsEc2Creator.createInstance(function(err, result)
+        {
+            if(err)
+            {
+                that.isCreating = false;
+            }
 
-        //생성하고 난 다음에 생성중 플래그 선언.
-        //this.slaves[host].next = true;
-        //만약 나중에 생성된 슬레이브가 자체 종료를 선언하게 되면?
+            that.slaveMap[result.privateHost] = result;
+        });
+    };
+
+    Master.prototype.deleteInstance = function()
+    {
+        var that = this;
+
+        //5분에 한 번씩 실행한다.
+        setTimeout(function()
+        {
+            // 모든 슬레이브의 유저들을 돌면서 마지막 대화가 10분이 넘은 유저는 거기서 삭제한다.
+            // 그리고 모든 유저가 삭제된 슬레이브도 삭제한다.
+            // 최소 슬레이브는 남겨야함.
+
+            console.log('슬레이브 삭제 체크');
+
+            var now = new Date().getTime();
+
+            for(var i=0; i<that.slaves.length; i++)
+            {
+                var slave = that.slaves[i];
+                for(var key in slave.users)
+                {
+                    var lastRequest = slave.users[key];
+                    var diffMins = Math.round((((now - lastRequest) % 86400000) % 3600000) / 60000); // minutes
+                    if(diffMins >= 1) //마지막 대화가 30분이 넘은 유저는 삭제
+                    {
+                        delete slave.users[key];
+                        delete that.userMap[key];
+                    }
+                }
+
+                if(Object.keys(slave.users).length == 0 && slave.instanceId)
+                {
+                    console.log('서버 삭제합니다' + slave.instanceId);
+                    (function(slave)
+                    {
+                        that.awsEc2Creator.deleteInstance(slave.instanceId, function(err, data)
+                        {
+                            if(!err)
+                            {
+                                var targetIndex = that.slaves.indexOf(slave);
+                                that.slaves.splice(targetIndex, 1);
+
+                                console.log('=========== 모든 슬레이브 ===========');
+                                for(var i=0; i<that.slaves.length; i++)
+                                {
+                                    console.log(that.slaves[i].host);
+                                }
+                                console.log('=====================================');
+                            }
+                        });
+                    })(slave);
+                }
+            }
+
+            for(var key in that.master.users)
+            {
+                var lastRequest = that.master.users[key];
+                var diffMins = Math.round((((now - lastRequest) % 86400000) % 3600000) / 60000); // minutes
+                if(diffMins >= 1) //마지막 대화가 30분이 넘은 유저는 삭제
+                {
+                    console.log('마스터에서 삭제 ' + key);
+                    delete that.master.users[key];
+                    delete that.userMap[key];
+                }
+            }
+
+            that.deleteInstance();
+        }, 1000 * 60 * 1);
     };
 
     Master.prototype.routing = function(channel, user, bot, text, json, callback)
     {
         var targetHost = undefined;
 
+        //만약 유저가 대화중인 슬레이브 서버가 있다면 구해야함. 그런데 모종의 이유로 슬레이브가 죽을수도 있음.
         if(this.userMap[user])
         {
-            //만약 이 유저를 처리하고 있던 서버가 있다면. 해당 서버로 넘긴다.
-            targetHost = this.userMap[user];
-            if(!this.slaves.hasOwnProperty(targetHost)) // 그런데 해당 서버가 종료되었다면 초기화해야함
+            var index = this.slaves.indexOf(this.userMap[user]);
+            if(index == -1) // 대화중이었던 슬레이브 서버가 죽은거임. 얘는 새로 할당해줘야함.
             {
-                targetHost = undefined;
+
+            }
+            else
+            {
+                //대화중인 슬레이브 서버 호스트를 세팅해줌.
+                targetHost = this.userMap[user].host;
+                this.userMap[user].users[user] = new Date().getTime(); //해당 유저의 마지막 대화 시간 기록.
             }
         }
 
+        //만약 최초 접속한 유저이거나 대화중인 슬레이브가 죽은경우 새로 슬레이브를 할당해야함.
         if(!targetHost)
         {
-            for(var key in this.slaves)
+            for(var i=0; i<this.slaves.length; i++)
             {
-                var cpuUsage = this.slaves[key].cpuUsage;
-
-                //슬레이브는 하나당 최대 cpu 50% 까지만 사용하도록 한다. 모든 슬레이브가 50이 넘었다면 다음 슬레이브가 실행중일텐데 그 사이 처리는 마스터가 해보자.
-                if(!cpuUsage || cpuUsage < 50)
+                var usersCount = Object.keys(this.slaves[i].users).length;
+                //사람당 초당 2개씩 보낼 수 있다고 가정했을때 50명이 초당 2개씩 초당 100개의 request를 받으면 t2.medium의 cpu가 50%정도 도달한다. 50%이상은 쓰지 않는것으로.
+                if(usersCount <= 50)
                 {
-                    targetHost = key;
+                    console.log('유저 카운트 [' + this.slaves[i].host + '] ' + usersCount + ' ' + i);
+                    //만약 마지막 슬레이브의 유저가 10명 이상이면 슬레이브 생성
+                    if(usersCount > 10 && this.slaves.length-1 == i && !this.isCreating)
+                    {
+                        this.createInstance(this.slaves[i]);
+                    }
+
+                    console.log('새로운 유저 할당 : ' + Object.keys(this.slaves[i].users).length);
+                    targetHost = this.slaves[i].host;
+                    this.slaves[i].users[user] = new Date().getTime(); //해당 유저의 마지막 대화 시간 기록.
+                    this.userMap[user] = this.slaves[i];
                     break;
                 }
             }
 
-            //만약 최초 유저의 경우 모든 슬레이브에서 처리가 불가능하다면 마스터로 세팅한다.
-            this.userMap[user] = targetHost ? targetHost : 'master';
+            if(!targetHost)
+            {
+                targetHost = 'master';
+                this.master.users[user] = new Date().getTime();
+                this.userMap[user] = this.master;
+            }
         }
 
-        if(!targetHost)
+        if(!targetHost || targetHost == 'master')
         {
             //슬레이브가 없다면 마스터가 처리한다.
             engine.write(channel, user, bot, text, json, callback);
@@ -111,12 +220,12 @@ var request = require('request');
         else
         {
             var query =
-            {
-                channel: channel,
-                user: user,
-                bot: bot,
-                text: text
-            };
+                {
+                    channel: channel,
+                    user: user,
+                    bot: bot,
+                    text: text
+                };
 
             request({ uri: 'http://' + targetHost + ':3000/chat/' + bot + '/message', method: 'POST', json: query }, function (error, response, body)
             {
@@ -126,8 +235,8 @@ var request = require('request');
                 }
                 else
                 {
-                    console.error('채널 라우팅 에러 : ', error);
-                    callback(JSON.stringify(error));
+                    console.error('채널 라우팅 에러 : ' + JSON.stringify(error) + targetHost);
+                    callback(null, null, JSON.stringify(error));
                 }
             });
         }
@@ -135,7 +244,9 @@ var request = require('request');
 
     Master.prototype.init = function(io)
     {
+        this.awsEc2Creator = require('./aws-ec2-creator.js');
         io.on('connection', this.connection.bind(this));
+        this.deleteInstance();
     };
 
     var instance = new Master();

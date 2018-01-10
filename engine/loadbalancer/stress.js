@@ -1,27 +1,29 @@
 var request = require('request');
 
+var userCount = 30;
+var sendCountPerSecond = 1;
+
 var errCount = 0;
 setInterval(function()
 {
-    for(var i=0; i<30; i++)
+    for(var userIndex=0; userIndex<userCount; userIndex++)
     {
-        (function(index)
+        for(var i=0; i<sendCountPerSecond; i++)
         {
-            request.post({ url: 'http://13.124.32.125:3000/chat/demo/message', json: { user: 'test', text: '안녕', bot: 'test', channel: 'rest'}}, function(err, response, body)
+            (function(userIndex, index)
             {
-                if(body.indexOf('그래') != -1)
-                {
-                    console.log('마스터가 처리함');
-                }
-                else
+                request.post({ url: 'http://13.124.32.125:3000/chat/test/message', json: { user: 'lbtest' + userIndex, text: '안녕', bot: 'test', channel: 'rest'}, timeout: 10 * 1000}, function(err, response, body)
                 {
                     if(err)
                     {
                         console.log('에러[' + errCount + '] : ', err);
                         errCount++;
                     }
-                }
-            });
-        })(i);
+                    else
+                    {
+                    }
+                });
+            })(userIndex, i);
+        }
     }
 }, 1000);

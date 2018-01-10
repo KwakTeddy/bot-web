@@ -1,8 +1,6 @@
 var os = require('os');
 var osUtils = require('os-utils');
 
-var SERVER_HOST = '13.125.132.231';
-
 function getLocalIPAddress() {
 
     var _address = '127.0.0.1';
@@ -32,7 +30,7 @@ function getLocalIPAddress() {
     {
         console.log('연결');
         this.socket.emit('lb_initialize', getLocalIPAddress());
-        this.checkCpuUsage();
+        // this.checkCpuUsage();
     };
 
     Slave.prototype.disconnect = function()
@@ -47,7 +45,7 @@ function getLocalIPAddress() {
         {
             osUtils.cpuUsage(function(v)
             {
-                console.log('시피유 : ', v);
+                console.log('시피유 : ' + v);
                 that.socket.emit('lb_cpu', v * 100);
                 that.checkCpuUsage();
             });
@@ -57,7 +55,10 @@ function getLocalIPAddress() {
 
     Slave.prototype.init = function()
     {
-        this.socket = require('socket.io-client')('http://' + SERVER_HOST + ':8443');
+        var SERVER_HOST = process.env.MASTER_HOST;
+        console.log('마스터 서버호스트 : ' + SERVER_HOST);
+
+        this.socket = require('socket.io-client')(SERVER_HOST);
         this.socket.on('connect', this.connection.bind(this));
         this.socket.on('disconnect', this.disconnect.bind(this));
     };
