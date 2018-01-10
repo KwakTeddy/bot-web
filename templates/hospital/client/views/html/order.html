@@ -1,0 +1,71 @@
+<style>
+    .template-demo-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-demo-menu
+    {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .template-demo-menu input
+    {
+        border: 1px solid #ddd;
+        padding: 10px 20px;
+    }
+</style>
+
+<!--<h1 class="template-demo-title">예약관리</h1>-->
+<div ng-controller="reserveController" class="template-demo-menu">
+    <form ng-submit="saveMenu($event);">
+        <!--<table class="tb02" style="table-layout:fixed;">-->
+        <table style="table-layout:fixed;" class="tb02">
+            <colgroup>
+                <col style="width: 30%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 5%;">
+                <col style="width: 20%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>상태</th>
+                <th>이름</th>
+                <th>핸드폰</th>
+                <th>날짜</th>
+                <th>시간</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="menu in menus">
+                <td>
+                    <p>{{menu.status}}</p>
+                </td>
+                <td>
+                    <p>{{menu.name}}</p>
+                </td>
+                <td>
+                    <p>{{menu.mobile}}</p>
+                </td>
+                <td>
+                    <p>{{menu.date.substring(0,10)}}</p>
+                </td>
+                <td>
+                    <p>{{menu.time}}</p>
+                </td>
+                <td>
+                    <button style="width: 70px;" type="button" class="default-button" ng-show="menu.status == '예약요청중'" ng-click="accept(menu)">승인</button>
+                    <button style="width: 70px;"type="button" class="default-button" ng-show="menu.status == '예약요청중'" ng-click="deny(menu)">거부</button>
+                </td >
+            </tr>
+            </tbody>
+        </table>
+        <h2 ng-show="menus.length==0"> 현재 대기중인 예약이 없습니다. </h2>
+    </form>
+</div>

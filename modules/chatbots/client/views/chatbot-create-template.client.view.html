@@ -1,0 +1,45 @@
+<div class="chatbot-body">
+    <form ng-submit="save();" style="width: 600px; margin: 30px auto;text-align: center;" ng-if="templateId == 'blank' || templateId == 'sample'">
+        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">Create Bot</h2>
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">{{ lan('ID')}}</span>-->
+                <!--<input type="text" placeholder="" ng-model="bot.id" class="entity-title data-input" ng-required="true" pattern="^[a-zA-Z]+[a-zA-Z0-9_]*" autofocus="true">-->
+            <!--</label>-->
+        <!--</div>-->
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">{{ lan('Name') }}</span>
+                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true" autofocus="true">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">{{ lan('Description') }}</span>
+                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
+            </label>
+        </div>
+        <div class="form-row">
+            <label class="required" style="text-align: left;">
+                <span class="form-title">{{ lan('Language') }}</span>
+                <div class="select-wrapper">
+                    <select class="jumbo-select" ng-model="bot.language">
+                        <option value="ko">{{ lan('Korean') }}</option>
+                        <option value="en">{{ lan('English') }}</option>
+                        <option value="zh">{{ lan('Chinese') }}</option>
+                        <option value="jp">{{ lan('Japanese') }}</option>
+                    </select>
+                </div>
+            </label>
+        </div>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button mr5">{{ lan('Create') }}</button>
+            <button type="button" class="default-button" ng-click="cancel();" style="width: 110px; cursor: pointer;">{{ lan('Cancel') }}</button>
+        </div>
+    </form>
+
+    <div style="width: 600px; margin: 30px auto;" ng-if="templateId != 'blank' && templateId != 'sample'">
+        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">{{ template.name }} - {{ lan('Basic Information') }}</h2>
+        <div id="templateCreateHtml"></div>
+    </div>
+</div>

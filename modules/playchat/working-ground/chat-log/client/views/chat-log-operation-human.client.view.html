@@ -1,0 +1,51 @@
+<!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
+
+<div ng-controller="HumanChatLogController">
+    <div class="upSide operation-search-area" ng-show="!isAdvancedMode">
+        <form class="inline-block">
+            <input name="search" type="search" class="search" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
+        </form>
+    </div>
+    <div class="operation-content">
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Channel</th>
+                    <th>User Key</th>
+                    <th>Last Update</th>
+                    <th>Dialog</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="list.length == 0">
+                    <td colspan="5">Empty</td>
+                </tr>
+                <tr ng-repeat="item in list">
+                    <td>{{ item._id.channel }}</td>
+                    <td>{{ item._id.userKey }}</td>
+                    <td>{{ dateFormat(item.maxDate) }}</td>
+                    <td>
+                        <a href="/playchat/operation/user/detail?_id={{ item._id._id }}&userKey={{ item._id.userKey }}&liveChat=true" class="operation-user-dialog-button">{{lan('Dialog') }}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="/playchat/management/entity?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
+                </a>
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/management/entity?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

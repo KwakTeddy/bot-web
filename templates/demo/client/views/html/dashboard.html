@@ -1,0 +1,56 @@
+<div ng-controller="dashboardController">
+    <div class="dashboard-summary-title">Bot Profile</div>
+    <div class="dashboard-bot-profile">
+        <div class="dashboard-bot-profile-image">
+            <div class="dashboard-bot-profile-image-wrapper">
+                <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                <span></span>
+            </div>
+        </div>
+        <div class="dashboard-bot-profile-content">
+            <div>
+                <span>Bot Name</span>
+                <input type="text" value="{{ chatbot.name }}" disabled="true">
+            </div>
+            <div>
+                <p>Description</p>
+                <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">컨텐츠 관리</div>
+    <div class="dashboard-dialog-develop">
+        <div class="dashboard-dialog-management-card">
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_set.png"></a> 기본정보</div>
+                <p>매장이름, 전화번호, 주소, 영업시간등을 수정 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_graph_min.png"></a> 메뉴관리</div>
+                <p>메뉴를 추가하거나 수정할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/intent.png"></a> 주문관리</div>
+                <p>고객들의 주문을 확인하고 관리할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/entity.png"></a> 이벤트관리</div>
+                <p>매장에서 실시하는 이벤트를 관리할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">채널</div>
+    <div style="padding: 30px;">
+        <p>Messenger</p>
+        <p>다양한 메신져에 나의 챗봇을 연결 할 수 있습니다.</p>
+        <button type="button" class="default-button">바로가기</button>
+    </div>
+</div>

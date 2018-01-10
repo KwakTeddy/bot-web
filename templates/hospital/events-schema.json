@@ -1,0 +1,7 @@
+{
+    "botId" : "String",
+    "name" : "String",
+    "description" : "String",
+    "period" : "String",
+    "image" : "String"
+}

@@ -1,0 +1,11 @@
+{
+    "category_name" : "String",
+    "restaurant_location" : "String",
+    "restaurant_mopentime": "String",
+    "restaurant_aopentime": "String",
+    "restaurant_nopentime": "String",
+    "restaurant_seat": "Number",
+    "restaurant_room": "String",
+    "restaurant_introduction": "String",
+    "restaurant_image": "String"
+}

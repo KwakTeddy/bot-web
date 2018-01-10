@@ -1,0 +1,31 @@
+<table class="tb02" style="margin-top: 28px;">
+    <colgroup>
+        <col style="width: 33%;">
+        <col style="width: 33%;">
+        <col style="width: 7%;">
+        <col style="width: 17%;">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>{{lan('Previous Dialog') }}</th>
+            <th>{{lan('User Input') }}</th>
+            <th>{{lan('Count') }}</th>
+            <th>{{lan('Manage') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-if="list.length == 0">
+            <td colspan="4">{{lan('empty') }}</td>
+        </tr>
+        <tr ng-repeat="item in list">
+            <td>{{ item.preDialogName }}</td>
+            <td>{{ item._id.dialog }}</td>
+            <td>{{ item.count }}</td>
+            <td>
+                <button type="button" class="jump-button" ng-click="jump(item);">{{lan('Jump') }}</button>
+                <button type="button" class="ignore-button" ng-click="ignore(item);">{{lan('Ignore') }}</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

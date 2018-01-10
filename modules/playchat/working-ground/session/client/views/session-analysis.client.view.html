@@ -1,0 +1,79 @@
+<div ng-controller="SessionAnalysisController">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button excel-download-button" ng-click="exelDownload()">{{lan('Excel Download') }}</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 0 10px;">
+        <canvas id="sessionCountChart" width="400" height="200"></canvas>
+    </div>
+    <div style="margin-top: 60px; padding: 0 10px;">
+        <canvas id="sessionAverageCountChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+
+<!--&lt;!&ndash;장원준 통계 html&ndash;&gt;-->
+
+<!--<header class="page-header">-->
+  <!--<h2>대화(세션) 성공률</h2>-->
+
+  <!--<div class="right-wrapper pull-right">-->
+    <!--<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>-->
+  <!--</div>-->
+<!--</header>-->
+
+<!--<script>-->
+  <!--function changeFunc(selectBox) {-->
+    <!--document.getElementById("year").style.display = "none";-->
+    <!--document.getElementById("ym").style.display = "none";-->
+    <!--switch (selectBox.selectedIndex) {-->
+      <!--case 1:-->
+        <!--document.getElementById("year").style.display = "inline";-->
+        <!--break;-->
+      <!--case 2:-->
+        <!--document.getElementById("ym").style.display = "inline";-->
+        <!--break;-->
+    <!--}-->
+  <!--}-->
+<!--</script>-->
+
+<!--&lt;!&ndash; start: page &ndash;&gt;-->
+<!--<section class="panel" ng-controller="AnalyticsListController" ng-init="find_session_success()">-->
+  <!--<header class="panel-heading">-->
+    <!--<form name="form" novalidate="novalidate">-->
+      <!--<table width="100%"><tr><td>-->
+        <!--<h2 class="panel-title">&nbsp;</h2>-->
+      <!--</td><td align="right">-->
+        <!--<select name="kind" ng-model="kind"  onchange="changeFunc(this)">-->
+          <!--<option selected="selected" value="all">전체</option>-->
+          <!--<option value="year">연도별</option>-->
+          <!--<option value="month">월별</option>-->
+        <!--</select>-->
+        <!--<input type="number" id="year" ng-model="year" min="1999" max="2100" value='2017' style="display:none">-->
+        <!--<input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">-->
+        <!--<button class="btn btn-primary" ng-click="find_session_success()">검색</button>-->
+      <!--</td></tr></table>-->
+    <!--</form>-->
+  <!--</header>-->
+
+  <!--<div class="panel-body">-->
+    <!--<table datatable="ng" id="dt" class="table table-bordered table-striped mb-none">-->
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th class="text-center">대화</th>-->
+        <!--<th class="text-center">성공률</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+      <!--<tr ng-repeat="dialogUsage in sessionSuccess">-->
+        <!--<td class="text-center">{{dialogUsage._id}}</td>-->
+        <!--<td class="text-center">{{dialogUsage.count}}%</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+  <!--</div>-->
+<!--</section>-->

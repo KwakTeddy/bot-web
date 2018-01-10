@@ -1,0 +1,11 @@
+{
+    "restaurantname" : "String",
+    "phone" : "String",
+    "mobile" : "String",
+    "address" : "String",
+    "startTime" : "String",
+    "endTime" : "String",
+    "holiday" : "String",
+    "image" : "String",
+    "description" : "String"
+}

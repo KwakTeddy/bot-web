@@ -1,0 +1,125 @@
+<!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
+
+<div ng-controller="OperationUserController">
+    <div class="operation-advance-search">
+        <span>{{lan('Advanced Search') }}</span>
+        <div class="slide" ng-class="isAdvancedMode ? 'on' : ''" style="display: inline-block;">
+            <input type="checkbox" id="advancedMode" ng-model="isAdvancedMode" />
+            <label for="advancedMode"></label>
+        </div>
+    </div>
+    <div class="upSide operation-search-area" ng-show="!isAdvancedMode" style="padding-bottom: 0px;">
+        <form class="inline-block">
+            <input name="search" type="search" class="search" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
+        </form>
+    </div>
+    <div class="operation-search-area advanced" ng-show="isAdvancedMode">
+        <table>
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 40%;">
+                <col style="width: 10%;">
+                <col style="width: 40%;">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>Channel</th>
+                    <td>
+                        <input type="text" class="input_type09" ng-model="searchValues.channel" style="padding: 7px 10px;">
+                    </td>
+                    <th>User Key</th>
+                    <td>
+                        <input type="text" class="input_type09" ng-model="searchValues.userKey">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Last update</th>
+                    <td>
+                        <div id="lastUpdateRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                            <span></span> <b class="caret"></b>
+                        </div>
+                    </td>
+                    <th>Dialog Count</th>
+                    <td>
+                        <input type="number" class="input_type09" ng-model="searchValues.dialogCountStart">
+                        <span> ~ </span>
+                        <input type="number" class="input_type09" ng-model="searchValues.dialogCountEnd">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Created</th>
+                    <td>
+                        <div id="createdRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                            <span></span> <b class="caret"></b>
+                        </div>
+                    </td>
+                    <th>Mobile</th>
+                    <td>
+                        <input type="number" class="input_type09" ng-model="searchValues.mobile">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="blue-button search" ng-click="search();">{{lan('Search') }}</button>
+        <button type="button" class="default-button clear" ng-click="clear();">{{lan('Clear') }}</button>
+    </div>
+    <div class="operation-content">
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 14%;">
+                <col style="width: 14%;">
+                <col style="width: 14%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 14%;">
+                <col style="width: 14%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Channel</th>
+                    <th>User Key</th>
+                    <th>Mobile</th>
+                    <th>Last Update</th>
+                    <th>Created</th>
+                    <th>Dialog Count</th>
+                    <th>Dialog</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="entitys.length == 0">
+                    <td colspan="6">Empty</td>
+                </tr>
+                <tr ng-repeat="item in list">
+                    <td>{{ item.channel }}</td>
+                    <td>{{ item.userKey }}</td>
+                    <td>{{ item.mobile }}</td>
+                    <td>{{ dateFormat(item.lastUpdate) }}</td>
+                    <td>{{ dateFormat(item.created) }}</td>
+                    <td>{{ item.dialogCount }}</td>
+                    <td>
+                        <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">Dialog</a>
+                    </td>
+                    <!--<td>-->
+                    <!--<div class="slide on">-->
+                    <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
+                    <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
+                    <!--</div>-->
+                    <!--</td>-->
+                </tr>
+            </tbody>
+        </table>
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="/playchat/management/entity?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
+                </a>
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/management/entity?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

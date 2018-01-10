@@ -1,0 +1,12 @@
+{
+    "menus" : [
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "manage reservation", "url" : "/templates/contents/order", "icon" : "reservation.png" },
+            { "name" : "manage procedural information", "url" : "/templates/contents/menu", "icon" : "info.png" },
+            { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
+        ] },
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
+    ]
+}

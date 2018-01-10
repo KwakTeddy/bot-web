@@ -1,0 +1,113 @@
+.playchat-background
+{
+    height: 100%;
+}
+
+.playchat-background .gnb
+{
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: 2;
+    width: 250px;
+    background-color: #363636;
+    text-transform: capitalize;
+
+    overflow: auto;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.playchat-background .gnb+div
+{
+    position: absolute;
+    top: 0;
+    left: 250px;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+}
+
+.playchat-background .top-bar
+{
+    width: 100%;
+    height: 63px;
+    border-bottom: #e7e7e7 solid 1px;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.playchat-background .top-bar+div
+{
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.playchat-background .top-bar+div > div
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 368px;
+    bottom: 0;
+}
+
+.playchat-background .top-bar+div .simulator
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 367px;
+    background: #f8f8f8;
+    border-left: #e7e7e7 solid 1px;
+}
+
+.playchat-background .top-bar+div > div .working-ground
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /*bottom: 211px;*/
+    bottom: 39px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+.playchat-background .top-bar+div > div .working-ground > div.fixed-width
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    min-width: 800px;
+    overflow-x: auto;
+}
+
+.playchat-background .top-bar+div > div .log-analysis
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 210px;
+    overflow: auto;
+    background: #fff;
+
+    z-index: 2000;
+}

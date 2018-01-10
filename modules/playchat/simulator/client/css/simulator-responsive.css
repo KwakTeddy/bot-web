@@ -1,0 +1,19 @@
+.playchat-background .top-bar+div > div
+{
+    right: 0px;
+}
+
+.playchat-background .top-bar+div > div .working-ground
+{
+    right: 45px;
+}
+
+.simulator
+{
+    right: -367px !important;
+}
+
+.simulator .simulator-btn
+{
+    display: block !important;
+}

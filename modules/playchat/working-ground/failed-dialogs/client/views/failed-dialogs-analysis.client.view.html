@@ -1,0 +1,28 @@
+<div ng-controller="FailedDialogsAnalysisController">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button excel-download-button" ng-click="exelDownload()">{{lan('Excel Download') }}</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <table class="tb02">
+        <colgroup>
+            <col style="width: 80%;">
+            <col style="width: 20%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{{lan('List of Failed Dialog') }}</th>
+                <th>{{lan('Number of Failure') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in list">
+                <td style="text-align: left; padding-left: 20px;">{{ item._id.dialog }}</td>
+                <td>{{ item.count }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

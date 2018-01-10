@@ -1,0 +1,42 @@
+<style>
+.dialog-graph-code-editor-controller.edit
+{
+    position: relative;
+    right: 360px;
+}
+
+.dialog-graph-code-editor-controller.edit .alert-success, .dialog-graph-code-editor-controller.edit .alert-error
+{
+    top: 30px;
+}
+
+.dialog-graph-code-editor-controller .alert-error-close
+{
+    position: absolute;
+    top: 5px;
+    right: 8px;
+
+    cursor: pointer;
+}
+
+.CodeMirror-sizer
+{
+    margin-left: 30px !important;
+}
+</style>
+
+<form ng-controller="DialogGraphCodeEditorController">
+    <div class="dialog-graph-code-editor-controller">
+        <button type="button" class="default-button" ng-click="backToGraph();" ng-if="mode == 'graphsource'" style="width: 200px;">{{lan('Back to Graph edit mode') }}</button>
+        <button type="button" class="blue-button" ng-click="save();">{{lan('Save') }}</button>
+        <div class="alert-success" role="alert" style="top: 80px;"> <strong>{{lan('Saved.') }}</strong> </div>
+        <div class="alert-error" role="alert" style="top: 80px; text-align: left; max-width: 800px;"> <strong>{{lan('JSON Format Error') }}</strong> <div>{{saveError}}</div> <span class="alert-error-close" ng-click="closeError();">X</span></div>
+    </div>
+    <div class="dialog-graph-code-editor-body">
+        <textarea style="display: none;"></textarea>
+    </div>
+    <!--<div class="dialog-editor-footer">-->
+        <!--<button class="blue-button">Save</button>-->
+        <!--<button type="button" class="default-button" ng-click="close($event);">Cancel</button>-->
+    <!--</div>-->
+</form>

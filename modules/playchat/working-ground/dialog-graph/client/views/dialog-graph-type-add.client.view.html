@@ -1,0 +1,22 @@
+<form ng-controller="DialogGraphTypeAddController" ng-submit="save($event);">
+    <div class="dialog-graph-instant-add-header">
+        <a href="#" class="dialog-graph-instant-add-close">
+            <img src="/modules/playchat/working-ground/common/client/imgs/close.png" ng-click="close($event);">
+        </a>
+        <p>{{lan('Type Add') }}</p>
+    </div>
+    <div class="dialog-graph-instant-add-content">
+        <p class="dialog-graph-instant-add-subject">{{lan('Type name') }}</p>
+        <input type="text" class="dialog-graph-instant-add-input type-add" placeholder="Type Name(English, Number, _)" ng-model="type.name" ng-required="true" pattern="[a-zA-Z_0-9]*">
+        <p class="dialog-graph-instant-add-subject">{{lan('Type Logic') }}</p>
+        <div class="dialog-graph-task-add-logic">
+            <p><span style="color: #708;">function</span>(<span style="color: #00f;">text</span>, <span style="color: #00f;">type</span>, <span style="color: #00f;">task</span>, <span style="color: #00f;">context</span>, <span style="color: #00f;">callback</span>) {</p>
+            <textarea style="display: none;" id="dialogGraphEditorTypeLogic">var matched = true;\ncallback(task, context, matched);</textarea>
+            <p>}</p>
+        </div>
+    </div>
+    <div class="dialog-editor-footer">
+        <button class="blue-button">{{lan('Save') }}</button>
+        <button type="button" class="default-button" ng-click="close($event);">{{lan('Cancel') }}</button>
+    </div>
+</form>

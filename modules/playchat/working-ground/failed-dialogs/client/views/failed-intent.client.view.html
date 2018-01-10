@@ -1,0 +1,59 @@
+<div class="failed-intent">
+    <div class="failed-intent-title">
+        <span>{{lan('Intent') }}</span>
+    </div>
+    <div class="failed-intent-content">
+        <div>
+            <input type="text" class="failed-intent-name">
+        </div>
+        <div style="margin-top: 25px;">
+            <table class="tb02" style="margin-top: 28px;">
+                <colgroup>
+                    <col style="width: 100%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>{{lan('Contents') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="list.length == 0">
+                        <td>{{lan('empty') }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{lan('Test Intent') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 30px;">
+            <table class="tb02" style="margin-top: 28px;">
+                <colgroup>
+                    <col style="width: 85%;">
+                    <col style="width: 15%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>{{lan('Failed Contents') }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="list.length == 0">
+                        <td colspan="2">{{lan('empty') }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{lan('Test Intent') }}</td>
+                        <td>
+                            <button type="button" class="jump-button">{{lan('Add') }}</button>
+                            <button type="button" class="ignore-button">{{lan('Ignore') }}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+            <button type="button" class="blue-button">{{lan('Add') }}</button>
+        </div>
+    </div>
+</div>

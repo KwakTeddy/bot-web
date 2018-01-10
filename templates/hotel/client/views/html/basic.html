@@ -1,0 +1,74 @@
+<style>
+.template-demo-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-demo-basic
+{
+    width: 40%;
+    margin-left: 5%;
+}
+</style>
+
+<!--<h1 class="template-demo-title">기본정보</h1>-->
+<div> <!-- 템플릿봇 생성시 구조로 인해 반드시 필요한 div -->
+    <div ng-controller="hotelBasicController" class="template-demo-basic">
+        <form ng-submit="saveTemplateBot($event);">
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">호텔이름</span>
+                    <input type="text" class="data-input" placeholder="호텔이름(ex:엠프레스호텔)" data-bot-name="true" name="hotelname" required="true" autofocus="true">
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">전화번호</span>
+                    <input type="text" class="data-input" placeholder="전화번호(ex:00-000-0000)" name="phone" required="true">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">휴대폰</span>
+                    <input type="text" class="data-input" name="mobile" placeholder="휴대폰(ex:000-0000-0000)">
+                </label>
+            </div>
+            <div class="form-row">
+                <label style="width: 90%;">
+                    <span class="form-title">주소</span>
+                    <input type="text" class="data-input" name="address" style="width: 80%;">
+                    <button type="button" class="default-button" ng-click="findAddress($event);" style="padding: 8px;width: 76px;margin-left: 3px;">검색</button>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">언어</span>
+                    <select class="jumbo-select" required="true" name="language">
+                        <option value="ko" selected="selected">Korean</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese</option>
+                        <option value="jp">Japanese</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required" style="width: 100%;height: 100px;">
+                    <span class="form-title">설명</span>
+                    <textarea class="data-input" name="description"></textarea>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required" style="width: 100%;height: 100px;">
+                    <span class="form-title">주문카드정보</span>
+                    <textarea class="data-input" placeholder="주문카드정보(ex:국민은행 620-186066-484 머니브레인호텔)" name="bank"></textarea>
+                </label>
+            </div>
+            <div class="tab-footer" style="border-top: 0;">
+                <button class="blue-button">Save</button>
+                <button class="default-button" ng-click="cancel();">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -254,34 +254,16 @@ function updateCacheBotUser() {
   botUserCacheLock = true;
 
   try {
-    // BotUser.collection.insert(botUserCache, function(err, docs) {
-    //   botUserCacheLock = false;
-    //
-    //   console.log('updateCacheBotUser err: ' + err);
-    //
-    //   if(docs && docs.insertedCount) {
-    //     botUserCache.splice(0, docs.insertedCount);
-    //     console.log('botUsers: ' + docs.insertedCount + ' inserted')
-    //   }
-    // });
-
-    var bulk = BotUser.collection.initializeOrderedBulkOp();
-    for(var i = 0; i < botUserCache.length; i++) {
-      bulk.find({userKey: botUserCache[i].userKey}).upsert().updateOne(botUserCache[i]);
-    }
-    bulk.execute(function(err, data) {
+    BotUser.collection.insert(botUserCache, function(err, docs) {
       botUserCacheLock = false;
 
-      if(!err) {
-        botUserCache.splice(0, data.nMatched);
-        console.log('botUsers: ' + data.nMatched + ' updated')
+      if(docs && docs.insertedCount) {
+        botUserCache.splice(0, docs.insertedCount);
+        console.log('botUsers: ' + docs.insertedCount + ' inserted')
       }
-
-    })
-
+    });
   } catch(e) {
     botUserCacheLock = false;
-    console.log('updateCacheBotUser Err: ' + e);
   }
 }
 
@@ -301,7 +283,7 @@ function getUserContext(task, context, callback) {
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
       if(false) {
-        BotUser.create({userKey: task.userId, channel: task.channel, created: Date.now(), botId: task.bot}, function(err, _doc) {
+        BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
           task.doc = _doc;
           callback(task, context);
         });

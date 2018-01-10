@@ -1,0 +1,145 @@
+<div ng-controller="DialogSetManagementController">
+    <div class="upSide">
+        <form class="inline-block">
+            <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+        </form>
+    </div>
+    <div class="tab01">
+        <ul class="tabs1">
+            <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
+        </ul>
+        <div class="flR" style="position: relative; top: -40px;">
+            <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
+                <a href="#">
+                    <img src="modules/playchat/working-ground/common/client/imgs/import.png">
+                    <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
+                    <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
+                </a>
+            </div>
+            <div class="btn02" style="width: 110px; display: inline-block;">
+                <a href="/playchat/management/dialog-set/add" class="">{{lan('Add New') }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="downSide">
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 15%;">
+                <col style="width: 25%;">
+                <col style="width: 10%;">
+                <col style="width: 40%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>{{lan('Title') }}</th>
+                <th>{{lan('Content') }}</th>
+                <th>{{lan('Last Update') }}</th>
+                <th></th>
+                <th>{{lan('Usable') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="dialogsets.length == 0">
+                    <td colspan="5">{{lan('empty') }}</td>
+                </tr>
+                <tr ng-repeat="item in dialogsets">
+                    <td ng-if="!item.importState"><a href="/playchat/development/dialog-set?dialogsetId={{ item._id }}&dialogsetTitle={{ item.title }}">{{ item.title }}</a></td>
+                    <td ng-if="item.importState">{{ item.title }}</td>
+                    <td>{{ item.content }}</td>
+                    <td>{{ item.user.displayName }}</td>
+                    <td>
+                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                    </td>
+                    <td ng-if="!item.importState">
+                        <div class="slide" ng-class="item.usable ? 'on' : ''">
+                            <input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />
+                            <label for="{{ item._id }}" ng-click="updateUsable(item);"></label>
+                        </div>
+                    </td>
+                    <td ng-if="item.importState"><img style="vertical-align: middle;" src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="/playchat/management/dialog-set?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
+                </a>
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/dialog-set?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/management/dialog-set?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('Title') }}</span>
+                        <input type="text" placeholder="{{lan('Enter dialogset name')}}" name="title" ng-model="modal.mgmtModal.data.title" class="dialogset-title data-input" ng-required="true" >
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label style="width: 100%;">
+                        <span style="display: block;">{{lan('Content') }}</span>
+                        <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="modal.mgmtModal.data.content" class="data-input" style="height: 90px;"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button" style="width: 100px;">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();" style="width: 100px;">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('Title') }}</span>
+                        <input type="text" placeholder="{{lan('Enter dialogset name')}}" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <!--<div class="form-row" style="display: none;">-->
+                    <!--<label class="required" style="width: 100%;">-->
+                        <!--<span>Type</span>-->
+                        <!--<div class="form-box">-->
+                            <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
+                            <!--<span>(csv or xlsx)</span>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span>File</span>
+                        <div class="form-box">
+                            <input type="file" name="file" id="file" ng-required="true" class="inputfile" data-multiple-caption="{count} files selected" nv-file-select uploader="uploader"/>
+                            <label for="file">{{lan('Choose a file')}}</label>
+                            <button type="button" class="default-button" style="float: right; width: 200px;" ng-click="exelDownload();">{{ lan('Template Download') }}</button>
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label style="width: 100%;">
+                        <span>{{lan('Content') }}</span>
+                        <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<style>
+    .template-demo-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-demo-data
+    {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .template-demo-data input
+    {
+        border: 1px solid #ddd;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 90%;
+    }
+</style>
+
+<!--<h1 class="template-demo-title">이벤트정보관리</h1>-->
+<div ng-controller="restaurantEventController" class="template-demo-data">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 25%;">
+                <col style="width: 15%;">
+                <col style="width: 30%;">
+                <col style="width: 20%;">
+                <col style="width: 10%;">
+
+            </colgroup>
+            <thead>
+            <tr>
+                <th>이벤트명</th>
+                <th>이벤트 기간</th>
+                <th>이벤트 설명</th>
+                <th>이벤트 이미지</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in datas">
+                <td>
+                    <input type="text" ng-model="data.name">
+                </td>
+                <td>
+                    <input type="text" placeholder="2017-01-01 ~ 2017-06-01" ng-model="data.date" >
+                </td>
+                <td>
+                    <input type="text" ng-model="data.description">
+                </td>
+                <td>
+                    <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
+                    <input style="border: none;" type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                </td>
+                <td>
+                    <button style="width: 70px;" type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <button type="button" class="default-button" ng-click="add();">이벤트 추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;float: right;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

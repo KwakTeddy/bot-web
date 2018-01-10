@@ -1,0 +1,136 @@
+<style>
+.working-ground
+{
+    padding: 0 !important;
+}
+
+.playchat-background .top-bar+div > div .working-ground
+{
+    overflow-x: hidden;
+}
+
+caption
+{
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    display: table-caption;
+}
+</style>
+
+<script type="text/template" id="dialogGraphTemplate">
+    <div class="graph-dialog" id="{id}">
+        <div class="graph-dialog-item">
+            <div class="graph-dialog-header">
+                <span>{name}</span>
+                <a href="" class="dialog-more"></a>
+            </div>
+            <div class="graph-dialog-input">
+                {input}
+                <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
+            </div>
+            <div class="graph-dialog-output">
+                {output}
+            </div>
+            {buttons}
+            <a class="graph-fold" ng-click="toggleChild($event);"></a>
+        </div>
+        <div class="graph-dialog-children"></div>
+    </div>
+</script>
+
+
+<div ng-controller="DialogGraphDevelopmentController" class="graph-background">
+    <div class="tab" style="padding-top: 16px;">
+        <a class="prev-tab" ng-mousedown="prevTab($event);"><img src="/modules/playchat/gnb/client/imgs/left.png"></a>
+        <ul class="tab-body">
+            <li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">
+                <a>{{ file }}</a>
+            </li>
+        </ul>
+        <a class="next-tab" ng-mousedown="nextTab($event);"><img src="/modules/playchat/gnb/client/imgs/right.png"></a>
+    </div>
+    <!--<div class="tab01">-->
+        <!--<ul class="tabs1">-->
+            <!--<li ng-repeat="file in fileList" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''">-->
+                <!--<a href="#">{{ file }}</a>-->
+            <!--</li>-->
+            <!--<li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>-->
+        <!--</ul>-->
+    <!--</div>-->
+    <div class="graph-controller" style="text-indent: 8px;">
+        <div>
+            <form>
+                <input id="search" name="search" type="search" class="search" ng-keyup="searchDialog($event);">
+            </form>
+            <div class="graph-zoom-controller">
+                <div>
+                    <button type="button" class="graph-zoom-in" ng-click="zoomIn($event);"></button>
+                    <button type="button" class="graph-zoom-out" ng-click="zoomOut($event);"></button>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="graph-button" ng-click="viewGraphSource()">Source</button>
+            <button type="button" class="graph-button" ng-click="toggleCommonMode();">{{ commonMode }}</button>
+            <button type="button" class="graph-button" ng-click="toggleCompactMode();">{{ compactMode }}</button>
+            <!--<a class="refresh" href="#">-->
+                <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/refresh.png" ng-click="undo();">-->
+            <!--</a>-->
+            <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex <= 0">{{lan('Undo') }}</button>
+            <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">{{lan('Redo') }}</button>
+            <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">{{lan('Save') }}</button>
+            <button type="button" class="graph-button save" ng-if="fromFailedDialog" ng-click="backToFailedDialog();" style="width: 170px;">{{lan('Back to Failed Dialog') }}</button>
+            <div class="alert-success" role="alert"> <strong>{{lan('Saved.') }}</strong> </div>
+                <!--font-size: 12px;-->
+                <!--vertical-align: middle;-->
+                <!--padding: 10px;-->
+                <!--display: inline-block;-->
+                <!--color: green;-->
+                <!--position: relative;-->
+                <!--top: 2px;-->
+        </div>
+    </div>
+    <div class="graph-body" style="text-indent: 8px;">
+        <div id="graphDialogCanvas"></div>
+
+        <ul class="dialog-menu" style="display: none;">
+            <li><span class="menu-title">{{lan('More') }}</span></li>
+            <li class="dialog-menu-divider"></li>
+            <li class="dialog-menu-item" data-name="addChild"><a>{{lan('Add Child') }}</a></li>
+            <li class="dialog-menu-item" data-name="moveUp"><a>{{lan('Move Up') }}</a></li>
+            <li class="dialog-menu-item" data-name="moveDown"><a>{{lan('Move Down') }}</a></li>
+            <li class="dialog-menu-divider"></li>
+            <li class="dialog-menu-item" data-name="duplicate"><a>{{lan('Duplicate') }}</a></li>
+            <li class="dialog-menu-item" data-name="delete"><a>{{lan('Delete') }}</a></li>
+        </ul>
+    </div>
+
+    <div class="video-popup">
+        <div class="video-controller">
+            <img src="modules/playchat/log-analysis/client/imgs/logclose.png" ng-click="closeVideo($event);">
+        </div>
+        <div class="video-wrapper">
+            <div class="video-cover" ng-click="openVideoPopup();"></div>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/x4Ne_9CTPo0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+        </div>
+        <img src="modules/playchat/working-ground/common/client/imgs/Q.png" style="display:none; cursor: pointer;" ng-click="openVideo($event);">
+    </div>
+
+    <div class="modal-background import-modal" ng-show="isOpenVideoPopup" style="background-color: rgba(0, 0, 0, 0.7);">
+        <div class="modal" style="width: auto;">
+            <iframe width="854" height="480" src="https://www.youtube.com/embed/x4Ne_9CTPo0" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeVideoPopup();">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="graphDialogEditor" ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-editor.client.view.html'"></div>
+<div ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-intent-add.client.view.html'" class="dialog-editor-creation-panel" data-type="intent"></div>
+<div ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-entity-add.client.view.html'" class="dialog-editor-creation-panel" data-type="entity"></div>
+<div ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-task-add.client.view.html'" class="dialog-editor-creation-panel" data-type="task"></div>
+<div ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-type-add.client.view.html'" class="dialog-editor-creation-panel" data-type="type"></div>
+<div ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-code-editor.client.view.html'" class="dialog-graph-code-editor"></div>

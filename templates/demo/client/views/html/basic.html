@@ -1,0 +1,130 @@
+<style>
+.template-demo-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-demo-basic
+{
+    width: 70%;
+    margin: 0 auto;
+}
+</style>
+
+<h1 class="template-demo-title">기본정보</h1>
+<div ng-controller="demoBasicController" class="template-demo-basic">
+    <form ng-submit="saveTemplateBot($event);">
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">매장명</span>
+                <input type="text" class="data-input" name="name" required="true" autofocus="true">
+            </label>
+        </div>
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">매장 전화번호</span>
+                <input type="text" class="data-input" name="phone" required="true">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">핸드폰 번호</span>
+                <input type="text" class="data-input" name="mobile">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">주소</span>
+                <input type="text" class="data-input" name="address">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">영업시간</span>
+            </label>
+            <table class="tb02">
+                <colgroup>
+                    <col style="width: 25%;">
+                    <col style="width: 25%;">
+                    <col style="width: 25%;">
+                    <col style="width: 25%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>요일</th>
+                        <th>시작</th>
+                        <th>종료</th>
+                        <th>휴일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>월</td>
+                        <td><input type="time" name="holiday.monday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.monday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.monday.close"></td>
+                    </tr>
+                    <tr>
+                        <td>화</td>
+                        <td><input type="time" name="holiday.tuseday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.tuseday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.tuseday.close"></td>
+                    </tr>
+                    <tr>
+                        <td>수</td>
+                        <td><input type="time" name="holiday.wednesday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.wednesday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.wednesday.close"></td>
+                    </tr>
+                    <tr>
+                        <td>목</td>
+                        <td><input type="time" name="holiday.thursday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.thursday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.thursday.close"></td>
+                    </tr>
+                    <tr>
+                        <td>금</td>
+                        <td><input type="time" name="holiday.friday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.friday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.friday.close"></td>
+                    </tr>
+                    <tr>
+                        <td>토</td>
+                        <td><input type="time" name="holiday.saturday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.saturday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.saturday.close"></td>
+                    </tr>
+                    <tr>
+                        <td>일</td>
+                        <td><input type="time" name="holiday.sunday.start" value="09:00"></td>
+                        <td><input type="time" name="holiday.sunday.end" value="18:00"></td>
+                        <td><input type="checkbox" name="holiday.sunday.close"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">언어</span>
+                <select class="jumbo-select" required="true" name="language">
+                    <option value="ko" selected="selected">Korean</option>
+                    <option value="en">English</option>
+                    <option value="zh">Chinese</option>
+                    <option value="jp">Japanese</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">설명</span>
+                <textarea class="data-input" name="description"></textarea>
+            </label>
+        </div>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Save</button>
+            <button class="default-button" ng-click="cancel();">Cancel</button>
+        </div>
+    </form>
+</div>

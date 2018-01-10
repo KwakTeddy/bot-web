@@ -1,0 +1,52 @@
+<style>
+table tbody td
+{
+    position: relative;
+
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    word-wrap:normal;
+    overflow:hidden;
+}
+.percent-bar
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(3, 142, 218, 0.3);
+}
+</style>
+
+<div ng-controller="DialogTrainingUsageAnalysisController">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button excel-download-button" ng-click="exelDownload()">{{lan('Excel Download') }}</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <table class="tb02" style="width: 100%;">
+        <colgroup>
+            <col style="width: 50%;">
+            <col style="width: 50%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{{lan('Trained Dialog') }}</th>
+                <th>{{lan('Usage Count') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in list">
+                <td style="text-align: left;">{{ item.dialog }}</td>
+                <td>
+                    <span>{{ item.count }}</span>
+                    <span class="percent-bar" style="width: {{ item.percent }}%;"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

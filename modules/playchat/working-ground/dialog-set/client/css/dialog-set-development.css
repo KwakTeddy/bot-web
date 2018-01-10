@@ -1,0 +1,264 @@
+.topicswitch
+{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.topicswitch >span{
+
+    text-transform: uppercase;
+    color: #626262;
+}
+.topic-area
+{
+    display: inline-block;
+    width: 1px;
+    height: 44px;
+    padding-left: 13px;
+    overflow: hidden;
+}
+
+.topic-area > div
+{
+    width: 100%;
+}
+
+.topic-area > div > div
+{
+    display: inline-block;
+    width: 32%;
+}
+
+.topic-area > div > div > p
+{
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.topic-area > div > div .select-wrapper
+{
+    width: 100%;
+}
+
+.topic-area > div > div .select-wrapper::after
+{
+    right: 10px;
+}
+
+.topic-area > div > div select
+{
+    width: 100%;
+    border-radius: 6px;
+    border-color: #d7d7d7;
+    height: 34px;
+}
+
+.question-area, .answer-area
+{
+    display: inline-block;
+    width: 42%;
+}
+
+.functions-area
+{
+    display: inline-block;
+    text-align: center;
+}
+.functions-area > img
+{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.functions-area > img:hover
+{
+    opacity: 1;
+}
+
+.functions-area button
+{
+    /*margin: 3px 0;*/
+}
+
+.dialog-learning-development-content .question-area input,
+.dialog-learning-development-content .answer-area input
+{
+    margin: 3px 0;
+}
+
+.dialog-learning-development-content.topic-open .topic-area
+{
+    display: inline-block;
+    width: 29%;
+    height: auto;
+}
+
+.dialog-learning-development-content.topic-open .question-area,
+.dialog-learning-development-content.topic-open .answer-area
+{
+    display: inline-block;
+    width: 30%;
+}
+
+.dialog-learning-development-content.topic-open .functions-area
+{
+    display: inline-block;
+    width: 8%;
+}
+
+.dialog-learning-development-title, .dialog-learning-development-content
+{
+    width: 100%;
+    font-size: 0;
+    margin: 10px 0;
+    position: relative;
+}
+
+.dialog-learning-development-content .data-input
+{
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid #d7d7d7;
+    transition: border 0.5s;
+}
+
+.dialog-learning-development-content .data-input:focus
+{
+    border-color: #038eda;
+}
+
+.dialog-learning-development-title span
+{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dialog-learning-development-title .topicopen-topic
+{
+    width: 29%;
+}
+
+.dialog-learning-development-title .topicopen-question
+{
+    width: 31%;
+}
+
+.dialog-learning-development-title .topicopen-answer
+{
+    width: 30%;
+}
+
+.dialog-learning-development-title .topicclose-topic
+{
+    display: none;
+}
+
+.dialog-learning-development-title .topicclose-question
+{
+    width: 45%;
+}
+
+.dialog-learning-development-title .topicclose-answer
+{
+    width: 39%;
+}
+
+.dialog-learning-development-content div
+{
+    font-size: 12px;
+    padding: 0 5px;
+    box-sizing: border-box;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row
+{
+    border-radius: 6px;
+    padding: 10px 0;
+
+    background: #f8f8f8;
+    border: 1px solid #e8e8e8;
+
+    margin-top: 8px;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row:first-child
+{
+    border-color: #2d9ee0;
+    background: #eaf5fc;
+    padding-top: 0;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row:first-child > p
+{
+    color: #038eda;
+    font-weight: 600;
+    padding: 10px 23px;
+    font-size: 13px;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row:first-child .topic-area
+{
+    border-color: #b1dbf4;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row .data-input
+{
+    background-color: white;
+    color: #343434;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row div
+{
+    position: relative;
+    vertical-align: top;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row .topic-area
+{
+    border-right: 1px solid #e8e8e8;
+    margin-right: 1px;
+}
+
+.dialog-learning-development-content div .plus-button
+{
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 100%;
+    background: #768ea2;
+    padding: 1px 3px;
+    position: absolute;
+    bottom: -7px;
+    left: 48%;
+    box-sizing: border-box;
+}
+
+.dialog-learning-development-content div .plus-button:hover
+{
+    background-color: #038eda;
+}
+
+.dialog-learning-development-content div .plus-button:before
+{
+    position: relative;
+    top: -7px;
+    font-size: 22px;
+    content: '+';
+    color: #fff;
+    font-weight: normal;
+    line-height: 30px;
+}
+
+.tabs1 li
+{
+    padding: 0 10px;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
+}

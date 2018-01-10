@@ -1,0 +1,96 @@
+<style>
+.template-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-body
+{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.template-body input
+{
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    width: 80%;
+    min-width: 95px;
+}
+.search-sp1{
+    outline: none;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    font-size: 100%;
+    background:#e8ebf0 url(/modules/playchat/working-ground/common/client/imgs/search.png) no-repeat 7px center;
+    border: solid 1px #e8ebf0;
+    padding: 7px 13px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+    cursor: pointer;
+    text-overflow: ellipsis;
+}
+</style>
+
+<!--<h1 class="template-title">주차정보관리</h1>-->
+<div ng-controller="hotelParkController" class="template-body">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 15%;">
+                <col style="width: 10%;">
+                <col style="width: 15%;">
+                <col style="width: 30%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>주차장 이름</th>
+                    <th>주차장 자리수</th>
+                    <th>주차장 정보</th>
+                    <th>주차장 위치</th>
+                    <th>주차가능여부</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in datas">
+                    <td>
+                        <input type="text" ng-model="data.parkname" class="data-input">
+                    </td>
+                    <td>
+                        <input type="number" ng-model="data.parksize" class="data-input">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.parkdetails" class="data-input">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="data.parkaddress" class="data-input">
+                        <button type="button" ng-click="findAddress($event, $index);" class="search-sp1">&nbsp;&nbsp;</button>
+                    </td>
+                    <td>
+                        <input type="checkbox" ng-model="data.parkornot">
+                    </td>
+                    <td>
+                        <button type="button" class="default-button" ng-click="delete($index)" style="width: 70px;" >삭제</button>
+                    </td>
+                </tr>                <tr>
+                    <td colspan="6">
+                        <button type="button" class="default-button" ng-click="add();">주차장 추가</button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;float: right;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

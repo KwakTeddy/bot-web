@@ -1,0 +1,10 @@
+{
+    "botId" : "String",
+    "name" : "String",
+    "description" : "String",
+    "price" : "Number",
+    "recovery" : "String",
+    "image" : "String",
+    "reviewImage" : "String",
+    "review" : "String"
+}

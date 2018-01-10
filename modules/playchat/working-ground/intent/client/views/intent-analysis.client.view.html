@@ -1,0 +1,16 @@
+<div ng-controller="IntentAnalysisController">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button excel-download-button" ng-click="exelDownload()">{{lan('Excel Download') }}</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="dialog-traffic-title">{{lan('Top 10 Intent') }}</h2>
+        <div>
+            <canvas id="intentCanvas" width="400" height="150"></canvas>
+        </div>
+    </div>
+</div>

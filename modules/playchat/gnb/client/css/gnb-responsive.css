@@ -1,0 +1,82 @@
+.playchat-background .gnb+div
+{
+    left: 72px;
+}
+
+.playchat-background .gnb
+{
+    width: 72px;
+}
+
+.playchat-background .gnb .gnb-header
+{
+    padding: 0;
+    height: 64px;
+}
+
+.playchat-background .gnb .gnb-header .logo-min
+{
+    display: none;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-detail, .playchat-background .gnb .gnb-bot-name img
+{
+    display: none;
+}
+
+.playchat-background .gnb .gnb-header .logo-min:hover
+{
+    opacity: 0.3;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify img
+{
+    display: none;
+}
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify
+{
+    background:#424242 url(../imgs/modify_fold.png) no-repeat 46px;
+    width: 72px;
+    height: 32px;
+    right: 22px;
+}
+
+.playchat-background .gnb span
+{
+    display: none;
+}
+
+.playchat-background .gnb .close
+{
+    display: none;
+}
+
+.playchat-background .gnb ul li
+{
+    padding: 0px 24px;
+}
+
+.playchat-background .gnb ul li.selected
+{
+    padding: 0px 24px;
+}
+
+.playchat-background .gnb ul li.menu-item-group
+{
+    padding: 0;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group .menu-item
+{
+    padding: 6px 24px;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group .menu-item .close
+{
+    display: none;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item
+{
+    padding: 0px 24px;
+}

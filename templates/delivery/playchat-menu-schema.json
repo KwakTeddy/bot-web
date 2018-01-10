@@ -1,0 +1,11 @@
+{
+    "menus" : [
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "Manage Menu", "url" : "/templates/contents/menu", "icon" : "menu.png" },
+            { "name" : "Manage orders", "url" : "/templates/contents/order", "icon" : "order.png" }
+        ] },
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
+    ]
+}
