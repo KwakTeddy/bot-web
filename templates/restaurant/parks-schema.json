@@ -1,7 +1,0 @@
-{
-    "parkname" : "String",
-    "parksize" : "Number",
-    "parkaddress" : "String",
-    "parkdetails" : "String",
-    "parkornot" : "Boolean"
-}

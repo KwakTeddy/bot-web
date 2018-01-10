@@ -1,9 +1,0 @@
-{
-    "name": "String",
-    "mobile": "String",
-    "memo": "String",
-    "date": "String",
-    "time": "String",
-    "status": "String",
-    "userKey": "String"
-}

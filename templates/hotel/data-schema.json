@@ -1,8 +1,0 @@
-{
-    "hotelname" : "String",
-    "phone" : "String",
-    "mobile" : "String",
-    "address" : "String",
-    "description" : "String",
-    "bank" : "String"
-}
