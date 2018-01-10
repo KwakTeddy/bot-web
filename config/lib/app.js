@@ -53,17 +53,20 @@ module.exports.init = function init(callback)
 
 module.exports.start = function start(callback)
 {
-    var fs = require('fs');
-    var list = fs.readdirSync(path.resolve('./engine/models'));
-    for(var i=0; i<list.length; i++)
-    {
-        require(path.resolve('./engine/models/' + list[i]));
-    }
+    var engine = require(path.resolve('./engine/core.js'));
+    engine.init();
 
-    var globals = require(path.resolve('engine/bot/engine/common/globals'));
-    globals.initGlobals();
-    var autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection'));
-    autoCorrection.loadWordCorrections();
+    // var fs = require('fs');
+    // var list = fs.readdirSync(path.resolve('./engine/models'));
+    // for(var i=0; i<list.length; i++)
+    // {
+    //     require(path.resolve('./engine/models/' + list[i]));
+    // }
+    //
+    // var globals = require(path.resolve('engine/bot/engine/common/globals'));
+    // globals.initGlobals();
+    // var autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection'));
+    // autoCorrection.loadWordCorrections();
 
     this.init(function (app, db, config)
     {
