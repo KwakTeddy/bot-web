@@ -27,7 +27,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n\n#customerList#+index+. +customerName+/+address+ \n#"
+                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#customerList#+index+. +customerName+/+address+ / +num+\n#"
             }
         ],
         "id": "default0",
@@ -36,7 +36,7 @@ var dialogs = [
                 "name": "요금 메뉴 선택",
                 "input": [
                     {
-                        "if": "true"
+                        "types": "customerListType"
                     }
                 ],
                 "output": [
@@ -88,7 +88,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "원하시는 기간을 선택해주세요",
+                                "text": "원하시는 고지내역 기간을 선택해주세요",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -111,27 +111,82 @@ var dialogs = [
                                 "name": "고지내역 3개월",
                                 "input": [
                                     {
-                                        "text": "3"
+                                        "types": "monthType"
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] 123456456 월별 고지내역입니다.(3개월)\n\n2017.12\n신용카드 자동이체 / 고지금액 1000원 중 0원 납부(미납)\n\n2017.11\n은행 자동이체 / 고지금액 2000원 중 2000원 납부(2017.11.25)\n\n2017.10\n지로용지 납부 / 고지금액 3000원 중 3000원 납부(2017.11.25)",
-                                        "buttons": [
+                                        "text": "[요금] +curCustomer.customerName+ 월별 고지내역입니다.(+listNum+개월)\n\n#noticeHistory#+index+. +date+\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#"
+                                    }
+                                ],
+                                "id": "default15",
+                                "children": [
+                                    {
+                                        "name": "고지내역 상세화면",
+                                        "input": [
                                             {
-                                                "url": "",
-                                                "text": "12월 상세보기"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "11월 상세보기"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "10월 상세보기"
+                                                "if": "true"
                                             }
                                         ],
+                                        "output": [
+                                            {
+                                                "kind": "Content"
+                                            }
+                                        ],
+                                        "id": "default18",
+                                        "task": {
+                                            "name": "getNoticeDetail"
+                                        }
+                                    }
+                                ],
+                                "task": {
+                                    "name": "getNoticeHistory"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "월별 납부내역 조회",
+                        "input": [
+                            {
+                                "text": "납부 역"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "원하시는 납부내역 기간을 선택해주세요",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "3개월"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "6개월"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "12개월"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default4",
+                        "children": [
+                            {
+                                "name": "납부내역 3개월",
+                                "input": [
+                                    {
+                                        "types": "monthType"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "[요금] +curCustomer.customerName+ 월별 납부내역입니다.(+listNum+개월)\n\n#paymentHistory#+index+. +date+\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
+                                        "buttons": [],
                                         "uploader": {
                                             "url": "/api/samchully/dialog-graphs/uploadImage",
                                             "alias": "uploadFile",
@@ -165,215 +220,30 @@ var dialogs = [
                                         }
                                     }
                                 ],
-                                "id": "default15",
-                                "children": [
-                                    {
-                                        "name": "고지내역 상세화면",
-                                        "input": [
-                                            {
-                                                "text": "상세"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "2017.12\n신용카드 자동이체 / 고지금액 1000원 중 0원 납부(미납)",
-                                                "buttons": [],
-                                                "uploader": {
-                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                                    "alias": "uploadFile",
-                                                    "headers": {},
-                                                    "queue": [],
-                                                    "progress": 0,
-                                                    "autoUpload": true,
-                                                    "removeAfterUpload": false,
-                                                    "method": "POST",
-                                                    "filters": [
-                                                        {
-                                                            "name": "folder"
-                                                        },
-                                                        {
-                                                            "name": "queueLimit"
-                                                        }
-                                                    ],
-                                                    "formData": [],
-                                                    "queueLimit": 1.7976931348623157e+308,
-                                                    "withCredentials": false,
-                                                    "disableMultipart": false,
-                                                    "isUploading": false,
-                                                    "_nextIndex": 0,
-                                                    "_failFilterIndex": -1,
-                                                    "_directives": {
-                                                        "select": [],
-                                                        "drop": [],
-                                                        "over": []
-                                                    },
-                                                    "item": "none"
-                                                }
-                                            }
-                                        ],
-                                        "id": "default18"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "6개월",
-                                "input": [
-                                    {
-                                        "text": "6개월"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "6개월"
-                                    }
-                                ],
-                                "id": "default16"
-                            },
-                            {
-                                "name": "9개월",
-                                "input": [
-                                    {
-                                        "text": "9개월"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "9개월"
-                                    }
-                                ],
-                                "id": "default17"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "월별 납부내역 조회",
-                        "input": [
-                            {
-                                "text": "납부"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "원하시는 기간을 선택해주세요",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "3개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "6개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "12개월"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default4",
-                        "children": [
-                            {
-                                "name": "납부내역 3개월",
-                                "input": [
-                                    {
-                                        "text": "3"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "[요금] 123456456 월별 납부내역입니다.(3개월)\n\n2017.12\n신용카드 자동이체 / 고지금액 1000원 중 0원 납부(미납)\n\n2017.11\n은행 자동이체 / 고지금액 2000원 중 2000원 납부(2017.11.25)\n\n2017.10\n지로용지 납부 / 고지금액 3000원 중 3000원 납부(2017.11.25)"
-                                    }
-                                ],
                                 "id": "default19",
                                 "children": [
                                     {
                                         "name": "납부내역 상세화면",
                                         "input": [
                                             {
-                                                "text": "상세"
+                                                "if": "true"
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "상세화면",
-                                                "buttons": [],
-                                                "uploader": {
-                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                                    "alias": "uploadFile",
-                                                    "headers": {},
-                                                    "queue": [],
-                                                    "progress": 0,
-                                                    "autoUpload": true,
-                                                    "removeAfterUpload": false,
-                                                    "method": "POST",
-                                                    "filters": [
-                                                        {
-                                                            "name": "folder"
-                                                        },
-                                                        {
-                                                            "name": "queueLimit"
-                                                        }
-                                                    ],
-                                                    "formData": [],
-                                                    "queueLimit": 1.7976931348623157e+308,
-                                                    "withCredentials": false,
-                                                    "disableMultipart": false,
-                                                    "isUploading": false,
-                                                    "_nextIndex": 0,
-                                                    "_failFilterIndex": -1,
-                                                    "_directives": {
-                                                        "select": [],
-                                                        "drop": [],
-                                                        "over": []
-                                                    },
-                                                    "item": "none"
-                                                }
+                                                "text": "상세화면"
                                             }
                                         ],
-                                        "id": "default22"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "납부내역 6개월",
-                                "input": [
-                                    {
-                                        "text": "6 개월"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "6개월"
-                                    }
-                                ],
-                                "id": "default20"
-                            },
-                            {
-                                "name": "납부내역 12개월",
-                                "input": [
-                                    {
-                                        "text": "12개월"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "12개월",
-                                        "if": ""
+                                        "id": "default22",
+                                        "task": {
+                                            "name": "getPaymentDetail"
+                                        }
                                     }
                                 ],
                                 "task": {
-                                    "name": ""
-                                },
-                                "id": "default21"
+                                    "name": "getPaymentHistory"
+                                }
                             }
                         ]
                     },
@@ -381,7 +251,7 @@ var dialogs = [
                         "name": "요금납부",
                         "input": [
                             {
-                                "text": "요금납부"
+                                "text": "요금"
                             }
                         ],
                         "output": [
@@ -401,7 +271,38 @@ var dialogs = [
                                         "url": "",
                                         "text": "입금전용계좌 조회"
                                     }
-                                ]
+                                ],
+                                "uploader": {
+                                    "url": "/api/samchully/dialog-graphs/uploadImage",
+                                    "alias": "uploadFile",
+                                    "headers": {},
+                                    "queue": [],
+                                    "progress": 0,
+                                    "autoUpload": true,
+                                    "removeAfterUpload": false,
+                                    "method": "POST",
+                                    "filters": [
+                                        {
+                                            "name": "folder"
+                                        },
+                                        {
+                                            "name": "queueLimit"
+                                        }
+                                    ],
+                                    "formData": [],
+                                    "queueLimit": 1.7976931348623157e+308,
+                                    "withCredentials": false,
+                                    "disableMultipart": false,
+                                    "isUploading": false,
+                                    "_nextIndex": 0,
+                                    "_failFilterIndex": -1,
+                                    "_directives": {
+                                        "select": [],
+                                        "drop": [],
+                                        "over": []
+                                    },
+                                    "item": "none"
+                                }
                             }
                         ],
                         "id": "default1",
@@ -416,20 +317,233 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다\n\n1",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "1, 12월"
+                                        "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4",
+                                        "buttons": [],
+                                        "uploader": {
+                                            "url": "/api/samchully/dialog-graphs/uploadImage",
+                                            "alias": "uploadFile",
+                                            "headers": {},
+                                            "queue": [],
+                                            "progress": 0,
+                                            "autoUpload": true,
+                                            "removeAfterUpload": false,
+                                            "method": "POST",
+                                            "filters": [
+                                                {
+                                                    "name": "folder"
+                                                },
+                                                {
+                                                    "name": "queueLimit"
+                                                }
+                                            ],
+                                            "formData": [],
+                                            "queueLimit": 1.7976931348623157e+308,
+                                            "withCredentials": false,
+                                            "disableMultipart": false,
+                                            "isUploading": false,
+                                            "_nextIndex": 0,
+                                            "_failFilterIndex": -1,
+                                            "_directives": {
+                                                "select": [],
+                                                "drop": [],
+                                                "over": []
                                             },
-                                            {
-                                                "url": "",
-                                                "text": "2, 11월"
-                                            }
-                                        ]
+                                            "item": "none"
+                                        }
                                     }
                                 ],
-                                "id": "default12"
+                                "id": "default12",
+                                "task": {
+                                    "name": "getNonpaymentList"
+                                },
+                                "children": [
+                                    {
+                                        "name": "납부연월 선택",
+                                        "input": [
+                                            {
+                                                "types": "number"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "다음 목록의 납부를 진행합니다.\n\n핸드폰 번호를 입력하세요",
+                                                "buttons": [],
+                                                "uploader": {
+                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
+                                                    "alias": "uploadFile",
+                                                    "headers": {},
+                                                    "queue": [],
+                                                    "progress": 0,
+                                                    "autoUpload": true,
+                                                    "removeAfterUpload": false,
+                                                    "method": "POST",
+                                                    "filters": [
+                                                        {
+                                                            "name": "folder"
+                                                        },
+                                                        {
+                                                            "name": "queueLimit"
+                                                        }
+                                                    ],
+                                                    "formData": [],
+                                                    "queueLimit": 1.7976931348623157e+308,
+                                                    "withCredentials": false,
+                                                    "disableMultipart": false,
+                                                    "isUploading": false,
+                                                    "_nextIndex": 0,
+                                                    "_failFilterIndex": -1,
+                                                    "_directives": {
+                                                        "select": [],
+                                                        "drop": [],
+                                                        "over": []
+                                                    },
+                                                    "item": "none"
+                                                }
+                                            }
+                                        ],
+                                        "id": "default16",
+                                        "children": [
+                                            {
+                                                "name": "핸드폰 입력_",
+                                                "input": [
+                                                    {
+                                                        "types": "mobile"
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "call": "등록완료_",
+                                                        "options": {
+                                                            "output": "인증번호 입력!"
+                                                        }
+                                                    }
+                                                ],
+                                                "id": "default17",
+                                                "children": [
+                                                    {
+                                                        "name": "인증번호 입력",
+                                                        "input": [
+                                                            {
+                                                                "if": "false"
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Content",
+                                                                "text": "다시 인증 번호를 입력해주세요."
+                                                            }
+                                                        ],
+                                                        "id": "default47",
+                                                        "children": [
+                                                            {
+                                                                "name": "등록완료_",
+                                                                "input": [
+                                                                    {
+                                                                        "regexp": "\\d{4}"
+                                                                    }
+                                                                ],
+                                                                "output": [
+                                                                    {
+                                                                        "kind": "Content",
+                                                                        "text": "완료",
+                                                                        "if": "context.dialog.smsAuth == dialog.inRaw.replace(/\\s*/g, '')",
+                                                                        "buttons": [],
+                                                                        "uploader": {
+                                                                            "url": "/api/samchully/dialog-graphs/uploadImage",
+                                                                            "alias": "uploadFile",
+                                                                            "headers": {},
+                                                                            "queue": [],
+                                                                            "progress": 0,
+                                                                            "autoUpload": true,
+                                                                            "removeAfterUpload": false,
+                                                                            "method": "POST",
+                                                                            "filters": [
+                                                                                {
+                                                                                    "name": "folder"
+                                                                                },
+                                                                                {
+                                                                                    "name": "queueLimit"
+                                                                                }
+                                                                            ],
+                                                                            "formData": [],
+                                                                            "queueLimit": 1.7976931348623157e+308,
+                                                                            "withCredentials": false,
+                                                                            "disableMultipart": false,
+                                                                            "isUploading": false,
+                                                                            "_nextIndex": 0,
+                                                                            "_failFilterIndex": -1,
+                                                                            "_directives": {
+                                                                                "select": [],
+                                                                                "drop": [],
+                                                                                "over": []
+                                                                            },
+                                                                            "item": "none"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "kind": "Action",
+                                                                        "repeat": 1,
+                                                                        "options": {
+                                                                            "output": "인증 번호를 입력해주세용ㅇㅇㅇㅇ"
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "id": "default48"
+                                                            },
+                                                            {
+                                                                "name": "인증번호 불일치_",
+                                                                "input": [
+                                                                    {
+                                                                        "if": "false"
+                                                                    }
+                                                                ],
+                                                                "output": [
+                                                                    {
+                                                                        "kind": "Content",
+                                                                        "text": "인증 번호를 다시",
+                                                                        "buttons": [
+                                                                            {
+                                                                                "url": "",
+                                                                                "text": "인증번호 재발송"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "id": "default20"
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "sendSMSAuth"
+                                                }
+                                            },
+                                            {
+                                                "name": "핸드폰 입력 리피트",
+                                                "input": [
+                                                    {
+                                                        "if": "true"
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "repeat": 1,
+                                                        "options": {
+                                                            "output": "잘못입력하셨습니다. 다시 입력해주세요."
+                                                        }
+                                                    }
+                                                ],
+                                                "id": "default21"
+                                            }
+                                        ],
+                                        "task": {
+                                            "name": "addButton"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "name": "편의점",
@@ -441,7 +555,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "편의점"
+                                        "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default23"
@@ -456,7 +570,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "입금전용계좌 개요",
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌를 선택해주세요",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -1153,6 +1267,37 @@ var dialogs = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1273,6 +1418,37 @@ var commonDialogs = [
         }
     }
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
