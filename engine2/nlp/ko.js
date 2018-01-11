@@ -19,20 +19,8 @@ var NLPUtil = require('./nlpUtil.js');
         });
     };
 
-    KoreanAnalyzer.prototype.morphemeAnalysis = function(session, inputRaw, callback, error)
+    KoreanAnalyzer.prototype.getNlpedText = function(inputRaw)
     {
-        var that = this;
-
-        if(!inputRaw)
-        {
-            return error.delegate('inputRaw is undefined');
-        }
-
-        if(Array.isArray(inputRaw))
-        {
-            return error.delegate('inputRaw is must be string');
-        }
-
         var cbTags = new CBTags();
         inputRaw = inputRaw.replace(/(^\s*)|(\s*$)/gi, "");
         inputRaw = inputRaw.replace(/\"/gi, "");
@@ -64,7 +52,7 @@ var NLPUtil = require('./nlpUtil.js');
         {
             if(err)
             {
-                return error.delegate(err);
+                return callback(err);
             }
 
             if (!result)
@@ -86,13 +74,13 @@ var NLPUtil = require('./nlpUtil.js');
                             entry.pos = mb_user_tag[key];
                         }
 
-                        entry.text = (entry.text).replace(new RegExp(key,'gi'), mb_user_str[key]);
+                        entry.text = (entry.text).replace(new RegExp(key, 'gi'), mb_user_str[key]);
                     }
                 }
 
                 entry.pos = cbTags.normalizeTag('ko', entry.text, entry.pos);
 
-                if(entry.pos == 'Alpha')
+                if (entry.pos == 'Alpha')
                 {
                     entry.pos = 'Noun';
                 }
@@ -111,6 +99,26 @@ var NLPUtil = require('./nlpUtil.js');
                 inNLP = inputRaw;
             }
 
+            callback(null, lastChar, inNLP, nlp, nlpAll);
+        });
+    };
+
+    KoreanAnalyzer.prototype.morphemeAnalysis = function(session, inputRaw, callback, error)
+    {
+        var that = this;
+
+        if(!inputRaw)
+        {
+            return error.delegate('inputRaw is undefined');
+        }
+
+        if(Array.isArray(inputRaw))
+        {
+            return error.delegate('inputRaw is must be string');
+        }
+
+        this.getNlpedText(inputRaw, function(err, lastChar, inNLP, nlp, nlpAll)
+        {
             session.botUser.inNLP = inNLP;
             session.botUser.nlpAll = nlpAll;
             session.botUser.nlp = nlp;
