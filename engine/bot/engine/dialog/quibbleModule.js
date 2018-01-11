@@ -1,5 +1,5 @@
 var path = require('path');
-var globalQuibbles = require(path.resolve('./engine/global/global-quibbles'));
+var globals = require(path.resolve('./engine/globals.js'));
 
 function quibble(context) {
   var quibbleSentence = undefined;
@@ -7,7 +7,7 @@ function quibble(context) {
   quibbleSentence = quibbleProcess(context.bot, context);
   if(quibbleSentence) return quibbleSentence;
 
-  quibbleSentence = quibbleProcess(globalQuibbles, context);
+  quibbleSentence = quibbleProcess(globals.quibbles, context);
 
   if(quibbleSentence) return quibbleSentence;
   else return '이해할 수 없는 말입니다.';

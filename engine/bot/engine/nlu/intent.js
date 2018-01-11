@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var BotIntentFail = mongoose.model('BotIntentFail');
@@ -9,65 +8,6 @@ var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
 var analytics = require(path.resolve('engine/analytics/server/controllers/analytics.server.controller'));
 var async = require('async');
 var _ = require('lodash');
-
-var intentCheck = {
-  name: 'intentDoc',
-  typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
-  limit: 10,
-  matchRate: 0.4,
-  matchCount: 4,
-  // exclude: ['하다', '이다'],
-  mongo: {
-    model: 'intentcontent',
-    queryFields: ['input'],
-    fields: 'input intentId' ,
-    taskFields: ['input', 'intentId', 'matchCount', 'matchRate'],
-    minMatch: 1
-  },
-  preType: function(task, context, type, callback) {
-    type.mongo.queryStatic = {};
-    if(type.typeCheck == undefined) type.typeCheck =global._context.typeChecks['dialogTypeCheck'];
-
-    if(context.bot.intents && context.bot.intents.length > 0) {
-      var _intents = [];
-      for(var i in context.bot.intents) {
-        _intents.push(context.bot.intents[i]._id);
-      }
-      type.mongo.queryStatic = {intentId: {$in: _intents}};
-    } else {
-      type.mongo.queryStatic.intentId = null;
-    }
-
-    callback(task, context);
-  }
-};
-
-exports.intentCheck = intentCheck;
-
-var intentTask = {
-
-  action: function(task, context, callback) {
-    // console.log(JSON.stringify(task.typeDoc, null, 2));
-
-    if(Array.isArray(task.typeDoc)) {
-      if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
-      else task._output = task.typeDoc[0].output;
-
-      console.log(task.typeDoc[0].inputRaw + ', ' + task.typeDoc[0].input + '(' + task.typeDoc[0].matchCount + ', ' + task.typeDoc[0].matchRate + ')');
-    } else {
-      task._output = task.typeDoc.output;
-      console.log(task.typeDoc.inputRaw + ', ' + task.typeDoc.input + '(' + task.typeDoc.matchCount + ', ' + task.typeDoc.matchRate + ')');
-    }
-
-    if(Array.isArray(task._output)) {
-      task._output = task._output[Math.floor(Math.random() * task._output.length)];
-    }
-
-    callback(task, context);
-  }
-};
-
-exports.intentTask = intentTask;
 
 function matchIntent(inRaw, inNLP, context, callback) {
   dialog.executeType(inRaw, inNLP, intentCheck, {}, context, function(inNLP, task, matched) {

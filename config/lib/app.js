@@ -53,42 +53,13 @@ module.exports.init = function init(callback)
 
 module.exports.start = function start(callback)
 {
-    var fs = require('fs');
-    var list = fs.readdirSync(path.resolve('./engine/models'));
-    for(var i=0; i<list.length; i++)
-    {
-        require(path.resolve('./engine/models/' + list[i]));
-    }
-
-    var globals = require(path.resolve('engine/bot/engine/common/globals'));
-    globals.initGlobals();
-    var autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection'));
-    autoCorrection.loadWordCorrections();
+    var Engine = require(path.resolve('./engine/core.js'));
 
     this.init(function (app, db, config)
     {
         app.server.listen(config.port, function ()
         {
-            app.io.on('connection', function (socket)
-            {
-                console.log('커넥션');
-                require(path.resolve('./engine/bot/server/sockets/bot.server.socket.config.js'))(app.io, socket);
-                require(path.resolve('./modules/demo/server/controllers/demo.server.controller.js'))(app.io, socket);
-            });
-
-            if(config.loadBalance.use)
-            {
-                if(config.loadBalance.isMaster)
-                {
-                    var master = require(path.resolve('./engine/loadbalancer/master.js'));
-                    master.init(app.io);
-                }
-                else
-                {
-                    var slave = require(path.resolve('./engine/loadbalancer/slave.js'));
-                    slave.init();
-                }
-            }
+            Engine.init(app, app.io);
 
             // Logging initialization
             console.log();
