@@ -1,8 +1,8 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/bot.js'));
-var dialog = require(path.resolve('engine/bot/action/common/dialog'));
-var contextModule = require(path.resolve('engine/bot/engine/common/context'));
-var utils = require(path.resolve('engine/bot/action/common/utils'));
+var bot = require(path.resolve('./engine2/bot.js'));
+var dialog = require(path.resolve('engine2/bot/action/common/dialog'));
+var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
 
 function command(inTextRaw, inTextNLP, context, print, callback) {
   var cmd = inTextRaw.trim();
@@ -49,10 +49,10 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
       });
   } else if(cmd == ':reset user') {
     //TODO 디버깅 시에 서버 재시작 안하고 로딩
-    // utils.requireNoCache(path.resolve('engine/bot/engine/common/globals')).initGlobals();
-    // utils.requireNoCache(path.resolve('engine/bot/action/common/dialog'));
-    // utils.requireNoCache(path.resolve('engine/bot/action/common/task'));
-    // utils.requireNoCache(path.resolve('engine/bot/action/common/type'));
+    // utils.requireNoCache(path.resolve('engine2/bot/engine/common/globals')).initGlobals();
+    // utils.requireNoCache(path.resolve('engine2/bot/action/common/dialog'));
+    // utils.requireNoCache(path.resolve('engine2/bot/action/common/task'));
+    // utils.requireNoCache(path.resolve('engine2/bot/action/common/type'));
 
     context.botUser.topic = null;
 

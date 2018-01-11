@@ -1,8 +1,8 @@
 var xml2json = require('xml2js');
 var js2xmlparser = require("js2xmlparser");
 var path = require('path');
-var utils = require(path.resolve('engine/bot/action/common/utils'));
-var chat = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
+var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
 
 exports.messageGet = function(req, res) {
   var signature = req.query['signature'];

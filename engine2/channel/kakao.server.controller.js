@@ -1,13 +1,13 @@
 var net = require('net');
 var request = require('request');
 var path = require('path');
-var chat = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
-var contextModule = require(path.resolve('engine/bot/engine/common/context'));
+var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
+var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
 var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
 var fs = require('fs');
 var config = require(path.resolve('config/config'));
-var master = require(path.resolve('engine/loadbalancer/master.js'));
+var master = require(path.resolve('engine2/loadbalancer/master.js'));
 
 
 var util = require('util');

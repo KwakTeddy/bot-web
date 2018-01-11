@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var fileutil = require(path.resolve('engine/bot/action/common/fileutil.js'));
+var fileutil = require(path.resolve('engine2/bot/action/common/fileutil.js'));
 
 var baseDir = path.resolve('public/files/');
 

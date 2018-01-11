@@ -1,18 +1,18 @@
 var path = require('path');
-var bot = require(path.resolve('engine/bot')).getTemplateBot('restaurant');
+var bot = require(path.resolve('engine2/bot')).getTemplateBot('restaurant');
 
-var type = require(path.resolve('./engine/bot/action/common/type'));
+var type = require(path.resolve('./engine2/bot/action/common/type'));
 
-var messages = require(path.resolve('engine/messages/server/controllers/messages.server.controller'));
-var botUser= require(path.resolve('engine/bot-users/server/controllers/bot-users.server.controller'));
+var messages = require(path.resolve('engine2/messages/server/controllers/messages.server.controller'));
+var botUser= require(path.resolve('engine2/bot-users/server/controllers/bot-users.server.controller'));
 var dateformat = require('dateformat');
 var config = require(path.resolve('./config/config'));
 var mongoose = require('mongoose');
-var mongo = require(path.resolve('./engine/bot/action/common/mongo'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
+var mongo = require(path.resolve('./engine2/bot/action/common/mongo'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
 var request = require('request');
 var _ = require('lodash');
-var globals = require(path.resolve('engine/bot/engine/common/globals'));
+var globals = require(path.resolve('engine2/bot/engine/common/globals'));
 var async = require('async');
 var restaurantmenu= mongo.getModel('restaurant-menus');
 

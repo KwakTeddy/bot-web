@@ -2,8 +2,8 @@ var https = require('https');
 var net = require('net');
 var request = require('request');
 var path = require('path');
-var chat = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
-var contextModule = require(path.resolve('engine/bot/engine/common/context'));
+var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
+var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
 
 exports.receiveNew = function (req, res) {
   // console.log("receive receive");

@@ -31,9 +31,9 @@ var chalk = require('chalk');
     Logger.prototype.error = function(err)
     {
         console.error();
-        console.error(chalk.red('======== Engine Error ' + this.now() + ' ========'));
+        console.error(chalk.red('================ Engine Error ' + this.now() + ' ================'));
         console.error(err);
-        console.error(chalk.red('================================'));
+        console.error(chalk.red('================================================================='));
         console.error();
     };
 

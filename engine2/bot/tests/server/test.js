@@ -29,8 +29,8 @@
 //     var app = require(path.resolve('config/lib/app.js'));
 //     app.start();
 //
-//     bot_server = require(path.resolve('./engine/bot.js.js'));
-//     bot = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
+//     bot_server = require(path.resolve('./engine2/bot.js.js'));
+//     bot = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
 //   });
 //
 //   describe('lgdemo', function () {

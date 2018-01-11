@@ -2,8 +2,8 @@ var path = require('path');
 
 var config = require(path.resolve('./config/config.js'));
 
-// var master = require(path.resolve('./engine/loadbalancer/master.js'));
-// var slave = require(path.resolve('./engine/loadbalancer/slave.js'));
+// var master = require(path.resolve('./engine2/loadbalancer/master.js'));
+// var slave = require(path.resolve('./engine2/loadbalancer/slave.js'));
 
 (function()
 {

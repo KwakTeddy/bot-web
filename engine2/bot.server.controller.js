@@ -3,18 +3,18 @@ var path = require('path');
 var botProcess = require('../controllers/_action.server.controller');
 var tough = require('tough-cookie');
 var _ = require('lodash');
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
 var config = require(path.resolve('./config/config'));
 var logger = require(path.resolve('./config/lib/logger'));
-var dialog = require(path.resolve('engine/bot/action/common/dialog'));
+var dialog = require(path.resolve('engine2/bot/action/common/dialog'));
 var async = require('async');
 var fs = require('fs');
-var command = require(path.resolve('engine/bot/action/common/command'));
-var botModule = require(path.resolve('./engine/bot.js'));
-var factModule = require(path.resolve('engine/bot/action/common/facts'));
-var toneModule = require(path.resolve('engine/bot/action/common/tone'));
-var contextModule = require(path.resolve('engine/bot/engine/common/context'));
-var dialogsetModule = require(path.resolve('engine/bot/engine/dialogset/dialogset'));
+var command = require(path.resolve('engine2/bot/action/common/command'));
+var botModule = require(path.resolve('./engine2/bot.js'));
+var factModule = require(path.resolve('engine2/bot/action/common/facts'));
+var toneModule = require(path.resolve('engine2/bot/action/common/tone'));
+var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
+var dialogsetModule = require(path.resolve('engine2/bot/engine/dialogset/dialogset'));
 
 var util = require('util'); //temporary
 
@@ -70,7 +70,7 @@ console.tlog = function(out, context) {
 
 function botProc(botName, channel, user, inTextRaw, json, outCallback, options, socket) {
     // TODO 개발용
-    dialog = utils.requireNoCache(path.resolve('engine/bot/action/common/dialog'));
+    dialog = utils.requireNoCache(path.resolve('engine2/bot/action/common/dialog'));
 
     var startTime = new Date();
     var print = function(_out, _task) {
@@ -169,7 +169,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
             inTextRaw = inTextRaw.replace(/^\s+|\s+$/g,"");
 
             // 현재 발화에 대한 자연어 처리
-            var type = utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
+            var type = utils.requireNoCache(path.resolve('./engine2/bot/action/common/type'));
             type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
                 console.tlog("NLP>> " + _inTextNLP, context);
                 console.tlog("NLU>> " + JSON.stringify(context.botUser.nlu), context);

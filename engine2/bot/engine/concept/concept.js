@@ -1,7 +1,7 @@
 var path = require('path');
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var utils = require(path.resolve('engine/bot/action/common/utils'));
-var dialogsetModule = require(path.resolve('engine/bot/engine/dialogset/dialogset'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
+var dialogsetModule = require(path.resolve('engine2/bot/engine/dialogset/dialogset'));
 var async = require('async');
 var _ = require('lodash');
 

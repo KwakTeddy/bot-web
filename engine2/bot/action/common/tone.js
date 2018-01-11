@@ -1,5 +1,5 @@
 var path = require('path');
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
 function toneSentence(text, toneType, callback) {
   var nlpKo1 = new nlp({

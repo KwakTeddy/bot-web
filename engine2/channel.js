@@ -5,8 +5,7 @@
 // var navertalk = require('./channel/navertalk.server.controller');
 // var wechat = require('./channel/wechat.server.controller');
 
-var path = require('path');
-var socketChannel = require(path.resolve('./engine/channel/socket.js'));
+var socketChannel = require('./channel/socket.js');
 
 (function()
 {
@@ -21,7 +20,7 @@ var socketChannel = require(path.resolve('./engine/channel/socket.js'));
         {
             socketChannel.init(socket);
 
-            // require(path.resolve('./engine/bot/server/sockets/bot.server.socket.config.js'))(app.io, socket);
+            // require(path.resolve('./engine2/bot/server/sockets/bot.server.socket.config.js'))(app.io, socket);
             // require(path.resolve('./modules/demo/server/controllers/demo.server.controller.js'))(app.io, socket);
         });
 

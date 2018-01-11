@@ -1,9 +1,9 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var utils = require(path.resolve('engine/bot/action/common/utils'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
 var async = require('async');
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
 function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
   var _nlp; // var nlp = context.botUser.nlp;

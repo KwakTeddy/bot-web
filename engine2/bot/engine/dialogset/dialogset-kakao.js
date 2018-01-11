@@ -1,11 +1,11 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var fileutil = require(path.resolve('engine/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo.js'));
+var fileutil = require(path.resolve('engine2/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo.js'));
 var dialogsetModule = require('./dialogset');
 
-// var bot = require(path.resolve('./engine/bot.js')).getBot('private_bot');
+// var bot = require(path.resolve('./engine2/bot.js')).getBot('private_bot');
 
 // var baseDir = path.resolve('public/files/');
 
@@ -302,7 +302,7 @@ function insertDatasetFile(infile, dialogset, callback) {
 
 exports.insertDatasetFile = insertDatasetFile;
 
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
 function processInput(context, inRaw, callback) {
   var nlpKo = new nlp({

@@ -13,7 +13,7 @@ var  BotUser = mongoose.model('BotUser'),
   request = require('request'),
   async = require('async'),
   util = require('util'),
-  utils = require(path.resolve('engine/bot/action/common/utils'));
+  utils = require(path.resolve('engine2/bot/action/common/utils'));
 
 
 

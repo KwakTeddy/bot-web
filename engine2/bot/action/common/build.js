@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var logger = require(path.resolve('config/lib/logger'));
-var utils = require(path.resolve('engine/bot/action/common/utils'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
 
 // var mongoose = require('mongoose'),
 //     BotFile = mongoose.model('BotFile');
@@ -62,7 +62,7 @@ function botBuild(bot, botPath, fileName, dialogs, commons) {
 
     if(!fs.existsSync(taskPath)) {
       logger.info('\t created task file: ' + infoname + '.js');
-      var taskFile = fs.readFileSync('./engine/global/default.task.js.template', 'utf8');
+      var taskFile = fs.readFileSync('./engine2/global/default.task.js.template', 'utf8');
       taskFile= taskFile.replace(/__bot__/g, bot);
       //createFile('default.task.js', bot.user, bot);
       fs.writeFileSync(taskPath, taskFile, 'utf8');
@@ -79,7 +79,7 @@ function botBuild(bot, botPath, fileName, dialogs, commons) {
 
     var text;
     if (dialogs) {
-      var dlgFile = fs.readFileSync('./engine/global/default.dlg.template', 'utf8');
+      var dlgFile = fs.readFileSync('./engine2/global/default.dlg.template', 'utf8');
       dlgFile= dlgFile.replace(/__bot__/g, bot);
       text = dlgFile;
     } else {
@@ -108,11 +108,11 @@ function botBuild(bot, botPath, fileName, dialogs, commons) {
 
     var tail;
     if(botDir.indexOf('templates') != -1) {
-      tail = '\nvar _bot = require(require(\'path\').resolve("./engine/bot.js")).getTemplateBot(\'' + bot + '\');' +
+      tail = '\nvar _bot = require(require(\'path\').resolve("./engine2/bot.js")).getTemplateBot(\'' + bot + '\');' +
         '\n_bot.setDialogs(dialogs);' +
         '\n_bot.setCommonDialogs(commonDialogs);\n';
     } else {
-      tail = '\nvar _bot = require(require(\'path\').resolve("./engine/bot.js")).getBot(\'' + bot + '\');' +
+      tail = '\nvar _bot = require(require(\'path\').resolve("./engine2/bot.js")).getBot(\'' + bot + '\');' +
         '\n_bot.setDialogs(dialogs);' +
         '\n_bot.setCommonDialogs(commonDialogs);\n';
     }

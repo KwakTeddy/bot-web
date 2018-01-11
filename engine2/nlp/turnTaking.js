@@ -1,6 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var SentenceInfo = require(path.resolve('./engine/bot/engine/nlp/sentenceInfo.js'));
+var SentenceInfo = require(path.resolve('./engine2/bot/engine/nlp/sentenceInfo.js'));
 var sentenceInfo = new SentenceInfo();
 
 var TurnTaking = function (language) {

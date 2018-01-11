@@ -11,20 +11,20 @@ var path = require('path'),
   BotFile = mongoose.model('BotFile'),
   BotFollow = mongoose.model('BotFollow'),
   BotAuth = mongoose.model('BotAuth'),
-  errorHandler = require(path.resolve('./engine/core/server/controllers/errors.server.controller')),
+  errorHandler = require(path.resolve('./engine2/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
-  botLib = require(path.resolve('./engine/bot.js')),
+  botLib = require(path.resolve('./engine2/bot.js')),
   multer = require('multer'),
   fs = require('fs');
 
 var util = require("util"); //temporary
 
-var templateDatas = require(path.resolve('./engine/templates/server/controllers/template-datas.server.controller'));
+var templateDatas = require(path.resolve('./engine2/templates/server/controllers/template-datas.server.controller'));
 var async = require('async');
 
 var Dialogset = mongoose.model('Dialogset');
-var dialogsetModule = require(path.resolve('engine/bot/engine/dialogset/dialogset.js'));
+var dialogsetModule = require(path.resolve('engine2/bot/engine/dialogset/dialogset.js'));
 
 exports.graph = function (req, res) {
   var bot = req.bot;
@@ -681,7 +681,7 @@ exports.sharedBotList = function (req, res) {
 /*
 exports.nluProcess = function(req, res) {
   var input = '';
-  var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+  var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
   var nlpKo = new nlp({
     stemmer: true,      // (optional default: true)
     normalizer: true,   // (optional default: true)
@@ -706,10 +706,10 @@ exports.nluProcess = function(req, res) {
 
 // 엔터티 입력 시 실시간 분석 결과 by dsyoon (2017. 09. 29.)
 exports.nluProcess = function(req, res) {
-    var koNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ko'));
-    var enNLP = require(path.resolve('./engine/bot/engine/nlp/processor_en'));
-    var jaNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ja'));
-    var zhNLP = require(path.resolve('./engine/bot/engine/nlp/processor_zh'));
+    var koNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_ko'));
+    var enNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_en'));
+    var jaNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_ja'));
+    var zhNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_zh'));
 
     var input = '';
 
@@ -1416,7 +1416,7 @@ exports.botDialogByID = function (req, res, next, id) {
 
 /********************** analytics ****************************/
 
-var type = require(path.resolve('./engine/bot/action/common/type'));
+var type = require(path.resolve('./engine2/bot/action/common/type'));
 exports.contextAnalytics = function (req, res) {
 
   var faqType = {
@@ -1486,7 +1486,7 @@ exports.nlp = function (req, res) {
   });
 };
 
-var autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection'));
+var autoCorrection = require(path.resolve('engine2/bot/engine/nlp/autoCorrection'));
 
 exports.autoCorrection = function (req, res) {
   autoCorrection.loadWordCorrections(function() {

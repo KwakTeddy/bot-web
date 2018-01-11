@@ -37,6 +37,6 @@ var commonDialogs = [
     }
 ];
 
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
+var _bot = require(require('path').resolve("./engine2/bot.js")).getBot('{id}');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

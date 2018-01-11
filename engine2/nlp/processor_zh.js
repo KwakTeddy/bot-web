@@ -7,10 +7,10 @@ var fs = require('fs');
 
 var RakutenMA = require(path.resolve('./external_modules/rakutenma/rakutenma.js'));
 var ZH_CharDic = require(path.resolve('./external_modules/rakutenma/zh_chardic.js'));
-var CBTags = require(path.resolve('./engine/bot/engine/nlp/cbTags.js'));
-var UserDictionary = require(path.resolve('./engine/bot/engine/nlp/userDictionary.js'));
-var SentenceInfo = require(path.resolve('./engine/bot/engine/nlp/sentenceInfo.js'));
-var TurnTaking = require(path.resolve('./engine/bot/engine/nlp/turnTaking.js'));
+var CBTags = require(path.resolve('./engine2/bot/engine/nlp/cbTags.js'));
+var UserDictionary = require(path.resolve('./engine2/bot/engine/nlp/userDictionary.js'));
+var SentenceInfo = require(path.resolve('./engine2/bot/engine/nlp/sentenceInfo.js'));
+var TurnTaking = require(path.resolve('./engine2/bot/engine/nlp/turnTaking.js'));
 
 var loadZhDictionary = undefined;
 (function()

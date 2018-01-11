@@ -12,17 +12,17 @@ var path = require('path'),
   UserBotFollow = mongoose.model('UserBotFollow'),
   UserBotFbPage = mongoose.model('UserBotFbPage'),
   DialogsetDialog = mongoose.model('DialogsetDialog'),
-  errorHandler = require(path.resolve('./engine/core/server/controllers/errors.server.controller')),
+  errorHandler = require(path.resolve('./engine2/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
-  botLib = require(path.resolve('./engine/bot.js')),
+  botLib = require(path.resolve('./engine2/bot.js')),
   multer = require('multer'),
   fs = require('fs'),
   request = require('request');
 
 
   var Dialogset = mongoose.model('Dialogset');
-  var dialogsetModule = require(path.resolve('engine/bot/engine/dialogset/dialogset.js'));
+  var dialogsetModule = require(path.resolve('engine2/bot/engine/dialogset/dialogset.js'));
 
 //temporary
 const util = require('util');
@@ -992,7 +992,7 @@ exports.userBotDialogByID = function (req, res, next, id) {
 
 /********************** analytics ****************************/
 
-var type = require(path.resolve('./engine/bot/action/common/type'));
+var type = require(path.resolve('./engine2/bot/action/common/type'));
 exports.contextAnalytics = function (req, res) {
 
   var faqType = {
@@ -1093,7 +1093,7 @@ exports.nlp = function (req, res) {
   });
 };
 
-var autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection'));
+var autoCorrection = require(path.resolve('engine2/bot/engine/nlp/autoCorrection'));
 
 exports.autoCorrection = function (req, res) {
 
@@ -1134,7 +1134,7 @@ exports.speech = function (req, res) {
   _req.pipe(res); // 브라우저로 출력
 };
 
-var typeModule = require(path.resolve('engine/bot/action/common/type.js'));
+var typeModule = require(path.resolve('engine2/bot/action/common/type.js'));
 
 exports.analyzeIntent = function(req, res) {
   var context = {

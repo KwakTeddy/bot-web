@@ -1,11 +1,11 @@
 var fs = require('fs');
 var async = require('async');
 var path = require('path');
-var fileutil = require(path.resolve('engine/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo.js'));
-var type = require(path.resolve('engine/bot/action/common/type'));
+var fileutil = require(path.resolve('engine2/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo.js'));
+var type = require(path.resolve('engine2/bot/action/common/type'));
 
-var bot = require(path.resolve('./engine/bot.js')).getBot('private_bot');
+var bot = require(path.resolve('./engine2/bot.js')).getBot('private_bot');
 
 var dialogsetKakao = require('./dialogset-kakao');
 var dialogsetSmi = require('./dialogset-smi');
@@ -177,7 +177,7 @@ exports.analyzeKnowledge = analyzeKnowledge;
 //
 // bot.setTask('insertDatasetTask', insertDatasetTask);
 
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
 
 // translateFile('/Users/com2best/Workspace/bot-data/data/en/chatscript/eliza_can_en.csv',

@@ -12,9 +12,9 @@ var path = require('path'),
   BotIntentFail = mongoose.model('BotIntentFail'),
   Intent = mongoose.model('Intent'),
   FactLink = mongoose.model('FactLink'),
-  botLib = require(path.resolve('./engine/bot.js')),
+  botLib = require(path.resolve('./engine2/bot.js')),
   _ = require('lodash'),
-  utils = require(path.resolve('engine/bot/action/common/utils')),
+  utils = require(path.resolve('engine2/bot/action/common/utils')),
   XLSX = require('xlsx'),
   moment = require('moment');
 
@@ -1001,7 +1001,7 @@ var targetPreDialog;
 var save = function(o, res, data) {
   // console.log(JSON.stringify(data));
 
-  var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+  var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
   var nlpKo = new nlp({
     stemmer: true,      // (optional default: true)
     normalizer: true,   // (optional default: true)

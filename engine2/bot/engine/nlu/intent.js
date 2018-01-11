@@ -3,9 +3,9 @@ var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var BotIntentFail = mongoose.model('BotIntentFail');
 var path = require('path');
-var dialog = require(path.resolve('engine/bot/action/common/dialog.js'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var analytics = require(path.resolve('engine/analytics/server/controllers/analytics.server.controller'));
+var dialog = require(path.resolve('engine2/bot/action/common/dialog.js'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
+var analytics = require(path.resolve('engine2/analytics/server/controllers/analytics.server.controller'));
 var async = require('async');
 var _ = require('lodash');
 
@@ -142,7 +142,7 @@ function analyzeIntentFail(botId, callback) {
       // var _failDialog = [];
       async.eachSeries(failDialogs, function(failDialog, cb2) {
 
-        var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+        var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
         var nlpKo = new nlp({
           stemmer: true,      // (optional default: true)
           normalizer: true,   // (optional default: true)

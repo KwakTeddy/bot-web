@@ -5,6 +5,7 @@ var fs = require('fs');
 {
     var Globals = function()
     {
+        this.bots = {};
         this.tasks = {};
         this.concepts = {};
         this.messages = {};
@@ -76,7 +77,7 @@ var fs = require('fs');
 
     Globals.prototype.init = function()
     {
-        this.loadDirs(path.resolve('./engine/globals'));
+        this.loadDirs(path.resolve('./engine2/globals'));
     };
 
     module.exports = new Globals();

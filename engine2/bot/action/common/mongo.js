@@ -1,6 +1,6 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
 var logger = require(path.resolve('./config/lib/logger'));
 var async = require('async');
 
@@ -166,7 +166,7 @@ exports.execute = execute;
 
 function execute(task, context, successCallback, errorCallback) {
 
-  var type = utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
+  var type = utils.requireNoCache(path.resolve('./engine2/bot/action/common/type'));
 
   try {
     switch (task.action) {

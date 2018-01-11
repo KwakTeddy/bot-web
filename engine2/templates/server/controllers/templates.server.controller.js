@@ -7,7 +7,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Template = mongoose.model('Template'),
   TemplateCategory = mongoose.model('TemplateCategory'),
-  errorHandler = require(path.resolve('./engine/core/server/controllers/errors.server.controller')),
+  errorHandler = require(path.resolve('./engine2/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
 /**

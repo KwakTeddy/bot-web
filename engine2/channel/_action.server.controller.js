@@ -1,15 +1,15 @@
 'use strict'
 
 var path = require('path');
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
-var taskModule = utils.requireNoCache(path.resolve('./engine/bot/action/common/task'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
+var taskModule = utils.requireNoCache(path.resolve('./engine2/bot/action/common/task'));
 var tough = require('tough-cookie');
 
 exports.processChatserverOut = function (context, outText, inText, inTextRaw, inDoc, successCallback, errorCallback) {
   var task = null;
   var out = null;
 
-  var type = utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
+  var type = utils.requireNoCache(path.resolve('./engine2/bot/action/common/type'));
 
   outText = type.chatserverEscape(outText);
 

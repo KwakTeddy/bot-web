@@ -2,12 +2,12 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Schema = mongoose.Schema;
 var path = require('path');
-var mongo = require(path.resolve('./engine/bot/action/common/mongo'));
+var mongo = require(path.resolve('./engine2/bot/action/common/mongo'));
 var fs = require('fs');
 
 var async = require('async');
 var logger = require(path.resolve('./config/lib/logger'));
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
 
 var ADDRESS_DIR = process.env.ADDRESS_DIR;
 var ADDRESS_MATCH_DIR = process.env.ADDRESS_MATCH_DIR;

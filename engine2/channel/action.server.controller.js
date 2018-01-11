@@ -1,6 +1,6 @@
 'use strict'
 
-var nlp = require('../../engine/nlp/processor');
+var nlp = require('../../engine2/nlp/processor');
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';

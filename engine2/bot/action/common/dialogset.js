@@ -1,8 +1,8 @@
 var fs = require('fs');
 var async = require('async');
 var path = require('path');
-var fileutil = require(path.resolve('engine/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo.js'));
+var fileutil = require(path.resolve('engine2/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo.js'));
 
 function insertDatasetFile(infile, outfile, from, to, callback) {
   if(fs.existsSync(outfile)) fs.truncateSync(outfile, 0);

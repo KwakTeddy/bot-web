@@ -1,6 +1,6 @@
 var request = require('request');
 var path = require('path');
-var chat = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
+var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
 var config = require(path.resolve('config/config'));
 var util = require('util');
 

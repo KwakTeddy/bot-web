@@ -1,7 +1,7 @@
 var path = require('path');
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 var mongoose = require('mongoose');
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo.js'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo.js'));
 
 function memoryFacts(inRaw, context, callback) {
 

@@ -1,7 +1,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   async = require('async'),
-  mongoModule = require(path.resolve('engine/bot/action/common/mongo')),
+  mongoModule = require(path.resolve('engine2/bot/action/common/mongo')),
   UserDialog = mongoose.model('UserDialog');
 
 var speller_en = require('./speller_en');

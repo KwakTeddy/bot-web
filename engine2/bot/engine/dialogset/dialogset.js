@@ -1,13 +1,13 @@
 var fs = require('fs');
 var async = require('async');
 var path = require('path');
-var fileutil = require(path.resolve('engine/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo.js'));
-var type = require(path.resolve('engine/bot/action/common/type'));
+var fileutil = require(path.resolve('engine2/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo.js'));
+var type = require(path.resolve('engine2/bot/action/common/type'));
 var mongoose = require('mongoose');
-var utils = require(path.resolve('engine/bot/action/common/utils'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
 
-// var bot = require(path.resolve('./engine/bot.js')).getBot('private_bot');
+// var bot = require(path.resolve('./engine2/bot.js')).getBot('private_bot');
 var dialogsetKakao = require('./dialogset-kakao');
 var dialogsetSmi = require('./dialogset-smi');
 var dialogsetKdrama = require('./dialogset-kdrama');
@@ -17,10 +17,10 @@ var XLSX = require('xlsx');
 
 var _ = require('lodash');
 
-var koNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ko'));
-var enNLP = require(path.resolve('./engine/bot/engine/nlp/processor_en'));
-var jaNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ja'));
-var zhNLP = require(path.resolve('./engine/bot/engine/nlp/processor_zh'));
+var koNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_ko'));
+var enNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_en'));
+var jaNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_ja'));
+var zhNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_zh'));
 
 var commonWords = ['하나요', '경우', '에서', '어디', '무엇', '까지', '뭔가', '언제', '알다', '확인', '얼마나', '얼마', '자도', '누가'];
 
@@ -991,7 +991,7 @@ exports.analyzeKnowledge = analyzeKnowledge;
 //
 // bot.setTask('insertDatasetTask', insertDatasetTask);
 
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
 
 // translateFile('/Users/com2best/Workspace/bot-data/data/en/chatscript/eliza_can_en.csv',

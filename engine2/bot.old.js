@@ -1,19 +1,19 @@
 var path = require('path'),
     mongoose = require('mongoose'),
     fs = require('fs'),
-    utils = require(path.resolve('./engine/bot/action/common/utils')),
-    intent = require(path.resolve('./engine/bot/engine/nlu/intent')),
-    entity = require(path.resolve('./engine/bot/engine/nlu/entity')),
-    customContext = require(path.resolve('./engine/bot/engine/dialog/custom-context.js')),
+    utils = require(path.resolve('./engine2/bot/action/common/utils')),
+    intent = require(path.resolve('./engine2/bot/engine/nlu/intent')),
+    entity = require(path.resolve('./engine2/bot/engine/nlu/entity')),
+    customContext = require(path.resolve('./engine2/bot/engine/dialog/custom-context.js')),
     _ = require('lodash');
 
 var async = require('async');
-var TemplateDataModule = require(path.resolve('./engine/templates/server/controllers/template-datas.server.controller'));
+var TemplateDataModule = require(path.resolve('./engine2/templates/server/controllers/template-datas.server.controller'));
 
 function buildBot(botName, botPath, fileName, dialogs, commons) {
     console.log('Building Bot: ' + botName + botPath);
 
-    var build = utils.requireNoCache(path.resolve('./engine/bot/action/common/build'));
+    var build = utils.requireNoCache(path.resolve('./engine2/bot/action/common/build'));
     build.botBuild(botName, botPath, fileName, dialogs, commons);
 }
 
@@ -54,13 +54,13 @@ exports.loadBots = loadBots;
 
 function loadBot(botName, callback) {
     // TODO 개발 시 node 재시작 안하려고 임시로
-    utils.requireNoCache(path.resolve('./engine/bot/action/common/dialog'));
-    utils.requireNoCache(path.resolve('./engine/bot/action/common/task'));
-    utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
-    utils.requireNoCache(path.resolve('./engine/bot/global/type/common.type'));
-    utils.requireNoCache(path.resolve('./engine/global/global-dialogs.js'));
+    utils.requireNoCache(path.resolve('./engine2/bot/action/common/dialog'));
+    utils.requireNoCache(path.resolve('./engine2/bot/action/common/task'));
+    utils.requireNoCache(path.resolve('./engine2/bot/action/common/type'));
+    utils.requireNoCache(path.resolve('./engine2/bot/global/type/common.type'));
+    utils.requireNoCache(path.resolve('./engine2/global/global-dialogs.js'));
 
-    var globalDialogs = require(path.resolve('./engine/global/global-dialogs.js'));
+    var globalDialogs = require(path.resolve('./engine2/global/global-dialogs.js'));
 
     console.log('Loading Bot: ' + botName);
 

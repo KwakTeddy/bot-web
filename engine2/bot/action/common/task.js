@@ -2,7 +2,7 @@ var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
 var utils = require('./utils');
 var async = require('async');
-var dialogModule = require(path.resolve('engine/bot/action/common/dialog'));
+var dialogModule = require(path.resolve('engine2/bot/action/common/dialog'));
 const MAX_ACTION = 100;
 
 function executeTask(task, context, callback, print, options) {

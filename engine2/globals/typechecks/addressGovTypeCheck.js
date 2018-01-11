@@ -1,5 +1,5 @@
 var path = require('path');
-var http = require(path.resolve('./engine/utils/http.js'));
+var http = require(path.resolve('./engine2/utils/http.js'));
 
 module.exports = function(globals)
 {

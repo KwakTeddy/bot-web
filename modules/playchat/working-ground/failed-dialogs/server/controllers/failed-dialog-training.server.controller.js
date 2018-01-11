@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/bot/engine/nlp/nlp-manager.js'));
 
 var stripArray = function(docs)
 {

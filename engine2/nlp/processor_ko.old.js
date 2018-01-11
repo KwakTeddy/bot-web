@@ -5,20 +5,20 @@ var path = require('path');
 var async = require('async');
 
 // var logger = require(path.resolve('./config/lib/logger'));
-// var utils = require(path.resolve('./engine/bot/action/common/utils'));
-var nlp = require(path.resolve('./engine/bot/engine/nlp/processor'));
-var CBTags = require(path.resolve('./engine/bot/engine/nlp/cbTags.js'));
-var UserDictionary = require(path.resolve('./engine/bot/engine/nlp/userDictionary.js'));
-var SentenceInfo = require(path.resolve('./engine/bot/engine/nlp/sentenceInfo.js'));
-var TurnTaking = require(path.resolve('./engine/bot/engine/nlp/turnTaking.js'));
+// var utils = require(path.resolve('./engine2/bot/action/common/utils'));
+var nlp = require(path.resolve('./engine2/bot/engine/nlp/processor'));
+var CBTags = require(path.resolve('./engine2/bot/engine/nlp/cbTags.js'));
+var UserDictionary = require(path.resolve('./engine2/bot/engine/nlp/userDictionary.js'));
+var SentenceInfo = require(path.resolve('./engine2/bot/engine/nlp/sentenceInfo.js'));
+var TurnTaking = require(path.resolve('./engine2/bot/engine/nlp/turnTaking.js'));
 var turnTaking = new TurnTaking("ko");
-var NLPUtil = require(path.resolve('./engine/bot/engine/nlp/nlpUtil.js'));
+var NLPUtil = require(path.resolve('./engine2/bot/engine/nlp/nlpUtil.js'));
 
-// var address = require(path.resolve('./engine/bot/action/common/address'));
-// var globals = require(path.resolve('./engine/bot/engine/common/globals'));
-// var concept = require(path.resolve('engine/bot/engine/concept/concept.js'));
-// var entity = utils.requireNoCache(path.resolve('engine/bot/engine/nlu/entity'));
-// var intent = utils.requireNoCache(path.resolve('engine/bot/engine/nlu/intent'));
+// var address = require(path.resolve('./engine2/bot/action/common/address'));
+// var globals = require(path.resolve('./engine2/bot/engine/common/globals'));
+// var concept = require(path.resolve('engine2/bot/engine/concept/concept.js'));
+// var entity = utils.requireNoCache(path.resolve('engine2/bot/engine/nlu/entity'));
+// var intent = utils.requireNoCache(path.resolve('engine2/bot/engine/nlu/intent'));
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';

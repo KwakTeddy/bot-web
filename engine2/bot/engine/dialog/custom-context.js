@@ -1,5 +1,5 @@
 var path = require('path');
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
 var async = require('async');
 
 function loadCustomContext(bot, callback) {

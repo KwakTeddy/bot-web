@@ -4,23 +4,23 @@ var path = require('path');
 var _ = require('lodash');
 var async = require('async');
 
-var koNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ko'));
-var enNLP = require(path.resolve('./engine/bot/engine/nlp/processor_en'));
-var jaNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ja'));
-var zhNLP = require(path.resolve('./engine/bot/engine/nlp/processor_zh'));
+var koNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_ko'));
+var enNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_en'));
+var jaNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_ja'));
+var zhNLP = require(path.resolve('./engine2/bot/engine/nlp/processor_zh'));
 
-var QAScore = require(path.resolve('./engine/bot/action/common/qaScore'));
+var QAScore = require(path.resolve('./engine2/bot/action/common/qaScore'));
 var qaScore = new QAScore();
 
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
-var entity = utils.requireNoCache(path.resolve('engine/bot/engine/nlu/entity'));
-var intent = utils.requireNoCache(path.resolve('engine/bot/engine/nlu/intent'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
+var entity = utils.requireNoCache(path.resolve('engine2/bot/engine/nlu/entity'));
+var intent = utils.requireNoCache(path.resolve('engine2/bot/engine/nlu/intent'));
 
 var mongoWrapper = require('../../../utils/mongo-wrapper.js');
 
 var MatchedIntent = mongoWrapper.model('MatchedIntent');
 
-var globlas = require(path.resolve('./engine/globals.js'));
+var globlas = require(path.resolve('./engine2/globals.js'));
 
 var commonTypes = [
     // amountType,
@@ -220,8 +220,8 @@ function processInput(context, inRaw, callback) {
         },
 
         function(cb) {
-            var dialogModule = require(path.resolve('engine/bot/action/common/dialog'));
-            var globalDialogs = require(path.resolve('./engine/global/global-dialogs.js'));
+            var dialogModule = require(path.resolve('engine2/bot/action/common/dialog'));
+            var globalDialogs = require(path.resolve('./engine2/global/global-dialogs.js'));
 
             dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType, {}, context, function(inNLP, task, matched) {
                 if(matched) context.botUser.userDialogs = task.typeDoc;
@@ -231,8 +231,8 @@ function processInput(context, inRaw, callback) {
         },
 
         function(cb) {
-            var dialogModule = require(path.resolve('engine/bot/action/common/dialog'));
-            var globalDialogs = require(path.resolve('./engine/global/global-dialogs.js'));
+            var dialogModule = require(path.resolve('engine2/bot/action/common/dialog'));
+            var globalDialogs = require(path.resolve('./engine2/global/global-dialogs.js'));
 
             dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched) {
                 if(matched) context.botUser.dialogsetDialogs = task.typeDoc;

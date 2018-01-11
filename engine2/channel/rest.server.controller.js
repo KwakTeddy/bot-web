@@ -1,6 +1,6 @@
 var path = require('path');
-var engine = require(path.resolve('engine/bot/server/controllers/bot.server.controller.js'));
-var master = require(path.resolve('engine/loadbalancer/master.js'));
+var engine = require(path.resolve('engine2/bot/server/controllers/bot.server.controller.js'));
+var master = require(path.resolve('engine2/loadbalancer/master.js'));
 
 var isMaster = process.env.LB_MASTER;
 

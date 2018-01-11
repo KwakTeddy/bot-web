@@ -1,9 +1,9 @@
 var path = require('path');
 var async = require('async');
 var tough = require('tough-cookie');
-var botModule = require(path.resolve('./engine/bot.js'));
-var dialog = require(path.resolve('engine/bot/action/common/dialog'));
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
+var botModule = require(path.resolve('./engine2/bot.js'));
+var dialog = require(path.resolve('engine2/bot/action/common/dialog'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
 var util = require('util');
 var config = require(path.resolve('./config/config'));
 
@@ -34,7 +34,7 @@ function getContext(botName, channel, user, options, callback) {
       if (user == undefined) {
         cb(null);
       } else if (!global._users[user]) {
-        var botUser = require(path.resolve('./engine/bot-users/server/controllers/bot-users.server.controller'));
+        var botUser = require(path.resolve('./engine2/bot-users/server/controllers/bot-users.server.controller'));
         var _user = {userId: user, channel: channel, bot: botName};
         botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};

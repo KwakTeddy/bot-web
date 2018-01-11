@@ -6,8 +6,8 @@
 var path = require('path'),
   analyticsPolicy = require('../policies/analytics.server.policy'),
   analytics = require('../controllers/analytics.server.controller'),
-  autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection')),
-  intent = require(path.resolve('engine/bot/engine/nlu/intent'));
+  autoCorrection = require(path.resolve('engine2/bot/engine/nlp/autoCorrection')),
+  intent = require(path.resolve('engine2/bot/engine/nlu/intent'));
 
 module.exports = function(app) {
   // Bot users Routes

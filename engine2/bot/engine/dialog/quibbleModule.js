@@ -1,5 +1,5 @@
 var path = require('path');
-var globals = require(path.resolve('./engine/globals.js'));
+var globals = require(path.resolve('./engine2/globals.js'));
 
 function quibble(context) {
   var quibbleSentence = undefined;

@@ -1,8 +1,8 @@
 var net = require('net');
 var request = require('request');
 var path = require('path');
-var chat = require(path.resolve('engine/bot/server/controllers/bot.server.controller'));
-var contextModule = require(path.resolve('engine/bot/engine/common/context'));
+var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
+var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
 var config = require(path.resolve('config/config'));
 var async = require('async');
 
@@ -11,8 +11,8 @@ var subscribePageToken = '';
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 var OverTextLink = mongoose.model('OverTextLink');
-var botLib = require(path.resolve('./engine/bot.js'));
-var utils = require(path.resolve('engine/bot/action/common/utils'));
+var botLib = require(path.resolve('./engine2/bot.js'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
 var crypto = require('crypto');
 var UserDialog = mongoose.model('UserDialog');
 var UserDialogLog = mongoose.model('UserDialogLog');

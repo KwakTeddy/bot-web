@@ -53,7 +53,7 @@ module.exports.init = function init(callback)
 
 module.exports.start = function start(callback)
 {
-    var Engine = require(path.resolve('./engine/core.js'));
+    var Engine = require(path.resolve('./engine2/core.js'));
 
     this.init(function (app, db, config)
     {

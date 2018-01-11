@@ -1,11 +1,11 @@
 var path = require('path');
 var tough = require('tough-cookie');
 
-var Error = require(path.resolve('./engine/error.js'));
-var Logger = require(path.resolve('./engine/logger.js'));
+var Error = require('./error.js');
+var Logger = require('./logger.js');
 
-var BotUser = require('./context/botuser.js');
-var BotFactory = require('./bot.js');
+var BotUserContext = require('./context/botUserContext.js');
+var BotContext = require('./context/botContext.js');
 
 (function()
 {
@@ -19,6 +19,7 @@ var BotFactory = require('./bot.js');
 
     Context.prototype.makeUserContext = function(bot, channel, user, callback)
     {
+        var that = this;
         if(user)
         {
             var userContext = this.users[user];
@@ -31,11 +32,11 @@ var BotFactory = require('./bot.js');
             {
                 //메모리에 로드된 컨텍스트가 없으면 생성한다.
                 //FIXME 이건 봇과 유저의 링크를 db에 저장하기 위함인데 개선이 필요해 보임.
-                BotUser.get(bot, user, channel, function(err, botUser)
+                BotUserContext.get(bot, user, channel, function(err, botUser)
                 {
                     if(err)
                     {
-                        Error.delegate(user, err);
+                        Error.delegate(err);
                     }
                     else
                     {
@@ -47,7 +48,7 @@ var BotFactory = require('./bot.js');
                             doc: botUser
                         };
 
-                        this.users[user] = userContext;
+                        that.users[user] = userContext;
                         callback();
                     }
                 });
@@ -56,18 +57,17 @@ var BotFactory = require('./bot.js');
         else
         {
             //이건 에러인거지.
-            Error.delegate(user, 'User is undefined : ' + bot + ' ' + channel);
+            Error.delegate('User is undefined : ' + bot + ' ' + channel);
         }
     };
 
-    Context.prototype.makeBotUserContext = function(bot, user, options)
+    Context.prototype.makeBotUserContextContext = function(bot, user, options, callback)
     {
         var botUserName = bot + '_' + user;
         var botUserContext = this.botusers[botUserName];
 
         if(!botUserContext)
         {
-            //언더바 없애고싶다.
             botUserContext = this.botusers[botUserName] = {
                 dialog: {},
                 task: {}
@@ -80,6 +80,8 @@ var BotFactory = require('./bot.js');
         {
             botUserContext.options = options;
         }
+
+        callback();
     };
 
     Context.prototype.makeBotContext = function(bot, user, callback)
@@ -91,7 +93,7 @@ var BotFactory = require('./bot.js');
         }
         else
         {
-            BotFactory.load(bot, user, function(botContext)
+            BotContext.load(bot, user, function(botContext)
             {
                 if(!botContext)
                 {
@@ -115,7 +117,7 @@ var BotFactory = require('./bot.js');
         var that = this;
         this.makeUserContext(bot, channel, user, function()
         {
-            that.makeBotUserContext(function()
+            that.makeBotUserContextContext(bot, user, options, function()
             {
                 that.makeBotContext(bot, user, function()
                 {
@@ -125,7 +127,7 @@ var BotFactory = require('./bot.js');
                     var channelContext = that.channels[channel];
 
                     var context = {
-                        global: global._context,
+                        // global: global._context,
                         bot: botContext,
                         channel: channelContext,
                         user: userContext,
@@ -155,6 +157,8 @@ var BotFactory = require('./bot.js');
 
                     context.bot.startDialog = dialog.findGlobalDialog(null, context, dialog.START_DIALOG_NAME);
                     context.bot.noDialog = dialog.findGlobalDialog(null, context, dialog.NO_DIALOG_NAME);
+
+                    callback(context);
                 });
             });
         });

@@ -1,9 +1,9 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var fileutil = require(path.resolve('engine/bot/action/common/fileutil'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var utils = require(path.resolve('engine/bot/action/common/utils'));
+var fileutil = require(path.resolve('engine2/bot/action/common/fileutil'));
+var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
+var utils = require(path.resolve('engine2/bot/action/common/utils'));
 
 
 function convertDialogset(filepath, dialogset, callback) {
@@ -221,7 +221,7 @@ function insertDatasetFile(infile, dialogset, callback) {
 
 exports.insertDatasetFile = insertDatasetFile;
 
-var nlp = require(path.resolve('engine/bot/engine/nlp/processor'));
+var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
 function processInput(context, inRaw, callback) {
   console.log(inRaw);

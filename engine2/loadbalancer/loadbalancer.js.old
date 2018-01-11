@@ -4,7 +4,7 @@ var config = require(path.resolve('./config/config'));
 var redis = require('redis');
 var cache;
 var MongoClient = require('mongodb').MongoClient;
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
+var utils = require(path.resolve('./engine2/bot/action/common/utils'));
 var localhost = utils.getLocalIPAddress();
 
 var FAIL_OUT = 10;

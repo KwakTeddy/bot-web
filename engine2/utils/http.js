@@ -32,7 +32,7 @@ exports.CURRENTPAGE_NAME = CURRENT_PAGE_NAME;
 function execute(task, context, successCallback, errorCallback) {
   var options;
   var cookiejar = context.user.cookie;
-  var type = utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
+  var type = utils.requireNoCache(path.resolve('./engine2/bot/action/common/type'));
 
   console.log('\n' + 'http.js:action ' +  + (task.method ? task.method : '') + ' ' +
       task.url + task.path);
@@ -462,7 +462,7 @@ exports.execute = execute;
 
 function simpleRequest(task, context, callback) {
   var cookiejar = context.user.cookie;
-  var type = utils.requireNoCache(path.resolve('./engine/bot/action/common/type'));
+  var type = utils.requireNoCache(path.resolve('./engine2/bot/action/common/type'));
 
   console.log('\n' + 'http.js:request: ' + (task.method ? task.method : '') + ' ' +
     (task.uri ? task.uri : task.url + task.path));

@@ -6,7 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   _ = require('lodash');
-  var mongoModule = require(path.resolve('./engine/bot/action/common/mongo'));
+  var mongoModule = require(path.resolve('./engine2/bot/action/common/mongo'));
 
 var util = require('util');
 
