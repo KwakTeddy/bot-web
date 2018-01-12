@@ -318,6 +318,7 @@ exports.uploadFile = function (req, res)
     {
         if(uploadError)
         {
+            console.error(uploadError);
             return res.status(400).send({ message: 'Error occurred while uploading file' });
         }
         else
