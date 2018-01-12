@@ -265,12 +265,11 @@
 .select-wrapper::after
 {
     content: url(/modules/core/client/imgs/default_select_arrow.png);
-    width: 20px;
-    height: 30px;
     position: absolute;
-    right: 5px;
+    right: 7px;
     background-color: white;
-    top: 1px;
+    top: 8px;
+    cursor: pointer;
 }
 
 .jumbo-select
@@ -280,6 +279,7 @@
     width: 100px;
     height: 35px;
     outline: 0;
+    cursor:pointer;
 }
 
 .codebtn
