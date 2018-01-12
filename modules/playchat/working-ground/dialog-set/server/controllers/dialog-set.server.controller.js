@@ -14,7 +14,7 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var Bot = mongoose.model('Bot');
 
-var uploadModule = require('./uploader/dialogset-uploader');
+// var uploadModule = require('./uploader/dialogset-uploader');
 
 exports.findTotalPage = function(req, res)
 {

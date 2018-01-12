@@ -7,7 +7,7 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var CustomContext = mongoose.model('CustomContext');
 
-var NLPManager = require(path.resolve('./engine2/bot/engine/nlp/nlp-manager.js'));
+// var NLPManager = require(path.resolve('./engine2/bot/engine/nlp/nlp-manager.js'));
 
 exports.findTotalPage = function(req, res)
 {

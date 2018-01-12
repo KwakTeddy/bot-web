@@ -1,89 +1,93 @@
 /**
  * Created by nzt on 15. 4. 26.
  */
-var path = require('path');
-var java = require('java');
-var java1 = require('java');
 var async = require('async');
 var deasync = require('deasync');
-//
-java.classpath.push(path.resolve(__dirname, '../../../../external_modules/scala-library-2.11.6.jar'));
-java.classpath.push(path.resolve(__dirname, '../../../../external_modules/twitter-text-1.11.1.jar'));
-java.classpath.push(path.resolve(__dirname, '../../../../external_modules/korean-text-3.0.jar'));
-java.classpath.push(path.resolve(__dirname, '../../../../external_modules/opennlp/lib/opennlp-tools-1.6.0.jar'));
+var java = require('java');
+var path = require('path');
+
+java.classpath.push(path.resolve('./external_modules/scala-library-2.11.6.jar'));
+java.classpath.push(path.resolve('./external_modules/twitter-text-1.11.1.jar'));
+java.classpath.push(path.resolve('./external_modules/korean-text-3.0.jar'));
+java.classpath.push(path.resolve('./external_modules/opennlp/lib/opennlp-tools-1.6.0.jar'));
 
 java.options.push('-Xmx2048m');
 java.options.push('-Xmx4096m');
 
-var procBuilder;
-java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, proc) {
-    // if (err)
-    //   return callback(err);
-
-    procBuilder = proc;
-    // callback();
-});
-
-var processor = function(options) {
+var processor = function(options)
+{
     // var procBuilder;
     var self = this;
+    var that = this;
     var done = false;
+    this.procBuilder = undefined;
 
-    async.waterfall([
-        // function(callback) {
-        //   java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, proc) {
-        //     if (err)
-        //       return callback(err);
-        //
-        //     procBuilder = proc;
-        //     callback();
-        //   });
-        // },
-        function(callback) {
-            if (options && options.normalizer === false)
-                return procBuilder.disableNormalizer(function(err) {
-                    if (err)
-                        return callback(err);
-                    callback();
-                });
-
-            callback();
-        },
-        function(callback) {
-            if (options && options.stemmer === false)
-                return procBuilder.disableStemmer(function(err) {
-                    if (err)
-                        return callback(err);
-                    callback();
-                });
-
-            callback();
-        },
-        function(callback) {
-            if (options && options.spamfilter === true)
-                return procBuilder.enablePhraseExtractorSpamFilter(function(err) {
-                    if (err)
-                        return callback(err);
-                    callback();
-                });
-
-            callback();
-        },
-        function(callback) {
-            procBuilder.build(function(err, processor) {
-                if (err)
-                    return callback(err);
-
-                self._processor = processor;
-                callback();
-            })
+    java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, procBuilder)
+    {
+        if(err)
+        {
+            throw new Error(err);
         }
-    ], function(err) {
-        if (err)
-            self._err = err;
 
-        done = true;
+        self.procBuilder = procBuilder;
+
+        async.waterfall([
+            // function(callback) {
+            //   java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, proc) {
+            //     if (err)
+            //       return callback(err);
+            //
+            //     procBuilder = proc;
+            //     callback();
+            //   });
+            // },
+            function(callback) {
+                if (options && options.normalizer === false)
+                    return that.procBuilder.disableNormalizer(function(err) {
+                        if (err)
+                            return callback(err);
+                        callback();
+                    });
+
+                callback();
+            },
+            function(callback) {
+                if (options && options.stemmer === false)
+                    return that.procBuilder.disableStemmer(function(err) {
+                        if (err)
+                            return callback(err);
+                        callback();
+                    });
+
+                callback();
+            },
+            function(callback) {
+                if (options && options.spamfilter === true)
+                    return that.procBuilder.enablePhraseExtractorSpamFilter(function(err) {
+                        if (err)
+                            return callback(err);
+                        callback();
+                    });
+
+                callback();
+            },
+            function(callback) {
+                that.procBuilder.build(function(err, processor) {
+                    if (err)
+                        return callback(err);
+
+                    self._processor = processor;
+                    callback();
+                })
+            }
+        ], function(err) {
+            if (err)
+                self._err = err;
+
+            done = true;
+        });
     });
+
 
     while(!done) {
         deasync.runLoopOnce();
@@ -200,4 +204,4 @@ function KoreanTokenToJSON(classObj, callback) {
     });
 }
 
-module.exports = exports = processor;
+module.exports = processor;

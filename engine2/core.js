@@ -8,11 +8,11 @@ var globals = require('./globals.js');
 var channel = require('./channel.js');
 var loadBalancer = require('./loadbalancer.js');
 
-var SessionManager = require('./session-manager.js');
+var SessionManager = require('./session.js');
 
-var BotManager = require('./bot-manager.js');
-var InputManager = require('./input-manager.js');
-// var context = require('./context.js');
+var BotManager = require('./bot.js');
+var InputManager = require('./input.js');
+var ContextManager = require('./context.js');
 
 (function()
 {
@@ -69,19 +69,30 @@ var InputManager = require('./input-manager.js');
             }
             else
             {
+                if(inputRaw.startsWith(':'))
+                {
+                    //커맨드 실행
+                    callback('커맨드가 실행되었습니다 ' + inputRaw);
+                    console.log(chalk.green('================================'));
+                    console.log();
+                    return;
+                }
+
                 //2. 그 다음 세션을 생성하고. 세션은 user-bot 단위로 유지되는 데이터 이 세션은 시간이 지나면 사라진다.
                 //3. 컨텍스트를 생성한다. 컨텍스트는 1 request 에서만 유지되는 데이터
 
                 //4. input을 처리하기 위한 작업
 
-                var session = SessionManager.make(botId, userId);
-                session.bot.language = bot.language;
+                var session = SessionManager.make(botId, userId, channel, options);
+                var context = ContextManager.make();
+                context.nlu.sentence = inputRaw;
 
-                InputManager.process(session, inputRaw);
-
-
-                console.log(chalk.green('================================'));
-                console.log();
+                InputManager.process(bot, session, context, error, function(outputText)
+                {
+                    callback(outputText);
+                    console.log(chalk.green('================================'));
+                    console.log();
+                });
             }
         });
 
