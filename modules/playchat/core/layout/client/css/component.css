@@ -266,7 +266,7 @@
 {
     content: url(/modules/core/client/imgs/default_select_arrow.png);
     position: absolute;
-    right: 7px;
+    right: 4px;
     background-color: white;
     top: 8px;
     cursor: pointer;
