@@ -1,5 +1,5 @@
 
-
+var path = require('path');
 
 var dialogs = [
 	{
@@ -59,7 +59,10 @@ var dialogs = [
 			},
 			{
 				"text": "취소"
-			}
+			},
+            {
+                "text": "9"
+            }
 		],
 		"output": [
 			{
@@ -252,7 +255,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "임원수가 어떻게 되나요?\n알려주세요.(ex: 5명)",
+                "text": "인원수가 어떻게 되나요?\n알려주세요.(ex: 5명)",
                 "kind": "Text"
             }
         ],
@@ -1051,7 +1054,7 @@ var dialogs = [
                                                             {
                                                                 "kind": "Action",
                                                                 "options": {
-                                                                    "output": "임원수가 어떻게 되나요? 알려주세요.(ex: 5)"
+                                                                    "output": "인원수가 어떻게 되나요? 알려주세요.(ex: 5)"
                                                                 },
                                                                 "call": "6.빠른예약 인원수 변경"
                                                             }
@@ -1657,7 +1660,7 @@ var dialogs = [
 						],
 						"output": [
 							{
-								"text": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n\n총 금액:+preallprice+원\n\n임원수가 어떻게 되나요? 알려주세요.(ex: 5)",
+								"text": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n\n총 금액:+preallprice+원\n\n인원수가 어떻게 되나요? 알려주세요.(ex: 5)",
 								"kind": "Text"
 							}
 						],
@@ -2146,7 +2149,7 @@ var dialogs = [
 															{
 																"kind": "Action",
 																"options": {
-																	"output": "임원수가 어떻게 되나요? 알려주세요.(ex: 5)"
+																	"output": "인원수가 어떻게 되나요? 알려주세요.(ex: 5)"
 																},
 																"call": "6.인원수 변경"
 															}
@@ -2272,7 +2275,7 @@ var dialogs = [
 									{
 										"kind": "Action",
 										"options": {
-											"output": "임원수가 어떻게 되나요? 알려주세요.(ex: 5)"
+											"output": "인원수가 어떻게 되나요? 알려주세요.(ex: 5)"
 										},
 										"call": "인증번호 확인",
 										"type": "Call"
@@ -2838,7 +2841,7 @@ var dialogs = [
                                                 "if": "context.user.mobile",
                                                 "kind": "Action",
                                                 "options": {
-                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n\n총 금액:+preallprice+원\n\n임원수가 어떻게 되나요? 알려주세요.(ex: 5)"
+                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n- 예약자 연락처 : +mobile+\n\n총 금액:+preallprice+원\n\n인원수가 어떻게 되나요? 알려주세요.(ex: 5)"
                                                 },
                                                 "call": "인증번호 확인"
                                             },
@@ -2846,7 +2849,7 @@ var dialogs = [
                                                 "if": "!context.user.mobile",
                                                 "kind": "Action",
                                                 "options": {
-                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n\n총 금액:+preallprice+원\n\n예약자의 휴대폰 번호를 입력해주세요.1111"
+                                                    "output": "[객실예약 진행상황]\n객실 예약 진행 정보\n- 객실 종류 : +roomlistType.category_name+\n- 체크인 일자 : +inputyear+년+inputmonth+월+inputday+일\n- 체크아웃 일자 : +outyear+년+outmonth+월+outday+일\n- 가격 : +roomlistType.room_price+원\n- 투숙 기간 : +days+박+dayss+일\n- 예약자 성함 : +myname+\n\n총 금액:+preallprice+원\n\n예약자의 휴대폰 번호를 입력해주세요."
                                                 },
                                                 "call": "휴대폰번호 인증"
                                             }
@@ -3054,22 +3057,22 @@ var commonDialogs = [
             }
         ]
     },
-    {
-        "id": "defaultcommon6",
-        "filename": "defaultcommon",
-        "name": "예약default",
-        "input": [
-            {
-                "regexp":"^[ ]?예약$"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Action",
-                "call": "빠른예약(체크인날짜,인원수,투숙 기간,객실명,예약)"
-            }
-        ]
-    },
+    // {
+    //     "id": "defaultcommon6",
+    //     "filename": "defaultcommon",
+    //     "name": "예약default",
+    //     "input": [
+    //         {
+    //             "regexp":"^예약$"
+    //         }
+    //     ],
+    //     "output": [
+    //         {
+    //             "kind": "Action",
+    //             "call": "빠른예약(체크인날짜,인원수,투숙 기간,객실명,예약)"
+    //         }
+    //     ]
+    // },
     {
         "id": "defaultcommon7",
         "filename": "defaultcommon",

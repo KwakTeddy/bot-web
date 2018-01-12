@@ -53,15 +53,18 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.restaurantno===undefined",
-                "ouput": "아직 인기 정보를 등록하지 않았습니다."
+                "ouput": "아직 인기 정보를 등록하지 않았습니다.",
+                "task": "categoryrestaurantlist"
             },
             {
                 "if": "context.dialog.restaurantno===1",
-                "ouput": "아직 인기 정보가 없습니다."
+                "ouput": "아직 인기 정보가 없습니다.",
+                "task": "categoryrestaurantlist"
             },
             {
                 "if": "context.dialog.restaurantno===0",
                 "output": "[인기메뉴판]\n#categorys#+index+.+name+\n#\n\n번호를 선택해주세요.",
+                "task": "categoryrestaurantlist",
                 "children": [
                     {
                         "filename": "restaurants",
@@ -132,11 +135,13 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.events == undefined || context.dialog.events.length == 0",
-                "output": "아직 이벤트 정보를 등록하지 않았습니다."
+                "output": "아직 이벤트 정보를 등록하지 않았습니다.",
+                "task": "eventCategoryAction"
             },
             {
                 "if": "context.dialog.events.length > 0",
                 "output": "[이벤트]\n#events#+index+. +name+\n#번호를 선택해주세요.",
+                "task": "eventCategoryAction",
                 "children": [
                     {
                         "id": "restaurant4",
@@ -151,7 +156,7 @@ var dialogs = [
                         "task": "eventAction",
                         "output":[
                             {
-                            "text": "[+eventlistType.name+]\n+eventlistType.description+\n+eventlistType.date+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
+                            "text": "#eventss#[+name+]\n+description+\n+date+\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
                             "kind": "Text"
                         }
                         ]
@@ -187,11 +192,13 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.categorys == undefined",
-                "output": "아직 시설 정보를 등록하지 않았습니다."
+                "output": "아직 시설 정보를 등록하지 않았습니다.",
+                "task": "previewCategoryAction"
             },
             {
                 "if": "context.dialog.categorys.length>0 && context.dialog.categoryisone==0",
                 "output": "[시설정보]\n#previewcategorylength#+index+. +category+\n#번호를 선택해주세요.",
+                "task": "previewCategoryAction",
                 "children": [
                     {
                         "id": "restaurant11",
@@ -252,6 +259,7 @@ var dialogs = [
             {
                 "if": "context.dialog.categorys.length>0 && context.dialog.categoryisone==1",
                 "output": "[+previewcategorylength+]\n#menuss#+index+.+name+\n#\n번호나 메뉴명을 입력해주세요.",
+                "task": "previewCategoryAction",
                 "children": [
                     {
                         "id": "restaurant333",
@@ -313,6 +321,7 @@ var dialogs = [
             {
                 "if": "context.dialog.restaurantno== 0 && context.dialog.categoryisone==0",
                 "output": "[가격표]\n#categorylength#+index+.+category+\n#번호를 선택해주세요.",
+                "task": "menuCategoryAction",
                 "children": [
                     {
                         "id": "restaurant18",
@@ -351,7 +360,8 @@ var dialogs = [
                                             "options": {
                                                 "postfix": "\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                                             }
-                                        }
+                                        },
+                                        "task": "categorymenuisornot"
                                     }
                                 ]
                             }
@@ -561,6 +571,7 @@ var dialogs = [
             {
                 "if": "context.botUser.isOwner && context.dialog.reserves != undefined",
                 "output": "미처리 예약내역입니다.\n#reserves#+index+. +name+ +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n처리할 예약번호를 말씀해주세요.",
+                "task": "reserveCheck",
                 "children": [
                     {
                         "id": "restaurant30",
@@ -643,11 +654,13 @@ var dialogs = [
             },
             {
                 "if": "context.botUser.isOwner && context.dialog.reserves == undefined",
-                "output": "미처리 예약내역이 없습니다. \n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                "output": "미처리 예약내역이 없습니다. \n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                "task": "reserveCheck"
             },
             {
                 "if": "context.dialog.reserves != undefined",
                 "output": "고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.",
+                "task": "reserveCheck",
                 "children": [
                     {
                         "id": "restaurant32",
@@ -682,6 +695,7 @@ var dialogs = [
             {
                 "if": "context.dialog.reserve != undefined",
                 "output": "고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 \"취소\"라고 말씀해주세요.",
+                "task": "reserveCheck",
                 "children": [
                     {
                         "id": "restaurant34",
@@ -714,14 +728,26 @@ var dialogs = [
                     {
                         "id": "restaurant36",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "date",
-                                    "typeCheck": "dateTypeCheck"
-                                }
-                            ]
-                        },
+                        // "input": {
+                        //     "types": [
+                        //         {
+                        //             "name": "date",
+                        //             "typeCheck": "dateTypeCheck"
+                        //         }
+                        //     ]
+                        // },
+                        "input": [
+                            {
+                                "types": "dateTypeCheck"
+                            }
+                        ],
+                        // "input": [
+                        //     {
+                        //         "types": [
+                        //             "date"
+                        //         ]
+                        //     }
+                        // ],
                         "task": "checkDate",
                         "output": [
                             {
@@ -775,14 +801,19 @@ var dialogs = [
                     {
                         "id": "restaurant40",
                         "filename": "restaurants",
-                        "input": {
-                            "types": [
-                                {
-                                    "name": "time",
-                                    "typeCheck": "timeTypeCheck"
-                                }
-                            ]
-                        },
+                        // "input": {
+                        //     "types": [
+                        //         {
+                        //             "name": "time",
+                        //             "typeCheck": "timeTypeCheck"
+                        //         }
+                        //     ]
+                        // },
+                        "input": [
+                            {
+                                "types": "timeTypeCheck"
+                            }
+                        ],
                         "task": "checkTime",
                         "output": [
                             {
@@ -1090,8 +1121,7 @@ var commonDialogs = [
             }
         ],
         "output": {
-            "kind": "Action",
-            "up": "1"
+            "up": 1
         }
     },
     {

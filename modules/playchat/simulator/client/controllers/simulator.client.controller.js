@@ -5,6 +5,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 {
     $scope.$parent.loaded('simulator');
 
+
     (function()
     {
         var chatbot = $cookies.getObject('chatbot');
@@ -15,9 +16,14 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         $scope.shortCutHelp = false;
         $scope.isClosed = false;
 
+        $scope.$on('editChatbotInfo', function () {
+            chatbot = $cookies.getObject('chatbot');
+            $scope.refresh();
+        });
+
         window.addEventListener('keydown', function(e)
         {
-            if(e.keyCode == 121)
+            if(e.keyCode == 121) //F10
             {
                 if($scope.isClosed)
                 {
@@ -27,7 +33,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 angular.element('.simulator-background input').focus();
                 e.preventDefault();
             }
-            else if(e.keyCode == 191 && e.shiftKey)
+            else if(e.keyCode == 191 && e.shiftKey) // ?
             {
                 if(e.path[0].value || e.path[0].nodeName == 'TEXTAREA' || e.path[0].nodeName == 'INPUT' || e.path[0].getAttribute('contenteditable'))
                 {
@@ -39,7 +45,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     $scope.shortCutHelp = true;
                 });
             }
-            else if(e.keyCode == 27)
+            else if(e.keyCode == 27) //ESC
             {
                 $scope.$apply(function()
                 {
@@ -54,11 +60,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
             var hour = date.getHours();
             var min = date.getMinutes();
+            var day = date.getDay();
+            var month = date.getMonth() + 1;
 
             hour = hour < 10 ? '0' + hour : hour;
             min = min < 10 ? '0' + min : min;
-
-            return hour + ':' + min;
+            return month + "월 " + day + "일 " + hour + ':' + min;
         };
 
         var addBotBubble = function(text)
@@ -178,7 +185,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.sendMessage = function(e)
         {
-            if(e.keyCode == 13)
+            if(e.keyCode == 13) //Enter
             {
                 var value = e.currentTarget.value;
                 if(value)
@@ -187,12 +194,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     e.currentTarget.value = '';
                 }
             }
-            else if(e.keyCode == 116)
+            else if(e.keyCode == 116) //F5
             {
                 clearBubble();
                 emitMsg(':build', false);
             }
-            else if(e.keyCode == 27)
+            else if(e.keyCode == 27) // Esc
             {
                 var dialogsetElement = angular.element('.dialog-learning-development-content-row').get(0);
                 var codeEditor = angular.element('.dialog-graph-code-editor').is(':visible');
@@ -206,7 +213,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 else if(dialogsetElement)
                     $rootScope.$broadcast('focusToDialogSet');
             }
-            else if(e.keyCode == 118)
+            else if(e.keyCode == 118) //F7
             {
                 var dialoggraphElement = angular.element('.graph-body').get(0);
                 var codeEditor = angular.element('.dialog-graph-code-editor').is(':visible');

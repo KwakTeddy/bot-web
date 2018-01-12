@@ -1,7 +1,7 @@
 'use strict';
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
-var loadbalancer = require(path.resolve('engine/bot/engine/loadbalancer/loadbalancer'));
+// var loadbalancer = require(path.resolve('engine/bot/engine/loadbalancer/loadbalancer'));
 
 process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
 
@@ -67,11 +67,6 @@ module.exports.start = function start(callback)
 
     this.init(function (app, db, config)
     {
-        if(config.loadBalance.use)
-        {
-            loadbalancer.init();
-        }
-
         app.server.listen(config.port, function ()
         {
             app.io.on('connection', function (socket)
@@ -80,6 +75,20 @@ module.exports.start = function start(callback)
                 require(path.resolve('./engine/bot/server/sockets/bot.server.socket.config.js'))(app.io, socket);
                 require(path.resolve('./modules/demo/server/controllers/demo.server.controller.js'))(app.io, socket);
             });
+
+            if(config.loadBalance.use)
+            {
+                if(config.loadBalance.isMaster)
+                {
+                    var master = require(path.resolve('./engine/loadbalancer/master.js'));
+                    master.init(app.io);
+                }
+                else
+                {
+                    var slave = require(path.resolve('./engine/loadbalancer/slave.js'));
+                    slave.init();
+                }
+            }
 
             // Logging initialization
             console.log();
