@@ -49,11 +49,11 @@
 .playchat-background .gnb .gnb-header .gnb-close
 {
     position: absolute;
-    right: 25px;
+    right: 22px;
     top: 19px;
     width: 28px;
     height: 26px;
-    background: url(../imgs/hamburger.png) no-repeat center center;
+    background: url('../imgs/hamburger.png') no-repeat center center;
     background-size: 23px 17px;
 }
 

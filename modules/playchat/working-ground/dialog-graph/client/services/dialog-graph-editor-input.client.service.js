@@ -55,8 +55,11 @@
                         }
 
                         //열어야 함.
-                        var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]');
-                        target.css('right', '0');
+                        var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]').show();
+                        setTimeout(function()
+                        {
+                            target.css('right', '0');
+                        }, 50);
 
                         setTimeout(function()
                         {
@@ -71,11 +74,19 @@
                         {
                             selectCallback(name);
                             target.css('right', '-368px');
+                            setTimeout(function()
+                            {
+                                target.hide();
+                            }, 500);
                         };
 
                         target.find('form').get(0).closeCallback = function()
                         {
                             target.css('right', '-368px');
+                            setTimeout(function()
+                            {
+                                target.hide();
+                            }, 500);
                         };
 
                         that.close();

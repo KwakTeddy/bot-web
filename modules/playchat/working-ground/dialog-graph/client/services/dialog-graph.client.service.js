@@ -262,12 +262,12 @@
 
             angular.element('.graph-body').on('click' ,function()
             {
-                that.editor.close();
+                // that.editor.close();
             });
 
             canvas.addEventListener('click', function(e)
             {
-                that.editor.close();
+                // that.editor.close();
             });
 
             canvas.parentElement.addEventListener('mousedown', function(e)
@@ -1714,7 +1714,10 @@
                 }
                 else if(dialog.children)
                 {
-                    return checkDuplicateName(name, dialog.children);
+                    if(checkDuplicateName(name, dialog.children))
+                    {
+                        return true;
+                    }
                 }
             }
 
