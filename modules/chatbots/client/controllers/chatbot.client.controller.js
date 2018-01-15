@@ -42,7 +42,6 @@
 
             SharedChatBotService.query({}, function(list)
             {
-                console.log('리스트 : ', list);
                 $scope.sharedList = list;
             });
         };
