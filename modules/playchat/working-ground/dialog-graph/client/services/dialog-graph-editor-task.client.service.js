@@ -75,6 +75,28 @@
                 }
             };
 
+            $scope.taskKeyUp = function(e)
+            {
+                console.log(e.currentTarget.value);
+
+                var value = e.currentTarget.value;
+
+                if(value)
+                {
+                    angular.element('.dialog-editor-select-options span[data-filename]').each(function()
+                    {
+                        if(angular.element(this).text().indexOf(value) == -1)
+                        {
+                            angular.element(this).parent().hide();
+                        }
+                    });
+                }
+                else
+                {
+                    angular.element('.dialog-editor-select-options span[data-filename]').parent().show();
+                }
+            };
+
             $scope.selectTask = function(e, task)
             {
                 $scope.dialog.task = { name: task.name };
