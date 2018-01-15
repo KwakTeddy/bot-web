@@ -1046,11 +1046,11 @@
                 "jp": "エントティ修正",
                 "zh": "实体编辑"
             },
-            "OO is duplicated name. ": {
-                "ko": "OO은 중복된 이름 입니다.",
-                "en": "OO is duplicated name. ",
-                "jp": "OOは重複する名前です。",
-                "zh": "OO是重复的名称。"
+            "is duplicated": {
+                "ko": " 은 중복된 이름 입니다.",
+                "en": " is duplicated.",
+                "jp": " は重複する名前です。",
+                "zh": " 是重复的名称。"
             },
             "Type the Intent Name.": {
                 "ko": "인텐트 이름을 입력해주세요",
