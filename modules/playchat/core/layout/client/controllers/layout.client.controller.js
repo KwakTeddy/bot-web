@@ -26,6 +26,11 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
         {
             $cookies.putObject('editableBot', result[0].edit);
         }
+        else
+        {
+            alert(LanguageService('You do not have permission to access this bot'));
+            location.href = '/playchat/chatbots';
+        }
 
     }, function(err)
     {

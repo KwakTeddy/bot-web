@@ -17,29 +17,22 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.drawMenu = function()
         {
             var savedMenu = [];
-            // ChatbotService.get({ botId: chatbot._id }, function(result)
-            // {
-                if(chatbot.templateId)
+            if(chatbot.templateId)
+            {
+                MenuService.get(chatbot.templateId.id, function(menus)
                 {
-                    MenuService.get(chatbot.templateId.id, function(menus)
-                    {
-                        $scope.menus = savedMenu = menus;
-                        $scope.$parent.loaded('side-menu');
-                    });
-                }
-                else
+                    $scope.menus = savedMenu = menus;
+                    $scope.$parent.loaded('side-menu');
+                });
+            }
+            else
+            {
+                MenuService.get(function(menus)
                 {
-                    MenuService.get(function(menus)
-                    {
-                        $scope.menus = savedMenu = menus;
-                        $scope.$parent.loaded('side-menu');
-                    });
-                }
-            // },
-            // function(err)
-            // {
-            //     alert(err);
-            // });
+                    $scope.menus = savedMenu = menus;
+                    $scope.$parent.loaded('side-menu');
+                });
+            }
         };
 
         $scope.drawMenu();

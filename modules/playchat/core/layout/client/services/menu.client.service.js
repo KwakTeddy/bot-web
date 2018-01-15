@@ -6,13 +6,13 @@
     angular.module('playchat').factory('MenuService', function($cookies, $resource, LanguageService)
     {
         var TemplateGnbService = $resource('/api/:templateId/gnb', { templateId : '@templateId' });
+        var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
 
         var instance = undefined;
 
         var Menu = function()
         {
             // this.setting = { name: 'Setting', icon: 'setting.png' };
-            this.editableBot = $cookies.getObject('editableBot');
         };
 
         Menu.prototype.initialize = function()
@@ -85,20 +85,41 @@
             }
             else if(typeof templateId == 'function')
             {
-                var menus = [];
-                menus.push(this.dashboard);
-                menus.push(this.development);
-                menus.push(this.management);
-                // menus.push(this.contents);
-                menus.push(this.channel);
-                if(this.editableBot)
+                var chatbot = $cookies.getObject('chatbot');
+                var that = this;
+                ChatbotAuthService.query({ botId: chatbot._id }, function(result)
                 {
-                    menus.push(this.operation);
-                }
-                menus.push(this.analysis);
-                // menus.push(this.setting);
+                    if(result.length > 0)
+                    {
+                        var menus = [];
+                        menus.push(that.dashboard);
+                        menus.push(that.development);
+                        menus.push(that.management);
+                        // menus.push(this.contents);
+                        menus.push(that.channel);
+                        if(result[0].edit)
+                        {
+                            menus.push(that.operation);
+                        }
+                        menus.push(that.analysis);
+                        // menus.push(this.setting);
 
-                templateId(menus);
+                        templateId(menus);
+                    }
+                    else
+                    {
+                        alert(LanguageService('You do not have permission to access this bot'));
+                        location.href = '/playchat/chatbots';
+                    }
+
+                }, function(err)
+                {
+                    if(err.status == 401)
+                    {
+                        alert(LanguageService('You do not have permission to access this bot'));
+                        location.href = '/playchat/chatbots';
+                    }
+                });
             }
         };
 
