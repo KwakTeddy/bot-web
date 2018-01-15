@@ -620,6 +620,12 @@
                 "jp": "ボットファイルが見つかりません。",
                 "zh": "没有找到Bot文件。"
             },
+            "You do not have permission to access this bot": {
+                "ko": "이 봇에 접근할 수 있는 권한이 없습니다.",
+                "en": "You do not have permission to read this bot",
+                "jp": "このボットにアクセスする権限がありません。",
+                "zh": "您无权访问此机器人。"
+            },
             "The last entity cannot be deleted.": {
                 "ko": "마지막 엔티티는 삭제할 수 없습니다",
                 "en": "The last entity cannot be deleted.",

@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$rootScope', 'EventService', '$state', '$stateParams', '$compile', '$cookies', function ($location, $scope, $rootScope, EventService, $state, $stateParams, $compile, $cookies)
+angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$resource', '$rootScope', 'EventService', '$state', '$stateParams', '$compile', '$cookies', 'LanguageService', function ($location, $scope, $resource, $rootScope, EventService, $state, $stateParams, $compile, $cookies, LanguageService)
 {
     $scope.componentsLoaded = {
         'side-menu': false,
@@ -14,9 +14,23 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
 
     EventService.subscribeMe();
 
+    var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
+
     var chatbot = $cookies.getObject('chatbot');
     var templateId = chatbot.templateId && chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
+
+    ChatbotAuthService.get({ botId: chatbot.id }, function(result)
+    {
+        console.log(result);
+    }, function(err)
+    {
+        if(err.status == 401)
+        {
+            alert(LanguageService('You do not have permission to access this bot'));
+            location.href = '/playchat/chatbots';
+        }
+    });
 
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
     $scope.loaded = function(name)
