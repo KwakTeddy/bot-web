@@ -648,7 +648,6 @@
                 }
                 else
                 {
-                    console.log('키코드 : ', e.keyCode, e);
                 }
             });
         };

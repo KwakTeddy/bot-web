@@ -189,23 +189,57 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                         angular.element('.dialog-graph-code-editor').hide();
                         $scope.loadFile(fileName);
                     }
+                    else
+                    {
+                        angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
+                    }
                 }
                 else
                 {
+                    var isLoad = false;
                     for(var i=0; i<fileList.length; i++)
                     {
                         if(fileList[i].endsWith('graph.js'))
                         {
+                            isLoad = true;
                             $scope.currentTabName = fileList[i];
                             $scope.loadFile($scope.currentTabName);
                             break;
+                        }
+                    }
+
+                    if(!isLoad && fileList.length > 0)
+                    {
+                        $scope.currentTabName = fileList[0];
+                        if(fileList[0].endsWith('graph.js'))
+                        {
+                            $scope.loadFile($scope.currentTabName);
+                        }
+                        else
+                        {
+                            var timer = setInterval(function()
+                            {
+                                if(angular.element('.dialog-graph-code-editor').get(0))
+                                {
+                                    angular.element('.tab-body li:first').click();
+                                    clearInterval(timer);
+                                }
+                            }, 50);
                         }
                     }
                 }
             },
             function(err)
             {
-                console.error(err);
+                if(err.status == 404)
+                {
+                    alert($scope.lan('Bot files not found.'));
+                    location.href = '/playchat/';
+                }
+                else
+                {
+                    console.error(err);
+                }
             });
         };
 

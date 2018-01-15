@@ -77,8 +77,6 @@
 
             $scope.taskKeyUp = function(e)
             {
-                console.log(e.currentTarget.value);
-
                 var value = e.currentTarget.value;
 
                 if(value)

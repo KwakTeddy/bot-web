@@ -614,6 +614,12 @@
                 "jp": "ファイルが見つかりません。",
                 "zh": "未找到文件。"
             },
+            "Bot files not found.": {
+                "ko": "봇 파일을 찾을 수 없습니다",
+                "en": "Bot files not found.",
+                "jp": "ボットファイルが見つかりません。",
+                "zh": "没有找到Bot文件。"
+            },
             "The last entity cannot be deleted.": {
                 "ko": "마지막 엔티티는 삭제할 수 없습니다",
                 "en": "The last entity cannot be deleted.",
