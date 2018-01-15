@@ -12,6 +12,14 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
     $scope.searchValues = {};
     $scope.isAdvancedMode = false;
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+    if(!$scope.editableBot)
+    {
+        alert(LanguageService('You do not have permission to edit this bot'));
+        location.href='/playchat/';
+        return;
+    }
+
     (function()
     {
         var start = moment().subtract(29, 'days');

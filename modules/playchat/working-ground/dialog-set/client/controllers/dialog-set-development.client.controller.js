@@ -16,6 +16,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
     var openDialogsets = $cookies.getObject('openDialogsets');
     var currentPage = 1;
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+
     $scope.openModal = {
         isOpened: false,
         data: {}
@@ -89,6 +91,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
         $scope.save = function(data, callback)
         {
+            if(!$scope.editableBot)
+            {
+                return alert(LanguageService('You do not have permission to edit this bot'));
+            }
+
             data.dialogset = $scope.currentDialogsetId;
             data.botId = chatbot.id;
 

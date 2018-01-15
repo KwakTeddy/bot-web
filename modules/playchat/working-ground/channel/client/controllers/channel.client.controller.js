@@ -17,6 +17,14 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     $scope.chatbot = $cookies.getObject('chatbot');
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+    if(!$scope.editableBot)
+    {
+        alert(LanguageService('You do not have permission to edit this bot'));
+        location.href='/playchat/';
+        return;
+    }
+
     $scope.help = {
         kakao: false,
         naver: false,

@@ -16,6 +16,8 @@ angular.module('playchat').controller('IntentManagementController', ['$window', 
 
     $scope.intentContentAdded = false;
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+
     (function()
     {
         var updateTarget = undefined;

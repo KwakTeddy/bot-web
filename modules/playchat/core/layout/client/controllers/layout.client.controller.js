@@ -20,9 +20,13 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     var templateId = chatbot.templateId && chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
 
-    ChatbotAuthService.get({ botId: chatbot.id }, function(result)
+    ChatbotAuthService.query({ botId: chatbot._id }, function(result)
     {
-        console.log(result);
+        if(result.length > 0)
+        {
+            $cookies.putObject('editableBot', result[0].edit);
+        }
+
     }, function(err)
     {
         if(err.status == 401)

@@ -14,6 +14,8 @@ angular.module('playchat').controller('EntityManagementController', ['$window', 
     var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+
     var updateTarget = undefined;
 
     (function()

@@ -7,6 +7,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     var chatbot = $cookies.getObject('chatbot');
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+
+    console.log('머지 : ', $scope.editableBot);
+
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
 

@@ -12,6 +12,7 @@
         var Menu = function()
         {
             // this.setting = { name: 'Setting', icon: 'setting.png' };
+            this.editableBot = $cookies.getObject('editableBot');
         };
 
         Menu.prototype.initialize = function()
@@ -90,7 +91,10 @@
                 menus.push(this.management);
                 // menus.push(this.contents);
                 menus.push(this.channel);
-                menus.push(this.operation);
+                if(this.editableBot)
+                {
+                    menus.push(this.operation);
+                }
                 menus.push(this.analysis);
                 // menus.push(this.setting);
 

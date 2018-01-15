@@ -4,11 +4,17 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
     var SimiliarsService = $resource('/api/:botId/operation/training/similiars', { botId: '@botId' });
     var TrainingService = $resource('/api/:botId/operation/training/save', { botId: '@botId' });
 
-    console.log('실패 대화 학습');
-
     var chatbot = $cookies.getObject('chatbot');
 
     $scope.list = [];
+
+    $scope.editableBot = $cookies.getObject('editableBot');
+    if(!$scope.editableBot)
+    {
+        alert(LanguageService('You do not have permission to edit this bot'));
+        location.href='/playchat/';
+        return;
+    }
 
     (function()
     {

@@ -12,6 +12,8 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
 
     $scope.$parent.loaded('working-ground');
 
+    $scope.editableBot = $cookies.getObject('editableBot');
+
     $scope.entities = [];
     $scope.entity = {};
 
