@@ -15,6 +15,17 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     EventService.subscribeMe();
 
     var chatbot = $cookies.getObject('chatbot');
+    if(!chatbot)
+    {
+        alert(LanguageService('The bot is not selected. Please select a bot.'));
+        location.href = '/playchat/chatbots';
+    }
+    else if(!chatbot.myBotAuth)
+    {
+        alert(LanguageService('Your bot\'s permissions are not set. Please select bot again. This message is shown only once at the beginning.'));
+        location.href = '/playchat/chatbots';
+    }
+
     var templateId = chatbot.templateId && chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
 

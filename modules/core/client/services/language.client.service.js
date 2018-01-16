@@ -632,6 +632,18 @@
                 "jp": "あなたはこのボットを編集する権限を持っていません。",
                 "zh": "您无权编辑此机器人。"
             },
+            "Your bot's permissions are not set. Please select bot again. This message is shown only once at the beginning.": {
+                "ko": "봇의 권한이 설정되어 있지 않습니다. 봇을 다시 선택하십시오. 이 메시지는 처음에 한 번만 표시됩니다.",
+                "en": "Your bot's permissions are not set. Please select bot again. This message is shown only once at the beginning.",
+                "jp": "あなたのボットの権限は設定されていません。 ボットをもう一度選択してください。 このメッセージは最初に1回だけ表示されます。",
+                "zh": "你的机器人的权限没有设置。 请再次选择机器人。 此消息在开始时只显示一次。"
+            },
+            "The bot is not selected. Please select a bot.": {
+                "ko": "봇이 선택되지 않았습니다. 봇을 선택해주세요.",
+                "en": "The bot is not selected. Please select a bot.",
+                "jp": "ボットは選択されていません。 ボットを選択してください。",
+                "zh": "机器人未被选中。 请选择一个机器人。"
+            },
             "The last entity cannot be deleted.": {
                 "ko": "마지막 엔티티는 삭제할 수 없습니다",
                 "en": "The last entity cannot be deleted.",
