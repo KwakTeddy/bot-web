@@ -1145,7 +1145,7 @@
             if(!dialog.name)
             {
                 console.log(dialog);
-                dialog.name = '생성된 이름 ' + tempIdCount;
+                dialog.name = 'Created Name ' + tempIdCount;
             }
 
             tempIdCount++;

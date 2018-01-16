@@ -318,14 +318,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     DialogGraphEditorOutput.make($scope);
     DialogGraphEditorTask.make($scope);
 
-    $scope.save = function(e)
+    $scope.parseResult = function()
     {
-        if(!DialogGraph.checkDuplicatedName($scope.dialog))
-        {
-            alert($scope.dialog.name + $scope.lan(' is duplicated'));
-            return;
-        }
-
         var result = {};
         if($scope.oldDialog)
         {
@@ -406,11 +400,24 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             delete result.output[i].uploader;
         }
 
-        // 새로 추가되는 경우 실 데이터에도 추가해줌.
-        if($scope.parentDialog && !$scope.oldDialog)
+        return result;
+    };
+
+    $scope.save = function(e)
+    {
+        if($scope.oldDialog && !DialogGraph.checkDuplicatedName($scope.dialog))
         {
-            DialogGraph.addChildDialog($scope.parentDialog, result);
+            alert($scope.dialog.name + $scope.lan(' is duplicated'));
+            return;
         }
+
+        var result = $scope.parseResult();
+
+        // 새로 추가되는 경우 실 데이터에도 추가해줌.
+        // if($scope.parentDialog && !$scope.oldDialog)
+        // {
+        //     DialogGraph.addChildDialog($scope.parentDialog, result);
+        // }
 
         DialogGraph.refresh();
         DialogGraph.setDirty(true);
@@ -509,6 +516,31 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         $scope.commonDialogs = DialogGraph.getCommonDialogs();
         $scope.userDialogs = DialogGraph.getAllUserDialogs();
+
+        if(parent && !dialog)
+        {
+            //새로 추가하는 경우 바로 추가해줌.
+            var result = {};
+            result.name = DialogGraph.getRandomName();
+            result.input = [{ text: '' }];
+            result.output = [{ kind: 'Content', text: '', buttons: [] }];
+            result.actionOutput = { kind: 'Action', type: '', dialog: '' };
+            result.task = undefined;
+
+            dialog = result;
+
+            DialogGraph.addChildDialog(parent, result);
+
+            DialogGraph.refresh();
+            DialogGraph.setDirty(true);
+            DialogGraph.focusById(result.id);
+
+            if(DialogGraphEditor.saveCallback)
+            {
+                DialogGraphEditor.saveCallback(result);
+                DialogGraphEditor.saveCallback = undefined;
+            }
+        }
 
         $scope.initialize(parent, dialog);
     },
