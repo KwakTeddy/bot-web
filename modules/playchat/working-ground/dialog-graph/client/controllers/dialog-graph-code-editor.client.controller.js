@@ -12,7 +12,7 @@
             smartIndent: true
         });
 
-        $scope.editableBot = $cookies.getObject('editableBot');
+        $scope.myBotAuth = chatbot.myBotAuth;
         $scope.currentFileName = undefined;
         $scope.mode = '';
         $scope.saveError = '';

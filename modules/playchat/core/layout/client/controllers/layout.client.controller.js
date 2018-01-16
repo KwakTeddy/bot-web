@@ -14,32 +14,9 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
 
     EventService.subscribeMe();
 
-    var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
-
     var chatbot = $cookies.getObject('chatbot');
     var templateId = chatbot.templateId && chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
-
-    ChatbotAuthService.query({ botId: chatbot._id }, function(result)
-    {
-        if(result.length > 0)
-        {
-            $cookies.putObject('editableBot', result[0].edit);
-        }
-        else
-        {
-            alert(LanguageService('You do not have permission to access this bot'));
-            location.href = '/playchat/chatbots';
-        }
-
-    }, function(err)
-    {
-        if(err.status == 401)
-        {
-            alert(LanguageService('You do not have permission to access this bot'));
-            location.href = '/playchat/chatbots';
-        }
-    });
 
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
     $scope.loaded = function(name)

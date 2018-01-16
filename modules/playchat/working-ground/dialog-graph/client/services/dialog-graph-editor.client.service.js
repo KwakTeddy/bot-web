@@ -13,12 +13,12 @@
             this.callback = undefined;
             this.bindCallback = undefined;
             this.saveCallback = undefined;
-            this.editableBot = true;
+            this.myBotAuth = { read: true, edit: true };
         };
 
         DialogGraphEditor.prototype.open = function(parent, dialog)
         {
-            if(!this.editableBot)
+            if(!this.myBotAuth.edit)
             {
                 return alert(LanguageService('You do not have permission to edit this bot'));
             }

@@ -86,40 +86,21 @@
             else if(typeof templateId == 'function')
             {
                 var chatbot = $cookies.getObject('chatbot');
-                var that = this;
-                ChatbotAuthService.query({ botId: chatbot._id }, function(result)
-                {
-                    if(result.length > 0)
-                    {
-                        var menus = [];
-                        menus.push(that.dashboard);
-                        menus.push(that.development);
-                        menus.push(that.management);
-                        // menus.push(this.contents);
-                        menus.push(that.channel);
-                        if(result[0].edit)
-                        {
-                            menus.push(that.operation);
-                        }
-                        menus.push(that.analysis);
-                        // menus.push(this.setting);
 
-                        templateId(menus);
-                    }
-                    else
-                    {
-                        alert(LanguageService('You do not have permission to access this bot'));
-                        location.href = '/playchat/chatbots';
-                    }
-
-                }, function(err)
+                var menus = [];
+                menus.push(that.dashboard);
+                menus.push(that.development);
+                menus.push(that.management);
+                // menus.push(this.contents);
+                menus.push(that.channel);
+                if(chatbot.myBotAuth.edit)
                 {
-                    if(err.status == 401)
-                    {
-                        alert(LanguageService('You do not have permission to access this bot'));
-                        location.href = '/playchat/chatbots';
-                    }
-                });
+                    menus.push(that.operation);
+                }
+                menus.push(that.analysis);
+                // menus.push(this.setting);
+
+                templateId(menus);
             }
         };
 

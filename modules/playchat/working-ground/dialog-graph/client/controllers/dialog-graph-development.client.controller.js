@@ -7,12 +7,12 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     var chatbot = $cookies.getObject('chatbot');
 
-    $scope.editableBot = $cookies.getObject('editableBot');
-
-    console.log('머지 : ', $scope.editableBot);
+    $scope.myBotAuth = chatbot.myBotAuth;
 
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
+
+    DialogGraphEditor.myBotAuth = chatbot.myBotAuth;
 
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope, $rootScope);

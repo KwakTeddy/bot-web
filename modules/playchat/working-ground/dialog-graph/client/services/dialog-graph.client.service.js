@@ -770,7 +770,7 @@
             }
 
             //plus 버튼을 여기서 붙여주면..
-            if(this.$scope.editableBot)
+            if(this.$scope.myBotAuth.edit)
             {
                 this.addPlusButton(parent);
             }
@@ -1230,7 +1230,7 @@
                 var target = t.find('.graph-dialog-item').get(0);
 
                 var half = Math.ceil(target.offsetHeight / 2) + 1.4;
-                if(this.$scope.editableBot)
+                if(this.$scope.myBotAuth.edit)
                 {
                     this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
                 }
@@ -1276,7 +1276,7 @@
 
             dialog.find('.graph-dialog-item').on('dblclick', function(e)
             {
-                if(that.$scope.editableBot)
+                if(that.$scope.myBotAuth.edit)
                 {
                     var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
                     that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);

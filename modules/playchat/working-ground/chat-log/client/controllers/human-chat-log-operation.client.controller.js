@@ -7,8 +7,8 @@ angular.module('playchat').controller('HumanChatLogController', ['$window', '$sc
 
     var chatbot = $cookies.getObject('chatbot');
 
-    $scope.editableBot = $cookies.getObject('editableBot');
-    if(!$scope.editableBot)
+    $scope.myBotAuth = chatbot.myBotAuth;
+    if(!$scope.myBotAuth.edit)
     {
         alert(LanguageService('You do not have permission to edit this bot'));
         location.href='/playchat/';
