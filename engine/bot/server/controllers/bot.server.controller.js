@@ -256,6 +256,19 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
                                 var mappedDialog = {id: _dialog.id, name: _dialog.name, input: _dialog.input,
                                     context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
                                     entities: context.botUser.entities};
+
+                                try
+                                {
+                                    if(context && context.botUser && context.botUser.socket && options.dev)
+                                    {
+                                        context.botUser.socket.emit('send_msg', JSON.stringify({ type: 'dialog', data: { dialogId: _dialog.id }}));
+                                    }
+                                }
+                                catch(err)
+                                {
+                                    console.error(err);
+                                }
+
                                 context.botUser.nlu.dialog = mappedDialog;
                             }
 

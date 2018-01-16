@@ -190,6 +190,7 @@
             this.historyIndex = 0;
 
             this.focusedTarget = undefined;
+            this.testFocusedTarget = undefined;
 
             this.dirtyCallback = undefined;
 
@@ -231,6 +232,11 @@
 
             $scope.$on('saveDialogGraph', function()
             {
+            });
+
+            $scope.$on('dialogGraphTestFocus', function(context, dialogId)
+            {
+                that.testFocus(dialogId);
             });
         };
 
@@ -1468,6 +1474,13 @@
             return check;
         };
 
+        DialogGraph.prototype.testFocus = function(target)
+        {
+            angular.element('.test-selected').removeClass('test-selected');
+            angular.element('#' + target + ' > .graph-dialog-item').addClass('test-selected');
+            this.testFocusedTarget = target;
+        };
+
         DialogGraph.prototype.focus = function(target)
         {
             this.canvas.find('.selected').removeClass('selected');
@@ -1607,6 +1620,8 @@
 
                 this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
+
+            this.testFocus(this.testFocusedTarget);
         };
 
         DialogGraph.prototype.refreshLine = function()

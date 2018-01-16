@@ -24,7 +24,8 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
             selector = '#intentcontent';
         }
 
-        angular.element(selector).append('<div>' + data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') + '</div>');
+        var log = data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
+        angular.element(selector).append('<div>' + log + '</div>');
 
         if(scrollTimer)
         {

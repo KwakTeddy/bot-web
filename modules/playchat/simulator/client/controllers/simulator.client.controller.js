@@ -172,14 +172,25 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         //event handling
         Socket.on('send_msg', function(data)
         {
-            if(data.indexOf(':log') != -1)
+            try
             {
-                $rootScope.$broadcast('onlog', { message: data });
+                data = JSON.parse(data);
+                if(data.type == 'dialog')
+                {
+                    $rootScope.$broadcast('dialogGraphTestFocus', data.data.dialogId);
+                }
             }
-            else
+            catch(err)
             {
-                addBotBubble(data);
-                $rootScope.$broadcast('onmsg', { message: data });
+                if(data.indexOf(':log') != -1)
+                {
+                    $rootScope.$broadcast('onlog', { message: data });
+                }
+                else
+                {
+                    addBotBubble(data);
+                    $rootScope.$broadcast('onmsg', { message: data });
+                }
             }
         });
 

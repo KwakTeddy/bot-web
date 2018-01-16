@@ -323,6 +323,11 @@
     border-color: #bfe3f6;
 }
 
+.graph-dialog-item.test-selected
+{
+    border: 2px solid #1f7abb;
+}
+
 .graph-dialog .arrow
 {
     position: absolute;
