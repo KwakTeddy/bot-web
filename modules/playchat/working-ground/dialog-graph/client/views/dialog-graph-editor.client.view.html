@@ -89,7 +89,7 @@
                             <a href="#" tabindex="-1"><img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteOutput(dialog.output, $index);" style="margin-right: 5px;"></a>
                         </div>
                         <div ng-if="output.kind == 'Text' || output.kind == 'Content'">
-                            <div class="dialog-editor-output-if" ng-if="isAdvancedMode === true">
+                            <div class="dialog-editor-output-if" ng-if="dialog.output.length > 1 && isAdvancedMode === true">
                                 <span>IF</span>
                                 <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
