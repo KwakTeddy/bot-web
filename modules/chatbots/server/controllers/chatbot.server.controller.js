@@ -328,7 +328,7 @@ exports.duplicate = function(req, res)
                         {
                             var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
                             content = content.toString();
-                            content = content.replace(new RegExp(item.id, 'gi'), clone.id);
+                            content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
 
                             fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
                         }

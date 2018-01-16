@@ -124,7 +124,6 @@
             $scope.clickToImageFile = function(e, direction)
             {
                 var imageFile = angular.element(e.currentTarget).find('input[type="file"]');
-                console.log(imageFile);
                 $timeout(function()
                 {
                     imageFile.click();
