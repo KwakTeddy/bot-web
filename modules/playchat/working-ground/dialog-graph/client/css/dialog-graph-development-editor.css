@@ -155,8 +155,9 @@
 .dialog-editor-input
 {
     width: 100%;
+    height: 40px;
 
-    padding: 8px 18px 9px !important;
+    padding: 5px 45px 5px 10px !important;
     border-radius: 6px;
     background: #fff;
     border: 1px solid #d7d7d7;
@@ -164,6 +165,104 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.dialog-editor-input + span
+{
+    position: absolute;
+    top: 1px;
+    right: 45px;
+    left: 10px;
+    bottom: 1px;
+
+    outline: 0;
+
+    padding: 10px 0 5px 0 !important;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    cursor: text;
+}
+
+.dialog-editor-input + span > span
+{
+    outline: 0;
+}
+
+.dialog-editor-input + span > span:first-child
+{
+    margin-left: 1px;
+}
+
+.dialog-editor-input + span > span.intent
+{
+    background-color: #f8f8ff;
+}
+
+.dialog-editor-input + span br
+{
+    display:none;
+
+}
+
+.dialog-editor-input + span *
+{
+    display:inline;
+    white-space:nowrap;
+}
+
+.dialog-editor-input-list-box
+{
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    height: 200px;
+
+    background-color: white;
+}
+
+.dialog-editor-input-list-box-title
+{
+    border-bottom: 1px solid #ddd;
+    background-color: #efefef;
+    padding: 5px 10px 6px 10px;
+    font-size: 11px;
+    color: #676767;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dialog-editor-input-list-box-title + ul > li
+{
+    padding: 10px;
+    font-size: 12px;
+}
+
+.dialog-editor-input-list-box-title + ul > li.selected
+{
+    background-color: #bfe3f6;
+}
+
+.dialog-editor-input-plus
+{
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    bottom: 0;
+    height: 100%;
+    font-size: 24px;
+    color: #aaa;
+
+    cursor: pointer;
+
+    transition: color 0.2s;
+}
+
+.dialog-editor-input-plus:hover
+{
+    color: #677677;
 }
 
 .dialog-editor-input-box
@@ -302,8 +401,8 @@
 .dialog-editor-input-box input + .delete-img
 {
     position: absolute;
-    top: 7px;
-    right: 12px;
+    top: 6px;
+    right: 24px;
 }
 
 .dialog-editor-input-wrapper

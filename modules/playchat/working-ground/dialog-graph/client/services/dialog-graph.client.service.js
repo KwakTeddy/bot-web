@@ -298,8 +298,6 @@
                 if(e.which != 1)
                     return;
 
-                console.log('adf?');
-
                 menuInstance.closeMenu(e);
 
                 isDragStart = true;
@@ -1661,6 +1659,7 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
+            //커먼다이얼로그에 서큘러 JSON이 생기는 문제가 있으므로 정리해야함.
             var temp = JSON.parse(JSON.stringify(this.commonDialogs));
             delete temp[0].children;
 

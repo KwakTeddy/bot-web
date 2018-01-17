@@ -16,51 +16,66 @@
         <form ng-submit="save($event);">
             <div class="dialog-editor-body">
                 <div class="dialog-editor-row">
-                    <p class="dialog-editor-subject">{{lan('Dialog name') }}</p>
+                    <p class="dialog-editor-subject">Dialog name</p>
                     <div class="dialog-editor-input-box">
                         <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true">
                     </div>
                 </div>
-                <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
+
+
+
+                <div class="dialog-editor-row">
                     <p class="dialog-editor-subject">Input</p>
                     <div class="dialog-editor-input-box">
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input" data-nlu="{{nlpedTextPrefix[$index]}} {{ nlpedText[$index] }}">
-                            <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-keyup="inputOnKeyUp($event, $index)" ng-blur="inputOnBlur($event, $index);" ng-required="true">
+                            <input type="text" class="dialog-editor-input" placeholder="{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}" ng-model="input.text" ng-required="true">
+                            <span ng-click="focusToLastSpan($event);">
+                                <span contenteditable="true" ng-keydown="onKeyDown($event);" ng-keyup="onKeyUp($event, $index)"></span>
+                            </span>
                             <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);">
+                            <span ng-if="$index == dialog.input.length-1" class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>
                         </div>
-                        <div style="position: relative;">
-                            <a href="#" class="dialog-editor-plus-wrapper" ng-click="addInput($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>
+                        <div class="dialog-editor-input-list-box" ng-show="showInputList">
+                            <div class="dialog-editor-input-list-box-title">↓ ↑ to navigate&nbsp;&nbsp;&nbsp; enter to select &nbsp;&nbsp;&nbsp;esc to dismiss</div>
+                            <ul>
+                                <li ng-repeat="item in inputList" ng-class="inputListTarget == $index ? 'selected' : ''">{{ item.name }}</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">Input</p>
-                    <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
-                        <p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>
-                        <div ng-repeat="input in dialog.input">
-                            <div class="dialog-editor-input-textarea" data-nlu="{{ nlpedTextPrefix[$index] + nlpedText[$index] }}" ng-click="focusToInputArea($event);">
-                                <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
-                                    <span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">
-                                        <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
-                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">
-                                    </span>
-                                    <span class="and" ng-if="getLength(input);">and</span>
-                                </span>
+                <!--<div class="dialog-editor-row" ng-if="isAdvancedMode === true">-->
+                    <!--<p class="dialog-editor-subject">Input</p>-->
+                    <!--<div class="dialog-editor-input-box" style="margin-bottom: 30px;">-->
+                        <!--<p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>-->
+                        <!--<div ng-repeat="input in dialog.input">-->
+                            <!--<div class="dialog-editor-input-textarea" data-nlu="{{ nlpedTextPrefix[$index] + nlpedText[$index] }}" ng-click="focusToInputArea($event);">-->
+                                <!--<span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">-->
+                                    <!--<span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">-->
+                                        <!--<span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>-->
+                                        <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">-->
+                                    <!--</span>-->
+                                    <!--<span class="and" ng-if="getLength(input);">and</span>-->
+                                <!--</span>-->
 
-                                <span class="dialog-editor-input-item">
-                                    <input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input, $index, true);">
-                                </span>
-                                <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);" style="position: absolute; top: 7px; right: 12px;">
-                            </div>
-                            <div class="or" ng-if="dialog.input.length > 1 && $index < dialog.input.length-1">
-                                <span>or</span>
-                            </div>
-                        </div>
-                        <div style="position: relative;">
-                            <a href="#" class="dialog-editor-plus-wrapper" ng-click="addInput($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>
-                        </div>
-                    </div>
-                </div>
+                                <!--<span class="dialog-editor-input-item">-->
+                                    <!--<input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input, $index, true);">-->
+                                <!--</span>-->
+                                <!--<img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);" style="position: absolute; top: 7px; right: 12px;">-->
+                            <!--</div>-->
+                            <!--<div class="or" ng-if="dialog.input.length > 1 && $index < dialog.input.length-1">-->
+                                <!--<span>or</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="position: relative;">-->
+                            <!--<a href="#" class="dialog-editor-plus-wrapper" ng-click="addInput($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+
+
+
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
                     <p class="dialog-editor-subject">Task</p>
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
@@ -91,6 +106,7 @@
                         <div ng-if="output.kind == 'Text' || output.kind == 'Content'">
                             <div class="dialog-editor-output-if" ng-if="dialog.output.length > 1 && isAdvancedMode === true">
                                 <span>IF</span>
+
                                 <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
                             <div class="dialog-editor-output-text">
