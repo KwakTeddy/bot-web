@@ -179,6 +179,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 {
                     $rootScope.$broadcast('dialogGraphTestFocus', data.data.dialogId);
                 }
+                else
+                {
+                    addBotBubble(data);
+                    $rootScope.$broadcast('onmsg', { message: data });
+                }
             }
             catch(err)
             {
