@@ -1885,17 +1885,17 @@
                 "zh": "检测到JSON格式错误。 聊天机器人可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
-            "Typing the regular expression, press Enter to finish.": {
-                "ko": "정규식 입력 중, 마치려면 Enter를 입력해주세요.",
-                "en": "While typing the regular expression, press Enter to finish.",
-                "zh": "输入正则表达式，按Enter完成。",
-                "jp": "正規表現を入力し、Enterキーを押して終了します。"
+            "Please enter a regular expression.": {
+                "ko": "정규식을 입력해주세요. ex) /[a-z]*/",
+                "en": "Please enter a regular expression. ex) /[a-z]*/",
+                "zh": "请输入正则表达式。 ex）/[a-z]*/",
+                "jp": "正規表現。 ex）/[a-z]*/"
             },
-            "Entering conditional statements, press Enter to finish.": {
-                "ko": "조건문 입력 중, 마치려면 Enter를 입력해주세요.",
-                "en": "Entering conditional statements, press Enter to finish.",
-                "zh": "输入条件语句，按Enter完成。",
-                "jp": "条件文を入力し、Enterキーを押して終了します。"
+            "Entering conditional statements.": {
+                "ko": "조건문을 입력해주세요. ex) if(a == b)",
+                "en": "Please enter the condition. ex) if (a == b)",
+                "zh": "请输入条件。 ex）if（a == b）",
+                "jp": "条件を入力してください。 ex） if（a == b）"
             },
             "Back to Graph edit mode": {
                 "ko": "그래프 편집으로 돌아가기",
