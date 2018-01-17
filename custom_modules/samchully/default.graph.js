@@ -1,21 +1,158 @@
 var dialogs = [
     {
-        "name": "고객인증",
+        "name": "인증_고객명",
         "input": [
             {
-                "text": "인증"
+                "if": "!context.user.auth"
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "테스크를 붙여야함"
+                "text": "삼천리 챗봇을 이용하기 위해서는 고객님 인증이 필요합니다. \n고객님 성함을 입력해주세요.",
+                "buttons": [],
+                "uploader": {
+                    "url": "/api/samchully/dialog-graphs/uploadImage",
+                    "alias": "uploadFile",
+                    "headers": {},
+                    "queue": [],
+                    "progress": 0,
+                    "autoUpload": true,
+                    "removeAfterUpload": false,
+                    "method": "POST",
+                    "filters": [
+                        {
+                            "name": "folder"
+                        },
+                        {
+                            "name": "queueLimit"
+                        }
+                    ],
+                    "formData": [],
+                    "queueLimit": 1.7976931348623157e+308,
+                    "withCredentials": false,
+                    "disableMultipart": false,
+                    "isUploading": false,
+                    "_nextIndex": 0,
+                    "_failFilterIndex": -1,
+                    "_directives": {
+                        "select": [],
+                        "drop": [],
+                        "over": []
+                    },
+                    "item": "none"
+                }
             }
         ],
         "id": "default3",
         "task": {
-            "name": "authentication"
-        }
+            "name": ""
+        },
+        "children": [
+            {
+                "name": "인증_생년월일",
+                "input": [
+                    {
+                        "types": "saveCustomerName"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "고객명은 다음과 같이 입력되었습니다.\n\n+customerName+\n생년월일을 다음과 같이 입력해주세요.\n예시) 900930",
+                        "if": ""
+                    }
+                ],
+                "id": "default46",
+                "children": [
+                    {
+                        "name": "인증_휴대폰번호",
+                        "input": [
+                            {
+                                "types": "saveCustomerBirth"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "생년월일은 다음과 같이 입력되었습니다.\n+customerBirth+\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
+                            }
+                        ],
+                        "id": "default49",
+                        "children": [
+                            {
+                                "name": "인증여부",
+                                "input": [
+                                    {
+                                        "types": "mobile"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "call": "시작",
+                                        "if": "context.user.auth",
+                                        "options": {
+                                            "output": "인증에 성공하셨습니다."
+                                        }
+                                    },
+                                    {
+                                        "kind": "Action",
+                                        "call": "인증실패",
+                                        "options": {
+                                            "output": ""
+                                        }
+                                    }
+                                ],
+                                "id": "default50",
+                                "task": {
+                                    "name": "authentication"
+                                },
+                                "children": [
+                                    {
+                                        "name": "인증실패",
+                                        "input": [
+                                            {
+                                                "if": "false"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "call": "인증_고객명",
+                                                "options": {
+                                                    "output": ""
+                                                }
+                                            }
+                                        ],
+                                        "id": "default52",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "리핏-핸드폰번호",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "repeat": 1,
+                                        "options": {
+                                            "output": "잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요."
+                                        }
+                                    }
+                                ],
+                                "id": "default51"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     },
     {
         "name": "요금",
@@ -27,7 +164,13 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#customerList#+index+. +customerName+/+address+ / +num+\n#"
+                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#customerList#+index+. +customerName+/+address+ / +id+\n#",
+                "if": "",
+                "type": "call",
+                "dialog": "요금 메뉴 선택",
+                "options": {
+                    "output": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#customerList#+index+. +customerName+/+address+ / +num+\n#\n\nㅇ"
+                }
             }
         ],
         "id": "default0",
@@ -102,7 +245,38 @@ var dialogs = [
                                         "url": "",
                                         "text": "12개월"
                                     }
-                                ]
+                                ],
+                                "uploader": {
+                                    "url": "/api/samchully/dialog-graphs/uploadImage",
+                                    "alias": "uploadFile",
+                                    "headers": {},
+                                    "queue": [],
+                                    "progress": 0,
+                                    "autoUpload": true,
+                                    "removeAfterUpload": false,
+                                    "method": "POST",
+                                    "filters": [
+                                        {
+                                            "name": "folder"
+                                        },
+                                        {
+                                            "name": "queueLimit"
+                                        }
+                                    ],
+                                    "formData": [],
+                                    "queueLimit": 1.7976931348623157e+308,
+                                    "withCredentials": false,
+                                    "disableMultipart": false,
+                                    "isUploading": false,
+                                    "_nextIndex": 0,
+                                    "_failFilterIndex": -1,
+                                    "_directives": {
+                                        "select": [],
+                                        "drop": [],
+                                        "over": []
+                                    },
+                                    "item": "none"
+                                }
                             }
                         ],
                         "id": "default14",
@@ -117,7 +291,39 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +curCustomer.customerName+ 월별 고지내역입니다.(+listNum+개월)\n\n#noticeHistory#+index+. +date+\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#"
+                                        "text": "[요금] +curCustomer.customerName+ 고객님 월별 고지내역입니다.( +noticeNum+ 개월)\n\n#noticeHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
+                                        "buttons": [],
+                                        "uploader": {
+                                            "url": "/api/samchully/dialog-graphs/uploadImage",
+                                            "alias": "uploadFile",
+                                            "headers": {},
+                                            "queue": [],
+                                            "progress": 0,
+                                            "autoUpload": true,
+                                            "removeAfterUpload": false,
+                                            "method": "POST",
+                                            "filters": [
+                                                {
+                                                    "name": "folder"
+                                                },
+                                                {
+                                                    "name": "queueLimit"
+                                                }
+                                            ],
+                                            "formData": [],
+                                            "queueLimit": 1.7976931348623157e+308,
+                                            "withCredentials": false,
+                                            "disableMultipart": false,
+                                            "isUploading": false,
+                                            "_nextIndex": 0,
+                                            "_failFilterIndex": -1,
+                                            "_directives": {
+                                                "select": [],
+                                                "drop": [],
+                                                "over": []
+                                            },
+                                            "item": "none"
+                                        }
                                     }
                                 ],
                                 "id": "default15",
@@ -131,7 +337,39 @@ var dialogs = [
                                         ],
                                         "output": [
                                             {
-                                                "kind": "Content"
+                                                "kind": "Content",
+                                                "buttons": [],
+                                                "uploader": {
+                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
+                                                    "alias": "uploadFile",
+                                                    "headers": {},
+                                                    "queue": [],
+                                                    "progress": 0,
+                                                    "autoUpload": true,
+                                                    "removeAfterUpload": false,
+                                                    "method": "POST",
+                                                    "filters": [
+                                                        {
+                                                            "name": "folder"
+                                                        },
+                                                        {
+                                                            "name": "queueLimit"
+                                                        }
+                                                    ],
+                                                    "formData": [],
+                                                    "queueLimit": 1.7976931348623157e+308,
+                                                    "withCredentials": false,
+                                                    "disableMultipart": false,
+                                                    "isUploading": false,
+                                                    "_nextIndex": 0,
+                                                    "_failFilterIndex": -1,
+                                                    "_directives": {
+                                                        "select": [],
+                                                        "drop": [],
+                                                        "over": []
+                                                    },
+                                                    "item": "none"
+                                                }
                                             }
                                         ],
                                         "id": "default18",
@@ -185,39 +423,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +curCustomer.customerName+ 월별 납부내역입니다.(+listNum+개월)\n\n#paymentHistory#+index+. +date+\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
-                                        "buttons": [],
-                                        "uploader": {
-                                            "url": "/api/samchully/dialog-graphs/uploadImage",
-                                            "alias": "uploadFile",
-                                            "headers": {},
-                                            "queue": [],
-                                            "progress": 0,
-                                            "autoUpload": true,
-                                            "removeAfterUpload": false,
-                                            "method": "POST",
-                                            "filters": [
-                                                {
-                                                    "name": "folder"
-                                                },
-                                                {
-                                                    "name": "queueLimit"
-                                                }
-                                            ],
-                                            "formData": [],
-                                            "queueLimit": 1.7976931348623157e+308,
-                                            "withCredentials": false,
-                                            "disableMultipart": false,
-                                            "isUploading": false,
-                                            "_nextIndex": 0,
-                                            "_failFilterIndex": -1,
-                                            "_directives": {
-                                                "select": [],
-                                                "drop": [],
-                                                "over": []
-                                            },
-                                            "item": "none"
-                                        }
+                                        "text": "[요금] +curCustomer.customerName+ 월별 납부내역입니다.(+listNum+개월)\n\n#paymentHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#"
                                     }
                                 ],
                                 "id": "default19",
@@ -257,7 +463,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "요금납부 화면입니다.\n원하시는 메뉴를 선택하세요",
+                                "text": "요금납부를 진행합니다.\n원하시는 납부 방식을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -317,39 +523,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4",
-                                        "buttons": [],
-                                        "uploader": {
-                                            "url": "/api/samchully/dialog-graphs/uploadImage",
-                                            "alias": "uploadFile",
-                                            "headers": {},
-                                            "queue": [],
-                                            "progress": 0,
-                                            "autoUpload": true,
-                                            "removeAfterUpload": false,
-                                            "method": "POST",
-                                            "filters": [
-                                                {
-                                                    "name": "folder"
-                                                },
-                                                {
-                                                    "name": "queueLimit"
-                                                }
-                                            ],
-                                            "formData": [],
-                                            "queueLimit": 1.7976931348623157e+308,
-                                            "withCredentials": false,
-                                            "disableMultipart": false,
-                                            "isUploading": false,
-                                            "_nextIndex": 0,
-                                            "_failFilterIndex": -1,
-                                            "_directives": {
-                                                "select": [],
-                                                "drop": [],
-                                                "over": []
-                                            },
-                                            "item": "none"
-                                        }
+                                        "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default12",
@@ -367,7 +541,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "다음 목록의 납부를 진행합니다.\n\n핸드폰 번호를 입력하세요",
+                                                "text": "다음 목록의 납부를 진행합니다.\n\n2017년 3월\n\n핸드폰 번호를 입력하세요",
                                                 "buttons": [],
                                                 "uploader": {
                                                     "url": "/api/samchully/dialog-graphs/uploadImage",
@@ -413,109 +587,17 @@ var dialogs = [
                                                 ],
                                                 "output": [
                                                     {
-                                                        "kind": "Action",
-                                                        "call": "등록완료_",
+                                                        "kind": "Content",
+                                                        "type": "call",
+                                                        "dialog": "등록완료_",
                                                         "options": {
                                                             "output": "인증번호 입력!"
-                                                        }
+                                                        },
+                                                        "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
                                                     }
                                                 ],
                                                 "id": "default17",
-                                                "children": [
-                                                    {
-                                                        "name": "인증번호 입력",
-                                                        "input": [
-                                                            {
-                                                                "if": "false"
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Content",
-                                                                "text": "다시 인증 번호를 입력해주세요."
-                                                            }
-                                                        ],
-                                                        "id": "default47",
-                                                        "children": [
-                                                            {
-                                                                "name": "등록완료_",
-                                                                "input": [
-                                                                    {
-                                                                        "regexp": "\\d{4}"
-                                                                    }
-                                                                ],
-                                                                "output": [
-                                                                    {
-                                                                        "kind": "Content",
-                                                                        "text": "완료",
-                                                                        "if": "context.dialog.smsAuth == dialog.inRaw.replace(/\\s*/g, '')",
-                                                                        "buttons": [],
-                                                                        "uploader": {
-                                                                            "url": "/api/samchully/dialog-graphs/uploadImage",
-                                                                            "alias": "uploadFile",
-                                                                            "headers": {},
-                                                                            "queue": [],
-                                                                            "progress": 0,
-                                                                            "autoUpload": true,
-                                                                            "removeAfterUpload": false,
-                                                                            "method": "POST",
-                                                                            "filters": [
-                                                                                {
-                                                                                    "name": "folder"
-                                                                                },
-                                                                                {
-                                                                                    "name": "queueLimit"
-                                                                                }
-                                                                            ],
-                                                                            "formData": [],
-                                                                            "queueLimit": 1.7976931348623157e+308,
-                                                                            "withCredentials": false,
-                                                                            "disableMultipart": false,
-                                                                            "isUploading": false,
-                                                                            "_nextIndex": 0,
-                                                                            "_failFilterIndex": -1,
-                                                                            "_directives": {
-                                                                                "select": [],
-                                                                                "drop": [],
-                                                                                "over": []
-                                                                            },
-                                                                            "item": "none"
-                                                                        }
-                                                                    },
-                                                                    {
-                                                                        "kind": "Action",
-                                                                        "repeat": 1,
-                                                                        "options": {
-                                                                            "output": "인증 번호를 입력해주세용ㅇㅇㅇㅇ"
-                                                                        }
-                                                                    }
-                                                                ],
-                                                                "id": "default48"
-                                                            },
-                                                            {
-                                                                "name": "인증번호 불일치_",
-                                                                "input": [
-                                                                    {
-                                                                        "if": "false"
-                                                                    }
-                                                                ],
-                                                                "output": [
-                                                                    {
-                                                                        "kind": "Content",
-                                                                        "text": "인증 번호를 다시",
-                                                                        "buttons": [
-                                                                            {
-                                                                                "url": "",
-                                                                                "text": "인증번호 재발송"
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                ],
-                                                                "id": "default20"
-                                                            }
-                                                        ]
-                                                    }
-                                                ],
+                                                "children": [],
                                                 "task": {
                                                     "name": "sendSMSAuth"
                                                 }
@@ -558,7 +640,59 @@ var dialogs = [
                                         "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
-                                "id": "default23"
+                                "id": "default23",
+                                "children": [
+                                    {
+                                        "name": "납부연월선택_편의점",
+                                        "input": [
+                                            {
+                                                "types": "number"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "다음 목록의 납부를 진행합니다.\n\n2017년 3월\n\n핸드폰 번호를 입력하세요."
+                                            }
+                                        ],
+                                        "id": "default20",
+                                        "children": [
+                                            {
+                                                "name": "핸드폰입력2",
+                                                "input": [
+                                                    {
+                                                        "types": "mobile"
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다."
+                                                    }
+                                                ],
+                                                "id": "default47",
+                                                "task": {
+                                                    "name": "sendSMSAuth"
+                                                }
+                                            },
+                                            {
+                                                "name": "리피트",
+                                                "input": [
+                                                    {
+                                                        "if": "true"
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "repeat": 1
+                                                    }
+                                                ],
+                                                "id": "default48"
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             {
                                 "name": "입금전용계좌 조회",
@@ -570,11 +704,11 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌를 선택해주세요",
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n1, 기업은행\n910-4422-4123\n2, 하나은행\n5302-33-441-3332",
                                         "buttons": [
                                             {
                                                 "url": "",
-                                                "text": "입금전용계좌 조회"
+                                                "text": "농협 입금전용계좌 생성"
                                             }
                                         ]
                                     }
@@ -585,22 +719,17 @@ var dialogs = [
                                         "name": "입금전용계좌 리스트",
                                         "input": [
                                             {
-                                                "text": "입금전용계좌 리스트"
+                                                "text": "농협"
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "1, 전용계좌 1",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "농협 입금전용계좌 생성"
-                                                    }
-                                                ]
+                                                "text": "1, 기업은행\n910-4422-4123\n2, 하나은행\n5302-33-441-3332\n3. 농협은행\n402-0338-4334-11"
                                             }
                                         ],
-                                        "id": "default25"
+                                        "id": "default25",
+                                        "children": []
                                     }
                                 ]
                             }
@@ -616,7 +745,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "전자고지",
+                                "text": "전자고지를 신청하거나 해지하실 수 있습니다.\n원하시는 메뉴를 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -641,7 +770,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지 방법입니다.\n 전자고지를 신청하거나 변경하시겠습니까?",
+                                        "text": "현재 고지 방법입니다.\n\n\"카카오페이 고지\"\n\n 전자고지를 신청하거나 변경하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -676,7 +805,38 @@ var dialogs = [
                                                         "url": "",
                                                         "text": "이메일 고지"
                                                     }
-                                                ]
+                                                ],
+                                                "uploader": {
+                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
+                                                    "alias": "uploadFile",
+                                                    "headers": {},
+                                                    "queue": [],
+                                                    "progress": 0,
+                                                    "autoUpload": true,
+                                                    "removeAfterUpload": false,
+                                                    "method": "POST",
+                                                    "filters": [
+                                                        {
+                                                            "name": "folder"
+                                                        },
+                                                        {
+                                                            "name": "queueLimit"
+                                                        }
+                                                    ],
+                                                    "formData": [],
+                                                    "queueLimit": 1.7976931348623157e+308,
+                                                    "withCredentials": false,
+                                                    "disableMultipart": false,
+                                                    "isUploading": false,
+                                                    "_nextIndex": 0,
+                                                    "_failFilterIndex": -1,
+                                                    "_directives": {
+                                                        "select": [],
+                                                        "drop": [],
+                                                        "over": []
+                                                    },
+                                                    "item": "none"
+                                                }
                                             }
                                         ],
                                         "id": "default27",
@@ -685,23 +845,13 @@ var dialogs = [
                                                 "name": "카카오페이 고지",
                                                 "input": [
                                                     {
-                                                        "text": "휴대폰번호 확인"
+                                                        "text": "카카오 페이"
                                                     }
                                                 ],
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "휴대폰 번호가 맞습니까?",
-                                                        "buttons": [
-                                                            {
-                                                                "url": "",
-                                                                "text": "네"
-                                                            },
-                                                            {
-                                                                "url": "",
-                                                                "text": "아니요"
-                                                            }
-                                                        ]
+                                                        "text": "카카에페이 URL 발송"
                                                     }
                                                 ],
                                                 "id": "default28"
@@ -716,10 +866,27 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "LMS 고지입니다.\n휴대폰 번호가 맞습니까"
+                                                        "text": "LMS 고지받을 휴대폰 번호를 입력해주세요"
                                                     }
                                                 ],
-                                                "id": "default29"
+                                                "id": "default29",
+                                                "children": [
+                                                    {
+                                                        "name": "LMS확인",
+                                                        "input": [
+                                                            {
+                                                                "types": "mobile"
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Content",
+                                                                "text": "신청 완료되었습니다."
+                                                            }
+                                                        ],
+                                                        "id": "default53"
+                                                    }
+                                                ]
                                             },
                                             {
                                                 "name": "이메일 고지",
@@ -731,10 +898,27 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "이메일 주소가 맞습니까"
+                                                        "text": "받으실 이메일 주소를 입력해주세요."
                                                     }
                                                 ],
-                                                "id": "default30"
+                                                "id": "default30",
+                                                "children": [
+                                                    {
+                                                        "name": "New Dialog",
+                                                        "input": [
+                                                            {
+                                                                "types": "email"
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Content",
+                                                                "text": "신청 완료되었습니다."
+                                                            }
+                                                        ],
+                                                        "id": "default54"
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
@@ -750,20 +934,33 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지방법입니다.\n해지하시겠습니까",
+                                        "text": "현재 고지방법입니다.\n\"카카오페이 고지\"\n해지하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "url": "",
                                                 "text": "네"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "아니요"
                                             }
                                         ]
                                     }
                                 ],
-                                "id": "default31"
+                                "id": "default31",
+                                "children": [
+                                    {
+                                        "name": "해지완료",
+                                        "input": [
+                                            {
+                                                "text": "네"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "전자고지 해지 완료되었습니다."
+                                            }
+                                        ],
+                                        "id": "default55"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1079,7 +1276,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "이사",
+                "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
                 "buttons": [
                     {
                         "url": "",
@@ -1298,6 +1495,44 @@ var dialogs = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1376,7 +1611,10 @@ var commonDialogs = [
                     "item": "/files/samchully-1515459210907-samchully.png"
                 }
             }
-        ]
+        ],
+        "task": {
+            "name": "getAuth"
+        }
     },
     {
         "id": "defaultcommon1",
@@ -1418,6 +1656,44 @@ var commonDialogs = [
         }
     }
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
