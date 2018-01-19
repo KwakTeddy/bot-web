@@ -322,11 +322,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.close = function()
     {
-        if($scope.isNew)
-        {
-            DialogGraph.deleteFocusedDialog();
-        }
-
         DialogGraphEditor.close();
     };
 
