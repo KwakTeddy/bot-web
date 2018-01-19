@@ -258,7 +258,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result = $scope.oldDialog;
         }
 
-        console.log('아아아 : ', $scope.dialog.input);
         for(var i=0; i<$scope.dialog.input.length; i++)
         {
             var input = $scope.dialog.input[i];
@@ -320,37 +319,63 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         return result;
     };
 
+    $scope.inputNLU = function(index, done)
+    {
+        if($scope.dialog.input.length == index)
+        {
+            return done();
+        }
+
+        var text = $scope.dialog.input[index].text;
+        if(text)
+        {
+            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+            {
+                $scope.dialog.input[index].text = result.text;
+                $scope.inputNLU(index+1, done);
+            });
+        }
+        else
+        {
+            $scope.inputNLU(index+1, done);
+        }
+    };
+
     $scope.save = function(e)
     {
         $scope.dialog.input = $scope.tempInputList;
-        delete $scope.tempInputList;
-        if($scope.oldDialog && !DialogGraph.checkDuplicatedName($scope.dialog))
+
+        $scope.inputNLU(0, function()
         {
-            alert($scope.dialog.name + $scope.lan(' is duplicated'));
-            return;
-        }
+            delete $scope.tempInputList;
+            if($scope.oldDialog && !DialogGraph.checkDuplicatedName($scope.dialog))
+            {
+                alert($scope.dialog.name + $scope.lan(' is duplicated'));
+                return;
+            }
 
-        var result = $scope.parseResult();
+            var result = $scope.parseResult();
 
-        // 새로 추가되는 경우 실 데이터에도 추가해줌.
-        // if($scope.parentDialog && !$scope.oldDialog)
-        // {
-        //     DialogGraph.addChildDialog($scope.parentDialog, result);
-        // }
+            // 새로 추가되는 경우 실 데이터에도 추가해줌.
+            // if($scope.parentDialog && !$scope.oldDialog)
+            // {
+            //     DialogGraph.addChildDialog($scope.parentDialog, result);
+            // }
 
-        DialogGraph.refresh();
-        DialogGraph.setDirty(true);
-        DialogGraph.focusById(result.id);
+            DialogGraph.refresh();
+            DialogGraph.setDirty(true);
+            DialogGraph.focusById(result.id);
 
-        if(DialogGraphEditor.saveCallback)
-        {
-            DialogGraphEditor.saveCallback(result);
-            DialogGraphEditor.saveCallback = undefined;
-        }
+            if(DialogGraphEditor.saveCallback)
+            {
+                DialogGraphEditor.saveCallback(result);
+                DialogGraphEditor.saveCallback = undefined;
+            }
 
-        $scope.close();
+            $scope.close();
 
-        e.preventDefault();
+            e.preventDefault();
+        });
     };
 
     $scope.close = function()
