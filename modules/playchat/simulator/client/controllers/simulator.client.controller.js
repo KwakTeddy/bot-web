@@ -213,11 +213,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else if(e.keyCode == 116) //F5
             {
                 clearBubble();
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':build', false);
             }
             else if(e.keyCode == 117) //F6
             {
                 clearBubble();
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':reset memory', false);
             }
             else if(e.keyCode == 27) // Esc
@@ -262,6 +264,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 }
 
                 $scope.chatbotName = data.name;
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':reset user', false);
             }, Beagle.error);
         };

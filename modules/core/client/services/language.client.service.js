@@ -2898,6 +2898,24 @@
                 "en": "Move Dialog",
                 "zh": "移动对话框",
                 "jp": "移動ダイアログ"
+            },
+            "Ask the question again": {
+                "ko": "다시 질문하기",
+                "en": "Ask the question again",
+                "zh": "再次提问",
+                "jp": "もう一度質問してください"
+            },
+            "Search after dialog moved": {
+                "ko": "대화 이동 후 검색",
+                "en": "Search after dialog moved",
+                "zh": "搜索对话框后移动。",
+                "jp": "ダイアログが移動した後の検索。"
+            },
+            "Move to previous dialog": {
+                "ko": "이전 대화로 이동",
+                "en": "Move to previous dialog",
+                "zh": "移到上一个对话框",
+                "jp": "前のダイアログに移動"
             }
         };
 

@@ -13,10 +13,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     $scope.actionList =
     [
         { key: 'call', name: LanguageService('Move Dialog') },
-        { key: 'callChild', name: 'Call Child' },
+        { key: 'callChild', name: LanguageService('Search after dialog moved') },
         { key: 'returnCall', name: 'Return Call' },
-        { key: 'up', name: 'Up' },
-        { key: 'repeat', name: 'Repeat' },
+        { key: 'up', name: LanguageService('Move to previous dialog') },
+        { key: 'repeat', name: LanguageService('Ask the question again') },
         { key: 'return', name: 'Return' }
     ];
 
