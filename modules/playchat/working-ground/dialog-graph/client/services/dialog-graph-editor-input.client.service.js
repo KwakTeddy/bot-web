@@ -15,6 +15,8 @@
         var DialogGraphEditorInput = {};
         DialogGraphEditorInput.init = function($scope)
         {
+            $scope.showInputList = false;
+
             angular.element('.dialog-editor-input-description').text('');
             angular.element('.dialog-editor-body').css('overflow', 'auto');
 
@@ -86,6 +88,18 @@
                     }
                 }
             }
+
+            var template = '<div class="dialog-editor-input-guide-box">\n' +
+            '                            <div class="dialog-editor-input-description"></div>\n' +
+            '                            <div class="dialog-editor-input-list-box ng-hide" ng-show="showInputList">\n' +
+            '                                <div class="dialog-editor-input-list-box-title">↓ ↑ to navigate&nbsp;&nbsp;&nbsp; enter to select &nbsp;&nbsp;&nbsp;esc to dismiss</div>\n' +
+            '                                <ul></ul>\n' +
+            '                            </div>\n' +
+            '                        </div>';
+            if(!angular.element('.dialog-editor-input-guide-box').get(0))
+            {
+                angular.element($compile(template)($scope)).insertAfter(angular.element('.dialog-editor-input-wrapper:last'));
+            }
         };
 
         DialogGraphEditorInput.make = function($scope)
@@ -130,10 +144,29 @@
 
             var selectInput = function(callback)
             {
-                angular.element('.dialog-editor-input-list-box > ul > li').on('click', function()
+                angular.element('.dialog-editor-input-list-box > ul > li').on('mousedown', function()
                 {
-                    var text = angular.element(this).text();
-                    callback(text);
+                    if(angular.element(this).attr('addNew'))
+                    {
+                        var text = angular.element(this).text();
+                        if(text.startsWith('#'))
+                        {
+
+                        }
+                        else if(text.startsWith('@'))
+                        {
+
+                        }
+                        else if(text.startsWith('$'))
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        var text = angular.element(this).text();
+                        callback(text);
+                    }
                 });
             };
 
@@ -149,6 +182,8 @@
                     {
                         html += '<li>#' + result[i].name + '</li>';
                     }
+
+                    html += '<li data-type="addNew">' + LanguageService('Add New') + '</li>';
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
@@ -168,6 +203,8 @@
                     {
                         html += '<li>@' + result[i].name + '</li>';
                     }
+
+                    html += '<li>' + LanguageService('Add New') + '</li>';
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
@@ -201,6 +238,8 @@
                             html += '<li>$' + result[i].name + '</li>';
                         }
                     }
+
+                    html += '<li>' + LanguageService('Add New') + '</li>';
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
@@ -482,6 +521,7 @@
                         {
                             showIntentInputList(text.replace('#', ''), function(text)
                             {
+                                console.log('타겟 : ', target);
                                 target.innerText = text;
 
                                 var span = document.createElement('span');
