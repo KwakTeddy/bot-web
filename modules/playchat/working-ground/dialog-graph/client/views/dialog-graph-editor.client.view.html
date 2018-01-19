@@ -78,7 +78,7 @@
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
                     <p class="dialog-editor-subject">답변 전 실행 함수</p>
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
-                        <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);" ng-keyup="taskKeyUp($event);">
+                        <input type="text" ng-model="dialog.task.name" ng-focus="taskFocus($event);" ng-keydown="taskKeydown($event);" ng-keyup="taskKeyUp($event);">
                         <ul class="dialog-editor-select-options">
                             <li ng-mousedown="createTask(dialog.task.name);">{{lan('Add New') }}</li>
                             <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">

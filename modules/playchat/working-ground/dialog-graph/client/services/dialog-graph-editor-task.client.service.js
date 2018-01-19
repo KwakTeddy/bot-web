@@ -95,6 +95,11 @@
                 }
             };
 
+            $scope.taskFocus = function(e)
+            {
+                $scope.taskKeyUp(e);
+            };
+
             $scope.selectTask = function(e, task)
             {
                 $scope.dialog.task = { name: task.name };
