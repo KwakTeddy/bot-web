@@ -4,8 +4,6 @@
 
 angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService','LanguageService', function ($window, $scope, $location, $cookies, $resource, MenuService, LanguageService)
 {
-    var ChatbotService = $resource('/api/chatbots/:botId', { botId : '@botId'});
-
     var chatbot = $cookies.getObject('chatbot');
 
     $scope.menus = [];
@@ -57,8 +55,23 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         //         link.attr('media', link.attr('data-media'));
         // });
 
+        if(location.href.indexOf('/development/dialog-graph') == -1)
+        {
+            $scope.stopToggle = true;
+        }
+        else
+        {
+            $scope.stopToggle = false;
+        }
+
         $scope.toggleGnb = function()
         {
+            if($scope.stopToggle == false)
+            {
+                $scope.stopToggle = true;
+                return;
+            }
+
             var isClosed = !angular.element('.gnb .logo-min img').is(':visible');
 
             //responsive 링크가 작동하면 접히고 그렇지 않으면 펼쳐진다.
@@ -73,22 +86,27 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             else
             {
                 $scope.stopToggle = true;
+                console.log('스탑 토글 : ', $scope.stopToggle);
 
                 //펼치기
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
             }
         };
 
-        $scope.openGnb = function () {
-            if(!$scope.stopToggle){
+        $scope.openGnb = function ()
+        {
+            if(!$scope.stopToggle)
+            {
                 var link = angular.element('#gnb-responsive-css');
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
                 angular.element('.video-popup').css('left', '255px');
             }
         };
 
-        $scope.closeGnb = function () {
-            if(!$scope.stopToggle){
+        $scope.closeGnb = function ()
+        {
+            if(!$scope.stopToggle)
+            {
                 var link = angular.element('#gnb-responsive-css');
                 link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
                 angular.element('.video-popup').css('left', '75px');

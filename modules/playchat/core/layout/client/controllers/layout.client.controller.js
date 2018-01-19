@@ -29,6 +29,19 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     var templateId = chatbot.templateId && chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
 
+    var link = angular.element('#gnb-responsive-css');
+    if(location.href.indexOf('/development/dialog-graph') != -1)
+    {
+        // gnb 숨기기
+        link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
+        angular.element('.video-popup').css('left', '75px');
+    }
+    else
+    {
+        link.attr('media', link.attr('data-media')).attr('disabled', '');
+        angular.element('.video-popup').css('left', '255px');
+    }
+
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
     $scope.loaded = function(name)
     {

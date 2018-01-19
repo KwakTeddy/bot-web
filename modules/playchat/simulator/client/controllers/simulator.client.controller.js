@@ -215,6 +215,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 clearBubble();
                 emitMsg(':build', false);
             }
+            else if(e.keyCode == 117) //F6
+            {
+                clearBubble();
+                emitMsg(':reset memory', false);
+            }
             else if(e.keyCode == 27) // Esc
             {
                 var dialogsetElement = angular.element('.dialog-learning-development-content-row').get(0);
