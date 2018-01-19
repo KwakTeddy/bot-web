@@ -152,6 +152,9 @@
                             prev.parent().get(0).scrollTop += diff - 5;
                         }
                     }
+
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
                 }
                 else if(e.keyCode == 40) //down
                 {
@@ -171,6 +174,9 @@
                             next.parent().get(0).scrollTop += diff + 5;
                         }
                     }
+
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
                 }
                 else if(e.keyCode == 13) //enter
                 {
@@ -183,6 +189,11 @@
 
             $scope.onActionKeyUp = function(e)
             {
+                if(e.keyCode == 38 || e.keyCode == 40)
+                {
+                    return;
+                }
+
                 var value = e.currentTarget.value;
                 angular.element(e.currentTarget).next().find('li').each(function()
                 {

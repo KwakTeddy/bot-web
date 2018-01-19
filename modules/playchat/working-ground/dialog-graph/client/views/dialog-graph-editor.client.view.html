@@ -28,7 +28,7 @@
                     <p class="dialog-editor-subject">사용자 입력</p>
                     <div class="dialog-editor-input-box">
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input">
-                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder();}}" required="true" style="color: white;">
+                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder();}}" required="true" style="color: white;" tabindex="-1">
                             <div class="editable" contenteditable="true" ng-keydown="onKeyDown($event);" ng-mouseup="onFocus($event);" ng-focus="focusGuideBox($event);" ng-keyup="onKeyUp($event)" ng-blur="onBlur($event, $index);" data-index="{{$index}}"></div>
                             <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($event);">
                             <span ng-if="$index == dialog.input.length-1" class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>

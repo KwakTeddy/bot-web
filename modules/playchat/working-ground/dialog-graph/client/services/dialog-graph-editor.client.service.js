@@ -13,6 +13,7 @@
             this.callback = undefined;
             this.bindCallback = undefined;
             this.saveCallback = undefined;
+            this.closeCallback = undefined;
             this.myBotAuth = { read: true, edit: true };
         };
 
@@ -51,6 +52,11 @@
             this.saveCallback = callback;
         };
 
+        DialogGraphEditor.prototype.setCloseCallback = function(callback)
+        {
+            this.closeCallback = callback;
+        };
+
         DialogGraphEditor.prototype.close = function()
         {
             angular.element('.graph-body').css('right', '');
@@ -59,6 +65,11 @@
             angular.element('.dialog-editor-input-list-modal').hide();
 
             angular.element('.dialog-graph-code-editor-controller').removeClass('edit');
+
+            if(this.closeCallback)
+            {
+                this.closeCallback();
+            }
         };
 
         if(!instance)

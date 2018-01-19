@@ -851,6 +851,10 @@ function executeDialog(dialog, context, print, callback, options) {
             if (dialog.output.options) nextOptions = utils.mergeWithClone(dialog.output.options, nextOptions);
             // else if(dialog.output.options) nextOptions = utils.clone(dialog.output.options);
 
+              if(context && context.botUser && context.botUser.socket)
+              {
+                  context.botUser.socket.emit('send_msg', JSON.stringify({ type: 'dialog', data: { dialogId: _dialog.id }}));
+              }
             executeDialog(_dialog, context, print, callback, utils.merge(nextOptions, {current: dialog}, true));
             cb(true);
           } else {

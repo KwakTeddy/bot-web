@@ -385,6 +385,11 @@
             }
         };
 
+        DialogGraph.prototype.deleteFocusedDialog = function()
+        {
+            this.deleteDialog(angular.element('#' + this.focusedDialog));
+        };
+
         DialogGraph.prototype.deleteDialog = function(target)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
@@ -430,6 +435,7 @@
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
+                        console.log('여기 아니여?');
                         //ESC
                         that.editor.close();
                         if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
