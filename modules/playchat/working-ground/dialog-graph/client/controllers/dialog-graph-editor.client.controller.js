@@ -10,6 +10,16 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     $scope.oldDialog = undefined;
     $scope.dialog = {};
 
+    $scope.actionList =
+    [
+        { key: 'call', name: LanguageService('Move Dialog') },
+        { key: 'callChild', name: 'Call Child' },
+        { key: 'returnCall', name: 'Return Call' },
+        { key: 'up', name: 'Up' },
+        { key: 'repeat', name: 'Repeat' },
+        { key: 'return', name: 'Return' }
+    ];
+
     $scope.isAdvancedMode = false;
 
     $scope.changeMode = function(e)
@@ -41,7 +51,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
             $scope.dialog.output = JSON.parse(angular.toJson(dialog.output));
             $scope.dialog.task = dialog.task;
-            
+
             for(var i=0; i<$scope.dialog.input.length; i++)
             {
                 if($scope.dialog.input[i].intent || $scope.dialog.input[i].entities || $scope.dialog.input[i].types || $scope.dialog.input[i].regexp || $scope.dialog.input[i].if)
@@ -63,7 +73,25 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 {
                     $scope.isAdvancedMode = true;
                 }
+                else if(dialog.output[i].kind == 'Action')
+                {
+                    $scope.dialog.output[i].text = dialog.output[i].options;
+                    delete $scope.dialog.output[i].options;
+
+                    for(var j=0; j<$scope.actionList.length; j++)
+                    {
+                        if($scope.dialog.output[i][$scope.actionList[j].key])
+                        {
+                            $scope.dialog.output[i].type = $scope.actionList[j].key;
+                            $scope.dialog.output[i].dialog = $scope.dialog.output[i][$scope.actionList[j].key];
+                            $scope.dialog.output[i][$scope.actionList[j].key]
+                            break;
+                        }
+                    }
+                }
             }
+
+            console.log('아웃풋 : ', $scope.dialog.output);
 
             // 옛날방식의 그래프를 읽기 위한 코드인데 일단 필요 없는듯 하니 뺀다. 만약 신한카드가 온다면 어떨까?
             // if(!$scope.dialog.input.length)

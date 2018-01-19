@@ -7,16 +7,6 @@
     {
         var make = function($scope)
         {
-            $scope.actionList =
-            [
-                { key: 'call', name: LanguageService('Move Dialog') },
-                { key: 'callChild', name: 'Call Child' },
-                { key: 'returnCall', name: 'Return Call' },
-                { key: 'up', name: 'Up' },
-                { key: 'repeat', name: 'Repeat' },
-                { key: 'return', name: 'Return' }
-            ];
-
             $scope.outputTypeChanged = function($event)
             {
             };
@@ -231,7 +221,7 @@
                     delete output[$scope.actionList[i].key];
                 }
 
-                $scope.controlDialogFlow = false;
+                output.kind = 'Content';
             };
 
             $scope.actionValueChanged = function(dialog)
