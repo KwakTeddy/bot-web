@@ -341,7 +341,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
               if(Array.isArray(input.entities)) {
                 for(var i in input.entities) {
                   for(key in context.botUser.entities) {
-                    if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
+                      if(input.entities[i] == key){
+                    // if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
                       eachMatched2 = true;
                     }
                   }
@@ -350,7 +351,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                 else cb2(true, false);
               } else {
                 for(key in context.botUser.entities) {
-                  if(input.entities == '@' + key || input.entities == context.botUser.entities[key] + '@' + key) {
+                  // if(input.entities == '@' + key || input.entities == context.botUser.entities[key] + '@' + key) {
+                if(input.entities == key){
                     eachMatched2 = true;
                   }
                 }
@@ -540,6 +542,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
         ], function(err, matched) {
           if(intentMatched && context.bot.contexts && Object.keys(context.bot.contexts).length > 0) {
+          // if(intentMatched){
             intentDialogs.push(dialog);
             _cb(null);
           } else
