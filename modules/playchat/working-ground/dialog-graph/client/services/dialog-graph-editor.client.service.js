@@ -30,7 +30,7 @@
             {
                 var el = angular.element('#graphDialogEditor .dialog-editor-input:first').focus().get(0);
                 el.setSelectionRange(0, el.value.length);
-            }, 602);
+            }, 502);
 
             if(this.callback)
                 this.callback(parent, dialog);
