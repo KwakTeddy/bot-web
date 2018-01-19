@@ -111,6 +111,12 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
         } else {
             if(_out.indexOf('|') == -1)
             {
+                if(_out.indexOf('알아듣지 못했습니다') != -1)
+                {
+                    // 일단 하드코딩. 나중에  바꿔야 함
+                    context.botUser.socket.emit('send_msg', JSON.stringify({ type: 'dialog', data: { dialogId: 'defaultcommon0' }}));
+                }
+
                 outCallback(pre == undefined ? _out : pre + '"' + _out + '"', _task);
             }
             else {
@@ -250,8 +256,10 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
 
                     // var isFirst = false;
                     dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
-                        if(matched) {
-                            if(_dialog) {
+                        if(matched)
+                        {
+                            if(_dialog)
+                            {
                                 console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
                                     context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
                                     entities: context.botUser.entities}));
@@ -283,6 +291,12 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
 
                                 context.botUser.nlu.dialog = mappedDialog;
                             }
+                            // else
+                            // {
+                            //     // 일단 하드코딩. 나중에  바꿔야 함
+                            //     context.botUser.socket.emit('send_msg', JSON.stringify({ type: 'dialog', data: { dialogId: 'defaultcommon0' }}));
+                            //     cb(null);
+                            // }
 
                             if(_dialog && context.bot.startDialog && context.bot.startDialog.name == _dialog.name) {
                                 context.botUser.currentDialog = null;
@@ -290,7 +304,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
 
                             cb();
                         }
-                        else cb(null);
 
                     })
                 }

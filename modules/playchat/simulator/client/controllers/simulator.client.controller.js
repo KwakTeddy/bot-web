@@ -175,6 +175,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             try
             {
                 data = JSON.parse(data);
+                console.log(data);
                 if(data.type == 'dialog')
                 {
                     $rootScope.$broadcast('dialogGraphTestFocus', data.data.dialogId);
