@@ -15,7 +15,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
     else
         $scope.host = 'https://' + $scope.host;
 
-    $scope.chatbot = $cookies.getObject('chatbot');
+    var chatbot = $scope.chatbot = $cookies.getObject('chatbot');
 
     $scope.myBotAuth = chatbot.myBotAuth;
     if(!$scope.myBotAuth.edit)

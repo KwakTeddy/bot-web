@@ -14,101 +14,18 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.changeMode = function(e)
     {
-        // if($scope.isAdvancedMode)
-        // {
-        //     if($scope.dialog.output.length > 1)
-        //     {
-        //         var check = false;
-        //         for(var i=0; i<$scope.dialog.output.length; i++)
-        //         {
-        //             if($scope.dialog.output[i].kind == 'Action')
-        //             {
-        //                 check = true;
-        //                 break;
-        //             }
-        //         }
-        //
-        //         if(check)
-        //         {
-        //             //아웃풋이 여러개고 그 중에 Action도 있는경우는 basic모드에서 편집 불가
-        //             alert($scope.lan('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.'));
-        //             return;
-        //         }
-        //     }$
-        //
-        //     $scope.isAdvancedMode = false;
-        // }
-        // else
-        // {
-        //     $scope.isAdvancedMode = true;
-        // }
+        if($scope.isAdvancedMode)
+        {
+            $scope.isAdvancedMode = false;
+        }
+        else
+        {
+            $scope.isAdvancedMode = true;
+        }
 
         e.preventDefault();
         e.stopPropagation();
     };
-
-    // 아래코드는 다이얼로그 데이터를 보고 Advanced 모드인지 판단해서 변환해주는 코드인데 일단 쓰지 않는다. 만약 더 이상 쓰지 않으면 삭제
-    // $scope.$watch('isAdvancedMode', function(after, before)
-    // {
-    //     if(after)
-    //     {
-    //         for(var i=0; i<$scope.dialog.input.length; i++)
-    //         {
-    //             if(!$scope.dialog.input[i].text)
-    //                 delete $scope.dialog.input[i].text;
-    //         }
-    //     }
-    //
-    //     if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
-    //     {
-    //         // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.
-    //         $scope.isUseOutput = true;
-    //         var actionObject = JSON.parse(angular.toJson($scope.dialog.actionOutput));
-    //         for(var key in actionObject)
-    //         {
-    //             $scope.dialog.output[0][key] = actionObject[key];
-    //         }
-    //
-    //         delete $scope.dialog.output[0].text;
-    //
-    //         angular.element('input[type="radio"][name="output"]').get(0).checked = true;
-    //     }
-    //     else if(!after && before)
-    //     {
-    //         // Advanced에서 basic으로 바뀐경우 여기는 변경이 가능한 조건일때만 수행된다. 즉 output이 Action 하나이거나 Content가 여러개.
-    //
-    //         if($scope.dialog.output.length == 1 && $scope.dialog.output[0].kind == 'Action')
-    //         {
-    //             // Action이 하나인경우 actionObject로 변환하고
-    //             var actionObject = {};
-    //             actionObject.kind = 'Action';
-    //             actionObject.type = $scope.dialog.output[0].type;
-    //             actionObject.dialog = $scope.dialog.output[0].dialog;
-    //
-    //             // Basic모드에 맞게 데이터 구조 변경
-    //             $scope.isUseOutput = false;
-    //             $scope.dialog.actionOutput = actionObject;
-    //             // $scope.dialog.output;
-    //
-    //             console.log($scope.dialog.actionOutput);
-    //
-    //             $scope.dialog.output[0].kind = 'Content';
-    //             $scope.dialog.output[0].text = '';
-    //             delete $scope.dialog.output[0].type;
-    //             delete $scope.dialog.output[0].dialog;
-    //         }
-    //         else if($scope.dialog.output.length > 1)
-    //         {
-    //             // Content로 여러개인경우는 걍 놔둬도 될듯
-    //             $scope.isUseOutput = true;
-    //         }
-    //     }
-    //
-    //     if($scope.isAdvancedMode)
-    //     {
-    //         $scope.useOutput();
-    //     }
-    // });
 
     $scope.initialize = function(parent, dialog)
     {
@@ -122,114 +39,94 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.dialog.id = dialog.id;
             $scope.dialog.name = dialog.name;
             $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
-            $scope.dialog.output = [];
+            $scope.dialog.output = JSON.parse(angular.toJson(dialog.output));
             $scope.dialog.task = dialog.task;
+            
+            for(var i=0; i<$scope.dialog.input.length; i++)
+            {
+                if($scope.dialog.input[i].intent || $scope.dialog.input[i].entities || $scope.dialog.input[i].types || $scope.dialog.input[i].regexp || $scope.dialog.input[i].if)
+                {
+                    $scope.isAdvancedMode = true;
+                    break;
+                }
+            }
 
-            console.log('허어? : ', $scope.dialog.input);
-
-            if(dialog.task)
+            if($scope.dialog.task)
             {
                 $scope.isAdvancedMode = true;
             }
 
-            if(!$scope.dialog.input.length)
+            for(var i=0; i<dialog.output.length; i++)
             {
-                $scope.dialog.input = [$scope.dialog.input];
-            }
-
-            if(typeof dialog.output == 'string')
-            {
-                $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
-            }
-            else if(typeof dialog.output == 'object')
-            {
-                if(dialog.output.length > 0)
+                //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
+                if(dialog.output[i].if)
                 {
-                    var actionObjects = [];
-                    for(var i=0; i<dialog.output.length; i++)
-                    {
-                        //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
-                        if(dialog.output[i].kind == 'Action')
-                        {
-                            var actionObject = {};
-                            actionObject.kind = 'Action';
-
-                            for(var key in dialog.output[i])
-                            {
-                                if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                                 {
-                                    actionObject.type = key;
-                                    actionObject.dialog = dialog.output[i][key];
-                                }
-                            }
-
-                            if(dialog.output[i].if)
-                            {
-                                actionObject.if = dialog.output[i].if;
-                            }
-
-                            if(dialog.output[i].options)
-                            {
-                                actionObject.options = dialog.output[i].options;
-                            }
-
-                            actionObjects.push(actionObject);
-                        }
-                        else
-                        {
-                            if(dialog.output[i].if)
-                            {
-                                $scope.isAdvancedMode = true;
-                                $scope.isUseOutput = true;
-                            }
-
-                            $scope.dialog.output.push(dialog.output[i]);
-                        }
-                    }
-
                     $scope.isAdvancedMode = true;
-                    for(var i=0; i<actionObjects.length; i++)
-                    {
-                        $scope.dialog.output.push(actionObjects[i]);
-                    }
-                }
-                else
-                {
-                    var check = false;
-                    for(var key in dialog.output)
-                    {
-                        if(key == 'options' || key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                        {
-                            var actionObject = {};
-                            actionObject.kind = 'Action';
-
-                            for(var key in dialog.output)
-                            {
-                                if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                                {
-                                    actionObject.type = key;
-                                    actionObject.dialog = dialog.output[key];
-                                    break;
-                                }
-                            }
-
-                            $scope.dialog.output.push(actionObject);
-
-                            check = true;
-                            break;
-                        }
-                    }
-
-                    if(!check)
-                    {
-                        $scope.dialog.output.push(dialog.output);
-                    }
                 }
             }
-            else
-            {
-                console.log('처리되지 않은 아웃풋 : ', dialog.output);
-            }
+
+            // 옛날방식의 그래프를 읽기 위한 코드인데 일단 필요 없는듯 하니 뺀다. 만약 신한카드가 온다면 어떨까?
+            // if(!$scope.dialog.input.length)
+            // {
+            //     $scope.dialog.input = [$scope.dialog.input];
+            // }
+
+            // if(typeof dialog.output == 'string')
+            // {
+            //     $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
+            // }
+            // else if(typeof dialog.output == 'object')
+            // {
+            //     if(dialog.output.length > 0)
+            //     {
+            //         for(var i=0; i<dialog.output.length; i++)
+            //         {
+            //             //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
+            //             if(dialog.output[i].if)
+            //             {
+            //                 $scope.isAdvancedMode = true;
+            //             }
+            //
+            //             $scope.dialog.output.push(dialog.output[i]);
+            //         }
+            //     }
+                // else
+                // {
+                //     var check = false;
+                //     for(var key in dialog.output)
+                //     {
+                //         if(key == 'options' || key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
+                //         {
+                //             var actionObject = {};
+                //             actionObject.kind = 'Action';
+                //
+                //             for(var key in dialog.output)
+                //             {
+                //                 if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
+                //                 {
+                //                     actionObject.type = key;
+                //                     actionObject.dialog = dialog.output[key];
+                //                     break;
+                //                 }
+                //             }
+                //
+                //             $scope.dialog.output.push(actionObject);
+                //
+                //             check = true;
+                //             break;
+                //         }
+                //     }
+                //
+                //     if(!check)
+                //     {
+                //         $scope.dialog.output.push(dialog.output);
+                //     }
+                // }
+            // }
+            // else
+            // {
+            //     console.log('처리되지 않은 아웃풋 : ', dialog.output);
+            // }
 
             setTimeout(function()
             {

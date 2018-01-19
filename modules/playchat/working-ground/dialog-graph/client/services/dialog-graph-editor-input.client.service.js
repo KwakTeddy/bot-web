@@ -105,6 +105,18 @@
 
         DialogGraphEditorInput.make = function($scope, $rootScope)
         {
+            $scope.getInputPlaceHolder = function()
+            {
+                if($scope.isAdvancedMode)
+                {
+                    return LanguageService('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)');
+                }
+                else
+                {
+                    return LanguageService('Keyword');
+                }
+            };
+
             var initInputList = function(descriptionHide)
             {
                 $scope.showInputList = false;
@@ -574,6 +586,8 @@
                 // 유형 span 생성
                 if(e.key == '#' || e.key == '@' || e.key == '$' || e.key == '/' || (e.key == '(' && text.indexOf('if(') != -1))
                 {
+                    $scope.isAdvancedMode = true;
+
                     var type = 'intent';
                     var replacedText = e.key;
                     var typeText = e.key;

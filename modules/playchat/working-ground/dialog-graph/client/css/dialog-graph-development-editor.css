@@ -845,7 +845,7 @@
 {
     width: 100%;
     box-sizing: border-box;
-    height: 33px;
+    height: 40px;
     border-radius: 6px;
     border: 1px solid #ddd;
 
@@ -1036,7 +1036,7 @@
 
 .dialog-editor-output-input.if
 {
-    width: 90%;
+    width: 85%;
     margin-left: 10px;
 }
 
