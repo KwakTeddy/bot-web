@@ -28,8 +28,9 @@
             angular.element('#graphDialogEditor').css('right', '0');
             setTimeout(function()
             {
-                angular.element('#graphDialogEditor .dialog-editor-input:first').focus();
-            }, 600);
+                var el = angular.element('#graphDialogEditor .dialog-editor-input:first').focus().get(0);
+                el.setSelectionRange(0, el.value.length);
+            }, 602);
 
             if(this.callback)
                 this.callback(parent, dialog);
