@@ -398,12 +398,6 @@
                 "jp": "作り",
                 "zh": "创建"
             },
-            " 머니브레인 MoneyBrain": {
-                "ko": "아테나 Athena - 인공지능 챗봇 플랫폼",
-                "en": " 머니브레인 MoneyBrain",
-                "jp": "Athena - Conversational A.I. Platform",
-                "zh": " MoneyBrain"
-            },
             "Docs": {
                 "ko": "Docs",
                 "en": "Docs",
@@ -752,12 +746,6 @@
                 "jp": "URLを入力してください",
                 "zh": "请在这里写URL地址。"
             },
-            " #인텐트": {
-                "ko": "키워드",
-                "en": " #인텐트",
-                "jp": " @엔티티",
-                "zh": " $타입"
-            },
             "and": {
                 "ko": "그리고",
                 "en": "and",
@@ -805,6 +793,12 @@
                 "en": "Add button",
                 "jp": "ボタン挿入",
                 "zh": "添加按钮"
+            },
+            "Add action": {
+                "ko": "대화 흐름 삽입",
+                "en": "Insert dialog flow",
+                "zh": "插入对话框流",
+                "jp": "ダイアログフローを挿入する"
             },
             "Action1": {
                 "ko": "액션 1",

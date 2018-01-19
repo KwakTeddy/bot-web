@@ -87,6 +87,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             if(!$scope.stopToggle){
                 var link = angular.element('#gnb-responsive-css');
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
+                angular.element('.video-popup').css('left', '255px');
             }
         };
 
@@ -94,6 +95,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             if(!$scope.stopToggle){
                 var link = angular.element('#gnb-responsive-css');
                 link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
+                angular.element('.video-popup').css('left', '75px');
             }
         };
 

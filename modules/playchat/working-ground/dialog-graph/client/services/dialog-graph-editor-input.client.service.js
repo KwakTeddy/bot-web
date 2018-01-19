@@ -21,10 +21,24 @@
             var input = JSON.parse(angular.toJson($scope.dialog.input));
             console.log(input);
 
+            var template = '<input type="text" class="dialog-editor-input" placeholder="' + LanguageService('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') + '" required="true" style="color: white;">\n' +
+                           '                            <div class="editable" contenteditable="true" ng-keydown="onKeyDown($event);" ng-mouseup="onFocus($event);" ng-keyup="onKeyUp($event)" ng-blur="onBlur($event, $index);" data-index="{{$index}}"></div>\n' +
+                           '                            <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);">';
+            var plusbutton = '<span class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>';
+
+
+            angular.element('.dialog-editor-input-wrapper').html('');
             for(var i=0; i<input.length; i++)
             {
-                var target = angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]');
-                target.html('');
+                var t = template.replace('$index', i);
+                if(i == input.length-1)
+                {
+                    t += plusbutton;
+                }
+
+                var target = angular.element($compile(t)($scope));
+                angular.element('.dialog-editor-input-wrapper').append(target);
+                target = target.find('div');
 
                 for(var key in input[i])
                 {
@@ -246,6 +260,8 @@
                 console.log('결과 : ', $scope.dialog.input);
 
                 var json = JSON.parse(angular.toJson($scope.dialog.input));
+
+                console.log('제이슨 : ', json);
                 if(Object.keys(json).length == 0)
                 {
                     e.currentTarget.previousElementSibling.setAttribute('required', 'true');
