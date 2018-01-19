@@ -9,8 +9,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
     var chatbot = $cookies.getObject('chatbot');
 
     var link = angular.element('#gnb-responsive-css');
-    link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
-
+    // link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
 
     $scope.menus = [];
     $scope.botName = chatbot.name;

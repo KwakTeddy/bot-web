@@ -367,6 +367,8 @@
     left: 75px;
 
     width: 200px;
+
+    transition: left 0.3s;
 }
 
 .video-controller

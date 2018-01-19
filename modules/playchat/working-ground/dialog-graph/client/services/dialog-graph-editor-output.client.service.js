@@ -78,9 +78,6 @@
 
             $scope.addOutput = function(e)
             {
-                if(!$scope.useOutput)
-                    return;
-
                 var output = { kind: 'Content', text: '' };
                 $scope.dialog.output.unshift(output);
                 $scope.setOutputImageUploader(0);
@@ -242,17 +239,12 @@
                 var type = dialog.type;
                 if(type == 'up' || type == 'repeat' || type == 'return')
                 {
-                    $scope.actionTypeCheck = true;
                     dialog.dialog = 1;
 
                     if(type == 'return')
                     {
                         dialog.dialog = '';
                     }
-                }
-                else
-                {
-                    $scope.actionTypeCheck = false;
                 }
 
                 dialog.kind = 'Action';

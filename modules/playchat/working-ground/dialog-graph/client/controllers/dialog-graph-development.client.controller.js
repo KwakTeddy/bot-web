@@ -18,6 +18,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
     angular.element('#middle-container').css("top", "0px");
 
+    // gnb 숨기기
+    // var link = angular.element('#gnb-responsive-css');
+    // link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
+
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope, $rootScope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
