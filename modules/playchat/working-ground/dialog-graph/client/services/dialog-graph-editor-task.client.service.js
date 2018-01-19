@@ -34,6 +34,15 @@
                         selectedTask.className = '';
 
                         selectedTask = selectedTask.previousElementSibling;
+
+                        var top = selectedTask.offsetTop;
+                        var scrollTop = selectedTask.parentElement.scrollTop;
+
+                        if(scrollTop > top)
+                        {
+                            var diff = top - scrollTop;
+                            selectedTask.parentElement.scrollTop += diff - 5;
+                        }
                     }
                 }
                 else if(e.keyCode == 40)
@@ -46,6 +55,16 @@
                             selectedTask.className = '';
 
                             selectedTask = selectedTask.nextElementSibling;
+
+                            var bottom = selectedTask.offsetTop + selectedTask.offsetHeight;
+                            var scrollTop = selectedTask.parentElement.scrollTop;
+                            var scrollHeight = selectedTask.parentElement.offsetHeight;
+
+                            if(scrollTop + scrollHeight < bottom)
+                            {
+                                var diff = bottom - (scrollTop + scrollHeight);
+                                selectedTask.parentElement.scrollTop += diff + 5;
+                            }
                         }
                     }
                     else

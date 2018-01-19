@@ -127,6 +127,15 @@
                     {
                         target.removeClass('selected');
                         target.prev().addClass('selected');
+
+                        var top = target.prev().get(0).offsetTop;
+                        var scrollTop = target.prev().parent().get(0).scrollTop;
+
+                        if(scrollTop > top)
+                        {
+                            var diff = top - scrollTop;
+                            target.prev().parent().get(0).scrollTop += diff;
+                        }
                     }
                 }
                 else if(direction == 'down')
@@ -135,6 +144,16 @@
                     {
                         target.removeClass('selected');
                         target.next().addClass('selected');
+
+                        var bottom = target.next().get(0).offsetTop + target.next().get(0).offsetHeight;
+                        var scrollTop = target.next().parent().get(0).scrollTop;
+                        var scrollHeight = target.next().parent().get(0).offsetHeight;
+                        
+                        if(scrollTop + scrollHeight < bottom)
+                        {
+                            var diff = bottom - (scrollTop + scrollHeight);
+                            target.next().parent().get(0).scrollTop += diff;
+                        }
                     }
                 }
             };
@@ -236,6 +255,28 @@
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
                     selectInput(target, callback);
+
+                    var page = 1;
+                    var ul = angular.element('.dialog-editor-input-list-box > ul');
+                    ul.on('scroll', function()
+                    {
+                        if(this.scrollTop + this.offsetHeight + 10 >= this.scrollHeight)
+                        {
+                            IntentService.query({ botId: chatbot.id, page: ++page, countPerPage: 10, name : name ? name.trim() : '' }, function(result)
+                            {
+                                if(result.length > 0)
+                                {
+                                    var html = '';
+                                    for (var i = 0; i < result.length; i++)
+                                    {
+                                        html += '<li>#' + result[i].name + '</li>';
+                                    }
+
+                                    angular.element(html).insertBefore(angular.element('.dialog-editor-input-list-box > ul > li:last'));
+                                }
+                            });
+                        }
+                    });
                 });
             };
 
@@ -257,6 +298,28 @@
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
                     selectInput(target, callback);
+
+                    var page = 1;
+                    var ul = angular.element('.dialog-editor-input-list-box > ul');
+                    ul.on('scroll', function()
+                    {
+                        if(this.scrollTop + this.offsetHeight + 10 >= this.scrollHeight)
+                        {
+                            EntityService.query({ botId: chatbot.id, page: ++page, countPerPage: 10, name : name ? name.trim() : '' }, function(result)
+                            {
+                                if(result.length > 0)
+                                {
+                                    var html = '';
+                                    for (var i = 0; i < result.length; i++)
+                                    {
+                                        html += '<li>@' + result[i].name + '</li>';
+                                    }
+
+                                    angular.element(html).insertBefore(angular.element('.dialog-editor-input-list-box > ul > li:last'));
+                                }
+                            });
+                        }
+                    });
                 });
             };
 
@@ -370,8 +433,6 @@
 
                 var target = selection.focusNode.parentElement;
 
-                console.log('타겟 : ', target);
-
                 if(selection.focusNode.className == 'editable')
                 {
                     target = selection.focusNode;
@@ -476,6 +537,14 @@
 
                         CaretService.placeCaretAtEnd(span);
 
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                }
+                else
+                {
+                    if(e.keyCode == 13)
+                    {
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }

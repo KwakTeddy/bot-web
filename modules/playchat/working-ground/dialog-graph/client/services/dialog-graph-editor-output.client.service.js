@@ -135,9 +135,9 @@
                 });
             };
 
-            $scope.addActionButton = function()
+            $scope.addActionButton = function(output)
             {
-                $scope.controlDialogFlow = true;
+                output.kind = 'Action';
             };
 
             $scope.onActionFocus = function(e)
