@@ -213,7 +213,7 @@
                     }
                     else
                     {
-                        callback(text);
+                        callback(angular.element(this).text());
                     }
                 });
             };
@@ -370,6 +370,8 @@
 
                 var target = selection.focusNode.parentElement;
 
+                console.log('타겟 : ', target);
+
                 if(selection.focusNode.className == 'editable')
                 {
                     target = selection.focusNode;
@@ -380,7 +382,7 @@
 
                 if(type == 'intent')
                 {
-                    showIntentInputList(text.replace('#', ''), function(text)
+                    showIntentInputList(text.replace('#', ''), target, function(text)
                     {
                         target.innerText = text;
                         CaretService.placeCaretAtEnd(target);
@@ -389,7 +391,7 @@
                 }
                 else if(type == 'entities')
                 {
-                    showEntityInputList(text.replace('@', ''), function()
+                    showEntityInputList(text.replace('@', ''), target, function()
                     {
                         target.innerText = text;
                         CaretService.placeCaretAtEnd(target);
@@ -398,7 +400,7 @@
                 }
                 else if(type == 'types')
                 {
-                    showTypeInputList(text.replace('$', ''), function()
+                    showTypeInputList(text.replace('$', ''), target, function()
                     {
                         target.innerText = text;
                         CaretService.placeCaretAtEnd(target);

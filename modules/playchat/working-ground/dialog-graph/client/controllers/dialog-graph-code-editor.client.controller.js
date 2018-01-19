@@ -63,7 +63,7 @@
             angular.element('.dialog-graph-code-editor-body textarea+.CodeMirror').hide();
 
             editor = editors[fileName];
-            if(options.refresh)
+            if(options && options.refresh)
                 editor = undefined;
             
             if(!editor)
