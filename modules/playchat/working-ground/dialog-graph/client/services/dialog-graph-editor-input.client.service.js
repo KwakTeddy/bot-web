@@ -24,6 +24,7 @@
             for(var i=0; i<input.length; i++)
             {
                 var target = angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]');
+                target.prev().removeAttr('required');
                 target.html('');
 
                 for(var key in input[i])
@@ -248,25 +249,30 @@
                     }
                 }
 
-                console.log('결과 : ', $scope.dialog.input);
-
-                var json = JSON.parse(angular.toJson($scope.dialog.input));
-
-                console.log('제이슨 : ', json);
-                if(Object.keys(json).length == 0)
+                for(var i=0; i<$scope.tempInputList.length; i++)
                 {
-                    e.currentTarget.previousElementSibling.setAttribute('required', 'true');
-                }
-                else
-                {
-                    e.currentTarget.previousElementSibling.removeAttribute('required');
+                    if(!$scope.tempInputList[i] || Object.keys($scope.tempInputList[i]).length == 0)
+                    {
+                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().attr('required', 'true');
+                    }
+                    else
+                    {
+                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().removeAttr('required');
+                    }
                 }
 
                 angular.element('.dialog-editor-input-description').text('');
                 angular.element('.dialog-editor-body').css('overflow', 'auto');
+
+                initInputList();
             };
 
-            $scope.onFocus = function()
+            $scope.focusGuideBox = function(e)
+            {
+                angular.element('.dialog-editor-input-box > .dialog-editor-input-guide-box').insertAfter(e.currentTarget.parentElement);
+            };
+
+            $scope.onFocus = function(e)
             {
                 var selection = window.getSelection();
 
@@ -388,11 +394,11 @@
                 var text = selection.focusNode.textContent;
                 if(e.currentTarget.innerText)
                 {
-                    angular.element('.dialog-editor-input-wrapper > .dialog-editor-input').attr('data-placeholder', angular.element('.dialog-editor-input-wrapper > .dialog-editor-input').attr('placeholder')).removeAttr('placeholder');
+                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
                 }
                 else
                 {
-                    angular.element('.dialog-editor-input-wrapper > .dialog-editor-input').attr('placeholder', angular.element('.dialog-editor-input-wrapper > .dialog-editor-input').attr('data-placeholder')).removeAttr('data-placeholder');
+                    angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
                 }
 
                 if(selection.focusNode.parentElement.nodeName == 'SPAN')
