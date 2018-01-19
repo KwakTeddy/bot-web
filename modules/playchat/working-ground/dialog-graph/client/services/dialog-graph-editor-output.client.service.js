@@ -242,10 +242,10 @@
                 {
                     dialog.dialog = 1;
 
-                    if(type == 'return')
-                    {
-                        dialog.dialog = '';
-                    }
+                    // if(type == 'return')
+                    // {
+                    //     dialog.dialog = '';
+                    // }
                 }
 
                 dialog.kind = 'Action';

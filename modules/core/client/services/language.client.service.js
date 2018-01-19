@@ -2895,7 +2895,7 @@
             },
             "Move Dialog": {
                 "ko": "대화 이동",
-                "en": "Move Dialog",
+                "en": "Call",
                 "zh": "移动对话框",
                 "jp": "移動ダイアログ"
             },
@@ -2916,6 +2916,18 @@
                 "en": "Move to previous dialog",
                 "zh": "移到上一个对话框",
                 "jp": "前のダイアログに移動"
+            },
+            "Return": {
+                "ko": "돌아가기용",
+                "en": "Return",
+                "zh": "返回",
+                "jp": "戻る"
+            },
+            "Return call": {
+                "ko": "돌아가기용 대화 이동",
+                "en": "Return Call",
+                "zh": "回电",
+                "jp": "リターンコール"
             }
         };
 
