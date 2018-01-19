@@ -21,8 +21,6 @@
             angular.element('.dialog-editor-body').css('overflow', 'auto');
 
             var input = $scope.tempInputList = JSON.parse(angular.toJson($scope.dialog.input));
-            console.log(input);
-
             for(var i=0; i<input.length; i++)
             {
                 var target = angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]');
@@ -158,7 +156,6 @@
                 {
                     if(angular.element(this).attr('data-type') == 'addNew')
                     {
-                        console.log('먼데? : ', text);
                         if(text.startsWith('#'))
                         {
                             var target = angular.element('.dialog-editor-creation-panel[data-type="intent"]').show();
