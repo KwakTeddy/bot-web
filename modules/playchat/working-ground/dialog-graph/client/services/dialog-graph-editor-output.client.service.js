@@ -3,22 +3,19 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $timeout, $rootScope, FileUploader)
+    angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $timeout, $rootScope, FileUploader, LanguageService)
     {
         var make = function($scope)
         {
             $scope.actionList =
             [
-                { key: 'call', name: 'Call' },
+                { key: 'call', name: LanguageService('Move Dialog') },
                 { key: 'callChild', name: 'Call Child' },
                 { key: 'returnCall', name: 'Return Call' },
                 { key: 'up', name: 'Up' },
                 { key: 'repeat', name: 'Repeat' },
                 { key: 'return', name: 'Return' }
             ];
-
-            $scope.actionTypeCheck = true;
-            $scope.controlDialogFlow = false;
 
             $scope.outputTypeChanged = function($event)
             {

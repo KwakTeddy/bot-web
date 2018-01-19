@@ -20,25 +20,21 @@
             angular.element('.dialog-editor-input-description').text('');
             angular.element('.dialog-editor-body').css('overflow', 'auto');
 
-            var input = JSON.parse(angular.toJson($scope.dialog.input));
+            var input = $scope.tempInputList = JSON.parse(angular.toJson($scope.dialog.input));
             console.log(input);
 
             for(var i=0; i<input.length; i++)
             {
                 var target = angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]');
-                target.prev().removeAttr('required');
                 target.html('');
 
-                if(Object.keys(input[i]).length > 1 && !input[i].key)
-                {
-                    target.prev().attr('data-placeholder', target.prev().attr('placeholder')).removeAttr('placeholder');
-                }
-
+                var isBinded = false;
                 for(var key in input[i])
                 {
                     var text = input[i][key];
                     if(key == 'types')
                     {
+                        isBinded = true;
                         if(typeof text == 'string')
                         {
                             var html = '<span class="' + key + '" data-type="' + key + '">$' + text + '</span>';
@@ -74,6 +70,7 @@
 
                         if(text.trim())
                         {
+                            isBinded = true;
                             if(key == 'text')
                             {
                                 var node = document.createTextNode(text);
@@ -86,6 +83,12 @@
                             }
                         }
                     }
+                }
+
+                if(isBinded)
+                {
+                    target.prev().attr('data-placeholder', target.prev().attr('placeholder')).removeAttr('placeholder');
+                    target.prev().removeAttr('required');
                 }
             }
 

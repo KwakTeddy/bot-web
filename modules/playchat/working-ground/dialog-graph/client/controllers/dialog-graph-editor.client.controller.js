@@ -112,8 +112,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.initialize = function(parent, dialog)
     {
-        $scope.actionTypeCheck = false;
-
         $timeout(function()
         {
             $scope.parentDialog = parent;
@@ -126,6 +124,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
             $scope.dialog.output = [];
             $scope.dialog.task = dialog.task;
+
+            console.log('허어? : ', $scope.dialog.input);
 
             if(dialog.task)
             {
@@ -258,6 +258,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result = $scope.oldDialog;
         }
 
+        console.log('아아아 : ', $scope.dialog.input);
         for(var i=0; i<$scope.dialog.input.length; i++)
         {
             var input = $scope.dialog.input[i];
@@ -432,6 +433,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     DialogGraphEditor.setOpenCallback(function(parent, dialog)
     {
+        $scope.controlDialogFlow = false;
+
         $scope.commonDialogs = DialogGraph.getCommonDialogs();
         $scope.userDialogs = DialogGraph.getAllUserDialogs();
 

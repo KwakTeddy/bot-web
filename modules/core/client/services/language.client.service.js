@@ -2886,6 +2886,12 @@
                 "en": "Successfully transferred!",
                 "zh": "成功转移！",
                 "jp": "転送に成功しました！"
+            },
+            "Move Dialog": {
+                "ko": "대화 이동",
+                "en": "Move Dialog",
+                "zh": "移动对话框",
+                "jp": "移動ダイアログ"
             }
         };
 
