@@ -27,6 +27,8 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     $scope.reportContent = '';
 
+    $scope.isTopBarOpen = false;
+
     $scope.languageChange = function()
     {
         UserLanguageService.save({ language: $scope.language }, function(result)
@@ -86,6 +88,28 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
     $scope.closeReporting = function()
     {
         $scope.openReporting = false;
+    };
+
+    $scope.toggleTopBar = function (open) {
+        if(open){
+            $scope.isTopBarOpen = true;
+            var topBarContainer = angular.element("#top-bar-container");
+            topBarContainer.css("position", "static");
+            topBarContainer.css("top", "0px");
+
+            var middleContainer = angular.element('#middle-container');
+            middleContainer.css("top", "64px")
+
+        }else {
+            $scope.isTopBarOpen = false;
+            var topBarContainer = angular.element("#top-bar-container");
+            topBarContainer.css("position", "relative");
+            topBarContainer.css("top", "-63px");
+
+            var middleContainer = angular.element('#middle-container');
+            middleContainer.css("top", "0px")
+
+        }
     };
 
     $scope.$on('update-topbar-title', function(scope, data)

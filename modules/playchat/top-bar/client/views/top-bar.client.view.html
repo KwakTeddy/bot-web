@@ -45,6 +45,25 @@
     background-color: #ebebeb;
     margin: 12px 0;
 }
+
+.topBarToggleButton
+{
+    display: inline-block;
+    border: 1px #e7e7e7 solid;
+    border-radius : 6px;
+    background-color: white;
+    position: absolute;
+    top: 63px;
+    padding:4px;
+    cursor: pointer;
+    z-index: 1000;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
 </style>
 
 <div ng-controller="TopBarController">
@@ -58,6 +77,14 @@
             </span>
         </div>
     </div>
+
+    <div>
+        <a class="topBarToggleButton" style="background: url('/modules/playchat/top-bar/client/imgs/arrow_up.png') no-repeat center center;"  href="#" ng-if="isTopBarOpen" ng-click="toggleTopBar(false)">
+        </a>
+        <a class="topBarToggleButton" style="background: url('/modules/playchat/top-bar/client/imgs/arrow_down.png') no-repeat center center;" href="#" ng-if="!isTopBarOpen" ng-click="toggleTopBar(true)">
+        </a>
+    </div>
+
     <div class="system" >
         <!--<a class="store-btn" href="#">-->
             <!--<span>{{lan('Store') }}</span>-->

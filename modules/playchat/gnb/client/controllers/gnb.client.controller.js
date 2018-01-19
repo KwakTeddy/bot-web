@@ -8,6 +8,10 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     var chatbot = $cookies.getObject('chatbot');
 
+    var link = angular.element('#gnb-responsive-css');
+    link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
+
+
     $scope.menus = [];
     $scope.botName = chatbot.name;
     $scope.path = $location.path();
@@ -65,16 +69,37 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             var link = angular.element('#gnb-responsive-css');
             if(!isClosed)
             {
+                $scope.stopToggle = false;
+
                 //접기
                 link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
             }
             else
             {
+                $scope.stopToggle = true;
+
                 //펼치기
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
             }
         };
+
+        $scope.openGnb = function () {
+            if(!$scope.stopToggle){
+                var link = angular.element('#gnb-responsive-css');
+                link.attr('media', link.attr('data-media')).attr('disabled', '');
+            }
+        };
+
+        $scope.closeGnb = function () {
+            if(!$scope.stopToggle){
+                var link = angular.element('#gnb-responsive-css');
+                link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
+            }
+        };
+
+
     })();
+
 
     $scope.toggleMenuItem = function(e)
     {

@@ -918,12 +918,13 @@
 
         var makeButtonsTemplate = function(buttons)
         {
-            var template = ''
+            var template = '';
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><a href="' + (buttons[i].url || '#') + '" class="default-button" target="_blank">' + buttons[i].text + '</a></div>';
-            }
+                if(buttons[i].url) template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600"><a href="' + buttons[i].url + '" target="_blank">' + buttons[i].text + '</a></div>';
+                else               template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600">' + buttons[i].text + '</div>';
+            };
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
         };

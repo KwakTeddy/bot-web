@@ -14,6 +14,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     DialogGraphEditor.myBotAuth = chatbot.myBotAuth;
 
+    //topBar숨기기 default
+    angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
+    angular.element('#middle-container').css("top", "0px");
+
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope, $rootScope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());

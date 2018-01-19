@@ -447,10 +447,10 @@
                 "zh": "对话学习"
             },
             "Dialog Graph": {
-                "ko": "다이얼로그 그래프",
-                "en": "Dialog Graph",
-                "jp": "ダイアロググラフ",
-                "zh": "对话框图"
+                "ko": "대화 시나리오",
+                "en": "Dialog Scenario",
+                "jp": "ダイアログシナリオ",
+                "zh": "对话方案"
             },
             "Dialog Learning trains questions and answers accordingly.": {
                 "ko": "대화 학습 기능은 1:1로 이루어진 질문답변을 챗봇에게 학습 시키는 기능입니다.",
@@ -477,10 +477,10 @@
                 "zh": "对话管理"
             },
             "Dialog Set": {
-                "ko": "대화셋",
+                "ko": "대화 셋",
                 "en": "Dialog Set",
-                "jp": "デファセッ",
-                "zh": "问答添加模块"
+                "jp": "ダイアログセット",
+                "zh": "对话框设置"
             },
             "Intent": {
                 "ko": "인텐트",
