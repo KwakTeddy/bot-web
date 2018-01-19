@@ -904,6 +904,7 @@ function executeDialog(dialog, context, print, callback, options) {
           dialog.output.options.callChild = 1;
           _execDialog(_dialog, 'returnCallChild');
         } else if (dialog.output.up) {
+
           _dialog = findUpDialog(dialog, context, print, callback);
 
           if(_dialog.upCallback) {

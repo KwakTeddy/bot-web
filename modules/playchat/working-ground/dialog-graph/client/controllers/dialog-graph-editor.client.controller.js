@@ -75,7 +75,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 }
                 else if(dialog.output[i].kind == 'Action')
                 {
-                    $scope.dialog.output[i].text = dialog.output[i].options;
+                    $scope.dialog.output[i].text = dialog.output[i].options ? dialog.output[i].options.output : '';
                     delete $scope.dialog.output[i].options;
 
                     for(var j=0; j<$scope.actionList.length; j++)
@@ -220,10 +220,16 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             {
                 var actionObject = { kind: 'Action' };
                 actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
+
                 if(result.output[i].if)
+                {
                     actionObject.if = result.output[i].if;
+                }
+
                 if(result.output[i].text)
-                    actionObject.options = result.output[i].text;
+                {
+                    actionObject.options = { output : result.output[i].text };
+                }
 
                 result.output[i] = actionObject;
             }

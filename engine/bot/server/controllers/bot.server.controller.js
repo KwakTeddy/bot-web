@@ -109,7 +109,10 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
         if(channel == 'ios' || channel == 'android') {
             outCallback(_out, _task);
         } else {
-            if(_out.indexOf('|') == -1) outCallback(pre == undefined ? _out : pre + '"' + _out + '"', _task);
+            if(_out.indexOf('|') == -1)
+            {
+                outCallback(pre == undefined ? _out : pre + '"' + _out + '"', _task);
+            }
             else {
                 var arr = _out.split('|');
                 _task.voice = arr[1];
@@ -261,6 +264,15 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
                                 {
                                     if(context && context.botUser && context.botUser.socket && options.dev)
                                     {
+                                        for(var i=0; i<_dialog.output.length; i++)
+                                        {
+                                            if(_dialog.output[i].kind == 'Action' && _dialog.output[i].repeat)
+                                            {
+                                                _dialog = _dialog.parent;
+                                                break;
+                                            }
+                                        }
+
                                         context.botUser.socket.emit('send_msg', JSON.stringify({ type: 'dialog', data: { dialogId: _dialog.id }}));
                                     }
                                 }
