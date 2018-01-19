@@ -24,7 +24,7 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == false)
                     return;
 
-                if(e.path[0].nodeName == 'TEXTAREA')
+                if(e.path[0].nodeName == 'TEXTAREA' && (!e.path[0].parentElement || e.path[0].parentElement.className != 'dialog-editor-output-text'))
                 {
                     var check = false;
                     for(var i=0; i<e.path.length; i++)
@@ -64,6 +64,7 @@
             }
 
             $scope.mode = '';
+            $scope.sourceFileName = options.sourceFileName;
 
             angular.element('.dialog-graph-code-editor-body textarea+.CodeMirror').hide();
 
@@ -112,6 +113,10 @@
                         else if(options.mode == 'graphsource')
                         {
                             $scope.mode = options.mode;
+                            editor.setValue(result.data);
+                        }
+                        else
+                        {
                             editor.setValue(result.data);
                         }
                     }
@@ -164,26 +169,24 @@
             {
                 $rootScope.$broadcast('simulator-build');
 
-                if($scope.mode == 'graphsource')
-                {
-                    angular.element('.dialog-graph-code-editor').hide();
-
-                    angular.element('.graph-controller .alert-success').show();
-                    $timeout(function()
-                    {
-                        angular.element('.graph-controller .alert-success').css('opacity', 1);
-                        $timeout(function()
-                        {
-                            angular.element('.graph-controller .alert-success').css('opacity', 0);
-                            $timeout(function()
-                            {
-                                angular.element('.graph-controller .alert-success').hide();
-                            }, 600);
-                        }, 1500);
-                    }, 5);
-                }
-                else
-                {
+                // if($scope.mode == 'graphsource')
+                // {
+                //     angular.element('.graph-controller .alert-success').show();
+                //     $timeout(function()
+                //     {
+                //         angular.element('.graph-controller .alert-success').css('opacity', 1);
+                //         $timeout(function()
+                //         {
+                //             angular.element('.graph-controller .alert-success').css('opacity', 0);
+                //             $timeout(function()
+                //             {
+                //                 angular.element('.graph-controller .alert-success').hide();
+                //             }, 600);
+                //         }, 1500);
+                //     }, 5);
+                // }
+                // else
+                // {
                     angular.element('.dialog-graph-code-editor .alert-success').show();
                     $timeout(function()
                     {
@@ -197,7 +200,7 @@
                             }, 600);
                         }, 1500);
                     }, 5);
-                }
+                // }
             },
             function()
             {
@@ -207,6 +210,12 @@
 
         $scope.backToGraph = function()
         {
+            if($scope.sourceFileName)
+            {
+                console.log('vkdlfdu : ', $scope.sourceFileName);
+                $rootScope.$broadcast('selectTab', $scope.sourceFileName);
+            }
+
             angular.element('.dialog-graph-code-editor').hide();
         };
 

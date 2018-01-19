@@ -208,7 +208,7 @@
                         }
                         else if(text.startsWith('$'))
                         {
-                            $rootScope.$broadcast('makeNewType', text.replace('$', ''));
+                            $rootScope.$broadcast('makeNewType', text.replace('$', ''), angular.element('.graph-background .select_tab').attr('id'));
                         }
                     }
                     else

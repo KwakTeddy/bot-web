@@ -114,7 +114,7 @@
                     return alert(LanguageService('Please enter Task name'));
                 }
 
-                $rootScope.$broadcast('makeNewTask', taskName);
+                $rootScope.$broadcast('makeNewTask', taskName, angular.element('.graph-background .select_tab').attr('id'));
 
                 // //열어야 함.
                 // var target = angular.element('.dialog-editor-creation-panel[data-type="task"]');

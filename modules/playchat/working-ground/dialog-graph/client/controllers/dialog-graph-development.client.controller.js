@@ -43,10 +43,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
-        $scope.$on('makeNewType', function(context, name)
+        $scope.$on('makeNewType', function(context, name, sourceFileName)
         {
-            console.log('머여 : ', name);
-
             var text = 'var ' + name + ' = {\n' +
                        '  typeCheck: function (text, type, task, context, callback) {\n' +
                        '    var matched = true;\n' +
@@ -65,13 +63,13 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource' });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource', sourceFileName: sourceFileName });
                     break;
                 }
             }
         });
 
-        $scope.$on('makeNewTask', function(context, name)
+        $scope.$on('makeNewTask', function(context, name, sourceFileName)
         {
             var text = 'var ' + name + ' = {\n' +
                        '  action: function (task,context,callback) {\n' +
@@ -89,7 +87,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource' });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource', sourceFileName: sourceFileName });
                     break;
                 }
             }
@@ -264,6 +262,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var tabBody = e.currentTarget.previousElementSibling;
             tabBody.scrollLeft += 100;
         };
+
+        $scope.$on('selectTab', function(context, fileName)
+        {
+            console.log('파일네임 : ', fileName);
+            angular.element('.tab-body .select_tab').removeClass('select_tab');
+            angular.element('#' + fileName.replace(/\./gi, '\\.')).addClass('select_tab');
+
+            $location.search().fileName = fileName;
+            $scope.currentTabName = fileName;
+        });
 
         $scope.selectTab = function(e, fileName)
         {
