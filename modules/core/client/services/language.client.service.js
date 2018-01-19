@@ -795,10 +795,10 @@
                 "zh": "添加按钮"
             },
             "Add action": {
-                "ko": "대화 흐름 삽입",
-                "en": "Insert dialog flow",
-                "zh": "插入对话框流",
-                "jp": "ダイアログフローを挿入する"
+                "ko": "대화 흐름 조절",
+                "en": "Control dialog flow",
+                "zh": "控制对话框流程",
+                "jp": "ダイアログフローの制御"
             },
             "Action1": {
                 "ko": "액션 1",

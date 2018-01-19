@@ -14,34 +14,34 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.changeMode = function(e)
     {
-        if($scope.isAdvancedMode)
-        {
-            if($scope.dialog.output.length > 1)
-            {
-                var check = false;
-                for(var i=0; i<$scope.dialog.output.length; i++)
-                {
-                    if($scope.dialog.output[i].kind == 'Action')
-                    {
-                        check = true;
-                        break;
-                    }
-                }
-
-                if(check)
-                {
-                    //아웃풋이 여러개고 그 중에 Action도 있는경우는 basic모드에서 편집 불가
-                    alert($scope.lan('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.'));
-                    return;
-                }
-            }$
-
-            $scope.isAdvancedMode = false;
-        }
-        else
-        {
-            $scope.isAdvancedMode = true;
-        }
+        // if($scope.isAdvancedMode)
+        // {
+        //     if($scope.dialog.output.length > 1)
+        //     {
+        //         var check = false;
+        //         for(var i=0; i<$scope.dialog.output.length; i++)
+        //         {
+        //             if($scope.dialog.output[i].kind == 'Action')
+        //             {
+        //                 check = true;
+        //                 break;
+        //             }
+        //         }
+        //
+        //         if(check)
+        //         {
+        //             //아웃풋이 여러개고 그 중에 Action도 있는경우는 basic모드에서 편집 불가
+        //             alert($scope.lan('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.'));
+        //             return;
+        //         }
+        //     }$
+        //
+        //     $scope.isAdvancedMode = false;
+        // }
+        // else
+        // {
+        //     $scope.isAdvancedMode = true;
+        // }
 
         e.preventDefault();
         e.stopPropagation();
@@ -186,28 +186,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                             }
                         }
 
-                        if(actionObjects.length > 1)
+                        $scope.isAdvancedMode = true;
+                        for(var i=0; i<actionObjects.length; i++)
                         {
-                            $scope.isAdvancedMode = true;
-                            $scope.isUseOutput = true;
-
-                            for(var i=0; i<actionObjects.length; i++)
-                            {
-                                $scope.dialog.output.push(actionObjects[i]);
-                            }
-                        }
-                        else if(actionObjects.length == 1)
-                        {
-                            if(!$scope.isAdvancedMode)
-                            {
-                                $scope.isUseOutput = false;
-                                $scope.dialog.actionOutput = actionObjects[0];
-                                $scope.dialog.output.push( { kind: 'Content', text: '' } );
-                            }
-                            else
-                            {
-                                $scope.dialog.output.push(actionObjects[0]);
-                            }
+                            $scope.dialog.output.push(actionObjects[i]);
                         }
                     }
                     else
@@ -230,16 +212,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                                     }
                                 }
 
-                                if(!$scope.isAdvancedMode)
-                                {
-                                    $scope.isUseOutput = false;
-                                    $scope.dialog.actionOutput = actionObject;
-                                    $scope.dialog.output.push( { kind: 'Content', text: '' } );
-                                }
-                                else
-                                {
-                                    $scope.dialog.output.push(actionObject);
-                                }
+                                $scope.dialog.output.push(actionObject);
 
                                 check = true;
                                 break;
@@ -271,12 +244,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
                 $scope.dialog.input = [{ text: '' }];
                 $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
-                $scope.dialog.actionOutput = { kind: 'Action', type: '', dialog: '' };
                 $scope.dialog.task = undefined;
 
                 $scope.oldDialog = undefined;
-
-                $scope.isUseOutput = true;
             }
 
             // 만들어진 아웃풋은 언제든지 Content 타입으로 변경될수도 있으므로 모든 output에 이미지 업로드가 가능하도록 세팅.
@@ -326,54 +296,40 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         result.name = $scope.dialog.name;
         result.input = $scope.dialog.input;
-        result.output = JSON.parse(JSON.stringify($scope.dialog.output));
+        result.output = JSON.parse(angular.toJson($scope.dialog.output));
         if($scope.dialog.task)
+        {
             result.task = $scope.dialog.task;
-
-        if(!$scope.isUseOutput || $scope.isAdvancedMode)
-        {
-            if($scope.isAdvancedMode)
-            {
-                //Advanced모드인경우 데이터를 잘 만들어야함.
-                for(var i=0; i<result.output.length; i++)
-                {
-                    if(result.output[i].kind == 'Action')
-                    {
-                        var actionObject = { kind: 'Action' };
-                        actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
-                        if(result.output[i].if)
-                            actionObject.if = result.output[i].if;
-                        if(result.output[i].options)
-                            actionObject.options = result.output[i].options;
-                        result.output[i] = actionObject;
-                    }
-                }
-            }
-            else
-            {
-                //액션 타입을 선택한 경우 저장시 액션데이터만 저장하도록.
-                //이렇게 하면 저장하기 전에 다시 Content등의 아웃풋을 선택하면 기존 데이터를 그대로 활용할 수 있음.
-                var output = { kind: 'Action' };
-                output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.type == 'return' ? 1 : $scope.dialog.actionOutput.dialog;
-                result.output = [output];
-            }
-        }
-        else
-        {
-            delete $scope.dialog.actionOutput;
         }
 
-        console.log(result.output);
 
-        result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
-        result.output = JSON.parse(angular.toJson(result.output));
-        if(result.task)
-            result.task = JSON.parse(angular.toJson(result.task));
 
-        for(var i=0; i<result.output.length; i++)
-        {
-            delete result.output[i].uploader;
-        }
+        // for(var i=0; i<result.output.length; i++)
+        // {
+        //     if(result.output[i].kind == 'Action')
+        //     {
+        //         var actionObject = { kind: 'Action' };
+        //         actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
+        //         if(result.output[i].if)
+        //             actionObject.if = result.output[i].if;
+        //         if(result.output[i].text)
+        //             actionObject.options = result.output[i].text;
+        //
+        //         result.output[i] = actionObject;
+        //     }
+        // }
+        //
+        // console.log(result.output);
+        //
+        // result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
+        // result.output = JSON.parse(angular.toJson(result.output));
+        // if(result.task)
+        //     result.task = JSON.parse(angular.toJson(result.task));
+        //
+        // for(var i=0; i<result.output.length; i++)
+        // {
+        //     delete result.output[i].uploader;
+        // }
 
         return result;
     };

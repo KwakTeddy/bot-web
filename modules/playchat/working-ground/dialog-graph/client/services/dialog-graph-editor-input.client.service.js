@@ -27,6 +27,11 @@
                 target.prev().removeAttr('required');
                 target.html('');
 
+                if(Object.keys(input[i]).length > 1 && !input[i].key)
+                {
+                    target.prev().attr('data-placeholder', target.prev().attr('placeholder')).removeAttr('placeholder');
+                }
+
                 for(var key in input[i])
                 {
                     var text = input[i][key];
@@ -466,10 +471,10 @@
                 selection = window.getSelection();
                 text = selection.focusNode.textContent;
 
+                var target = undefined;
                 if(e.keyCode != 38 && e.keyCode != 40)
                 {
                     //up, down은 목록에서 고르는것이기 때문에 reload 하지 않는다.
-                    var target = undefined;
                     if((target = selection.focusNode).nodeName == 'SPAN' || (selection.focusNode.nodeName == '#text' && (target = selection.focusNode.parentElement).nodeName == 'SPAN'))
                     {
                         var type = target.getAttribute('data-type');
@@ -521,7 +526,7 @@
                     }
                 }
 
-                if(target.nodeName == 'SPAN')
+                if(target && target.nodeName == 'SPAN')
                 {
                     var type = target.getAttribute('data-type');
                     if((type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
@@ -584,6 +589,16 @@
                 {
                     target.find('input:last').focus();
                 }, 100);
+            };
+
+            $scope.deleteInput = function(e)
+            {
+                angular.element(e.currentTarget).parent().remove();
+            };
+
+            $scope.addNewType = function()
+            {
+                console.log($scope.inputType);
             };
         };
 

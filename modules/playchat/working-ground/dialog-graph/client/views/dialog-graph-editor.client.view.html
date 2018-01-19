@@ -38,6 +38,7 @@
                             <div class="dialog-editor-input-list-box" ng-show="showInputList">
                                 <div class="dialog-editor-input-list-box-title">↓ ↑ to navigate&nbsp;&nbsp;&nbsp; enter to select &nbsp;&nbsp;&nbsp;esc to dismiss</div>
                                 <ul></ul>
+                                <div class="dialog-editor-input-list-box-new-button" ng-click="addNewType();">{{lan('Add New')}}</div>
                             </div>
                         </div>
                     </div>
@@ -128,22 +129,25 @@
                                 <span class="blue-label">{{lan('Add button') }}</span>
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
-                            <div class="dialog-editor-output-box-row">
-                                <div>
+                            <div class="dialog-editor-output-box-row" ng-if="controlDialogFlow">
+                                <div style="font-size: 0; text-align: left;">
                                     <div class="select-wrapper">
-                                        <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-change="actionValueChanged(output);">
-                                            <option value="">none</option>
-                                            <option value="call">Call</option>
-                                            <option value="callChild">Call Child</option>
-                                            <option value="returnCall">Return Call</option>
-                                            <option value="up">Up</option>
-                                            <option value="repeat">Repeat</option>
-                                            <option value="return">Return</option>
+                                        <select class="jumbo-select dialog-editor-action-type" style="width: 100%; display: block;" ng-model="output.type" ng-change="actionValueChanged(output);">
+                                            <option value="">Select dialog flow</option>
+                                            <option ng-repeat="action in actionList" value="{{action.key}}">{{action.name}}</option>
                                         </select>
                                     </div>
+                                    <div class="dialog-editor-select-input" ng-class="actionTypeCheck === false ? '' : 'disabled'">
+                                        <input type="text" ng-model="output.dialog" ng-required="true" placeholder="{{lan('Dialog Input') }}" ng-focus="onActionFocus($event);" ng-keydown="onActionKeyDown($event, output);" ng-keyup="onActionKeyUp($event);">
+                                        <ul class="dialog-editor-select-options">
+                                            <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
+                                            <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
+                                        </ul>
+                                    </div>
+                                    <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 9px; right: 12px;" ng-click="deleteActionButton(output);">
                                 </div>
                             </div>
-                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton($event, output);">
+                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton($event, output);" ng-if="!controlDialogFlow">
                                 <span class="blue-label">{{lan('Add action') }}</span>
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>

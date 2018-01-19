@@ -280,6 +280,20 @@
     background-color: #bfe3f6;
 }
 
+.dialog-editor-input-list-box-new-button
+{
+    padding: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.dialog-editor-input-list-box-new-button:hover
+{
+    font-weight: bold;
+}
+
 .dialog-editor-input-plus
 {
     position: absolute;
@@ -625,15 +639,50 @@
     resize: none;
 }
 
-.dialog-editor-row .select-wrapper::after
+.dialog-editor-row .select-wrapper
 {
-    right: 20px;
-    top: 2px;
+    width: 90%;
+    font-size: 12px;
 }
 
-.dialog-editor-row .select-wrapper.disabled::after
+.dialog-editor-row .select-wrapper select
 {
-    background-color: #ddd;
+    margin: 0;
+}
+
+.dialog-editor-row .select-wrapper+div
+{
+    width: 100%;
+    font-size: 12px;
+}
+
+.dialog-editor-row .select-wrapper::after
+{
+    top: 9px;
+}
+
+.dialog-editor-row .select-wrapper+div
+{
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.dialog-editor-row .select-wrapper+div.disabled
+{
+    height: 0;
+    border: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.dialog-editor-row .select-wrapper+div.disabled input
+{
+    padding: 0;
+}
+
+.dialog-editor-row .select-wrapper+div > input
+{
+    cursor: text;
 }
 
 .dialog-editor-action-type
@@ -832,6 +881,8 @@
 
     max-height: 200px;
     overflow: auto;
+
+    text-align: left;
 }
 
 .dialog-editor-select-options > li
