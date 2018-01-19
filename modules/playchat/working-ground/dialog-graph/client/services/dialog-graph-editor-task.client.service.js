@@ -104,7 +104,7 @@
             {
                 e.stopPropagation();
 
-                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name});
+                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name });
             };
 
             $scope.createTask = function(taskName)

@@ -112,142 +112,129 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.initialize = function(parent, dialog)
     {
+        $scope.actionTypeCheck = false;
+
         $timeout(function()
         {
             $scope.parentDialog = parent;
 
-            if(dialog)
+            $scope.oldDialog = dialog;
+
+            $scope.dialog = {};
+            $scope.dialog.id = dialog.id;
+            $scope.dialog.name = dialog.name;
+            $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
+            $scope.dialog.output = [];
+            $scope.dialog.task = dialog.task;
+
+            if(dialog.task)
             {
-                $scope.oldDialog = dialog;
+                $scope.isAdvancedMode = true;
+            }
 
-                $scope.dialog.id = dialog.id;
-                $scope.dialog.name = dialog.name;
-                $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
-                $scope.dialog.output = [];
-                $scope.dialog.task = dialog.task;
+            if(!$scope.dialog.input.length)
+            {
+                $scope.dialog.input = [$scope.dialog.input];
+            }
 
-                if(dialog.task)
+            if(typeof dialog.output == 'string')
+            {
+                $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
+            }
+            else if(typeof dialog.output == 'object')
+            {
+                if(dialog.output.length > 0)
                 {
-                    $scope.isAdvancedMode = true;
-                }
-
-                if(!$scope.dialog.input.length)
-                {
-                    $scope.dialog.input = [$scope.dialog.input];
-                }
-
-                if(typeof dialog.output == 'string')
-                {
-                    $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
-                }
-                else if(typeof dialog.output == 'object')
-                {
-                    if(dialog.output.length > 0)
+                    var actionObjects = [];
+                    for(var i=0; i<dialog.output.length; i++)
                     {
-                        var actionObjects = [];
-                        for(var i=0; i<dialog.output.length; i++)
+                        //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
+                        if(dialog.output[i].kind == 'Action')
                         {
-                            //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
-                            if(dialog.output[i].kind == 'Action')
+                            var actionObject = {};
+                            actionObject.kind = 'Action';
+
+                            for(var key in dialog.output[i])
                             {
-                                var actionObject = {};
-                                actionObject.kind = 'Action';
-
-                                for(var key in dialog.output[i])
-                                {
-                                    if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                                     {
-                                        actionObject.type = key;
-                                        actionObject.dialog = dialog.output[i][key];
-                                    }
+                                if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
+                                 {
+                                    actionObject.type = key;
+                                    actionObject.dialog = dialog.output[i][key];
                                 }
-
-                                if(dialog.output[i].if)
-                                {
-                                    actionObject.if = dialog.output[i].if;
-                                }
-
-                                if(dialog.output[i].options)
-                                {
-                                    actionObject.options = dialog.output[i].options;
-                                }
-
-                                actionObjects.push(actionObject);
                             }
-                            else
+
+                            if(dialog.output[i].if)
                             {
-                                if(dialog.output[i].if)
-                                {
-                                    $scope.isAdvancedMode = true;
-                                    $scope.isUseOutput = true;
-                                }
-
-                                $scope.dialog.output.push(dialog.output[i]);
+                                actionObject.if = dialog.output[i].if;
                             }
+
+                            if(dialog.output[i].options)
+                            {
+                                actionObject.options = dialog.output[i].options;
+                            }
+
+                            actionObjects.push(actionObject);
                         }
-
-                        $scope.isAdvancedMode = true;
-                        for(var i=0; i<actionObjects.length; i++)
+                        else
                         {
-                            $scope.dialog.output.push(actionObjects[i]);
+                            if(dialog.output[i].if)
+                            {
+                                $scope.isAdvancedMode = true;
+                                $scope.isUseOutput = true;
+                            }
+
+                            $scope.dialog.output.push(dialog.output[i]);
                         }
                     }
-                    else
+
+                    $scope.isAdvancedMode = true;
+                    for(var i=0; i<actionObjects.length; i++)
                     {
-                        var check = false;
-                        for(var key in dialog.output)
-                        {
-                            if(key == 'options' || key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                            {
-                                var actionObject = {};
-                                actionObject.kind = 'Action';
-
-                                for(var key in dialog.output)
-                                {
-                                    if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                                    {
-                                        actionObject.type = key;
-                                        actionObject.dialog = dialog.output[key];
-                                        break;
-                                    }
-                                }
-
-                                $scope.dialog.output.push(actionObject);
-
-                                check = true;
-                                break;
-                            }
-                        }
-
-                        if(!check)
-                        {
-                            $scope.dialog.output.push(dialog.output);
-                        }
+                        $scope.dialog.output.push(actionObjects[i]);
                     }
                 }
                 else
                 {
-                    console.log('처리되지 않은 아웃풋 : ', dialog.output);
-                }
+                    var check = false;
+                    for(var key in dialog.output)
+                    {
+                        if(key == 'options' || key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
+                        {
+                            var actionObject = {};
+                            actionObject.kind = 'Action';
 
-                setTimeout(function()
-                {
-                    DialogGraphEditorInput.init($scope); // 편집시에 초기화
-                }, 200);
+                            for(var key in dialog.output)
+                            {
+                                if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
+                                {
+                                    actionObject.type = key;
+                                    actionObject.dialog = dialog.output[key];
+                                    break;
+                                }
+                            }
+
+                            $scope.dialog.output.push(actionObject);
+
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    if(!check)
+                    {
+                        $scope.dialog.output.push(dialog.output);
+                    }
+                }
             }
             else
             {
-                if(parent)
-                {
-                    $scope.dialog.name = DialogGraph.getRandomName();
-                }
-
-                $scope.dialog.input = [{ text: '' }];
-                $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
-                $scope.dialog.task = undefined;
-
-                $scope.oldDialog = undefined;
+                console.log('처리되지 않은 아웃풋 : ', dialog.output);
             }
+
+            setTimeout(function()
+            {
+                DialogGraphEditorInput.init($scope); // 편집시에 초기화
+            }, 200);
 
             // 만들어진 아웃풋은 언제든지 Content 타입으로 변경될수도 있으므로 모든 output에 이미지 업로드가 가능하도록 세팅.
             // 버튼도 마찬가지. 화면 viewing을 위해 필요한 데이터.
@@ -302,34 +289,32 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result.task = $scope.dialog.task;
         }
 
+        for(var i=0; i<result.output.length; i++)
+        {
+            if(result.output[i].kind == 'Action')
+            {
+                var actionObject = { kind: 'Action' };
+                actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
+                if(result.output[i].if)
+                    actionObject.if = result.output[i].if;
+                if(result.output[i].text)
+                    actionObject.options = result.output[i].text;
 
+                result.output[i] = actionObject;
+            }
+        }
 
-        // for(var i=0; i<result.output.length; i++)
-        // {
-        //     if(result.output[i].kind == 'Action')
-        //     {
-        //         var actionObject = { kind: 'Action' };
-        //         actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
-        //         if(result.output[i].if)
-        //             actionObject.if = result.output[i].if;
-        //         if(result.output[i].text)
-        //             actionObject.options = result.output[i].text;
-        //
-        //         result.output[i] = actionObject;
-        //     }
-        // }
-        //
-        // console.log(result.output);
-        //
-        // result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
-        // result.output = JSON.parse(angular.toJson(result.output));
-        // if(result.task)
-        //     result.task = JSON.parse(angular.toJson(result.task));
-        //
-        // for(var i=0; i<result.output.length; i++)
-        // {
-        //     delete result.output[i].uploader;
-        // }
+        console.log(result.output);
+
+        result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
+        result.output = JSON.parse(angular.toJson(result.output));
+        if(result.task)
+            result.task = JSON.parse(angular.toJson(result.task));
+
+        for(var i=0; i<result.output.length; i++)
+        {
+            delete result.output[i].uploader;
+        }
 
         return result;
     };
@@ -438,7 +423,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     }, true);
 
-    $scope.initialize();
+    // $scope.initialize();
 
     $scope.$on('saveDialogGraphEditor', function()
     {
@@ -457,7 +442,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result.name = DialogGraph.getRandomName();
             result.input = [{ text: '' }];
             result.output = [{ kind: 'Content', text: '', buttons: [] }];
-            result.actionOutput = { kind: 'Action', type: '', dialog: '' };
             result.task = undefined;
 
             dialog = result;

@@ -104,10 +104,15 @@
 
         DialogGraphEditorInput.make = function($scope, $rootScope)
         {
-            var initInputList = function()
+            var initInputList = function(descriptionHide)
             {
                 $scope.showInputList = false;
-                angular.element('.dialog-editor-input-description').text('');
+
+                if(descriptionHide)
+                {
+                    angular.element('.dialog-editor-input-description').text('');
+                }
+
                 angular.element('.dialog-editor-body').css('overflow', 'auto');
             };
 
@@ -351,7 +356,7 @@
                 angular.element('.dialog-editor-input-description').text('');
                 angular.element('.dialog-editor-body').css('overflow', 'auto');
 
-                initInputList();
+                initInputList(true);
             };
 
             $scope.focusGuideBox = function(e)
@@ -379,7 +384,7 @@
                     {
                         target.innerText = text;
                         CaretService.placeCaretAtEnd(target);
-                        initInputList();
+                        initInputList(true);
                     });
                 }
                 else if(type == 'entities')
@@ -388,7 +393,7 @@
                     {
                         target.innerText = text;
                         CaretService.placeCaretAtEnd(target);
-                        initInputList();
+                        initInputList(true);
                     });
                 }
                 else if(type == 'types')
@@ -397,22 +402,22 @@
                     {
                         target.innerText = text;
                         CaretService.placeCaretAtEnd(target);
-                        initInputList();
+                        initInputList(true);
                     });
                 }
                 else if(type == 'regexp')
                 {
-                    initInputList();
+                    initInputList(false);
                     angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
                 }
                 else if(type == 'if')
                 {
-                    initInputList();
+                    initInputList(false);
                     angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
                 }
                 else
                 {
-                    initInputList();
+                    initInputList(false);
                     if(text.trim())
                     {
                         DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
@@ -429,7 +434,7 @@
                     }
                     else
                     {
-                        initInputList();
+                        initInputList(true);
                     }
                 }
             };
@@ -452,7 +457,7 @@
                     }
                     else if(e.keyCode == 27) // esc
                     {
-                        initInputList();
+                        initInputList(true);
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }
@@ -564,7 +569,6 @@
                         {
                             showIntentInputList(text.replace('#', ''), target, function(text)
                             {
-                                console.log('타겟 : ', target);
                                 target.innerText = text;
 
                                 var span = document.createElement('span');
@@ -573,7 +577,7 @@
 
                                 CaretService.placeCaretAtEnd(span);
 
-                                initInputList();
+                                initInputList(true);
                             });
                         }
                         else if(type == 'entities')
@@ -588,7 +592,7 @@
 
                                 CaretService.placeCaretAtEnd(span);
 
-                                initInputList();
+                                initInputList(true);
                             });
                         }
                         else if(type == 'types')
@@ -603,7 +607,7 @@
 
                                 CaretService.placeCaretAtEnd(span);
 
-                                initInputList();
+                                initInputList(true);
                             });
                         }
                     }
@@ -633,7 +637,7 @@
 
                 if(!text.startsWith('#') && !text.startsWith('@') && !text.startsWith('$'))
                 {
-                    initInputList();
+                    initInputList(false);
 
                     if(text.length > 1 && text.startsWith('/') && text.endsWith('/'))
                     {

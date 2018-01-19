@@ -63,6 +63,9 @@
             angular.element('.dialog-graph-code-editor-body textarea+.CodeMirror').hide();
 
             editor = editors[fileName];
+            if(options.refresh)
+                editor = undefined;
+            
             if(!editor)
             {
                 angular.element('.dialog-graph-code-editor-body').prepend('<textarea style="display: none;"></textarea>');

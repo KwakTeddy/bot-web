@@ -89,7 +89,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource' });
                     break;
                 }
             }
@@ -353,7 +353,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.viewGraphSource = function()
         {
             var fileName = $scope.currentTabName;
-            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource' });
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource', refresh: true });
         };
 
         $scope.toggleCompactMode = function()

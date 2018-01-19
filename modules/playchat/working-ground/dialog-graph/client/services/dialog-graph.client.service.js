@@ -899,6 +899,10 @@
                     {
                         template += '<div><span>' + JSON.stringify(output.options) + '</span></div>';
                     }
+                    else if(typeof output.options == 'string')
+                    {
+                        template += '<div><span>[options] ' + output.options + '</span></div>';
+                    }
                     else if(typeof output.options.output == 'string')
                     {
                         template += '<div><span>' + output.options.output + '</span></div>';
