@@ -104,7 +104,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
         var pre = (context.botUser.curBotId && context.botUser.curBotName && context.botUser.curBotId != botName ?
             context.botUser.curBotName + ': ' : undefined);
 
-        if(_task && _task.text) _out = _task.text;
+        // if(_task && _task.text) _out = _task.text;
 
         if(channel == 'ios' || channel == 'android') {
             outCallback(_out, _task);

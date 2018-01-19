@@ -1069,9 +1069,12 @@ function executeDialog(dialog, context, print, callback, options) {
         var userOut = type.processOutput(dialog.task, context, _output);
 
         if(output.image || output.buttons || output.items || output.result)
-          dialog.task = utils.merge(dialog.task, output);
+        {
+            dialog.task = utils.merge(dialog.task, output);
+        }
 
         context.botUser._currentDialog = dialog;    // 이게 진짜 현재 다이얼로그
+
 
         print(userOut, dialog.task);
 
