@@ -58,12 +58,17 @@
 
         function openCodeEditor(fileName, options)
         {
+            if(!options)
+            {
+                options = {};
+            }
+
             $scope.mode = '';
 
             angular.element('.dialog-graph-code-editor-body textarea+.CodeMirror').hide();
 
             editor = editors[fileName];
-            if(options && options.refresh)
+            if(options.refresh)
                 editor = undefined;
             
             if(!editor)
