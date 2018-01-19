@@ -45,6 +45,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('makeNewType', function(context, name)
         {
+            console.log('머여 : ', name);
+
             var text = 'var ' + name + ' = {\n' +
                        '  typeCheck: function (text, type, task, context, callback) {\n' +
                        '    var matched = true;\n' +
@@ -63,7 +65,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource' });
                     break;
                 }
             }

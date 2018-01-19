@@ -102,7 +102,7 @@
             }
         };
 
-        DialogGraphEditorInput.make = function($scope)
+        DialogGraphEditorInput.make = function($scope, $rootScope)
         {
             var initInputList = function()
             {
@@ -142,35 +142,78 @@
                 });
             };
 
-            var selectInput = function(callback)
+            var selectInput = function(textInput, callback)
             {
+                var text = angular.element(textInput).text();
+
                 angular.element('.dialog-editor-input-list-box > ul > li').on('mousedown', function()
                 {
-                    if(angular.element(this).attr('addNew'))
+                    if(angular.element(this).attr('data-type') == 'addNew')
                     {
-                        var text = angular.element(this).text();
+                        console.log('먼데? : ', text);
                         if(text.startsWith('#'))
                         {
+                            var target = angular.element('.dialog-editor-creation-panel[data-type="intent"]').show();
+                            target.css('right', '0');
 
+                            setTimeout(function()
+                            {
+                                if(target.find('form').get(0).open)
+                                    target.find('form').get(0).open();
+                            }, 501);
+
+                            if(target.find('form').get(0).openCallback)
+                                target.find('form').get(0).openCallback(text.replace('#', ''));
+
+                            target.find('form').get(0).saveCallback = function(name)
+                            {
+                                callback('#' + name);
+                                target.css('right', '-368px');
+                            };
+
+                            target.find('form').get(0).closeCallback = function()
+                            {
+                                target.css('right', '-368px');
+                            };
                         }
                         else if(text.startsWith('@'))
                         {
+                            var target = angular.element('.dialog-editor-creation-panel[data-type="entity"]').show();
+                            target.css('right', '0');
 
+                            setTimeout(function()
+                            {
+                                if(target.find('form').get(0).open)
+                                    target.find('form').get(0).open();
+                            }, 501);
+
+                            if(target.find('form').get(0).openCallback)
+                                target.find('form').get(0).openCallback(text.replace('@', ''));
+
+                            target.find('form').get(0).saveCallback = function(name)
+                            {
+                                callback('@' + name);
+                                target.css('right', '-368px');
+                            };
+
+                            target.find('form').get(0).closeCallback = function()
+                            {
+                                target.css('right', '-368px');
+                            };
                         }
                         else if(text.startsWith('$'))
                         {
-
+                            $rootScope.$broadcast('makeNewType', text.replace('$', ''));
                         }
                     }
                     else
                     {
-                        var text = angular.element(this).text();
                         callback(text);
                     }
                 });
             };
 
-            var showIntentInputList = function(name, callback)
+            var showIntentInputList = function(name, target, callback)
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
@@ -187,11 +230,11 @@
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
-                    selectInput(callback);
+                    selectInput(target, callback);
                 });
             };
 
-            var showEntityInputList = function(name, callback)
+            var showEntityInputList = function(name, target, callback)
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
@@ -204,15 +247,15 @@
                         html += '<li>@' + result[i].name + '</li>';
                     }
 
-                    html += '<li>' + LanguageService('Add New') + '</li>';
+                    html += '<li data-type="addNew">' + LanguageService('Add New') + '</li>';
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
-                    selectInput(callback);
+                    selectInput(target, callback);
                 });
             };
 
-            var showTypeInputList = function(name, callback)
+            var showTypeInputList = function(name, target, callback)
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
@@ -239,11 +282,11 @@
                         }
                     }
 
-                    html += '<li>' + LanguageService('Add New') + '</li>';
+                    html += '<li data-type="addNew">' + LanguageService('Add New') + '</li>';
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
-                    selectInput(callback);
+                    selectInput(target, callback);
                 });
             };
 
@@ -519,7 +562,7 @@
                         var type = target.getAttribute('data-type');
                         if(type == 'intent')
                         {
-                            showIntentInputList(text.replace('#', ''), function(text)
+                            showIntentInputList(text.replace('#', ''), target, function(text)
                             {
                                 console.log('타겟 : ', target);
                                 target.innerText = text;
@@ -535,7 +578,7 @@
                         }
                         else if(type == 'entities')
                         {
-                            showEntityInputList(text.replace('@', ''), function()
+                            showEntityInputList(text.replace('@', ''), target, function()
                             {
                                 target.innerText = text;
 
@@ -550,7 +593,7 @@
                         }
                         else if(type == 'types')
                         {
-                            showTypeInputList(text.replace('$', ''), function()
+                            showTypeInputList(text.replace('$', ''), target, function()
                             {
                                 target.innerText = text;
 

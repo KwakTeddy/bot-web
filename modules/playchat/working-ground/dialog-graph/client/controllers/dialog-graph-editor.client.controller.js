@@ -1,4 +1,4 @@
-angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
+angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$rootScope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $rootScope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
 {
     var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
 
@@ -259,7 +259,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         });
     };
 
-    DialogGraphEditorInput.make($scope);
+    DialogGraphEditorInput.make($scope, $rootScope);
     DialogGraphEditorOutput.make($scope);
     DialogGraphEditorTask.make($scope);
 

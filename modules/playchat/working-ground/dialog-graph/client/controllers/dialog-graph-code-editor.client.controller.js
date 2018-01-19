@@ -95,6 +95,7 @@
                         }
                         else if(options.isCreate)
                         {
+                            $scope.mode = options.mode;
                             angular.element('.dialog-graph-code-editor-controller').addClass('edit');
                             editor.setValue(result.data + '\n\n' + options.code);
                             editor.focus();
