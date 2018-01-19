@@ -47,67 +47,68 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         e.stopPropagation();
     };
 
-    $scope.$watch('isAdvancedMode', function(after, before)
-    {
-        if(after)
-        {
-            for(var i=0; i<$scope.dialog.input.length; i++)
-            {
-                if(!$scope.dialog.input[i].text)
-                    delete $scope.dialog.input[i].text;
-            }
-        }
-
-        if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
-        {
-            // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.
-            $scope.isUseOutput = true;
-            var actionObject = JSON.parse(angular.toJson($scope.dialog.actionOutput));
-            for(var key in actionObject)
-            {
-                $scope.dialog.output[0][key] = actionObject[key];
-            }
-
-            delete $scope.dialog.output[0].text;
-
-            angular.element('input[type="radio"][name="output"]').get(0).checked = true;
-        }
-        else if(!after && before)
-        {
-            // Advanced에서 basic으로 바뀐경우 여기는 변경이 가능한 조건일때만 수행된다. 즉 output이 Action 하나이거나 Content가 여러개.
-
-            if($scope.dialog.output.length == 1 && $scope.dialog.output[0].kind == 'Action')
-            {
-                // Action이 하나인경우 actionObject로 변환하고
-                var actionObject = {};
-                actionObject.kind = 'Action';
-                actionObject.type = $scope.dialog.output[0].type;
-                actionObject.dialog = $scope.dialog.output[0].dialog;
-
-                // Basic모드에 맞게 데이터 구조 변경
-                $scope.isUseOutput = false;
-                $scope.dialog.actionOutput = actionObject;
-                // $scope.dialog.output;
-
-                console.log($scope.dialog.actionOutput);
-
-                $scope.dialog.output[0].kind = 'Content';
-                $scope.dialog.output[0].text = '';
-                delete $scope.dialog.output[0].type;
-                delete $scope.dialog.output[0].dialog;
-            }
-            else if($scope.dialog.output.length > 1)
-            {
-                // Content로 여러개인경우는 걍 놔둬도 될듯
-                $scope.isUseOutput = true;
-            }
-        }
-
-        if($scope.isAdvancedMode)
-        {
-            $scope.useOutput();
-        }
-    });
+    // 아래코드는 다이얼로그 데이터를 보고 Advanced 모드인지 판단해서 변환해주는 코드인데 일단 쓰지 않는다. 만약 더 이상 쓰지 않으면 삭제
+    // $scope.$watch('isAdvancedMode', function(after, before)
+    // {
+    //     if(after)
+    //     {
+    //         for(var i=0; i<$scope.dialog.input.length; i++)
+    //         {
+    //             if(!$scope.dialog.input[i].text)
+    //                 delete $scope.dialog.input[i].text;
+    //         }
+    //     }
+    //
+    //     if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
+    //     {
+    //         // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.
+    //         $scope.isUseOutput = true;
+    //         var actionObject = JSON.parse(angular.toJson($scope.dialog.actionOutput));
+    //         for(var key in actionObject)
+    //         {
+    //             $scope.dialog.output[0][key] = actionObject[key];
+    //         }
+    //
+    //         delete $scope.dialog.output[0].text;
+    //
+    //         angular.element('input[type="radio"][name="output"]').get(0).checked = true;
+    //     }
+    //     else if(!after && before)
+    //     {
+    //         // Advanced에서 basic으로 바뀐경우 여기는 변경이 가능한 조건일때만 수행된다. 즉 output이 Action 하나이거나 Content가 여러개.
+    //
+    //         if($scope.dialog.output.length == 1 && $scope.dialog.output[0].kind == 'Action')
+    //         {
+    //             // Action이 하나인경우 actionObject로 변환하고
+    //             var actionObject = {};
+    //             actionObject.kind = 'Action';
+    //             actionObject.type = $scope.dialog.output[0].type;
+    //             actionObject.dialog = $scope.dialog.output[0].dialog;
+    //
+    //             // Basic모드에 맞게 데이터 구조 변경
+    //             $scope.isUseOutput = false;
+    //             $scope.dialog.actionOutput = actionObject;
+    //             // $scope.dialog.output;
+    //
+    //             console.log($scope.dialog.actionOutput);
+    //
+    //             $scope.dialog.output[0].kind = 'Content';
+    //             $scope.dialog.output[0].text = '';
+    //             delete $scope.dialog.output[0].type;
+    //             delete $scope.dialog.output[0].dialog;
+    //         }
+    //         else if($scope.dialog.output.length > 1)
+    //         {
+    //             // Content로 여러개인경우는 걍 놔둬도 될듯
+    //             $scope.isUseOutput = true;
+    //         }
+    //     }
+    //
+    //     if($scope.isAdvancedMode)
+    //     {
+    //         $scope.useOutput();
+    //     }
+    // });
 
     $scope.initialize = function(parent, dialog)
     {
@@ -132,36 +133,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
                 if(!$scope.dialog.input.length)
                 {
-                    for(var key in $scope.dialog.input)
-                    {
-                        if(key != 'text')
-                        {
-                            $scope.isAdvancedMode = true;
-                            break;
-                        }
-                    }
-
                     $scope.dialog.input = [$scope.dialog.input];
-                }
-                else
-                {
-                    for(var i=0, l=$scope.dialog.input.length; i<l; i++)
-                    {
-                        if(Object.keys($scope.dialog.input[i]).length > 1)
-                        {
-                            $scope.isAdvancedMode = true;
-                            break;
-                        }
-                        else
-                        {
-                            var string = JSON.stringify($scope.dialog.input[i]);
-                            if(string.indexOf('text') == -1)
-                            {
-                                $scope.isAdvancedMode = true;
-                                break;
-                            }
-                        }
-                    }
                 }
 
                 if(typeof dialog.output == 'string')
@@ -285,7 +257,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                     console.log('처리되지 않은 아웃풋 : ', dialog.output);
                 }
 
-                console.log('아웃풋 : ', $scope.dialog.output);
+                setTimeout(function()
+                {
+                    DialogGraphEditorInput.init($scope); // 편집시에 초기화
+                }, 200);
             }
             else
             {

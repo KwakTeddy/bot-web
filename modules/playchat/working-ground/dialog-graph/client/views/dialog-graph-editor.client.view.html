@@ -27,19 +27,16 @@
                 <div class="dialog-editor-row">
                     <p class="dialog-editor-subject">사용자 입력</p>
                     <div class="dialog-editor-input-box">
-                        <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input" data-nlu="{{nlpedTextPrefix[$index]}} {{ nlpedText[$index] }}">
-                            <input type="text" class="dialog-editor-input" placeholder="{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}" ng-model="input.text" ng-required="true">
-                            <span ng-click="focusToLastSpan($event);">
-                                <span contenteditable="true" ng-keydown="onKeyDown($event);" ng-keyup="onKeyUp($event, $index)"></span>
-                            </span>
+                        <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input">
+                            <input type="text" class="dialog-editor-input" placeholder="{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}" required="true" style="color: white;" ng-focus="focusToSpan($event);">
+                            <div class="editable" contenteditable="true" ng-keydown="onKeyDown($event);" ng-mouseup="onFocus($event);" ng-keyup="onKeyUp($event)" ng-blur="onBlur($event, $index);" data-index="{{$index}}"></div>
                             <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);">
                             <span ng-if="$index == dialog.input.length-1" class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>
                         </div>
+                        <div class="dialog-editor-input-description"></div>
                         <div class="dialog-editor-input-list-box" ng-show="showInputList">
                             <div class="dialog-editor-input-list-box-title">↓ ↑ to navigate&nbsp;&nbsp;&nbsp; enter to select &nbsp;&nbsp;&nbsp;esc to dismiss</div>
-                            <ul>
-                                <li ng-repeat="item in inputList" ng-class="inputListTarget == $index ? 'selected' : ''">{{ item.name }}</li>
-                            </ul>
+                            <ul></ul>
                         </div>
                     </div>
                 </div>

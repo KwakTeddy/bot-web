@@ -25,6 +25,15 @@
                     textRange.collapse(false);
                     textRange.select();
                 }
+            },
+            placeCaretAtIndex: function(node, index)
+            {
+                var range = document.createRange();
+                var sel = window.getSelection();
+                range.setStart(node, index);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
             }
         };
     });

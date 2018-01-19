@@ -60,6 +60,8 @@
         {
             $scope.mode = '';
 
+            console.log('머야 : ', options.mode);
+            
             angular.element('.dialog-graph-code-editor-body textarea+.CodeMirror').hide();
 
             editor = editors[fileName];
@@ -122,6 +124,8 @@
             }
             else
             {
+                $scope.mode = options.mode;
+
                 $scope.currentFileName = fileName;
                 angular.element(editor.getTextArea()).next().show();
                 angular.element('.dialog-graph-code-editor').show();

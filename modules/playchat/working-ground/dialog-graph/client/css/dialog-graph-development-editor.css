@@ -167,7 +167,7 @@
     box-sizing: border-box;
 }
 
-.dialog-editor-input + span
+.dialog-editor-input + .editable
 {
     position: absolute;
     top: 1px;
@@ -187,28 +187,53 @@
     cursor: text;
 }
 
-.dialog-editor-input + span > span
+.dialog-editor-input + .editable > span
 {
     outline: 0;
 }
 
-.dialog-editor-input + span > span:first-child
+.dialog-editor-input + .editable > span:first-child
 {
-    margin-left: 1px;
+    margin-left: 0px;
 }
 
-.dialog-editor-input + span > span.intent
+.dialog-editor-input + .editable > span.intent
 {
-    background-color: #f8f8ff;
+    background-color: #aeb0ff;
+    margin: 0 3px;
 }
 
-.dialog-editor-input + span br
+.dialog-editor-input + .editable > span.entities
+{
+    background-color: rgba(2,125,24,.44);
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.types
+{
+    background-color: #b5cfff;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.regexp
+{
+    background-color: #ffb9cc;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.if
+{
+    background-color: #ffbe3e;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable br
 {
     display:none;
 
 }
 
-.dialog-editor-input + span *
+.dialog-editor-input + .editable *
 {
     display:inline;
     white-space:nowrap;
@@ -216,10 +241,13 @@
 
 .dialog-editor-input-list-box
 {
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*z-index: 1;*/
+    /*box-sizing: border-box;*/
+
     border: 1px solid #ddd;
     border-radius: 6px;
-    height: 200px;
-
     background-color: white;
 }
 
@@ -234,10 +262,17 @@
     font-weight: bold;
 }
 
+.dialog-editor-input-list-box-title + ul
+{
+    overflow: auto;
+    max-height: 500px;
+}
+
 .dialog-editor-input-list-box-title + ul > li
 {
     padding: 10px;
     font-size: 12px;
+    cursor: pointer;
 }
 
 .dialog-editor-input-list-box-title + ul > li.selected
@@ -269,6 +304,11 @@
 {
     position: relative;
     margin: 0 12px;
+}
+
+.dialog-editor-input-description
+{
+    font-size: 12px;
 }
 
 .dialog-editor-input-textarea
@@ -425,6 +465,13 @@
     position: absolute;
     bottom: -20px;
     left: 0;
+}
+
+.dialog-editor-input-wrapper .delete-img
+{
+    position: absolute;
+    right: 24px;
+    top: 8px;
 }
 
 .dialog-editor-output-box
