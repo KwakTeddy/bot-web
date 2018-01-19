@@ -380,6 +380,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.save = function(e)
     {
+        $scope.dialog.input = $scope.tempInputList;
+        delete $scope.tempInputList;
         if($scope.oldDialog && !DialogGraph.checkDuplicatedName($scope.dialog))
         {
             alert($scope.dialog.name + $scope.lan(' is duplicated'));
