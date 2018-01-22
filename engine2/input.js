@@ -56,7 +56,7 @@ var IntentManager = require('./input/intent.js');
 
                     console.log('----- Input Process [End]');
 
-                    callback('넵');
+                    callback();
                 });
             });
         });

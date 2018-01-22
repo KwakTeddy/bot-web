@@ -12,6 +12,7 @@ var EntityModel = mongoose.model('Entity');
 var EntityContentModel = mongoose.model('EntityContent');
 var CustomContextModel = mongoose.model('CustomContext');
 var CustomContextItemModel = mongoose.model('CustomContextItem');
+var Dialogset = mongoose.model('dialogset');
 
 (function()
 {
@@ -79,17 +80,25 @@ var CustomContextItemModel = mongoose.model('CustomContextItem');
                                 return callback(err);
                             }
 
-                            that.loadCustomContext(function(err)
+                            that.loadDialogsets(function(err)
                             {
                                 if(err)
                                 {
                                     return callback(err);
                                 }
 
-                                that.extractTopicKeywordFromDialogset();
-                                that.setDialogs(Globals.dialogs.endDialogs);
+                                that.loadCustomContext(function(err)
+                                {
+                                    if(err)
+                                    {
+                                        return callback(err);
+                                    }
 
-                                callback();
+                                    that.extractTopicKeywordFromDialogset();
+                                    that.setDialogs(Globals.dialogs.endDialogs);
+
+                                    callback();
+                                });
                             });
                         });
                     });
@@ -413,6 +422,21 @@ var CustomContextItemModel = mongoose.model('CustomContextItem');
                     callback(err);
                 });
             });
+        });
+    };
+
+    Bot.prototype.loadDialogsets = function(callback)
+    {
+        var that = this;
+        Dialogset.find({ bot: this._id, usable: true }).lean().exec(function(err, dialogsets)
+        {
+            if(err)
+            {
+                return callback(err);
+            }
+
+            that.dialogsets = dialogsets;
+            callback();
         });
     };
 

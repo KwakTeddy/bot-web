@@ -71,7 +71,7 @@ var ContextManager = require('./context.js');
             {
                 if(inputRaw.startsWith(':'))
                 {
-                    //커맨드 실행
+                    //FIXME 커맨드 실행
                     callback('커맨드가 실행되었습니다 ' + inputRaw);
                     console.log(chalk.green('================================'));
                     console.log();
@@ -87,9 +87,12 @@ var ContextManager = require('./context.js');
                 var context = ContextManager.make();
                 context.nlu.sentence = inputRaw;
 
-                InputManager.analysis(bot, session, context, error, function(outputText)
+                InputManager.analysis(bot, session, context, error, function()
                 {
-                    callback(outputText);
+
+
+
+                    callback('넵');
                     console.log(chalk.green('================================'));
                     console.log();
                 });
