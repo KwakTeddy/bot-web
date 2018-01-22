@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 
-var RakutenMA = require('./rakutenma/rakutenma.js');
 var CBTags = require('./cbTags.js');
 var UserDictionary = require('./userDictionary.js');
 var SentenceInfo = require('./sentenceInfo.js');
@@ -11,6 +10,7 @@ var TurnTaking = require('./turnTaking.js').ja;
 {
     var JapaneseAnalyzer = function()
     {
+        var RakutenMA = require('./rakutenma/rakutenma.js');
         this.cbTags = new CBTags();
         var model = JSON.parse(fs.readFileSync(path.resolve('./engine2/input/nlp/rakutenma/model_ja.json')));
         var rma = new RakutenMA(model, 1024, 0.007812);

@@ -9,7 +9,7 @@ var IntentManager = require('./input/intent.js');
 
     };
 
-    InputManager.prototype.process = function(bot, session, context, error, callback)
+    InputManager.prototype.analysis = function(bot, session, context, error, callback)
     {
         var inputRaw = context.nlu.sentence;
 

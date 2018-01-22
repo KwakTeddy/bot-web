@@ -52,9 +52,8 @@ var EntityContentSynonym = mongoose.model('EntityContentSynonym');
         return nouns;
     };
 
-    EntityManager.prototype.getEntities = function(check, query, nouns, callback)
+    EntityManager.prototype.getEntities = function(check, bot, nouns, entities, callback)
     {
-        var entities = {};
         async.eachSeries(nouns, function(word, next)
         {
             var query = { name: word };
@@ -114,14 +113,14 @@ var EntityContentSynonym = mongoose.model('EntityContentSynonym');
         var nouns = this.getNouns(nlp);
 
         var that = this;
-        this.getEntities(true, nouns, entities, function(err)
+        this.getEntities(true, bot, nouns, entities, function(err)
         {
             if (err)
             {
                 return callback(err);
             }
 
-            that.getEntities(false, nouns, entities, function(err)
+            that.getEntities(false, bot, nouns, entities, function(err)
             {
                 if (err)
                 {

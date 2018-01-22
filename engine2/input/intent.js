@@ -18,8 +18,7 @@ var IntentContent = mongoose.model('IntentContent');
                 return callback(err);
             }
 
-            var checkIntentDupliacte = {};
-            var matched = [];
+            var result = {};
             for(var i=0; i<nlp.length; i++)
             {
                 if(nlp[i].pos == 'Josa' || nlp[i].pos == 'Suffix')
@@ -31,16 +30,22 @@ var IntentContent = mongoose.model('IntentContent');
 
                 for(var j=0; j<list.length; j++)
                 {
-                    var match = list[j].input.match(new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i'));
-                    if(match && match.length > 0)
+                    if(list[j].input.indexOf(word) != -1)
                     {
-                        if(!checkIntentDupliacte[list[j].intentId._id])
+                        if(!result[list[j].intentId._id])
                         {
-                            matched.push({ intentId: list[j].intentId._id, intentName: list[j].intentId.name, matchCount: match.length });
-                            checkIntentDupliacte[list[j].intentId._id] = true;
+                            result[list[j].intentId._id] = { intentId: list[j].intentId._id, intentName: list[j].intentId.name, matchCount: 0 };
                         }
+
+                        result[list[j].intentId._id].matchCount++;
                     }
                 }
+            }
+
+            var matched = [];
+            for(var key in result)
+            {
+                matched.push(result[key]);
             }
 
             matched.sort(function(a, b)

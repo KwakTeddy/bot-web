@@ -87,7 +87,7 @@ var ContextManager = require('./context.js');
                 var context = ContextManager.make();
                 context.nlu.sentence = inputRaw;
 
-                InputManager.process(bot, session, context, error, function(outputText)
+                InputManager.analysis(bot, session, context, error, function(outputText)
                 {
                     callback(outputText);
                     console.log(chalk.green('================================'));

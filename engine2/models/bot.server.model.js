@@ -199,34 +199,6 @@ var BotDialogFileSchema = new Schema({
 
 mongoWrapper.model('BotDialogFile', BotDialogFileSchema);
 
-
-// var BotDialogSchema = new Schema({
-//   bot: {
-//     type: Schema.ObjectId,
-//     ref: 'Bot'
-//   },
-//   input: {
-//     type: String
-//   },
-//   task: {
-//     type: String
-//   },
-//   output: {
-//     type: String
-//   },
-//   updated: {
-//     type: Date,
-//     default: Date.now
-//   },
-//   created: {
-//     type: Date,
-//     default: Date.now
-//   }
-// });
-//
-// mongoWrapper.model('BotDialog', BotDialogSchema);
-
-
 var BotFollowSchema = new Schema({
   bot: {
     type: Schema.ObjectId,
@@ -267,42 +239,6 @@ var BotCommentSchema = new Schema({
 });
 
 mongoWrapper.model('BotComment', BotCommentSchema);
-
-
-var BotDialogSchema = new Schema({
-  botId: {
-    type: String
-  },
-  id: {
-    type: String
-  },
-  input: {
-    type: String
-  },
-  inputRaw: {
-    type: String
-  },
-  output: {
-    type: String
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  parent: {
-    type: Schema.ObjectId,
-    ref: 'BotDialog'
-  },
-  depth: {
-    type: Number
-  }
-});
-
-mongoWrapper.model('BotDialog', BotDialogSchema);
 
 var UserBotFbPageSchema = new Schema({
     bot: {
