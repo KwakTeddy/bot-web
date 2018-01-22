@@ -34,7 +34,7 @@ var IntentManager = require('./input/intent.js');
             context.nlu.nlp = nlp;
             context.nlu.lastChar = lastChar;
 
-            EntityManager.analysis(bot, inputRaw, nlp, function(err, entities)
+            EntityManager.analysis(bot, nlp, function(err, entities)
             {
                 if(err)
                 {
@@ -44,14 +44,21 @@ var IntentManager = require('./input/intent.js');
                 console.log('엔티티 : ', entities);
                 context.nlu.entities = entities;
 
-                IntentManager.analysis(inputRaw, nlp);
+                IntentManager.analysis(bot, nlp, function(err, intents)
+                {
+                    if(err)
+                    {
+                        return error.delegate(err);
+                    }
+
+                    console.log('인텐트 : ', intents);
+                    context.nlu.intents = intents;
+
+                    console.log('----- Input Process [End]');
+
+                    callback('넵');
+                });
             });
-
-            console.log('context : ', context);
-
-            console.log('----- Input Process [End]');
-
-            callback('넵');
         });
     };
 

@@ -108,7 +108,7 @@ var EntityContentSynonym = mongoose.model('EntityContentSynonym');
         });
     };
 
-    EntityManager.prototype.analysis = function(bot, inputRaw, nlp, callback)
+    EntityManager.prototype.analysis = function(bot, nlp, callback)
     {
         var entities = {};
         var nouns = this.getNouns(nlp);
