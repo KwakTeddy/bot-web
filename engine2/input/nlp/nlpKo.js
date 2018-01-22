@@ -1,5 +1,4 @@
 var path = require('path');
-var processor = require('./processor.js');
 var async = require('async');
 
 var CBTags = require('./cbTags.js');
@@ -13,7 +12,6 @@ var processor = require('./processor.js');
 {
     var KoreanAnalyzer = function()
     {
-        var that = this;
         this.nlpKo = undefined;
     };
 
@@ -60,10 +58,6 @@ var processor = require('./processor.js');
         var mb_user_tag = dicResult[2];
         var position = -1;
 
-        var nlpAll = [];
-        var nlp = [];
-        var inNLP = [];
-
         var that = this;
         this.initNLPKo(function()
         {
@@ -73,6 +67,10 @@ var processor = require('./processor.js');
                 {
                     return callback(err);
                 }
+
+                var nlpAll = [];
+                var nlp = [];
+                var inNLP = [];
 
                 if (!result)
                 {
@@ -125,11 +123,12 @@ var processor = require('./processor.js');
 
     KoreanAnalyzer.prototype.morphemeAnalysis = function(inputRaw, nlp, callback)
     {
+        var that = this;
         async.eachSeries(nlp, function(item, next)
         {
             if(item.pos == 'Verb')
             {
-                this.nlpKo.tokenize(item.text, function(err, result)
+                that.nlpKo.tokenize(item.text, function(err, result)
                 {
                     for(var i=0; i<result.length; i++)
                     {

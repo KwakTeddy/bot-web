@@ -1,0 +1,89 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "rakutenma@^1.0.0",
+        "scope": null,
+        "escapedName": "rakutenma",
+        "name": "rakutenma",
+        "rawSpec": "^1.0.0",
+        "spec": ">=1.0.0 <2.0.0",
+        "type": "range"
+      },
+      "/Users/dsyoon/workspace/moneybrain-nlp"
+    ]
+  ],
+  "_from": "rakutenma@>=1.0.0 <2.0.0",
+  "_id": "rakutenma@1.0.0",
+  "_inCache": true,
+  "_location": "/rakutenma",
+  "_npmUser": {
+    "name": "rakuten-nlp",
+    "email": "prj-rakutenma@mail.rakuten.com"
+  },
+  "_npmVersion": "2.0.0-alpha-5",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "rakutenma@^1.0.0",
+    "scope": null,
+    "escapedName": "rakutenma",
+    "name": "rakutenma",
+    "rawSpec": "^1.0.0",
+    "spec": ">=1.0.0 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/rakutenma/-/rakutenma-1.0.0.tgz",
+  "_shasum": "840e0c2f1dcb97d322897f97dd7bc9347d14e5c4",
+  "_shrinkwrap": null,
+  "_spec": "rakutenma@^1.0.0",
+  "_where": "/Users/dsyoon/workspace/moneybrain-nlp",
+  "author": {
+    "name": "rakuten-nlp"
+  },
+  "bugs": {
+    "url": "https://github.com/rakuten-nlp/rakutenma/issues"
+  },
+  "dependencies": {},
+  "description": "Rakuten MA - morphological analyzer (word segmentation + PoS Tagger) for Chinese and Japanese written purely in JavaScript.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "840e0c2f1dcb97d322897f97dd7bc9347d14e5c4",
+    "tarball": "https://registry.npmjs.org/rakutenma/-/rakutenma-1.0.0.tgz"
+  },
+  "gitHead": "1f1f46f785c5da8baa29649627730856045b4ee0",
+  "homepage": "https://github.com/rakuten-nlp/rakutenma",
+  "keywords": [
+    "natural language processing",
+    "NLP",
+    "morphological analysis",
+    "word segmentation",
+    "PoS tagging",
+    "text mining",
+    "Chinese",
+    "Japanese",
+    "machine learning"
+  ],
+  "license": "Apache License version 2.0",
+  "main": "rakutenma.js",
+  "maintainers": [
+    {
+      "name": "rakuten-nlp",
+      "email": "prj-rakutenma@mail.rakuten.com"
+    }
+  ],
+  "name": "rakutenma",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakuten-nlp/rakutenma.git"
+  },
+  "scripts": {
+    "test": "jasmine-node spec"
+  },
+  "version": "1.0.0"
+}
