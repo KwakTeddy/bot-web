@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var chalk = require('chalk');
 
 (function()
 {
@@ -14,11 +15,11 @@ var path = require('path');
 
     TurnTaking.prototype.parse = function (language)
     {
-        var dicFileName = path.resolve("./external_modules/resources/"+language+"/turnTaking.dic");
+        var dicFileName = path.resolve('./engine2/input/nlp/resources/' + language + '/turnTaking.dic');
 
         try
         {
-            var data = fs.readFileSync(path.resolve(dicFileName), 'utf8');
+            var data = fs.readFileSync(dicFileName, 'utf8');
             var entries = data.split('\n');
             for (var i in entries)
             {
@@ -41,7 +42,7 @@ var path = require('path');
         }
         catch(e)
         {
-            console.error(e);
+            console.error(chalk.red(language + '\'s TurnTaking.dic is not found'));
         }
     };
 

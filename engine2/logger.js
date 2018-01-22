@@ -33,7 +33,7 @@ var chalk = require('chalk');
         console.error();
         console.error(chalk.red('================ Engine Error ' + this.now() + ' ================'));
         console.error(err);
-        console.error(chalk.red('================================================================='));
+        console.error(chalk.red('=================================================================='));
         console.error();
     };
 

@@ -1,164 +1,138 @@
-var path = require('path');
 var mongoose = require('mongoose');
-var mongoModule = require(path.resolve('engine2/bot/action/common/mongo'));
-var utils = require(path.resolve('engine2/bot/action/common/utils'));
 var async = require('async');
-var nlp = require(path.resolve('engine2/bot/engine/nlp/processor'));
 
-function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
-  var _nlp; // var nlp = context.botUser.nlp;
-  var entities = {};
-  var nouns = [], phrase = '', phraseCnt = 0;
+var EntityContentSynonym = mongoose.model('EntityContentSynonym');
 
-  async.waterfall([
-    function(cb) {
-      _nlp = context.botUser.nlu.nlp;
-      phrase = ''; phraseCnt = 0;
-
-      for(var i in _nlp) {
-        if(!(_nlp[i].pos == 'Josa' || _nlp[i].pos == 'Suffix' || _nlp[i].pos == 'Verb' || _nlp[i].pos == 'Adjective')) {
-          if(_nlp[i].pos == 'Noun') nouns.push(_nlp[i].text);
-
-          if(phraseCnt > 0 && _nlp[i].offset > _nlp[i-1].offset + _nlp[i-1].length) phrase += ' ';
-          phrase += _nlp[i].text;
-          phraseCnt ++;
-          if(phraseCnt > 1) nouns.push(phrase);
-        } else {
-          phrase = ''; phraseCnt = 0;
-        }
-      }
-
-      nouns.sort(function (a, b) {
-        return b.length - a.length;
-      });
-
-      cb(null);
-    },
-
-    function(cb)
+(function()
+{
+    var EntityManager = function()
     {
-        var Dic = mongoose.model('EntityContentSynonym');
-        async.eachSeries(nouns, function(word, cb1)
+
+    };
+
+    EntityManager.prototype.getNouns = function(nlp)
+    {
+        var phrase = '';
+        var phraseCount = 0;
+        var nouns = [];
+        for(var i in nlp)
         {
-            console.log('워드 : ' + word);
-
-           var query = { name: word };
-           if(context.bot.templateId)
-               query.templateId = context.bot.templateId;
-           else 
-               query.botId = context.bot.id;
-
-            Dic.find(query).lean().populate('entityId').populate('contentId').exec(function(err, docs)
+            if(!(nlp[i].pos == 'Josa' || nlp[i].pos == 'Suffix' || nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective'))
             {
-              for(var i in docs) {
-                if(docs[i].entityId)
+                if(nlp[i].pos == 'Noun')
                 {
-                    if(entities[docs[i].entityId.name] == undefined)
-                        entities[docs[i].entityId.name] = [];
-
-                    entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+                    nouns.push(nlp[i].text);
                 }
-              }
 
-              cb1(null);
-            });
-        }, function(err)
+                if(phraseCount > 0 && nlp[i].offset > nlp[i-1].offset + nlp[i-1].length)
+                {
+                    phrase += ' ';
+                }
+
+                phrase += nlp[i].text;
+                phraseCount ++;
+
+                if(phraseCount > 1)
+                {
+                    nouns.push(phrase);
+                }
+            }
+            else
+            {
+                phrase = '';
+                phraseCount = 0;
+            }
+        }
+
+        nouns.sort(function (a, b)
         {
-            console.log('에러 : ' + err);
-            cb(null);
+            return b.length - a.length;
         });
-    },
 
-    function(cb) {
-      var Dic = mongoose.model('EntityContentSynonym');
-      async.eachSeries(nouns, function(word, cb1) {
-        Dic.find({botId: null, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
-          for(var i in docs) {
-            if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
-                if(entities[docs[i].entityId.name] == undefined)
-                    entities[docs[i].entityId.name] = [];
+        return nouns;
+    };
 
-              entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
-          }
+    EntityManager.prototype.getEntities = function(check, query, nouns, callback)
+    {
+        var entities = {};
+        async.eachSeries(nouns, function(word, next)
+        {
+            var query = { name: word };
+            if(check)
+            {
+                if(bot.templateId)
+                {
+                    query.templateId = bot.templateId;
+                }
+                else
+                {
+                    query.botId = bot.id;
+                }
+            }
+            else
+            {
+                query.botId = undefined;
+            }
 
-          cb1(null);
-        })
-      }, function(err) {
-        cb(null);
-      });
-    }
+            EntityContentSynonym.find(query).lean().populate('entityId').populate('contentId').exec(function(err, docs)
+            {
+                if(err)
+                {
+                    return callback(err);
+                }
 
-  ], function(err1) {
-    callback(inRaw, entities, true);
-  });
+                for(var i in docs)
+                {
+                    if(docs[i].entityId)
+                    {
+                        if(entities[docs[i].entityId.name] == undefined)
+                        {
+                            entities[docs[i].entityId.name] = [];
+                        }
 
-}
+                        entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+                    }
+                }
 
-exports.matchDictionaryEntities = matchDictionaryEntities;
+                next();
+            });
+        },
+        function(err)
+        {
+            if(err)
+            {
+                return callback(err);
+            }
 
+            callback(null, entities);
+        });
+    };
 
-function matchEntities(inRaw, inNLP, inDoc, context, callback) {
+    EntityManager.prototype.analysis = function(bot, inputRaw, nlp, callback)
+    {
+        var entities = {};
+        var nouns = this.getNouns(nlp);
 
-  async.waterfall([
-    // dictionary-based entity
-    function(cb) {
-      matchDictionaryEntities(inRaw, inNLP, inDoc, context, function(_inRaw, _inDoc, _matched) {
-        cb(null);
-      })
-    },
+        var that = this;
+        this.getEntities(true, nouns, entities, function(err)
+        {
+            if (err)
+            {
+                return callback(err);
+            }
 
-    // rule-based entity
-    function(cb) {
+            that.getEntities(false, nouns, entities, function(err)
+            {
+                if (err)
+                {
+                    return callback(err);
+                }
 
-    },
+                callback(null, entities);
+            });
+        });
+    };
 
-    // custom entity
-    function(cb) {
+    module.exports = new EntityManager();
 
-    }
-
-  ], function(err) {
-
-  })
-}
-
-exports.matchEntities = matchEntities;
-
-
-function loadEntities(bot, callback) {
-  var Entity = mongoose.model('Entity');
-
-  Entity.find({botId: bot.id}).lean().exec(function(err, docs) {
-    bot.entities = docs;
-    if(callback) callback();
-  });
-}
-
-exports.loadEntities = loadEntities;
-
-function loadEntityContents(bot, callback) {
-  var Entity = mongoose.model('Entity');
-
-  Entity.find({botId: bot.id}).lean().exec(function(err, docs) {
-    bot.entityContents = docs;
-    for(var i in docs) {
-      docs[i].name = '@' + docs[i].name;
-    }
-
-    var EntityContent = mongoose.model('EntityContent');
-
-    EntityContent.find({botId: bot.id}).lean().populate('entityId').exec(function(err, docs) {
-      for(var i in docs) {
-        docs[i].name = docs[i].name + '@' + (docs[i].entityId ? docs[i].entityId.name : '');
-      }
-      bot.entityContents = bot.entityContents.concat(docs);
-
-      bot.entities = bot.entityContents;
-
-      if(callback) callback();
-    });
-  });
-
-}
-
-exports.loadEntityContents = loadEntityContents;
+})();

@@ -1,15 +1,15 @@
 /**
  * Created by nzt on 15. 4. 26.
  */
+var path = require('path');
 var async = require('async');
 var deasync = require('deasync');
 var java = require('java');
-var path = require('path');
 
-java.classpath.push(path.resolve('./external_modules/scala-library-2.11.6.jar'));
-java.classpath.push(path.resolve('./external_modules/twitter-text-1.11.1.jar'));
-java.classpath.push(path.resolve('./external_modules/korean-text-3.0.jar'));
-java.classpath.push(path.resolve('./external_modules/opennlp/lib/opennlp-tools-1.6.0.jar'));
+java.classpath.push(path.resolve('./engine2/input/nlp/twitter/scala-library-2.11.6.jar'));
+java.classpath.push(path.resolve('./engine2/input/nlp/twitter/twitter-text-1.11.1.jar'));
+java.classpath.push(path.resolve('./engine2/input/nlp/twitter/korean-text-3.0.jar'));
+java.classpath.push(path.resolve('./engine2/input/nlp/opennlp/lib/opennlp-tools-1.6.0.jar'));
 
 java.options.push('-Xmx2048m');
 java.options.push('-Xmx4096m');

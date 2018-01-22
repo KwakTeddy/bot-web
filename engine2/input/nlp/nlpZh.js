@@ -1,22 +1,26 @@
+var fs = require('fs');
+var path = require('path');
+
 var CBTags = require('./cbTags.js');
 var UserDictionary = require('./userDictionary.js');
 var SentenceInfo = require('./sentenceInfo.js');
 var TurnTaking = require('./turnTaking.js').zh;
+var RakutenMA = require('./rakutenma/rakutenma.js');
+var ZH_CharDic = require('./rakutenma/zh_chardic.js');
 
 (function()
 {
     var ChineseAnalyzer = function()
     {
         this.cbTags = new CBTags();
-        var userDictionary = new UserDictionary('./nlp/resources/zh');
-        var model = JSON.parse(fs.readFileSync('./nlp/rakutenma/model_zh.json'));
+        var model = JSON.parse(fs.readFileSync(path.resolve('./engine2/input/nlp/rakutenma/model_zh.json')));
         var rma = new RakutenMA(model, 1024, 0.007812);
         rma.featset = RakutenMA.default_featset_zh;
         rma.hash_func = RakutenMA.create_hash_func(15);
         var zh_CharDic = new ZH_CharDic();
         rma.ctype_func = RakutenMA.create_ctype_chardic_func(zh_CharDic.get());
 
-        this.dictionary = userDictionary;
+        this.dictionary = new UserDictionary('zh');
         this.rma = rma;
     };
 
@@ -42,7 +46,7 @@ var TurnTaking = require('./turnTaking.js').zh;
 
         var nlp = [];
         var nlpAll = [];
-        var inNLP = [];
+        var nlpText = [];
 
         // restore user dictionary from POS
         for (var i = 0; i < tokens.length; i++)
@@ -82,18 +86,17 @@ var TurnTaking = require('./turnTaking.js').zh;
             entry.pos = tokens[i][1];
 
             nlp.push(entry);
-            nlpAll.push(entry);
-            inNLP.push(entry.text);
+            nlpText.push(entry.text);
         }
 
-        inNLP = inNLP.join(' ');
-        while (inNLP.search(/^ /) >= 0 || inNLP.search(/ $/) >= 0)
+        nlpText = nlpText.join(' ');
+        while (nlpText.search(/^ /) >= 0 || nlpText.search(/ $/) >= 0)
         {
-            inNLP = inNLP.replace(new RegExp(/^ /, 'gi'), "").replace(new RegExp(" $", 'gi'), "");
+            nlpText = nlpText.replace(new RegExp(/^ /, 'gi'), "").replace(new RegExp(" $", 'gi'), "");
         }
 
         var nlpJsonPOS = this.rma.tokens2json(inputRaw, tokens);
-        callback(null, lastChar, inNLP, nlp, nlpAll, nlpJsonPOS);
+        callback(null, lastChar, nlpText, nlp, nlpJsonPOS);
     };
 
     ChineseAnalyzer.prototype.findSentenceType = function(inputRaw, nlp)
@@ -134,7 +137,7 @@ var TurnTaking = require('./turnTaking.js').zh;
         }
 
         var that = this;
-        this.getNlpedText(inputRaw, function(err, lastChar, inNLP, nlp, nlpAll, nlpJsonPOS)
+        this.getNlpedText(inputRaw, function(err, lastChar, nlpText, nlp, nlpJsonPOS)
         {
             if(err)
             {
@@ -144,7 +147,7 @@ var TurnTaking = require('./turnTaking.js').zh;
             var sentenceInfo = that.findSentenceType(inputRaw, nlp);
             var turnTaking = that.turnTaking(inputRaw);
 
-            callback(null, lastChar, inNLP, nlp, nlpAll, sentenceInfo, turnTaking, nlpJsonPOS);
+            callback(null, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS);
         });
     };
 

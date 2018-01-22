@@ -1,4 +1,4 @@
-var openNLP = require('./nlp/opennlp/opennlp.js');
+var openNLP = require('./opennlp/opennlp.js');
 var posTagger = new openNLP().posTagger;
 
 var CBTags = require('./cbTags.js');
@@ -18,7 +18,7 @@ var TurnTaking = require('./turnTaking.js').en;
         inputRaw = inputRaw.replace(/(^\s*)|(\s*$)/gi, "");
         inputRaw = inputRaw.replace(/\"/gi, "");
 
-        var userDictionary = new UserDictionary('./nlp/resources/en');
+        var userDictionary = new UserDictionary('en');
 
         var tempInputRaw = inputRaw;
 
@@ -75,9 +75,8 @@ var TurnTaking = require('./turnTaking.js').en;
                 return callback(err);
             }
 
-            var inNLP = [];
+            var nlpText = [];
             var nlp = [];
-            var nlpAll = [];
 
             if (!result)
             {
@@ -122,20 +121,19 @@ var TurnTaking = require('./turnTaking.js').en;
 
                 entry.pos = that.cbTags.normalizeTag('en', entry.text, entry.pos);
 
-                nlpAll.push(entry);
                 nlp.push(entry);
-                inNLP.push(entry.text);
+                nlpText.push(entry.text);
             }
 
-            inNLP = inNLP.join(' ');
-            inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
+            nlpText = nlpText.join(' ');
+            nlpText = nlpText.replace(/(?:\{ | \})/g, '+');
 
-            if (inNLP == '')
+            if (nlpText == '')
             {
-                inNLP = inputRaw;
+                nlpText = inputRaw;
             }
 
-            callback(null, lastChar, inNLP, nlp, nlpAll);
+            callback(null, lastChar, nlpText, nlp);
         });
     };
 
@@ -177,7 +175,7 @@ var TurnTaking = require('./turnTaking.js').en;
         }
 
         var that = this;
-        this.getNlpedText(inputRaw, function(err, lastChar, inNLP, nlp, nlpAll)
+        this.getNlpedText(inputRaw, function(err, lastChar, nlpText, nlp, nlpJsonPOS)
         {
             if(err)
             {
@@ -187,7 +185,7 @@ var TurnTaking = require('./turnTaking.js').en;
             var sentenceInfo = that.findSentenceType(inputRaw, nlp);
             var turnTaking = that.turnTaking(inputRaw);
 
-            callback(null, lastChar, inNLP, nlp, nlpAll, sentenceInfo, turnTaking, nlpJsonPOS);
+            callback(null, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS);
         });
     };
 

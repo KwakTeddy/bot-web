@@ -5,8 +5,7 @@ var CBTags = require('./cbTags.js');
 var UserDictionary = require('./userDictionary.js');
 var SentenceInfo = require('./sentenceInfo.js');
 var TurnTaking = require('./turnTaking.js').ko;
-var NLPUtil = require('./nlpUtil.js');
-var processor = require('./processor.js');
+var processor = require('./twitter-korean-processor.js');
 
 (function()
 {
@@ -39,7 +38,7 @@ var processor = require('./processor.js');
         inputRaw = inputRaw.replace(/(^\s*)|(\s*$)/gi, "");
         inputRaw = inputRaw.replace(/\"/gi, "");
 
-        var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko'));
+        var userDictionary = new UserDictionary('ko');
 
         var tempInputRaw = inputRaw;
 
@@ -68,9 +67,8 @@ var processor = require('./processor.js');
                     return callback(err);
                 }
 
-                var nlpAll = [];
                 var nlp = [];
-                var inNLP = [];
+                var nlpText = [];
 
                 if (!result)
                 {
@@ -102,21 +100,20 @@ var processor = require('./processor.js');
                         entry.pos = 'Noun';
                     }
 
-                    nlpAll.push(entry);
                     //if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _nlp.push(entry);
-                    //if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _inNLP.push(entry.text);
+                    //if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _nlpText.push(entry.text);
                     nlp.push(entry);
-                    inNLP.push(entry.text);
+                    nlpText.push(entry.text);
                 }
 
-                inNLP = inNLP.join(' ');
-                inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
-                if (inNLP == '')
+                nlpText = nlpText.join(' ');
+                nlpText = nlpText.replace(/(?:\{ | \})/g, '+');
+                if (nlpText == '')
                 {
-                    inNLP = inputRaw;
+                    nlpText = inputRaw;
                 }
 
-                callback(null, lastChar, inNLP, nlp, nlpAll);
+                callback(null, lastChar, nlpText, nlp);
             });
         });
     };
@@ -147,12 +144,25 @@ var processor = require('./processor.js');
         },
         function()
         {
-            var nlpUtil = new NLPUtil();
-            var nlpJsonPOS = nlpUtil.convertJSON(inputRaw, nlp);
+            var nlpJsonPOS = {};
+            nlpJsonPOS.sentence = { str: inputRaw };
+            nlpJsonPOS.morpheme = [];
+
+            for(var i=0; i<nlp.length; i++)
+            {
+                if (nlp[i].stem != undefined && nlp[i].stem != null)
+                {
+                    nlpJsonPOS.morpheme.push({ text: nlp[i].text, stem: nlp[i].stem, pos: nlp[i].pos });
+                }
+                else
+                {
+                    nlpJsonPOS.morpheme.push({ text: nlp[i].text, pos: nlp[i].pos });
+                }
+            }
 
             if(callback)
             {
-                callback(nlpJsonPOS);
+                callback(JSON.stringify(nlpJsonPOS));
             }
         });
     };
@@ -196,7 +206,7 @@ var processor = require('./processor.js');
         }
 
         var that = this;
-        this.getNlpedText(inputRaw, function(err, lastChar, inNLP, nlp, nlpAll)
+        this.getNlpedText(inputRaw, function(err, lastChar, nlpText, nlp)
         {
             if(err)
             {
@@ -208,7 +218,7 @@ var processor = require('./processor.js');
                 var sentenceInfo = that.findSentenceType(inputRaw, nlp);
                 var turnTaking = that.turnTaking(inputRaw);
 
-                callback(null, lastChar, inNLP, nlp, nlpAll, sentenceInfo, turnTaking, nlpJsonPOS);
+                callback(null, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS);
             });
         });
     };

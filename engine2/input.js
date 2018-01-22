@@ -1,5 +1,6 @@
 var NLPManager = require('./input/nlp.js');
-// var EntityManager = require('./input/entity.js');
+var EntityManager = require('./input/entity.js');
+var IntentManager = require('./input/intent.js');
 
 (function()
 {
@@ -18,7 +19,7 @@ var NLPManager = require('./input/nlp.js');
 
         inputRaw = inputRaw.replace(/^\s+|\s+$/g,"");
 
-        NLPManager.analysis(bot.language, inputRaw, function(err, lastChar, inNLP, nlp, nlpAll, sentenceInfo, turnTaking, nlpJsonPOS)
+        NLPManager.analysis(bot.language, inputRaw, function(err, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS)
         {
             if(err)
             {
@@ -29,10 +30,22 @@ var NLPManager = require('./input/nlp.js');
             context.nlu.json = nlpJsonPOS;
             context.nlu.sentenceInfo = sentenceInfo;
             context.nlu.turnTaking = turnTaking;
-            context.nlu.inNLP = inNLP;
-            context.nlu.nlpAll = nlpAll;
+            context.nlu.nlpText = nlpText;
             context.nlu.nlp = nlp;
             context.nlu.lastChar = lastChar;
+
+            EntityManager.analysis(bot, inputRaw, nlp, function(err, entities)
+            {
+                if(err)
+                {
+                    return error.delegate(err);
+                }
+
+                console.log('엔티티 : ', entities);
+                context.nlu.entities = entities;
+
+                IntentManager.analysis(inputRaw, nlp);
+            });
 
             console.log('context : ', context);
 

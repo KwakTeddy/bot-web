@@ -85,7 +85,8 @@
 
             // 2. 명령문: “-아라/-어라, -아/-어, -게, -오/-으오, -아요/-어요, -십시오/-시지요‟
             // 체크 1: 와라, 찾아라, 찾아줘, 찾아죠
-            if (suffixIndex - 1 > 0) {
+            if (suffixIndex - 1 > 0)
+            {
                 if (morphemes[suffixIndex-1].pos=="Verb") {
                     if (suffix == "니" || suffix == "냐" || suffix == "라" || suffix == "줘" || suffix == "죠") {
                         return this.type.imperative;
@@ -167,50 +168,58 @@
         return this.type.declarative;
     };
 
-    SentenceInfo.prototype.isBeVerb = function (str) {
+    SentenceInfo.prototype.isBeVerb = function (str)
+    {
         var str = str.toLowerCase();
-        if (str == "be" || str == "am" || str == "are" || str == "is" || str == "was" || str == "were") {
+        if (str == "who" || str == "what" || str == "where" || str == "which" || str == "when" || str == "why")
+        {
             return true;
         }
+
         return false;
     }
+
     SentenceInfo.prototype.isInterrogative = function (str) {
         var str = str.toLowerCase();
         if (str == "who" || str == "what" || str == "where" || str == "which" || str == "when" || str == "why") {
             return true;
         }
         return false;
-    }
+    };
 
-    SentenceInfo.prototype.analyzeEN = function (morphemes) {
-
-        var suffix = "";
-        var suffixIndex = -1;
-        var wasSuffix = false;
-
+    SentenceInfo.prototype.analyzeEN = function (morphemes)
+    {
         // 1. 의문문
         // 체크1. is this... do you...
-        if (morphemes.length > 1) {
-            if (morphemes[0].pos == "AuxVerb") {
+        if (morphemes.length > 1)
+        {
+            if (morphemes[0].pos == "AuxVerb")
+            {
                 return this.type.interrogative;
             }
-            if (this.isBeVerb(morphemes[0].text)) {
+
+            if(this.isBeVerb(morphemes[0].text))
+            {
                 return this.type.interrogative;
             }
         }
 
         // 체크2. what is this, which book is, What sports,
-        if (morphemes.length > 2) {
-            var str0 = morphemes[0].text.toLowerCase();
-            if (this.isInterrogative(str0)) {
+        if (morphemes.length > 2)
+        {
+            if (this.isBeVerb(morphemes[0].text))
+            {
                 var pos1 = morphemes[1].pos;
-                if (pos1 == "Verb" || pos1 == "AuxVerb") {
+                if (pos1 == "Verb" || pos1 == "AuxVerb")
+                {
                     return this.type.interrogative;
                 }
 
                 var pos2 = morphemes[2].pos;
-                if (pos1 == "NOUN") {
-                    if (pos2 == "Verb" || pos2 == "AuxVerb") {
+                if (pos1 == "NOUN")
+                {
+                    if (pos2 == "Verb" || pos2 == "AuxVerb")
+                    {
                         return this.type.interrogative;
                     }
                 }
@@ -219,23 +228,31 @@
 
         // 2. 명령문
         // 체크1. is this... do you...
-        if (morphemes.length > 1) {
-            if (morphemes[0].pos == "Verb" && !this.isBeVerb(morphemes[0].text)) {
+        if (morphemes.length > 1)
+        {
+            if (morphemes[0].pos == "Verb" && !this.isBeVerb(morphemes[0].text))
+            {
                 return this.type.imperative;
             }
         }
 
         // 3. 감탄문
         // 체크1. How foolish, What a foolish
-        if (morphemes.length > 1) {
-            if (morphemes[0].text.toLowerCase() == "how") {
-                if (morphemes[1].pos == "Adjective" || morphemes[1].pos == "Adverb") {
+        if (morphemes.length > 1)
+        {
+            if (morphemes[0].text.toLowerCase() == "how")
+            {
+                if (morphemes[1].pos == "Adjective" || morphemes[1].pos == "Adverb")
+                {
                     return this.type.declarative;
                 }
             }
-            if (morphemes[0].text.toLowerCase() == "what") {
-                if (morphemes[1].pos == "Determiner") {
-                    if (morphemes[2].pos == "Adjective" || morphemes[2].pos == "Adverb" || morphemes[2].pos == "Noun") {
+            else if (morphemes[0].text.toLowerCase() == "what")
+            {
+                if (morphemes[1].pos == "Determiner")
+                {
+                    if (morphemes[2].pos == "Adjective" || morphemes[2].pos == "Adverb" || morphemes[2].pos == "Noun")
+                    {
                         return this.type.declarative;
                     }
                 }
@@ -244,17 +261,24 @@
 
         // 4. 청유형
         // 체크1. Let’s (합시다), Shall we?
-        if (morphemes.length > 1) {
-            if (morphemes[0].text.toLowerCase() == "let’s") {
-                if (morphemes[1].pos == "Verb") {
+        if (morphemes.length > 1)
+        {
+            if (morphemes[0].text.toLowerCase() == "let’s")
+            {
+                if (morphemes[1].pos == "Verb")
+                {
                     return this.type.lets;
                 }
             }
         }
-        if (morphemes.length > 2) {
-            if (morphemes[0].text.toLowerCase() == "shall") {
-                if (morphemes[1].text.toLowerCase() == "we") {
-                    if (morphemes[2].pos == "Verb" && !this.isBeVerb(morphemes[2].text)) {
+        else if (morphemes.length > 2)
+        {
+            if (morphemes[0].text.toLowerCase() == "shall")
+            {
+                if (morphemes[1].text.toLowerCase() == "we")
+                {
+                    if (morphemes[2].pos == "Verb" && !this.isBeVerb(morphemes[2].text))
+                    {
                         return this.type.lets;
                     }
                 }
@@ -266,28 +290,41 @@
 
     SentenceInfo.prototype.analyzeZH = function (morphemes)
     {
-        if(morphemes === undefined) return this.type.declarative;
+        if(morphemes === undefined)
+        {
+            return this.type.declarative;
+        }
+
         // 1. 의문문
         // 체크1. 서술문 + 吗
-        if (morphemes.length > 1) {
-            if (morphemes[morphemes.length-1].text == "吗") {
-                if (morphemes[morphemes.length-2].pos == 'Verb' || morphemes[morphemes.length-2].pos == 'Adjective') {
+        if (morphemes.length > 1)
+        {
+            if (morphemes[morphemes.length-1].text == "吗")
+            {
+                if (morphemes[morphemes.length-2].pos == 'Verb' || morphemes[morphemes.length-2].pos == 'Adjective')
+                {
                     return this.type.interrogative;
                 }
             }
-            if (morphemes[morphemes.length-1].text == "呢") {
-                if (morphemes[morphemes.length-2].pos == 'Verb' || morphemes[morphemes.length-2].pos == 'Adjective' || morphemes[morphemes.length-2].pos == 'Pronoun' || morphemes[morphemes.length-2].pos == 'Noun') {
+            else if (morphemes[morphemes.length-1].text == "呢")
+            {
+                if (morphemes[morphemes.length-2].pos == 'Verb' || morphemes[morphemes.length-2].pos == 'Adjective' || morphemes[morphemes.length-2].pos == 'Pronoun' || morphemes[morphemes.length-2].pos == 'Noun')
+                {
                     return this.type.interrogative;
                 }
             }
-            if (morphemes[morphemes.length-1].text == "哪儿") {
+            else if (morphemes[morphemes.length-1].text == "哪儿")
+            {
                 return this.type.interrogative;
             }
         }
 
-        for (var i=1; i<morphemes.length; i++) {
-            if (morphemes[i].text == '没') {
-                if ((i+1<morphemes.length) && (morphemes[i-1].text == morphemes[i+1].text)) {
+        for (var i=1; i<morphemes.length; i++)
+        {
+            if (morphemes[i].text == '没')
+            {
+                if ((i+1<morphemes.length) && (morphemes[i-1].text == morphemes[i+1].text))
+                {
                     return this.type.interrogative;
                 }
             }
@@ -298,7 +335,8 @@
                 }
             }
             */
-            if (morphemes[i].text == '几' || morphemes[i].text == '多少' || morphemes[i].text == '怎么' || morphemes[i].text == '为什么' || morphemes[i].text == '还是') {
+            else if (morphemes[i].text == '几' || morphemes[i].text == '多少' || morphemes[i].text == '怎么' || morphemes[i].text == '为什么' || morphemes[i].text == '还是')
+            {
                 return this.type.interrogative;
             }
         }
@@ -314,23 +352,34 @@
 
         // 2. 명령문
         // 체크1. 不要 + 동사인 경우, 别 + 동사인 경우
-        for (var i=0; i<morphemes.length; i++) {
-            if (morphemes[i].text.indexOf("不要") > -1) {
-                if (morphemes[i].pos == "Adjective") {
+        for (var i=0; i<morphemes.length; i++)
+        {
+            if (morphemes[i].text.indexOf("不要") > -1)
+            {
+                if (morphemes[i].pos == "Adjective")
+                {
                     return this.type.imperative;
                 }
-                if (i<morphemes.length-1) {
-                    if (morphemes[i+1].pos == "Verb") {
+
+                if (i<morphemes.length-1)
+                {
+                    if (morphemes[i+1].pos == "Verb")
+                    {
                         return this.type.imperative;
                     }
                 }
             }
-            if (morphemes[i].text.indexOf("别") > -1) {
-                if (morphemes[i].pos == "Adjective") {
+            else if (morphemes[i].text.indexOf("别") > -1)
+            {
+                if (morphemes[i].pos == "Adjective")
+                {
                     return this.type.imperative;
                 }
-                if (i<morphemes.length-1) {
-                    if (morphemes[i+1].pos == "Verb") {
+
+                if (i<morphemes.length-1)
+                {
+                    if (morphemes[i+1].pos == "Verb")
+                    {
                         return this.type.imperative;
                     }
                 }
@@ -348,19 +397,24 @@
         }
 
         // 체크2.
-        if (morphemes.length >=3) {
-            for (var i=2; i<morphemes.length; i++) {
+        if (morphemes.length >=3)
+        {
+            for (var i=2; i<morphemes.length; i++)
+            {
                 // ‘多(么)+형용사+啊’
-                if ((morphemes[i-2].text == "多" || morphemes[i-2].text == "么") && morphemes[i-1].pos == "Adjective" && morphemes[i].text == "啊") {
+                if ((morphemes[i-2].text == "多" || morphemes[i-2].text == "么") && morphemes[i-1].pos == "Adjective" && morphemes[i].text == "啊")
+                {
                     return this.type.exclamation;
                 }
                 // ‘多(么)’ 앞에 ‘该’가 오는 경우
-                if (morphemes[i-1].text == "该" && (morphemes[i].text == "多" || morphemes[i].text == "么")) {
+                if (morphemes[i-1].text == "该" && (morphemes[i].text == "多" || morphemes[i].text == "么"))
+                {
                     return this.type.exclamation;
                 }
             }
             // ‘太…了’를 사용
-            if (morphemes[0].text == "太" && morphemes[morphemes.length-1].text == "了") {
+            if (morphemes[0].text == "太" && morphemes[morphemes.length-1].text == "了")
+            {
                 return this.type.exclamation;
             }
         }
@@ -370,53 +424,58 @@
 
     SentenceInfo.prototype.analyzeJA = function (morphemes)
     {
-        // 1. 의문문
-        // 체크1. 문장 뒤에 だ를 지우고 か
-        if (morphemes.length > 1) {
-            if (morphemes[morphemes.length-2].pos == "Preposition" || morphemes[morphemes.length-2].pos == "AuxVerb" || morphemes[morphemes.length-2].pos == "Verb") {
-                if (morphemes[morphemes.length-1].text == "か" && morphemes[morphemes.length-1].pos == "Preposition") {
+        // 3. 감탄문
+        // 체크1. 1단어 형용사
+        if (morphemes.length == 1)
+        {
+            if (morphemes[0].pos == "Adjective")
+            {
+                return this.type.exclamation;
+            }
+        }
+
+        if (morphemes.length > 1)
+        {
+            // 1. 의문문
+            // 체크1. 문장 뒤에 だ를 지우고 か
+            if (morphemes[morphemes.length-2].pos == "Preposition" || morphemes[morphemes.length-2].pos == "AuxVerb" || morphemes[morphemes.length-2].pos == "Verb")
+            {
+                if (morphemes[morphemes.length-1].text == "か" && morphemes[morphemes.length-1].pos == "Preposition")
+                {
                     return this.type.interrogative;
                 }
             }
-        }
 
-        // 2. 명령문
-        // 체크1. 동사 ます형 + なさい
-        if (morphemes.length > 1) {
-            if (morphemes[morphemes.length-2].pos == "AuxVerb" || morphemes[morphemes.length-2].pos == "Verb") {
-                if (morphemes[morphemes.length-1].text == "なさい") {
+            // 2. 명령문
+            // 체크1. 동사 ます형 + なさい
+            else if (morphemes[morphemes.length-2].pos == "AuxVerb" || morphemes[morphemes.length-2].pos == "Verb")
+            {
+                if (morphemes[morphemes.length-1].text == "なさい")
+                {
                     return this.type.imperative;
                 }
             }
-        }
-        if (morphemes.length > 2) {
-            if (morphemes[morphemes.length-2].pos == "Preposition" || morphemes[morphemes.length-2].pos == "AuxVerb" || morphemes[morphemes.length-2].pos == "Verb") {
-                if (morphemes[morphemes.length-1].text == "しまえ") {
-                    return this.type.imperative;
-                }
-            }
-        }
 
-        // 3. 감탄문
-        // 체크1. 1단어 형용사
-        if (morphemes.length == 1) {
-            if (morphemes[0].pos == "Adjective") {
+            // 체크2. おや (감탄사로써 어, 이런, 어머, 어머나.)
+            else if (morphemes[0].pos == "Interjection")
+            {
                 return this.type.exclamation;
             }
         }
 
-        // 체크2. おや (감탄사로써 어, 이런, 어머, 어머나.)
-        if (morphemes.length > 1) {
-            if (morphemes[0].pos == "Interjection") {
-                return this.type.exclamation;
+        if (morphemes.length > 2)
+        {
+            if (morphemes[morphemes.length-2].pos == "Preposition" || morphemes[morphemes.length-2].pos == "AuxVerb" || morphemes[morphemes.length-2].pos == "Verb")
+            {
+                if (morphemes[morphemes.length-1].text == "しまえ")
+                {
+                    return this.type.imperative;
+                }
             }
-        }
-
-        // 4. 청유형
-        // 끝 음절인 " る。" 를 " よう。" 로 교체
-        if (morphemes.length > 2) {
-            if (morphemes[morphemes.length-1].pos == "Verb") {
-                if (morphemes[1].text.indexOf("よう")>0) {
+            else if (morphemes[morphemes.length-1].pos == "Verb")
+            {
+                if (morphemes[1].text.indexOf("よう")>0)
+                {
                     return this.type.lets;
                 }
             }

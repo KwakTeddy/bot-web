@@ -1,4 +1,7 @@
-var RakutenMA = require('./nlp/rakutenma/rakutenma.js');
+var fs = require('fs');
+var path = require('path');
+
+var RakutenMA = require('./rakutenma/rakutenma.js');
 var CBTags = require('./cbTags.js');
 var UserDictionary = require('./userDictionary.js');
 var SentenceInfo = require('./sentenceInfo.js');
@@ -9,13 +12,12 @@ var TurnTaking = require('./turnTaking.js').ja;
     var JapaneseAnalyzer = function()
     {
         this.cbTags = new CBTags();
-        var userDictionary = new UserDictionary('./nlp/resources/ja/user.pos');
-        var model = JSON.parse(fs.readFileSync('./nlp/rakutenma/model_ja.json'));
+        var model = JSON.parse(fs.readFileSync(path.resolve('./engine2/input/nlp/rakutenma/model_ja.json')));
         var rma = new RakutenMA(model, 1024, 0.007812);
         rma.featset = RakutenMA.default_featset_ja;
         rma.hash_func = RakutenMA.create_hash_func(15);
 
-        this.dictionary = userDictionary;
+        this.dictionary = new UserDictionary('ja');
         this.rma = rma;
     };
 
@@ -40,8 +42,7 @@ var TurnTaking = require('./turnTaking.js').ja;
         var tokens = this.rma.tokenize(text);
 
         var nlp = [];
-        var nlpAll = [];
-        var inNLP = [];
+        var nlpText = [];
 
         var temp = '';
         for (var i = 0; i < tokens.length; i++)
@@ -59,14 +60,13 @@ var TurnTaking = require('./turnTaking.js').ja;
             entry.text = tokens[i][0];
             entry.pos = tokens[i][1];
             nlp.push(entry);
-            nlpAll.push(entry);
-            inNLP.push(entry.text);
+            nlpText.push(entry.text);
         }
 
-        inNLP = inNLP.join(' ');
+        nlpText = nlpText.join(' ');
 
         var nlpJsonPOS = this.rma.tokens2json(inputRaw, tokens);
-        callback(null, lastChar, inNLP, nlp, nlpAll, nlpJsonPOS);
+        callback(null, lastChar, nlpText, nlp, nlpJsonPOS);
     };
 
     JapaneseAnalyzer.prototype.findSentenceType = function(inputRaw, nlp)
@@ -107,7 +107,7 @@ var TurnTaking = require('./turnTaking.js').ja;
         }
 
         var that = this;
-        this.getNlpedText(inputRaw, function(err, lastChar, inNLP, nlp, nlpAll, nlpJsonPOS)
+        this.getNlpedText(inputRaw, function(err, lastChar, nlpText, nlp, nlpJsonPOS)
         {
             if(err)
             {
@@ -117,7 +117,7 @@ var TurnTaking = require('./turnTaking.js').ja;
             var sentenceInfo = that.findSentenceType(inputRaw, nlp);
             var turnTaking = that.turnTaking(inputRaw);
 
-            callback(null, lastChar, inNLP, nlp, nlpAll, sentenceInfo, turnTaking, nlpJsonPOS);
+            callback(null, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS);
         });
     };
 
