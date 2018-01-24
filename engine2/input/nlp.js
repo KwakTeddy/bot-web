@@ -1,32 +1,41 @@
-var nlpKo = require('./nlp/nlpKo.js');
-var nlpEn = require('./nlp/nlpEn.js');
-var nlpZh = require('./nlp/nlpZh.js');
-var nlpJa = require('./nlp/nlpJa.js');
-
 (function()
 {
     var NLPManager = function()
     {
-
+        this.nlpKo = require('./nlp/nlpKo.js');
+        this.nlpEn = require('./nlp/nlpEn.js');
+        this.nlpZh = undefined;
+        this.nlpJa = undefined;
     };
 
     NLPManager.prototype.getNLPedText = function(language, inputRaw, callback)
     {
         if(language == 'ko')
         {
-            nlpKo.getNlpedText(inputRaw, callback);
+            this.nlpKo.getNlpedText(inputRaw, callback);
         }
         else if(language == 'en')
         {
-            nlpEn.getNlpedText(inputRaw, callback);
+            this.nlpEn.getNlpedText(inputRaw, callback);
         }
         else if(language == 'zh')
         {
-            nlpZh.getNlpedText(inputRaw, callback);
+            // 서버기동시 로드가 느려서 서버가 늦게뜨는것 때문에 이렇게 처리함.
+            if(!this.nlpZh)
+            {
+                this.nlpZh = require('./nlp/nlpZh.js');
+            }
+
+            this.nlpZh.getNlpedText(inputRaw, callback);
         }
         else if(language == 'ja')
         {
-            nlpJa.getNlpedText(inputRaw, callback);
+            if(!this.nlpJa)
+            {
+                this.nlpJa = require('./nlp/nlpJa.js');
+            }
+
+            this.nlpJa.getNlpedText(inputRaw, callback);
         }
     };
 
@@ -34,19 +43,29 @@ var nlpJa = require('./nlp/nlpJa.js');
     {
         if(language == 'ko')
         {
-            nlpKo.analysis(inputRaw, callback);
+            this.nlpKo.analysis(inputRaw, callback);
         }
         else if(language == 'en')
         {
-            nlpEn.analysis(inputRaw, callback);
+            this.nlpEn.analysis(inputRaw, callback);
         }
         else if(language == 'zh')
         {
-            nlpZh.analysis(inputRaw, callback);
+            if(!this.nlpZh)
+            {
+                this.nlpZh = require('./nlp/nlpZh.js');
+            }
+
+            this.nlpZh.analysis(inputRaw, callback);
         }
         else if(language == 'ja')
         {
-            nlpJa.analysis(inputRaw, callback);
+            if(!this.nlpJa)
+            {
+                this.nlpJa = require('./nlp/nlpJa.js');
+            }
+
+            this.nlpJa.analysis(inputRaw, callback);
         }
     };
 

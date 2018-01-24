@@ -40,7 +40,7 @@ var BotObject = require('./bot/bot.js');
                     }
 
                     that.bots[botId] = bot;
-                    that.loadBotFiles(botDir);
+                    that.loadBotFiles(bot, botDir);
 
                     console.log('----- Loading Bot : ', botId, ' [End]');
 
@@ -50,27 +50,16 @@ var BotObject = require('./bot/bot.js');
         }
     };
 
-    BotManager.prototype.loadBotFiles = function(botDir)
+    BotManager.prototype.loadBotFiles = function(bot, botDir)
     {
         //제일먼저 .bot.js 파일을 로딩하고나서 그래프 등의 로직파일을 로딩한다.
         var files = fs.readdirSync(botDir);
         for(var i=0; i<files.length; i++)
         {
-            if(files[i].endsWith('.bot.js'))
-            {
-                console.log('Loading : ', files[i]);
-                utils.requireNoCache(botDir + '/' + files[i], true);
-                files.splice(i, 1);
-                break;
-            }
-        }
-
-        for(var i=0; i<files.length; i++)
-        {
+            console.log('Loading : ', files[i]);
             if(files[i].endsWith('.js'))
             {
-                console.log('Loading : ', files[i]);
-                utils.requireNoCache(botDir + '/' + files[i], true);
+                utils.requireNoCache(botDir + '/' + files[i], true)(bot);
             }
         }
     };

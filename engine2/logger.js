@@ -4,7 +4,6 @@ var chalk = require('chalk');
 {
     var Logger = function()
     {
-
     };
 
     Logger.prototype.now = function()
@@ -26,6 +25,15 @@ var chalk = require('chalk');
         sec = sec < 10 ? '0' + sec : sec;
 
         return year + '-' + month + '-' + date + ' ' + hour + ':' + min + ':' + sec;
+    };
+
+    Logger.prototype.log = function()
+    {
+        console.log();
+        console.log(chalk.green('================ Engine Error ' + this.now() + ' ================'));
+        console.log.apply(null, arguments);
+        console.log(chalk.green('=================================================================='));
+        console.log();
     };
 
     Logger.prototype.error = function(err)

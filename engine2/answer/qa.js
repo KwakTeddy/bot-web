@@ -14,12 +14,25 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
     };
 
     QA.prototype.find = function(bot, nlp, callback)
-{
-    var checkDuplicate = {};
-    var matchedList = [];
-    async.eachSeries(nlp, function(word, next)
+    {
+        var that = this;
+
+        var dialogsets = [];
+        for(var i=0; i<bot.dialogsets.length; i++)
         {
-            DialogsetDialog.find({ input: new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i') }).limit(this.limit).lean().exec(function(err, list)
+            dialogsets.push(bot.dialogsets[i]._id);
+        }
+
+        var checkDuplicate = {};
+        var matchedList = [];
+        async.eachSeries(nlp, function(word, next)
+        {
+            if(that.exclude.indexOf(word.text) != -1)
+            {
+                return next();
+            }
+
+            DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text + '(?:$|\\s)', 'i') }).limit(this.limit).lean().exec(function(err, list)
             {
                 if(err)
                 {
@@ -30,8 +43,13 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                 {
                     if(!checkDuplicate[list[i]._id]) // exclude도 제외시킨다.
                     {
-                        matchedList.push(list[i]);
-                        checkDuplicate[list[i]._id] = true;
+                        checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
+                        checkDuplicate[list[i]._id].matchCount = 1;
+                        matchedList.push(checkDuplicate[list[i]._id]);
+                    }
+                    else
+                    {
+                        checkDuplicate[list[i]._id].matchCount++;
                     }
                 }
 
@@ -40,9 +58,14 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         },
         function()
         {
+            matchedList.sort(function(a, b)
+            {
+                return b.matchCount - a.matchCount;
+            });
+
             callback(null, matchedList);
         })
-};
+    };
 
     module.exports = new QA();
 })();

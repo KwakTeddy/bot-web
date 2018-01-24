@@ -1,3 +1,5 @@
+var logger = require('./logger.js');
+
 var NLPManager = require('./input/nlp.js');
 var EntityManager = require('./input/entity.js');
 var IntentManager = require('./input/intent.js');
@@ -31,8 +33,9 @@ var IntentManager = require('./input/intent.js');
             context.nlu.sentenceInfo = sentenceInfo;
             context.nlu.turnTaking = turnTaking;
             context.nlu.nlpText = nlpText;
-            context.nlu.nlp = nlp;
             context.nlu.lastChar = lastChar;
+
+            console.log('nlp: ', nlp);
 
             EntityManager.analysis(bot, nlp, function(err, entities)
             {

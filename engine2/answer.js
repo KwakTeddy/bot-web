@@ -17,10 +17,12 @@ var DialogGraphManager = require('./answer/dm.js');
         QA.find(bot, nlp, function(err, matchedList)
         {
             console.log('큐에이 결과 : ', matchedList);
-            DialogGraphManager.find(bot, nlp, function()
-            {
-                callback();
-            });
+
+            callback({ type: 'qa', list: matchedList[0].output });
+            // DialogGraphManager.find(bot, nlp, function()
+            // {
+            //     callback();
+            // });
         });
     };
 

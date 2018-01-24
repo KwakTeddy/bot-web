@@ -13,6 +13,7 @@ var SessionManager = require('./session.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var AnswerManager = require('./answer.js');
+var OutputManager = require('./output.js');
 var ContextManager = require('./context.js');
 
 (function()
@@ -90,9 +91,11 @@ var ContextManager = require('./context.js');
 
                 InputManager.analysis(bot, session, context, error, function()
                 {
-                    AnswerManager.analysis(bot, session, context, error, function()
+                    AnswerManager.analysis(bot, session, context, error, function(output)
                     {
-                        callback('넵');
+                        var message = OutputManager.make(output);
+                        callback(message);
+
                         console.log(chalk.green('================================'));
                         console.log();
                     });

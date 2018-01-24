@@ -71,19 +71,6 @@ var TurnTaking = require('./turnTaking.js').ja;
 
     JapaneseAnalyzer.prototype.findSentenceType = function(inputRaw, nlp)
     {
-        var str = inputRaw;
-
-        // 1. 문장 부호 확인
-        var lastStr = str.charAt(str.length - 1);
-        if (lastStr == "?" || lastStr == "？")
-        {
-            return this.type.interrogative;
-        }
-        else if (lastStr == "!")
-        {
-            return this.type.exclamation;
-        }
-
         var value = SentenceInfo.analyze('zh', inputRaw, nlp);
         return value;
     };

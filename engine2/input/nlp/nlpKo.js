@@ -168,22 +168,8 @@ var processor = require('./twitter-korean-processor.js');
 
     KoreanAnalyzer.prototype.findSentenceType = function(inputRaw, nlp)
     {
-        var str = inputRaw;
-
-        // 1. 문장 부호 확인
-        var lastStr = str.charAt(str.length - 1);
-        if (lastStr == "?" || lastStr == "？")
-        {
-            return this.type.interrogative;
-        }
-        else if (lastStr == "!")
-        {
-            return this.type.exclamation;
-        }
-
         var value = SentenceInfo.analyze('ko', inputRaw, nlp);
         return value;
-        // context.botUser.nlu["sentenceInfo"] = value;
     };
 
     KoreanAnalyzer.prototype.turnTaking = function(inputRaw)
