@@ -8,6 +8,9 @@ module.exports = function (app)
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 
+    // To Log User Activity
+    app.route('/logging').post(core.logging);
+
     // To Get Config
     app.route('/config').get(core.getConfig);
 

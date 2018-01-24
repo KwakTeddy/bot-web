@@ -5,7 +5,7 @@
 
     var instance = undefined;
 
-    angular.module('playchat').factory('DialogGraphEditor', function($window, $rootScope)
+    angular.module('playchat').factory('DialogGraphEditor', function($window, $rootScope, CaretService)
     {
         var DialogGraphEditor = function()
         {
@@ -17,7 +17,7 @@
             this.myBotAuth = { read: true, edit: true };
         };
 
-        DialogGraphEditor.prototype.open = function(parent, dialog)
+        DialogGraphEditor.prototype.open = function(parent, dialog, which)
         {
             if(!this.myBotAuth.edit)
             {
@@ -26,10 +26,25 @@
 
             angular.element('.graph-body').css('right', '365px');
             angular.element('#graphDialogEditor').css('right', '0');
+
+
             setTimeout(function()
             {
-                var el = angular.element('#graphDialogEditor .dialog-editor-input:first').focus().get(0);
-                el.setSelectionRange(0, el.value.length);
+                if(which == 'header')
+                {
+                    var el = angular.element('#graphDialogEditor .dialog-editor-input:first').focus().get(0);
+                    el.setSelectionRange(0, el.value.length);
+                }
+                else if(which == 'input')
+                {
+                    var el = angular.element('#graphDialogEditor .dialog-editor-input-box .editable').focus().get(0);
+                    CaretService.placeCaretAtEnd(el);
+                }
+                else if(which == 'output')
+                {
+                    var el = angular.element('#graphDialogEditor .dialog-editor-output-text textarea').focus().get(0);
+
+                }
             }, 502);
 
             if(this.callback)

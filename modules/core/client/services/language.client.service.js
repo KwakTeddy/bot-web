@@ -5,18 +5,24 @@
 
     angular.module('playchat').factory('LanguageService', function($cookies, $rootScope)
     {
-        var user = $cookies.getObject('user');
-        var userLang = navigator.language || navigator.userLanguage;
-        var code = user ? user.language : userLang || 'en';
+        // var user = $cookies.getObject('user');
+        // var userLang = navigator.language || navigator.userLanguage;
+        // var code = user ? user.language : userLang || 'en';
 
-        code = code.split('-')[0];
+        // code = code.split('-')[0];
+
+        var code = $cookies.get('language');
+        console.log(code)
 
         $rootScope.$on('changeLanguage', function()
         {
-            user = $cookies.getObject('user');
-            code = user ? user.language : userLang || 'en';
+            // user = $cookies.getObject('user');
+            //
+            // code = user ? user.language : userLang || 'en';
+            //
+            // code = code.split('-')[0];
 
-            code = code.split('-')[0];
+            code = $cookies.get('language');
         });
 
         var languages = {
@@ -2935,8 +2941,7 @@
 
         var lan = function(key)
         {
-            if(!key)
-                return '';
+            if(!key) return '';
 
             key = key.trim();
             if(!languages[key])

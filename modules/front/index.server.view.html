@@ -158,7 +158,7 @@
     						</ul>
     					</div>
     				</div>
-    				<a href="/playchat/chatbots" class="startBtn">{{L015}}</a>
+    				<a href="#" class="startBtn" id="topStartBtn">{{L015}}</a>
     			</div>
     		</div>
     	</div>
@@ -534,36 +534,47 @@
     <script>
         $(document).ready(function()
         {
-            var user = $.cookie('user');
+            $('#topStartBtn').on('click', function () {
+                console.log($.cookie('login'));
 
-            user = user ? JSON.parse(user) : {};
+                if($.cookie('login') != 'true')
+                {
+                    return location.href = '/signin';
+                }else
+                {
+                    return location.href = '/playchat/chatbots';
+                }
+
+            });
+
+            var lanCategory = ['ko', 'en', 'zh', 'jp'];
+            var lan = {{ lan | json | safe }};
+            var query = window.location.search;
+            if(!query)
+            {
+                return location.href = '/?lan=' + $.cookie('language');
+            }else
+            {
+                $.cookie('language', lan);
+
+                query = query.replace("?", '').split('=')[1];
+
+                if(lanCategory.indexOf(query) == -1)
+                {
+                    return location.href = '/?lan=' + lan;
+                }
+
+            }
 
             $('.lang li').on('click', function()
             {
                 var code = $(this).attr('data-id');
 
-                user.language = code;
-
-                $.cookie('user', JSON.stringify(user));
+                $.cookie('language', code);
 
                 var href = $(this).find('a').attr('href');
                 location.href = href;
             });
-
-            var lan = location.href.split('lan=')[1] || '';
-            if(user.language)
-            {
-                if(lan != user.language)
-                {
-                    return location.href = '/?lan=' + user.language;
-                }
-
-                lan = user.language;
-            }
-            else
-            {
-                $.cookie('user', JSON.stringify({ language: lan }));
-            }
 
             var text = $('.lang li[data-id="' + lan + '"] a').text();
             $('.langCode').text(text);
