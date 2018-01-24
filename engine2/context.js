@@ -11,100 +11,10 @@ var Logger = require('./logger.js');
 {
     var Context = function()
     {
-        this.bots = {};
-        this.users = {};
-        this.botusers = {};
-        this.channels = {};
-    };
+        this.history = [];
 
-    Context.prototype.makeUserContext = function(bot, channel, user, callback)
-    {
-        var that = this;
-        if(user)
-        {
-            var userContext = this.users[user];
-            if(userContext)
-            {
-                //이미 로딩된 컨텍스트가 있으면
-                callback();
-            }
-            else
-            {
-                //메모리에 로드된 컨텍스트가 없으면 생성한다.
-                //FIXME 이건 봇과 유저의 링크를 db에 저장하기 위함인데 개선이 필요해 보임.
-                BotUserContext.get(bot, user, channel, function(err, botUser)
-                {
-                    if(err)
-                    {
-                        callback(err);
-                    }
-                    else
-                    {
-                        var userContext = {
-                            bot: bot,
-                            userId: user,
-                            userKey: user,
-                            channel: channel,
-                            doc: botUser
-                        };
-
-                        that.users[user] = userContext;
-                        callback();
-                    }
-                });
-            }
-        }
-        else
-        {
-            //이건 에러인거지.
-            callback('User is undefined : ' + bot + ' ' + channel);
-        }
-    };
-
-    Context.prototype.makeBotUserContextContext = function(bot, user, options, callback)
-    {
-        var botUserName = bot + '_' + user;
-        var botUserContext = this.botusers[botUserName];
-
-        if(!botUserContext)
-        {
-            botUserContext = this.botusers[botUserName] = {
-                dialog: {},
-                task: {}
-            };
-        }
-
-        botUserContext.orgBot = this.bots[bot];
-
-        if(options)
-        {
-            botUserContext.options = options;
-        }
-
-        callback();
-    };
-
-    Context.prototype.makeBotContext = function(bot, user, callback)
-    {
-        var that = this;
-        if(this.bots[bot])
-        {
-            callback(this.bots[bot]);
-        }
-        else
-        {
-            BotContext.load(bot, user, function(botContext)
-            {
-                if(!botContext)
-                {
-                    botContext = {};
-                }
-
-                that.bots[bot] = botContext;
-
-                callback();
-            });
-        }
+        // 사용자가 한 번 말할때마다 저장.
+        // 총 history를 10개까지 들고 있음
     };
 
     Context.prototype.make = function()
@@ -133,7 +43,9 @@ var Logger = require('./logger.js');
                 pos: '',
                 nlpCorrection: '',
                 inRawCorrection: '',
-                wordCorrection: ''
+                wordCorrection: '',
+                entities: [],
+                intents: []
             }
         };
 

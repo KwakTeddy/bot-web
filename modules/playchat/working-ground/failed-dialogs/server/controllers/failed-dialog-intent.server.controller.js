@@ -3,7 +3,7 @@ var UserDialog = mongoose.model('UserDialog');
 var IntentContent = mongoose.model('IntentContent');
 
 var path = require('path');
-// var NLPManager = require(path.resolve('./engine2/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 module.exports.analysis = function(req, res)
 {

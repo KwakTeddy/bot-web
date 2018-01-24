@@ -12,7 +12,7 @@ var EntityModel = mongoose.model('Entity');
 var EntityContentModel = mongoose.model('EntityContent');
 var CustomContextModel = mongoose.model('CustomContext');
 var CustomContextItemModel = mongoose.model('CustomContextItem');
-var Dialogset = mongoose.model('dialogset');
+var Dialogset = mongoose.model('Dialogset');
 
 (function()
 {

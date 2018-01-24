@@ -19,7 +19,7 @@ var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var IntentContext = mongoose.model('IntentContext');
 
-// var NLPManager = require(path.resolve('./engine2/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 exports.findTotalPage = function(req, res)
 {
