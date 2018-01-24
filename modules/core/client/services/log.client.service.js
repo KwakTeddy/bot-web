@@ -30,7 +30,6 @@
             var that = this;
             var pushState = history.pushState;
             history.pushState = function(a, b, state) {
-                console.log(this)
                 if (typeof history.onpushstate == "function") {
                     history.onpushstate({state: state});
                 }
@@ -39,7 +38,7 @@
                 }
 
                 var statePathname = state.split('?')[0].split('#')[0];
-                if(statePathname.slice(-1) == '/') statePathname = statePathname.slice(0, -1);
+                if(statePathname.slice(-1) == '/' && statePathname.length > 1) statePathname = statePathname.slice(0, -1);
 
 
                 if(statePathname != window.location.pathname){
