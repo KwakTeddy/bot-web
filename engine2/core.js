@@ -13,13 +13,13 @@ var SessionManager = require('./session.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var AnswerManager = require('./answer.js');
+var TaskManager = require('./task.js');
 var OutputManager = require('./output.js');
 var ContextManager = require('./context.js');
 
 (function()
 {
-    console.log('엔진호출');
-    var Engine = function()
+    var Core = function()
     {
         console.log();
         console.log(chalk.green('================= Engine Initailize ==================='));
@@ -34,7 +34,7 @@ var ContextManager = require('./context.js');
         console.log();
     };
 
-    Engine.prototype.loadModels = function()
+    Core.prototype.loadModels = function()
     {
         console.log('[Load Models START]');
         var list = fs.readdirSync(path.resolve('./engine2/models'));
@@ -47,13 +47,13 @@ var ContextManager = require('./context.js');
         console.log();
     };
 
-    Engine.prototype.init = function(app, io)
+    Core.prototype.init = function(app, io)
     {
         channel.init(app, io);
         // loadBalancer.init(app, io);
     };
 
-    Engine.prototype.process = function(botId, channel, userId, inputRaw, options, callback, errCallback)
+    Core.prototype.process = function(botId, channel, userId, inputRaw, options, outCallback, errCallback)
     {
         console.log();
         console.log(chalk.green('======== Engine Process ========'));
@@ -74,7 +74,7 @@ var ContextManager = require('./context.js');
                 if(inputRaw.startsWith(':'))
                 {
                     //FIXME 커맨드 실행
-                    callback('커맨드가 실행되었습니다 ' + inputRaw);
+                    outCallback('커맨드가 실행되었습니다 ' + inputRaw);
                     console.log(chalk.green('================================'));
                     console.log();
                     return;
@@ -86,16 +86,47 @@ var ContextManager = require('./context.js');
                 //4. input을 처리하기 위한 작업
 
                 var session = SessionManager.make(botId, userId, channel, options);
-                var context = ContextManager.make();
+                var context = session.context.get();
                 context.nlu.sentence = inputRaw;
 
                 InputManager.analysis(bot, session, context, error, function()
                 {
-                    AnswerManager.analysis(bot, session, context, error, function(output)
+                    AnswerManager.analysis(bot, session, context, error, function(answer)
                     {
-                        var message = OutputManager.make(output);
-                        callback(message);
+                        if(answer.type == 'qa')
+                        {
+                            //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
+                            outCallback(answer.list[0]);
+                        }
+                        else if(answer.type == 'dm')
+                        {
+                            if(answer.dialog.task)
+                            {
+                                TaskManager.exec(answer.dialog.task);
+                            }
 
+                            // var hasIf = false;
+                            // var elseOutput = false;
+                            // for(var i=0; i<answer.dialog.output.length; i++)
+                            // {
+                            //     var output = answer.dialog.output[i];
+                            //     if(output.if)
+                            //     {
+                            //         //TODO 실행 후 맞으면 target에 넣어줌
+                            //         hasIf = true;
+                            //     }
+                            // }
+
+                            outCallback(answer.dialog.output[0].text);
+
+                            //TODO execute postTask
+                        }
+                        else
+                        {
+                            outCallback(answer.text);
+                        }
+
+                        //output 출력하고
                         console.log(chalk.green('================================'));
                         console.log();
                     });
@@ -112,5 +143,5 @@ var ContextManager = require('./context.js');
         // bot.loadBot();
     };
 
-    module.exports = new Engine();
+    module.exports = new Core();
 })();

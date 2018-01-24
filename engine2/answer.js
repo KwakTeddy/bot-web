@@ -1,8 +1,12 @@
-var QA = require('./answer/qa.js');
+var Transaction = require('./utils/transaction.js');
+
+var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
 
 (function()
 {
+    // 어떤 답변을 할 것인지 선택해주는 역할.
+    // 딱 선택까지만 한다.
     var AnswerManager = function()
     {
 
@@ -11,18 +15,47 @@ var DialogGraphManager = require('./answer/dm.js');
     AnswerManager.prototype.analysis = function(bot, session, context, error, callback)
     {
         var nlp = context.nlu.nlp;
-        var intents = context.nlu.intents;
-        var entities = context.nlu.entities;
 
-        QA.find(bot, nlp, function(err, matchedList)
+        var transaction = new Transaction.async();
+
+        QNAManager.find(bot, nlp, transaction.callback(function(err, matchedList, done)
         {
-            console.log('큐에이 결과 : ', matchedList);
+            if(matchedList.length > 0)
+            {
+                transaction.qa = { type: 'qa', list: matchedList[0].output };
+            }
 
-            callback({ type: 'qa', list: matchedList[0].output });
-            // DialogGraphManager.find(bot, nlp, function()
-            // {
-            //     callback();
-            // });
+            done();
+        }));
+
+        DialogGraphManager.find(bot, session, context, transaction.callback(function(err, dialog, done)
+        {
+            if(dialog)
+            {
+                transaction.dm = { type: 'dm', dialog: dialog };
+            }
+
+            done();
+        }));
+
+        transaction.done(function()
+        {
+            console.log('qa 결과 : ', this.qa);
+            console.log('dm 결과 : ', this.dm);
+
+            if(this.dm)
+            {
+                session.dialogCursor = this.dm.dialog.id;
+                callback(this.dm);
+            }
+            else if(this.qa)
+            {
+                callback(this.qa);
+            }
+            else
+            {
+                callback({ text: '모르겟어요 ㅜㅜ' });
+            }
         });
     };
 

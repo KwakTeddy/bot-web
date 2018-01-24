@@ -1,48 +1,30 @@
+var Context = require('./context.js');
+
 (function()
 {
+    // 내부 channel을 레디스로
     var Session = function()
     {
-        this.bots = {};
-        this.users = {};
-        this.botUsers = {};
-        this.channels = {};
+        this.channel = {};
     };
 
-    Session.prototype.make = function(botId, userId, channel, options)
+    Session.prototype.make = function(botId, userId, channel)
     {
-        if(!this.bots[botId])
+        if(!this.channel[channel])
         {
-            var botContext = { id: botId };
-            this.bots[botId] = botContext;
+            this.channel[channel] = {};
         }
 
-        if(!this.users[userId])
+        var session = this.channel[channel][botId + '_' + userId];
+        if(!session)
         {
-            var userContext = { userId: userId, userKey: userId };
-            this.users[userId] = userContext;
+            session = this.channel[channel][botId + '_' + userId] = {};
+            session.context = new Context();
         }
-
-        var botUserId = botId + '_' + userId;
-
-        if(!this.botUsers[botUserId])
+        else
         {
-            var botUserContext = { dialog: {}, task: {}, options: options };
-            this.botUsers[botUserId] = botUserContext;
+            session.context.make();
         }
-
-        if(!this.channels[channel])
-        {
-            var channelContext = { name: channel };
-            this.channels[channel] = channelContext;
-        }
-
-        var session =
-        {
-            bot: this.bots[botId],
-            user: this.users[userId],
-            botUser: this.botUsers[botUserId],
-            channel: this.channels[channel]
-        };
 
         return session;
     };

@@ -8,7 +8,7 @@
         this.nlpJa = undefined;
     };
 
-    NLPManager.prototype.getNLPedText = function(language, inputRaw, callback)
+    NLPManager.prototype.getNlpedText = function(language, inputRaw, callback)
     {
         if(language == 'ko')
         {

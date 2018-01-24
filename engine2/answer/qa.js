@@ -27,7 +27,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         var matchedList = [];
         async.eachSeries(nlp, function(word, next)
         {
-            if(that.exclude.indexOf(word.text) != -1)
+            if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
             {
                 return next();
             }
