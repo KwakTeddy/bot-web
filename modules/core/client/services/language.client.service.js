@@ -12,7 +12,6 @@
         // code = code.split('-')[0];
 
         var code = $cookies.get('language');
-        console.log(code)
 
         $rootScope.$on('changeLanguage', function()
         {

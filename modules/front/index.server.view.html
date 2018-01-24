@@ -158,7 +158,7 @@
     						</ul>
     					</div>
     				</div>
-    				<a href="#" class="startBtn" id="topStartBtn">{{L015}}</a>
+    				<a href="#" class="startBtn" data-id="startBtn">{{L015}}</a>
     			</div>
     		</div>
     	</div>
@@ -178,7 +178,7 @@
                             {{L018}}
 						</p>
     					<div class="homeBtn">
-    						<a href="/playchat/chatbots" class="btnOne Btn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
+    						<a href="#" class="btnOne Btn" data-id="startBtn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
     						<!--<a href="#" class="btnTwo Btn">check pricing</a>-->
     					</div>
     				</div>
@@ -466,7 +466,7 @@
     		<div class="row">
     			<div class="col-md-12 animated">
     				<span class="ctaTxtTwo">{{L079}}</span>
-    				<div class="ctaBtn"><a href="/playchat/chatbots" class="btnOne Btn">{{L015}}</a></div>
+    				<div class="ctaBtn"><a href="#" class="btnOne Btn" data-id="startBtn">{{L015}}</a></div>
     			</div>
     		</div>
     	</div>
@@ -534,7 +534,7 @@
     <script>
         $(document).ready(function()
         {
-            $('#topStartBtn').on('click', function () {
+            $('[data-id="startBtn"]').on('click', function () {
                 console.log($.cookie('login'));
 
                 if($.cookie('login') != 'true')
