@@ -38,8 +38,12 @@ window.saveAs || ( window.saveAs = (window.navigator.msSaveBlob ? function(b,n){
 
 })() );
 
-angular.module('playchat').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', 'LanguageService', function ($scope, $location, $timeout, $cookies, Authentication, LanguageService)
+angular.module('playchat').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', 'LanguageService', 'LogService', function ($scope, $location, $timeout, $cookies, Authentication, LanguageService, LogService)
 {
+    var userId = $cookies.getObject('user') ? $cookies.getObject('user')._id : '';
+    var botId = $cookies.getObject('chatbot') ? $cookies.getObject('chatbot')._id : '';
+    if(userId) LogService.init(userId, botId);
+
     $scope.loading = true;
 
     $scope.$watch('loading', function(after, before)

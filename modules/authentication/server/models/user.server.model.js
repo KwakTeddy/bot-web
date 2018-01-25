@@ -98,7 +98,10 @@ var UserSchema = new Schema({
     default: false
   },
   messengerIds: Schema.Types.Mixed,
-    language: { type: String, default: 'en' }
+  language: {
+    type: String,
+    default: 'en'
+  }
 
 });
 
