@@ -38,53 +38,32 @@
         this.doneCallback = f;
     };
 
-
     var SyncTransaction = function()
     {
         this.list = [];
-        this.doneCallback = undefined;
     };
 
-    SyncTransaction.prototype.callback = function(f)
+    SyncTransaction.prototype.make = function(f)
     {
-        var that = this;
-
-        return function()
-        {
-            var args = [];
-            for(var i=0; i<arguments.length; i++)
-            {
-                args.push(arguments[i]);
-            }
-
-            args.push(function()
-            {
-                that.callNext();
-            });
-
-            that.list.push(function()
-            {
-                f.apply(this, args);
-            });
-        };
+        this.list.push(f);
     };
 
     SyncTransaction.prototype.callNext = function()
     {
-        if(this.list[0])
+        var that = this;
+        if(this.list.length > 0)
         {
             var next = this.list.splice(0, 1);
-            next[0]();
-        }
-        else
-        {
-            this.doneCallback();
+            next[0].call(next[0], function()
+            {
+                that.callNext();
+            });
         }
     };
 
     SyncTransaction.prototype.done = function(f)
     {
-        this.doneCallback = f;
+        this.list.push(f);
         this.callNext();
     };
 

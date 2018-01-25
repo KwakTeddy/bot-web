@@ -7,6 +7,7 @@
         this.initContext = {};
         this.initContext.nlu = {};
         this.initContext.userData = {};
+        this.initContext.output = undefined;
 
         this.history = [this.initContext];
     };

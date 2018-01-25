@@ -20,6 +20,7 @@ var Dialogset = mongoose.model('Dialogset');
     {
         this.botId = botId;
 
+        this.dialogMap = {};
         this.dialogs = this.dialogs || [];
         this.commonDialogs = this.commonDialogs || [];
         this.tasks = this.tasks || {};
@@ -57,7 +58,7 @@ var Dialogset = mongoose.model('Dialogset');
                     }
                 }
 
-                that.setDialogs(Globals.dialogs.startDialogs);
+                // that.setDialogs(Globals.dialogs.startDialogs);
 
                 that.loadTemplateBotData(function(err)
                 {
@@ -95,7 +96,7 @@ var Dialogset = mongoose.model('Dialogset');
                                     }
 
                                     that.extractTopicKeywordFromDialogset();
-                                    that.setDialogs(Globals.dialogs.endDialogs);
+                                    // that.setDialogs(Globals.dialogs.endDialogs);
 
                                     callback();
                                 });
@@ -557,9 +558,23 @@ var Dialogset = mongoose.model('Dialogset');
         });
     };
 
+    Bot.prototype.setDialogMap = function(dialogs)
+    {
+        for(var i=0; i<dialogs.length; i++)
+        {
+            this.dialogMap[dialogs[i].id] = dialogs[i];
+
+            if(dialogs[i].children)
+            {
+                this.setDialogMap(dialogs[i].children);
+            }
+        }
+    };
+
     Bot.prototype.setDialogs = function(dialogs)
     {
         this.dialogs = this.dialogs.concat(dialogs);
+        this.setDialogMap(dialogs);
     };
 
     Bot.prototype.setCommonDialogs = function(dialogs)

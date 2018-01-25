@@ -2,6 +2,11 @@ var path = require('path');
 var fs = require('fs');
 var Q = require('q');
 
+module.exports.getRandomInt = function(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 exports.readFirstLine = function (path) {
   return Q.promise(function (resolve, reject) {
     var rs = fs.createReadStream(path, {encoding: 'utf8'});

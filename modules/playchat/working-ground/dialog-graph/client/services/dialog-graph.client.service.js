@@ -1638,8 +1638,11 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
+            var children = this.commonDialogs[0].children;
+            delete this.commonDialogs[0].children;
             var temp = JSON.parse(JSON.stringify(this.commonDialogs));
-            delete temp[0].children;
+
+            this.commonDialogs[0].children = children;
 
             var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
             return data;

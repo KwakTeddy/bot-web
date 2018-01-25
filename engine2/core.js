@@ -8,15 +8,10 @@ var globals = require('./globals.js');
 var channel = require('./channel.js');
 var loadBalancer = require('./loadbalancer.js');
 
-var Transaction = require('./utils/transaction.js');
-
 var SessionManager = require('./session.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
-var AnswerManager = require('./answer.js');
-var TaskManager = require('./task.js');
 var OutputManager = require('./output.js');
-var ContextManager = require('./context.js');
 
 (function()
 {
@@ -93,34 +88,10 @@ var ContextManager = require('./context.js');
 
                 InputManager.analysis(bot, session, context, error, function()
                 {
-                    AnswerManager.analysis(bot, session, context, error, function(answer)
+                    OutputManager.analysis(bot, session, context, error, function(output)
                     {
-                        if(answer.type == 'qa')
-                        {
-                            //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
-                            outCallback(answer.list[0]);
-                        }
-                        else if(answer.type == 'dm')
-                        {
-                            var transaction = new Transaction.sync();
-                            if(answer.dialog.task)
-                            {
-                                TaskManager.exec(bot, session, context, answer.dialog.output, answer.dialog.task.name, transaction.callback(function(done)
-                                {
-                                    done();
-                                }));
-                            }
-
-                            transaction.done(function()
-                            {
-                                outCallback(answer.dialog.output[0].text);
-                            });
-                        }
-                        else
-                        {
-                            outCallback(answer.text);
-                        }
-
+                        console.log('output: ', output);
+                        outCallback(output);
                         //output 출력하고
                         console.log(chalk.green('================================'));
                         console.log();

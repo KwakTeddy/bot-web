@@ -1,3 +1,8 @@
+var Transaction = require('../utils/transaction.js');
+var utils = require('../utils/utils.js');
+
+var TaskManager = require('./task.js');
+
 (function()
 {
     var DialogGraphManager = function()
@@ -49,46 +54,60 @@
         return false;
     };
 
-    DialogGraphManager.prototype.findDialog = function(nlpText, intents, entities, dialogs)
+    DialogGraphManager.prototype.findDialog = function(context, intents, entities, dialogs)
     {
+        var nlpText = context.nlu.nlpText;
+
         for(var i=0; i<dialogs.length; i++)
         {
-            var input = dialogs[i].input;
-            if(!input || input.length <= 0)
+            var inputs = dialogs[i].input;
+            if(!inputs || !inputs.length || inputs.length <= 0)
             {
                 continue;
             }
 
-            for(var j=0; j<input.length; j++)
+            for(var j=0; j<inputs.length; j++)
             {
-                if(input[j].text)
+                var result = true;
+                var input = inputs[j];
+                for(var key in input)
                 {
-                    if(this.checkInputText(nlpText, input[j].text))
+                    console.log(input[key]);
+
+                    if(key == 'text')
                     {
-                        return dialogs[i];
+                        result = result && this.checkInputText(nlpText, input.text);
+                    }
+                    else if(key == 'entities')
+                    {
+                        result = result && this.checkEntities(input.entities, entities);
+                    }
+                    else if(key == 'intent')
+                    {
+                        result = result && (intents.length > 0 && input.intent == intents[0].name);
+                    }
+                    else if(key == 'types')
+                    {
+                        //TODO
+                    }
+                    else if(key == 'if')
+                    {
+                        result = result && (function(context, input)
+                        {
+                            if(eval('result = (' + input.if + ' ? true : false);'))
+                            {
+                                return true;
+                            }
+
+                            return false;
+
+                        })(JSON.parse(JSON.stringify(context)), input);
                     }
                 }
-                else if(input[j].entities)
+
+                if(result)
                 {
-                    if(this.checkEntities(input[j].entities, entities))
-                    {
-                        return dialogs[i];
-                    }
-                }
-                else if(input[j].intent)
-                {
-                    if(intents.length > 0 && input[j].intent == intents[0].name)
-                    {
-                        return dialogs[i];
-                    }
-                }
-                else if(input[j].types)
-                {
-                    //TODO
-                }
-                else if(input[j].if)
-                {
-                    //TODO eval을 써야만 하겠네
+                    return dialogs[i];
                 }
             }
         }
@@ -136,23 +155,107 @@
 
             if(dialogs)
             {
-                dialog = this.findDialog(context.nlu.nlpText, intents, entities, dialogs);
+                dialog = this.findDialog(context, intents, entities, dialogs);
             }
         }
 
         if(!dialog)
         {
-            dialog = this.findDialog(context.nlu.nlpText, intents, entities, bot.commonDialogs);
+            dialog = this.findDialog(context, intents, entities, bot.commonDialogs);
             if(!dialog)
             {
-                dialog = this.findDialog(context.nlu.nlpText, intents, entities, bot.dialogs);
+                dialog = this.findDialog(context, intents, entities, bot.dialogs);
             }
+        }
+
+        if(dialog)
+        {
+            dialog.parentDialogId = session.dialogCursor;
+            session.dialogCursor = dialog.id;
         }
 
         callback(null, dialog);
 
         console.log('----- DialogGraphManager find [End]');
         console.log();
+    };
+
+    DialogGraphManager.prototype.exec = function(bot, session, context, dialog, callback)
+    {
+        var sync = new Transaction.sync();
+        if(dialog.task)
+        {
+            sync.make(function(done)
+            {
+                TaskManager.exec(bot, session, context, dialog.output, dialog.task.name, done);
+            });
+        }
+
+        sync.done(function()
+        {
+            var output = dialog.output;
+
+            if(output.length > 0)
+            {
+                var resultOutput = undefined;
+                var elseList = [];
+                for(var i=0; i<output.length; i++)
+                {
+                    if(!resultOutput && output[i].if)
+                    {
+                        (function(context, output)
+                        {
+                            var result = false;
+                            eval('result = (' + output[i].if + ' ? true : false);');
+
+                            if(result)
+                            {
+                                resultOutput = output;
+                            }
+
+                        })(JSON.parse(JSON.stringify(context)), output);
+                    }
+                    else if(!output[i].if)
+                    {
+                        elseList.push(output[i]);
+                    }
+                }
+
+                if(!resultOutput)
+                {
+                    resultOutput = elseList[utils.getRandomInt(0, elseList.length-1)];
+                }
+
+                if(resultOutput.kind == 'Action')
+                {
+                    //call, callChild, reutrnCall, up, repeat, return
+                    if(resultOutput.type == 'repeat')
+                    {
+                        console.log('컨텍 : ', context.output);
+
+                        if(resultOutput.text)
+                        {
+                            callback(resultOutput.text);
+                        }
+                        else
+                        {
+                            callback(context.output);
+                        }
+
+                        session.dialogCursor = dialog.parentDialogId;
+                    }
+                }
+                else
+                {
+                    context.output = resultOutput;
+                    callback(resultOutput);
+                }
+            }
+            else
+            {
+                callback(output);
+            }
+        });
     };
 
     module.exports = new DialogGraphManager();
