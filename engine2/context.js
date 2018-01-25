@@ -4,10 +4,11 @@
 
     var Context = function()
     {
-        var initContext = {};
-        initContext.nlu = {};
+        this.initContext = {};
+        this.initContext.nlu = {};
+        this.initContext.userData = {};
 
-        this.history = [initContext];
+        this.history = [this.initContext];
     };
 
     Context.prototype.get = function()
@@ -17,9 +18,12 @@
 
     Context.prototype.make = function()
     {
-        var context = {
-            nlu: {}
-        };
+        var context = JSON.parse(JSON.stringify(this.initContext));
+
+        if(this.history.length > 0)
+        {
+            context.prev = this.history[this.history.length-1];
+        }
 
         this.history.push(context);
 

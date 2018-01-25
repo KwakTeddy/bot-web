@@ -1,5 +1,4 @@
 var fs = require('fs');
-var _ = require('lodash');
 
 var Config = require('./config.js');
 var utils = require('./utils/utils.js');

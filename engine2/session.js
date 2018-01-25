@@ -20,6 +20,7 @@ var Context = require('./context.js');
         {
             session = this.channel[channel][botId + '_' + userId] = {};
             session.context = new Context();
+            session.userData = {};
         }
         else
         {

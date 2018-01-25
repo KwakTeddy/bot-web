@@ -125,28 +125,28 @@
         console.log();
         console.log('----- DialogGraphManager find [Start]');
 
-        var dialogs = undefined;
+        var dialog = undefined;
         if(session.dialogCursor)
         {
-            dialogs = this.getNextDialogs(session.dialogCursor, bot.commonDialogs);
+            var dialogs = this.getNextDialogs(session.dialogCursor, bot.commonDialogs);
             if(!dialogs)
             {
                 dialogs = this.getNextDialogs(session.dialogCursor, bot.dialogs);
             }
+
+            if(dialogs)
+            {
+                dialog = this.findDialog(context.nlu.nlpText, intents, entities, dialogs);
+            }
         }
 
-        var dialog = undefined;
-        if(!dialogs)
+        if(!dialog)
         {
             dialog = this.findDialog(context.nlu.nlpText, intents, entities, bot.commonDialogs);
             if(!dialog)
             {
                 dialog = this.findDialog(context.nlu.nlpText, intents, entities, bot.dialogs);
             }
-        }
-        else
-        {
-            dialog = this.findDialog(context.nlu.nlpText, intents, entities, dialogs);
         }
 
         callback(null, dialog);

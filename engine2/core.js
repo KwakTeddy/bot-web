@@ -8,8 +8,9 @@ var globals = require('./globals.js');
 var channel = require('./channel.js');
 var loadBalancer = require('./loadbalancer.js');
 
-var SessionManager = require('./session.js');
+var Transaction = require('./utils/transaction.js');
 
+var SessionManager = require('./session.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var AnswerManager = require('./answer.js');
@@ -88,6 +89,7 @@ var ContextManager = require('./context.js');
                 var session = SessionManager.make(botId, userId, channel, options);
                 var context = session.context.get();
                 context.nlu.sentence = inputRaw;
+                context.nlu.inputRaw = inputRaw;
 
                 InputManager.analysis(bot, session, context, error, function()
                 {
@@ -100,26 +102,19 @@ var ContextManager = require('./context.js');
                         }
                         else if(answer.type == 'dm')
                         {
+                            var transaction = new Transaction.sync();
                             if(answer.dialog.task)
                             {
-                                TaskManager.exec(answer.dialog.task);
+                                TaskManager.exec(bot, session, context, answer.dialog.output, answer.dialog.task.name, transaction.callback(function(done)
+                                {
+                                    done();
+                                }));
                             }
 
-                            // var hasIf = false;
-                            // var elseOutput = false;
-                            // for(var i=0; i<answer.dialog.output.length; i++)
-                            // {
-                            //     var output = answer.dialog.output[i];
-                            //     if(output.if)
-                            //     {
-                            //         //TODO 실행 후 맞으면 target에 넣어줌
-                            //         hasIf = true;
-                            //     }
-                            // }
-
-                            outCallback(answer.dialog.output[0].text);
-
-                            //TODO execute postTask
+                            transaction.done(function()
+                            {
+                                outCallback(answer.dialog.output[0].text);
+                            });
                         }
                         else
                         {
