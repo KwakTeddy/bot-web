@@ -1,10 +1,15 @@
 {
-    "name": "String",
-    "mobile": "String",
-    "numOfPerson": "String",
-    "memo": "String",
-    "date": "String",
-    "time":"String",
-    "status": "String",
-    "userKey": "String"
+    "order_name": "String",
+    "order_mobile": "String",
+    "order_itemname": "String",
+    "order_itemcode": "String",
+    "order_date": "String",
+    "order_hour": "String",
+    "order_receivername":"String",
+    "order_receivermobile": "String",
+    "order_receiveraddress": "String",
+    "order_deliverydate": "String",
+    "order_deliveryhour": "String",
+    "order_greeting":"String",
+    "order_sendername":"String"
 }

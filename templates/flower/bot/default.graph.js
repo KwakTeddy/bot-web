@@ -467,7 +467,10 @@ var dialogs = [
                 "text": "2"
             },
             {
-                "text": "주문"
+                "text": "주문하기"
+            },
+            {
+                "text": "상품 주문하기"
             }
         ],
         "output": [
@@ -4117,6 +4120,6 @@ var commonDialogs = [
 
 
 
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('blank_user0_1515733668648');
+var _bot = require(require('path').resolve("engine/bot.js")).getTemplateBot('flower');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

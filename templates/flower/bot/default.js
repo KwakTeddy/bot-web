@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/bot.js')).getBot('blank_user0_1515733668648');
+var bot = require(path.resolve('engine/bot.js')).getTemplateBot('flower');
 var request = require('request');
 var mongo = require(path.resolve('./engine/bot/action/common/mongo'));
 var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
@@ -21,14 +21,14 @@ var nodemailer = require('nodemailer');
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
 
-
-var defaultTask = {
-    name: 'defaultTask',
-    action: function(task, context, callback) {
-        callback(task, context);
-    }
-};
-bot.setTask("defaultTask", defaultTask);
+//
+// var defaultTask = {
+//     name: 'defaultTask',
+//     action: function(task, context, callback) {
+//         callback(task, context);
+//     }
+// };
+// bot.setTask("defaultTask", defaultTask);
 
 
 var getcategory = {
@@ -834,10 +834,15 @@ var collectorderinfor = {
         var myDate = new Date();
         //var local=myDate.toLocaleString( );
         var year=myDate.getFullYear();
+        var year1=myDate.getYear();
         var month=myDate.getMonth()+1;
         var day=myDate.getDate();
         var time=myDate.toLocaleTimeString();
+        var time1=myDate.getHours();
         context.dialog.orderinfor.time=year+"년"+month+"월"+day+"일"+" "+time;
+        context.dialog.orderinfor.date=year1+"."+month+"."+day;
+        context.dialog.orderinfor.hour=time1;
+
         //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:
         if(context.user.username!==undefined){
             context.dialog.orderinfor.name=context.user.username;
@@ -869,12 +874,16 @@ var collectorderinfor = {
         context.dialog.orderinfor.receiveraddress=context.dialog.friendaddress;
         //배달일자:
         context.dialog.orderinfor.deliverytime=context.dialog.deliverytime;
+        context.dialog.orderinfor.deliverydate=context.dialog.dateonly;
+        context.dialog.orderinfor.deliveryhour=context.dialog.time;
         //남기시는 메세지:
         context.dialog.orderinfor.greeting=context.dialog.selectedgreeting;
         //상품명:
         context.dialog.orderinfor.itemname=context.dialog.selecteditem.name;
         //상품 이미지:
         context.dialog.orderinfor.itemimage=context.dialog.selecteditem.picture;
+        //상품 코드:
+        context.dialog.orderinfor.itemcode=context.dialog.selecteditem.code;
         //수량---------------------------------------
         if(context.dialog.itemnumber===undefined){
             context.dialog.orderinfor.itemnumber=1;}
@@ -946,6 +955,8 @@ var addorder = {
     action: function (task,context,callback) {
         var neworder={
             order_time: context.dialog.orderinfor.time,
+            order_date: context.dialog.orderinfor.date,
+            order_hour: context.dialog.orderinfor.hour,
             order_name:context.dialog.orderinfor.name,
             order_mobile:context.dialog.orderinfor.mobile,
             order_price: context.dialog.orderinfor.itemprice,
@@ -957,6 +968,7 @@ var addorder = {
             order_itemname:context.dialog.orderinfor.itemname,
             order_itemimage: context.dialog.orderinfor.itemimage,
             order_itemnumber:context.dialog.orderinfor.itemnumber,
+            order_itemcode:context.dialog.orderinfor.itemcode,
             order_email:context.dialog.orderinfor.email,
             order_bride:context.dialog.orderinfor.brideornot,
             order_showtime:context.dialog.orderinfor.showtime,
@@ -966,6 +978,8 @@ var addorder = {
             order_payway:context.dialog.orderinfor.payway,
             order_allprice:context.dialog.orderinfor.allprice,
             order_deliverytime:context.dialog.orderinfor.deliverytime,
+            order_deliverydate:context.dialog.orderinfor.deliverydate,
+            order_deliveryhour:context.dialog.orderinfor.deliveryhour,
             order_otherrequire:context.dialog.orderinfor.otherrequire,
             order_status:"주문",
             botId:context.bot.id,

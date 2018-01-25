@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantDashboardController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
+angular.module('template').controller('flowerDashboardController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
 
 
 {

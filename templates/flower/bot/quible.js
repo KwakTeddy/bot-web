@@ -1105,5 +1105,5 @@ var dialogs = [
     }
 ];
 
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('blank_user0_1515733668648');
+var _bot = require(require('path').resolve("engine/bot.js")).getTemplateBot('flower');
 _bot.setDialogs(dialogs);

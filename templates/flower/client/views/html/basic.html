@@ -15,12 +15,12 @@
 
 <!--<h1 class="template-demo-title">기본정보</h1>-->
 <div> <!-- 템플릿봇 생성시 구조로 인해 반드시 필요한 div -->
-    <div ng-controller="restaurantBasicController" class="template-demo-basic">
+    <div ng-controller="flowerBasicController" class="template-demo-basic">
         <form ng-submit="saveTemplateBot($event);">
             <div class="form-row">
                 <label class="required">
-                    <span class="form-title">레스토랑이름</span>
-                    <input type="text" class="data-input" placeholder="레스토랑이름(ex:엠프레스호텔)" data-bot-name="true" name="restaurantname" required="true" autofocus="true">
+                    <span class="form-title">꽃배달봇이름</span>
+                    <input type="text" class="data-input" placeholder="꽃배달봇이름(ex:머니브레인)" data-bot-name="true" name="flowername" required="true" autofocus="true">
                 </label>
             </div>
             <div class="form-row">
@@ -70,7 +70,7 @@
             </div>
             <div class="form-row">
                 <label>
-                    <span class="form-title">메뉴판 사진</span>
+                    <span class="form-title">꽃배달봇이미지</span>
                     <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
                     <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
                 </label>

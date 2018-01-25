@@ -1,7 +1,7 @@
 var path = require('path');
 var botlib = require(path.resolve('./engine/bot.js'));
 
-var blank_user0_1515733668648 = {
+var flower = {
     use: true,
     naver: {
         clientId: 'Aqi_RlMlLRlJnmJptMhD',
@@ -15,4 +15,4 @@ var blank_user0_1515733668648 = {
 
 };
 
-botlib.makeBot('blank_user0_1515733668648', blank_user0_1515733668648);
+botlib.makeTemplateBot('flower', flower);

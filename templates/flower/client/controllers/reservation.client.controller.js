@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('template').controller('restaurantReservationController', ['$scope', '$resource', '$cookies', 'FileUploader', '$rootScope',function ($scope, $resource, $cookies, FileUploader,$rootScope)
+angular.module('template').controller('flowerReservationCompleteController', ['$scope', '$resource', '$cookies','$http', 'FileUploader', 'LanguageService','$rootScope','DateRangePickerService',function ($scope, $resource, $cookies,  $http, FileUploader, LanguageService, $rootScope,DateRangePickerService)
 {
-    $scope.$parent.changeWorkingGroundName('컨텐츠 관리 > 예약정보관리', '/modules/playchat/gnb/client/imgs/reservation_grey.png');
+    $scope.$parent.changeWorkingGroundName('주문관리', '/modules/playchat/gnb/client/imgs/reservation_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/reservations', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -11,12 +11,32 @@ angular.module('template').controller('restaurantReservationController', ['$scop
     console.log(chatbot);
 
     $scope.datas = [];
-
+    $scope.date = {};
     (function()
     {
         $scope.getList = function()
+        {        $scope.searchKeyDown = function(e)
         {
-            ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
+            if(e.keyCode == 13)
+            {
+                $scope.search();
+                e.preventDefault();
+            }
+            else if(e.keyCode == 8)
+            {
+                if(e.currentTarget.value.length == 1)
+                {
+                    $scope.getList(1, '');
+                }
+            }
+        };
+
+            $scope.search = function()
+            {
+                var value = angular.element('#operationSearchInput').val();
+                $scope.getList(1, value);
+            };
+            ChatbotTemplateService.get({ templateId: chatbot.templateId._id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()}, function(result)
                 {
                     $scope.template = result;
 
@@ -36,6 +56,7 @@ angular.module('template').controller('restaurantReservationController', ['$scop
                     alert(err);
                 });
         };
+
 
         $scope.add = function()
         {
@@ -82,6 +103,9 @@ angular.module('template').controller('restaurantReservationController', ['$scop
                 });
         };
     })();
-
+    DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
+    $scope.lan=LanguageService;
+
+
 }]);

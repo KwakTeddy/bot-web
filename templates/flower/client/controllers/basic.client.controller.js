@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope','FileUploader','LanguageService',function ($scope, $resource, $cookies, $stateParams,$rootScope, FileUploader, LanguageService)
+angular.module('template').controller('flowerBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope','FileUploader','LanguageService',function ($scope, $resource, $cookies, $stateParams,$rootScope, FileUploader, LanguageService)
 // angular.module('template').controller('restaurantBasicController', ['$scope', '$resource', '$cookies', '$stateParams', '$rootScope','LanguageService',function ($scope, $resource, $cookies, $stateParams,$rootScope, LanguageService)
 {
 
@@ -125,7 +125,7 @@ angular.module('template').controller('restaurantBasicController', ['$scope', '$
             data.language = 'ko';
         }
 
-        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description,bank:data.bank }, function()
+        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description}, function()
             {
                 ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.data._id, data: data }, function(result)
                     {
