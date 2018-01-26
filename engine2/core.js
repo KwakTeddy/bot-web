@@ -92,6 +92,8 @@ var OutputManager = require('./output.js');
                     {
                         console.log('output: ', output);
                         outCallback(output);
+
+                        console.log('컨텍스트 : ', context);
                         //output 출력하고
                         console.log(chalk.green('================================'));
                         console.log();

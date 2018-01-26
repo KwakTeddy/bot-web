@@ -9,7 +9,7 @@
         this.initContext.userData = {};
         this.initContext.output = undefined;
 
-        this.history = [this.initContext];
+        this.history = [JSON.parse(JSON.stringify(this.initContext))];
     };
 
     Context.prototype.get = function()

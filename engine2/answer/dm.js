@@ -1,7 +1,11 @@
+var async = require('async');
+
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
 var TaskManager = require('./task.js');
+
+var Globals = require('../globals.js');
 
 (function()
 {
@@ -54,33 +58,40 @@ var TaskManager = require('./task.js');
         return false;
     };
 
-    DialogGraphManager.prototype.findDialog = function(context, intents, entities, dialogs)
+    DialogGraphManager.prototype.findDialog = function(bot, context, intents, entities, dialogs, callback)
     {
-        var nlpText = context.nlu.nlpText;
+        var that = this;
 
-        for(var i=0; i<dialogs.length; i++)
+        var nlpText = context.nlu.nlpText;
+        async.eachSeries(dialogs, function(dialog, next)
         {
-            var inputs = dialogs[i].input;
+            var inputs = dialog.input;
             if(!inputs || !inputs.length || inputs.length <= 0)
             {
-                continue;
+                return next();
             }
 
-            for(var j=0; j<inputs.length; j++)
+            async.eachSeries(inputs, function(input, next)
             {
                 var result = true;
-                var input = inputs[j];
+
+                var keyList = [];
                 for(var key in input)
+                {
+                    keyList.push(key);
+                }
+
+                async.eachSeries(keyList, function(key, next)
                 {
                     console.log(input[key]);
 
                     if(key == 'text')
                     {
-                        result = result && this.checkInputText(nlpText, input.text);
+                        result = result && that.checkInputText(nlpText, input.text);
                     }
                     else if(key == 'entities')
                     {
-                        result = result && this.checkEntities(input.entities, entities);
+                        result = result && that.checkEntities(input.entities, entities);
                     }
                     else if(key == 'intent')
                     {
@@ -88,7 +99,28 @@ var TaskManager = require('./task.js');
                     }
                     else if(key == 'types')
                     {
-                        //TODO
+                        var type = bot.types[input[key]];
+                        if(!type)
+                        {
+                            type = Globals.types[input[key]];
+                        }
+
+                        type.typeCheck(context.nlu.inputRaw, type, function(parsed)
+                        {
+                            if(parsed)
+                            {
+                                result = result && true;
+                                context.userData[type.name] = parsed;
+                            }
+                            else
+                            {
+                                result = false;
+                            }
+
+                            next();
+                        });
+
+                        return;
                     }
                     else if(key == 'if')
                     {
@@ -103,14 +135,28 @@ var TaskManager = require('./task.js');
 
                         })(JSON.parse(JSON.stringify(context)), input);
                     }
-                }
 
-                if(result)
+                    next();
+                },
+                function()
                 {
-                    return dialogs[i];
-                }
-            }
-        }
+                    if(result)
+                    {
+                        return callback(dialog);
+                    }
+
+                    next();
+                });
+            },
+            function()
+            {
+                next();
+            });
+        },
+        function()
+        {
+            callback();
+        });
     };
 
     DialogGraphManager.prototype.getNextDialogs = function(cursor, dialogs)
@@ -134,15 +180,15 @@ var TaskManager = require('./task.js');
 
     DialogGraphManager.prototype.find = function(bot, session, context, callback)
     {
-        // 가장먼저 공통 다이얼로그에서 찾고
-        // 그 다음 사용자 다이얼로그에서 찾고
-        // 각 대화카드의 input값을 가지고
-        var nlp = context.nlu.nlp;
+        var that = this;
+
         var intents = context.nlu.intents;
         var entities = context.nlu.entities;
 
         console.log();
         console.log('----- DialogGraphManager find [Start]');
+
+        var transaction = new Transaction.sync();
 
         var dialog = undefined;
         if(session.dialogCursor)
@@ -155,26 +201,53 @@ var TaskManager = require('./task.js');
 
             if(dialogs)
             {
-                dialog = this.findDialog(context, intents, entities, dialogs);
+                transaction.call(function(done)
+                {
+                    that.findDialog(bot, context, intents, entities, dialogs, function(result)
+                    {
+                        dialog = result;
+                        done();
+                    });
+                });
             }
         }
 
-        if(!dialog)
+        transaction.call(function(done)
         {
-            dialog = this.findDialog(context, intents, entities, bot.commonDialogs);
             if(!dialog)
             {
-                dialog = this.findDialog(context, intents, entities, bot.dialogs);
+                that.findDialog(bot, context, intents, entities, bot.commonDialogs, function(result)
+                {
+                    dialog = result;
+                    done();
+                });
             }
-        }
+            else
+            {
+                done();
+            }
+        });
 
-        if(dialog)
+        transaction.call(function(done)
         {
-            dialog.parentDialogId = session.dialogCursor;
-            session.dialogCursor = dialog.id;
-        }
+            if(!dialog)
+            {
+                that.findDialog(bot, context, intents, entities, bot.dialogs, function(result)
+                {
+                    dialog = result;
+                    done();
+                });
+            }
+            else
+            {
+                done();
+            }
+        });
 
-        callback(null, dialog);
+        transaction.done(function()
+        {
+            callback(null, dialog);
+        });
 
         console.log('----- DialogGraphManager find [End]');
         console.log();
@@ -182,19 +255,23 @@ var TaskManager = require('./task.js');
 
     DialogGraphManager.prototype.exec = function(bot, session, context, dialog, callback)
     {
+        var that = this;
+
+        session.dialogCursor = dialog.id;
+
         var sync = new Transaction.sync();
         if(dialog.task)
         {
-            sync.make(function(done)
+            sync.call(function(done)
             {
                 TaskManager.exec(bot, session, context, dialog.output, dialog.task.name, done);
             });
         }
 
+        var dialogId = dialog.id;
+        var output = dialog.output;
         sync.done(function()
         {
-            var output = dialog.output;
-
             if(output.length > 0)
             {
                 var resultOutput = undefined;
@@ -231,29 +308,112 @@ var TaskManager = require('./task.js');
                     //call, callChild, reutrnCall, up, repeat, return
                     if(resultOutput.type == 'repeat')
                     {
-                        console.log('컨텍 : ', context.output);
-
-                        if(resultOutput.text)
+                        var prev = context.prev;
+                        if(prev)
                         {
-                            callback(resultOutput.text);
+                            that.exec(bot, session, prev, prev.dialog, callback);
                         }
                         else
                         {
-                            callback(context.output);
+                            //TODO 만약 prev가 없다면??? 없을리가 없긴 하지만..
+                            callback('[repeat] prev가 없습니다');
                         }
+                    }
+                    else if(resultOutput.type == 'up')
+                    {
+                        var prev = context.prev;
+                        if(prev)
+                        {
+                            if(prev.prev)
+                            {
+                                that.exec(bot, session, prev.prev, prev.prev.dialog, callback);
+                            }
+                            else
+                            {
+                                callback(context, '[up] prev.prev가 없습니다');
+                            }
+                        }
+                        else
+                        {
+                            callback(context, '[up] prev가 없습니다');
+                        }
+                    }
+                    else if(resultOutput.type == 'call')
+                    {
+                        var prevContext = context;
+                        var nlu = context.nlu;
+                        var dialog = bot.dialogMap[resultOutput.dialogId];
+                        context = session.context.make();
+                        context.nlu = JSON.parse(JSON.stringify(nlu));
+                        context.dialog = dialog;
+                        that.exec(bot, session, context, dialog, callback);
+                    }
+                    else if(resultOutput.type == 'callChild')
+                    {
+                        var prevContext = context;
+                        var nlu = context.nlu;
+                        var dialog = bot.dialogMap[resultOutput.dialogId];
+                        context = session.context.make();
+                        context.nlu = JSON.parse(JSON.stringify(nlu));
+                        context.fromContext = prevContext;
+                        context.dialog = dialog;
+                        that.exec(bot, session, context, dialog, function(context, resultOutput)
+                        {
+                            that.find(bot, session, context, function(err, dialog)
+                            {
+                                if(dialog)
+                                {
+                                    context = session.context.make();
+                                    context.nlu = JSON.parse(JSON.stringify(nlu));
+                                    context.fromContext = prevContext;
+                                    context.dialog = dialog;
 
-                        session.dialogCursor = dialog.parentDialogId;
+                                    that.exec(bot, session, context, dialog, callback);
+                                }
+                                else
+                                {
+                                    callback(context, resultOutput);
+                                }
+                            });
+                        });
+                    }
+                    else if(resultOutput.type == 'returnCall')
+                    {
+                        session.returnDialog = dialogId;
+
+                        var nlu = context.nlu;
+                        var dialog = bot.dialogMap[resultOutput.dialogId];
+                        context = session.context.make();
+                        context.nlu = JSON.parse(JSON.stringify(nlu));
+                        context.dialog = dialog;
+                        that.exec(bot, session, context, dialog, callback);
+                    }
+                    else if(resultOutput.type == 'return')
+                    {
+                        if(session.returnDialog)
+                        {
+                            var nlu = context.nlu;
+                            var dialog = bot.dialogMap[session.returnDialog];
+                            context = session.context.make();
+                            context.nlu = JSON.parse(JSON.stringify(nlu));
+                            context.dialog = dialog;
+                            that.exec(bot, session, context, dialog, callback);
+                        }
+                        else
+                        {
+                            // 모르겟어요?
+                            callback(context, resultOutput);
+                        }
                     }
                 }
                 else
                 {
-                    context.output = resultOutput;
-                    callback(resultOutput);
+                    callback(context, resultOutput);
                 }
             }
             else
             {
-                callback(output);
+                callback(context, output);
             }
         });
     };

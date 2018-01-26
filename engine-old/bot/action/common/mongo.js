@@ -1,6 +1,6 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var utils = require(path.resolve('./engine2/bot/action/common/utils'));
+var utils = require(path.resolve('./engine-old/bot/action/common/utils'));
 var logger = require(path.resolve('./config/lib/logger'));
 var async = require('async');
 

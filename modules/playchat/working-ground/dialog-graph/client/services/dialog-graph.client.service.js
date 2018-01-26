@@ -888,15 +888,9 @@
             {
                 var template = '';
 
-                if(output.kind == 'Action' || output.callChild || output.call || output.returnCall || output.up || output.repeat || output.return)
+                if(output.kind == 'Action')
                 {
-                    for(var key in output)
-                    {
-                        if(key != 'kind' && key != 'options')
-                        {
-                            template = '<div><span>' + (output.return ? '[return]' : '[' + key + '] ' + output[key]) + '</span></div>';
-                        }
-                    }
+                    template = '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
                 }
 
                 if(output.options)
@@ -1485,9 +1479,16 @@
 
         DialogGraph.prototype.testFocus = function(target)
         {
-            angular.element('.test-selected').removeClass('test-selected');
-            angular.element('#' + target + ' > .graph-dialog-item').addClass('test-selected');
-            this.testFocusedTarget = target;
+            target = angular.element('#' + target).get(0);
+            if(target)
+            {
+                angular.element('.test-selected').removeClass('test-selected');
+                angular.element(target).children('.graph-dialog-item').addClass('test-selected');
+
+                this.testFocusedTarget = target;
+
+                this.moveScrollToTarget(target);
+            }
         };
 
         DialogGraph.prototype.focus = function(target)

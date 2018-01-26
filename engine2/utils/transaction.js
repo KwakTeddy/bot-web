@@ -43,7 +43,7 @@
         this.list = [];
     };
 
-    SyncTransaction.prototype.make = function(f)
+    SyncTransaction.prototype.call = function(f)
     {
         this.list.push(f);
     };

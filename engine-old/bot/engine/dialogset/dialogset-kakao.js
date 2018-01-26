@@ -1,8 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var fileutil = require(path.resolve('engine2/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('engine2/bot/action/common/mongo.js'));
+var fileutil = require(path.resolve('engine-old/bot/action/common/fileutil.js'));
 var dialogsetModule = require('./dialogset');
 
 // var bot = require(path.resolve('./engine2/bot.js')).getBot('private_bot');

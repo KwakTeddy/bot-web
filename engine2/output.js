@@ -46,13 +46,14 @@ var DialogGraphManager = require('./answer/dm.js');
             if(this.qa)
             {
                 //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
-                callback(this.qa.list[0]);
+                callback({ type: 'qa', output: this.qa.list[0] });
             }
             else if(this.dm)
             {
-                DialogGraphManager.exec(bot, session, context, this.dm.dialog, function(output)
+                context.dialog = this.dm.dialog;
+                DialogGraphManager.exec(bot, session, context, this.dm.dialog, function(context, output)
                 {
-                    callback(output);
+                    callback({ type: 'dialog', dialogId: context.dialog.id, output: output });
                 });
             }
             else

@@ -5,7 +5,6 @@ var fs = require('fs');
 {
     var Globals = function()
     {
-        this.bots = {};
         this.tasks = {};
         this.concepts = {};
         this.messages = {};

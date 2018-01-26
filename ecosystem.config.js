@@ -36,7 +36,7 @@ module.exports =
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
                 "LB_MASTER": true,
                 "LB_USE": true,
-                "NODE_ENV": "development"
+                "NODE_ENV": "remaster"
             },
             env_production:
             {
