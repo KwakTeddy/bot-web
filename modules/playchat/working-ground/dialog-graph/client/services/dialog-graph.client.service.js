@@ -190,6 +190,7 @@
             this.historyIndex = 0;
 
             this.focusedTarget = undefined;
+            this.testFocusedTarget = undefined;
 
             this.dirtyCallback = undefined;
 
@@ -232,6 +233,11 @@
             $scope.$on('saveDialogGraph', function()
             {
             });
+
+            $scope.$on('dialogGraphTestFocus', function(context, dialogId)
+            {
+                that.testFocus(dialogId);
+            });
         };
 
         DialogGraph.prototype.setEditor = function(editor)
@@ -262,12 +268,12 @@
 
             angular.element('.graph-body').on('click' ,function()
             {
-                that.editor.close();
+                // that.editor.close();
             });
 
             canvas.addEventListener('click', function(e)
             {
-                that.editor.close();
+                // that.editor.close();
             });
 
             canvas.parentElement.addEventListener('mousedown', function(e)
@@ -291,8 +297,6 @@
             {
                 if(e.which != 1)
                     return;
-
-                console.log('adf?');
 
                 menuInstance.closeMenu(e);
 
@@ -381,6 +385,11 @@
             }
         };
 
+        DialogGraph.prototype.deleteFocusedDialog = function()
+        {
+            this.deleteDialog(angular.element('#' + this.focusedDialog));
+        };
+
         DialogGraph.prototype.deleteDialog = function(target)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
@@ -426,6 +435,7 @@
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
+                        console.log('여기 아니여?');
                         //ESC
                         that.editor.close();
                         if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
@@ -648,7 +658,6 @@
                 }
                 else
                 {
-                    console.log('키코드 : ', e.keyCode, e);
                 }
             });
         };
@@ -771,7 +780,10 @@
             }
 
             //plus 버튼을 여기서 붙여주면..
-            this.addPlusButton(parent);
+            if(this.$scope.myBotAuth.edit)
+            {
+                this.addPlusButton(parent);
+            }
         };
 
         DialogGraph.prototype.addPlusButton = function(parent, style)
@@ -893,6 +905,10 @@
                     {
                         template += '<div><span>' + JSON.stringify(output.options) + '</span></div>';
                     }
+                    else if(typeof output.options == 'string')
+                    {
+                        template += '<div><span>[options] ' + output.options + '</span></div>';
+                    }
                     else if(typeof output.options.output == 'string')
                     {
                         template += '<div><span>' + output.options.output + '</span></div>';
@@ -912,12 +928,13 @@
 
         var makeButtonsTemplate = function(buttons)
         {
-            var template = ''
+            var template = '';
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><a href="' + (buttons[i].url || '#') + '" class="default-button" target="_blank">' + buttons[i].text + '</a></div>';
-            }
+                if(buttons[i].url) template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600"><a href="' + buttons[i].url + '" target="_blank">' + buttons[i].text + '</a></div>';
+                else               template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600">' + buttons[i].text + '</div>';
+            };
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
         };
@@ -1143,7 +1160,7 @@
             if(!dialog.name)
             {
                 console.log(dialog);
-                dialog.name = '생성된 이름 ' + tempIdCount;
+                dialog.name = 'Created Name ' + tempIdCount;
             }
 
             tempIdCount++;
@@ -1228,7 +1245,10 @@
                 var target = t.find('.graph-dialog-item').get(0);
 
                 var half = Math.ceil(target.offsetHeight / 2) + 1.4;
-                this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
+                if(this.$scope.myBotAuth.edit)
+                {
+                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
+                }
             }
             else
             {
@@ -1271,10 +1291,13 @@
 
             dialog.find('.graph-dialog-item').on('dblclick', function(e)
             {
-                var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
-                that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
+                if(that.$scope.myBotAuth.edit)
+                {
+                    var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
 
-                e.stopPropagation();
+                    e.stopPropagation();
+                }
             });
 
             dialog.find('.dialog-more').on('click', function(e)
@@ -1460,6 +1483,13 @@
             return check;
         };
 
+        DialogGraph.prototype.testFocus = function(target)
+        {
+            angular.element('.test-selected').removeClass('test-selected');
+            angular.element('#' + target + ' > .graph-dialog-item').addClass('test-selected');
+            this.testFocusedTarget = target;
+        };
+
         DialogGraph.prototype.focus = function(target)
         {
             this.canvas.find('.selected').removeClass('selected');
@@ -1599,6 +1629,8 @@
 
                 this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
+
+            this.testFocus(this.testFocusedTarget);
         };
 
         DialogGraph.prototype.refreshLine = function()
@@ -1638,11 +1670,9 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
-            var children = this.commonDialogs[0].children;
-            delete this.commonDialogs[0].children;
+            //커먼다이얼로그에 서큘러 JSON이 생기는 문제가 있으므로 정리해야함.
             var temp = JSON.parse(JSON.stringify(this.commonDialogs));
-
-            this.commonDialogs[0].children = children;
+            delete temp[0].children;
 
             var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
             return data;
@@ -1717,7 +1747,10 @@
                 }
                 else if(dialog.children)
                 {
-                    return checkDuplicateName(name, dialog.children);
+                    if(checkDuplicateName(name, dialog.children))
+                    {
+                        return true;
+                    }
                 }
             }
 

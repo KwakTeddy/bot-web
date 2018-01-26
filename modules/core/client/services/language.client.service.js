@@ -398,12 +398,6 @@
                 "jp": "作り",
                 "zh": "创建"
             },
-            " 머니브레인 MoneyBrain": {
-                "ko": "아테나 Athena - 인공지능 챗봇 플랫폼",
-                "en": " 머니브레인 MoneyBrain",
-                "jp": "Athena - Conversational A.I. Platform",
-                "zh": " MoneyBrain"
-            },
             "Docs": {
                 "ko": "Docs",
                 "en": "Docs",
@@ -447,10 +441,10 @@
                 "zh": "对话学习"
             },
             "Dialog Graph": {
-                "ko": "다이얼로그 그래프",
-                "en": "Dialog Graph",
-                "jp": "ダイアロググラフ",
-                "zh": "对话框图"
+                "ko": "대화 시나리오",
+                "en": "Dialog Scenario",
+                "jp": "ダイアログシナリオ",
+                "zh": "对话方案"
             },
             "Dialog Learning trains questions and answers accordingly.": {
                 "ko": "대화 학습 기능은 1:1로 이루어진 질문답변을 챗봇에게 학습 시키는 기능입니다.",
@@ -477,10 +471,10 @@
                 "zh": "对话管理"
             },
             "Dialog Set": {
-                "ko": "대화셋",
+                "ko": "대화 셋",
                 "en": "Dialog Set",
-                "jp": "デファセッ",
-                "zh": "问答添加模块"
+                "jp": "ダイアログセット",
+                "zh": "对话框设置"
             },
             "Intent": {
                 "ko": "인텐트",
@@ -614,6 +608,36 @@
                 "jp": "ファイルが見つかりません。",
                 "zh": "未找到文件。"
             },
+            "Bot files not found.": {
+                "ko": "봇 파일을 찾을 수 없습니다",
+                "en": "Bot files not found.",
+                "jp": "ボットファイルが見つかりません。",
+                "zh": "没有找到Bot文件。"
+            },
+            "You do not have permission to access this bot": {
+                "ko": "이 봇에 접근할 수 있는 권한이 없습니다.",
+                "en": "You do not have permission to read this bot",
+                "jp": "このボットにアクセスする権限がありません。",
+                "zh": "您无权访问此机器人。"
+            },
+            "You do not have permission to edit this bot": {
+                "ko": "이 봇을 편집할 수 있는 권한이 없습니다.",
+                "en": "You do not have permission to edit this bot",
+                "jp": "あなたはこのボットを編集する権限を持っていません。",
+                "zh": "您无权编辑此机器人。"
+            },
+            "Your bot's permissions are not set. Please select bot again. This message is shown only once at the beginning.": {
+                "ko": "봇의 권한이 설정되어 있지 않습니다. 봇을 다시 선택하십시오. 이 메시지는 처음에 한 번만 표시됩니다.",
+                "en": "Your bot's permissions are not set. Please select bot again. This message is shown only once at the beginning.",
+                "jp": "あなたのボットの権限は設定されていません。 ボットをもう一度選択してください。 このメッセージは最初に1回だけ表示されます。",
+                "zh": "你的机器人的权限没有设置。 请再次选择机器人。 此消息在开始时只显示一次。"
+            },
+            "The bot is not selected. Please select a bot.": {
+                "ko": "봇이 선택되지 않았습니다. 봇을 선택해주세요.",
+                "en": "The bot is not selected. Please select a bot.",
+                "jp": "ボットは選択されていません。 ボットを選択してください。",
+                "zh": "机器人未被选中。 请选择一个机器人。"
+            },
             "The last entity cannot be deleted.": {
                 "ko": "마지막 엔티티는 삭제할 수 없습니다",
                 "en": "The last entity cannot be deleted.",
@@ -722,12 +746,6 @@
                 "jp": "URLを入力してください",
                 "zh": "请在这里写URL地址。"
             },
-            " #인텐트": {
-                "ko": "키워드",
-                "en": " #인텐트",
-                "jp": " @엔티티",
-                "zh": " $타입"
-            },
             "and": {
                 "ko": "그리고",
                 "en": "and",
@@ -775,6 +793,12 @@
                 "en": "Add button",
                 "jp": "ボタン挿入",
                 "zh": "添加按钮"
+            },
+            "Add action": {
+                "ko": "대화 흐름 조절",
+                "en": "Control dialog flow",
+                "zh": "控制对话框流程",
+                "jp": "ダイアログフローの制御"
             },
             "Action1": {
                 "ko": "액션 1",
@@ -1046,11 +1070,11 @@
                 "jp": "エントティ修正",
                 "zh": "实体编辑"
             },
-            "OO is duplicated name. ": {
-                "ko": "OO은 중복된 이름 입니다.",
-                "en": "OO is duplicated name. ",
-                "jp": "OOは重複する名前です。",
-                "zh": "OO是重复的名称。"
+            "is duplicated": {
+                "ko": " 은 중복된 이름 입니다.",
+                "en": " is duplicated.",
+                "jp": " は重複する名前です。",
+                "zh": " 是重复的名称。"
             },
             "Type the Intent Name.": {
                 "ko": "인텐트 이름을 입력해주세요",
@@ -1800,6 +1824,12 @@
                 "zh": "关键词, #意图, @实体, $类型, /正则表达式/, if(条件)",
                 "jp": "キーワード, #インテント, @エンティティ, $タイプ, /正規表現/, if(調子)"
             },
+            "Keyword": {
+                "ko": "키워드",
+                "en": "Keyword",
+                "zh": "关键词",
+                "jp": "キーワード"
+            },
             "Human Chat log": {
                 "ko": "상담원 대화 내역",
                 "en": "Human Chat log",
@@ -1855,17 +1885,17 @@
                 "zh": "检测到JSON格式错误。 聊天机器人可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
-            "Typing the regular expression, press Enter to finish.": {
-                "ko": "정규식 입력 중, 마치려면 Enter를 입력해주세요.",
-                "en": "While typing the regular expression, press Enter to finish.",
-                "zh": "输入正则表达式，按Enter完成。",
-                "jp": "正規表現を入力し、Enterキーを押して終了します。"
+            "Please enter a regular expression.": {
+                "ko": "정규식을 입력해주세요. ex) /[a-z]*/",
+                "en": "Please enter a regular expression. ex) /[a-z]*/",
+                "zh": "请输入正则表达式。 ex）/[a-z]*/",
+                "jp": "正規表現。 ex）/[a-z]*/"
             },
-            "Entering conditional statements, press Enter to finish.": {
-                "ko": "조건문 입력 중, 마치려면 Enter를 입력해주세요.",
-                "en": "Entering conditional statements, press Enter to finish.",
-                "zh": "输入条件语句，按Enter完成。",
-                "jp": "条件文を入力し、Enterキーを押して終了します。"
+            "Entering conditional statements.": {
+                "ko": "조건문을 입력해주세요. ex) if(a == b)",
+                "en": "Please enter the condition. ex) if (a == b)",
+                "zh": "请输入条件。 ex）if（a == b）",
+                "jp": "条件を入力してください。 ex） if（a == b）"
             },
             "Back to Graph edit mode": {
                 "ko": "그래프 편집으로 돌아가기",
@@ -2862,6 +2892,42 @@
                 "en": "Successfully transferred!",
                 "zh": "成功转移！",
                 "jp": "転送に成功しました！"
+            },
+            "Move Dialog": {
+                "ko": "대화 이동",
+                "en": "Call",
+                "zh": "移动对话框",
+                "jp": "移動ダイアログ"
+            },
+            "Ask the question again": {
+                "ko": "다시 질문하기",
+                "en": "Ask the question again",
+                "zh": "再次提问",
+                "jp": "もう一度質問してください"
+            },
+            "Search after dialog moved": {
+                "ko": "대화 이동 후 검색",
+                "en": "Search after dialog moved",
+                "zh": "搜索对话框后移动。",
+                "jp": "ダイアログが移動した後の検索。"
+            },
+            "Move to previous dialog": {
+                "ko": "이전 대화로 이동",
+                "en": "Move to previous dialog",
+                "zh": "移到上一个对话框",
+                "jp": "前のダイアログに移動"
+            },
+            "Return": {
+                "ko": "돌아가기",
+                "en": "Return",
+                "zh": "返回",
+                "jp": "戻る"
+            },
+            "Return call": {
+                "ko": "돌아가기용 대화 이동",
+                "en": "Return Call",
+                "zh": "回电",
+                "jp": "リターンコール"
             }
         };
 

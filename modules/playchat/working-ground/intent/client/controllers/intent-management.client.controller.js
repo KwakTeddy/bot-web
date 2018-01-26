@@ -16,6 +16,8 @@ angular.module('playchat').controller('IntentManagementController', ['$window', 
 
     $scope.intentContentAdded = false;
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     (function()
     {
         var updateTarget = undefined;

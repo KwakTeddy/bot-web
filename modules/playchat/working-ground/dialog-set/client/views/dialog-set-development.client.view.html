@@ -26,14 +26,14 @@
         </div>
         <div class="question-area">
             <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true"></textarea>
-            <span class="plus-button" ng-click="addInput($event);"></span>
+            <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInput($event);"></span>
         </div>
         <div class="answer-area">
             <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true"></textarea>
-            <span class="plus-button" ng-click="addInput($event);"></span>
+            <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInput($event);"></span>
         </div>
         <div class="functions-area" style="margin-top: 5px;">
-            <button class="blue-button" style="width: 90px;"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
+            <button class="blue-button" style="width: 90px;" ng-if="myBotAuth.edit"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="{{lan('display: none;') }}">
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="{{lan('display: none;') }}">
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="{{lan('display: none;') }}">
@@ -101,14 +101,14 @@
                 </div>
                 <div class="question-area">
                     <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
-                    <span class="plus-button" ng-click="addInputElement($event);"></span>
+                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="answer-area">
                     <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
-                    <span class="plus-button" ng-click="addInputElement($event);"></span>
+                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="functions-area" style="margin-top: 5px;">
-                    <button class="blue-button"style="width: 90px;"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> {{lan('Add') }}</button>
+                    <button class="blue-button"style="width: 90px;" ng-if="myBotAuth.edit"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> {{lan('Add') }}</button>
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="display: none;">

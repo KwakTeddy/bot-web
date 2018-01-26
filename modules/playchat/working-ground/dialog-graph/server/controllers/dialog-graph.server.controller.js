@@ -18,6 +18,11 @@ exports.find = function (req, res)
         botsPath = path.resolve('./templates/' + req.query.templateId + '/bot');
     }
 
+    if(!fs.existsSync(botsPath))
+    {
+        return res.status(404).end();
+    }
+
     fs.readdir(botsPath, function(err, list)
     {
         if(err)

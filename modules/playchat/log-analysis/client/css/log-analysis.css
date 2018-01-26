@@ -1,6 +1,6 @@
 .log-analysis .logHeader
 {
-    height: 36px;
+    height: 38px;
     background:#e8ebf0;
     border-bottom: #e7e7e7 solid 1px;
     border-top: #e7e7e7 solid 1px;
@@ -26,7 +26,7 @@
 
 .log-analysis .select
 {
-    border-bottom:#038eda solid 3px;
+    border-bottom:#038eda solid 4px;
 }
 
 .log-analysis .logsystem
@@ -45,7 +45,7 @@
 {
     .log-analysis .logTab
     {
-        padding: 6px 25px;
+        padding: 7px 25px;
     }
 }
 
@@ -53,7 +53,7 @@
 {
     .log-analysis .logTab
     {
-        padding: 6px 15px;
+        padding: 7px 15px;
     }
 }
 

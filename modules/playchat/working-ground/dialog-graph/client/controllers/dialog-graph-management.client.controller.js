@@ -9,6 +9,8 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
     var chatbot = $cookies.getObject('chatbot');
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     (function()
     {
         var mgmtModal = new ModalService('mgmtModal', $scope);

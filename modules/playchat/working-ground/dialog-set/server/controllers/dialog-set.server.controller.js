@@ -14,7 +14,7 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var Bot = mongoose.model('Bot');
 
-// var uploadModule = require('./uploader/dialogset-uploader');
+var uploadModule = require('./uploader/dialogset-uploader');
 
 exports.findTotalPage = function(req, res)
 {
@@ -318,6 +318,7 @@ exports.uploadFile = function (req, res)
     {
         if(uploadError)
         {
+            console.error(uploadError);
             return res.status(400).send({ message: 'Error occurred while uploading file' });
         }
         else

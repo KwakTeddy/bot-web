@@ -13,16 +13,24 @@
             this.callback = undefined;
             this.bindCallback = undefined;
             this.saveCallback = undefined;
+            this.closeCallback = undefined;
+            this.myBotAuth = { read: true, edit: true };
         };
 
         DialogGraphEditor.prototype.open = function(parent, dialog)
         {
+            if(!this.myBotAuth.edit)
+            {
+                return alert(LanguageService('You do not have permission to edit this bot'));
+            }
+
             angular.element('.graph-body').css('right', '365px');
             angular.element('#graphDialogEditor').css('right', '0');
             setTimeout(function()
             {
-                angular.element('#graphDialogEditor .dialog-editor-input:first').focus();
-            }, 600);
+                var el = angular.element('#graphDialogEditor .dialog-editor-input:first').focus().get(0);
+                el.setSelectionRange(0, el.value.length);
+            }, 502);
 
             if(this.callback)
                 this.callback(parent, dialog);
@@ -45,6 +53,11 @@
             this.saveCallback = callback;
         };
 
+        DialogGraphEditor.prototype.setCloseCallback = function(callback)
+        {
+            this.closeCallback = callback;
+        };
+
         DialogGraphEditor.prototype.close = function()
         {
             angular.element('.graph-body').css('right', '');
@@ -53,6 +66,11 @@
             angular.element('.dialog-editor-input-list-modal').hide();
 
             angular.element('.dialog-graph-code-editor-controller').removeClass('edit');
+
+            if(this.closeCallback)
+            {
+                this.closeCallback();
+            }
         };
 
         if(!instance)

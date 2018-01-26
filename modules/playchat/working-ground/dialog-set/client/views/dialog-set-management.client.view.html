@@ -10,7 +10,7 @@
             <!--<li><a href="#">{{lan('Store') }}</a></li>-->
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
-        <div class="flR" style="position: relative; top: -40px;">
+        <div class="flR" style="position: relative; top: -40px;" ng-if="myBotAuth.edit">
             <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
                 <a href="#">
                     <img src="modules/playchat/working-ground/common/client/imgs/import.png">
@@ -51,11 +51,11 @@
                     <td>{{ item.content }}</td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
-                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                        <a href="#" class="flR" ng-if="myBotAuth.edit" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" ng-if="myBotAuth.edit" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                     </td>
                     <td ng-if="!item.importState">
-                        <div class="slide" ng-class="item.usable ? 'on' : ''">
+                        <div class="slide" ng-class="item.usable ? 'on' : ''" ng-if="myBotAuth.edit">
                             <input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />
                             <label for="{{ item._id }}" ng-click="updateUsable(item);"></label>
                         </div>

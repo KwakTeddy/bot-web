@@ -34,6 +34,15 @@
                         selectedTask.className = '';
 
                         selectedTask = selectedTask.previousElementSibling;
+
+                        var top = selectedTask.offsetTop;
+                        var scrollTop = selectedTask.parentElement.scrollTop;
+
+                        if(scrollTop > top)
+                        {
+                            var diff = top - scrollTop;
+                            selectedTask.parentElement.scrollTop += diff - 5;
+                        }
                     }
                 }
                 else if(e.keyCode == 40)
@@ -46,6 +55,16 @@
                             selectedTask.className = '';
 
                             selectedTask = selectedTask.nextElementSibling;
+
+                            var bottom = selectedTask.offsetTop + selectedTask.offsetHeight;
+                            var scrollTop = selectedTask.parentElement.scrollTop;
+                            var scrollHeight = selectedTask.parentElement.offsetHeight;
+
+                            if(scrollTop + scrollHeight < bottom)
+                            {
+                                var diff = bottom - (scrollTop + scrollHeight);
+                                selectedTask.parentElement.scrollTop += diff + 5;
+                            }
                         }
                     }
                     else
@@ -75,6 +94,31 @@
                 }
             };
 
+            $scope.taskKeyUp = function(e)
+            {
+                var value = e.currentTarget.value;
+
+                if(value)
+                {
+                    angular.element('.dialog-editor-select-options span[data-filename]').each(function()
+                    {
+                        if(angular.element(this).text().indexOf(value) == -1)
+                        {
+                            angular.element(this).parent().hide();
+                        }
+                    });
+                }
+                else
+                {
+                    angular.element('.dialog-editor-select-options span[data-filename]').parent().show();
+                }
+            };
+
+            $scope.taskFocus = function(e)
+            {
+                $scope.taskKeyUp(e);
+            };
+
             $scope.selectTask = function(e, task)
             {
                 $scope.dialog.task = { name: task.name };
@@ -84,7 +128,7 @@
             {
                 e.stopPropagation();
 
-                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name});
+                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name });
             };
 
             $scope.createTask = function(taskName)
@@ -94,7 +138,7 @@
                     return alert(LanguageService('Please enter Task name'));
                 }
 
-                $rootScope.$broadcast('makeNewTask', taskName);
+                $rootScope.$broadcast('makeNewTask', taskName, angular.element('.graph-background .select_tab').attr('id'));
 
                 // //열어야 함.
                 // var target = angular.element('.dialog-editor-creation-panel[data-type="task"]');

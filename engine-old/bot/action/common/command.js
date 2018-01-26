@@ -62,25 +62,19 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
       // print('시작 Dialog가 없습니다.');
     else
       dialog.executeDialog(startDialog, context, print, callback);
+  }
+  else if(cmd == ':reset memory')
+  {
+      context.user = {};
+      console.log('리셋 메모리');
 
-  // } else if(cmd.indexOf(':change') == 0) {
-  //   var commands = cmd.split(' ');
-  //   if(commands.length > 1) {
-  //     context.botUser.curBotName = commands[1];
-  //
-  //     contextModule.getBotContext(context.botUser.curBotName, function(_botContext) {
-  //       context.bot = _botContext;
-  //
-  //       startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
-  //
-  //       if(!startDialog)
-  //         print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
-  //       else
-  //         print(startDialog.output);
-  //     });
-  //   } else {
-  //     print('봇을 찾을 수 없습니다.');
-  //   }
+      startDialog = dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+
+      if(!startDialog)
+          print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
+      // print('시작 Dialog가 없습니다.');
+      else
+          dialog.executeDialog(startDialog, context, print, callback);
   }
 }
 

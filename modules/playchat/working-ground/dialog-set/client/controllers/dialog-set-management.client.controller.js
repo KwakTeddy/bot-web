@@ -9,6 +9,9 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
     var DialogSetsUsableService = $resource('/api/:botId/dialogsets/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
+
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     var user = $cookies.getObject('user');
 
     (function()

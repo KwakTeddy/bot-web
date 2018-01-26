@@ -155,8 +155,9 @@
 .dialog-editor-input
 {
     width: 100%;
+    height: 40px;
 
-    padding: 8px 18px 9px !important;
+    padding: 5px 45px 5px 10px !important;
     border-radius: 6px;
     background: #fff;
     border: 1px solid #d7d7d7;
@@ -166,10 +167,162 @@
     box-sizing: border-box;
 }
 
+.dialog-editor-input + .editable
+{
+    position: absolute;
+    top: 1px;
+    right: 45px;
+    left: 10px;
+    bottom: 1px;
+
+    outline: 0;
+
+    padding: 10px 0 5px 0 !important;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    cursor: text;
+}
+
+.dialog-editor-input + .editable > span
+{
+    outline: 0;
+}
+
+.dialog-editor-input + .editable > span:first-child
+{
+    margin-left: 0px;
+}
+
+.dialog-editor-input + .editable > span.intent
+{
+    background-color: #aeb0ff;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.entities
+{
+    background-color: rgba(2,125,24,.44);
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.types
+{
+    background-color: #b5cfff;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.regexp
+{
+    background-color: #ffb9cc;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable > span.if
+{
+    background-color: #ffbe3e;
+    margin: 0 3px;
+}
+
+.dialog-editor-input + .editable br
+{
+    display:none;
+
+}
+
+.dialog-editor-input + .editable *
+{
+    display:inline;
+    white-space:nowrap;
+}
+
+.dialog-editor-input-list-box
+{
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*z-index: 1;*/
+    /*box-sizing: border-box;*/
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.dialog-editor-input-list-box-title
+{
+    border-bottom: 1px solid #ddd;
+    background-color: #efefef;
+    padding: 5px 10px 6px 10px;
+    font-size: 11px;
+    color: #676767;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dialog-editor-input-list-box-title + ul
+{
+    overflow: auto;
+    max-height: 500px;
+}
+
+.dialog-editor-input-list-box-title + ul > li
+{
+    padding: 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.dialog-editor-input-list-box-title + ul > li.selected
+{
+    background-color: #bfe3f6;
+}
+
+.dialog-editor-input-list-box-new-button
+{
+    padding: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.dialog-editor-input-list-box-new-button:hover
+{
+    font-weight: bold;
+}
+
+.dialog-editor-input-plus
+{
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    bottom: 0;
+    height: 100%;
+    font-size: 24px;
+    color: #aaa;
+
+    cursor: pointer;
+
+    transition: color 0.2s;
+}
+
+.dialog-editor-input-plus:hover
+{
+    color: #677677;
+}
+
 .dialog-editor-input-box
 {
     position: relative;
     margin: 0 12px;
+}
+
+.dialog-editor-input-description
+{
+    font-size: 12px;
 }
 
 .dialog-editor-input-textarea
@@ -302,8 +455,8 @@
 .dialog-editor-input-box input + .delete-img
 {
     position: absolute;
-    top: 7px;
-    right: 12px;
+    top: 6px;
+    right: 24px;
 }
 
 .dialog-editor-input-wrapper
@@ -328,6 +481,13 @@
     left: 0;
 }
 
+.dialog-editor-input-wrapper .delete-img
+{
+    position: absolute;
+    right: 24px;
+    top: 8px;
+}
+
 .dialog-editor-output-box
 {
     border: 1px solid #d7d7d7;
@@ -335,6 +495,7 @@
     background: #fff;
     margin: 8px auto 0;
     width: 93%;
+    position: relative;
 }
 
 .dialog-editor-output-box[disabled]
@@ -453,41 +614,75 @@
 
 .dialog-editor-output-text
 {
-    padding: 10px;
+    /*padding: 10px;*/
 }
 
 .dialog-editor-output-text > textarea
 {
     width: 100%;
-
-    padding: 10px;
+    font-size: 14px;
+    padding: 15px;
+    padding-right: 25px;
     outline: 0;
     border: 0;
 
-    height: 50px;
+    min-height: 100px;
 
     transition: height 0.5s;
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+
+    border-radius: 6px;
+
+    resize: none;
 }
 
-.dialog-editor-output-text > textarea:focus
+.dialog-editor-row .select-wrapper
 {
-    outline: 1px solid #d3efff;
-    height: 150px;
+    width: 90%;
+    font-size: 12px;
+}
+
+.dialog-editor-row .select-wrapper select
+{
+    margin: 0;
+}
+
+.dialog-editor-row .select-wrapper+div
+{
+    width: 100%;
+    font-size: 12px;
 }
 
 .dialog-editor-row .select-wrapper::after
 {
-    right: 20px;
-    top: 2px;
+    top: 9px;
 }
 
-.dialog-editor-row .select-wrapper.disabled::after
+.dialog-editor-row .select-wrapper+div
 {
-    background-color: #ddd;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.dialog-editor-row .select-wrapper+div.disabled
+{
+    height: 0;
+    border: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.dialog-editor-row .select-wrapper+div.disabled input
+{
+    padding: 0;
+}
+
+.dialog-editor-row .select-wrapper+div > input
+{
+    cursor: text;
 }
 
 .dialog-editor-action-type
@@ -635,22 +830,9 @@
 .dialog-editor-select-input
 {
     width: 63%;
-    height: 33px;
     display: inline-block;
-    border: 1px solid #ddd;
     border-radius: 6px;
     vertical-align: middle;
-
-    background-color: white;
-    background-image: url(/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png);
-    background-repeat: no-repeat;
-    background-position: right center;
-}
-
-.dialog-editor-select-input:focus
-{
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .dialog-editor-select-input[disabled]
@@ -663,17 +845,20 @@
 {
     width: 100%;
     box-sizing: border-box;
-    height: 100%;
+    height: 40px;
     border-radius: 6px;
+    border: 1px solid #ddd;
 
     padding: 5px 20px 5px 10px;
 
-    cursor: pointer;
+    cursor: text;
 }
 
 .dialog-editor-select-input > input:focus
 {
     cursor: text;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .dialog-editor-select-options
@@ -686,6 +871,8 @@
 
     max-height: 200px;
     overflow: auto;
+
+    text-align: left;
 }
 
 .dialog-editor-select-options > li
@@ -819,8 +1006,11 @@
 
 .dialog-editor-output-functions
 {
+    position: absolute;
+    right: 5px;
+    top: 10px;
     text-align: right;
-    padding: 5px;
+    /*padding: 5px;*/
 }
 
 .dialog-editor-output-if, .dialog-editor-output-action-row
@@ -846,7 +1036,7 @@
 
 .dialog-editor-output-input.if
 {
-    width: 90%;
+    width: 85%;
     margin-left: 10px;
 }
 

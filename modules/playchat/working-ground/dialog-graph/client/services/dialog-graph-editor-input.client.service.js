@@ -3,1088 +3,777 @@
 {
     'use strict';
 
-    var ListModal = (function()
+    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $cookies, $compile, LanguageService, CaretService)
     {
-        var Instance = function()
-        {
-            this.inputModal = undefined;
-        };
-
-        Instance.prototype.open = function(type, y, x, dataCallback, selectCallback)
-        {
-            var that = this;
-
-            if(this.inputModal)
-            {
-                this.inputModal.find('li').each(function(index)
-                {
-                    if(index > 0)
-                    {
-                        angular.element(this).remove();
-                    }
-                });
-            }
-            else
-            {
-                var page = 1;
-                var template = '<ul class="dialog-editor-input-list-modal">' +
-                               '<li data-new="true">' + this.lan('Add New') + '</li>' +
-                               '</ul>';
-
-                var t = angular.element(template);
-
-                t.find('li').on('mousedown', function(e)
-                {
-                    if(this.getAttribute('data-new') == 'true')
-                    {
-                        var value = this.getAttribute('data-name');
-
-                        if(type == 'type')
-                        {
-                            if(!value)
-                            {
-                                e.stopPropagation();
-                                return alert(that.lan('Please enter Type name'));
-                            }
-
-                            that.$rootScope.$broadcast('makeNewType', value);
-
-                            selectCallback(value);
-                            that.close();
-                            return;
-                        }
-
-                        //열어야 함.
-                        var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]');
-                        target.css('right', '0');
-
-                        setTimeout(function()
-                        {
-                            if(target.find('form').get(0).open)
-                                target.find('form').get(0).open();
-                        }, 501);
-
-                        if(target.find('form').get(0).openCallback)
-                            target.find('form').get(0).openCallback(value);
-
-                        target.find('form').get(0).saveCallback = function(name)
-                        {
-                            selectCallback(name);
-                            target.css('right', '-368px');
-                        };
-
-                        target.find('form').get(0).closeCallback = function()
-                        {
-                            target.css('right', '-368px');
-                        };
-
-                        that.close();
-                    }
-
-                    e.stopPropagation();
-                });
-
-                t.on('scroll', function(e)
-                {
-                    if(e.currentTarget.scrollTop + e.currentTarget.offsetHeight >= e.currentTarget.scrollHeight)
-                    {
-                        that.nextPage();
-                    }
-                });
-
-                this.nextPage = function()
-                {
-                    dataCallback(++page, function(name, list)
-                    {
-                        that.inputModal.find('li:first').attr('data-name', name);
-                        for(var i=0; i<list.length; i++)
-                        {
-                            var li = document.createElement('li');
-                            li.innerText = list[i].name;
-                            li.data = list[i];
-                            li.addEventListener('click', function()
-                            {
-                                selectCallback(this.innerText);
-                                that.close();
-                            });
-
-                            that.inputModal.append(li);
-                        }
-                    });
-                };
-
-                t.css('top', y + 'px').css('left', x + 'px');
-
-                angular.element('body').append(t);
-
-                this.inputModal = t;
-            }
-
-            dataCallback(1, function(name, list)
-            {
-                if(!that.inputModal)
-                {
-                    return;
-                }
-
-                that.inputModal.find('li:first').attr('data-name', name);
-                for(var i=0; i<list.length; i++)
-                {
-                    var li = document.createElement('li');
-                    li.innerText = list[i].name;
-                    li.data = list[i];
-                    li.addEventListener('mousedown', function(e)
-                    {
-                        selectCallback(this.innerText);
-                        that.close();
-
-                        e.stopPropagation();
-                    });
-
-                    that.inputModal.append(li);
-                }
-            });
-        };
-
-        Instance.prototype.moveDown = function()
-        {
-            var selected = this.inputModal.find('.selected');
-            if(selected.get(0))
-            {
-                var next = selected.get(0).nextElementSibling;
-                if(next)
-                {
-                    selected.removeClass('selected');
-                    angular.element(next).addClass('selected');
-                }
-                else
-                {
-                    this.nextPage();
-                }
-            }
-            else
-            {
-                this.inputModal.find('li:first').addClass('selected');
-            }
-        };
-
-        Instance.prototype.moveUp = function()
-        {
-            var selected = this.inputModal.find('.selected');
-            if(selected.get(0))
-            {
-                var prev = selected.get(0).previousElementSibling;
-                if(prev)
-                {
-                    selected.removeClass('selected');
-                    angular.element(prev).addClass('selected');
-                }
-            }
-        };
-
-        Instance.prototype.getSelectedItem = function()
-        {
-            if(!this.inputModal)
-                return false;
-
-            var selected = this.inputModal.find('.selected').get(0);
-            if(selected)
-            {
-                var clickEvent = document.createEvent ('MouseEvents');
-                clickEvent.initEvent ('mousedown', true, true);
-                selected.dispatchEvent (clickEvent);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        Instance.prototype.close = function()
-        {
-            angular.element('.dialog-editor-input-list-modal').remove();
-            this.inputModal = undefined;
-        };
-
-
-        return new Instance();
-    })();
-
-
-    angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $rootScope, LanguageService)
-    {
-        ListModal.$rootScope = $rootScope;
-        ListModal.lan = LanguageService;
         var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' });
 
-        var make = function($scope)
+        var chatbot = $cookies.getObject('chatbot');
+
+        var DialogGraphEditorInput = {};
+        DialogGraphEditorInput.init = function($scope)
         {
-            $scope.nlpedText = {};
-            $scope.nlpedTextPrefix = {};
-            $scope.showNlpTimeout = undefined;
+            $scope.showInputList = false;
 
-            function addOrPushData(input, key, text)
+            angular.element('.dialog-editor-input-description').text('');
+            angular.element('.dialog-editor-body').css('overflow', 'auto');
+
+            var input = $scope.tempInputList = JSON.parse(angular.toJson($scope.dialog.input));
+            for(var i=0; i<input.length; i++)
             {
-                if(input[key])
-                {
-                    if(typeof input[key] == 'string')
-                    {
-                        input[key] = [input[key], text];
-                    }
-                    else
-                    {
-                        input[key].push(text);
-                    }
-                }
-                else
-                {
-                    input[key] = text;
-                }
-            };
+                var target = angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]');
+                target.html('');
 
-            function openEntityListModal(e, input, y, x, name)
-            {
-                ListModal.open('entity', y, x, function(page, bind)
+                var isBinded = false;
+                for(var key in input[i])
                 {
-                    EntityService.query({ botId: $scope.chatbot.id, templateId: ($scope.chatbot.templateId ? $scope.chatbot.templateId._id: ''), page: page, countPerPage: 10, name : name }, function(list)
+                    var text = input[i][key];
+                    if(key == 'types')
                     {
-                        bind(name, list);
-                    },
-                    function(error)
-                    {
-                        alert(error.message);
-                    });
-                }, function(selectedText)
-                {
-                    if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
-                    {
-                        addOrPushData(input, 'entities', '@' + selectedText);
-
-                        // addOrPushData(input, 'entities', selectedText);
-                        if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                            e.currentTarget.innerText = '@' + selectedText;
-                        angular.element('.dialog-editor-input-key:last').focus();
-                    }
-                    else
-                    {
-                        $scope.$apply(function()
+                        isBinded = true;
+                        if(typeof text == 'string')
                         {
-                            addOrPushData(input, 'entities', '@' + selectedText);
-
-                            // addOrPushData(input, 'entities', selectedText);
-                            if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                                e.currentTarget.innerText = '@' + selectedText;
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        });
-                    }
-
-                    e.currentTarget.value = '';
-
-                    e.stopPropagation();
-                    e.preventDefault();
-                });
-            };
-
-            function openIntentListModal(e, input, y, x, name)
-            {
-                ListModal.open('intent', y, x, function(page, bind)
-                {
-                    IntentService.query({ botId: $scope.chatbot.id, templateId: ($scope.chatbot.templateId ? $scope.chatbot.templateId._id: ''), page: page, countPerPage: 10, name: name }, function(list)
-                    {
-                        bind(name, list);
-                    },
-                    function(error)
-                    {
-                        alert(error.message);
-                    });
-                }, function(selectedText)
-                {
-                    // 새로 만들기에서 넘어오는 스코프가 있다.
-                    if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
-                    {
-                        input.intent = selectedText;
-                        if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                            e.currentTarget.innerText = input.intent;
-                        angular.element('.dialog-editor-input-key:last').focus();
-                    }
-                    else
-                    {
-                        $scope.$apply(function()
-                        {
-                            input.intent = selectedText;
-                            if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                                e.currentTarget.innerText = input.intent;
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        });
-                    }
-
-                    e.currentTarget.value = '';
-
-                    e.stopPropagation();
-                    e.preventDefault();
-                });
-            };
-
-            function openTypeListModal(e, input, y, x, name)
-            {
-                ListModal.open('type', y, x, function(page, bind)
-                {
-                    if(page == 1)
-                    {
-                        //나중에 실제로 서버에서 타입을 가져와야 함.
-                        $scope.commonTypes = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
-
-                        TypeService.query({ botId: $scope.chatbot.id, templateId: ($scope.chatbot.templateId ? $scope.chatbot.templateId.id: '') }, function(result)
-                        {
-                            var list = [];
-                            for(var i=0, l=$scope.commonTypes.length; i<l; i++)
-                            {
-                                if(!name || new RegExp(name, 'gi').exec($scope.commonTypes[i]))
-                                {
-                                    list.push({ name: $scope.commonTypes[i] });
-                                }
-                            }
-
-                            for(var i=0; i<result.length; i++)
-                            {
-                                list.push({ name : result[i].name, fileName: result[i].fileName });
-                            }
-
-                            bind(name, list);
-                        },
-                        function(err)
-                        {
-                            alert(err.data.error || err.data.message);
-                        });
-                    }
-
-                }, function(selectedText)
-                {
-                    if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
-                    {
-                        addOrPushData(input, 'types', selectedText);
-
-                        // addOrPushData(input, 'types', selectedText);
-                        if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                            e.currentTarget.innerText = selectedText;
-                        angular.element('.dialog-editor-input-key:last').focus();
-                    }
-                    else
-                    {
-                        $scope.$apply(function()
-                        {
-                            addOrPushData(input, 'types', selectedText);
-
-                            // addOrPushData(input, 'types', selectedText);
-                            if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                                e.currentTarget.innerText = selectedText;
-
-                            console.log(input);
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        });
-                    }
-
-                    e.currentTarget.value = '';
-
-                    e.stopPropagation();
-                    e.preventDefault();
-                });
-            };
-
-            $scope.getValueName = function(value)
-            {
-                if(typeof value == 'object')
-                {
-                    return value.join(', ');
-                }
-                else
-                {
-                    return value;
-                }
-            };
-
-            $scope.deleteInput = function(index)
-            {
-                if($scope.dialog.input.length == 1)
-                {
-                    alert('마지막 Input은 삭제할 수 없습니다');
-                    return;
-                }
-
-                $scope.dialog.input.splice(index, 1);
-            };
-
-            $scope.addInput = function()
-            {
-                $scope.dialog.input.push({ text: '' });
-            };
-
-            $scope.inputOnKeyUp = function(e, index)
-            {
-                var value = e.currentTarget.value;
-
-                if(e.keyCode == 13)
-                {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else
-                {
-                    if(!value || value == '' || value.startsWith('if(') || value.startsWith('/'))
-                    {
-                        return;
-                    }
-
-                    if(value)
-                    {
-                        DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
-                        {
-                            $scope.nlpedTextPrefix[index] = 'nlu: ';
-                            $scope.nlpedText[index] = result.text;
-
-                            if($scope.showNlpTimeout)
-                                clearTimeout($scope.showNlpTimeout);
-
-                            $scope.showNlpTimeout = setTimeout(function()
-                            {
-                                $scope.$apply(function()
-                                {
-                                    $scope.nlpedTextPrefix[index] = '';
-                                    $scope.nlpedText[index] = '';
-                                });
-                            }, 2000);
-                        });
-                    }
-                }
-            };
-
-            $scope.inputOnBlur = function(e, index)
-            {
-                var value = e.currentTarget.value;
-                if(value)
-                {
-                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
-                    {
-                        $scope.dialog.input[index].text = result.text;
-                    });
-                }
-            };
-
-            $scope.inputOnKeyDown = function(e, index)
-            {
-                var _this = e.currentTarget;
-                var value = e.currentTarget.value;
-                if(e.keyCode == 13 && (e.ctrlKey || e.metaKey))
-                {
-                    if(value)
-                    {
-                        $scope.dialog.input.unshift({ kind: 'text', text: $scope.nlpedText[index] });
-                        e.currentTarget.value = '';
-                    }
-
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    return;
-                }
-                else if(e.keyCode == 13)
-                {
-                    if(value)
-                    {
-                        DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
-                        {
-                            $scope.nlpedTextPrefix[index] = 'nlu: ';
-                            $scope.dialog.input[index].text = result.text;
-
-                            if($scope.showNlpTimeout)
-                                clearTimeout($scope.showNlpTimeout);
-
-                            $scope.showNlpTimeout = setTimeout(function()
-                            {
-                                $scope.$apply(function()
-                                {
-                                    $scope.nlpedTextPrefix[index] = '';
-                                    $scope.nlpedText[index] = '';
-                                });
-                            }, 2000);
-                        });
-                    }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 8)
-                {
-                    if(value.length <= 1 && $scope.dialog.input.length > 1)
-                    {
-                        if(_this.checkDelete)
-                        {
-                            var target = _this.parentElement.previousElementSibling.children[0];
-                            var strLength = target.value.length * 2;
-
-                            target.focus();
-                            target.setSelectionRange(strLength, strLength);
-
-                            $scope.dialog.input.splice(index, 1);
-
-                            e.preventDefault();
+                            var html = '<span class="' + key + '" data-type="' + key + '">$' + text + '</span>';
+                            target.append(html);
                         }
                         else
                         {
-                            var placeholder = _this.getAttribute('placeholder');
-                            _this.setAttribute('placeholder', '한번더 Backpace를 누르면 Input이 삭제됩니다.');
-                            _this.setAttribute('data-placeholder', placeholder);
-                            _this.checkDelete = true;
-                        }
-
-                        return;
-                    }
-                }
-                else if(e.keyCode == 45)
-                {
-                    console.log('인서트 누르셧셰여?');
-                    $scope.addInput();
-                }
-
-                if(_this.checkDelete)
-                {
-                    _this.checkDelete = false;
-                    _this.setAttribute('placeholder', _this.getAttribute('data-placeholder') || '');
-                }
-            };
-
-
-
-
-            // -------- Advanced
-
-            $scope.focusToInputArea = function(e)
-            {
-                // if(e.target && e.target.className.indexOf('dialog-editor-input-key') != -1)
-                // {
-                //     return;
-                // }
-
-                angular.element(e.currentTarget).find('.dialog-editor-input-key:last').focus();
-            };
-
-            $scope.getInputKeyLength = function(input, key)
-            {
-                return input[key] ? input[key].length : 0;
-            };
-
-            $scope.inputKeyOnClick = function(e)
-            {
-                e.stopPropagation();
-            };
-
-            // focus
-            // - @, #, $가 있으면 리스트 에디터를 띄움.
-            $scope.inputKeyOnFocus = function(e, input)
-            {
-                e.stopPropagation();
-
-                var value = e.currentTarget.value;
-                if(e.currentTarget.nodeName == 'SPAN')
-                    value = e.currentTarget.innerText;
-
-                var rect = e.currentTarget.getBoundingClientRect();
-
-                var y = rect.bottom;
-                var x = rect.left;
-
-                if(!value.replace('#', '').replace('@', '').replace('$', ''))
-                    return;
-
-                // @, #, $ 이것에 대해서만 열어주면 된다.
-                if(value.indexOf('@') != -1)
-                {
-                    openEntityListModal(e, input, y, x, value.split('@')[1] || undefined);
-                }
-                else if(value[0] == '#')
-                {
-                    openIntentListModal(e, input, y, x, value.replace('#', '') || undefined);
-                }
-                else if(value[0] == '$')
-                {
-                    openTypeListModal(e, input, y, x, value.replace('$', '') || undefined);
-                }
-            };
-
-            // blur
-            // - 에디터 닫음.
-            $scope.inputKeyOnBlur = function(e, input, isSpan)
-            {
-                if(e.which == 3)
-                {
-                    return;
-                }
-
-                if(isSpan)
-                {
-                    var key = e.currentTarget.getAttribute('data-key');
-
-                    var value = e.currentTarget.value;
-                    if(e.currentTarget.nodeName == 'SPAN')
-                        value = e.currentTarget.innerText;
-
-                    //기 입력된 내용에 대해서는 엔터를 입력하지 않아도 수정이 될거라는 생각이 든다. 그러므로 여기서 저장을 해주자.
-                    var item = ListModal.getSelectedItem();
-                    if(item)
-                    {
-                        return;
-                    }
-
-                    if(value === undefined || value === null || value === '')
-                    {
-                        return
-                    }
-
-                    if(e.currentTarget.parentElement.className.indexOf('entities') != -1 || value.indexOf('@') != -1)
-                    {
-                        //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                        if(key && key != 'entities')
-                        {
-                            return alert(LanguageService('Input cannot be changed to other forms of input.'));
-                        }
-
-                        // addOrPushData(input, 'entities', value);
-                        e.currentTarget.value = ''; // span의 경우 value가 없으므로 문제 없음.
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('intent') != -1 || value[0] == '#')
-                    {
-                        if(checkDuplicateInput(e.currentTarget, 'intent'))
-                        {
-                            //이미 추가된게 있으면 추가 할 수 없게 함.
-                            return alert(LanguageService('Intent is applied as the form of input.'));
-                        }
-                        else
-                        {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'intent')
+                            for(var j=0; j<text.length; j++)
                             {
-                                return alert(LanguageService('Input cannot be changed to other forms of input.'));
+                                var html = '<span class="' + key + '" data-type="' + key + '">$' + text[j] + '</span>';
+                                target.append(html);
                             }
-
-                            input.intent = value == '#' ? '' : value;
-                            e.currentTarget.value = '';
-
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        }
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('types') != -1 || value[0] == '$')
-                    {
-                        //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                        if(key && key != 'types')
-                        {
-                            return alert(LanguageService('Input cannot be changed to other forms of input.'));
-                        }
-
-                        // addOrPushData(input, 'types', value.replace('$', ''));
-                        e.currentTarget.value = '';
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || (value[0] == '/' && value[value.length-1] == '/'))
-                    {
-                        if(checkDuplicateInput(e.currentTarget, 'regexp'))
-                        {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            alert(LanguageService('Regular Expression is applied as the form of input.'));
-                            return;
-                        }
-                        else
-                        {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'regexp')
-                            {
-                                return alert(LanguageService('Input cannot be changed to other forms of input.'));
-                            }
-
-                            input.regexp = value.replace(/\//gi, '');
-                            e.currentTarget.value = '';
-
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        }
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if('))
-                    {
-                        if (checkDuplicateInput(e.currentTarget, 'if'))
-                        {
-                            alert(LanguageService('Conditional Expression is applied as the form of input.'));
-                            e.preventDefault();
-                        }
-                        else
-                        {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'if')
-                            {
-                                return alert(LanguageService('Conditional Expression is applied as the form of input.'));
-                            }
-
-                            input.if = value.replace('if(', '').replace(')', '');
-                            e.currentTarget.value = '';
-
-                            angular.element('.dialog-editor-input-key:last').focus();
                         }
                     }
                     else
                     {
-                        if(input.text && key != 'text')
+                        if(key == 'intent')
                         {
-                            e.stopPropagation();
-                            e.preventDefault();
-
-                            return alert(LanguageService('Text is applied as the form of input.'));
+                            text = '#' + text;
                         }
-                        else
+                        else if(key == 'entities')
                         {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'text')
+                            text = '@' + text;
+                        }
+                        else if(key == 'regexp')
+                        {
+                            text = '/' + text + '/';
+                        }
+                        else if(key == 'if')
+                        {
+                            text = 'if(' + text + ')';
+                        }
+
+                        if(text.trim())
+                        {
+                            isBinded = true;
+                            if(key == 'text')
                             {
-                                return alert(LanguageService('Input cannot be changed to other forms of input.'));
+                                var node = document.createTextNode(text);
+                                target.append(node);
                             }
-
-                            input.text = value;
-
-                            e.currentTarget.value = '';
+                            else
+                            {
+                                var html = '<span class="' + key + '" data-type="' + key + '">' + text + '</span>';
+                                target.append(html);
+                            }
                         }
                     }
                 }
 
-                ListModal.close();
-            };
-
-            // keydown
-            // - 중복 안되는 타입 체크
-            $scope.inputKeyOnKeyDown = function(e, input)
-            {
-                var value = e.currentTarget.value;
-                if(e.currentTarget.nodeName == 'SPAN')
-                    value = e.currentTarget.innerText;
-
-                if(e.keyCode == 51) // #
+                if(isBinded)
                 {
-                    var key = e.currentTarget.getAttribute('data-key');
-                    if(input.intent && key != 'intent')
-                    {
-                        //이미 추가된게 있으면 추가 할 수 없게 함.
-                        alert(LanguageService('Intent is applied as the form of input.'));
-                        e.preventDefault();
-                        e.stopPropagation();
-                        return;
-                    }
+                    target.prev().attr('data-placeholder', target.prev().attr('placeholder')).removeAttr('placeholder');
+                    target.prev().removeAttr('required');
                 }
-                else if(e.keyCode == 13)
-                {
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 38)
-                {
-                    ListModal.moveUp();
-                    console.log('top');
-                }
-                else if(e.keyCode == 40)
-                {
-                    ListModal.moveDown();
-                    console.log('bottom');
-                }
-                else if(e.keyCode == 45)
-                {
-                    $scope.addInput();
-                }
-            };
-
-            var checkDuplicateInput = function(target, key)
-            {
-                // var duplicatedTarget = angular.element(target).parent().parent().parent().find('.' + key).get(0);
-
-                var duplicatedTarget = target.parentElement.parentElement.parentElement.querySelector('.' + key);
-                if(duplicatedTarget && duplicatedTarget != target.parentElement)
-                {
-                    return true;
-                }
-
-                return false;
             }
 
-            // keyup
-            // -
-            $scope.inputKeyOnKeyUp = function(e, input, index, isInput)
+            var template = '<div class="dialog-editor-input-guide-box">\n' +
+            '                            <div class="dialog-editor-input-description"></div>\n' +
+            '                            <div class="dialog-editor-input-list-box ng-hide" ng-show="showInputList">\n' +
+            '                                <div class="dialog-editor-input-list-box-title">↓ ↑ to navigate&nbsp;&nbsp;&nbsp; enter to select &nbsp;&nbsp;&nbsp;esc to dismiss</div>\n' +
+            '                                <ul></ul>\n' +
+            '                            </div>\n' +
+            '                        </div>';
+            if(!angular.element('.dialog-editor-input-guide-box').get(0))
             {
-                var value = e.currentTarget.value;
-                if(e.currentTarget.nodeName == 'SPAN')
-                    value = e.currentTarget.innerText;
+                angular.element($compile(template)($scope)).insertAfter(angular.element('.dialog-editor-input-wrapper:last'));
+            }
+        };
 
-                var key = e.currentTarget.getAttribute('data-key');
-
-                var rect = e.currentTarget.getBoundingClientRect();
-
-                var y = rect.bottom;
-                var x = rect.left;
-
-                // @, #, $ 이것에 대해서만 열어주면 된다.
-                if(e.keyCode == 50 && value.indexOf('@') != -1)
+        DialogGraphEditorInput.make = function($scope, $rootScope)
+        {
+            $scope.getInputPlaceHolder = function()
+            {
+                if($scope.isAdvancedMode)
                 {
-                    openEntityListModal(e, input, y, x, value.split('@')[1] || undefined);
+                    return LanguageService('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)');
                 }
-                else if(e.keyCode == 51 && value[0] == '#')
+                else
                 {
-                    openIntentListModal(e, input, y, x, value.replace('#', '') || undefined);
+                    return LanguageService('Keyword');
                 }
-                else if(e.keyCode == 52 && value[0] == '$')
+            };
+
+            var initInputList = function(descriptionHide)
+            {
+                $scope.showInputList = false;
+
+                if(descriptionHide)
                 {
-                    openTypeListModal(e, input, y, x, value.replace('$', '') || undefined);
+                    angular.element('.dialog-editor-input-description').text('');
                 }
-                else if(e.keyCode == 13)
+
+                angular.element('.dialog-editor-body').css('overflow', 'auto');
+            };
+
+            var moveInputListSelection = function(direction)
+            {
+                var target = angular.element('.dialog-editor-input-list-box > ul > li.selected');
+
+                if(direction == 'up')
                 {
-                    e.preventDefault();
-
-                    var item = ListModal.getSelectedItem();
-                    if(item)
+                    if(target.prev().get(0))
                     {
-                        return;
-                    }
+                        target.removeClass('selected');
+                        target.prev().addClass('selected');
 
-                    if(value === undefined || value === null || value === '')
-                    {
-                        return
-                    }
+                        var top = target.prev().get(0).offsetTop;
+                        var scrollTop = target.prev().parent().get(0).scrollTop;
 
-                    if(e.currentTarget.parentElement.className.indexOf('entities') != -1 || value.indexOf('@') != -1)
-                    {
-                        //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                        if(key && key != 'entities')
+                        if(scrollTop > top)
                         {
-                            // alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                            // return e.preventDefault();
-                            return e.currentTarget.blur();
+                            var diff = top - scrollTop;
+                            target.prev().parent().get(0).scrollTop += diff;
                         }
-
-                        addOrPushData(input, 'entities', value);
-                        e.currentTarget.value = ''; // span의 경우 value가 없으므로 문제 없음.
                     }
-                    else if(e.currentTarget.parentElement.className.indexOf('intent') != -1 || value[0] == '#')
+                }
+                else if(direction == 'down')
+                {
+                    if(target.next().get(0))
                     {
-                        if(checkDuplicateInput(e.currentTarget, 'intent'))
+                        target.removeClass('selected');
+                        target.next().addClass('selected');
+
+                        var bottom = target.next().get(0).offsetTop + target.next().get(0).offsetHeight;
+                        var scrollTop = target.next().parent().get(0).scrollTop;
+                        var scrollHeight = target.next().parent().get(0).offsetHeight;
+                        
+                        if(scrollTop + scrollHeight < bottom)
                         {
-                            //이미 추가된게 있으면 추가 할 수 없게 함.
-                            // alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
-                            // e.preventDefault();
-                            e.currentTarget.blur();
+                            var diff = bottom - (scrollTop + scrollHeight);
+                            target.next().parent().get(0).scrollTop += diff;
                         }
-                        else
+                    }
+                }
+            };
+
+            var makeMoveInputListSelectionByMouseOver = function()
+            {
+                angular.element('.dialog-editor-input-list-box > ul > li').on('mouseover', function()
+                {
+                    angular.element('.dialog-editor-input-list-box > ul > li.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                });
+            };
+
+            var selectInput = function(textInput, callback)
+            {
+                var text = angular.element(textInput).text();
+
+                angular.element('.dialog-editor-input-list-box > ul > li').on('mousedown', function()
+                {
+                    if(angular.element(this).attr('data-type') == 'addNew')
+                    {
+                        if(text.startsWith('#'))
                         {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'intent')
+                            var target = angular.element('.dialog-editor-creation-panel[data-type="intent"]').show();
+                            target.css('right', '0');
+
+                            setTimeout(function()
                             {
-                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                // return e.preventDefault();
-                                return e.currentTarget.blur();
-                            }
+                                if(target.find('form').get(0).open)
+                                    target.find('form').get(0).open();
+                            }, 501);
 
-                            input.intent = value;
-                            e.currentTarget.value = '';
+                            if(target.find('form').get(0).openCallback)
+                                target.find('form').get(0).openCallback(text.replace('#', ''));
 
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        }
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('types') != -1 || value[0] == '$')
-                    {
-                        //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                        if(key && key != 'types')
-                        {
-                            // alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                            // return e.preventDefault();
-                            e.currentTarget.blur();
-                        }
-
-                        addOrPushData(input, 'types', value.replace('$', ''));
-                        e.currentTarget.value = '';
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || (value[0] == '/' && value[value.length-1] == '/'))
-                    {
-                        if(checkDuplicateInput(e.currentTarget, 'regexp'))
-                        {
-                            // e.preventDefault();
-                            // e.stopPropagation();
-                            // alert('이미 정규식 형태의 Input이 추가되어 있습니다');
-                            // return;
-                            return e.currentTarget.blur();
-                        }
-                        else
-                        {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'regexp')
+                            target.find('form').get(0).saveCallback = function(name)
                             {
-                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                // return e.preventDefault();
-                                return e.currentTarget.blur();
-                            }
+                                callback('#' + name);
+                                target.css('right', '-368px');
+                            };
 
-                            input.regexp = value.replace(/\//gi, '');
-                            e.currentTarget.value = '';
-
-                            angular.element('.dialog-editor-input-key:last').focus();
-                        }
-                    }
-                    else if(e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if('))
-                    {
-                        if (checkDuplicateInput(e.currentTarget, 'if'))
-                        {
-                            // alert('이미 조건식 형태의 Input이 추가되어 있습니다');
-                            // e.preventDefault();
-                            e.currentTarget.blur();
-                        }
-                        else
-                        {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'if')
+                            target.find('form').get(0).closeCallback = function()
                             {
-                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                // return e.preventDefault();
-                                return e.currentTarget.blur();
-                            }
+                                target.css('right', '-368px');
+                            };
+                        }
+                        else if(text.startsWith('@'))
+                        {
+                            var target = angular.element('.dialog-editor-creation-panel[data-type="entity"]').show();
+                            target.css('right', '0');
 
-                            input.if = value.replace('if(', '').replace(')', '');
-                            e.currentTarget.value = '';
+                            setTimeout(function()
+                            {
+                                if(target.find('form').get(0).open)
+                                    target.find('form').get(0).open();
+                            }, 501);
 
-                            angular.element('.dialog-editor-input-key:last').focus();
+                            if(target.find('form').get(0).openCallback)
+                                target.find('form').get(0).openCallback(text.replace('@', ''));
+
+                            target.find('form').get(0).saveCallback = function(name)
+                            {
+                                callback('@' + name);
+                                target.css('right', '-368px');
+                            };
+
+                            target.find('form').get(0).closeCallback = function()
+                            {
+                                target.css('right', '-368px');
+                            };
+                        }
+                        else if(text.startsWith('$'))
+                        {
+                            $rootScope.$broadcast('makeNewType', text.replace('$', ''), angular.element('.graph-background .select_tab').attr('id'));
                         }
                     }
                     else
                     {
-                        if(input.text && key != 'text')
-                        {
-                            e.currentTarget.blur();
-                        }
-                        else
-                        {
-                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
-                            if(key && key != 'text')
-                            {
-                                // alert('다른 형태의 Input으로 변경할 수 없습니다.');
-                                // return e.preventDefault();
-                                return e.currentTarget.blur();
-                            }
+                        callback(angular.element(this).text());
+                    }
+                });
+            };
 
-                            if(value)
+            var showIntentInputList = function(name, target, callback)
+            {
+                angular.element('.dialog-editor-body').css('overflow', 'hidden');
+
+                $scope.showInputList = true;
+                IntentService.query({ botId: chatbot.id, page: 1, countPerPage: 10, name: name ? name.trim() : '' }, function(result)
+                {
+                    var html = '';
+                    for(var i=0; i<result.length; i++)
+                    {
+                        html += '<li>#' + result[i].name + '</li>';
+                    }
+
+                    html += '<li data-type="addNew">' + LanguageService('Add New') + '</li>';
+
+                    angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
+                    makeMoveInputListSelectionByMouseOver();
+                    selectInput(target, callback);
+
+                    var page = 1;
+                    var ul = angular.element('.dialog-editor-input-list-box > ul');
+                    ul.on('scroll', function()
+                    {
+                        if(this.scrollTop + this.offsetHeight + 10 >= this.scrollHeight)
+                        {
+                            IntentService.query({ botId: chatbot.id, page: ++page, countPerPage: 10, name : name ? name.trim() : '' }, function(result)
                             {
-                                DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                                if(result.length > 0)
                                 {
-                                    $scope.nlpedTextPrefix[index] = 'nlu: ';
-                                    input.text = $scope.nlpedText[index];
-
-                                    if($scope.showNlpTimeout)
-                                        clearTimeout($scope.showNlpTimeout);
-
-                                    $scope.showNlpTimeout = setTimeout(function()
+                                    var html = '';
+                                    for (var i = 0; i < result.length; i++)
                                     {
-                                        $scope.$apply(function()
-                                        {
-                                            $scope.nlpedTextPrefix[index] = '';
-                                            $scope.nlpedText[index] = '';
-                                        });
-                                    }, 2000);
-                                });
-                            }
+                                        html += '<li>#' + result[i].name + '</li>';
+                                    }
 
-                            e.currentTarget.value = '';
+                                    angular.element(html).insertBefore(angular.element('.dialog-editor-input-list-box > ul > li:last'));
+                                }
+                            });
+                        }
+                    });
+                });
+            };
 
-                            angular.element('.dialog-editor-input-key:last').focus();
+            var showEntityInputList = function(name, target, callback)
+            {
+                angular.element('.dialog-editor-body').css('overflow', 'hidden');
+
+                $scope.showInputList = true;
+                EntityService.query({ botId: chatbot.id, page: 1, countPerPage: 10, name : name ? name.trim() : '' }, function(result)
+                {
+                    var html = '';
+                    for(var i=0; i<result.length; i++)
+                    {
+                        html += '<li>@' + result[i].name + '</li>';
+                    }
+
+                    html += '<li data-type="addNew">' + LanguageService('Add New') + '</li>';
+
+                    angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
+                    makeMoveInputListSelectionByMouseOver();
+                    selectInput(target, callback);
+
+                    var page = 1;
+                    var ul = angular.element('.dialog-editor-input-list-box > ul');
+                    ul.on('scroll', function()
+                    {
+                        if(this.scrollTop + this.offsetHeight + 10 >= this.scrollHeight)
+                        {
+                            EntityService.query({ botId: chatbot.id, page: ++page, countPerPage: 10, name : name ? name.trim() : '' }, function(result)
+                            {
+                                if(result.length > 0)
+                                {
+                                    var html = '';
+                                    for (var i = 0; i < result.length; i++)
+                                    {
+                                        html += '<li>@' + result[i].name + '</li>';
+                                    }
+
+                                    angular.element(html).insertBefore(angular.element('.dialog-editor-input-list-box > ul > li:last'));
+                                }
+                            });
+                        }
+                    });
+                });
+            };
+
+            var showTypeInputList = function(name, target, callback)
+            {
+                angular.element('.dialog-editor-body').css('overflow', 'hidden');
+
+                $scope.showInputList = true;
+
+                // 나중에는 실제로 봇엔진이 들고있는 공통 타입들을 가지고 와야함.
+                var commons = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
+                TypeService.query({ botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id: '') }, function(result)
+                {
+                    var html = '';
+                    for(var i=0; i<commons.length; i++)
+                    {
+                        if(!name || commons[i].indexOf(name) != -1)
+                        {
+                            html += '<li>$' + commons[i] + '</li>';
                         }
                     }
 
-                    ListModal.close();
+                    for(var i=0; i<result.length; i++)
+                    {
+                        if(!name || result[i].indexOf(name))
+                        {
+                            html += '<li>$' + result[i].name + '</li>';
+                        }
+                    }
+
+                    html += '<li data-type="addNew">' + LanguageService('Add New') + '</li>';
+
+                    angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
+                    makeMoveInputListSelectionByMouseOver();
+                    selectInput(target, callback);
+                });
+            };
+
+            $scope.focusToSpan = function(e)
+            {
+                e.currentTarget.nextElementSibling.focus();
+            };
+
+            $scope.onBlur = function(e, index)
+            {
+                if(!$scope.tempInputList)
+                {
+                    $scope.tempInputList = [];
+                }
+
+                var input = $scope.tempInputList[index] = {};
+
+                var children = e.currentTarget.childNodes;
+                for(var i=0; i<children.length; i++)
+                {
+                    if(children[i].nodeName == '#text')
+                    {
+                        input.text = children[i].textContent;
+                    }
+                    else if(children[i].nodeName == 'SPAN')
+                    {
+                        var type = children[i].getAttribute('data-type');
+                        if(type)
+                        {
+                            if(type == 'types')
+                            {
+                                var text = children[i].innerText.replace('$', '');
+                                if(input[type] && input[type].indexOf(text) == -1)
+                                {
+                                    input[type].push(text);
+                                }
+                                else if(!input[type])
+                                {
+                                    input[type] = [text];
+                                }
+                            }
+                            else
+                            {
+                                input[type] = children[i].innerText.replace('#', '').replace('@', '').replace(/\//gi, '').replace('if(', '').replace(')', '');
+                            }
+                        }
+                    }
+                }
+
+                for(var i=0; i<$scope.tempInputList.length; i++)
+                {
+                    if(!$scope.tempInputList[i] || Object.keys($scope.tempInputList[i]).length == 0)
+                    {
+                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().attr('required', 'true');
+                    }
+                    else
+                    {
+                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().removeAttr('required');
+                    }
+                }
+
+                angular.element('.dialog-editor-input-description').text('');
+                angular.element('.dialog-editor-body').css('overflow', 'auto');
+
+                initInputList(true);
+            };
+
+            $scope.focusGuideBox = function(e)
+            {
+                angular.element('.dialog-editor-input-box > .dialog-editor-input-guide-box').insertAfter(e.currentTarget.parentElement);
+            };
+
+            $scope.onFocus = function(e)
+            {
+                var selection = window.getSelection();
+
+                var target = selection.focusNode.parentElement;
+
+                if(selection.focusNode.className == 'editable')
+                {
+                    target = selection.focusNode;
+                }
+
+                var text = target.innerText;
+                var type = target.getAttribute('data-type');
+
+                if(type == 'intent')
+                {
+                    showIntentInputList(text.replace('#', ''), target, function(text)
+                    {
+                        target.innerText = text;
+                        CaretService.placeCaretAtEnd(target);
+                        initInputList(true);
+                    });
+                }
+                else if(type == 'entities')
+                {
+                    showEntityInputList(text.replace('@', ''), target, function()
+                    {
+                        target.innerText = text;
+                        CaretService.placeCaretAtEnd(target);
+                        initInputList(true);
+                    });
+                }
+                else if(type == 'types')
+                {
+                    showTypeInputList(text.replace('$', ''), target, function()
+                    {
+                        target.innerText = text;
+                        CaretService.placeCaretAtEnd(target);
+                        initInputList(true);
+                    });
+                }
+                else if(type == 'regexp')
+                {
+                    initInputList(false);
+                    angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
+                }
+                else if(type == 'if')
+                {
+                    initInputList(false);
+                    angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
                 }
                 else
                 {
-                    if(e.keyCode == 8 && value.length == 0)
+                    initInputList(false);
+                    if(text.trim())
                     {
-                        ListModal.close();
-                        return;
-                    }
-                    else if(e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40 || e.keyCode == 16 || e.keyCode == 9)
-                    {
-                        return;
-                    }
-                    else if(value.indexOf('@') == -1 && value.indexOf('#') == -1 && value.indexOf('$') == -1)
-                    {
-                        ListModal.close();
-                    }
-
-                    // 일반 텍스트 입력 및 탭이동시
-                    if(value.indexOf('@') != -1)
-                    {
-                        openEntityListModal(e, input, y, x, value.replace('@', '') || undefined);
-                    }
-                    else if(value[0] == '#')
-                    {
-                        openIntentListModal(e, input, y, x, value.replace('#', '') || undefined);
-                    }
-                    else if(value[0] == '$')
-                    {
-                        openTypeListModal(e, input, y, x, value.replace('$', '') || undefined);
-                    }
-                    else if(value.indexOf('@') == -1 && value.indexOf('#') == -1 && value.indexOf('$') == -1)
-                    {
-                        ListModal.close();
-                    }
-
-                    if(value !== undefined && value !== null && value !== '')
-                    {
-                        if(value.startsWith('/'))
+                        DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
                         {
-                            $scope.nlpedTextPrefix[index] = '';
-                            $scope.nlpedText[index] = LanguageService('Typing the regular expression, press Enter to finish.');
-                            return;
-                        }
-                        else if(value.startsWith('if('))
-                        {
-                            $scope.nlpedTextPrefix[index] = '';
-                            $scope.nlpedText[index] = LanguageService('Entering conditional statements, press Enter to finish.');
-                            return;
-                        }
-
-                        if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if(') || value.startsWith('/'))
-                        {
-                            return;
-                        }
-
-                        if(value)
-                        {
-                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                            if(result.text.trim())
                             {
-                                $scope.nlpedTextPrefix[index] = 'nlu: ';
-                                $scope.nlpedText[index] = result.text;
+                                angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
+                            }
+                            else
+                            {
+                                angular.element('.dialog-editor-input-description').text('');
+                            }
+                        });
+                    }
+                    else
+                    {
+                        initInputList(true);
+                    }
+                }
+            };
 
-                                if($scope.showNlpTimeout)
-                                    clearTimeout($scope.showNlpTimeout);
+            $scope.onKeyDown = function(e)
+            {
+                if($scope.showInputList)
+                {
+                    if(e.keyCode == 38) // up
+                    {
+                        moveInputListSelection('up');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if(e.keyCode == 40) // down
+                    {
+                        moveInputListSelection('down');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if(e.keyCode == 27) // esc
+                    {
+                        initInputList(true);
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if(e.keyCode == 13) // enter
+                    {
+                        var selectedText = angular.element('.dialog-editor-input-list-box > ul > li.selected').text();
 
-                                $scope.showNlpTimeout = setTimeout(function()
-                                {
-                                    $scope.$apply(function()
-                                    {
-                                        $scope.nlpedText[index] = '';
-                                        $scope.nlpedTextPrefix[index] = '';
-                                    });
-                                }, 2000);
+                        var selection = window.getSelection();
+                        selection.focusNode.textContent = selectedText;
+
+                        var span = document.createElement('span');
+                        span.innerText = String.fromCharCode(160);
+                        e.currentTarget.appendChild(span);
+
+                        CaretService.placeCaretAtEnd(span);
+
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                }
+                else
+                {
+                    if(e.keyCode == 13)
+                    {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                }
+            };
+
+            $scope.onKeyUp = function(e)
+            {
+                var selection = window.getSelection();
+                var text = selection.focusNode.textContent;
+                if(e.currentTarget.innerText)
+                {
+                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
+                }
+                else
+                {
+                    angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+                }
+
+                if(selection.focusNode.parentElement.nodeName == 'SPAN')
+                {
+                    //span이 한 번 생성된 후에 다 지우고 다시 입력하면 span이 생김.
+                    selection.focusNode.parentElement.style.backgroundColor = '';
+                    selection.focusNode.parentElement.style.color = '';
+                }
+
+                // 유형 span 생성
+                if(e.key == '#' || e.key == '@' || e.key == '$' || e.key == '/' || (e.key == '(' && text.indexOf('if(') != -1))
+                {
+                    $scope.isAdvancedMode = true;
+
+                    var type = 'intent';
+                    var replacedText = e.key;
+                    var typeText = e.key;
+                    var focusIndex = -1;
+
+                    if(e.key == '@')
+                    {
+                        type = 'entities';
+                    }
+                    else if(e.key == '$')
+                    {
+                        type = 'types';
+                    }
+                    else if(e.key == '/')
+                    {
+                        type = 'regexp';
+                        typeText = '//';
+                        replacedText = '/';
+                        focusIndex = 1;
+                    }
+                    else if(text.indexOf('if(') != -1)
+                    {
+                        type = 'if';
+                        typeText = 'if()';
+                        replacedText = 'if(';
+                        focusIndex = 3;
+                    }
+
+                    selection.focusNode.textContent = text.replace(replacedText, '');
+
+                    var span = document.createElement('span');
+                    span.className = type;
+                    span.setAttribute('data-type', type);
+                    span.innerText = typeText;
+                    e.currentTarget.appendChild(span);
+
+                    if(focusIndex > 0)
+                    {
+                        CaretService.placeCaretAtIndex(span.childNodes[0], focusIndex);
+                    }
+                    else
+                    {
+                        CaretService.placeCaretAtEnd(span);
+                    }
+
+                    if(selection.focusNode.textContent.length == 0 && selection.focusNode.parentElement.nodeName == 'SPAN')
+                    {
+                        selection.focusNode.parentElement.parentElement.removeChild(selection.focusNode.parentElement);
+                    }
+                }
+
+                // 유형 span에 focus가 왔다면
+                selection = window.getSelection();
+                text = selection.focusNode.textContent;
+
+                var target = undefined;
+                if(e.keyCode != 38 && e.keyCode != 40)
+                {
+                    //up, down은 목록에서 고르는것이기 때문에 reload 하지 않는다.
+                    if((target = selection.focusNode).nodeName == 'SPAN' || (selection.focusNode.nodeName == '#text' && (target = selection.focusNode.parentElement).nodeName == 'SPAN'))
+                    {
+                        var type = target.getAttribute('data-type');
+                        if(type == 'intent')
+                        {
+                            showIntentInputList(text.replace('#', ''), target, function(text)
+                            {
+                                target.innerText = text;
+
+                                var span = document.createElement('span');
+                                span.innerText = String.fromCharCode(160);
+                                e.currentTarget.appendChild(span);
+
+                                CaretService.placeCaretAtEnd(span);
+
+                                initInputList(true);
+                            });
+                        }
+                        else if(type == 'entities')
+                        {
+                            showEntityInputList(text.replace('@', ''), target, function()
+                            {
+                                target.innerText = text;
+
+                                var span = document.createElement('span');
+                                span.innerText = String.fromCharCode(160);
+                                e.currentTarget.appendChild(span);
+
+                                CaretService.placeCaretAtEnd(span);
+
+                                initInputList(true);
+                            });
+                        }
+                        else if(type == 'types')
+                        {
+                            showTypeInputList(text.replace('$', ''), target, function()
+                            {
+                                target.innerText = text;
+
+                                var span = document.createElement('span');
+                                span.innerText = String.fromCharCode(160);
+                                e.currentTarget.appendChild(span);
+
+                                CaretService.placeCaretAtEnd(span);
+
+                                initInputList(true);
                             });
                         }
                     }
                 }
+
+                if(target && target.nodeName == 'SPAN')
+                {
+                    var type = target.getAttribute('data-type');
+                    if((type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
+                       || (type == 'if' && (!target.innerText.startsWith('if(') || !target.innerText.endsWith(')')))
+                       || (type == 'intent' && !target.innerText.startsWith('#'))
+                       || (type == 'entities' && (!target.innerText.startsWith('@')))
+                       || (type == 'types' && (!target.innerText.startsWith('$'))))
+                    {
+                        text = target.innerText;
+
+                        selection = window.getSelection();
+                        var offset = selection.anchorOffset;
+
+                        var node = document.createTextNode(text);
+                        e.currentTarget.insertBefore(node, target);
+                        e.currentTarget.removeChild(target);
+
+                        CaretService.placeCaretAtIndex(node, offset);
+                    }
+                }
+
+                if(!text.startsWith('#') && !text.startsWith('@') && !text.startsWith('$'))
+                {
+                    initInputList(false);
+
+                    if(text.length > 1 && text.startsWith('/') && text.endsWith('/'))
+                    {
+                        angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
+                    }
+                    else if(text.startsWith('if(') && text.endsWith(')'))
+                    {
+                        angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
+                    }
+                    else
+                    {
+                        if(text.trim())
+                        {
+                            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+                            {
+                                angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
+                            });
+                        }
+                        else
+                        {
+                            angular.element('.dialog-editor-input-description').text('');
+                        }
+                    }
+                }
+                else
+                {
+                    angular.element('.dialog-editor-input-description').text('');
+                }
             };
 
-            $scope.deleteInputKey = function(input, key)
+            $scope.addInput = function(e)
             {
-                if(Object.keys(input).length > 1)
-                    delete input[key];
+                var target = angular.element(e.currentTarget).parent().parent();
+                $scope.dialog.input.push({ text: '' });
+                setTimeout(function()
+                {
+                    target.find('input:last').focus();
+                }, 100);
+            };
 
-                ListModal.close();
+            $scope.deleteInput = function(e)
+            {
+                angular.element(e.currentTarget).parent().remove();
+            };
+
+            $scope.addNewType = function()
+            {
+                console.log($scope.inputType);
             };
         };
 
-        return { make: make };
+        return DialogGraphEditorInput;
     });
 })();

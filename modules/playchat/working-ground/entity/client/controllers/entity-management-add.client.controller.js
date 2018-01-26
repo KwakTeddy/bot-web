@@ -12,6 +12,8 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
 
     $scope.$parent.loaded('working-ground');
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     $scope.entities = [];
     $scope.entity = {};
 

@@ -172,15 +172,32 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         //event handling
         Socket.on('send_msg', function(data)
         {
-            // if(data.indexOf(':log') != -1)
-            // {
-            //     $rootScope.$broadcast('onlog', { message: data });
-            // }
-            // else
-            // {
-                addBotBubble(data);
-                $rootScope.$broadcast('onmsg', { message: data });
-            // }
+            try
+            {
+                data = JSON.parse(data);
+                console.log(data);
+                if(data.type == 'dialog')
+                {
+                    $rootScope.$broadcast('dialogGraphTestFocus', data.data.dialogId);
+                }
+                else
+                {
+                    addBotBubble(data);
+                    $rootScope.$broadcast('onmsg', { message: data });
+                }
+            }
+            catch(err)
+            {
+                if(data.indexOf(':log') != -1)
+                {
+                    $rootScope.$broadcast('onlog', { message: data });
+                }
+                else
+                {
+                    addBotBubble(data);
+                    $rootScope.$broadcast('onmsg', { message: data });
+                }
+            }
         });
 
         $scope.sendMessage = function(e)
@@ -197,7 +214,14 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else if(e.keyCode == 116) //F5
             {
                 clearBubble();
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':build', false);
+            }
+            else if(e.keyCode == 117) //F6
+            {
+                clearBubble();
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
+                emitMsg(':reset memory', false);
             }
             else if(e.keyCode == 27) // Esc
             {
@@ -241,6 +265,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 }
 
                 $scope.chatbotName = data.name;
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':reset user', false);
             }, Beagle.error);
         };

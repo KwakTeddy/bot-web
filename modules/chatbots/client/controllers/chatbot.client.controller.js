@@ -8,6 +8,7 @@
         var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
         var ChatBotShareService = $resource('/api/chatbots/:botId/share', { botId: '@botId' });
+        var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
         var SharedChatBotService = $resource('/api/chatbots/shared');
 
         if($cookies.get('login') === 'false')
@@ -42,7 +43,6 @@
 
             SharedChatBotService.query({}, function(list)
             {
-                console.log('리스트 : ', list);
                 $scope.sharedList = list;
             });
         };
@@ -64,8 +64,29 @@
 
         $scope.selectChatbot = function(chatbot)
         {
-            $cookies.putObject('chatbot', chatbot);
-            $location.url('/playchat');
+            delete chatbot.user;
+            ChatbotAuthService.query({ botId: chatbot._id }, function(result)
+            {
+                if(result.length > 0)
+                {
+                    chatbot.myBotAuth = { read : result[0].read, edit: result[0].edit };
+                    $cookies.putObject('chatbot', chatbot);
+                    $location.url('/playchat');
+                }
+                else
+                {
+                    alert(LanguageService('You do not have permission to access this bot'));
+                    location.href = '/playchat/chatbots';
+                }
+
+            }, function(err)
+            {
+                if(err.status == 401)
+                {
+                    alert(LanguageService('You do not have permission to access this bot'));
+                    location.href = '/playchat/chatbots';
+                }
+            });
         };
 
         $scope.moveTab = function(e, name)
@@ -225,13 +246,6 @@
             {
                 alert(err.data.message);
             });
-        };
-
-        $scope.selectBot = function(bot)
-        {
-            delete bot.user;
-            $cookies.putObject('chatbot', bot);
-            $state.go('playchat-main');
         };
 
         $scope.moveToCreate = function()

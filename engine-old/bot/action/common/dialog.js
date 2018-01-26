@@ -341,7 +341,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
               if(Array.isArray(input.entities)) {
                 for(var i in input.entities) {
                   for(key in context.botUser.entities) {
-                    if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
+                      if(input.entities[i] == key){
+                    // if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
                       eachMatched2 = true;
                     }
                   }
@@ -350,7 +351,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                 else cb2(true, false);
               } else {
                 for(key in context.botUser.entities) {
-                  if(input.entities == '@' + key || input.entities == context.botUser.entities[key] + '@' + key) {
+                  // if(input.entities == '@' + key || input.entities == context.botUser.entities[key] + '@' + key) {
+                if(input.entities == key){
                     eachMatched2 = true;
                   }
                 }
@@ -540,6 +542,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
         ], function(err, matched) {
           if(intentMatched && context.bot.contexts && Object.keys(context.bot.contexts).length > 0) {
+          // if(intentMatched){
             intentDialogs.push(dialog);
             _cb(null);
           } else
@@ -848,6 +851,10 @@ function executeDialog(dialog, context, print, callback, options) {
             if (dialog.output.options) nextOptions = utils.mergeWithClone(dialog.output.options, nextOptions);
             // else if(dialog.output.options) nextOptions = utils.clone(dialog.output.options);
 
+              if(context && context.botUser && context.botUser.socket)
+              {
+                  context.botUser.socket.emit('send_msg', JSON.stringify({ type: 'dialog', data: { dialogId: _dialog.id }}));
+              }
             executeDialog(_dialog, context, print, callback, utils.merge(nextOptions, {current: dialog}, true));
             cb(true);
           } else {
@@ -901,6 +908,7 @@ function executeDialog(dialog, context, print, callback, options) {
           dialog.output.options.callChild = 1;
           _execDialog(_dialog, 'returnCallChild');
         } else if (dialog.output.up) {
+
           _dialog = findUpDialog(dialog, context, print, callback);
 
           if(_dialog.upCallback) {
@@ -1066,9 +1074,12 @@ function executeDialog(dialog, context, print, callback, options) {
         var userOut = type.processOutput(dialog.task, context, _output);
 
         if(output.image || output.buttons || output.items || output.result)
-          dialog.task = utils.merge(dialog.task, output);
+        {
+            dialog.task = utils.merge(dialog.task, output);
+        }
 
         context.botUser._currentDialog = dialog;    // 이게 진짜 현재 다이얼로그
+
 
         print(userOut, dialog.task);
 

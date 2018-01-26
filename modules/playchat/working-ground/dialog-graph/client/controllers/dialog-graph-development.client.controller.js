@@ -7,8 +7,17 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     var chatbot = $cookies.getObject('chatbot');
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
+
+    DialogGraphEditor.myBotAuth = chatbot.myBotAuth;
+
+    //topBar숨기기 default
+    angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
+    angular.element('#middle-container').css("top", "0px");
+    angular.element('.video-popup').css('left', '75px');
 
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope, $rootScope);
@@ -35,7 +44,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
-        $scope.$on('makeNewType', function(context, name)
+        $scope.$on('makeNewType', function(context, name, sourceFileName)
         {
             var text = 'var ' + name + ' = {\n' +
                        '  typeCheck: function (text, type, task, context, callback) {\n' +
@@ -55,13 +64,13 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource', sourceFileName: sourceFileName });
                     break;
                 }
             }
         });
 
-        $scope.$on('makeNewTask', function(context, name)
+        $scope.$on('makeNewTask', function(context, name, sourceFileName)
         {
             var text = 'var ' + name + ' = {\n' +
                        '  action: function (task,context,callback) {\n' +
@@ -79,7 +88,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource', sourceFileName: sourceFileName });
                     break;
                 }
             }
@@ -189,23 +198,57 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                         angular.element('.dialog-graph-code-editor').hide();
                         $scope.loadFile(fileName);
                     }
+                    else
+                    {
+                        angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
+                    }
                 }
                 else
                 {
+                    var isLoad = false;
                     for(var i=0; i<fileList.length; i++)
                     {
                         if(fileList[i].endsWith('graph.js'))
                         {
+                            isLoad = true;
                             $scope.currentTabName = fileList[i];
                             $scope.loadFile($scope.currentTabName);
                             break;
+                        }
+                    }
+
+                    if(!isLoad && fileList.length > 0)
+                    {
+                        $scope.currentTabName = fileList[0];
+                        if(fileList[0].endsWith('graph.js'))
+                        {
+                            $scope.loadFile($scope.currentTabName);
+                        }
+                        else
+                        {
+                            var timer = setInterval(function()
+                            {
+                                if(angular.element('.dialog-graph-code-editor').get(0))
+                                {
+                                    angular.element('.tab-body li:first').click();
+                                    clearInterval(timer);
+                                }
+                            }, 50);
                         }
                     }
                 }
             },
             function(err)
             {
-                console.error(err);
+                if(err.status == 404)
+                {
+                    alert($scope.lan('Bot files not found.'));
+                    location.href = '/playchat/';
+                }
+                else
+                {
+                    console.error(err);
+                }
             });
         };
 
@@ -220,6 +263,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var tabBody = e.currentTarget.previousElementSibling;
             tabBody.scrollLeft += 100;
         };
+
+        $scope.$on('selectTab', function(context, fileName)
+        {
+            console.log('파일네임 : ', fileName);
+            angular.element('.tab-body .select_tab').removeClass('select_tab');
+            angular.element('#' + fileName.replace(/\./gi, '\\.')).addClass('select_tab');
+
+            $location.search().fileName = fileName;
+            $scope.currentTabName = fileName;
+        });
 
         $scope.selectTab = function(e, fileName)
         {
@@ -309,7 +362,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.viewGraphSource = function()
         {
             var fileName = $scope.currentTabName;
-            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource' });
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource', refresh: true });
         };
 
         $scope.toggleCompactMode = function()

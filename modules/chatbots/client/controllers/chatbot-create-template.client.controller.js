@@ -146,6 +146,7 @@
                 ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, isSample: $scope.templateId == 'sample' }, function(chatbot)
                 {
                     delete chatbot.user;
+                    chatbot.myBotAuth = { read: true, edit: true };
                     $cookies.putObject('chatbot', chatbot);
                     $location.url('/playchat/?isFirst=true');
                 },
@@ -222,6 +223,8 @@
                 ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username.replace(/\s/gi, '') + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
                 {
                     delete chatbot.user;
+
+                    chatbot.myBotAuth = { read: true, edit: true };
                     $cookies.putObject('chatbot', chatbot);
 
 

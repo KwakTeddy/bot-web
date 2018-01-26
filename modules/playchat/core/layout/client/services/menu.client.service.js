@@ -6,6 +6,7 @@
     angular.module('playchat').factory('MenuService', function($cookies, $resource, LanguageService)
     {
         var TemplateGnbService = $resource('/api/:templateId/gnb', { templateId : '@templateId' });
+        var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
 
         var instance = undefined;
 
@@ -84,14 +85,19 @@
             }
             else if(typeof templateId == 'function')
             {
+                var chatbot = $cookies.getObject('chatbot');
+
                 var menus = [];
-                menus.push(this.dashboard);
-                menus.push(this.development);
-                menus.push(this.management);
+                menus.push(that.dashboard);
+                menus.push(that.development);
+                menus.push(that.management);
                 // menus.push(this.contents);
-                menus.push(this.channel);
-                menus.push(this.operation);
-                menus.push(this.analysis);
+                menus.push(that.channel);
+                if(chatbot.myBotAuth.edit)
+                {
+                    menus.push(that.operation);
+                }
+                menus.push(that.analysis);
                 // menus.push(this.setting);
 
                 templateId(menus);
