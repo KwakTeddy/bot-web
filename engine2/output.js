@@ -1,7 +1,7 @@
 var Transaction = require('./utils/transaction.js');
 
-var QNAManager = require('./answer/qa.js');
-var DialogGraphManager = require('./answer/dm.js');
+var QNAManager = require('./output/qa.js');
+var DialogGraphManager = require('./output/dm.js');
 
 (function()
 {
@@ -12,7 +12,7 @@ var DialogGraphManager = require('./answer/dm.js');
 
     };
 
-    OutputManager.prototype.analysis = function(bot, session, context, error, callback)
+    OutputManager.prototype.determine = function(bot, session, context, error, callback)
     {
         var nlp = context.nlu.nlp;
 
@@ -40,9 +40,6 @@ var DialogGraphManager = require('./answer/dm.js');
 
         transaction.done(function()
         {
-            console.log('qa 결과 : ', this.qa);
-            console.log('dm 결과 : ', this.dm);
-
             if(this.qa)
             {
                 //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
@@ -58,7 +55,8 @@ var DialogGraphManager = require('./answer/dm.js');
             }
             else
             {
-                callback('??');
+                var dialog = bot.dialogMap['noanswer'];
+                callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });
             }
         });
     };

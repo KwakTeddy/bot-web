@@ -16,7 +16,6 @@ module.exports.init = function(socket)
     {
         Engine.process(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg.options, function(out)
         {
-            console.log('머지 : ', out);
             socket.emit('send_msg', out);
 
             // if(task == undefined || (task.result == undefined && task.image == undefined && task.buttons == undefined && task.items == undefined))

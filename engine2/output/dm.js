@@ -83,8 +83,6 @@ var Globals = require('../globals.js');
 
                 async.eachSeries(keyList, function(key, next)
                 {
-                    console.log(input[key]);
-
                     if(key == 'text')
                     {
                         result = result && that.checkInputText(nlpText, input.text);
@@ -185,9 +183,6 @@ var Globals = require('../globals.js');
         var intents = context.nlu.intents;
         var entities = context.nlu.entities;
 
-        console.log();
-        console.log('----- DialogGraphManager find [Start]');
-
         var transaction = new Transaction.sync();
 
         var dialog = undefined;
@@ -248,9 +243,6 @@ var Globals = require('../globals.js');
         {
             callback(null, dialog);
         });
-
-        console.log('----- DialogGraphManager find [End]');
-        console.log();
     };
 
     DialogGraphManager.prototype.exec = function(bot, session, context, dialog, callback)

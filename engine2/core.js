@@ -58,7 +58,6 @@ var OutputManager = require('./output.js');
 
         var error = new Error(errCallback);
 
-        //1. 유저가 접속하면 제일 먼저 봇을 로딩해야 함.
         BotManager.load(botId, function(err, bot)
         {
             if(err)
@@ -70,16 +69,31 @@ var OutputManager = require('./output.js');
                 if(inputRaw.startsWith(':'))
                 {
                     //FIXME 커맨드 실행
-                    outCallback('커맨드가 실행되었습니다 ' + inputRaw);
                     console.log(chalk.green('================================'));
                     console.log();
+
+                    if(inputRaw == ':reset user')
+                    {
+                        outCallback(bot.commonDialogs[0].output[0]);
+                    }
+                    else if(inputRaw == ':build')
+                    {
+                        BotManager.reset(botId);
+                        BotManager.load(botId, function(err, bot)
+                        {
+                            if (err)
+                            {
+                                error.delegate(err);
+                            }
+                            else
+                            {
+                                outCallback(bot.commonDialogs[0].output[0]);
+                            }
+                        });
+                    }
+
                     return;
                 }
-
-                //2. 그 다음 세션을 생성하고. 세션은 user-bot 단위로 유지되는 데이터 이 세션은 시간이 지나면 사라진다.
-                //3. 컨텍스트를 생성한다. 컨텍스트는 1 request 에서만 유지되는 데이터
-
-                //4. input을 처리하기 위한 작업
 
                 var session = SessionManager.make(botId, userId, channel, options);
                 var context = session.context.get();
@@ -88,27 +102,17 @@ var OutputManager = require('./output.js');
 
                 InputManager.analysis(bot, session, context, error, function()
                 {
-                    OutputManager.analysis(bot, session, context, error, function(output)
+                    OutputManager.determine(bot, session, context, error, function(output)
                     {
-                        console.log('output: ', output);
+                        console.log('아웃풋 : ', output);
                         outCallback(output);
 
-                        console.log('컨텍스트 : ', context);
-                        //output 출력하고
                         console.log(chalk.green('================================'));
                         console.log();
                     });
                 });
             }
         });
-
-        // context.makeContext(bot, channel, user, options, function(context)
-        // {
-        //     console.log(context);
-        //     console.log('컨텍스트 끝');
-        // });
-        //
-        // bot.loadBot();
     };
 
     module.exports = new Core();

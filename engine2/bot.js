@@ -49,6 +49,11 @@ var BotObject = require('./bot/bot.js');
         }
     };
 
+    BotManager.prototype.reset = function(botId)
+    {
+        this.bots[botId] = undefined;
+    };
+
     BotManager.prototype.loadBotFiles = function(bot, botDir)
     {
         //제일먼저 .bot.js 파일을 로딩하고나서 그래프 등의 로직파일을 로딩한다.
