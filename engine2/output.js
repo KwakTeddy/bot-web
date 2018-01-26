@@ -50,7 +50,15 @@ var DialogGraphManager = require('./output/dm.js');
                 context.dialog = this.dm.dialog;
                 DialogGraphManager.exec(bot, session, context, this.dm.dialog, function(context, output)
                 {
-                    callback({ type: 'dialog', dialogId: context.dialog.id, output: output });
+                    if(output)
+                    {
+                        callback({ type: 'dialog', dialogId: context.dialog.id, output: output });
+                    }
+                    else
+                    {
+                        var dialog = bot.dialogMap['noanswer'];
+                        callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });
+                    }
                 });
             }
             else

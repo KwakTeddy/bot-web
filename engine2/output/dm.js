@@ -332,7 +332,6 @@ var Globals = require('../globals.js');
                     }
                     else if(resultOutput.type == 'call')
                     {
-                        var prevContext = context;
                         var nlu = context.nlu;
                         var dialog = bot.dialogMap[resultOutput.dialogId];
                         context = session.context.make();
@@ -342,12 +341,10 @@ var Globals = require('../globals.js');
                     }
                     else if(resultOutput.type == 'callChild')
                     {
-                        var prevContext = context;
                         var nlu = context.nlu;
                         var dialog = bot.dialogMap[resultOutput.dialogId];
                         context = session.context.make();
                         context.nlu = JSON.parse(JSON.stringify(nlu));
-                        context.fromContext = prevContext;
                         context.dialog = dialog;
                         that.exec(bot, session, context, dialog, function(context, resultOutput)
                         {
@@ -394,7 +391,7 @@ var Globals = require('../globals.js');
                         else
                         {
                             // 모르겟어요?
-                            callback(context, resultOutput);
+                            callback(context, null);
                         }
                     }
                 }
