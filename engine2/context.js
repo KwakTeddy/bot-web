@@ -12,6 +12,11 @@
         this.history = [JSON.parse(JSON.stringify(this.initContext))];
     };
 
+    Context.prototype.load = function(json)
+    {
+        this.history = JSON.parse(json);
+    };
+
     Context.prototype.get = function()
     {
         return this.history[this.history.length-1];
@@ -31,6 +36,7 @@
         if(this.history.length > MAX)
         {
             this.history.splice(0, 1);
+            delete this.history[0].prev;
         }
 
         return context;

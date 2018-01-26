@@ -13,10 +13,14 @@ var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var OutputManager = require('./output.js');
 
+var redis = require(path.resolve('./config/lib/redis.js'));
+
 (function()
 {
     var Core = function()
     {
+        this.redis = undefined;
+
         console.log();
         console.log(chalk.green('================= Engine Initailize ==================='));
 
@@ -51,6 +55,8 @@ var OutputManager = require('./output.js');
 
     Core.prototype.process = function(botId, channel, userId, inputRaw, options, outCallback, errCallback)
     {
+        var that = this;
+
         console.log();
         console.log(chalk.green('======== Engine Process ========'));
         console.log('--- Parameters: ');

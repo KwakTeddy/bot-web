@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var async = require('async');
 
-var Globals = require('../globals.js');
 var utils = require('../utils/utils.js');
 
 var BotModel = mongoose.model('Bot');
