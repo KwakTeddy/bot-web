@@ -382,7 +382,7 @@ var Globals = require('../globals.js');
                         if(session.returnDialog)
                         {
                             var nlu = context.nlu;
-                            var dialog = bot.dialogMap[session.returnDialog];
+                            var dialog = bot.parentDialogMap[session.returnDialog];
                             context = session.context.make();
                             context.nlu = JSON.parse(JSON.stringify(nlu));
                             context.dialog = dialog;

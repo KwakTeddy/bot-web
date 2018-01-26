@@ -21,6 +21,7 @@ var Dialogset = mongoose.model('Dialogset');
         this.botId = botId;
 
         this.dialogMap = {};
+        this.parentDialogMap = {};
         this.dialogs = this.dialogs || [];
         this.commonDialogs = this.commonDialogs || [];
         this.tasks = this.tasks || {};
@@ -558,15 +559,20 @@ var Dialogset = mongoose.model('Dialogset');
         });
     };
 
-    Bot.prototype.setDialogMap = function(dialogs)
+    Bot.prototype.setDialogMap = function(dialogs, parent)
     {
         for(var i=0; i<dialogs.length; i++)
         {
             this.dialogMap[dialogs[i].id] = dialogs[i];
 
+            if(parent)
+            {
+                this.parentDialogMap[dialogs[i].id] = parent;
+            }
+
             if(dialogs[i].children)
             {
-                this.setDialogMap(dialogs[i].children);
+                this.setDialogMap(dialogs[i].children, dialogs[i]);
             }
         }
     };
