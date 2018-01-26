@@ -1319,6 +1319,9 @@ var dialogs = [
                 "input": [
                     {
                         "intent": "네"
+                    },
+                    {
+                        "text": "네"
                     }
                 ],
                 "output": [
@@ -1462,7 +1465,16 @@ var dialogs = [
                 "name": "3.수취인 성함",
                 "input": [
                     {
+                        "text": "아니요"
+                    },
+                    {
                         "intent": "아니요"
+                    },
+                    {
+                        "text": "아니다"
+                    },
+                    {
+                        "text": "아니"
                     }
                 ],
                 "output": [
@@ -1679,6 +1691,9 @@ var dialogs = [
                                                                                                 "input": [
                                                                                                     {
                                                                                                         "intent": "네"
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "text": "네"
                                                                                                     }
                                                                                                 ],
                                                                                                 "output": [
@@ -2865,7 +2880,16 @@ var dialogs = [
                                                                                                 "name": "2.카드일 때 \"아니요\"",
                                                                                                 "input": [
                                                                                                     {
+                                                                                                        "text": "아니요"
+                                                                                                    },
+                                                                                                    {
                                                                                                         "intent": "아니요"
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "text": "아니다"
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "text": "아니"
                                                                                                     }
                                                                                                 ],
                                                                                                 "output": [
@@ -3783,6 +3807,9 @@ var dialogs = [
                 "input": [
                     {
                         "intent": "네"
+                    },
+                    {
+                        "text": "네"
                     }
                 ],
                 "output": [
@@ -3797,7 +3824,16 @@ var dialogs = [
                 "name": "6.기존회원 주문내역 없고 아니요 경우",
                 "input": [
                     {
+                        "text": "아니요"
+                    },
+                    {
                         "intent": "아니요"
+                    },
+                    {
+                        "text": "아니다"
+                    },
+                    {
+                        "text": "아니"
                     }
                 ],
                 "output": [
