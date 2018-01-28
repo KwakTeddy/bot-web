@@ -15,7 +15,6 @@ var cache;
 //
 // }
 
-
 exports.getContext = getContext;
 function getContext(botName, channel, user, options, callback) {
   // if(!global._context) global._context = {};

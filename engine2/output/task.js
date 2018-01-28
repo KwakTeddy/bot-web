@@ -5,14 +5,14 @@
 
     };
 
-    TaskManager.prototype.exec = function(bot, session, context, output, name, callback)
+    TaskManager.prototype.exec = function(bot, session, context, name, callback)
     {
         if(name && bot.tasks.hasOwnProperty(name))
         {
             var task = bot.tasks[name];
             if(typeof task.action == 'function')
             {
-                task.action(session.userData, context, output, function()
+                task.action(session, context, function()
                 {
                     callback();
                 });

@@ -3,6 +3,7 @@ var async = require('async');
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
+var Context = require('../context.js');
 var TaskManager = require('./task.js');
 
 var Globals = require('../globals.js');
@@ -245,10 +246,11 @@ var Globals = require('../globals.js');
         });
     };
 
-    DialogGraphManager.prototype.exec = function(bot, session, context, dialog, callback)
+    DialogGraphManager.prototype.exec = function(bot, session, context, callback)
     {
         var that = this;
 
+        var dialog = context.dialog;
         session.dialogCursor = dialog.id;
 
         var sync = new Transaction.sync();
@@ -256,7 +258,7 @@ var Globals = require('../globals.js');
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, session, context, dialog.output, dialog.task.name, done);
+                TaskManager.exec(bot, session, context, dialog.task.name, done);
             });
         }
 
@@ -300,10 +302,10 @@ var Globals = require('../globals.js');
                     //call, callChild, reutrnCall, up, repeat, return
                     if(resultOutput.type == 'repeat')
                     {
-                        var prev = context.prev;
+                        var prev = context.prev; // 가장 최신 dialog는 0번이니까 1번이 0번의 prev이다.
                         if(prev)
                         {
-                            that.exec(bot, session, prev, prev.dialog, callback);
+                            that.exec(bot, prev, prev.dialog, callback);
                         }
                         else
                         {
@@ -318,7 +320,7 @@ var Globals = require('../globals.js');
                         {
                             if(prev.prev)
                             {
-                                that.exec(bot, session, prev.prev, prev.prev.dialog, callback);
+                                that.exec(bot, prev.prev, prev.prev.dialog, callback);
                             }
                             else
                             {
@@ -334,30 +336,23 @@ var Globals = require('../globals.js');
                     {
                         var nlu = context.nlu;
                         var dialog = bot.dialogMap[resultOutput.dialogId];
-                        context = session.context.make();
-                        context.nlu = JSON.parse(JSON.stringify(nlu));
-                        context.dialog = dialog;
-                        that.exec(bot, session, context, dialog, callback);
+
+                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                        that.exec(bot, session, newContext, callback);
                     }
                     else if(resultOutput.type == 'callChild')
                     {
                         var nlu = context.nlu;
                         var dialog = bot.dialogMap[resultOutput.dialogId];
-                        context = session.context.make();
-                        context.nlu = JSON.parse(JSON.stringify(nlu));
-                        context.dialog = dialog;
-                        that.exec(bot, session, context, dialog, function(context, resultOutput)
+                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                        that.exec(bot, session, newContext, function(context, resultOutput)
                         {
                             that.find(bot, session, context, function(err, dialog)
                             {
                                 if(dialog)
                                 {
-                                    context = session.context.make();
-                                    context.nlu = JSON.parse(JSON.stringify(nlu));
-                                    context.fromContext = prevContext;
-                                    context.dialog = dialog;
-
-                                    that.exec(bot, session, context, dialog, callback);
+                                    newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                                    that.exec(bot, session, context, callback);
                                 }
                                 else
                                 {
@@ -372,10 +367,8 @@ var Globals = require('../globals.js');
 
                         var nlu = context.nlu;
                         var dialog = bot.dialogMap[resultOutput.dialogId];
-                        context = session.context.make();
-                        context.nlu = JSON.parse(JSON.stringify(nlu));
-                        context.dialog = dialog;
-                        that.exec(bot, session, context, dialog, callback);
+                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                        that.exec(bot, session, newContext, callback);
                     }
                     else if(resultOutput.type == 'return')
                     {
@@ -383,10 +376,8 @@ var Globals = require('../globals.js');
                         {
                             var nlu = context.nlu;
                             var dialog = bot.parentDialogMap[session.returnDialog];
-                            context = session.context.make();
-                            context.nlu = JSON.parse(JSON.stringify(nlu));
-                            context.dialog = dialog;
-                            that.exec(bot, session, context, dialog, callback);
+                            var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                            that.exec(bot, newContext, context, callback);
                         }
                         else
                         {

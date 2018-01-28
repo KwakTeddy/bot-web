@@ -40,15 +40,11 @@ var DialogGraphManager = require('./output/dm.js');
 
         transaction.done(function()
         {
-            if(this.qa)
-            {
-                //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
-                callback({ type: 'qa', output: this.qa.list[0] });
-            }
-            else if(this.dm)
+            if(this.dm)
             {
                 context.dialog = this.dm.dialog;
-                DialogGraphManager.exec(bot, session, context, this.dm.dialog, function(context, output)
+
+                DialogGraphManager.exec(bot, session, context, function(context, output)
                 {
                     if(output)
                     {
@@ -57,9 +53,14 @@ var DialogGraphManager = require('./output/dm.js');
                     else
                     {
                         var dialog = bot.dialogMap['noanswer'];
-                        callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });
+                        callback({ type: 'dialog', dialogId: context.dialog.id, output: dialog.output });
                     }
                 });
+            }
+            else if(this.qa)
+            {
+                //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
+                callback({ type: 'qa', output: this.qa.list[0] });
             }
             else
             {

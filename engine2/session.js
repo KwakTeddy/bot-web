@@ -16,7 +16,7 @@ var Context = require('./context.js');
         this.channel[channel][botId + '_' + userId] = JSON.parse(json);
     };
 
-    Session.prototype.make = function(botId, userId, channel)
+    Session.prototype.make = function(botId, userKey, channel)
     {
         if(!this.channel[channel])
         {
@@ -28,6 +28,7 @@ var Context = require('./context.js');
         {
             session = this.channel[channel][botId + '_' + userId] = {};
             session.context = new Context();
+            session.userKey = userKey;
             session.userData = {};
         }
         else

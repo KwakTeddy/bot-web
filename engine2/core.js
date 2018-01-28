@@ -8,7 +8,7 @@ var globals = require('./globals.js');
 var channel = require('./channel.js');
 var loadBalancer = require('./loadbalancer.js');
 
-var SessionManager = require('./session.js');
+var Context = require('./context.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var OutputManager = require('./output.js');
@@ -53,14 +53,14 @@ var redis = require(path.resolve('./config/lib/redis.js'));
         // loadBalancer.init(app, io);
     };
 
-    Core.prototype.process = function(botId, channel, userId, inputRaw, options, outCallback, errCallback)
+    Core.prototype.process = function(botId, channel, userKey, inputRaw, options, outCallback, errCallback)
     {
         var that = this;
 
         console.log();
         console.log(chalk.green('======== Engine Process ========'));
         console.log('--- Parameters: ');
-        console.log({ botId: botId, channel: channel, userId: userId, inputRaw: inputRaw, options: options });
+        console.log({ botId: botId, channel: channel, userKey: userKey, inputRaw: inputRaw, options: options });
 
         var error = new Error(errCallback);
 
@@ -101,22 +101,80 @@ var redis = require(path.resolve('./config/lib/redis.js'));
                     return;
                 }
 
-                var session = SessionManager.make(botId, userId, channel, options);
-                var context = session.context.get();
-                context.nlu.sentence = inputRaw;
-                context.nlu.inputRaw = inputRaw;
-
-                InputManager.analysis(bot, session, context, error, function()
+                var sessionKey = channel + '_' + botId + '_' + userKey;
+                redis.get(sessionKey, function(err, session)
                 {
-                    OutputManager.determine(bot, session, context, error, function(output)
+                    if(err)
                     {
-                        console.log('아웃풋 : ', output);
-                        outCallback(output);
+                        error.delegate(err);
+                    }
+                    else
+                    {
+                        if(!session)
+                        {
+                            session = {};
+                            session.userKey = userKey;
+                            session.botId = botId;
+                            session.channel = channel;
+                            session.userData = {};
+                            session.contexts = [];
+                            session.returnDialog = undefined;
+                            session.dialogCursor = undefined;
+                        }
+                        else
+                        {
+                            session = JSON.parse(session);
+                        }
 
-                        console.log(chalk.green('================================'));
-                        console.log();
-                    });
+                        var context = Context.make({});
+                        session.contexts.splice(0, 0, context);
+
+                        for(var i=0; i<session.contexts.length; i++)
+                        {
+                            if(i < session.contexts.length - 1)
+                            {
+                                session.contexts[i].prev = session.contexts[i+1];
+                            }
+                        }
+
+                        InputManager.analysis(bot, context, error, function()
+                        {
+                            OutputManager.determine(bot, session, context, error, function(output)
+                            {
+                                console.log('아웃풋 : ', output);
+
+                                for(var i=0; i<session.contexts.length; i++)
+                                {
+                                    delete session.contexts[i].prev;
+                                }
+
+                                redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                {
+                                    if(err)
+                                    {
+                                        error.delegate(err);
+                                    }
+                                    else
+                                    {
+                                        //테스트 필요
+                                        redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                                        outCallback(output);
+
+                                        console.log('세션저장 : ', reply);
+                                        console.log(chalk.green('================================'));
+                                        console.log();
+                                    }
+                                });
+                            });
+                        });
+                    }
                 });
+
+                // var session = SessionManager.make(botId, userKey, channel, options);
+                // var context = session.context.get();
+                // context.nlu.sentence = inputRaw;
+                // context.nlu.inputRaw = inputRaw;
             }
         });
     };
