@@ -1,24 +1,13 @@
 {
     "menus" : [
-<<<<<<< HEAD
         { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard_1.png" },
         { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents_1.png", "childMenus" : [
-            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "Basic Information", "url" : "/templates/contents/basicinformation", "icon" : "basic.png" },
             { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" },
             { "name" : "상품관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
             { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
         ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini_1.png" }
-=======
-        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
-        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
-            { "name" : "기본정보", "url" : "/templates/contents/basicinformation", "icon" : "basic.png" },
-            { "name" : "주문관리", "url" : "/templates/contents/reservation", "icon" : "reservation.png" },
-            { "name" : "상품 및 후기관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
-            { "name" : "이벤트 관리", "url" : "/templates/contents/event", "icon" : "event.png" }
-        ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" },
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini_1.png" },
         { "name" : "Channel Management", "url": "/channel", "icon": "speech_select_mini.png" }
->>>>>>> 6dbaa0ef52ef94c5ede6dc62643e91989974e7eb
     ]
 }

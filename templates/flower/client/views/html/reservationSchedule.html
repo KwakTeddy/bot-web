@@ -237,7 +237,7 @@
                 <td type="text" class="case1" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">승인</button> <button type="button" class="flower-button" ng-click="delete($index)">취소</button>
+                    <button type="button" class="operation-user-dialog-button" ng-click="accept(orderconfirm)">승인</button> <button type="button" class="flower-button" ng-click="delete(data)">삭체</button>
                 </td>
             </tr>
             <tr>

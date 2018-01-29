@@ -348,6 +348,11 @@ var mobileidentification = {
                 "name":"임보훈",
                 "mobile":"01062588718",
                 "email":"rayim@moneybrain.ai"
+            },
+            {
+                "name":"손보경",
+                "mobile":"01021244141",
+                "email":"sbk@moneybrain.ai"
             }
         ];
         context.dialog.isvipornot=false;
@@ -355,12 +360,12 @@ var mobileidentification = {
             if(userinfor[i].mobile===str){
                 context.dialog.isvipornot=true;
                 context.user.mobile=str;
-                console.log(userinfor[i].name+'==========================userinfor[i].name==');
-                console.log(context.user.name2+'=1=========================context.user.name2==');
+                //console.log(userinfor[i].name+'==========================userinfor[i].name==');
+                //console.log(context.user.name2+'=1=========================context.user.name2==');
                 context.user.name2=userinfor[i].name;
                 context.user.email2=userinfor[i].email;
-                console.log(context.user.name2+'=2=========================context.user.name2==');
-                // console.log("context.user.email2======="+context.user.email2);
+                //console.log(context.user.name2+'=2=========================context.user.name2==');
+                // //console.log("context.user.email2======="+context.user.email2);
                 // console.log("context.user.name2======="+context.user.name2);
                 // console.log("context.user.mobile======="+context.user.mobile);
             }
@@ -481,11 +486,11 @@ bot.setTask('savedeliveryway', savedeliveryway);
 
 var savedecorate = {
     action: function (task,context,callback) {
-        console.log("==============context.dialog.inCurRaw=============="+context.dialog.inCurRaw);
+        //console.log("==============context.dialog.inCurRaw=============="+context.dialog.inCurRaw);
 
         if(context.dialog.inCurRaw!=="다시 입력" && context.dialog.inCurRaw!=="다시 확인" && context.dialog.inCurRaw!=="다시 선택" && context.dialog.inCurRaw!=="이전" ) {
             if(context.dialog.decorate===undefined) {
-                console.log("==============1==============");
+                //console.log("==============1==============");
                 var str = context.dialog.inCurRaw;
                 if (str.indexOf("카드") >= 0) {
                     context.dialog.decorate = "카드";
@@ -498,7 +503,7 @@ var savedecorate = {
                     callback(task, context);
                 }
                 else {
-                    console.log("==============2==============");
+                    //console.log("==============2==============");
                     context.dialog.decorate = "리본";
                     task.buttons = [
                         {
@@ -517,7 +522,7 @@ var savedecorate = {
                  str = context.dialog.inCurRaw;
                 if (str.indexOf("리본") < 0) {
                     context.dialog.decorate = "카드";
-                    console.log("==============3==============");
+                    //console.log("==============3==============");
                     task.buttons = [
                         {
                             text: "참고문구",
@@ -528,7 +533,7 @@ var savedecorate = {
                 }
                 else {
                     context.dialog.decorate = "리본";
-                    console.log("==============4==============");
+                    //console.log("==============4==============");
                     task.buttons = [
                         {
                             text: "네",
@@ -553,9 +558,9 @@ bot.setTask('savedecorate', savedecorate);
 
 var getgreeting = {
     action: function (task,context,callback) {
-        //console.log('context.dialog.decorate============'+context.dialog.decorate);
+        ////console.log('context.dialog.decorate============'+context.dialog.decorate);
         if(context.dialog.decorate==="리본"){
-            //console.log('context.dialog.decorate1============'+context.dialog.decorate);
+            ////console.log('context.dialog.decorate1============'+context.dialog.decorate);
             greeting.find({"decorate":{"$ne":"카드"}}).lean().exec(function(err,docs){
                 context.dialog.category =[];
                 context.user.categorylist2=undefined;
@@ -616,19 +621,19 @@ var savesendname = {
             }
             else if (context.dialog.inCurRaw === "네") {
                 if (context.user.username !== undefined) {
-                    console.log("===========================1======================");
-                    console.log("===========================context.user.username======================"+context.user.username);
+                    //console.log("===========================1======================");
+                    //console.log("===========================context.user.username======================"+context.user.username);
                     context.dialog.sendname = context.user.username;
                 }
                 else {
-                    console.log("===========================2======================");
-                    console.log("===========================context.user.name2======================"+context.user.name2);
+                    //console.log("===========================2======================");
+                    //console.log("===========================context.user.name2======================"+context.user.name2);
                     context.dialog.sendname = context.user.name2;
                 }
             }
             else {
-                console.log("===========================3======================");
-                console.log("context.dialog.inCurRaw=========" + context.dialog.inCurRaw);
+                //console.log("===========================3======================");
+                //console.log("context.dialog.inCurRaw=========" + context.dialog.inCurRaw);
                 context.dialog.sendname = context.dialog.inCurRaw;
             }
             task.buttons = [
@@ -857,12 +862,12 @@ var collectorderinfor = {
         }
         //보내시는분 성함:
         if(context.dialog.decorate==="리본"){
-            console.log("===========================11======================");
-            console.log("===========================context.dialog.sendname======================"+context.dialog.sendname);
+            //console.log("===========================11======================");
+            //console.log("===========================context.dialog.sendname======================"+context.dialog.sendname);
             context.dialog.orderinfor.sendername=context.dialog.sendname;}
         else{
-            console.log("===========================22======================");
-            console.log("===========================context.dialog.orderinfor.name======================"+context.dialog.orderinfor.name);
+            //console.log("===========================22======================");
+            //console.log("===========================context.dialog.orderinfor.name======================"+context.dialog.orderinfor.name);
             context.dialog.orderinfor.sendername=context.dialog.orderinfor.name;
         }
         //받는분 성함:

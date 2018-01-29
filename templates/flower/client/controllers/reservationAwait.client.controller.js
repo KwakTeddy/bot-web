@@ -51,6 +51,16 @@ angular.module('template').controller('flowerReservationAwaitController', ['$sco
 
         $scope.delete = function(index)
         {
+            // function delete_confirm(e)
+            // {
+            //     if (event.srcElement.outerText == "삭제")
+            //     {
+            //         event.returnValue = confirm("정말로 삭제하겠습니까?");
+            //     }
+            // }
+            // document.onclick = delete_confirm;
+            //
+            // // alert("정말로 삭제하겠습니까?");
             $scope.datas.splice(index, 1);
             for(var i=0; i<$scope.datas.length; i++)
             {
