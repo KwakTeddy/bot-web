@@ -21,13 +21,12 @@ var addButton = {
 bot.setTask('addButton', addButton);
 
 
-var authentication = {
+var searchUser = {
     action: function (task,context,callback) {
         if(true)
         {
-            //DB에 고객정보가 있을시에
-            context.user.auth = true;
-        }else //DB에 고객 정보가 없을시에
+            context.user.customerInfo = {};
+        }else
         {
 
         }
@@ -35,31 +34,32 @@ var authentication = {
     }
 };
 
-bot.setTask('authentication', authentication);
+bot.setTask('searchUser', searchUser);
 
 var getCustomerList = {
     action: function (task,context,callback) {
-        var data = [
-            {
-                customerName: "박준하",
-                address: "서울시 관악구 행운동12",
-                id: "1235534"
-            },
-            {
-                customerName: "김지섭",
-                address: "서울시 도봉구 덕릉로 12344",
-                id: "45344004"
+        if(context.user.auth){
+            var data = [
+                {
+                    customerName: "박준하",
+                    address: "서울시 관악구 행운동12",
+                    id: "1235534"
+                },
+                {
+                    customerName: "김지섭",
+                    address: "서울시 도봉구 덕릉로 12344",
+                    id: "45344004"
+                }
+            ];
+
+            context.dialog.customerList = data;
+
+            task.buttons = [];
+
+            for(var i = 0; i < data.length; i++){
+                task.buttons.push({text: i + 1})
             }
-        ];
-
-        context.dialog.customerList = data;
-
-        task.buttons = [];
-
-        for(var i = 0; i < data.length; i++){
-            task.buttons.push({text: i + 1})
         }
-
         callback(task,context);
     }
 };
@@ -72,7 +72,7 @@ var customerListType = {
         var matched = true;
         var customerList = context.dialog.customerList;
         for(var i = 0; i < customerList.length; i++){
-            if(customerList[i].id == text){
+            if(i + 1 == text){
                 context.dialog.curCustomer = customerList[i];
                 break;
             }
@@ -279,10 +279,14 @@ bot.setTask('sendSMSAuth', sendSMSAuth);
 
 var saveCustomerName = {
     typeCheck: function (text, type, task, context, callback) {
-        var matched = true;
+        var matched = false;
         var word = context.dialog.inCurRaw || context.dialog.inRaw;
-        context.user.customerName = word;
-
+        var regExp = new RegExp('[가-힣]{2,4}', "g");
+        if(regExp.exec(word))
+        {
+            context.user.customerName = word;
+            matched = true;
+        }
         callback(text, task, matched);
     }
 };
@@ -291,9 +295,15 @@ bot.setType('saveCustomerName', saveCustomerName);
 
 var saveCustomerBirth = {
     typeCheck: function (text, type, task, context, callback) {
-        var matched = true;
+        var matched = false;
         var word = context.dialog.inCurRaw || context.dialog.inRaw;
-        context.user.customerBirth = word;
+        var regexp = new RegExp("[0-9]{6}", "g");
+
+        if(regexp.exec(word))
+        {
+            context.user.customerBirth = word;
+            matched = true;
+        }
         callback(text, task, matched);
     }
 };
@@ -338,3 +348,106 @@ var email = {
 };
 
 bot.setType('email', email);
+
+
+var getAccoutList = {
+  action: function (task,context,callback) {
+    callback(task,context);
+	}
+};
+
+bot.setTask('getAccoutList', getAccoutList);
+
+var selectedAccountType = {
+
+    typeCheck: function (text, type, task, context, callback) {
+        var matched = true;
+
+        callback(text, task, matched);
+    }
+};
+
+bot.setType('selectedAccountType', selectedAccountType);
+
+
+var getNoticeMethod = {
+    action: function (task,context,callback) {
+
+        callback(task,context);
+    }
+};
+
+bot.setTask('getNoticeMethod', getNoticeMethod);
+
+
+var setNoticeMethod = {
+    action: function (task,context,callback) {
+
+        callback(task,context);
+    }
+};
+
+bot.setTask('setNoticeMethod', setNoticeMethod);
+
+var getPaymentMethod = {
+    action: function (task,context,callback) {
+
+        callback(task,context);
+    }
+};
+
+bot.setTask('getPaymentMethod', getPaymentMethod);
+
+
+
+var getErrMsg = {
+  action: function (task,context,callback) {
+    callback(task,context);
+	}
+};
+
+bot.setTask('getErrMsg', getErrMsg);
+
+
+var getSafetyCheckResult = {
+  action: function (task,context,callback) {
+    callback(task,context);
+	}
+};
+
+bot.setTask('getSafetyCheckResult', getSafetyCheckResult);
+
+var getSafetyCheckMonth = {
+    action: function (task,context,callback) {
+        callback(task,context);
+    }
+};
+
+bot.setTask('getSafetyCheckMonth', getSafetyCheckMonth);
+
+
+var sendNotiTalk = {
+  action: function (task,context,callback) {
+    callback(task,context);
+	}
+};
+
+bot.setTask('sendNotiTalk', sendNotiTalk);
+
+var searchCustomerCenter = {
+  action: function (task,context,callback) {
+    callback(task,context);
+	}
+};
+
+bot.setTask('searchCustomerCenter', searchCustomerCenter);
+
+
+var authConfirm = {
+  action: function (task,context,callback) {
+      context.user.auth = true;
+    callback(task,context);
+	}
+};
+
+bot.setTask('authConfirm', authConfirm);
