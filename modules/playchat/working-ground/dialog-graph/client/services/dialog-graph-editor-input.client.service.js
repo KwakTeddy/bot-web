@@ -5,12 +5,12 @@
 
     angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $cookies, $compile, LanguageService, CaretService)
     {
-        var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
+        var chatbot = $cookies.getObject('chatbot');
+
+        var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: chatbot.language });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' });
-
-        var chatbot = $cookies.getObject('chatbot');
 
         var DialogGraphEditorInput = {};
         DialogGraphEditorInput.init = function($scope)
@@ -66,7 +66,7 @@
                             text = 'if(' + text + ')';
                         }
 
-                        if(text.trim())
+                        if(text.raw.trim())
                         {
                             isBinded = true;
                             if(key == 'text')
@@ -389,7 +389,7 @@
                 {
                     if(children[i].nodeName == '#text')
                     {
-                        input.text = children[i].textContent;
+                        input.text = { raw: children[i].textContent, nlp: '' };
                     }
                     else if(children[i].nodeName == 'SPAN')
                     {
@@ -736,9 +736,14 @@
                     {
                         if(text.trim())
                         {
+                            console.log('여기는??? : ', text);
                             DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
                             {
+                                console.log('어허 : ', result);
                                 angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
+                            }, function(error)
+                            {
+                                console.log('에러 : ', error);
                             });
                         }
                         else

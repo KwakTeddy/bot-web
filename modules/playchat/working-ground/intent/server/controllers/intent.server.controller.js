@@ -12,14 +12,14 @@ var csv = require('fast-csv');
 
 var logger = require(path.resolve('./config/lib/logger.js'));
 
-// var dialogset = require(path.resolve('modules_old/bot/engine/dialogset/dialogset'));
-// var intentModule = require(path.resolve('modules_old/bot/engine/nlu/intent'));
+// var dialogset = require(path.resolve('modules_old/bot/engine2/dialogset/dialogset'));
+// var intentModule = require(path.resolve('modules_old/bot/engine2/nlu/intent'));
 
 var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var IntentContext = mongoose.model('IntentContext');
 
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 exports.findTotalPage = function(req, res)
 {

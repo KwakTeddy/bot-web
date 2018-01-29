@@ -1,4 +1,4 @@
-var demo = require('../controllers/demo.server.controller.js');
+// var demo = require('../controllers/demo.server.controller.js');
 
 module.exports = function (app)
 {

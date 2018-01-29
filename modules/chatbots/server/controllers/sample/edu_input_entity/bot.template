@@ -1,5 +1,5 @@
 var path = require('path');
-var botlib = require(path.resolve('./engine/bot.js'));
+var botlib = require(path.resolve('./engine2/bot.js'));
 
 var {id} = {
     use: true

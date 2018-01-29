@@ -174,11 +174,17 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
-                data = JSON.parse(data);
-                console.log(data);
                 if(data.type == 'dialog')
                 {
-                    $rootScope.$broadcast('dialogGraphTestFocus', data.data.dialogId);
+                    console.log('데이터 : ', data);
+                    $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
+
+                    addBotBubble(data.output);
+                    $rootScope.$broadcast('onmsg', { message: data.output });
+                }
+                else if(data.type == 'log')
+                {
+                    $rootScope.$broadcast('onlog', { message: data });
                 }
                 else
                 {
@@ -188,15 +194,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             catch(err)
             {
-                if(data.indexOf(':log') != -1)
-                {
-                    $rootScope.$broadcast('onlog', { message: data });
-                }
-                else
-                {
-                    addBotBubble(data);
-                    $rootScope.$broadcast('onmsg', { message: data });
-                }
+                console.error(err);
             }
         });
 
