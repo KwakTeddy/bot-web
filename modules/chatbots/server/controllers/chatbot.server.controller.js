@@ -149,15 +149,19 @@ exports.create = function(req, res)
 
                     if(req.body.isSample)
                     {
-                        var botjs = fs.readFileSync(__dirname + '/sample/bot.template');
-                        var defaultjs = fs.readFileSync(__dirname + '/sample/default.template');
-                        var graphjs = fs.readFileSync(__dirname + '/sample/graph.' + language + '.template');
+                        // var botjs = fs.readFileSync(__dirname + '/sample/bot.template');
+                        // var defaultjs = fs.readFileSync(__dirname + '/sample/default.template');
+                        // var graphjs = fs.readFileSync(__dirname + '/sample/graph.' + language + '.template');
 
+                        var botjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/bot.template');
+                        var defaultjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/default.template');
+                        var graphjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template');
+                        console.log(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template')
                         fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                         fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                         fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
 
-                        var contents = IntentController.parseXlsx(__dirname + '/sample/intent.' + language + '.xlsx');
+                        var contents = IntentController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/intent.' + language + '.xlsx');
                         if(contents.length > 0)
                         {
                             var intent = new Intent();
@@ -184,7 +188,7 @@ exports.create = function(req, res)
                             });
                         }
 
-                        var entities = EntityController.parseXlsx(__dirname + '/sample/entity.' + language + '.xlsx');
+                        var entities = EntityController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/entity.' + language + '.xlsx');
                         if(entities.length > 0)
                         {
                             var entity = new Entity();

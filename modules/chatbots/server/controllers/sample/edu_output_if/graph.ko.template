@@ -1,0 +1,113 @@
+var dialogs = [
+    {
+        "name": "답변IF 기능",
+        "input": [
+            {
+                "text": "기능"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "답변IF 기능은 하나의 대화카드에서 조건에 따라 다른 답변을 내놓는 기능입니다.\n\n예를 들어, 사용자의 대화 채널(카카오, 페이스북 등)에 따라 다른 답변을 내놓아야 할 때 활용할 수 있습니다.\n\n챗봇 답변을 여러개 만들었을 시  사용 가능합니다.\n\nIF 안에서 변수에 대한 접근이 가능합니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "답변IF 구현 _ 소켓",
+        "input": [
+            {
+                "text": "소켓 구현"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓(socket) 채널로 대화중입니다.",
+                "if": "context.user.channel == 'socket'"
+            },
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓이 아닌 다른 채널에서 대화중입니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "답변IF 구현 _ 카카오",
+        "input": [
+            {
+                "text": "카카오 구현"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n\n카카오 채널로 대화중입니다.",
+                "if": "context.user.channel == 'kakao'"
+            },
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n소켓 채널로 대화중입니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+
+var commonDialogs = [
+    {
+        "id": "defaultcommon0",
+        "filename": "defaultcommon",
+        "name": "시작",
+        "input": [
+            {
+                "text": "start"
+            },
+            {
+                "text": "시작"
+            },
+            {
+                "text": "처음"
+            }
+        ],
+        "output": "안녕하세요, 샘플봇_기능_답변IF 입니다.\n무엇을 도와드릴까요?"
+    },
+    {
+        "id": "defaultcommon1",
+        "filename": "defaultcommon",
+        "name": "상위",
+        "input": [
+            {
+                "text": "up"
+            },
+            {
+                "text": "back"
+            },
+            {
+                "text": "상위"
+            },
+            {
+                "text": "이전"
+            }
+        ],
+        "output": {
+            "up": 1
+        }
+    },
+    {
+        "id": "defaultcommon2",
+        "filename": "defaultcommon",
+        "name": "답변없음",
+        "input": "",
+        "output": "알아듣지 못했습니다."
+    }
+];
+
+
+
+var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
+_bot.setDialogs(dialogs);
+_bot.setCommonDialogs(commonDialogs);
