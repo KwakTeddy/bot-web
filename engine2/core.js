@@ -13,8 +13,6 @@ var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var OutputManager = require('./output.js');
 
-var redis = require(path.resolve('./config/lib/redis.js'));
-
 (function()
 {
     var Core = function()
@@ -32,6 +30,11 @@ var redis = require(path.resolve('./config/lib/redis.js'));
 
         console.log(chalk.green('===================================================='));
         console.log();
+    };
+
+    Core.prototype.setRedisClient = function(client)
+    {
+        this.redis = client;
     };
 
     Core.prototype.loadModels = function()
@@ -102,7 +105,7 @@ var redis = require(path.resolve('./config/lib/redis.js'));
                 }
 
                 var sessionKey = channel + '_' + botId + '_' + userKey;
-                redis.get(sessionKey, function(err, session)
+                that.redis.get(sessionKey, function(err, session)
                 {
                     if(err)
                     {
@@ -137,6 +140,8 @@ var redis = require(path.resolve('./config/lib/redis.js'));
                             }
                         }
 
+                        context.nlu.sentence = inputRaw;
+
                         InputManager.analysis(bot, context, error, function()
                         {
                             OutputManager.determine(bot, session, context, error, function(output)
@@ -148,7 +153,7 @@ var redis = require(path.resolve('./config/lib/redis.js'));
                                     delete session.contexts[i].prev;
                                 }
 
-                                redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                that.redis.set(sessionKey, JSON.stringify(session), function(err, reply)
                                 {
                                     if(err)
                                     {
@@ -157,7 +162,7 @@ var redis = require(path.resolve('./config/lib/redis.js'));
                                     else
                                     {
                                         //테스트 필요
-                                        redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+                                        that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                         outCallback(output);
 

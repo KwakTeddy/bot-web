@@ -63,11 +63,11 @@ module.exports.start = function start(callback)
     {
         client.on('connect', function()
         {
-            console.log(chalk.green('redis connected!'));
+            console.log(chalk.green('sdf redis connected!'));
             console.log();
         });
 
-        Engine.redis = client;
+        Engine.setRedisClient(client);
 
         app.server.listen(config.port, function ()
         {
@@ -75,7 +75,6 @@ module.exports.start = function start(callback)
 
             console.log();
             console.log(chalk.green('================= Server Started ==================='));
-            console.log(chalk.green('redis connected'));
 
             // Logging initialization
             console.log(chalk.green(config.app.title));
