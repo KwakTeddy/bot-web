@@ -305,7 +305,10 @@ var Globals = require('../globals.js');
                         var prev = context.prev; // 가장 최신 dialog는 0번이니까 1번이 0번의 prev이다.
                         if(prev)
                         {
-                            that.exec(bot, prev, prev.dialog, callback);
+                            // var nlu = context.nlu;
+                            session.dialogCursor = prev.dialog.id;
+                            session.contexts.splice(0, 1);
+                            callback(resultOutput.text);
                         }
                         else
                         {
@@ -320,16 +323,18 @@ var Globals = require('../globals.js');
                         {
                             if(prev.prev)
                             {
-                                that.exec(bot, prev.prev, prev.prev.dialog, callback);
+                                var nlu = context.nlu;
+                                var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), prev.dialog, context);
+                                that.exec(bot, session, newContext, callback);
                             }
                             else
                             {
-                                callback(context, '[up] prev.prev가 없습니다');
+                                callback('[up] prev.prev가 없습니다');
                             }
                         }
                         else
                         {
-                            callback(context, '[up] prev가 없습니다');
+                            callback('[up] prev가 없습니다');
                         }
                     }
                     else if(resultOutput.type == 'call')
@@ -356,7 +361,7 @@ var Globals = require('../globals.js');
                                 }
                                 else
                                 {
-                                    callback(context, resultOutput);
+                                    callback(resultOutput);
                                 }
                             });
                         });
@@ -382,18 +387,18 @@ var Globals = require('../globals.js');
                         else
                         {
                             // 모르겟어요?
-                            callback(context, null);
+                            callback(null);
                         }
                     }
                 }
                 else
                 {
-                    callback(context, resultOutput);
+                    callback(resultOutput);
                 }
             }
             else
             {
-                callback(context, output);
+                callback(output);
             }
         });
     };

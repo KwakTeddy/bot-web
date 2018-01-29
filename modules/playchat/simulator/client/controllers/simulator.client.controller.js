@@ -176,6 +176,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             {
                 if(data.type == 'dialog')
                 {
+                    console.log('데이터 : ', data);
                     $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
 
                     addBotBubble(data.output);

@@ -75,35 +75,6 @@ var OutputManager = require('./output.js');
             }
             else
             {
-                if(inputRaw.startsWith(':'))
-                {
-                    //FIXME 커맨드 실행
-                    console.log(chalk.green('================================'));
-                    console.log();
-
-                    if(inputRaw == ':reset user')
-                    {
-                        outCallback(bot.commonDialogs[0].output[0]);
-                    }
-                    else if(inputRaw == ':build')
-                    {
-                        BotManager.reset(botId);
-                        BotManager.load(botId, function(err, bot)
-                        {
-                            if (err)
-                            {
-                                error.delegate(err);
-                            }
-                            else
-                            {
-                                outCallback(bot.commonDialogs[0].output[0]);
-                            }
-                        });
-                    }
-
-                    return;
-                }
-
                 var sessionKey = channel + '_' + botId + '_' + userKey;
                 that.redis.get(sessionKey, function(err, session)
                 {
@@ -113,6 +84,87 @@ var OutputManager = require('./output.js');
                     }
                     else
                     {
+                        if(inputRaw.startsWith(':'))
+                        {
+                            //FIXME 커맨드 실행
+                            console.log(chalk.green('================================'));
+                            console.log();
+
+                            if(inputRaw == ':reset user')
+                            {
+                                session = {};
+                                session.userKey = userKey;
+                                session.botId = botId;
+                                session.channel = channel;
+                                session.userData = {};
+                                session.contexts = [];
+                                session.returnDialog = undefined;
+                                session.dialogCursor = undefined;
+
+                                that.redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                {
+                                    if(err)
+                                    {
+                                        error.delegate(err);
+                                    }
+                                    else
+                                    {
+                                        //테스트 필요
+                                        that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                                        outCallback(bot.commonDialogs[0].output[0]);
+
+                                        console.log('세션저장 : ', reply);
+                                        console.log(chalk.green('================================'));
+                                        console.log();
+                                    }
+                                });
+                            }
+                            else if(inputRaw == ':build')
+                            {
+                                session = {};
+                                session.userKey = userKey;
+                                session.botId = botId;
+                                session.channel = channel;
+                                session.userData = {};
+                                session.contexts = [];
+                                session.returnDialog = undefined;
+                                session.dialogCursor = undefined;
+
+                                that.redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                {
+                                    if(err)
+                                    {
+                                        error.delegate(err);
+                                    }
+                                    else
+                                    {
+                                        //테스트 필요
+                                        that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                                        BotManager.reset(botId);
+                                        BotManager.load(botId, function(err, bot)
+                                        {
+                                            if (err)
+                                            {
+                                                error.delegate(err);
+                                            }
+                                            else
+                                            {
+                                                outCallback(bot.commonDialogs[0].output[0]);
+                                            }
+                                        });
+
+                                        console.log('세션저장 : ', reply);
+                                        console.log(chalk.green('================================'));
+                                        console.log();
+                                    }
+                                });
+                            }
+
+                            return;
+                        }
+
                         if(!session)
                         {
                             session = {};
@@ -141,6 +193,8 @@ var OutputManager = require('./output.js');
                         }
 
                         context.nlu.sentence = inputRaw;
+
+                        console.log('컨텍스트 : ', context);
 
                         InputManager.analysis(bot, context, error, function()
                         {

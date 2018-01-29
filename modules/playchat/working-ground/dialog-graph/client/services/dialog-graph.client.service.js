@@ -1526,15 +1526,18 @@
 
         DialogGraph.prototype.testFocus = function(target)
         {
-            target = angular.element('#' + target).get(0);
             if(target)
             {
-                angular.element('.test-selected').removeClass('test-selected');
-                angular.element(target).children('.graph-dialog-item').addClass('test-selected');
+                target = angular.element('#' + target).get(0);
+                if(target)
+                {
+                    angular.element('.test-selected').removeClass('test-selected');
+                    angular.element(target).children('.graph-dialog-item').addClass('test-selected');
 
-                this.testFocusedTarget = target;
+                    this.testFocusedTarget = target;
 
-                this.moveScrollToTarget(target);
+                    this.moveScrollToTarget(target);
+                }
             }
         };
 

@@ -66,7 +66,7 @@
                             text = 'if(' + text + ')';
                         }
 
-                        if(text.trim())
+                        if(text.raw.trim())
                         {
                             isBinded = true;
                             if(key == 'text')

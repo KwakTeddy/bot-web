@@ -75,88 +75,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 {
                     $scope.isAdvancedMode = true;
                 }
-                else if(dialog.output[i].kind == 'Action')
-                {
-                    $scope.dialog.output[i].text = dialog.output[i].options ? dialog.output[i].options.output : '';
-                    delete $scope.dialog.output[i].options;
-
-                    for(var j=0; j<$scope.actionList.length; j++)
-                    {
-                        if($scope.dialog.output[i][$scope.actionList[j].key])
-                        {
-                            $scope.dialog.output[i].type = $scope.actionList[j].key;
-                            $scope.dialog.output[i].dialog = $scope.dialog.output[i][$scope.actionList[j].key];
-                            $scope.dialog.output[i][$scope.actionList[j].key]
-                            break;
-                        }
-                    }
-                }
             }
 
             console.log('아웃풋 : ', $scope.dialog.output);
-
-            // 옛날방식의 그래프를 읽기 위한 코드인데 일단 필요 없는듯 하니 뺀다. 만약 신한카드가 온다면 어떨까?
-            // if(!$scope.dialog.input.length)
-            // {
-            //     $scope.dialog.input = [$scope.dialog.input];
-            // }
-
-            // if(typeof dialog.output == 'string')
-            // {
-            //     $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
-            // }
-            // else if(typeof dialog.output == 'object')
-            // {
-            //     if(dialog.output.length > 0)
-            //     {
-            //         for(var i=0; i<dialog.output.length; i++)
-            //         {
-            //             //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
-            //             if(dialog.output[i].if)
-            //             {
-            //                 $scope.isAdvancedMode = true;
-            //             }
-            //
-            //             $scope.dialog.output.push(dialog.output[i]);
-            //         }
-            //     }
-                // else
-                // {
-                //     var check = false;
-                //     for(var key in dialog.output)
-                //     {
-                //         if(key == 'options' || key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                //         {
-                //             var actionObject = {};
-                //             actionObject.kind = 'Action';
-                //
-                //             for(var key in dialog.output)
-                //             {
-                //                 if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                //                 {
-                //                     actionObject.type = key;
-                //                     actionObject.dialog = dialog.output[key];
-                //                     break;
-                //                 }
-                //             }
-                //
-                //             $scope.dialog.output.push(actionObject);
-                //
-                //             check = true;
-                //             break;
-                //         }
-                //     }
-                //
-                //     if(!check)
-                //     {
-                //         $scope.dialog.output.push(dialog.output);
-                //     }
-                // }
-            // }
-            // else
-            // {
-            //     console.log('처리되지 않은 아웃풋 : ', dialog.output);
-            // }
 
             setTimeout(function()
             {
@@ -289,12 +210,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             var result = $scope.parseResult();
 
-            // 새로 추가되는 경우 실 데이터에도 추가해줌.
-            // if($scope.parentDialog && !$scope.oldDialog)
-            // {
-            //     DialogGraph.addChildDialog($scope.parentDialog, result);
-            // }
-
             DialogGraph.refresh();
             DialogGraph.setDirty(true);
             DialogGraph.focusById(result.id);
@@ -412,7 +327,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             //새로 추가하는 경우 바로 추가해줌.
             var result = {};
             result.name = DialogGraph.getRandomName();
-            result.input = [{ text: '' }];
+            result.input = [{ text: { raw: '', nlp: '' } }];
             result.output = [{ kind: 'Content', text: '', buttons: [] }];
             result.task = undefined;
 
