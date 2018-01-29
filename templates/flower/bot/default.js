@@ -834,13 +834,12 @@ var collectorderinfor = {
         var myDate = new Date();
         //var local=myDate.toLocaleString( );
         var year=myDate.getFullYear();
-        var year1=myDate.getYear();
         var month=myDate.getMonth()+1;
         var day=myDate.getDate();
         var time=myDate.toLocaleTimeString();
         var time1=myDate.getHours();
         context.dialog.orderinfor.time=year+"년"+month+"월"+day+"일"+" "+time;
-        context.dialog.orderinfor.date=year1+"."+month+"."+day;
+        context.dialog.orderinfor.date=year+"년"+month+"월"+day+"일";
         context.dialog.orderinfor.hour=time1;
 
         //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:

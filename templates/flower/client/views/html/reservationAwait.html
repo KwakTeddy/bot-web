@@ -34,16 +34,20 @@
     .case1
     {
         background-color: #FFFFFF;
+        word-break:break-all;
+        word-wrap: normal;
         color:#272727;
         font-size: 13px;
     }
     .case2
     {
         background-color: #FFFFFF;
+        word-break:break-all;
+        word-wrap: normal;
         color:#272727;
         font-size: 13px;
     }
-    /*tb01----------------------------------*/
+   /*tb01----------------------------------*/
     .tb01{
         border-collapse: collapse;
         width: 100%;
@@ -86,7 +90,7 @@
     .tb01 tbody td.icon:last-child{
         padding: 7px 16px 7px 5px !important;
     }
-    /*tb02----------------------------------*/
+   /*tb02----------------------------------*/
     .tb02{
         width: 100%;
         margin-top: 14px;
@@ -191,48 +195,66 @@
 
 
 
-<div class="template-body" data-id="complete" ng-controller="flowerEventController" style="display: block;">
-
-
-
-    <!--<h1 class="template-title">예약정보관리</h1>-->
-    <!--<div class="daterangepicker dropdown-menu ltr opensleft show-calendar" style="top: 123px; right: 388px; left: auto; display: block;">-->
+<div class="template-body" data-id="complete" ng-controller="flowerReservationAwaitController" style="display: block;">
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width:20%;">
-                <col style="width: 35%;">
-                <col style="width: 25%;">
-                <col style="width: 20%;">
-
+                <col style="width:10%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 14%;">
+                <col style="width: 10%;">
+                <col style="width: 21%;">
+                <col style="width: 15%;">
+            </colgroup>
             <thead>
             <tr>
-                <th>이벤트명</th>
-                <th>이벤트 설명</th>
-                <th>이미지</th>
+                <th>구매자정보</th>
+                <th>상품명 및 코드</th>
+                <th>주문시각</th>
+                <th>받는사람 및 연락처</th>
+                <th>배송지</th>
+                <th>배송날짜 및 시간</th>
+                <th>리본문구(좌/우)</th>
                 <th>관리</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="data in datas">
-                <td type="text" ng-model="data.category" class="case1">{{data.category}}1</td>
-                <td type="text" ng-model="data.description" class="case2">{{data.description}}4</td>
-                <td>
-                    <label>
-                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
-                        <img src="{{ data.picture }}" style="width: 50px;" ng-if="data.picture" ng-click="editImage($event);">
-                    </label>
-                </td>
+                <td type="text"><p ng-model="data.order_name" class="case1">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case1">{{data.order_mobile}}</p></td>
+                <td type="text"><p ng-model="data.order_itemname" class="case2">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case2">{{data.order_itemcode}}</p></td>
+                <td type="text"><p ng-model="data.order_date" class="case2">{{data.order_date}}</p><p ng-model="data.order_hour" class="case2">{{data.order_hour}}</p></td>
+                <td type="text"><p ng-model="data.order_receivername" class="case1">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case1">{{data.order_receivermobile}}</p></td>
+                <td type="text" class="case1" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
+                <td type="text"><p ng-model="data.order_deliverydate" class="case2">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case2">{{data.order_deliveryhour}}</p></td>
+                <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">저장</button> <button type="button" class="flower-button" ng-click="delete($index)">삭제</button>
+                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">승인</button> <button type="button" class="flower-button" ng-click="delete($index)">취소</button>
                 </td>
             </tr>
             <tr>
                 <td colspan="10">
-                    <button type="button" class="default-button" ng-click="add();">추가</button>
+                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
                 </td>
             </tr>
             </tbody>
         </table>
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="/playchat/templates/contents/reservation?page=1" ng-click="toPage(pageOptions.prev);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                </a>
+                <!--ngRepeat: page in pageOptions.pages <a ng-repeat="page in pageOptions.pages" href="/playchat/templates/contents/reservation?page=1" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''" class="ng-binding ng-scope selected">1</a> end ngRepeat: page in pageOptions.pages -->
+                <!-- ngRepeat: page in pageOptions.pages --><a href="/playchat/templates/contents/reservation?page=1" ng-click="toPage(page);" class="ng-binding ng-scope selected">1</a><!-- end ngRepeat: page in pageOptions.pages -->
+                <a href="/playchat/templates/contents/reservation?page=0" ng-click="toPage(pageOptions.next);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                </a>
+            </div>
+        </div>
     </form>
 </div>
+
+
+
+

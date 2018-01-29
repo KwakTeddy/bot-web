@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('template').controller('flowerMenuController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
+angular.module('template').controller('flowerBasicinformationController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
-    $scope.$parent.changeWorkingGroundName('상품 및 후기 관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
+    $scope.$parent.changeWorkingGroundName('기본정보', '/modules/playchat/gnb/client/imgs/event_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
@@ -23,8 +23,6 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
                     DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                         {
                             $scope.datas = list;
-                            // console.log('00000000006666666'+JSON.stringify(list));
-                            //console.log(JSON.stringify(list)+'-----------------------------');
                             console.log(list);
                             for(var i=0; i<list.length; i++)
                             {
@@ -72,13 +70,14 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
 
         $scope.add = function()
         {
-            $scope.datas.push({ categor: '',name:'', hotmenus:'',price:'',description:'',uploader: undefined });
+            $scope.datas.push({ name: '',date:'',description:'', uploader: undefined });
             addUploader($scope.datas.length-1);
         };
 
         $scope.delete = function(index)
         {
             $scope.datas.splice(index, 1);
+
             for(var i=0; i<$scope.datas.length; i++)
             {
                 delete $scope.datas[i].uploader;
@@ -111,6 +110,7 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
                     console.log(result);
                     alert("저장하였습니다");
                     $rootScope.$broadcast('simulator-build');
+
                 },
                 function(err)
                 {

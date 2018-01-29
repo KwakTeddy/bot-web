@@ -1,6 +1,5 @@
 'use strict';
-
-angular.module('template').controller('flowerReservationCompleteController', ['$scope', '$resource', '$cookies','$http', 'FileUploader', 'LanguageService','$rootScope','DateRangePickerService',function ($scope, $resource, $cookies,  $http, FileUploader, LanguageService, $rootScope,DateRangePickerService)
+angular.module('template').controller('flowerReservationController', ['$scope', '$resource', '$cookies','$http', 'FileUploader','$location', 'LanguageService','$rootScope','DateRangePickerService',function ($scope, $resource, $cookies,  $http, FileUploader,$location, LanguageService, $rootScope,DateRangePickerService)
 {
     $scope.$parent.changeWorkingGroundName('주문관리', '/modules/playchat/gnb/client/imgs/reservation_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -12,39 +11,50 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
 
     $scope.datas = [];
     $scope.date = {};
+    $scope.list = [];
+
+
+    $scope.changeTab = function(e, name)
+    {
+        angular.element(e.currentTarget).parent().find('.select_tab').removeClass('select_tab');
+        angular.element(e.currentTarget).addClass('select_tab');
+
+        angular.element('.tab-body').hide();
+        angular.element('.tab-body[data-id="' + name + '"]').show();
+
+        $location.hash(name);
+
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    if($location.hash())
+    {
+        angular.element('.failed-dialog .select_tab').removeClass('select_tab');
+        angular.element('.failed-dialog a[href="#' + $location.hash() + '"]').parent().addClass('select_tab');
+
+        setTimeout(function()
+        {
+            console.log('나와라 : ', angular.element('.failed-dialog .tab-body'));
+            angular.element('.failed-dialog .tab-body').hide();
+            angular.element('.failed-dialog .tab-body[data-id="' + $location.hash() + '"]').show();
+        }, 100);
+    }
     (function()
     {
-        $scope.getList = function()
-        {        $scope.searchKeyDown = function(e)
-        {
-            if(e.keyCode == 13)
-            {
-                $scope.search();
-                e.preventDefault();
-            }
-            else if(e.keyCode == 8)
-            {
-                if(e.currentTarget.value.length == 1)
-                {
-                    $scope.getList(1, '');
-                }
-            }
-        };
 
-            $scope.search = function()
-            {
-                var value = angular.element('#operationSearchInput').val();
-                $scope.getList(1, value);
-            };
-            ChatbotTemplateService.get({ templateId: chatbot.templateId._id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()}, function(result)
+        $scope.getList = function()
+        {
+
+            ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.template = result;
-
+                    // $scope.list = result;
+                    //alert(" $scope.template"+JSON.stringify( $scope.template));
                     DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                         {
                             $scope.datas = list;
-
-                           // console.log(list);
+                            //alert("$scope.datas"+JSON.stringify($scope.datas));
                         },
                         function(err)
                         {
@@ -57,10 +67,9 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
                 });
         };
 
-
         $scope.add = function()
         {
-            $scope.datas.push({ name: '', mobile: '', numOfPerson: '', memo: '', date:'',time:'',status:'',userKey:''});
+            $scope.datas.push({ order_name: '', order_mobile: '', order_itemname: '', order_itemcode: '', order_date:'',order_hour:'',order_receivername:'',order_receivermobile:'',order_receiveraddress:'',order_deliverydate:'',order_deliveryhour:'',order_greeting:'',order_sendername:''});
         };
 
         $scope.delete = function(index)
@@ -106,6 +115,5 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
     $scope.lan=LanguageService;
-
 
 }]);
