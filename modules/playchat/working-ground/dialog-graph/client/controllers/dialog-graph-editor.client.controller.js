@@ -1,8 +1,8 @@
 angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$rootScope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $rootScope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
 {
-    var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
-
     var chatbot = $cookies.getObject('chatbot');
+
+    var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: chatbot.language });
 
     $scope.chatbot = chatbot;
 
@@ -262,9 +262,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         var text = $scope.dialog.input[index].text;
         if(text)
         {
-            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+            DialogGraphsNLPService.get({ botId: chatbot.id, text: text.raw }, function(result)
             {
-                $scope.dialog.input[index].text = result.text;
+                $scope.dialog.input[index].text = { raw: text.raw, nlp: result.text };
                 $scope.inputNLU(index+1, done);
             });
         }

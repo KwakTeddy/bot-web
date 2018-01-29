@@ -52,7 +52,7 @@
 ```
 
 ### 다이얼로그 그래프 Input 유형
-* text
+* text: { raw: String, nlp: String }
 * intent
 * entities
 * types

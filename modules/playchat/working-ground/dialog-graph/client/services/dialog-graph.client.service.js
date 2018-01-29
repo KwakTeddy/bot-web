@@ -856,7 +856,7 @@
                     }
                     else if(key == 'text')
                     {
-                        displayText = input[key];
+                        displayText = input[key].raw;
                     }
                     else if(key == 'if')
                     {

@@ -226,15 +226,15 @@ exports.uploadImage = function(req, res)
 
 module.exports.getNlp = function(req, res)
 {
-    var language = 'ko'; //temporary
-    NLPManager.getNlpedText(req.params.text, language, function(err, result)
+    var language = req.query.language;
+    NLPManager.getNlpedText(language, req.params.text, function(err, lastChar, nlpText, nlp)
     {
         if(err)
         {
-            console.error(err.stack || err); return res.status(400).send({ message: uploadError.message });
+            console.error(err.stack || err);
+            return res.status(400).send({ error: err});
         }
 
-        console.log('결과 : ' + result);
-        res.jsonp({ text: result });
+        res.jsonp({ text: nlpText });
     });
 };

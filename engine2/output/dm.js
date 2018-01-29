@@ -86,7 +86,7 @@ var Globals = require('../globals.js');
                 {
                     if(key == 'text')
                     {
-                        result = result && that.checkInputText(nlpText, input.text);
+                        result = result && that.checkInputText(nlpText, input.text.nlp);
                     }
                     else if(key == 'entities')
                     {
