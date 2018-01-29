@@ -19,6 +19,18 @@
                 <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
             </label>
         </div>
+
+        <div class="form-row" ng-if="templateId == 'sample'">
+            <label class="required" style="text-align: left;">
+                <span class="form-title">{{ lan('SampleBot Category') }}</span>
+                <div class="select-wrapper" style="width: 100%">
+                    <select style="width: 100%" class="jumbo-select" ng-model="bot.sampleCategory" ng-required="true">
+                        <option value={{category}} ng-repeat="category in sampleCategory">{{lan(category)}}</option>
+                    </select>
+                </div>
+            </label>
+        </div>
+
         <div class="form-row">
             <label class="required" style="text-align: left;">
                 <span class="form-title">{{ lan('Language') }}</span>

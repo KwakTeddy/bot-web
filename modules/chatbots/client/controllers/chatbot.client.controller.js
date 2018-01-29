@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService)
+    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', 'LogService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService, LogService)
     {
         var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
         var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
@@ -64,6 +64,7 @@
 
         $scope.selectChatbot = function(chatbot)
         {
+            LogService.botId = chatbot._id;
             delete chatbot.user;
             ChatbotAuthService.query({ botId: chatbot._id }, function(result)
             {

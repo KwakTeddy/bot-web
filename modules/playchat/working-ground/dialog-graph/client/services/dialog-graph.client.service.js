@@ -87,6 +87,18 @@
             this.closeMenu();
         };
 
+        var changeCloneInfo = function (dialog) {
+            dialog.name += ' Clone';
+            dialog.id += 'Clone';
+            if(dialog.children)
+            {
+                for(var i = 0; i < dialog.children.length; i++)
+                {
+                    changeCloneInfo(dialog.children[i]);
+                }
+            }
+        };
+
         Menu.prototype.duplicate = function()
         {
             var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
@@ -94,7 +106,7 @@
 
             var clone = JSON.parse(JSON.stringify(dialog));
 
-            clone.name += ' Clone';
+            changeCloneInfo(clone);
 
             var index = parentDialog.children.indexOf(dialog);
             instance.addChildDialog(parentDialog, clone, index + 1);
@@ -1283,16 +1295,51 @@
                 e.stopPropagation();
             });
 
-            dialog.find('.graph-dialog-item').on('dblclick', function(e)
+            // dialog.find('.graph-dialog-item').on('dblclick', function(e)
+            // {
+            //     if(that.$scope.myBotAuth.edit)
+            //     {
+            //         var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+            //         that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
+            //
+            //         e.stopPropagation();
+            //     }
+            // });
+
+            //헤더, 인풋, 아웃풋 더블 클릭 별로 포커스 다르게
+            dialog.find('.graph-dialog-header').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
                     var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
-                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog, 'header');
 
                     e.stopPropagation();
                 }
             });
+
+            dialog.find('.graph-dialog-input').on('dblclick', function(e)
+            {
+                if(that.$scope.myBotAuth.edit)
+                {
+                    var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog, 'input');
+
+                    e.stopPropagation();
+                }
+            });
+
+            dialog.find('.graph-dialog-output').on('dblclick', function(e)
+            {
+                if(that.$scope.myBotAuth.edit)
+                {
+                    var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog, 'output');
+
+                    e.stopPropagation();
+                }
+            });
+
 
             dialog.find('.dialog-more').on('click', function(e)
             {

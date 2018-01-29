@@ -1,0 +1,101 @@
+<style>
+.template-demo-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-demo-basic
+{
+    width: 40%;
+    margin-left: 5%;
+}
+</style>
+
+<!--<h1 class="template-demo-title">기본정보</h1>-->
+<div> <!-- 템플릿봇 생성시 구조로 인해 반드시 필요한 div -->
+    <div ng-controller="flowerBasicController" class="template-demo-basic">
+        <form ng-submit="saveTemplateBot($event);">
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">꽃배달봇이름</span>
+                    <input type="text" class="data-input" placeholder="꽃배달봇이름(ex:머니브레인)" data-bot-name="true" name="flowername" required="true" autofocus="true">
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">전화번호</span>
+                    <input type="text" class="data-input" placeholder="전화번호(ex:00-000-0000)" name="phone" required="true">
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">휴대폰</span>
+                    <input type="text" class="data-input" name="mobile" placeholder="휴대폰(ex:000-0000-0000)">
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required" style="width: 90%;">
+                    <span class="form-title">주소</span>
+                    <input type="text" class="data-input" name="address" style="width: 80%;">
+                    <button type="button" class="default-button" ng-click="findAddress($event);" style="padding: 8px;width:76px;margin-left: 3px;">검색</button>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required" style="width: 130px;margin-right: 2px;">
+                    <span class="form-title">영업 시작 시간</span>
+                    <input type="time" class="data-input" value="09:00" name="startTime" required="true">
+                </label>
+                <label class="required" style="width: 130px;margin-right: 2px;">
+                    <span class="form-title">영업 종료 시간</span>
+                    <input type="time" class="data-input" value="18:00" name="endTime" required="true">
+                </label>
+                <label class="form-row">
+                    <span class="form-title">휴일</span>
+                    <select name="holiday">
+                        <option value="">휴일없음</option>
+                        <option value="일요일">일요일</option>
+                        <option value="월요일">월요일</option>
+                        <option value="화요일">화요일</option>
+                        <option value="수요일">수요일</option>
+                        <option value="목요일">목요일</option>
+                        <option value="금요일">금요일</option>
+                        <option value="토요일">토요일</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">꽃배달봇이미지</span>
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                    <img src="{{ data.image }}" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">언어</span>
+                    <select class="jumbo-select" required="true" name="language">
+                        <option value="ko" selected="selected">Korean</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese</option>
+                        <option value="jp">Japanese</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required" style="width: 100%;height: 100px;">
+                    <span class="form-title">설명</span>
+                    <textarea class="data-input" name="description"></textarea>
+                </label>
+            </div>
+            <div class="tab-footer" style="border-top: 0;">
+                <button class="blue-button">Save</button>
+                <button class="default-button" ng-click="cancel();">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

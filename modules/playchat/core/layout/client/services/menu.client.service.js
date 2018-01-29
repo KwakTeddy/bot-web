@@ -17,14 +17,14 @@
 
         Menu.prototype.initialize = function()
         {
-            this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard.png' };
+            this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
 
             this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
                 { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
                 { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
             ] };
 
-            this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant.png', childMenus: [
+            this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
                 { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },
                 { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
                 { name: LanguageService('Entity'), url: '/management/entity', icon: 'entity_select_mini.png' },

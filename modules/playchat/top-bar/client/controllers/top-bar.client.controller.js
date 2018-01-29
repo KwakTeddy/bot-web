@@ -16,10 +16,14 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     var user = $scope.user = $cookies.getObject('user');
 
-    var userLang = navigator.language || navigator.userLanguage;
-    var code = user ? user.language : userLang || 'en';
+    // var userLang = navigator.language || navigator.userLanguage;
+    // var code = user ? user.language : userLang || 'en';
 
-    code = code.split('-')[0];
+    // code = code.split('-')[0];
+
+    var code = $cookies.get('language');
+
+
 
     $scope.language = code || 'ko';
 
@@ -35,6 +39,7 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
         {
             user.language = $scope.language;
             $cookies.putObject('user', user);
+            $cookies.put('language', $scope.language);
 
             $rootScope.$broadcast('changeLanguage');
         },
@@ -59,6 +64,10 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     $scope.signout = function()
     {
+        angular.forEach($cookies.getAll(), function (v, k) {
+            if(k != 'language') $cookies.remove(k);
+        });
+
         $window.location.href = '/api/auth/signout';
     };
 

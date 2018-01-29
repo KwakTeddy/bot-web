@@ -1,0 +1,31 @@
+<style>
+    .tab01 li
+    {
+        width: 120px;
+    }
+</style>
+
+<div class="upSide">
+    <form class="inline-block ng-pristine ng-valid">
+        <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+    </form>
+    <div id="createdRange" class="pull-right" style="width: 20%;">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+        <span>2017/12/27 - 2018/01/25</span> <b class="caret"></b>
+    </div>
+</div>
+
+<div class="failed-dialog" ng-controller="flowerReservationController">
+    <div class="tab01" style="margin-top: 20px;">
+        <ul class="tabs1">
+            <li class="select_tab" ng-click="changeTab($event, 'schedule');"><a href="#schedule" class="ng-binding">스케줄</a></li>
+            <li ng-click="changeTab($event, 'await');"><a href="#await" class="ng-binding">승인 대기</a></li>
+            <li ng-click="changeTab($event, 'complete');"><a href="#complete" class="ng-binding">승인 완료</a></li>
+            <li ng-click="changeTab($event, 'cancel');"><a href="#cancel" class="ng-binding">취소 내역</a></li>
+        </ul>
+    </div>
+    <div class="tab-body" data-id="schedule" ng-include="'/templates/flower/client/views/html/reservationSchedule.html'" ng-controller="flowerReservationScheduleController" style="display: block;"></div>
+    <div class="tab-body" data-id="await" ng-include="'/templates/flower/client/views/html/reservationAwait.html'" ng-controller="flowerReservationAwaitController"></div>
+    <div class="tab-body" data-id="complete" ng-include="'/templates/flower/client/views/html/reservationComplete.html'" ng-controller="flowerReservationCompleteController"></div>
+    <div class="tab-body" data-id="cancel" ng-include="'/templates/flower/client/views/html/reservationCancel.html'" ng-controller="flowerReservationCancelController"></div>
+</div>

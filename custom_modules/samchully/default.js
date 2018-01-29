@@ -57,7 +57,7 @@ var getCustomerList = {
         task.buttons = [];
 
         for(var i = 0; i < data.length; i++){
-            task.buttons.push({text: data[i].id})
+            task.buttons.push({text: i + 1})
         }
 
         callback(task,context);
@@ -77,6 +77,8 @@ var customerListType = {
                 break;
             }
         }
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        console.log(context.dialog.curCustomer);
 
         callback(text, task, matched);
     }

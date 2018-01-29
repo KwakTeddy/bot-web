@@ -130,7 +130,7 @@ input.search[type="submit"]:hover {
 /*upside*/
 .upSide{
   height: 40px;
-  padding-bottom: 14px;
+  padding-bottom: 4px;
 }
 .funtionbtn1{
 	display: inline-block;
@@ -591,7 +591,7 @@ div.slide>input[type=checkbox]{
 	border-top: 2px solid #ebebeb;
 	border-radius: 6px 6px 0 0;
 	background: #f5f5f5;
-	margin: 0 8px 0 0;
+	margin: 0 6px 0 0;
 	cursor: pointer;
 	width: 80px;
 	text-align: center;
@@ -611,7 +611,7 @@ div.slide>input[type=checkbox]{
 .tb01{
 	border-collapse: collapse;
     width: 100%;
-	margin-top: 12px;
+	margin-top: 8px;
 }
 .tb01 thead{
 	background: #f5f5f5;
@@ -686,6 +686,15 @@ div.slide>input[type=checkbox]{
 }
 .tb02 tbody td.icon:last-child{
 	padding: 7px 16px 7px 5px !important;
+}
+.tb02 tbody td .case1{
+	padding: 2px 0;
+	text-align: left;
+	padding-left: 20px;
+}
+.tb02 tbody td .case2{
+	padding: 2px 0;
+	text-align: center;
 }
 /*input_type01*/
 .input_type01{

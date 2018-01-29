@@ -5,18 +5,23 @@
 
     angular.module('playchat').factory('LanguageService', function($cookies, $rootScope)
     {
-        var user = $cookies.getObject('user');
-        var userLang = navigator.language || navigator.userLanguage;
-        var code = user ? user.language : userLang || 'en';
+        // var user = $cookies.getObject('user');
+        // var userLang = navigator.language || navigator.userLanguage;
+        // var code = user ? user.language : userLang || 'en';
 
-        code = code.split('-')[0];
+        // code = code.split('-')[0];
+
+        var code = $cookies.get('language');
 
         $rootScope.$on('changeLanguage', function()
         {
-            user = $cookies.getObject('user');
-            code = user ? user.language : userLang || 'en';
+            // user = $cookies.getObject('user');
+            //
+            // code = user ? user.language : userLang || 'en';
+            //
+            // code = code.split('-')[0];
 
-            code = code.split('-')[0];
+            code = $cookies.get('language');
         });
 
         var languages = {
@@ -2928,15 +2933,120 @@
                 "en": "Return Call",
                 "zh": "回电",
                 "jp": "リターンコール"
+            },
+
+            "SampleBot Category": {
+                "ko": "샘플봇 종류",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_keyword" : {
+                "ko": "기능가이드 챗봇 (사용자입력_키워드)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_entity" : {
+                "ko": "기능가이드 챗봇 (사용자입력_엔터티)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_intent" : {
+                "ko": "기능가이드 챗봇 (사용자입력_인텐트)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_regexp" : {
+                "ko": "기능가이드 챗봇 (사용자입력_정규식)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_type" : {
+                "ko": "기능가이드 챗봇 (사용자입력_타입)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_if" : {
+                "ko": "기능가이드 챗봇 (사용자입력_조건문)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_variable" : {
+                "ko": "기능가이드 챗봇 (사용자입력_변수)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_task_crawling" : {
+                "ko": "기능가이드 챗봇 (함수_크롤링)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_task_api" : {
+                "ko": "기능가이드 챗봇 (함수_API)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_variable" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_변수)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_if" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_조건문)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_call" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_대화이동)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_repeat" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_다시질문하기)",
+               "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_up" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_이전대화이동)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_callchild" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_대화이동 후 검색)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_output_returncall" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_돌아오기용 대화이동)",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
             }
+
+
+
         };
 
         var list = {};
 
         var lan = function(key)
         {
-            if(!key)
-                return '';
+            if(!key) return '';
 
             key = key.trim();
             if(!languages[key])

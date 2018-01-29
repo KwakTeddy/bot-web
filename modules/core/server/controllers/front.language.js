@@ -99,7 +99,8 @@ module.exports = function(code)
             "L087":"",
             "L088":"",
             "L089":"",
-            "L090":""
+            "L090":"",
+            "lan" : "ko"
         },
         en: {
             "L001":"Playchat - Develop a Chatbot, Conversational AI platform, Moneybrain",
@@ -199,7 +200,9 @@ module.exports = function(code)
             "L087":"Comming Soon",
             "L088":"Blog",
             "L089":"Facebook",
-            "L090":"contact with us"
+            "L090":"contact with us",
+            "lan" : "en"
+
         },
         zh: {
             "L001": "Playchat - 聊天机器人开发，对话型人工智能平台，Moneybrain",
@@ -299,7 +302,9 @@ module.exports = function(code)
             "L087":"开发中",
             "L088":"博客",
             "L089":"Facebook",
-            "L090":"联系我们"
+            "L090":"联系我们",
+            "lan" : "zh"
+
         },
         jp: {
             "L001":"",
@@ -399,7 +404,9 @@ module.exports = function(code)
             "L087":"",
             "L088":"",
             "L089":"",
-            "L090":""
+            "L090":"",
+            "lan" : "jp"
+
         }
     };
 

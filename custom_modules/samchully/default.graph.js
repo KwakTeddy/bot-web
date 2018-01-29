@@ -185,7 +185,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "원하시는 메뉴를 선택하세요",
+                        "text": "+curCustomer+가 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -1533,6 +1533,8 @@ var dialogs = [
 
 
 
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1578,37 +1580,6 @@ var commonDialogs = [
                 "image": {
                     "url": "/files/samchully-1515459210907-samchully.png",
                     "displayname": "samchully.png"
-                },
-                "uploader": {
-                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                    "alias": "uploadFile",
-                    "headers": {},
-                    "queue": [],
-                    "progress": 0,
-                    "autoUpload": true,
-                    "removeAfterUpload": false,
-                    "method": "POST",
-                    "filters": [
-                        {
-                            "name": "folder"
-                        },
-                        {
-                            "name": "queueLimit"
-                        }
-                    ],
-                    "formData": [],
-                    "queueLimit": 1.7976931348623157e+308,
-                    "withCredentials": false,
-                    "disableMultipart": false,
-                    "isUploading": false,
-                    "_nextIndex": 0,
-                    "_failFilterIndex": -1,
-                    "_directives": {
-                        "select": [],
-                        "drop": [],
-                        "over": []
-                    },
-                    "item": "/files/samchully-1515459210907-samchully.png"
                 }
             }
         ],
@@ -1656,6 +1627,8 @@ var commonDialogs = [
         }
     }
 ];
+
+
 
 
 
