@@ -24,15 +24,14 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 {
     function processInput(language, rawText, done)
     {
-        var language = 'ko'; //temporary
-        NLPManager.getNlpedText(rawText, language, function(err, result)
+        NLPManager.getNlpedText(language, rawText, function(err, lastChar, nlpText, nlp)
         {
             if(err)
             {
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            done(result);
+            done(nlpText);
         });
     };
 

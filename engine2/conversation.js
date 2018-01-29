@@ -7,12 +7,12 @@ var DialogGraphManager = require('./output/dm.js');
 {
     // 어떤 답변을 할 것인지 선택해주는 역할.
     // 딱 선택까지만 한다.
-    var OutputManager = function()
+    var ConversationManager = function()
     {
 
     };
 
-    OutputManager.prototype.determine = function(bot, session, context, error, callback)
+    ConversationManager.prototype.answer = function(bot, session, context, error, callback)
     {
         var nlp = context.nlu.nlp;
 
@@ -70,5 +70,5 @@ var DialogGraphManager = require('./output/dm.js');
         });
     };
 
-    module.exports = new OutputManager();
+    module.exports = new ConversationManager();
 })();

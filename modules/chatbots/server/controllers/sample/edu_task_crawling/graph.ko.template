@@ -3,7 +3,10 @@ var dialogs = [
         "name": "함수 기능",
         "input": [
             {
-                "text": "함수 기능"
+                "text": {
+                    "raw": "함수 기능",
+                    "nlp": "함수 기능"
+                }
             }
         ],
         "output": [
@@ -28,7 +31,10 @@ var dialogs = [
                 "name": "함수 구조 설명",
                 "input": [
                     {
-                        "text": "함수 구조 설명"
+                        "text": {
+                            "raw": "함수 구조 설명",
+                            "nlp": "함수 구조 설명"
+                        }
                     }
                 ],
                 "output": [
@@ -57,7 +63,10 @@ var dialogs = [
                         "name": "함수 파라미터 task",
                         "input": [
                             {
-                                "text": "함수 파라미터 task 구체 설명"
+                                "text": {
+                                    "raw": "함수 파라미터 task 구체 설명",
+                                    "nlp": "함수 파라미터 task 구체 설명"
+                                }
                             }
                         ],
                         "output": [
@@ -72,7 +81,10 @@ var dialogs = [
                         "name": "함수 파라미터 context",
                         "input": [
                             {
-                                "text": "함수 파라미터 context 구체 설명"
+                                "text": {
+                                    "raw": "함수 파라미터 context 구체 설명",
+                                    "nlp": "함수 파라미터 context 구체 설명"
+                                }
                             }
                         ],
                         "output": [
@@ -87,7 +99,10 @@ var dialogs = [
                         "name": "함수 파라미터 callback",
                         "input": [
                             {
-                                "text": "함수 파라미터 callback 구체 설명"
+                                "text": {
+                                    "raw": "함수 파라미터 callback 구체 설명",
+                                    "nlp": "함수 파라미터 callback 구체 설명"
+                                }
                             }
                         ],
                         "output": [
@@ -110,7 +125,10 @@ var dialogs = [
                 "name": "크롤링 구현 설명",
                 "input": [
                     {
-                        "text": "크롤 링 구현 설명"
+                        "text": {
+                            "raw": "크롤 링 구현 설명",
+                            "nlp": "크롤 링 구현 설명"
+                        }
                     }
                 ],
                 "output": [
@@ -135,7 +153,10 @@ var dialogs = [
                         "name": "request 모듈 설명",
                         "input": [
                             {
-                                "text": "request 모듈 설명"
+                                "text": {
+                                    "raw": "request 모듈 설명",
+                                    "nlp": "request 모듈 설명"
+                                }
                             }
                         ],
                         "output": [
@@ -150,7 +171,10 @@ var dialogs = [
                         "name": "cheerio 모듈 설명",
                         "input": [
                             {
-                                "text": "cheerio 모듈 설명"
+                                "text": {
+                                    "raw": "cheerio 모듈 설명",
+                                    "nlp": "cheerio 모듈 설명"
+                                }
                             }
                         ],
                         "output": [
@@ -175,7 +199,10 @@ var dialogs = [
         "name": "함수 구현 _ 크롤링",
         "input": [
             {
-                "text": "크롤 링"
+                "text": {
+                    "raw": "크롤 링",
+                    "nlp": "크롤 링"
+                }
             }
         ],
         "output": [
@@ -192,13 +219,6 @@ var dialogs = [
     }
 ];
 
-
-
-
-
-
-
-
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -206,13 +226,22 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
-                "text": "start"
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
             },
             {
-                "text": "시작"
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
             },
             {
-                "text": "처음"
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
             }
         ],
         "output": "안녕하세요, 샘플봇_기능_함수(크롤링) 입니다.\n무엇을 도와드릴까요?"
@@ -223,16 +252,28 @@ var commonDialogs = [
         "name": "상위",
         "input": [
             {
-                "text": "up"
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
             },
             {
-                "text": "back"
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
             },
             {
-                "text": "상위"
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
             },
             {
-                "text": "이전"
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
             }
         ],
         "output": {
@@ -240,7 +281,7 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon2",
+        "id": "noanswer",
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
@@ -248,6 +289,8 @@ var commonDialogs = [
     }
 ];
 
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

@@ -11,7 +11,7 @@ var loadBalancer = require('./loadbalancer.js');
 var Context = require('./context.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
-var OutputManager = require('./output.js');
+var ConversationManager = require('./conversation.js');
 
 (function()
 {
@@ -112,7 +112,13 @@ var OutputManager = require('./output.js');
                                         //테스트 필요
                                         that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                                        outCallback(bot.commonDialogs[0].output[0]);
+                                        var output = bot.commonDialogs[0].output;
+                                        if(typeof output != 'string')
+                                        {
+                                            output = bot.commonDialogs[0].output[0];
+                                        }
+
+                                        outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                                         console.log('세션저장 : ', reply);
                                         console.log(chalk.green('================================'));
@@ -151,7 +157,13 @@ var OutputManager = require('./output.js');
                                             }
                                             else
                                             {
-                                                outCallback(bot.commonDialogs[0].output[0]);
+                                                var output = bot.commonDialogs[0].output;
+                                                if(typeof output != 'string')
+                                                {
+                                                    output = bot.commonDialogs[0].output[0];
+                                                }
+
+                                                outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
                                             }
                                         });
 
@@ -193,12 +205,13 @@ var OutputManager = require('./output.js');
                         }
 
                         context.nlu.sentence = inputRaw;
+                        context.nlu.inputRaw = inputRaw;
 
                         console.log('컨텍스트 : ', context);
 
                         InputManager.analysis(bot, context, error, function()
                         {
-                            OutputManager.determine(bot, session, context, error, function(output)
+                            ConversationManager.answer(bot, session, context, error, function(output)
                             {
                                 console.log('아웃풋 : ', output);
 

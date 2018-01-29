@@ -94,7 +94,7 @@ var Globals = require('../globals.js');
                     }
                     else if(key == 'intent')
                     {
-                        result = result && (intents.length > 0 && input.intent == intents[0].name);
+                        result = result && (intents.length > 0 && input.intent == intents[0].intentName);
                     }
                     else if(key == 'types')
                     {
@@ -270,6 +270,7 @@ var Globals = require('../globals.js');
             {
                 var resultOutput = undefined;
                 var elseList = [];
+
                 for(var i=0; i<output.length; i++)
                 {
                     if(!resultOutput && output[i].if)
@@ -296,109 +297,109 @@ var Globals = require('../globals.js');
                 {
                     resultOutput = elseList[utils.getRandomInt(0, elseList.length-1)];
                 }
+            }
+            else
+            {
+                resultOutput = output;
+            }
 
-                if(resultOutput.kind == 'Action')
+            if(resultOutput.kind == 'Action')
+            {
+                //call, callChild, reutrnCall, up, repeat, return
+                if(resultOutput.type == 'repeat')
                 {
-                    //call, callChild, reutrnCall, up, repeat, return
-                    if(resultOutput.type == 'repeat')
+                    var prev = context.prev; // 가장 최신 dialog는 0번이니까 1번이 0번의 prev이다.
+                    if(prev)
                     {
-                        var prev = context.prev; // 가장 최신 dialog는 0번이니까 1번이 0번의 prev이다.
-                        if(prev)
+                        // var nlu = context.nlu;
+                        session.dialogCursor = prev.dialog.id;
+                        session.contexts.splice(0, 1);
+                        callback(resultOutput.text);
+                    }
+                    else
+                    {
+                        //TODO 만약 prev가 없다면??? 없을리가 없긴 하지만..
+                        callback('[repeat] prev가 없습니다');
+                    }
+                }
+                else if(resultOutput.type == 'up')
+                {
+                    var prev = context.prev;
+                    if(prev)
+                    {
+                        if(prev.prev)
                         {
-                            // var nlu = context.nlu;
-                            session.dialogCursor = prev.dialog.id;
-                            session.contexts.splice(0, 1);
-                            callback(resultOutput.text);
+                            var nlu = context.nlu;
+                            var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), prev.dialog, context);
+                            that.exec(bot, session, newContext, callback);
                         }
                         else
                         {
-                            //TODO 만약 prev가 없다면??? 없을리가 없긴 하지만..
-                            callback('[repeat] prev가 없습니다');
+                            callback('[up] prev.prev가 없습니다');
                         }
                     }
-                    else if(resultOutput.type == 'up')
+                    else
                     {
-                        var prev = context.prev;
-                        if(prev)
+                        callback('[up] prev가 없습니다');
+                    }
+                }
+                else if(resultOutput.type == 'call')
+                {
+                    var nlu = context.nlu;
+                    var dialog = bot.dialogMap[resultOutput.dialogId];
+
+                    var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                    that.exec(bot, session, newContext, callback);
+                }
+                else if(resultOutput.type == 'callChild')
+                {
+                    var nlu = context.nlu;
+                    var dialog = bot.dialogMap[resultOutput.dialogId];
+                    var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                    that.exec(bot, session, newContext, function(context, resultOutput)
+                    {
+                        that.find(bot, session, context, function(err, dialog)
                         {
-                            if(prev.prev)
+                            if(dialog)
                             {
-                                var nlu = context.nlu;
-                                var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), prev.dialog, context);
-                                that.exec(bot, session, newContext, callback);
+                                newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                                that.exec(bot, session, context, callback);
                             }
                             else
                             {
-                                callback('[up] prev.prev가 없습니다');
+                                callback(resultOutput);
                             }
-                        }
-                        else
-                        {
-                            callback('[up] prev가 없습니다');
-                        }
-                    }
-                    else if(resultOutput.type == 'call')
-                    {
-                        var nlu = context.nlu;
-                        var dialog = bot.dialogMap[resultOutput.dialogId];
-
-                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                        that.exec(bot, session, newContext, callback);
-                    }
-                    else if(resultOutput.type == 'callChild')
-                    {
-                        var nlu = context.nlu;
-                        var dialog = bot.dialogMap[resultOutput.dialogId];
-                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                        that.exec(bot, session, newContext, function(context, resultOutput)
-                        {
-                            that.find(bot, session, context, function(err, dialog)
-                            {
-                                if(dialog)
-                                {
-                                    newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                                    that.exec(bot, session, context, callback);
-                                }
-                                else
-                                {
-                                    callback(resultOutput);
-                                }
-                            });
                         });
-                    }
-                    else if(resultOutput.type == 'returnCall')
-                    {
-                        session.returnDialog = dialogId;
-
-                        var nlu = context.nlu;
-                        var dialog = bot.dialogMap[resultOutput.dialogId];
-                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                        that.exec(bot, session, newContext, callback);
-                    }
-                    else if(resultOutput.type == 'return')
-                    {
-                        if(session.returnDialog)
-                        {
-                            var nlu = context.nlu;
-                            var dialog = bot.parentDialogMap[session.returnDialog];
-                            var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                            that.exec(bot, newContext, context, callback);
-                        }
-                        else
-                        {
-                            // 모르겟어요?
-                            callback(null);
-                        }
-                    }
+                    });
                 }
-                else
+                else if(resultOutput.type == 'returnCall')
                 {
-                    callback(resultOutput);
+                    session.returnDialog = dialogId;
+
+                    var nlu = context.nlu;
+                    var dialog = bot.dialogMap[resultOutput.dialogId];
+                    var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                    that.exec(bot, session, newContext, callback);
+                }
+                else if(resultOutput.type == 'return')
+                {
+                    if(session.returnDialog)
+                    {
+                        var nlu = context.nlu;
+                        var dialog = bot.parentDialogMap[session.returnDialog];
+                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
+                        that.exec(bot, newContext, context, callback);
+                    }
+                    else
+                    {
+                        // 모르겟어요?
+                        callback(null);
+                    }
                 }
             }
             else
             {
-                callback(output);
+                callback(resultOutput);
             }
         });
     };

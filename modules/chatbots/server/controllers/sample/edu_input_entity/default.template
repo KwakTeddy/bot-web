@@ -1,10 +1,10 @@
-var path = require('path');
-var bot = require(path.resolve('./engine/bot.js')).getBot('{id}');
-
-var defaultTask = {
-    name: 'defaultTask',
-    action: function(task, context, callback) {
-        callback(task, context);
-    }
+module.exports = function(bot)
+{
+    var defaultTask = {
+        name: 'defaultTask',
+        action: function(task, context, callback) {
+            callback(task, context);
+        }
+    };
+    bot.setTask("defaultTask", defaultTask);
 };
-bot.setTask("defaultTask", defaultTask);

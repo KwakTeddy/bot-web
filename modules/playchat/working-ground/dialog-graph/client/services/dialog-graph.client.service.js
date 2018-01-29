@@ -1534,7 +1534,7 @@
                     angular.element('.test-selected').removeClass('test-selected');
                     angular.element(target).children('.graph-dialog-item').addClass('test-selected');
 
-                    this.testFocusedTarget = target;
+                    this.testFocusedTarget = target.id;
 
                     this.moveScrollToTarget(target);
                 }
@@ -1681,7 +1681,7 @@
                 this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
 
-            this.testFocus(this.testFocusedTarget);
+            this.testFocus(this.testFocusedTarget || this.commonDialogs[0].id);
         };
 
         DialogGraph.prototype.refreshLine = function()

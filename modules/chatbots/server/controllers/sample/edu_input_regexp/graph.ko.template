@@ -3,7 +3,10 @@ var dialogs = [
         "name": "정규식 기능",
         "input": [
             {
-                "text": "정규식 기능"
+                "text": {
+                    "raw": "정규식 기능",
+                    "nlp": "정규식 기능"
+                }
             }
         ],
         "output": [
@@ -53,8 +56,6 @@ var dialogs = [
     }
 ];
 
-
-
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -62,13 +63,22 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
-                "text": "start"
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
             },
             {
-                "text": "시작"
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
             },
             {
-                "text": "처음"
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
             }
         ],
         "output": "안녕하세요, 샘플봇_기능_정규식 입니다.\n무엇을 도와드릴까요?"
@@ -79,16 +89,28 @@ var commonDialogs = [
         "name": "상위",
         "input": [
             {
-                "text": "up"
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
             },
             {
-                "text": "back"
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
             },
             {
-                "text": "상위"
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
             },
             {
-                "text": "이전"
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
             }
         ],
         "output": {
@@ -96,7 +118,7 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon2",
+        "id": "noanswer",
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
@@ -104,8 +126,8 @@ var commonDialogs = [
     }
 ];
 
-
-
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

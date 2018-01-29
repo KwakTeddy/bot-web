@@ -3,10 +3,16 @@ var dialogs = [
         "name": "1.打招呼",
         "input": [
             {
-                "text": "您好"
+                "text": {
+                    "raw": "您好",
+                    "nlp": "您好"
+                }
             },
             {
-                "text": "你好"
+                "text": {
+                    "raw": "你好",
+                    "nlp": "你好"
+                }
             }
         ],
         "output": [
@@ -21,7 +27,10 @@ var dialogs = [
         "name": "2.名字",
         "input": [
             {
-                "text": "名字"
+                "text": {
+                    "raw": "名字",
+                    "nlp": "名字"
+                }
             }
         ],
         "output": [
@@ -87,10 +96,16 @@ var dialogs = [
                         "name": "3.action-up",
                         "input": [
                             {
-                                "text": "号码"
+                                "text": {
+                                    "raw": "号码",
+                                    "nlp": "号码"
+                                }
                             },
                             {
-                                "text": "电话号码"
+                                "text": {
+                                    "raw": "电话号码",
+                                    "nlp": "电话号码"
+                                }
                             }
                         ],
                         "output": [
@@ -159,7 +174,10 @@ var dialogs = [
         "name": "6.图片",
         "input": [
             {
-                "text": "照片"
+                "text": {
+                    "raw": "照片",
+                    "nlp": "照片"
+                }
             }
         ],
         "output": [
@@ -178,7 +196,10 @@ var dialogs = [
                 "name": "6.action-return call",
                 "input": [
                     {
-                        "text": "好看"
+                        "text": {
+                            "raw": "好看",
+                            "nlp": "好看"
+                        }
                     }
                 ],
                 "output": [
@@ -195,7 +216,10 @@ var dialogs = [
         "name": "7.按钮",
         "input": [
             {
-                "text": "地图"
+                "text": {
+                    "raw": "地图",
+                    "nlp": "地图"
+                }
             }
         ],
         "output": [
@@ -220,7 +244,10 @@ var dialogs = [
         "name": "8.action-call",
         "input": [
             {
-                "text": "地址"
+                "text": {
+                    "raw": "地址",
+                    "nlp": "地址"
+                }
             }
         ],
         "output": [
@@ -233,24 +260,6 @@ var dialogs = [
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -258,13 +267,22 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
-                "text": "start"
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
             },
             {
-                "text": "开始"
+                "text": {
+                    "raw": "开始",
+                    "nlp": "开始"
+                }
             },
             {
-                "text": "最开始"
+                "text": {
+                    "raw": "最开始",
+                    "nlp": "最开始"
+                }
             }
         ],
         "output": "您好, 我是朋友聊天机器人.\n有什么需要帮助您的吗?"
@@ -275,16 +293,28 @@ var commonDialogs = [
         "name": "상위",
         "input": [
             {
-                "text": "up"
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
             },
             {
-                "text": "back"
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
             },
             {
-                "text": "上一步"
+                "text": {
+                    "raw": "上一步",
+                    "nlp": "上一步"
+                }
             },
             {
-                "text": "返回"
+                "text": {
+                    "raw": "返回",
+                    "nlp": "返回"
+                }
             }
         ],
         "output": {
@@ -292,7 +322,7 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon2",
+        "id": "noanswer",
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
@@ -300,24 +330,8 @@ var commonDialogs = [
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

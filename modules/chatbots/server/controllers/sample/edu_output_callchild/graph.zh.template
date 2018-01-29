@@ -1,39 +1,48 @@
 var dialogs = [
     {
-        "name": "1.打招呼",
+        "name": "대화이동 후 검색 기능",
         "input": [
             {
-                "text": "您好"
-            },
-            {
-                "text": "你好"
+                "text": {
+                    "raw": "기능",
+                    "nlp": "기능"
+                }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "您好~"
+                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n'대화이동 후 검색'은 대화이동 후, 이동한 대화카드의 자식들에 대하여 검색을 실행하는 기능입니다.\n\nA 대화카드에서 B 대화카드로 대화이동 후 검색을 실행할 경우, B 대화카드로 커서(Cursor)가 이동한 후 A 대화카드에서 받은 사용자 입력으로  B의 자식들에 대하여 검색을 실행합니다. \n\nA 대화카드에서 받은 사용자 입력으로 검색한 다음 매칭된 대화 카드가 없을 경우 B 대화카드로 커서가 이동하고, 매칭된 대화 카드가 있을 경우 매칭된 대화 카드로 커서가 이동합니다.\n\n따라서 커서가 '대화이동 후 검색 실행 대화카드'에 있을 때, 사용자가 대화이동 후 검색 이라고 입력했을 경우 B(대화 이동 후 검색될 카드)의 자식 중 매칭될 수 있는 카드가 없어 B로 커서가 이동하고, 사용자가 1이라고 입력할 경우 B의 자식 중 '검색될 자식카드1'로 커서가 이동합니다.\n\n챗봇 답변은 대화이동 후 검색 기능을 실행하는 대화카드에서 챗봇 답변이 있을 경우 해당 답변이 실행되며, 없을 경우 커서가 이동한 대화카드의 챗봇 답변이 실행됩니다."
             }
         ],
         "id": "default0"
     },
     {
-        "name": "2.名字",
+        "name": "대화이동 후 검색 실행",
         "input": [
             {
-                "text": "名字"
+                "text": {
+                    "raw": "실행",
+                    "nlp": "실행"
+                }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "我是+name+。\n你叫什么名字?"
+                "text": "대화이동 후 검색 실행을 위해서 아래의 버튼을 눌러주세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "대화이동 후 검색"
+                    }
+                ]
             }
         ],
         "id": "default1",
         "children": [
             {
-                "name": "2.task",
+                "name": "대화이동 후 검색 실행 카드",
                 "input": [
                     {
                         "if": "true"
@@ -41,215 +50,71 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "kind": "Content",
-                        "text": "+myname+好好听哦^^"
+                        "kind": "Action",
+                        "callChild": "대화 이동 후 검색될 카드",
+                        "options": {
+                            "output": "대화이동 후 검색을 실행합니다."
+                        }
                     }
                 ],
-                "task": {
-                    "name": "savemyname"
-                },
-                "id": "default2",
-                "children": []
+                "id": "default2"
             }
         ]
     },
     {
-        "name": "3.type(类型)",
+        "name": "대화 이동 후 검색될 카드",
         "input": [
             {
-                "types": "mobile"
+                "if": "true"
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "电话号码是+mobile+~\n\n那么下次我要给+myname+打电话~>-<"
+                "text": "대화 이동됐습니다."
             }
         ],
         "id": "default3",
         "children": [
             {
-                "name": "3.意图",
+                "name": "검색될 자식카드1",
                 "input": [
                     {
-                        "intent": "好的"
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
+                        }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "好棒^^哈哈\n是真的电话号吧?"
+                        "text": "1"
                     }
                 ],
-                "id": "default4",
-                "children": [
-                    {
-                        "name": "3.action-up",
-                        "input": [
-                            {
-                                "text": "号码"
-                            },
-                            {
-                                "text": "电话号码"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "up": 1
-                            }
-                        ],
-                        "id": "default11"
-                    }
-                ]
+                "id": "default4"
             },
             {
-                "name": "3.action-repeat",
+                "name": "검색될 자식카드2",
                 "input": [
                     {
-                        "if": "true"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "repeat": 1,
-                        "options": {
-                            "output": "等到你说好为止~\n好不? 好不?"
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
                         }
                     }
                 ],
-                "id": "default10"
-            }
-        ]
-    },
-    {
-        "name": "4.正则表达式",
-        "input": [
-            {
-                "regexp": "[天气]"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "天气真是太好了，阳光好棒~~"
-            }
-        ],
-        "id": "default5",
-        "children": []
-    },
-    {
-        "name": "5.实体",
-        "input": [
-            {
-                "entities": "@地址"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "去那儿干什么?"
-            }
-        ],
-        "id": "default6",
-        "children": []
-    },
-    {
-        "name": "6.图片",
-        "input": [
-            {
-                "text": "照片"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "这张照片怎么样?\n(不怎么样/好看)\n\n*回复【好看】就好啦~",
-                "image": {
-                    "url": "/files/blank_zsslovelyg_1513674143338-1513676651308-拔萝卜.jpg",
-                    "displayname": "拔萝卜.jpg"
-                }
-            }
-        ],
-        "id": "default7",
-        "children": [
-            {
-                "name": "6.action-return call",
-                "input": [
-                    {
-                        "text": "好看"
-                    }
-                ],
                 "output": [
                     {
-                        "kind": "Action",
-                        "returnCall": 1
+                        "kind": "Content",
+                        "text": "2"
                     }
                 ],
-                "id": "default12"
+                "id": "default5"
             }
         ]
-    },
-    {
-        "name": "7.按钮",
-        "input": [
-            {
-                "text": "地图"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "想看地图的话就点击下面的按钮",
-                "buttons": [
-                    {
-                        "url": "https://map.naver.com/?mapmode=0&lng=2ce68ec691fa0eb6d7450f9db857bfbb&pinId=18735742&lat=64f38a8b152f9d7f5ef77247624152e3&dlevel=11&enc=b64&pinType=site",
-                        "text": "Naver地图(点击)"
-                    },
-                    {
-                        "url": "https://www.google.co.kr/maps/place/Nambusunhwan-ro+289-gil,+Bangbae+3(sam)-dong,+%E7%91%9E%E8%8D%89%E5%8C%BA%E6%B1%89%E5%9F%8E/data=!4m2!3m1!1s0x357ca053b2a81481:0x9abf921f60bc9eef?sa=X&ved=0ahUKEwjliJqi8ZXYAhULi7wKHRtFCKMQ8gEIJDAA",
-                        "text": "谷歌地图(点击)"
-                    }
-                ]
-            }
-        ],
-        "id": "default8"
-    },
-    {
-        "name": "8.action-call",
-        "input": [
-            {
-                "text": "地址"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Action",
-                "call": "7.按钮"
-            }
-        ],
-        "id": "default9"
     }
 ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var commonDialogs = [
     {
@@ -258,16 +123,25 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
-                "text": "start"
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
             },
             {
-                "text": "开始"
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
             },
             {
-                "text": "最开始"
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
             }
         ],
-        "output": "您好, 我是朋友聊天机器人.\n有什么需要帮助您的吗?"
+        "output": "안녕하세요, 샘플봇_기능_대화이동 후 검색 입니다.\n무엇을 도와드릴까요?"
     },
     {
         "id": "defaultcommon1",
@@ -275,16 +149,28 @@ var commonDialogs = [
         "name": "상위",
         "input": [
             {
-                "text": "up"
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
             },
             {
-                "text": "back"
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
             },
             {
-                "text": "上一步"
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
             },
             {
-                "text": "返回"
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
             }
         ],
         "output": {
@@ -292,32 +178,16 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon2",
+        "id": "noanswer",
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
-        "output": "我听不懂您在说什么."
+        "output": "알아듣지 못했습니다."
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

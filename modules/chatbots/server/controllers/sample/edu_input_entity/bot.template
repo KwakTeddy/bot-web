@@ -1,8 +1,4 @@
-var path = require('path');
-var botlib = require(path.resolve('./engine2/bot.js'));
-
-var {id} = {
-    use: true
+module.exports = function(bot)
+{
+    bot.use = true;
 };
-
-botlib.makeBot('{id}', {id});

@@ -66,16 +66,22 @@
                             text = 'if(' + text + ')';
                         }
 
-                        if(text.raw.trim())
+                        if(key == 'text')
                         {
-                            isBinded = true;
-                            if(key == 'text')
+                            if(text.raw.trim())
                             {
-                                var node = document.createTextNode(text);
+                                isBinded = true;
+
+                                var node = document.createTextNode(text.raw);
                                 target.append(node);
                             }
-                            else
+                        }
+                        else
+                        {
+                            if(text.trim())
                             {
+                                isBinded = true;
+
                                 var html = '<span class="' + key + '" data-type="' + key + '">' + text + '</span>';
                                 target.append(html);
                             }

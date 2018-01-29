@@ -15,7 +15,7 @@ Bot.prototype.setCommonDialogs = function(commonDialogs)
 };
 
 var b = new Bot();
-require('./custom_modules/blank_com2best_1516067335456/default.graph.js')(b);
+require('./custom_modules/sample_com2best_1517223500346/default.graph.js')(b);
 
 
 var convert = function(dialogs)
@@ -56,4 +56,4 @@ content += 'module.exports = function(bot)\n' +
            '    bot.setCommonDialogs(commonDialogs);\n' +
            '};\n';
 
-fs.writeFileSync('./custom_modules/blank_com2best_1516067335456/default2.graph.js', content);
+fs.writeFileSync('graph.js', content);

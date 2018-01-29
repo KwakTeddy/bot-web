@@ -10,6 +10,7 @@
         context.nlu = nlu;
         context.dialog = dialog;
         context.prev = prev;
+        context.userData = {};
 
         return context;
     };

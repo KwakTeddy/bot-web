@@ -151,13 +151,21 @@ var saveIntentContexts = function(botId, templateId, language, success, error)
                 return error(err);
             }
 
-            IntentContext.collection.insert(list, function (err, result)
+            async.each(list, function(item, next)
             {
-                if(err)
+                var context = new IntentContext(item);
+                context.save(function(err)
                 {
-                    return error(err);
-                }
+                    if(err)
+                    {
+                        return error(err);
+                    }
 
+                    next();
+                });
+            },
+            function()
+            {
                 success();
             });
         });
@@ -177,8 +185,6 @@ var saveIntentContents = function(botId, templateId, language, user, intentId, c
 
         var list = [];
 
-        console.log('봇 : ', botId, intentId);
-
         async.eachSeries(contents, function(name, done)
         {
             var intentContent = new IntentContent();
@@ -190,14 +196,14 @@ var saveIntentContents = function(botId, templateId, language, user, intentId, c
             intentContent.name = name;
 
             language = language || 'ko';
-            NLPManager.getNlpedText(name, language, function(err, result)
+            NLPManager.getNlpedText(language, name, function(err, lastChar, nlpText, nlp)
             {
                 if(err)
                 {
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                intentContent.input = result;
+                intentContent.input = nlpText;
                 list.push(intentContent);
                 done();
             });
