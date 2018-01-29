@@ -191,7 +191,7 @@
 
 
 
-<div class="template-body" data-id="complete" ng-controller="flowerEventController" style="display: block;">
+<div class="template-body" data-id="complete" ng-controller="flowerBasicinformationController" style="display: block;">
 
 
 
@@ -207,10 +207,10 @@
 
             <thead>
             <tr>
-                <th>이벤트명</th>
-                <th>이벤트 설명</th>
+                <th>업체명</th>
+                <th>소개글</th>
                 <th>이미지</th>
-                <th>관리</th>
+                <th>연락처</th>
             </tr>
             </thead>
             <tbody>
@@ -223,9 +223,7 @@
                         <img src="{{ data.picture }}" style="width: 50px;" ng-if="data.picture" ng-click="editImage($event);">
                     </label>
                 </td>
-                <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">저장</button> <button type="button" class="flower-button" ng-click="delete($index)">삭제</button>
-                </td>
+                <td type="text" ng-model="data.code" class="case2">{{data.code}}3</td>
             </tr>
             <tr>
                 <td colspan="10">
@@ -236,3 +234,4 @@
         </table>
     </form>
 </div>
+

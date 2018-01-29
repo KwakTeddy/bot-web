@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('template').controller('flowerEventController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
+angular.module('template').controller('flowerBasicinformationController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
 {
-    $scope.$parent.changeWorkingGroundName('이벤트 관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
+    $scope.$parent.changeWorkingGroundName('기본정보', '/modules/playchat/gnb/client/imgs/event_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -78,23 +78,23 @@ angular.module('template').controller('flowerEventController', ['$scope', '$reso
         {
             $scope.datas.splice(index, 1);
 
-                for(var i=0; i<$scope.datas.length; i++)
+            for(var i=0; i<$scope.datas.length; i++)
+            {
+                delete $scope.datas[i].uploader;
+            }
+
+            var datas = JSON.parse(angular.toJson($scope.datas));
+            DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
                 {
-                    delete $scope.datas[i].uploader;
-                }
+                    console.log(result);
+                    alert("삭제하였습니다");
+                    $rootScope.$broadcast('simulator-build');
 
-                var datas = JSON.parse(angular.toJson($scope.datas));
-                DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
-                    {
-                        console.log(result);
-                        alert("삭제하였습니다");
-                        $rootScope.$broadcast('simulator-build');
-
-                    },
-                    function(err)
-                    {
-                        alert(err);
-                    });
+                },
+                function(err)
+                {
+                    alert(err);
+                });
         };
 
         $scope.save = function()

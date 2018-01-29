@@ -1,35 +1,38 @@
 'use strict';
 
-angular.module('template').controller('flowerMenuController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
-{
-    $scope.$parent.changeWorkingGroundName('상품 및 후기 관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
+angular.module('template').controller('flowerReservationCancelController', ['$scope', '$resource', '$cookies','$http', 'FileUploader', 'LanguageService','$rootScope','DateRangePickerService',function ($scope, $resource, $cookies,  $http, FileUploader, LanguageService, $rootScope,DateRangePickerService)
+    {
+    $scope.$parent.changeWorkingGroundName('주문관리', '/modules/playchat/gnb/client/imgs/reservation_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/reservations', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
 
     $scope.datas = [];
-
+    $scope.date = {};
+    $scope.list = [];
     (function()
     {
+        // $scope.search = function()
+        // {
+        //     var value = angular.element('#search').val();
+        //     $scope.getList(1, value);
+        // };
+
         $scope.getList = function()
         {
-            ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
+
+            ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.template = result;
-
+                    // $scope.list = result;
+                    //alert(" $scope.template"+JSON.stringify( $scope.template));
                     DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
                         {
                             $scope.datas = list;
-                            // console.log('00000000006666666'+JSON.stringify(list));
-                            //console.log(JSON.stringify(list)+'-----------------------------');
-                            console.log(list);
-                            for(var i=0; i<list.length; i++)
-                            {
-                                addUploader(i);
-                            }
+                            //alert("$scope.datas"+JSON.stringify($scope.datas));
                         },
                         function(err)
                         {
@@ -42,38 +45,9 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
                 });
         };
 
-        var addUploader = function(index)
-        {
-            $scope.datas[index].uploader = new FileUploader({
-                url: '/api/' + chatbot.id + '/template-contents/upload',
-                alias: 'uploadImage',
-                autoUpload: true
-            });
-
-            $scope.datas[index].uploader.onErrorItem = function(item, response, status, headers)
-            {
-            };
-
-            $scope.datas[index].uploader.onSuccessItem = function(item, response, status, headers)
-            {
-                $scope.datas[index].image = response.url;
-            };
-
-            $scope.datas[index].uploader.onProgressItem = function(fileItem, progress)
-            {
-                angular.element('.form-box-progress').css('width', progress + '%');
-            };
-        };
-
-        $scope.editImage = function(e)
-        {
-            angular.element(e.currentTarget).next().click();
-        };
-
         $scope.add = function()
         {
-            $scope.datas.push({ categor: '',name:'', hotmenus:'',price:'',description:'',uploader: undefined });
-            addUploader($scope.datas.length-1);
+            $scope.datas.push({ order_name: '', order_mobile: '', order_itemname: '', order_itemcode: '', order_date:'',order_hour:'',order_receivername:'',order_receivermobile:'',order_receiveraddress:'',order_deliverydate:'',order_deliveryhour:'',order_greeting:'',order_sendername:''});
         };
 
         $scope.delete = function(index)
@@ -100,12 +74,10 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
 
         $scope.save = function()
         {
-            for(var i=0; i<$scope.datas.length; i++)
-            {
-                delete $scope.datas[i].uploader;
-            }
-
             var datas = JSON.parse(angular.toJson($scope.datas));
+
+            console.log('데이터스 : ', datas);
+
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
                 {
                     console.log(result);
@@ -118,6 +90,8 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
                 });
         };
     })();
-
+    DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
+    $scope.lan=LanguageService;
+
 }]);
