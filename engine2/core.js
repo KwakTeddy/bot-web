@@ -12,6 +12,7 @@ var Context = require('./context.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var ConversationManager = require('./conversation.js');
+var OutputManager = require('./output.js');
 
 (function()
 {
@@ -64,6 +65,7 @@ var ConversationManager = require('./conversation.js');
         console.log(chalk.green('======== Engine Process ========'));
         console.log('--- Parameters: ');
         console.log({ botId: botId, channel: channel, userKey: userKey, inputRaw: inputRaw, options: options });
+        console.log();
 
         var error = new Error(errCallback);
 
@@ -75,8 +77,8 @@ var ConversationManager = require('./conversation.js');
             }
             else
             {
-                var sessionKey = channel + '_' + botId + '_' + userKey;
-                that.redis.get(sessionKey, function(err, session)
+                var contextKey = channel + '_' + botId + '_' + userKey;
+                that.redis.get(contextKey, function(err, context)
                 {
                     if(err)
                     {
@@ -84,24 +86,56 @@ var ConversationManager = require('./conversation.js');
                     }
                     else
                     {
+                        if(!context)
+                        {
+                            context = Context.create();
+                        }
+                        else
+                        {
+                            context = JSON.parse(context);
+                        }
+
                         if(inputRaw.startsWith(':'))
                         {
                             //FIXME 커맨드 실행
                             console.log(chalk.green('================================'));
-                            console.log();
+                            console.log('커맨드 실행 : ', inputRaw);
+
+                            context.history = [{ dialog: bot.commonDialogs[0] }];
 
                             if(inputRaw == ':reset user')
                             {
-                                session = {};
-                                session.userKey = userKey;
-                                session.botId = botId;
-                                session.channel = channel;
-                                session.userData = {};
-                                session.contexts = [];
-                                session.returnDialog = undefined;
-                                session.dialogCursor = undefined;
+                                context.returnDialog = undefined;
+                                context.dialogCursor = undefined;
 
-                                that.redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
+                                {
+                                    if(err)
+                                    {
+                                        error.delegate(err);
+                                    }
+                                    else
+                                    {
+                                        var output = bot.commonDialogs[0].output;
+                                        if(typeof output != 'string')
+                                        {
+                                            output = bot.commonDialogs[0].output[0];
+                                        }
+
+                                        output = OutputManager.make(context, output);
+                                        outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+
+                                        console.log(chalk.green('================================'));
+                                        console.log();
+                                    }
+                                });
+                            }
+                            else if(inputRaw == ':reset memory')
+                            {
+                                context = JSON.parse(context);
+
+                                context = Context.create();
+                                that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
                                 {
                                     if(err)
                                     {
@@ -110,7 +144,7 @@ var ConversationManager = require('./conversation.js');
                                     else
                                     {
                                         //테스트 필요
-                                        that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+                                        that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                         var output = bot.commonDialogs[0].output;
                                         if(typeof output != 'string')
@@ -118,9 +152,9 @@ var ConversationManager = require('./conversation.js');
                                             output = bot.commonDialogs[0].output[0];
                                         }
 
+                                        output = OutputManager.make(context, output);
                                         outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                                        console.log('세션저장 : ', reply);
                                         console.log(chalk.green('================================'));
                                         console.log();
                                     }
@@ -128,16 +162,10 @@ var ConversationManager = require('./conversation.js');
                             }
                             else if(inputRaw == ':build')
                             {
-                                session = {};
-                                session.userKey = userKey;
-                                session.botId = botId;
-                                session.channel = channel;
-                                session.userData = {};
-                                session.contexts = [];
-                                session.returnDialog = undefined;
-                                session.dialogCursor = undefined;
+                                context.returnDialog = undefined;
+                                context.dialogCursor = undefined;
 
-                                that.redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
                                 {
                                     if(err)
                                     {
@@ -145,9 +173,6 @@ var ConversationManager = require('./conversation.js');
                                     }
                                     else
                                     {
-                                        //테스트 필요
-                                        that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
                                         BotManager.reset(botId);
                                         BotManager.load(botId, function(err, bot)
                                         {
@@ -163,11 +188,11 @@ var ConversationManager = require('./conversation.js');
                                                     output = bot.commonDialogs[0].output[0];
                                                 }
 
+                                                output = OutputManager.make(context, output);
                                                 outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
                                             }
                                         });
 
-                                        console.log('세션저장 : ', reply);
                                         console.log(chalk.green('================================'));
                                         console.log();
                                     }
@@ -177,50 +202,62 @@ var ConversationManager = require('./conversation.js');
                             return;
                         }
 
-                        if(!session)
-                        {
-                            session = {};
-                            session.userKey = userKey;
-                            session.botId = botId;
-                            session.channel = channel;
-                            session.userData = {};
-                            session.contexts = [];
-                            session.returnDialog = undefined;
-                            session.dialogCursor = undefined;
-                        }
-                        else
-                        {
-                            session = JSON.parse(session);
-                        }
+                        context.user.userKey = userKey;
+                        context.bot = bot;
+                        context.channel = channel;
 
-                        var context = Context.make({});
-                        session.contexts.splice(0, 0, context);
-
-                        for(var i=0; i<session.contexts.length; i++)
+                        for(var i=0; i<context.history.length; i++)
                         {
-                            if(i < session.contexts.length - 1)
+                            if(i < context.history.length - 1)
                             {
-                                session.contexts[i].prev = session.contexts[i+1];
+                                context.history[i].prev = context.history[i+1];
+                            }
+
+                            if(i > 0)
+                            {
+                                context.history[i].next = context.history[i-1];
                             }
                         }
 
-                        context.nlu.sentence = inputRaw;
-                        context.nlu.inputRaw = inputRaw;
+                        var conversation = {};
 
-                        console.log('컨텍스트 : ', context);
-
-                        InputManager.analysis(bot, context, error, function()
+                        if(context.history.length > 0)
                         {
-                            ConversationManager.answer(bot, session, context, error, function(output)
-                            {
-                                console.log('아웃풋 : ', output);
+                            conversation.prev = context.history[0];
+                            context.history[0].next = conversation;
+                        }
 
-                                for(var i=0; i<session.contexts.length; i++)
+                        context.history.splice(0, 0, conversation);
+
+                        conversation.nlu = {
+                            sentence: inputRaw,
+                            inputRaw: inputRaw
+                        };
+
+                        console.log('[[[ Context ]]]');
+                        console.log(context);
+                        console.log();
+
+                        InputManager.analysis(bot, conversation, error, function()
+                        {
+                            ConversationManager.answer(bot, context, error, function(output)
+                            {
+                                output = OutputManager.make(context, output);
+
+                                for(var i=0; i<context.history.length; i++)
                                 {
-                                    delete session.contexts[i].prev;
+                                    delete context.history[i].next;
+                                    delete context.history[i].prev;
                                 }
 
-                                that.redis.set(sessionKey, JSON.stringify(session), function(err, reply)
+                                delete context.bot;
+                                delete context.channel;
+
+                                console.log('[[[ Save Context ]]]');
+                                console.log(context);
+                                console.log();
+
+                                that.redis.set(contextKey, JSON.stringify(context), function(err)
                                 {
                                     if(err)
                                     {
@@ -229,11 +266,10 @@ var ConversationManager = require('./conversation.js');
                                     else
                                     {
                                         //테스트 필요
-                                        that.redis.expireat(sessionKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+                                        that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                         outCallback(output);
 
-                                        console.log('세션저장 : ', reply);
                                         console.log(chalk.green('================================'));
                                         console.log();
                                     }
@@ -242,11 +278,6 @@ var ConversationManager = require('./conversation.js');
                         });
                     }
                 });
-
-                // var session = SessionManager.make(botId, userKey, channel, options);
-                // var context = session.context.get();
-                // context.nlu.sentence = inputRaw;
-                // context.nlu.inputRaw = inputRaw;
             }
         });
     };

@@ -15,7 +15,7 @@ Bot.prototype.setCommonDialogs = function(commonDialogs)
 };
 
 var b = new Bot();
-require('./custom_modules/sample_com2best_1517223500346/default.graph.js')(b);
+require('./custom_modules/samchully/default.graph.js')(b);
 
 
 var convert = function(dialogs)
@@ -31,6 +31,48 @@ var convert = function(dialogs)
                 {
                     input[key] = { raw: input[key], nlp: input[key] };
                     console.log(input[key]);
+                }
+            }
+        }
+
+        for(var j=0; j<dialogs[i].output.length; j++)
+        {
+            var output = dialogs[i].output[j];
+            if(output.kind == 'Action')
+            {
+                var type = '';
+                if(output.call)
+                {
+                    output.type = 'call';
+                    output.dialogName = output.call;
+                    delete output.call;
+                }
+                else if(output.callChild)
+                {
+                    output.type = 'callChild';
+                    output.dialogName = output.callChild;
+                    delete output.callChild;
+                }
+                else if(output.return)
+                {
+                    output.type = 'return';
+                    delete output.return;
+                }
+                else if(output.returnCall)
+                {
+                    output.type = 'returnCall';
+                    output.dialogName = output.returnCall;
+                    delete output.returnCall;
+                }
+                else if(output.repeat)
+                {
+                    output.type = 'repeat';
+                    delete output.repeat;
+                }
+                else if(output.up)
+                {
+                    output.type = 'up';
+                    delete output.up;
                 }
             }
         }

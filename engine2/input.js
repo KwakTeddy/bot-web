@@ -11,12 +11,12 @@ var IntentManager = require('./input/intent.js');
 
     };
 
-    InputManager.prototype.analysis = function(bot, context, error, callback)
+    InputManager.prototype.analysis = function(bot, input, error, callback)
     {
-        var inputRaw = context.nlu.sentence;
+        var inputRaw = input.nlu.sentence;
 
         console.log();
-        console.log('----- Input Process [Start]');
+        console.log('[[[ INPUT ]]]');
         console.log('inputRaw : ', inputRaw);
 
         inputRaw = inputRaw.replace(/^\s+|\s+$/g,"");
@@ -28,12 +28,12 @@ var IntentManager = require('./input/intent.js');
                 return error.delegate(err);
             }
 
-            context.nlu.nlp = nlp;
-            context.nlu.json = nlpJsonPOS;
-            context.nlu.sentenceInfo = sentenceInfo;
-            context.nlu.turnTaking = turnTaking;
-            context.nlu.nlpText = nlpText;
-            context.nlu.lastChar = lastChar;
+            input.nlu.nlp = nlp;
+            input.nlu.json = nlpJsonPOS;
+            input.nlu.sentenceInfo = sentenceInfo;
+            input.nlu.turnTaking = turnTaking;
+            input.nlu.nlpText = nlpText;
+            input.nlu.lastChar = lastChar;
 
             console.log('nlp: ', nlp);
 
@@ -45,7 +45,7 @@ var IntentManager = require('./input/intent.js');
                 }
 
                 console.log('엔티티 : ', entities);
-                context.nlu.entities = entities;
+                input.nlu.entities = entities;
 
                 IntentManager.analysis(bot, nlp, function(err, intents)
                 {
@@ -55,9 +55,9 @@ var IntentManager = require('./input/intent.js');
                     }
 
                     console.log('인텐트 : ', intents);
-                    context.nlu.intents = intents;
+                    input.nlu.intents = intents;
 
-                    console.log('----- Input Process [End]');
+                    console.log();
 
                     callback();
                 });

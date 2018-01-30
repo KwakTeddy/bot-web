@@ -1544,7 +1544,7 @@
 
                     this.testFocusedTarget = target.id;
 
-                    this.moveScrollToTarget(target);
+                    this.moveScrollToTarget(target.children[0]);
                 }
             }
         };

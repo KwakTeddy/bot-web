@@ -59,11 +59,11 @@ var Globals = require('../globals.js');
         return false;
     };
 
-    DialogGraphManager.prototype.findDialog = function(bot, context, intents, entities, dialogs, callback)
+    DialogGraphManager.prototype.findDialog = function(bot, context, conversation, intents, entities, dialogs, callback)
     {
         var that = this;
 
-        var nlpText = context.nlu.nlpText;
+        var nlpText = conversation.nlu.nlpText;
         async.eachSeries(dialogs, function(dialog, next)
         {
             var inputs = dialog.input;
@@ -80,6 +80,11 @@ var Globals = require('../globals.js');
                 for(var key in input)
                 {
                     keyList.push(key);
+                }
+
+                if(keyList.length <= 0)
+                {
+                    result = false;
                 }
 
                 async.eachSeries(keyList, function(key, next)
@@ -104,12 +109,16 @@ var Globals = require('../globals.js');
                             type = Globals.types[input[key]];
                         }
 
-                        type.typeCheck(context.nlu.inputRaw, type, function(parsed)
+                        type.typeCheck.call(type, conversation, context, function(matched, parsed)
                         {
-                            if(parsed)
+                            if(matched)
                             {
                                 result = result && true;
-                                context.userData[type.name] = parsed;
+
+                                if(parsed)
+                                {
+                                    conversation[type.name] = parsed;
+                                }
                             }
                             else
                             {
@@ -123,7 +132,7 @@ var Globals = require('../globals.js');
                     }
                     else if(key == 'if')
                     {
-                        result = result && (function(context, input)
+                        result = result && (function(conversation, input)
                         {
                             if(eval('result = (' + input.if + ' ? true : false);'))
                             {
@@ -132,7 +141,11 @@ var Globals = require('../globals.js');
 
                             return false;
 
-                        })(JSON.parse(JSON.stringify(context)), input);
+                        })(conversation, input);
+                    }
+                    else
+                    {
+                        result = false;
                     }
 
                     next();
@@ -177,42 +190,21 @@ var Globals = require('../globals.js');
         }
     };
 
-    DialogGraphManager.prototype.find = function(bot, session, context, callback)
+    DialogGraphManager.prototype.find = function(bot, context, conversation, callback)
     {
         var that = this;
 
-        var intents = context.nlu.intents;
-        var entities = context.nlu.entities;
+        var intents = conversation.nlu.intents;
+        var entities = conversation.nlu.entities;
 
         var transaction = new Transaction.sync();
 
         var dialog = undefined;
-        if(session.dialogCursor)
-        {
-            var dialogs = this.getNextDialogs(session.dialogCursor, bot.commonDialogs);
-            if(!dialogs)
-            {
-                dialogs = this.getNextDialogs(session.dialogCursor, bot.dialogs);
-            }
-
-            if(dialogs)
-            {
-                transaction.call(function(done)
-                {
-                    that.findDialog(bot, context, intents, entities, dialogs, function(result)
-                    {
-                        dialog = result;
-                        done();
-                    });
-                });
-            }
-        }
-
         transaction.call(function(done)
         {
             if(!dialog)
             {
-                that.findDialog(bot, context, intents, entities, bot.commonDialogs, function(result)
+                that.findDialog(bot, context, conversation, intents, entities, bot.commonDialogs, function(result)
                 {
                     dialog = result;
                     done();
@@ -226,9 +218,38 @@ var Globals = require('../globals.js');
 
         transaction.call(function(done)
         {
+            if(context.dialogCursor && !dialog)
+            {
+                var dialogs = that.getNextDialogs(context.dialogCursor, bot.commonDialogs);
+                if(!dialogs)
+                {
+                    dialogs = that.getNextDialogs(context.dialogCursor, bot.dialogs);
+                }
+
+                if(dialogs)
+                {
+                    that.findDialog(bot, context, conversation, intents, entities, dialogs, function(result)
+                    {
+                        dialog = result;
+                        done();
+                    });
+                }
+                else
+                {
+                    done();
+                }
+            }
+            else
+            {
+                done();
+            }
+        });
+
+        transaction.call(function(done)
+        {
             if(!dialog)
             {
-                that.findDialog(bot, context, intents, entities, bot.dialogs, function(result)
+                that.findDialog(bot, context, conversation, intents, entities, bot.dialogs, function(result)
                 {
                     dialog = result;
                     done();
@@ -246,26 +267,33 @@ var Globals = require('../globals.js');
         });
     };
 
-    DialogGraphManager.prototype.exec = function(bot, session, context, callback)
+    DialogGraphManager.prototype.exec = function(bot, context, conversation, callback)
     {
         var that = this;
 
-        var dialog = context.dialog;
-        session.dialogCursor = dialog.id;
+        var dialog = conversation.dialog;
+        context.dialogCursor = dialog.id;
 
         var sync = new Transaction.sync();
         if(dialog.task)
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, session, context, dialog.task.name, done);
+                TaskManager.exec(bot, context, conversation, dialog.task.name, done);
             });
         }
 
-        var dialogId = dialog.id;
-        var output = dialog.output;
         sync.done(function()
         {
+            var dialogId = conversation.dialog.id;
+            var output = conversation.dialog.output;
+
+            if(typeof output == 'string')
+            {
+                // TASK에서 string으로 output을 강제로 넣은경우
+                output = { kind: 'Content', text: output };
+            }
+
             if(output.length > 0)
             {
                 var resultOutput = undefined;
@@ -275,17 +303,17 @@ var Globals = require('../globals.js');
                 {
                     if(!resultOutput && output[i].if)
                     {
-                        (function(context, output)
+                        (function(context, o)
                         {
                             var result = false;
-                            eval('result = (' + output[i].if + ' ? true : false);');
+                            eval('result = (' + o.if + ' ? true : false);');
 
                             if(result)
                             {
-                                resultOutput = output;
+                                resultOutput = o;
                             }
 
-                        })(JSON.parse(JSON.stringify(context)), output);
+                        })(context, output[i]);
                     }
                     else if(!output[i].if)
                     {
@@ -303,17 +331,20 @@ var Globals = require('../globals.js');
                 resultOutput = output;
             }
 
+            console.log();
+            console.log('[[[ OUTPUT ]]]');
+            console.log(resultOutput);
+
             if(resultOutput.kind == 'Action')
             {
                 //call, callChild, reutrnCall, up, repeat, return
                 if(resultOutput.type == 'repeat')
                 {
-                    var prev = context.prev; // 가장 최신 dialog는 0번이니까 1번이 0번의 prev이다.
+                    // 커서를 부모다이얼로그로 옮긴다.
+                    var prev = conversation.prev;
                     if(prev)
                     {
-                        // var nlu = context.nlu;
-                        session.dialogCursor = prev.dialog.id;
-                        session.contexts.splice(0, 1);
+                        context.dialogCursor = prev.id;
                         callback(resultOutput.text);
                     }
                     else
@@ -324,71 +355,63 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'up')
                 {
-                    var prev = context.prev;
+                    context.history.splice(0, 2);
+                    var prev = conversation.prev;
                     if(prev)
                     {
                         if(prev.prev)
                         {
-                            var nlu = context.nlu;
-                            var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), prev.dialog, context);
-                            that.exec(bot, session, newContext, callback);
+                            prev = prev.prev;
                         }
-                        else
-                        {
-                            callback('[up] prev.prev가 없습니다');
-                        }
+
+                        that.exec(bot, context, prev, callback);
                     }
                     else
                     {
-                        callback('[up] prev가 없습니다');
+                        callback({ output: { text: '[up] prev가 없습니다' } });
                     }
                 }
                 else if(resultOutput.type == 'call')
                 {
-                    var nlu = context.nlu;
                     var dialog = bot.dialogMap[resultOutput.dialogId];
+                    conversation.dialog = dialog;
 
-                    var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                    that.exec(bot, session, newContext, callback);
+                    console.log('[call]', resultOutput.dialogName);
+
+                    that.exec(bot, context, conversation, callback);
                 }
                 else if(resultOutput.type == 'callChild')
                 {
-                    var nlu = context.nlu;
                     var dialog = bot.dialogMap[resultOutput.dialogId];
-                    var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                    that.exec(bot, session, newContext, function(context, resultOutput)
+                    context.dialogCursor = dialog.id;
+                    that.find(bot, context, conversation, function(err, dialog)
                     {
-                        that.find(bot, session, context, function(err, dialog)
+                        if(dialog)
                         {
-                            if(dialog)
-                            {
-                                newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                                that.exec(bot, session, context, callback);
-                            }
-                            else
-                            {
-                                callback(resultOutput);
-                            }
-                        });
+                            conversation.dialog = dialog;
+                            that.exec(bot, context, conversation, callback);
+                        }
+                        else
+                        {
+                            callback(resultOutput);
+                        }
                     });
                 }
                 else if(resultOutput.type == 'returnCall')
                 {
-                    session.returnDialog = dialogId;
+                    context.returnDialog = dialogId;
 
-                    var nlu = context.nlu;
                     var dialog = bot.dialogMap[resultOutput.dialogId];
-                    var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                    that.exec(bot, session, newContext, callback);
+                    conversation.dialog = dialog;
+                    that.exec(bot, context, conversation, callback);
                 }
                 else if(resultOutput.type == 'return')
                 {
-                    if(session.returnDialog)
+                    if(context.returnDialog)
                     {
-                        var nlu = context.nlu;
-                        var dialog = bot.parentDialogMap[session.returnDialog];
-                        var newContext = Context.make(JSON.parse(JSON.stringify(nlu)), dialog, context);
-                        that.exec(bot, newContext, context, callback);
+                        var dialog = bot.parentDialogMap[context.returnDialog];
+                        conversation.dialog = dialog;
+                        that.exec(bot, context, conversation, callback);
                     }
                     else
                     {

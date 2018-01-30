@@ -4,6 +4,17 @@
     {
     };
 
+    Context.prototype.create = function()
+    {
+        var context = {};
+        context.user = {};
+        context.history = [];
+        context.returnDialog = undefined;
+        context.dialogCursor = undefined;
+
+        return context;
+    };
+
     Context.prototype.make = function(nlu, dialog, prev)
     {
         var context = {};

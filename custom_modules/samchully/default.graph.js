@@ -27,7 +27,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "고객명 : +customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞에 6자리를 입력해주세요.\n예시) 900930",
+                        "text": "고객명 : +user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞에 6자리를 입력해주세요.\n예시) 900930",
                         "if": ""
                     }
                 ],
@@ -43,7 +43,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +customerName+\n생년월일 : +customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
+                                "text": "고객명 : +user.customerName+\n생년월일 : +user.customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
                             }
                         ],
                         "id": "default49",
@@ -58,12 +58,16 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "call": "인증동의",
-                                        "if": "context.user.customerInfo"
+                                        "if": "context.user.customerInfo",
+                                        "type": "call",
+                                        "dialogId": "default64",
+                                        "dialogName": "인증동의"
                                     },
                                     {
                                         "kind": "Action",
-                                        "call": "인증실패"
+                                        "type": "call",
+                                        "dialogId": "default52",
+                                        "dialogName": "인증실패"
                                     }
                                 ],
                                 "id": "default50",
@@ -100,13 +104,18 @@ var dialogs = [
                                                 "name": "인증완료",
                                                 "input": [
                                                     {
-                                                        "text": "네"
+                                                        "text": {
+                                                            "raw": "네",
+                                                            "nlp": "네"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "call": "시작"
+                                                        "type": "call",
+                                                        "dialogId": "defaultcommon0",
+                                                        "dialogName": "시작"
                                                     }
                                                 ],
                                                 "id": "default65",
@@ -118,13 +127,18 @@ var dialogs = [
                                                 "name": "인증거절",
                                                 "input": [
                                                     {
-                                                        "text": "아니다"
+                                                        "text": {
+                                                            "raw": "아니다",
+                                                            "nlp": "아니다"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "call": "시작"
+                                                        "type": "call",
+                                                        "dialogId": "defaultcommon0",
+                                                        "dialogName": "시작"
                                                     }
                                                 ],
                                                 "id": "default66"
@@ -141,10 +155,12 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "call": "인증_고객명",
                                                 "options": {
                                                     "output": "고객 인증에 실패했습니다."
-                                                }
+                                                },
+                                                "type": "call",
+                                                "dialogId": "default3",
+                                                "dialogName": "인증_고객명"
                                             }
                                         ],
                                         "id": "default52",
@@ -162,10 +178,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "repeat": 1,
                                         "options": {
                                             "output": "잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요."
-                                        }
+                                        },
+                                        "type": "repeat"
                                     }
                                 ],
                                 "id": "default51"
@@ -182,10 +198,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "repeat": 1,
                                 "options": {
                                     "output": "잘못 입력하셨습니다.\n\n주민등록번호 앞에 6자리 형식에 맞게 입력해주세요.\n\n예시) 900930"
-                                }
+                                },
+                                "type": "repeat"
                             }
                         ],
                         "id": "default63"
@@ -202,10 +218,10 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "repeat": 1,
                         "options": {
                             "output": "잘못 입력하셨습니다.\n\n한글 이름 형식에 맞게 다시 입력해주세요."
-                        }
+                        },
+                        "type": "repeat"
                     }
                 ],
                 "id": "default67"
@@ -216,7 +232,10 @@ var dialogs = [
         "name": "요금",
         "input": [
             {
-                "text": "요금"
+                "text": {
+                    "raw": "요금",
+                    "nlp": "요금"
+                }
             }
         ],
         "output": [
@@ -227,7 +246,9 @@ var dialogs = [
             },
             {
                 "kind": "Action",
-                "call": "인증_고객명"
+                "type": "call",
+                "dialogId": "default3",
+                "dialogName": "인증_고객명"
             }
         ],
         "id": "default0",
@@ -284,7 +305,10 @@ var dialogs = [
                         "name": "월별 고지내역 조회",
                         "input": [
                             {
-                                "text": "고 지내역"
+                                "text": {
+                                    "raw": "고 지내역",
+                                    "nlp": "고 지내역"
+                                }
                             }
                         ],
                         "output": [
@@ -304,38 +328,7 @@ var dialogs = [
                                         "url": "",
                                         "text": "12개월"
                                     }
-                                ],
-                                "uploader": {
-                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                    "alias": "uploadFile",
-                                    "headers": {},
-                                    "queue": [],
-                                    "progress": 0,
-                                    "autoUpload": true,
-                                    "removeAfterUpload": false,
-                                    "method": "POST",
-                                    "filters": [
-                                        {
-                                            "name": "folder"
-                                        },
-                                        {
-                                            "name": "queueLimit"
-                                        }
-                                    ],
-                                    "formData": [],
-                                    "queueLimit": 1.7976931348623157e+308,
-                                    "withCredentials": false,
-                                    "disableMultipart": false,
-                                    "isUploading": false,
-                                    "_nextIndex": 0,
-                                    "_failFilterIndex": -1,
-                                    "_directives": {
-                                        "select": [],
-                                        "drop": [],
-                                        "over": []
-                                    },
-                                    "item": "none"
-                                }
+                                ]
                             }
                         ],
                         "id": "default14",
@@ -351,38 +344,7 @@ var dialogs = [
                                     {
                                         "kind": "Content",
                                         "text": "[요금] +curCustomer.customerName+ 고객님 월별 고지내역입니다.( +noticeNum+ 개월)\n\n#noticeHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
-                                        "buttons": [],
-                                        "uploader": {
-                                            "url": "/api/samchully/dialog-graphs/uploadImage",
-                                            "alias": "uploadFile",
-                                            "headers": {},
-                                            "queue": [],
-                                            "progress": 0,
-                                            "autoUpload": true,
-                                            "removeAfterUpload": false,
-                                            "method": "POST",
-                                            "filters": [
-                                                {
-                                                    "name": "folder"
-                                                },
-                                                {
-                                                    "name": "queueLimit"
-                                                }
-                                            ],
-                                            "formData": [],
-                                            "queueLimit": 1.7976931348623157e+308,
-                                            "withCredentials": false,
-                                            "disableMultipart": false,
-                                            "isUploading": false,
-                                            "_nextIndex": 0,
-                                            "_failFilterIndex": -1,
-                                            "_directives": {
-                                                "select": [],
-                                                "drop": [],
-                                                "over": []
-                                            },
-                                            "item": "none"
-                                        }
+                                        "buttons": []
                                     }
                                 ],
                                 "id": "default15",
@@ -397,38 +359,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "buttons": [],
-                                                "uploader": {
-                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                                    "alias": "uploadFile",
-                                                    "headers": {},
-                                                    "queue": [],
-                                                    "progress": 0,
-                                                    "autoUpload": true,
-                                                    "removeAfterUpload": false,
-                                                    "method": "POST",
-                                                    "filters": [
-                                                        {
-                                                            "name": "folder"
-                                                        },
-                                                        {
-                                                            "name": "queueLimit"
-                                                        }
-                                                    ],
-                                                    "formData": [],
-                                                    "queueLimit": 1.7976931348623157e+308,
-                                                    "withCredentials": false,
-                                                    "disableMultipart": false,
-                                                    "isUploading": false,
-                                                    "_nextIndex": 0,
-                                                    "_failFilterIndex": -1,
-                                                    "_directives": {
-                                                        "select": [],
-                                                        "drop": [],
-                                                        "over": []
-                                                    },
-                                                    "item": "none"
-                                                }
+                                                "buttons": []
                                             }
                                         ],
                                         "id": "default18",
@@ -447,7 +378,10 @@ var dialogs = [
                         "name": "월별 납부내역 조회",
                         "input": [
                             {
-                                "text": "납부 역"
+                                "text": {
+                                    "raw": "납부 역",
+                                    "nlp": "납부 역"
+                                }
                             }
                         ],
                         "output": [
@@ -516,7 +450,10 @@ var dialogs = [
                         "name": "요금납부",
                         "input": [
                             {
-                                "text": "요금"
+                                "text": {
+                                    "raw": "요금",
+                                    "nlp": "요금"
+                                }
                             }
                         ],
                         "output": [
@@ -536,38 +473,7 @@ var dialogs = [
                                         "url": "",
                                         "text": "입금전용계좌 조회"
                                     }
-                                ],
-                                "uploader": {
-                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                    "alias": "uploadFile",
-                                    "headers": {},
-                                    "queue": [],
-                                    "progress": 0,
-                                    "autoUpload": true,
-                                    "removeAfterUpload": false,
-                                    "method": "POST",
-                                    "filters": [
-                                        {
-                                            "name": "folder"
-                                        },
-                                        {
-                                            "name": "queueLimit"
-                                        }
-                                    ],
-                                    "formData": [],
-                                    "queueLimit": 1.7976931348623157e+308,
-                                    "withCredentials": false,
-                                    "disableMultipart": false,
-                                    "isUploading": false,
-                                    "_nextIndex": 0,
-                                    "_failFilterIndex": -1,
-                                    "_directives": {
-                                        "select": [],
-                                        "drop": [],
-                                        "over": []
-                                    },
-                                    "item": "none"
-                                }
+                                ]
                             }
                         ],
                         "id": "default1",
@@ -576,10 +482,16 @@ var dialogs = [
                                 "name": "신용카드",
                                 "input": [
                                     {
-                                        "text": "신용카드"
+                                        "text": {
+                                            "raw": "신용카드",
+                                            "nlp": "신용카드"
+                                        }
                                     },
                                     {
-                                        "text": "1"
+                                        "text": {
+                                            "raw": "1",
+                                            "nlp": "1"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -604,38 +516,7 @@ var dialogs = [
                                             {
                                                 "kind": "Content",
                                                 "text": "다음 목록의 납부를 진행합니다.\n\n2017년 3월\n\n핸드폰 번호를 입력하세요",
-                                                "buttons": [],
-                                                "uploader": {
-                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                                    "alias": "uploadFile",
-                                                    "headers": {},
-                                                    "queue": [],
-                                                    "progress": 0,
-                                                    "autoUpload": true,
-                                                    "removeAfterUpload": false,
-                                                    "method": "POST",
-                                                    "filters": [
-                                                        {
-                                                            "name": "folder"
-                                                        },
-                                                        {
-                                                            "name": "queueLimit"
-                                                        }
-                                                    ],
-                                                    "formData": [],
-                                                    "queueLimit": 1.7976931348623157e+308,
-                                                    "withCredentials": false,
-                                                    "disableMultipart": false,
-                                                    "isUploading": false,
-                                                    "_nextIndex": 0,
-                                                    "_failFilterIndex": -1,
-                                                    "_directives": {
-                                                        "select": [],
-                                                        "drop": [],
-                                                        "over": []
-                                                    },
-                                                    "item": "none"
-                                                }
+                                                "buttons": []
                                             }
                                         ],
                                         "id": "default16",
@@ -650,11 +531,6 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "type": "call",
-                                                        "dialog": "등록완료_",
-                                                        "options": {
-                                                            "output": "인증번호 입력!"
-                                                        },
                                                         "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
                                                     }
                                                 ],
@@ -674,10 +550,10 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "repeat": 1,
                                                         "options": {
                                                             "output": "잘못입력하셨습니다. 다시 입력해주세요."
-                                                        }
+                                                        },
+                                                        "type": "repeat"
                                                     }
                                                 ],
                                                 "id": "default21"
@@ -693,10 +569,16 @@ var dialogs = [
                                 "name": "편의점",
                                 "input": [
                                     {
-                                        "text": "편의점"
+                                        "text": {
+                                            "raw": "편의점",
+                                            "nlp": "편의점"
+                                        }
                                     },
                                     {
-                                        "text": "2"
+                                        "text": {
+                                            "raw": "2",
+                                            "nlp": "2"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -746,7 +628,10 @@ var dialogs = [
                                                         "name": "New Dialog1",
                                                         "input": [
                                                             {
-                                                                "text": ""
+                                                                "text": {
+                                                                    "raw": "",
+                                                                    "nlp": ""
+                                                                }
                                                             }
                                                         ],
                                                         "output": [
@@ -770,7 +655,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "repeat": 1
+                                                        "type": "repeat"
                                                     }
                                                 ],
                                                 "id": "default48"
@@ -783,10 +668,16 @@ var dialogs = [
                                 "name": "입금전용계좌 조회",
                                 "input": [
                                     {
-                                        "text": "입금 전용"
+                                        "text": {
+                                            "raw": "입금 전용",
+                                            "nlp": "입금 전용"
+                                        }
                                     },
                                     {
-                                        "text": "3"
+                                        "text": {
+                                            "raw": "3",
+                                            "nlp": "3"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -832,7 +723,10 @@ var dialogs = [
                         "name": "전자고지 신청/해지",
                         "input": [
                             {
-                                "text": "전자 고지"
+                                "text": {
+                                    "raw": "전자 고지",
+                                    "nlp": "전자 고지"
+                                }
                             }
                         ],
                         "output": [
@@ -857,7 +751,10 @@ var dialogs = [
                                 "name": "신청",
                                 "input": [
                                     {
-                                        "text": "신청"
+                                        "text": {
+                                            "raw": "신청",
+                                            "nlp": "신청"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -878,7 +775,10 @@ var dialogs = [
                                         "name": "고지 목록",
                                         "input": [
                                             {
-                                                "text": "전자고지 신청"
+                                                "text": {
+                                                    "raw": "전자고지 신청",
+                                                    "nlp": "전자고지 신청"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -898,38 +798,7 @@ var dialogs = [
                                                         "url": "",
                                                         "text": "이메일 고지"
                                                     }
-                                                ],
-                                                "uploader": {
-                                                    "url": "/api/samchully/dialog-graphs/uploadImage",
-                                                    "alias": "uploadFile",
-                                                    "headers": {},
-                                                    "queue": [],
-                                                    "progress": 0,
-                                                    "autoUpload": true,
-                                                    "removeAfterUpload": false,
-                                                    "method": "POST",
-                                                    "filters": [
-                                                        {
-                                                            "name": "folder"
-                                                        },
-                                                        {
-                                                            "name": "queueLimit"
-                                                        }
-                                                    ],
-                                                    "formData": [],
-                                                    "queueLimit": 1.7976931348623157e+308,
-                                                    "withCredentials": false,
-                                                    "disableMultipart": false,
-                                                    "isUploading": false,
-                                                    "_nextIndex": 0,
-                                                    "_failFilterIndex": -1,
-                                                    "_directives": {
-                                                        "select": [],
-                                                        "drop": [],
-                                                        "over": []
-                                                    },
-                                                    "item": "none"
-                                                }
+                                                ]
                                             }
                                         ],
                                         "id": "default27",
@@ -938,7 +807,10 @@ var dialogs = [
                                                 "name": "카카오페이 고지",
                                                 "input": [
                                                     {
-                                                        "text": "카카오 페이"
+                                                        "text": {
+                                                            "raw": "카카오 페이",
+                                                            "nlp": "카카오 페이"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
@@ -953,7 +825,10 @@ var dialogs = [
                                                 "name": "LMS 고지",
                                                 "input": [
                                                     {
-                                                        "text": "LMS"
+                                                        "text": {
+                                                            "raw": "LMS",
+                                                            "nlp": "LMS"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
@@ -992,7 +867,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Action",
-                                                                "repeat": 1
+                                                                "type": "repeat"
                                                             }
                                                         ],
                                                         "id": "default57"
@@ -1003,7 +878,10 @@ var dialogs = [
                                                 "name": "이메일 고지",
                                                 "input": [
                                                     {
-                                                        "text": "이메일"
+                                                        "text": {
+                                                            "raw": "이메일",
+                                                            "nlp": "이메일"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
@@ -1042,7 +920,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Action",
-                                                                "repeat": 1
+                                                                "type": "repeat"
                                                             }
                                                         ],
                                                         "id": "default58"
@@ -1060,7 +938,10 @@ var dialogs = [
                                 "name": "해지",
                                 "input": [
                                     {
-                                        "text": "해지"
+                                        "text": {
+                                            "raw": "해지",
+                                            "nlp": "해지"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1081,7 +962,10 @@ var dialogs = [
                                         "name": "해지완료",
                                         "input": [
                                             {
-                                                "text": "네"
+                                                "text": {
+                                                    "raw": "네",
+                                                    "nlp": "네"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -1106,7 +990,10 @@ var dialogs = [
                         "name": "자동이체 신청해지_",
                         "input": [
                             {
-                                "text": "자동 이체"
+                                "text": {
+                                    "raw": "자동 이체",
+                                    "nlp": "자동 이체"
+                                }
                             }
                         ],
                         "output": [
@@ -1131,7 +1018,10 @@ var dialogs = [
                                 "name": "자동이체 신청",
                                 "input": [
                                     {
-                                        "text": "신청"
+                                        "text": {
+                                            "raw": "신청",
+                                            "nlp": "신청"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1152,7 +1042,10 @@ var dialogs = [
                                         "name": "자동이체 신청 안내멘트",
                                         "input": [
                                             {
-                                                "text": "신청"
+                                                "text": {
+                                                    "raw": "신청",
+                                                    "nlp": "신청"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -1172,7 +1065,10 @@ var dialogs = [
                                 "name": "자동이체 해지",
                                 "input": [
                                     {
-                                        "text": "해지"
+                                        "text": {
+                                            "raw": "해지",
+                                            "nlp": "해지"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1193,7 +1089,10 @@ var dialogs = [
                                         "name": "자동이체 해지 완료 메세지",
                                         "input": [
                                             {
-                                                "text": "네"
+                                                "text": {
+                                                    "raw": "네",
+                                                    "nlp": "네"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -1212,7 +1111,10 @@ var dialogs = [
                         "name": "자가 검침 입력",
                         "input": [
                             {
-                                "text": "자가 검침"
+                                "text": {
+                                    "raw": "자가 검침",
+                                    "nlp": "자가 검침"
+                                }
                             }
                         ],
                         "output": [
@@ -1227,7 +1129,10 @@ var dialogs = [
                                 "name": "자가검침 화면",
                                 "input": [
                                     {
-                                        "text": "자가 검침 화면"
+                                        "text": {
+                                            "raw": "자가 검침 화면",
+                                            "nlp": "자가 검침 화면"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1242,7 +1147,10 @@ var dialogs = [
                                         "name": "자가검침등록",
                                         "input": [
                                             {
-                                                "text": "자가 검침 등록"
+                                                "text": {
+                                                    "raw": "자가 검침 등록",
+                                                    "nlp": "자가 검침 등록"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -1257,7 +1165,10 @@ var dialogs = [
                                                 "name": "청구예상금액",
                                                 "input": [
                                                     {
-                                                        "text": "청구 예상 금액"
+                                                        "text": {
+                                                            "raw": "청구 예상 금액",
+                                                            "nlp": "청구 예상 금액"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
@@ -1276,7 +1187,10 @@ var dialogs = [
                                 "name": "에러메세지출력",
                                 "input": [
                                     {
-                                        "text": "에러 메세지 출력"
+                                        "text": {
+                                            "raw": "에러 메세지 출력",
+                                            "nlp": "에러 메세지 출력"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1296,7 +1210,10 @@ var dialogs = [
                         "name": "고지서 재발행 신청",
                         "input": [
                             {
-                                "text": "고지서 재발 행"
+                                "text": {
+                                    "raw": "고지서 재발 행",
+                                    "nlp": "고지서 재발 행"
+                                }
                             }
                         ],
                         "output": [
@@ -1311,7 +1228,10 @@ var dialogs = [
                                 "name": "전자고지 재발행 접수",
                                 "input": [
                                     {
-                                        "text": "재발 행"
+                                        "text": {
+                                            "raw": "재발 행",
+                                            "nlp": "재발 행"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1326,7 +1246,10 @@ var dialogs = [
                                         "name": "고지서 재발행",
                                         "input": [
                                             {
-                                                "text": "고지서 재발 행"
+                                                "text": {
+                                                    "raw": "고지서 재발 행",
+                                                    "nlp": "고지서 재발 행"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -1343,7 +1266,10 @@ var dialogs = [
                                 "name": "에러메세지",
                                 "input": [
                                     {
-                                        "text": "에러"
+                                        "text": {
+                                            "raw": "에러",
+                                            "nlp": "에러"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1370,7 +1296,10 @@ var dialogs = [
         "name": "이사/AS",
         "input": [
             {
-                "text": "이사"
+                "text": {
+                    "raw": "이사",
+                    "nlp": "이사"
+                }
             }
         ],
         "output": [
@@ -1407,14 +1336,19 @@ var dialogs = [
         "name": "안전점검",
         "input": [
             {
-                "text": "안전 점검"
+                "text": {
+                    "raw": "안전 점검",
+                    "nlp": "안전 점검"
+                }
             }
         ],
         "output": [
             {
                 "kind": "Action",
-                "call": "인증_고객명",
-                "if": "!context.user.auth"
+                "if": "!context.user.auth",
+                "type": "call",
+                "dialogId": "default3",
+                "dialogName": "인증_고객명"
             },
             {
                 "kind": "Content",
@@ -1455,7 +1389,10 @@ var dialogs = [
                         "name": "안전전검",
                         "input": [
                             {
-                                "text": "안전 전검"
+                                "text": {
+                                    "raw": "안전 전검",
+                                    "nlp": "안전 전검"
+                                }
                             }
                         ],
                         "output": [
@@ -1480,7 +1417,10 @@ var dialogs = [
                                 "name": "안전 점검 월 조회",
                                 "input": [
                                     {
-                                        "text": "안전 점검 월 조회"
+                                        "text": {
+                                            "raw": "안전 점검 월 조회",
+                                            "nlp": "안전 점검 월 조회"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1498,7 +1438,10 @@ var dialogs = [
                                 "name": "안전점검 결과 내역",
                                 "input": [
                                     {
-                                        "text": "안전 점검 결과 역"
+                                        "text": {
+                                            "raw": "안전 점검 결과 역",
+                                            "nlp": "안전 점검 결과 역"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1518,7 +1461,10 @@ var dialogs = [
                         "name": "누출 화재 긴급연결",
                         "input": [
                             {
-                                "text": "누 추다 화재 긴급 연결"
+                                "text": {
+                                    "raw": "누 추다 화재 긴급 연결",
+                                    "nlp": "누 추다 화재 긴급 연결"
+                                }
                             }
                         ],
                         "output": [
@@ -1540,7 +1486,10 @@ var dialogs = [
         "name": "카카오톡상담",
         "input": [
             {
-                "text": "카카오 톡"
+                "text": {
+                    "raw": "카카오 톡",
+                    "nlp": "카카오 톡"
+                }
             }
         ],
         "output": [
@@ -1558,7 +1507,10 @@ var dialogs = [
         "name": "기타",
         "input": [
             {
-                "text": "기타"
+                "text": {
+                    "raw": "기타",
+                    "nlp": "기타"
+                }
             }
         ],
         "output": [
@@ -1587,7 +1539,10 @@ var dialogs = [
                 "name": "자주 묻는 질문",
                 "input": [
                     {
-                        "text": "자주 묻다 질문"
+                        "text": {
+                            "raw": "자주 묻다 질문",
+                            "nlp": "자주 묻다 질문"
+                        }
                     }
                 ],
                 "output": [
@@ -1644,7 +1599,10 @@ var dialogs = [
                 "name": "관할 고객센터 조회",
                 "input": [
                     {
-                        "text": "관할 고객 센터 조회"
+                        "text": {
+                            "raw": "관할 고객 센터 조회",
+                            "nlp": "관할 고객 센터 조회"
+                        }
                     }
                 ],
                 "output": [
@@ -1664,119 +1622,6 @@ var dialogs = [
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1784,13 +1629,22 @@ var commonDialogs = [
         "name": "시작",
         "input": [
             {
-                "text": "start"
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
             },
             {
-                "text": "시작"
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
             },
             {
-                "text": "처음"
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
             }
         ],
         "output": [
@@ -1835,20 +1689,33 @@ var commonDialogs = [
         "name": "상위",
         "input": [
             {
-                "text": "up"
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
             },
             {
-                "text": "back"
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
             },
             {
-                "text": "상위"
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
             },
             {
-                "text": "이전"
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
             }
         ],
         "output": {
-            "up": 1
+            "kind": "Action",
+            "type": "up"
         }
     },
     {
@@ -1872,119 +1739,8 @@ var commonDialogs = [
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _bot = require(require('path').resolve("./engine/bot.js")).getBot('samchully');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

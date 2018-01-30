@@ -88,7 +88,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
                 template = angular.element(template);
 

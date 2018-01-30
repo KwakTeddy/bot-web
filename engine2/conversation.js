@@ -12,9 +12,10 @@ var DialogGraphManager = require('./output/dm.js');
 
     };
 
-    ConversationManager.prototype.answer = function(bot, session, context, error, callback)
+    ConversationManager.prototype.answer = function(bot, context, error, callback)
     {
-        var nlp = context.nlu.nlp;
+        var conversation = context.history[0];
+        var nlp = conversation.nlu.nlp;
 
         var transaction = new Transaction.async();
 
@@ -28,7 +29,7 @@ var DialogGraphManager = require('./output/dm.js');
             done();
         }));
 
-        DialogGraphManager.find(bot, session, context, transaction.callback(function(err, dialog, done)
+        DialogGraphManager.find(bot, context, conversation, transaction.callback(function(err, dialog, done)
         {
             if(dialog)
             {
@@ -42,24 +43,27 @@ var DialogGraphManager = require('./output/dm.js');
         {
             if(this.dm)
             {
-                context.dialog = this.dm.dialog;
-
-                DialogGraphManager.exec(bot, session, context, function(output)
+                conversation.dialog = this.dm.dialog;
+                DialogGraphManager.exec(bot, context, conversation, function(output)
                 {
                     if(output)
                     {
-                        callback({ type: 'dialog', dialogId: session.dialogCursor, output: output });
+                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: output });
                     }
                     else
                     {
                         var dialog = bot.dialogMap['noanswer'];
-                        callback({ type: 'dialog', dialogId: session.dialogCursor, output: dialog.output });
+                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output });
                     }
                 });
             }
             else if(this.qa)
             {
-                //TODO 여러개일때 랜덤하게 출력 dm도 마찬가지
+                console.log();
+                console.log('[[[ Q&A ]]]');
+                console.log(this.qa.list);
+                console.log();
+
                 callback({ type: 'qa', output: this.qa.list[0] });
             }
             else
