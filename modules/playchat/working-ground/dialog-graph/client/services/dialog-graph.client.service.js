@@ -8,6 +8,8 @@
 
     angular.module('playchat').factory('DialogGraph', function($window, $rootScope)
     {
+        var PLUS_BUTTON_MARGIN_TOP = 22;
+
         var Menu = function()
         {
             this.currentDialog = undefined;
@@ -889,7 +891,7 @@
                 var template = '<div><div><span>' + output.text + '</span></div>';
                 if(output.image)
                 {
-                    // template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                    template += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
                 }
 
                 template += '</div>';
@@ -1237,6 +1239,12 @@
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
+            var that = this;
+            t.find('.graph-dialog-output img').on('load', function()
+            {
+                that.refreshLine();
+            });
+
             t.find('.graph-dialog-item').get(0).dialog = dialog;
 
             this.bindDialogFunctions(t);
@@ -1253,7 +1261,7 @@
                 var half = Math.ceil(target.offsetHeight / 2) + 1.4;
                 if(this.$scope.myBotAuth.edit)
                 {
-                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
+                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > PLUS_BUTTON_MARGIN_TOP ? PLUS_BUTTON_MARGIN_TOP : half) + 'px"');
                 }
             }
             else
@@ -1377,7 +1385,7 @@
         {
             var half = src.offsetHeight / 2;
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + (half > 90 ? 90 : half);
+            var y1 = src.offsetTop - 1 + (half > PLUS_BUTTON_MARGIN_TOP ? PLUS_BUTTON_MARGIN_TOP : half);
 
             var x2 = dest.offsetLeft;
             var y2 = dest.offsetTop + dest.offsetHeight / 2;
