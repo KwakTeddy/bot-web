@@ -143,7 +143,10 @@ var dialogs = [
                                                 ],
                                                 "id": "default66"
                                             }
-                                        ]
+                                        ],
+                                        "task": {
+                                            "name": "searchUser"
+                                        }
                                     },
                                     {
                                         "name": "인증실패",
@@ -1622,6 +1625,7 @@ var dialogs = [
 
 
 
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1736,6 +1740,7 @@ var commonDialogs = [
         }
     }
 ];
+
 
 
 

@@ -1,4 +1,5 @@
 var path = require('path');
+var request = require('request');
 
 module.exports = function(bot)
 {
@@ -26,16 +27,42 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            if(true)
-            {
-                context.user.customerInfo = {};
-            }
-            else
-            {
+            console.log('컨텍스트 : ', context.user);
 
-            }
+          	var options = {};
+          	options.url = 'http://sam.moneybrain.ai:3000/api';
+          	options.json = {};
+          	options.json.name = 'ZCS_CUSTOMER_INFO';
+          	options.json.param = [
+            	{ key: 'I_NAME', val: context.user.customerName },
+              	{ key: 'I_BIRTH', val: context.user.customerBirth },
+                { key: 'I_PHONE', val: context.types.mobile }
+            ];
+          
+          	request.post(options, function(err, response, body)
+            {
+              	if(err)
+                {
+                }
+				else
+    	        {
+                    console.log('개쩐다 : ', typeof body, body);
+    	            if(body.E_RETCD == 'E')
+                    {
+                        conversation.dialog.output = body.E_RETMG;
+                    }
+                    else
+                    {
+                        context.user.customerInfo = {
+                            name: context.user.customerName,
+                            birth: context.user.customerBirth,
+                            phone: context.types.mobile
+                        };
+                    }
 
-            callback();
+                    callback();
+                }
+            });
         }
     });
 
@@ -323,7 +350,8 @@ module.exports = function(bot)
     });
 
 
-    bot.setType('saveCustomerName',
+ 
+   bot.setType('saveCustomerName',
     {
         typeCheck: function (conversation, context, callback)
         {
