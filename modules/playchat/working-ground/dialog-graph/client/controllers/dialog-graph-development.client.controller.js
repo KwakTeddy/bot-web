@@ -72,13 +72,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('makeNewTask', function(context, name, sourceFileName)
         {
-            var text = 'var ' + name + ' = {\n' +
-                       '  action: function (task,context,callback) {\n' +
-                       '    callback(task,context);\n' +
-                       '\t}\n' +
-                       '};\n' +
-                       '\n' +
-                       'bot.setTask(\'' + name + '\', ' + name + ');';
+            var text = '\tbot.setTask(\'' + name + '\', \n\t{\n\t\taction: function (conversation, context, callback)\n\t\t{\n\n\t\t}\n\t});';
             for(var i=0; i<$scope.fileList.length; i++)
             {
                 if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))

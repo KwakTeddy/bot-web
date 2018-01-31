@@ -117,7 +117,7 @@ var Globals = require('../globals.js');
 
                                 if(parsed)
                                 {
-                                    conversation[type.name] = parsed;
+                                    context.types[type.name] = parsed;
                                 }
                             }
                             else

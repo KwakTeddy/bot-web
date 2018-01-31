@@ -11,6 +11,7 @@
         context.history = [];
         context.returnDialog = undefined;
         context.dialogCursor = undefined;
+        context.types = {};
 
         return context;
     };

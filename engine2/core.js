@@ -132,8 +132,6 @@ var OutputManager = require('./output.js');
                             }
                             else if(inputRaw == ':reset memory')
                             {
-                                context = JSON.parse(context);
-
                                 context = Context.create();
                                 that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
                                 {

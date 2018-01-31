@@ -362,7 +362,7 @@
 
                     for(var i=0; i<result.length; i++)
                     {
-                        if(!name || result[i].indexOf(name))
+                        if(!name || result[i].name.indexOf(name))
                         {
                             html += '<li>$' + result[i].name + '</li>';
                         }

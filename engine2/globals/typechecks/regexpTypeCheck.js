@@ -8,7 +8,7 @@ module.exports = function(globals)
         var matched = false;
 
         var inputRaw = conversation.nlu.inputRaw;
-        inputRaw.replace(re, function(match, p1)
+        conversation.nlu.inputRaw = inputRaw.replace(re, function(match, p1)
         {
             matched = true;
             parsed = p1;
