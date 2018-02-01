@@ -96,8 +96,6 @@ var UserDialogLog = mongoose.model('UserDialogLog');
 
     Logger.prototype.logBotUser = function(botId, channel, userKey)
     {
-        userKey = new Date().getTime();
-
         BotUser.findOne({ userKey: userKey }).exec(function(err, data)
         {
             if(err)
