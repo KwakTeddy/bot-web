@@ -45,6 +45,12 @@
         console.log('[[[ OUTPUT MAKEUP BEFORE ]]]');
         console.log(target);
 
+        var conversation = context.history[0];
+        if(!conversation)
+        {
+            conversation = {};
+        }
+
         target = JSON.parse(JSON.stringify(target));
 
         if(typeof target == 'object')
@@ -67,6 +73,11 @@
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
                         var list = getValue(context, key);
+                        if(!list)
+                        {
+                            list = getValue(conversation, key);
+                        }
+
                         if(list)
                         {
                             var resultText = '';
@@ -101,6 +112,10 @@
                     if(key)
                     {
                         var replaced = getValue(context, key);
+                        if(!replaced)
+                        {
+                            replaced = getValue(conversation, key);
+                        }
 
                         if(replaced)
                         {
