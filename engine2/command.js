@@ -155,7 +155,7 @@ var BotManager = require('./bot.js');
     {
         //FIXME 커맨드 실행
         console.log();
-        console.log(chalk.yellow(' [[[ Execute Command ]]]'));
+        console.log(chalk.yellow('[[[ Execute Command ]]]'));
         console.log(inputRaw);
 
         context.history = [{ dialog: bot.commonDialogs[0] }];
