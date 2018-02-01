@@ -315,7 +315,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             DialogGraph.addChildDialog(parent, result);
 
-            DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children'), dialog);
+            DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children:first'), dialog);
+            DialogGraph.refreshLine();
             // DialogGraph.refresh();
             DialogGraph.setDirty(true);
             // DialogGraph.focusById(result.id);

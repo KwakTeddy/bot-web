@@ -1316,14 +1316,29 @@
 
             makeDialogDraggable(t.find('.graph-dialog-item').get(0));
 
-            // if(parent.find('.plus').length > 0)
-            // {
-            //     t.insertBefore(parent.find('.plus'));
-            // }
-            // else
-            // {
+            var plusButton = parent.children('.plus').get(0);
+            if(plusButton)
+            {
+                t.insertBefore(plusButton);
+
+                var target = t.get(0);
+                if(target)
+                {
+                    plusButton.style.top = '';
+                    plusButton.style.position = '';
+                    var diff = plusButton.offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
+                    if(diff > 50)
+                    {
+                        plusButton.style.top = -(plusButton.offsetTop - target.offsetTop) + (target.children[0].offsetHeight + plusButton.offsetHeight) + 'px';
+                        plusButton.style.position = 'relative';
+                        plusButton.setAttribute('data-diff', diff);
+                    }
+                }
+            }
+            else
+            {
                 parent.append(t);
-            // }
+            }
 
             if(!dialog.children || dialog.children.length == 0)
             {
