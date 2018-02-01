@@ -13,7 +13,7 @@ var Command = require('./command.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var KnowledgeGraph = require('./km.js');
-var ConversationManager = require('./conversation.js');
+var AnswerManager = require('./answer.js');
 var OutputManager = require('./output.js');
 
 var Transaction = require('./utils/transaction.js');
@@ -121,6 +121,11 @@ var Transaction = require('./utils/transaction.js');
 
                         context.history.splice(0, 0, conversation);
 
+                        if(context.history.length > 10)
+                        {
+                            context.history.splice(10, 1);
+                        }
+
                         conversation.nlu = {
                             sentence: inputRaw,
                             inputRaw: inputRaw
@@ -162,7 +167,7 @@ var Transaction = require('./utils/transaction.js');
                             {
                                 transaction.done(function()
                                 {
-                                    ConversationManager.answer(bot, context, error, function(output)
+                                    AnswerManager.answer(bot, context, error, function(output)
                                     {
                                         output = OutputManager.make(context, output);
 

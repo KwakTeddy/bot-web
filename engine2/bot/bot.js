@@ -21,16 +21,16 @@ var Dialogset = mongoose.model('Dialogset');
 
         this.dialogMap = {};
         this.parentDialogMap = {};
-        this.dialogs = this.dialogs || [];
-        this.commonDialogs = this.commonDialogs || [];
-        this.tasks = this.tasks || {};
-        this.actions = this.actions || {};
-        this.types = this.types || {};
-        this.typeChecks = this.typeChecks || {};
-        this.concepts = this.concepts || {};
-        this.messages = this.messages || {};
-        this.patterns = this.patterns || {};
-        this.dialogsets = this.dialogsets || [];
+        this.dialogs = [];
+        this.commonDialogs = [];
+        this.tasks = {};
+        this.actions = {};
+        this.types = {};
+        this.typeChecks = {};
+        this.concepts = {};
+        this.messages = {};
+        this.patterns = {};
+        this.dialogsets = [];
     };
 
     Bot.prototype.loadBotData = function(callback)

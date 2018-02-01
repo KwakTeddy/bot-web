@@ -2,8 +2,8 @@ var Transaction = require('./utils/transaction.js');
 
 var autoCorrection = require('./input/nlp/autoCorrection.js');
 
-var QNAManager = require('./output/qa.js');
-var DialogGraphManager = require('./output/dm.js');
+var QNAManager = require('./answer/qa.js');
+var DialogGraphManager = require('./answer/dm.js');
 
 var Logger = require('./logger.js');
 
@@ -11,12 +11,12 @@ var Logger = require('./logger.js');
 {
     // 어떤 답변을 할 것인지 선택해주는 역할.
     // 딱 선택까지만 한다.
-    var ConversationManager = function()
+    var AnswerManager = function()
     {
 
     };
 
-    ConversationManager.prototype.answer = function(bot, context, error, callback)
+    AnswerManager.prototype.answer = function(bot, context, error, callback)
     {
         var conversation = context.history[0];
         var nlp = conversation.nlu.nlp;
@@ -65,12 +65,21 @@ var Logger = require('./logger.js');
 
                         callback({ type: 'dialog', dialogId: context.dialogCursor, output: output });
                     }
+                    else if(this.qa)
+                    {
+                        console.log();
+                        console.log('[[[ Q&A ]]]');
+                        console.log(this.qa.list);
+                        console.log();
+
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, this.qa.list[0], '', '', '', '', false, 'qna');
+
+                        callback({ type: 'qa', output: this.qa.list[0] });
+                    }
                     else
                     {
                         var dialog = bot.dialogMap['noanswer'];
-
                         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-
                         callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0].text });
                     }
                 });
@@ -89,10 +98,11 @@ var Logger = require('./logger.js');
             else
             {
                 var dialog = bot.dialogMap['noanswer'];
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
                 callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });
             }
         });
     };
 
-    module.exports = new ConversationManager();
+    module.exports = new AnswerManager();
 })();
