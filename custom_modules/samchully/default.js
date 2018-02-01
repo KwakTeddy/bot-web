@@ -3,6 +3,7 @@ var request = require('request');
 
 module.exports = function(bot)
 {
+    var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
     var messages = require(path.resolve('engine2/messages.js'));
 
     bot.setTask('defaultTask',
@@ -327,34 +328,38 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            //get Data
-            var data = [
-                {
-                    date: "2017.3",
-                    method: "신용카드 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                },
-                {
-                    date: "2017.4",
-                    method: "지로용지 납부",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                },
-                {
-                    date: "2017.5",
-                    method: "은행 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                }
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_CHECK_NOTI_AMT';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'}
             ];
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        conversation.dialog.output[0].text = body.E_RETMG;
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        // context.nonpaymentHistory = data;
+                    }
+                    else
+                    {
+                        console.log(body.E_RETCD)
+                    }
+                    callback();
 
-            context.nonpaymentHistory = data;
-
-            callback();
+                }
+            });
         }
     });
 
@@ -421,7 +426,54 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            callback();
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_CB_COMMON_ACCINFO';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'}
+            ];
+            options.json.isTable = true;
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        context.nonpaymentHistory = [];
+
+                        var data = body.data.ET_TABLE;
+                        conversation.dialog.output[0].buttons = [];
+
+                        for(var i = 0; i < data.length; i++)
+                        {
+                            if(data[i].BANKN != '')
+                            {
+                                context.nonpaymentHistory.push(data[i]);
+                            }
+                            else
+                            {
+                                conversation.dialog.output[0].buttons.push({text: data[i].BANKA + '입금전용계좌 생성'});
+
+                            }
+                        }
+
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+                    callback();
+
+                }
+            });
         }
     });
 
@@ -678,47 +730,86 @@ module.exports = function(bot)
     });
 
     bot.setTask('cancelNoticeMethod',
+    {
+        action: function (conversation, context, callback)
         {
-            action: function (conversation, context, callback)
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_GOJI_CANCEL';
+            options.json.param = [
+                { key: 'I_VKONT', val: '1105391507' }
+            ];
+            options.timeout = 7000;
+
+            request.post(options, function(err, response, body)
             {
-                var options = {};
-                options.url = 'http://sam.moneybrain.ai:3000/api';
-                options.json = {};
-                options.json.name = 'ZCS_GOJI_CANCEL';
-                options.json.param = [
-                    { key: 'I_VKONT', val: '1105391507' }
-                ];
-                options.timeout = 7000;
-
-                request.post(options, function(err, response, body)
+                if(err)
                 {
-                    if(err)
-                    {no
-                        console.log(err);
-                    }
-                    else
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
                     {
-                        if(body.E_RETCD == 'E')
-                        {
-                            console.log('##########')
-                            console.log(body);
-                        }
-                        else if(body.E_RETCD == 'S')
-                        {
-                            conversation.setNoticeMethodSuccess = true;
-                            console.log('@@@@@@@@@@@@@@@')
-                            console.log(body)
-                        }else {
-                            console.log(body.E_RETCD)
-                        }
-
-                        callback();
+                        console.log('##########')
+                        console.log(body);
                     }
-                });
-            }
-        });
+                    else if(body.E_RETCD == 'S')
+                    {
+                        conversation.cancelNoticeMethodSuccess = true;
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
 
+                    callback();
+                }
+            });
+        }
+    });
 
+    bot.setTask('resendNotice',
+    {
+        action: function (conversation, context, callback)
+        {
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZBI_MS_GOJI_RESEND';
+            options.json.param = [
+                { key: 'I_VKONT', val: '1105391507' }
+            ];
+            options.timeout = 7000;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########')
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        conversation.setNoticeMethodSuccess = true;
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+
+                    callback();
+                }
+            });
+        }
+    });
 
     bot.setTask('getPaymentMethod',
     {
@@ -867,6 +958,57 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '105831826'},
                 { key: 'I_HPNUM', val: '01088588151' },
+                { key: 'I_BETRWP', val: '0' },
+            ];
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    console.log(body)
+
+                    if(body.E_RETCD == 'E')
+                    {
+
+                        console.log(body)
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+
+                        console.log(body)
+
+
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+                    callback();
+
+                }
+            });
+        }
+    });
+
+    bot.setTask('payByQR',
+    {
+        action: function (conversation, context, callback)
+        {
+            callback();
+        }
+    });
+
+    bot.setTask('cancelAutoTransfer',
+    {
+        action: function (conversation, context, callback)
+        {
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_EXPIRE_SO';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'}
             ];
             request.post(options, function(err, response, body)
             {
@@ -897,16 +1039,6 @@ module.exports = function(bot)
                 }
             });
 
-
-            callback();
-        }
-    });
-
-    bot.setTask('payByQR',
-    {
-        action: function (conversation, context, callback)
-        {
-            callback();
         }
     });
 

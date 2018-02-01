@@ -577,7 +577,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n1, 기업은행\n910-4422-4123\n2, 하나은행\n5302-33-441-3332",
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.nonpaymentHistory#\n+index+.\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -858,7 +858,12 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "전자고지 해지 완료되었습니다."
+                                                "text": "전자고지 해지 완료되었습니다.",
+                                                "if": "conversation.cancelNoticeMethodSuccess"
+                                            },
+                                            {
+                                                "kind": "Content",
+                                                "text": "에러"
                                             }
                                         ],
                                         "id": "default55",
@@ -935,7 +940,10 @@ var dialogs = [
                                         "text": "자동이체 재 신청이 필요하신 고객님께서는 관할 고객센터로 연락 주시기 바랍니다"
                                     }
                                 ],
-                                "id": "default57"
+                                "id": "default57",
+                                "task": {
+                                    "name": "cancelAutoTransfer"
+                                }
                             }
                         ],
                         "task": {
