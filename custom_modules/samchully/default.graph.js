@@ -121,7 +121,8 @@ var dialogs = [
                                                 "id": "default65",
                                                 "task": {
                                                     "name": "authConfirm"
-                                                }
+                                                },
+                                                "children": []
                                             },
                                             {
                                                 "name": "인증거절",
@@ -368,7 +369,8 @@ var dialogs = [
                                         "id": "default18",
                                         "task": {
                                             "name": "getNoticeDetail"
-                                        }
+                                        },
+                                        "children": []
                                     }
                                 ],
                                 "task": {
@@ -1612,17 +1614,6 @@ var dialogs = [
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1738,19 +1729,8 @@ var commonDialogs = [
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
-};
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
+}

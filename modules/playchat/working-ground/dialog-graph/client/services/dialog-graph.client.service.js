@@ -693,43 +693,57 @@
 
             try
             {
-                data = data.trim();
-
                 this.originalFileData = data;
 
-                var commandMatch = data.match(/var commonDialogs[^;]*;/gi);
-                if(commandMatch && commandMatch.length == 1)
+                this.commonDialogs = data.commonDialogs;
+
+                var startDialog = this.commonDialogs[0];
+                if(!startDialog)
                 {
-                    var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
-                    this.commonDialogs = JSON.parse(parsed);
-
-                    this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
-
-                    var startDialog = this.commonDialogs[0];
-                    if(!startDialog)
-                        startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
-
-                    var match = data.match(/var dialogs[^;]*;/gi);
-                    if(match && match.length == 1)
-                    {
-                        parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
-
-                        startDialog.children = this.userDialogs = JSON.parse(parsed);
-                        this.graphData = startDialog;
-
-                        this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
-
-                        this.refresh();
-
-                        this.onLoad();
-
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
                 }
+
+                startDialog.children = this.userDialogs = data.dialogs;
+                this.graphData = startDialog;
+
+                this.refresh();
+                this.onLoad();
+
+                return true;
+
+                // var commandMatch = data.match(/var commonDialogs[^;]*;/gi);
+                // if(commandMatch && commandMatch.length == 1)
+                // {
+                //     var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
+                //     this.commonDialogs = JSON.parse(parsed);
+                //
+                //     this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
+                //
+                //     var startDialog = this.commonDialogs[0];
+                //     if(!startDialog)
+                //         startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
+                //
+                //     var match = data.match(/var dialogs[^;]*;/gi);
+                //     if(match && match.length == 1)
+                //     {
+                //         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
+                //
+                //         startDialog.children = this.userDialogs = JSON.parse(parsed);
+                //         this.graphData = startDialog;
+                //
+                //         this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
+                //
+                //         this.refresh();
+                //
+                //         this.onLoad();
+                //
+                //         return true;
+                //     }
+                //     else
+                //     {
+                //         return false;
+                //     }
+                // }
             }
             catch(err)
             {
@@ -1729,11 +1743,17 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
-            //커먼다이얼로그에 서큘러 JSON이 생기는 문제가 있으므로 정리해야함.
-            var temp = JSON.parse(JSON.stringify(this.commonDialogs));
-            delete temp[0].children;
+            delete this.commonDialogs[0].children;
 
-            var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
+            var userDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4);
+            var commonDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.commonDialogs)), null, 4);
+
+            var data = 'var dialogs = ' + userDialogsString + ';\r\n\r\n' + 'var commonDialogs = ' + commonDialogsString + ';\r\n\r\n' + 'module.exports = function(bot)\r\n{\r\n\tbot.setDialogs(dialogs);\r\n\tbot.setCommonDialogs(commonDialogs);\r\n}';
+            //커먼다이얼로그에 서큘러 JSON이 생기는 문제가 있으므로 정리해야함.
+            // var temp = JSON.parse(JSON.stringify(this.commonDialogs));
+            // delete temp[0].children;
+            //
+            // var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
             return data;
         };
 

@@ -5,7 +5,7 @@ var multer = require('multer');
 
 var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
-var logger = require(path.resolve('./config/lib/logger.js'));
+var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var BotFile = mongoose.model('BotFile');
 
@@ -50,6 +50,42 @@ exports.checkFile = function(req, res)
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
 
     res.jsonp({ exist: fs.existsSync(filePath) });
+};
+
+exports.getGraphFile = function(req, res)
+{
+    var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
+
+    if(req.query.templateId)
+    {
+        // 추후 서비스봇과 템플릿 클론봇 구분
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot/' + req.params.fileName);
+    }
+
+    fs.stat(filePath, function(err, stat)
+    {
+        if(err || !stat)
+        {
+            return res.status(404).end();
+        }
+
+        console.log('파일패스 : ', filePath);
+
+        var bot = {};
+        bot.setDialogs = function(dialogs)
+        {
+            this.dialogs = dialogs;
+        };
+
+        bot.setCommonDialogs = function(commonDialogs)
+        {
+            this.commonDialogs = commonDialogs;
+        };
+
+        utils.requireNoCache(filePath)(bot);
+
+        res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
+    });
 };
 
 exports.findFile = function(req, res)

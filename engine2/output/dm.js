@@ -283,7 +283,7 @@ var Globals = require('../globals.js');
             });
         }
 
-        sync.done(function()
+        sync.done(function(options)
         {
             var dialogId = conversation.dialog.id;
             var output = conversation.dialog.output;
@@ -334,6 +334,11 @@ var Globals = require('../globals.js');
             console.log();
             console.log('[[[ OUTPUT ]]]');
             console.log(resultOutput);
+
+            if(options)
+            {
+
+            }
 
             if(resultOutput.kind == 'Action')
             {

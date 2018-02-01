@@ -4,6 +4,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+    var GraphFileService = $resource('/api/:botId/graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
 
     var chatbot = $cookies.getObject('chatbot');
 
@@ -295,23 +296,27 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             $scope.initialize();
 
             angular.element('.graph-body').append('<div class="dialog-graph-error"><h1>Loading...</h1></div>');
-            DialogGraphsService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
+            GraphFileService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
             {
                 angular.element('.graph-body .dialog-graph-error').remove();
                 angular.element('#graphDialogCanvas').html('');
 
-                var data = result.data;
-                if(data)
+                console.log('하핫 : ', result);
+                if(result && result.dialogs && result.commonDialogs)
                 {
                     //최초 로딩한거 history에 넣어둠.
-                    $scope.graphHistory.push(data);
+                    $scope.graphHistory.push(result);
                     $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
-                    var result = DialogGraph.loadFromFile(data, fileName);
+                    var result = DialogGraph.loadFromFile(result, fileName);
                     if(!result)
                     {
                         angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
                     }
+                }
+                else
+                {
+                    angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><div>' + JSON.stringify(result) + '</div></div></div>')($scope));
                 }
             },
             function(err)
