@@ -5,6 +5,8 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
 var QNAManager = require('./output/qa.js');
 var DialogGraphManager = require('./output/dm.js');
 
+var Logger = require('./logger.js');
+
 (function()
 {
     // 어떤 답변을 할 것인지 선택해주는 역할.
@@ -53,12 +55,20 @@ var DialogGraphManager = require('./output/dm.js');
                 conversation.dialog = this.dm.dialog;
                 DialogGraphManager.exec(bot, context, conversation, function(output)
                 {
+                    var prev = {};
+                    if(conversation.prev)
+                        prev = conversation.prev;
+
                     if(output)
                     {
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, output.text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, false, 'dialog');
+
                         callback({ type: 'dialog', dialogId: context.dialogCursor, output: output });
                     }
                     else
                     {
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, output.text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
+
                         var dialog = bot.dialogMap['noanswer'];
                         callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output });
                     }
@@ -70,6 +80,8 @@ var DialogGraphManager = require('./output/dm.js');
                 console.log('[[[ Q&A ]]]');
                 console.log(this.qa.list);
                 console.log();
+
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, this.qa.list[0], '', '', '', '', false, 'qna');
 
                 callback({ type: 'qa', output: this.qa.list[0] });
             }
