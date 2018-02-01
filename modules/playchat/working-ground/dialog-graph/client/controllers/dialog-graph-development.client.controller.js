@@ -505,7 +505,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     });
                 }
 
-                $rootScope.$broadcast('simulator-build');
+                $rootScope.$broadcast('simulator-build-without-reset-focus');
 
                 angular.element('.graph-controller .alert-success').show();
                 $timeout(function()

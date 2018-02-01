@@ -126,10 +126,6 @@ var Transaction = require('./utils/transaction.js');
                             inputRaw: inputRaw
                         };
 
-                        console.log('[[[ Context ]]]');
-                        console.log(context);
-                        console.log();
-
                         InputManager.analysis(bot, conversation, error, function()
                         {
                             var transaction = new Transaction.sync();
