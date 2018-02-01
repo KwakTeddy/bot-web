@@ -48,10 +48,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.$on('makeNewType', function(context, name, sourceFileName)
         {
             var text = 'var ' + name + ' = {\n' +
-                       '  typeCheck: function (text, type, task, context, callback) {\n' +
+                       '  typeCheck: function (conversation, context, callback) {\n' +
                        '    var matched = true;\n' +
+                       '    var parsedData = \'example\';\n' +
                        '    \n' +
-                       '    callback(text, task, matched);\n' +
+                       '    callback(matched, parsedData);\n' +
                        '\t}\n' +
                        '};\n' +
                        '\n' +

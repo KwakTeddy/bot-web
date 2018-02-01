@@ -137,27 +137,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result.task = $scope.dialog.task;
         }
 
-        for(var i=0; i<result.output.length; i++)
-        {
-            if(result.output[i].kind == 'Action')
-            {
-                var actionObject = { kind: 'Action' };
-                actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
-
-                if(result.output[i].if)
-                {
-                    actionObject.if = result.output[i].if;
-                }
-
-                if(result.output[i].text)
-                {
-                    actionObject.options = { output : result.output[i].text };
-                }
-
-                result.output[i] = actionObject;
-            }
-        }
-
         console.log(result.output);
 
         result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
@@ -210,9 +189,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             var result = $scope.parseResult();
 
-            DialogGraph.refresh();
+            // DialogGraph.refresh();
+            DialogGraph.reloadDialog(result);
             DialogGraph.setDirty(true);
-            DialogGraph.focusById(result.id);
+            // DialogGraph.focusById(result.id);
 
             if(DialogGraphEditor.saveCallback)
             {
@@ -335,9 +315,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             DialogGraph.addChildDialog(parent, result);
 
-            DialogGraph.refresh();
+            DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children'), dialog);
+            // DialogGraph.refresh();
             DialogGraph.setDirty(true);
-            DialogGraph.focusById(result.id);
+            // DialogGraph.focusById(result.id);
 
             if(DialogGraphEditor.saveCallback)
             {
