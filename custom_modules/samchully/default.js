@@ -527,7 +527,7 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        context.sendUrlSuccess = true;
+                        context.user.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
                         console.log('@@@@@@@@@@@@@@@')
                         console.log(body)
                     }else {
@@ -541,13 +541,135 @@ module.exports = function(bot)
     });
 
 
-    bot.setTask('setNoticeMethod',
+    bot.setTask('setNoticeMethod_kkopay',
     {
         action: function (conversation, context, callback)
         {
-            callback();
+            if(conversation.nlu.inputRaw)
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
+            options.json.param = [
+                { key: 'I_VKONT', val: '110591507' },
+                { key: 'I_HPNUM', val: '01088588151' }
+            ];
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########')
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        conversation.setNoticeMethodSuccess = true; //TODO conversation으로 교체
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+
+                    callback();
+                }
+            });
         }
     });
+
+    bot.setTask('setNoticeMethod_lms',
+        {
+            action: function (conversation, context, callback)
+            {
+                if(conversation.nlu.inputRaw)
+
+                    var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_LMS_REQUEST';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '110591507' },
+                    { key: 'I_HPNUM', val: '01088588151' }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        console.log(err);
+                    }
+                    else
+                    {
+                        if(body.E_RETCD == 'E')
+                        {
+                            console.log('##########')
+                            console.log(body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            conversation.setNoticeMethodSuccess = true; //TODO conversation으로 교체
+                            console.log('@@@@@@@@@@@@@@@')
+                            console.log(body)
+                        }else {
+                            console.log(body.E_RETCD)
+                        }
+
+                        callback();
+                    }
+                });
+            }
+        });
+
+    bot.setTask('setNoticeMethod_eㅇmail',
+        {
+            action: function (conversation, context, callback)
+            {
+                if(conversation.nlu.inputRaw)
+
+                    var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '110591507' },
+                    { key: 'I_EMAIL', val: '5709psy@moneybrain.ai' }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    console.log(body)
+                    if(err)
+                    {
+                        console.log(err);
+                    }
+                    else
+                    {
+                        if(body.E_RETCD == 'E')
+                        {
+                            console.log('##########')
+                            console.log(body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            conversation.setNoticeMethodSuccess = true; //TODO conversation으로 교체
+                            console.log('@@@@@@@@@@@@@@@')
+                            console.log(body)
+                        }else {
+                            console.log(body.E_RETCD)
+                        }
+
+                        callback();
+                    }
+                });
+            }
+        });
 
     bot.setTask('getPaymentMethod',
     {

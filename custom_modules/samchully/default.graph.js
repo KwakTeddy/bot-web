@@ -820,14 +820,17 @@ var dialogs = [
                                                     {
                                                         "kind": "Content",
                                                         "text": "카카에페이 URL을 발송했습니다.",
-                                                        "if": "context.sendUrlSuccess"
+                                                        "if": "conversation.setNoticeMethodSuccess"
                                                     },
                                                     {
                                                         "kind": "Content",
                                                         "text": "카카에페이 URL 발송"
                                                     }
                                                 ],
-                                                "id": "default28"
+                                                "id": "default28",
+                                                "task": {
+                                                    "name": "setNoticeMethod"
+                                                }
                                             },
                                             {
                                                 "name": "LMS 고지",
@@ -842,45 +845,19 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "LMS 고지받을 휴대폰 번호를 입력해주세요"
+                                                        "text": "정상적으로 처리되었습니다.",
+                                                        "if": "conversation.setNoticeMethodSuccess"
+                                                    },
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "에러가 발생했습니다."
                                                     }
                                                 ],
                                                 "id": "default29",
-                                                "children": [
-                                                    {
-                                                        "name": "LMS확인",
-                                                        "input": [
-                                                            {
-                                                                "types": "mobile"
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Content",
-                                                                "text": "신청 완료되었습니다."
-                                                            }
-                                                        ],
-                                                        "id": "default53",
-                                                        "task": {
-                                                            "name": "setNoticeMethod"
-                                                        }
-                                                    },
-                                                    {
-                                                        "name": "핸드폰재질의",
-                                                        "input": [
-                                                            {
-                                                                "if": "true"
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Action",
-                                                                "type": "repeat"
-                                                            }
-                                                        ],
-                                                        "id": "default57"
-                                                    }
-                                                ]
+                                                "children": [],
+                                                "task": {
+                                                    "name": "setNoticeMethod_lms"
+                                                }
                                             },
                                             {
                                                 "name": "이메일 고지",
@@ -904,18 +881,25 @@ var dialogs = [
                                                         "name": "New Dialog",
                                                         "input": [
                                                             {
-                                                                "types": "email"
+                                                                "types": [
+                                                                    "email"
+                                                                ]
                                                             }
                                                         ],
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "신청 완료되었습니다."
+                                                                "text": "신청 완료되었습니다.",
+                                                                "if": "conversation.setNoticeMethodSuccess"
+                                                            },
+                                                            {
+                                                                "kind": "Content",
+                                                                "text": "에러 났습니다."
                                                             }
                                                         ],
                                                         "id": "default54",
                                                         "task": {
-                                                            "name": "setNoticeMethod"
+                                                            "name": "setNoticeMethod_email"
                                                         }
                                                     },
                                                     {
@@ -1635,6 +1619,10 @@ var dialogs = [
 
 
 
+
+
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1749,6 +1737,10 @@ var commonDialogs = [
         }
     }
 ];
+
+
+
+
 
 
 
