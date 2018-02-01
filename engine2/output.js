@@ -45,7 +45,15 @@ var chalk = require('chalk');
     {
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
-        console.log(target.text);
+        console.log(target.text || target.output.text);
+        if(target.output && target.output.buttons)
+        {
+            console.log('-- buttons --');
+            for(var i=0; i<target.output.buttons.length; i++)
+            {
+                console.log('[ ' + target.output.buttons[i].text + ' ]');
+            }
+        }
 
         var conversation = context.history[0];
         if(!conversation)
@@ -138,7 +146,15 @@ var chalk = require('chalk');
 
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup After ]]]'));
-        console.log(target.text);
+        console.log(target.text || target.output.text);
+        if(target.output && target.output.buttons)
+        {
+            console.log('-- buttons --');
+            for(var i=0; i<target.output.buttons.length; i++)
+            {
+                console.log('[ ' + target.output.buttons[i].text + ' ]');
+            }
+        }
 
         return target;
     };
