@@ -138,6 +138,10 @@ module.exports = function(bot)
                     }
                 });
             }
+            else
+            {
+                callback();
+            }
         }
     });
 
