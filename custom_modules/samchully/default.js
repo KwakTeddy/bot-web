@@ -17,7 +17,6 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            task.buttons = [];
             callback();
         }
     });
@@ -197,40 +196,49 @@ module.exports = function(bot)
             var word = conversation.nlu.inputRaw;
             var num = parseInt(word);
 
-            //get Data
-            var data = [
-                {
-                    date: "2017.3",
-                    method: "신용카드 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                },
-                {
-                    date: "2017.4",
-                    method: "지로용지 납부",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                },
-                {
-                    date: "2017.5",
-                    method: "은행 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                }
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZBI_MS_GOJI_LIST';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'},
+                { key: 'I_GUBUN', val: num/3 }
             ];
-            context.noticeNum = num;
-            context.noticeHistory = data;
-
-            conversation.buttons = [];
-            for(var i = 0; i < data.length; i++)
+            options.json.isTable = true;
+            request.post(options, function(err, response, body)
             {
-                conversation.buttons.push({text: data[i].date + "월 상세보기"});
-            }
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
 
-            callback();
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        var data = body.data.ET_TABLE;
+                        context.noticeNum = num;
+                        context.noticeHistory = data;
+
+                        conversation.dialog.output[0].buttons = [];
+                        for(var i = 0; i < data.length; i++)
+                        {
+                            conversation.dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
+                        }
+
+
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+                    callback();
+
+                }
+            });
+
         }
     });
 
@@ -238,21 +246,14 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            //get Data
-            var data = [
+            for(var i = 0; i < context.noticeHistory.length; i++)
+            {
+                if(context.noticeHistory[i].BILLING_PERIOD == conversation.nlu.inputRaw)
                 {
-                    date: "2017.3.5",
-                    method: "신용카드 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
+                    conversation.noticeDetail = context.noticeHistory[i];
+                    break;
                 }
-            ];
-
-            conversation.dialog.output = data[0].date + '/'+ data[0].method;
-
-            console.log('컨버세이션 ', conversation.dialog);
-
+            }
             callback();
         }
     });
@@ -264,41 +265,44 @@ module.exports = function(bot)
             var word = conversation.nlu.inputRaw;
             var num = parseInt(word);
 
-            //get Data
-            var data = [
-                {
-                    date: "2017.3",
-                    method: "신용카드 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                },
-                {
-                    date: "2017.4",
-                    method: "지로용지 납부",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                },
-                {
-                    date: "2017.5",
-                    method: "은행 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
-                }
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZFC_MS_PAYMENT';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'},
+                { key: 'I_GUBUN', val: num/3 }
             ];
-
-            context.listNum = num;
-            context.paymentHistory = data;
-            conversation.buttons = [];
-
-            for(var i = 0; i < data.length; i++)
+            options.json.isTable = true;
+            request.post(options, function(err, response, body)
             {
-                conversation.buttons.push({text: data[i].date + "월 상세보기"});
-            }
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########')
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(body)
 
-            callback();
+                        var data = body.data.ET_TABLE;
+                        context.listNum = num;
+                        context.paymentHistory = data;
+
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+                    callback();
+                }
+            });
         }
     });
 
@@ -306,20 +310,14 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            var word = conversation.nlu.inputRaw;
-
-            //get Data
-            var data = [
+            for(var i = 0; i < context.paymentHistory.length; i++)
+            {
+                if(context.paymentHistory[i].YYYYMM == conversation.nlu.inputRaw)
                 {
-                    date: "2017.3.5",
-                    method: "신용카드 자동이체",
-                    noticeVal : 1000,
-                    payment: 500,
-                    paymentDate: "2017.4.5"
+                    conversation.paymentDetail = context.paymentHistory[i];
+                    break;
                 }
-            ];
-
-            conversation.dialog.output = data[0].date + '/' + data[0].method;
+            }
             callback();
         }
     });
@@ -360,43 +358,7 @@ module.exports = function(bot)
         }
     });
 
-    bot.setTask('sendSMSAuth',
-    {
-        action: function (conversation, context, callback)
-        {
-            var request = require('request');
-
-            var randomNum = '';
-            randomNum += '' + Math.floor(Math.random() * 10);
-            randomNum += '' + Math.floor(Math.random() * 10);
-            randomNum += '' + Math.floor(Math.random() * 10);
-            randomNum += '' + Math.floor(Math.random() * 10);
-
-            var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
-
-            request.post(
-                'https://bot.moneybrain.ai/api/messages/sms/send',
-                // 'http://dev.moneybrain.ai:8443/api/messages/sms/send',
-                {json: {callbackPhone: config.callcenter, phone: conversation.mobile, message: message}},
-                function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        task._result = body.result;
-                        task._resultMessage = body.resultMessage;
-                    } else {
-                        task._result = 'FAIL';
-                        task._resultMessage = 'HTTP ERROR';
-                    }
-
-                    context.smsAuth = randomNum;
-                    callback();
-                }
-            );
-        }
-    });
-
-
- 
-   bot.setType('saveCustomerName',
+    bot.setType('saveCustomerName',
     {
         typeCheck: function (conversation, context, callback)
         {
@@ -445,22 +407,6 @@ module.exports = function(bot)
         }
     });
 
-    bot.setTask('verifyCode',
-    {
-        action: function (conversation, context, callback)
-        {
-            var word = conversation.nlu.inputRaw;
-
-            if(context.smsAuth == word.replace(/\s*/g, ''))
-            {
-                context.user.mobile = conversation.mobile;
-            }
-
-            callback();
-        }
-    });
-
-
     bot.setType('email',
     {
         typeCheck: function (conversation, context, callback)
@@ -471,7 +417,7 @@ module.exports = function(bot)
     });
 
 
-    bot.setTask('getAccoutList',
+    bot.setTask('getAccountList',
     {
         action: function (conversation, context, callback)
         {
@@ -484,28 +430,73 @@ module.exports = function(bot)
         typeCheck: function (conversation, context, callback)
         {
             var matched = false;
-            var bankIndex =
-            {
-                '기업' : '003',
-                '국민' : '004',
-                '농협' : '011',
-                '우리' : '020',
-                '신한' : '026',
-                '하나' : '081'
-            };
+            var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
 
-            for(var i = 0; i < Object.keys(bankIndex).length; i++)
-            {
 
+            for(var i = 0; i < bankArr.length; i++)
+            {
+                if(conversation.nlu.inputRaw.indexOf(bankArr[i]) != -1)
+                {
+                    conversation.selectedBank = bankArr[i];
+                    matched = true;
+                    break;
+                }
             }
-
-            if(conversation.nlu.inputRaw)
-
-            console.log(conversation.nlu.inputRaw);
-
 
             callback(matched);
         }
+    });
+
+    bot.setTask('createDepositAccount',
+        {
+            action: function (conversation, context, callback)
+            {
+                var bankIndex =
+                {
+                    '기업' : '003',
+                    '국민' : '004',
+                    '농협' : '011',
+                    '우리' : '020',
+                    '신한' : '026',
+                    '하나' : '081'
+                };
+                var selectedBank = bankIndex[conversation.selectedBank];
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CB_COMMON_ACCCRE';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '105831826'},
+                    { key: 'I_BANKK', val: selectedBank }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        console.log(err);
+                    }
+                    else
+                    {
+                        if(body.E_RETCD == 'E')
+                        {
+                            console.log('##########')
+                            console.log(body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            conversation.createdBankAccount = body.E_BANKN;
+                            console.log('@@@@@@@@@@@@@@@')
+                            console.log(body)
+                        }else {
+                            console.log(body.E_RETCD)
+                        }
+
+                        callback();
+                    }
+                });
+            }
     });
 
 
@@ -864,4 +855,61 @@ module.exports = function(bot)
             callback();
         }
     });
+
+    bot.setTask('payByARS',
+    {
+        action: function (conversation, context, callback)
+        {
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_ARS_PAYMENT';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'},
+                { key: 'I_HPNUM', val: '01088588151' },
+            ];
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    console.log(body)
+
+                    if(body.E_RETCD == 'E')
+                    {
+
+                        console.log(body)
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+
+                        console.log(body)
+
+
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+                    callback();
+
+                }
+            });
+
+
+            callback();
+        }
+    });
+
+    bot.setTask('payByQR',
+    {
+        action: function (conversation, context, callback)
+        {
+            callback();
+        }
+    });
+
+
+
 };

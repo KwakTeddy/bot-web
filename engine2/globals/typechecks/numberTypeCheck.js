@@ -1,15 +1,15 @@
 module.exports = function(globals)
 {
-    globals.setTypeChecks('numberTypeCheck', function(text, type, task, context, callback)
+    globals.setTypeChecks('numberTypeCheck', function(conversation, context, callback)
     {
+        var text = conversation.nlu.inputRaw;
         if(text.search(/^(\d)+$/g) != -1)
         {
-            task[type.name] = text;
-            callback(text, task, true);
+            callback(true, text);
         }
         else
         {
-            callback(text, task, false);
+            callback(false);
         }
     });
 };

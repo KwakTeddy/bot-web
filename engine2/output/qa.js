@@ -32,7 +32,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                 return next();
             }
 
-            DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text + '(?:$|\\s)', 'i') }).limit(this.limit).lean().exec(function(err, list)
+            DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text.replace(/\(/gi, '\\(').replace(/\)/gi, '\\(') + '(?:$|\\s)', 'i') }).limit(this.limit).lean().exec(function(err, list)
             {
                 if(err)
                 {
