@@ -1,3 +1,5 @@
+var chalk = require('chalk');
+
 (function()
 {
     var REPLACED_TAG = '\\+';
@@ -42,8 +44,8 @@
     OutputManager.prototype.make = function(context, target)
     {
         console.log();
-        console.log('[[[ OUTPUT MAKEUP BEFORE ]]]');
-        console.log(target);
+        console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
+        console.log(target.text);
 
         var conversation = context.history[0];
         if(!conversation)
@@ -135,8 +137,8 @@
         }
 
         console.log();
-        console.log('[[[ OUTPUT MAKEUP AFTER ]]]');
-        console.log(target);
+        console.log(chalk.yellow('[[[ Output Makeup After ]]]'));
+        console.log(target.text);
 
         return target;
     };

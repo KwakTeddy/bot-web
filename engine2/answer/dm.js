@@ -1,11 +1,10 @@
 var async = require('async');
+var chalk = require('chalk');
 
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
-var Context = require('../context.js');
 var TaskManager = require('./task.js');
-
 var Globals = require('../globals.js');
 
 (function()
@@ -269,6 +268,9 @@ var Globals = require('../globals.js');
 
     DialogGraphManager.prototype.exec = function(bot, context, conversation, callback)
     {
+        console.log();
+        console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
+
         var that = this;
 
         var dialog = conversation.dialog;
@@ -332,7 +334,7 @@ var Globals = require('../globals.js');
             }
 
             console.log();
-            console.log('[[[ OUTPUT ]]]');
+            console.log(chalk.yellow('[[[ Output ]]]'));
             console.log(resultOutput);
 
             if(options)
@@ -349,12 +351,19 @@ var Globals = require('../globals.js');
                     var prev = conversation.prev;
                     if(prev)
                     {
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - repeat ]]]'));
+                        console.log(prev.id);
+
                         context.dialogCursor = prev.id;
                         callback(resultOutput.text);
                     }
                     else
                     {
-                        //TODO 만약 prev가 없다면??? 없을리가 없긴 하지만..
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - repeat ]]]'));
+                        console.log('prev is undefined');
+
                         callback('[repeat] prev가 없습니다');
                     }
                 }
@@ -369,10 +378,18 @@ var Globals = require('../globals.js');
                             prev = prev.prev;
                         }
 
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - up ]]]'));
+                        console.log(prev.id);
+
                         that.exec(bot, context, prev, callback);
                     }
                     else
                     {
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - up ]]]'));
+                        console.log('prev is undefined');
+
                         callback({ output: { text: '[up] prev가 없습니다' } });
                     }
                 }
@@ -381,7 +398,10 @@ var Globals = require('../globals.js');
                     var dialog = bot.dialogMap[resultOutput.dialogId];
                     conversation.dialog = dialog;
 
-                    console.log('[call]', resultOutput.dialogName);
+                    console.log();
+                    console.log(chalk.yellow('[[[ Action - call ]]]'));
+                    console.log(resultOutput.dialogId);
+                    console.log(resultOutput.dialogName);
 
                     that.exec(bot, context, conversation, callback);
                 }
@@ -393,6 +413,10 @@ var Globals = require('../globals.js');
                     {
                         if(dialog)
                         {
+                            console.log();
+                            console.log(chalk.yellow('[[[ Action - callChild ]]]'));
+                            console.log(dialog.id);
+
                             conversation.dialog = dialog;
                             that.exec(bot, context, conversation, callback);
                         }
@@ -408,6 +432,11 @@ var Globals = require('../globals.js');
 
                     var dialog = bot.dialogMap[resultOutput.dialogId];
                     conversation.dialog = dialog;
+
+                    console.log();
+                    console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
+                    console.log(dialog.id);
+
                     that.exec(bot, context, conversation, callback);
                 }
                 else if(resultOutput.type == 'return')
@@ -416,11 +445,21 @@ var Globals = require('../globals.js');
                     {
                         var dialog = bot.parentDialogMap[context.returnDialog];
                         conversation.dialog = dialog;
+
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - return ]]]'));
+                        console.log(dialog.id);
+
                         that.exec(bot, context, conversation, callback);
                     }
                     else
                     {
                         // 모르겟어요?
+
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - return ]]]'));
+                        console.log('context.returnDialog is undefined');
+
                         callback(null);
                     }
                 }

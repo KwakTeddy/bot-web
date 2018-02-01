@@ -13,7 +13,7 @@ var Command = require('./command.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var KnowledgeGraph = require('./km.js');
-var ConversationManager = require('./conversation.js');
+var AnswerManager = require('./answer.js');
 var OutputManager = require('./output.js');
 
 var Transaction = require('./utils/transaction.js');
@@ -49,8 +49,8 @@ var Transaction = require('./utils/transaction.js');
         var that = this;
 
         console.log();
-        console.log(chalk.green('======== Engine Process ========'));
-        console.log('--- Parameters: ');
+        console.log(chalk.green('======================== Engine Process ========================'));
+        console.log(chalk.yellow('[[[ Parameter ]]]'));
         console.log({ botId: botId, channel: channel, userKey: userKey, inputRaw: inputRaw, options: options });
         console.log();
 
@@ -121,6 +121,11 @@ var Transaction = require('./utils/transaction.js');
 
                         context.history.splice(0, 0, conversation);
 
+                        if(context.history.length > 10)
+                        {
+                            context.history.splice(10, 1);
+                        }
+
                         conversation.nlu = {
                             sentence: inputRaw,
                             inputRaw: inputRaw
@@ -130,7 +135,7 @@ var Transaction = require('./utils/transaction.js');
                         {
                             var transaction = new Transaction.sync();
 
-                            if(bot.useKnowledgeMemory)
+                            if(bot.options.useKnowledgeMemory)
                             {
                                 transaction.call(function(done)
                                 {
@@ -162,7 +167,7 @@ var Transaction = require('./utils/transaction.js');
                             {
                                 transaction.done(function()
                                 {
-                                    ConversationManager.answer(bot, context, error, function(output)
+                                    AnswerManager.answer(bot, context, error, function(output)
                                     {
                                         output = OutputManager.make(context, output);
 
@@ -174,10 +179,6 @@ var Transaction = require('./utils/transaction.js');
 
                                         delete context.bot;
                                         delete context.channel;
-
-                                        console.log('[[[ Save Context ]]]');
-                                        console.log(context);
-                                        console.log();
 
                                         that.redis.set(contextKey, JSON.stringify(context), function(err)
                                         {
@@ -192,7 +193,7 @@ var Transaction = require('./utils/transaction.js');
 
                                                 outCallback(output);
 
-                                                console.log(chalk.green('================================'));
+                                                console.log(chalk.green('================================================================'));
                                                 console.log();
                                             }
                                         });

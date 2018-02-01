@@ -1,4 +1,4 @@
-var logger = require('./logger.js');
+var chalk = require('chalk');
 
 var NLPManager = require('./input/nlp.js');
 var EntityManager = require('./input/entity.js');
@@ -16,7 +16,7 @@ var IntentManager = require('./input/intent.js');
         var inputRaw = input.nlu.sentence;
 
         console.log();
-        console.log('[[[ INPUT ]]]');
+        console.log(chalk.yellow('[[[ INPUT ]]]'));
         console.log('inputRaw : ', inputRaw);
 
         inputRaw = inputRaw.replace(/^\s+|\s+$/g,"");

@@ -1,6 +1,6 @@
-module.exports = function(bot)
+module.exports = function(options)
 {
-    bot.use = true;
-    bot.kakao =  { keyboard: { type :"buttons", buttons:["시작"]} };
-    bot.commonButtons = [{"text": "이전"}, {"text": "처음"}];
+    options.use = true;
+    options.kakao =  { keyboard: { type :"buttons", buttons:["시작"]} };
+    options.commonButtons = [{"text": "이전"}, {"text": "처음"}];
 };

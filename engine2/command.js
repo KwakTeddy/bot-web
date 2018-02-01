@@ -24,6 +24,9 @@ var BotManager = require('./bot.js');
             }
             else
             {
+                //테스트 필요
+                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
                 var output = bot.commonDialogs[0].output;
                 if(typeof output != 'string')
                 {
@@ -53,14 +56,25 @@ var BotManager = require('./bot.js');
                 //테스트 필요
                 redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                var output = bot.commonDialogs[0].output;
-                if(typeof output != 'string')
+                BotManager.reset(bot.id);
+                BotManager.load(bot.id, function(err, bot)
                 {
-                    output = bot.commonDialogs[0].output[0];
-                }
+                    if (err)
+                    {
+                        error.delegate(err);
+                    }
+                    else
+                    {
+                        var output = bot.commonDialogs[0].output;
+                        if(typeof output != 'string')
+                        {
+                            output = bot.commonDialogs[0].output[0];
+                        }
 
-                output = OutputManager.make(context, output);
-                callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                        output = OutputManager.make(context, output);
+                        callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                    }
+                });
 
                 console.log(chalk.green('================================'));
                 console.log();
@@ -81,6 +95,9 @@ var BotManager = require('./bot.js');
             }
             else
             {
+                //테스트 필요
+                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
                 BotManager.reset(bot.id);
                 BotManager.load(bot.id, function(err, bot)
                 {
@@ -137,8 +154,9 @@ var BotManager = require('./bot.js');
     CommandManager.prototype.execute = function(redis, contextKey, inputRaw, bot, context, error, callback)
     {
         //FIXME 커맨드 실행
-        console.log(chalk.green('================================'));
-        console.log('커맨드 실행 : ', inputRaw);
+        console.log();
+        console.log(chalk.yellow(' [[[ Execute Command ]]]'));
+        console.log(inputRaw);
 
         context.history = [{ dialog: bot.commonDialogs[0] }];
 

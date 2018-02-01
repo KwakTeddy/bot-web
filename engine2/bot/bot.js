@@ -19,18 +19,19 @@ var Dialogset = mongoose.model('Dialogset');
     {
         this.botId = botId;
 
+        this.options = {};
         this.dialogMap = {};
         this.parentDialogMap = {};
-        this.dialogs = this.dialogs || [];
-        this.commonDialogs = this.commonDialogs || [];
-        this.tasks = this.tasks || {};
-        this.actions = this.actions || {};
-        this.types = this.types || {};
-        this.typeChecks = this.typeChecks || {};
-        this.concepts = this.concepts || {};
-        this.messages = this.messages || {};
-        this.patterns = this.patterns || {};
-        this.dialogsets = this.dialogsets || [];
+        this.dialogs = [];
+        this.commonDialogs = [];
+        this.tasks = {};
+        this.actions = {};
+        this.types = {};
+        this.typeChecks = {};
+        this.concepts = {};
+        this.messages = {};
+        this.patterns = {};
+        this.dialogsets = [];
     };
 
     Bot.prototype.loadBotData = function(callback)
@@ -131,6 +132,8 @@ var Dialogset = mongoose.model('Dialogset');
 
             that.intents = docs;
 
+            console.log('intents: ', docs);
+
             IntentContextModel.find({ botId: that.id }).lean().exec(function(err, doc)
             {
                 if(err)
@@ -168,6 +171,8 @@ var Dialogset = mongoose.model('Dialogset');
             {
                 docs[i].name = '@' + docs[i].name;
             }
+
+            console.log('entities: ', docs);
 
             EntityContentModel.find({ botId: that.id }).lean().populate('entityId').exec(function(err, docs)
             {
@@ -437,6 +442,8 @@ var Dialogset = mongoose.model('Dialogset');
             }
 
             that.dialogsets = dialogsets;
+
+            console.log('dialogset: ', dialogsets);
             callback();
         });
     };
@@ -482,6 +489,8 @@ var Dialogset = mongoose.model('Dialogset');
                     // utils.requireNoCache('templates/' + doc.id + '/bot/' + doc.id + '.bot.js', true);
 
                     that.template = doc;
+
+                    console.log('Template: ', doc);
 
                     // that.setCommonDialogs(that.template.commonDialogs);
                     // that.setDialogs(that.template.dialogs);

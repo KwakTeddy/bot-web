@@ -1,4 +1,5 @@
 var fs = require('fs');
+var chalk = require('chalk');
 
 var Config = require('./config.js');
 var utils = require('./utils/utils.js');
@@ -15,7 +16,7 @@ var BotObject = require('./bot/bot.js');
     BotManager.prototype.load = function(botId, callback)
     {
         console.log();
-        console.log('----- Loading Bot : ', botId, ' [Start]');
+        console.log(chalk.yellow('[[[ Bot loading ]]]'));
         var that = this;
         if(this.bots[botId])
         {
@@ -40,8 +41,6 @@ var BotObject = require('./bot/bot.js');
 
                     that.bots[botId] = bot;
                     that.loadBotFiles(bot, botDir);
-
-                    console.log('----- Loading Bot : ', botId, ' [End]');
 
                     callback(null, bot);
                 })
@@ -69,9 +68,11 @@ var BotObject = require('./bot/bot.js');
             console.log('Loading : ', files[i]);
             if(files[i].endsWith('.js'))
             {
-                utils.requireNoCache(botDir + '/' + files[i], true)(bot);
+                utils.requireNoCache(botDir + '/' + files[i], true)((files[i].endsWith('bot.js') ? bot.options : bot));
             }
         }
+
+        console.log('options: ', bot.options);
     };
     
     BotManager.prototype.setOptions = function(botId, options)
