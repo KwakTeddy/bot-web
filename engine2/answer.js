@@ -1,3 +1,5 @@
+var chalk = require('chalk');
+
 var Transaction = require('./utils/transaction.js');
 
 var autoCorrection = require('./input/nlp/autoCorrection.js');
@@ -23,7 +25,7 @@ var Logger = require('./logger.js');
 
         var transaction = new Transaction.async();
 
-        if(bot.useAutoCorrection)
+        if(bot.options.useAutoCorrection)
         {
             autoCorrection.loadWordCorrections();
         }
@@ -68,9 +70,8 @@ var Logger = require('./logger.js');
                     else if(this.qa)
                     {
                         console.log();
-                        console.log('[[[ Q&A ]]]');
+                        console.log(chalk.yellow('[[[ Q&A ]]]'));
                         console.log(this.qa.list);
-                        console.log();
 
                         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, this.qa.list[0], '', '', '', '', false, 'qna');
 
@@ -78,6 +79,9 @@ var Logger = require('./logger.js');
                     }
                     else
                     {
+                        console.log();
+                        console.log(chalk.yellow('[[[ No Answer ]]]'));
+
                         var dialog = bot.dialogMap['noanswer'];
                         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
                         callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0].text });
@@ -87,9 +91,8 @@ var Logger = require('./logger.js');
             else if(this.qa)
             {
                 console.log();
-                console.log('[[[ Q&A ]]]');
+                console.log(chalk.yellow('[[[ Q&A ]]]'));
                 console.log(this.qa.list);
-                console.log();
 
                 Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, this.qa.list[0], '', '', '', '', false, 'qna');
 
@@ -97,6 +100,9 @@ var Logger = require('./logger.js');
             }
             else
             {
+                console.log();
+                console.log(chalk.yellow('[[[ No Answer ]]]'));
+
                 var dialog = bot.dialogMap['noanswer'];
                 Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
                 callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });

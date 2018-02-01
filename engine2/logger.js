@@ -36,7 +36,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
                     if(!err)
                     {
                         botUserCache.splice(0, data.nMatched);
-                        console.log('botUsers: ' + data.nMatched + ' updated')
+                        console.log(chalk.magenta('botUsers: ' + data.nMatched + ' updated'));
                     }
 
                 })
@@ -44,7 +44,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
         }
         catch(e)
         {
-            console.log('updateCacheBotUser Err: ' + e);
+            console.error(chalk.red('updateCacheBotUser Err: ' + JSON.stringify(e)));
         }
     };
 
@@ -59,7 +59,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
                     if(docs && docs.insertedCount)
                     {
                         dialogCache.splice(0, docs.insertedCount);
-                        console.log('userdialogs: ' + docs.insertedCount + ' inserted')
+                        console.log(chalk.magenta('userdialogs: ' + docs.insertedCount + ' inserted'));
                     }
                 });
             }
@@ -77,7 +77,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
                     if(!err)
                     {
                         dialoglogCache.splice(0, data.nMatched);
-                        console.log('userdialoglogs: ' + data.nMatched + ' updated')
+                        console.log(chalk.magenta('userdialoglogs: ' + data.nMatched + ' updated'));
                     }
                 });
             }
@@ -109,7 +109,20 @@ var UserDialogLog = mongoose.model('UserDialogLog');
             {
                 if(botUserCache.length < LIMIT_CACHE_DIALOG)
                 {
-                    botUserCache.push({userKey: userKey, channel: channel, created: new Date()});
+                    var check = false;
+                    for(var i=0; i<botUserCache.length; i++)
+                    {
+                        if(botUserCache[i].userKey == userKey)
+                        {
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    if(!check)
+                    {
+                        botUserCache.push({userKey: userKey, channel: channel, created: new Date()});
+                    }
                 }
 
                 if(botUserCache.length >= MAX_CACHE_DIALOG)
@@ -137,7 +150,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
                     {
                         if(err)
                         {
-                            console.log(err);
+                            console.error(err);
                         }
                     })
                 }

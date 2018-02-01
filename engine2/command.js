@@ -154,8 +154,9 @@ var BotManager = require('./bot.js');
     CommandManager.prototype.execute = function(redis, contextKey, inputRaw, bot, context, error, callback)
     {
         //FIXME 커맨드 실행
-        console.log(chalk.green('================================'));
-        console.log('커맨드 실행 : ', inputRaw);
+        console.log();
+        console.log(chalk.yellow(' [[[ Execute Command ]]]'));
+        console.log(inputRaw);
 
         context.history = [{ dialog: bot.commonDialogs[0] }];
 
