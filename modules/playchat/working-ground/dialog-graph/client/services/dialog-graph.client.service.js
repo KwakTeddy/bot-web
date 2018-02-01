@@ -187,7 +187,6 @@
 
         var DialogGraph = function()
         {
-            this.originalFileData = undefined;
             this.graphData = undefined;
             this.template = undefined;
             this.canvas = undefined;
@@ -693,8 +692,6 @@
 
             try
             {
-                this.originalFileData = data;
-
                 this.commonDialogs = data.commonDialogs;
 
                 var startDialog = this.commonDialogs[0];
@@ -710,40 +707,6 @@
                 this.onLoad();
 
                 return true;
-
-                // var commandMatch = data.match(/var commonDialogs[^;]*;/gi);
-                // if(commandMatch && commandMatch.length == 1)
-                // {
-                //     var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
-                //     this.commonDialogs = JSON.parse(parsed);
-                //
-                //     this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
-                //
-                //     var startDialog = this.commonDialogs[0];
-                //     if(!startDialog)
-                //         startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
-                //
-                //     var match = data.match(/var dialogs[^;]*;/gi);
-                //     if(match && match.length == 1)
-                //     {
-                //         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
-                //
-                //         startDialog.children = this.userDialogs = JSON.parse(parsed);
-                //         this.graphData = startDialog;
-                //
-                //         this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
-                //
-                //         this.refresh();
-                //
-                //         this.onLoad();
-                //
-                //         return true;
-                //     }
-                //     else
-                //     {
-                //         return false;
-                //     }
-                // }
             }
             catch(err)
             {
@@ -1170,6 +1133,94 @@
             });
         };
 
+        DialogGraph.prototype.reloadDialog = function(dialog)
+        {
+            var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
+
+            var inputTemplate = '';
+            var outputTemplate = '';
+            var buttonTemplate = '';
+
+            if(typeof dialog.input == 'object' && dialog.input.length)
+            {
+                //or
+                for(var i=0; i<dialog.input.length; i++)
+                {
+                    var input = dialog.input[i];
+                    inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
+                }
+            }
+            else
+            {
+                // 예전 그래프에 input이 리스트가 아닌것도 있었다.
+                inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+
+            if(typeof dialog.output == 'object')
+            {
+                if(dialog.output.length)
+                {
+                    for(var i=0; i<dialog.output.length; i++)
+                    {
+                        var output = dialog.output[i];
+
+                        if(output.kind == 'Text')
+                        {
+                            outputTemplate += '<div>' + output.text + '</div>';
+                        }
+                        else
+                        {
+                            outputTemplate += makeOutputTemplate(output);
+                        }
+
+                        if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
+                        {
+                            buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
+                        }
+
+                        break;
+                    }
+                }
+                else
+                {
+                    outputTemplate = makeOutputTemplate(dialog.output);
+                    if(dialog.output.buttons && dialog.output.buttons.length > 0)
+                    {
+                        buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
+                    }
+                }
+            }
+            else
+            {
+                outputTemplate = makeOutputTemplate(dialog.output);
+            }
+
+
+            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
+            t = angular.element(this.$compile(t)(this.$scope));
+
+            var that = this;
+            t.find('.graph-dialog-output img').on('load', function()
+            {
+                that.refreshLine();
+            });
+
+            t.find('.graph-dialog-item').get(0).dialog = dialog;
+
+            makeDialogDraggable(t.find('.graph-dialog-item').get(0));
+
+            var itemElement = t.find('.graph-dialog-item').get(0);
+
+            var parent = angular.element(this.canvas).find('#' + dialog.id).get(0);
+            parent.replaceChild(itemElement, parent.children[0]);
+
+            this.bindDialogFunctions(angular.element(parent));
+
+            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+
+            this.focusById(dialog.id);
+        };
+
         //아이디가 없으면 생성하게끔 하려고 임시로 넣음.
         var tempIdCount = new Date().getTime();
         DialogGraph.prototype.drawDialog = function(parent, dialog)
@@ -1265,7 +1316,14 @@
 
             makeDialogDraggable(t.find('.graph-dialog-item').get(0));
 
-            parent.append(t);
+            // if(parent.find('.plus').length > 0)
+            // {
+            //     t.insertBefore(parent.find('.plus'));
+            // }
+            // else
+            // {
+                parent.append(t);
+            // }
 
             if(!dialog.children || dialog.children.length == 0)
             {
@@ -1743,17 +1801,15 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
+            var children = this.commonDialogs[0].children;
             delete this.commonDialogs[0].children;
 
             var userDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4);
             var commonDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.commonDialogs)), null, 4);
 
+            this.commonDialogs[0].children = children;
+
             var data = 'var dialogs = ' + userDialogsString + ';\r\n\r\n' + 'var commonDialogs = ' + commonDialogsString + ';\r\n\r\n' + 'module.exports = function(bot)\r\n{\r\n\tbot.setDialogs(dialogs);\r\n\tbot.setCommonDialogs(commonDialogs);\r\n}';
-            //커먼다이얼로그에 서큘러 JSON이 생기는 문제가 있으므로 정리해야함.
-            // var temp = JSON.parse(JSON.stringify(this.commonDialogs));
-            // delete temp[0].children;
-            //
-            // var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
             return data;
         };
 

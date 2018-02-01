@@ -126,7 +126,7 @@ var BotManager = require('./bot.js');
                 }
 
                 output = OutputManager.make(context, output);
-                callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                callback({ type: 'dialog', output: output});
 
                 console.log(chalk.green('================================'));
                 console.log();
@@ -156,6 +156,8 @@ var BotManager = require('./bot.js');
         }
         else if(inputRaw == ':reload-bot-files')
         {
+            bot.dialogs = [];
+            bot.commonDialogs = [];
             this.reloadBotFiles(bot, context, error, callback);
         }
         else

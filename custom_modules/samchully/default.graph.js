@@ -830,7 +830,8 @@ var dialogs = [
                                                 "id": "default28",
                                                 "task": {
                                                     "name": "setNoticeMethod"
-                                                }
+                                                },
+                                                "children": []
                                             },
                                             {
                                                 "name": "LMS 고지",

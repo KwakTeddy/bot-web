@@ -1,4 +1,4 @@
-<script type="text/template" id="inputListModalTemplate">
+'<script type="text/template" id="inputListModalTemplate">
 <ul class="dialog-editor-input-list-modal">
     <li>{{lan('새로만들기') }}</li>
 </ul>
@@ -114,7 +114,7 @@
                                         </select>
                                     </div>
                                     <div class="dialog-editor-select-input" ng-class="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? '' : 'disabled'">
-                                        <input type="text" ng-model="output.dialog" ng-required="true" placeholder="{{lan('Dialog Input') }}" ng-focus="onActionFocus($event);" ng-keydown="onActionKeyDown($event, output);" ng-keyup="onActionKeyUp($event);">
+                                        <input type="text" ng-model="output.dialogName" ng-required="true" placeholder="{{lan('Dialog Input') }}" ng-focus="onActionFocus($event);" ng-keydown="onActionKeyDown($event, output);" ng-keyup="onActionKeyUp($event);">
                                         <ul class="dialog-editor-select-options">
                                             <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
                                             <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
