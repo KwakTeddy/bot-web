@@ -23,22 +23,24 @@ var UserDialogLog = mongoose.model('UserDialogLog');
     {
         try
         {
-            var bulk = BotUser.collection.initializeOrderedBulkOp();
-            for(var i = 0; i < botUserCache.length; i++)
+            if(botUserCache.length > 0)
             {
-                bulk.find({userKey: botUserCache[i].userKey}).upsert().updateOne(botUserCache[i]);
-            }
-
-            bulk.execute(function(err, data)
-            {
-                if(!err)
+                var bulk = BotUser.collection.initializeOrderedBulkOp();
+                for(var i = 0; i < botUserCache.length; i++)
                 {
-                    botUserCache.splice(0, data.nMatched);
-                    console.log('botUsers: ' + data.nMatched + ' updated')
+                    bulk.find({userKey: botUserCache[i].userKey}).upsert().updateOne(botUserCache[i]);
                 }
 
-            })
+                bulk.execute(function(err, data)
+                {
+                    if(!err)
+                    {
+                        botUserCache.splice(0, data.nMatched);
+                        console.log('botUsers: ' + data.nMatched + ' updated')
+                    }
 
+                })
+            }
         }
         catch(e)
         {
@@ -50,15 +52,20 @@ var UserDialogLog = mongoose.model('UserDialogLog');
     {
         try
         {
-            UserDialog.collection.insert(dialogCache, function(err, docs)
+            if(dialogCache.length > 0)
             {
-
-                if(docs && docs.insertedCount)
+                UserDialog.collection.insert(dialogCache, function(err, docs)
                 {
-                    dialogCache.splice(0, docs.insertedCount);
-                    console.log('userdialogs: ' + docs.insertedCount + ' inserted')
-                }
+                    if(docs && docs.insertedCount)
+                    {
+                        dialogCache.splice(0, docs.insertedCount);
+                        console.log('userdialogs: ' + docs.insertedCount + ' inserted')
+                    }
+                });
+            }
 
+            if(dialoglogCache.length > 0)
+            {
                 var bulk = UserDialogLog.collection.initializeOrderedBulkOp();
                 for(var i = 0; i < dialoglogCache.length; i++)
                 {
@@ -72,10 +79,8 @@ var UserDialogLog = mongoose.model('UserDialogLog');
                         dialoglogCache.splice(0, data.nMatched);
                         console.log('userdialoglogs: ' + data.nMatched + ' updated')
                     }
-
-                })
-
-            });
+                });
+            }
         }
         catch(e)
         {
