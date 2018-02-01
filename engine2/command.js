@@ -107,7 +107,7 @@ var BotManager = require('./bot.js');
         });
     };
 
-    CommandManager.prototype.reloadBotFiles = function(bot, error, callback)
+    CommandManager.prototype.reloadBotFiles = function(bot, context, error, callback)
     {
         BotManager.load(bot.id, function(err, bot)
         {
@@ -156,7 +156,7 @@ var BotManager = require('./bot.js');
         }
         else if(inputRaw == ':reload-bot-files')
         {
-            this.reloadBotFiles(bot, error, callback);
+            this.reloadBotFiles(bot, context, error, callback);
         }
         else
         {

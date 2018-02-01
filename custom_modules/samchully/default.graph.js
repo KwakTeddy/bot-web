@@ -121,8 +121,7 @@ var dialogs = [
                                                 "id": "default65",
                                                 "task": {
                                                     "name": "authConfirm"
-                                                },
-                                                "children": []
+                                                }
                                             },
                                             {
                                                 "name": "인증거절",
@@ -369,8 +368,7 @@ var dialogs = [
                                         "id": "default18",
                                         "task": {
                                             "name": "getNoticeDetail"
-                                        },
-                                        "children": []
+                                        }
                                     }
                                 ],
                                 "task": {
@@ -941,7 +939,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지방법입니다.\n\"카카오페이 고지\"\n해지하시겠습니까?",
+                                        "text": "현재 고지방법입니다.\n\n\"+user.curNoticeMethod+\"\n\n해지하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -970,7 +968,7 @@ var dialogs = [
                                         ],
                                         "id": "default55",
                                         "task": {
-                                            "name": "setNoticeMethod"
+                                            "name": "cancelNoticeMethod"
                                         }
                                     }
                                 ],
@@ -1614,6 +1612,19 @@ var dialogs = [
     }
 ];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1729,8 +1740,21 @@ var commonDialogs = [
     }
 ];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
-}
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};
