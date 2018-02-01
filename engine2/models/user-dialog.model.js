@@ -31,36 +31,15 @@ var UserDialogSchema = new Schema(
 mongoWrapper.model('UserDialog', UserDialogSchema);
 
 
-var UserDialogLogSchema = new Schema({
-  botId: {
-    type: String
-  },
-
-  userId: {
-    type: String
-  },
-
-  channel: {
-    type: String
-  },
-
-  year: {
-    type: Number,
-    default: (new Date()).getYear() + 1900
-  },
-  month: {
-    type: Number,
-    default: (new Date()).getMonth() + 1
-  },
-  date: {
-    type: Number,
-    default: (new Date()).getDate()
-  },
-
-  created: {
-    type: Date,
-    default: Date.now
-  }
+var UserDialogLogSchema = new Schema(
+{
+    botId: String,
+    userId: String,
+    channel: String,
+    year: { type: Number, default: (new Date()).getYear() + 1900 },
+    month: { type: Number, default: (new Date()).getMonth() + 1 },
+    date: { type: Number, default: (new Date()).getDate() },
+    created: { type: Date, default: Date.now }
 });
 
 mongoWrapper.model('UserDialogLog', UserDialogLogSchema);

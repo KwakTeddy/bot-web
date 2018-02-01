@@ -1,9 +1,34 @@
+var path = require('path');
+var fs = require('fs');
 var chalk = require('chalk');
+
+var mongoose = require('mongoose');
+var BotUser = mongoose.model('BotUser');
 
 (function()
 {
     var Logger = function()
     {
+    };
+
+    Logger.prototype.logBotUser = function(botId, channel, userKey, data)
+    {
+        BotUser.findOne({ botId: botId, channel: channel, userKey: userKey }).exec(function(err, data)
+        {
+            if(err || !data)
+            {
+
+            }
+            else
+            {
+                if(!fs.existsSync(path.resolve('./logs')))
+                {
+                    fs.mkdirSync(path.resolve('./logs'));
+                }
+
+                fs.writeFileSync(path.resolve('./logs') + '/botUser-' + botId + '_' + userKey + '_' + channel, JSON.stringify(data || {}));
+            }
+        });
     };
 
     Logger.prototype.now = function()

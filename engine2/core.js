@@ -1,18 +1,22 @@
-var fs = require('fs');
-var path = require('path');
 var chalk = require('chalk');
 
 var Error = require('./error.js');
+
+var Logger = require('./logger.js');
 
 var globals = require('./globals.js');
 var channel = require('./channel.js');
 var loadBalancer = require('./loadbalancer.js');
 
 var Context = require('./context.js');
+var Command = require('./command.js');
 var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
+var KnowledgeGraph = require('./km.js');
 var ConversationManager = require('./conversation.js');
 var OutputManager = require('./output.js');
+
+var Transaction = require('./utils/transaction.js');
 
 (function()
 {
@@ -23,11 +27,7 @@ var OutputManager = require('./output.js');
         console.log();
         console.log(chalk.green('================= Engine Initailize ==================='));
 
-        this.loadModels();
         globals.init();
-
-        // var autoCorrection = require(path.resolve('engine2/bot/engine/nlp/autoCorrection'));
-        // autoCorrection.loadWordCorrections();
 
         console.log(chalk.green('===================================================='));
         console.log();
@@ -36,19 +36,6 @@ var OutputManager = require('./output.js');
     Core.prototype.setRedisClient = function(client)
     {
         this.redis = client;
-    };
-
-    Core.prototype.loadModels = function()
-    {
-        console.log('[Load Models START]');
-        var list = fs.readdirSync(path.resolve('./engine2/models'));
-        for(var i=0; i<list.length; i++)
-        {
-            require(path.resolve('./engine2/models/' + list[i]));
-            console.log(list[i]);
-        }
-        console.log('[Load Models END]');
-        console.log();
     };
 
     Core.prototype.init = function(app, io)
@@ -66,6 +53,8 @@ var OutputManager = require('./output.js');
         console.log('--- Parameters: ');
         console.log({ botId: botId, channel: channel, userKey: userKey, inputRaw: inputRaw, options: options });
         console.log();
+
+        Logger.logBotUser(botId, channel, userKey, {});
 
         var error = new Error(errCallback);
 
@@ -97,106 +86,7 @@ var OutputManager = require('./output.js');
 
                         if(inputRaw.startsWith(':'))
                         {
-                            //FIXME 커맨드 실행
-                            console.log(chalk.green('================================'));
-                            console.log('커맨드 실행 : ', inputRaw);
-
-                            context.history = [{ dialog: bot.commonDialogs[0] }];
-
-                            if(inputRaw == ':reset user')
-                            {
-                                context.returnDialog = undefined;
-                                context.dialogCursor = undefined;
-
-                                that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
-                                {
-                                    if(err)
-                                    {
-                                        error.delegate(err);
-                                    }
-                                    else
-                                    {
-                                        var output = bot.commonDialogs[0].output;
-                                        if(typeof output != 'string')
-                                        {
-                                            output = bot.commonDialogs[0].output[0];
-                                        }
-
-                                        output = OutputManager.make(context, output);
-                                        outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
-
-                                        console.log(chalk.green('================================'));
-                                        console.log();
-                                    }
-                                });
-                            }
-                            else if(inputRaw == ':reset memory')
-                            {
-                                context = Context.create();
-                                that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
-                                {
-                                    if(err)
-                                    {
-                                        error.delegate(err);
-                                    }
-                                    else
-                                    {
-                                        //테스트 필요
-                                        that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                                        var output = bot.commonDialogs[0].output;
-                                        if(typeof output != 'string')
-                                        {
-                                            output = bot.commonDialogs[0].output[0];
-                                        }
-
-                                        output = OutputManager.make(context, output);
-                                        outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
-
-                                        console.log(chalk.green('================================'));
-                                        console.log();
-                                    }
-                                });
-                            }
-                            else if(inputRaw == ':build')
-                            {
-                                context.returnDialog = undefined;
-                                context.dialogCursor = undefined;
-
-                                that.redis.set(contextKey, JSON.stringify(context), function(err, reply)
-                                {
-                                    if(err)
-                                    {
-                                        error.delegate(err);
-                                    }
-                                    else
-                                    {
-                                        BotManager.reset(botId);
-                                        BotManager.load(botId, function(err, bot)
-                                        {
-                                            if (err)
-                                            {
-                                                error.delegate(err);
-                                            }
-                                            else
-                                            {
-                                                var output = bot.commonDialogs[0].output;
-                                                if(typeof output != 'string')
-                                                {
-                                                    output = bot.commonDialogs[0].output[0];
-                                                }
-
-                                                output = OutputManager.make(context, output);
-                                                outCallback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
-                                            }
-                                        });
-
-                                        console.log(chalk.green('================================'));
-                                        console.log();
-                                    }
-                                });
-                            }
-
+                            Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
                             return;
                         }
 
@@ -238,41 +128,77 @@ var OutputManager = require('./output.js');
 
                         InputManager.analysis(bot, conversation, error, function()
                         {
-                            ConversationManager.answer(bot, context, error, function(output)
+                            var transaction = new Transaction.sync();
+
+                            if(bot.useKnowledgeMemory)
                             {
-                                output = OutputManager.make(context, output);
-
-                                for(var i=0; i<context.history.length; i++)
+                                transaction.call(function(done)
                                 {
-                                    delete context.history[i].next;
-                                    delete context.history[i].prev;
-                                }
-
-                                delete context.bot;
-                                delete context.channel;
-
-                                console.log('[[[ Save Context ]]]');
-                                console.log(context);
-                                console.log();
-
-                                that.redis.set(contextKey, JSON.stringify(context), function(err)
-                                {
-                                    if(err)
+                                    KnowledgeGraph.memory(conversation, error, function(numAffected)
                                     {
-                                        error.delegate(err);
-                                    }
-                                    else
-                                    {
-                                        //테스트 필요
-                                        that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                                        outCallback(output);
-
-                                        console.log(chalk.green('================================'));
-                                        console.log();
-                                    }
+                                        if(numAffected && numAffected.ok == 1 && numAffected.n > 0)
+                                        {
+                                            if (bot.language == "zh")
+                                            {
+                                                outCallback(context, '我学到了你说的话。');
+                                            }
+                                            else if (bot.language == "en")
+                                            {
+                                                outCallback(context, 'I understand.');
+                                            }
+                                            else
+                                            {
+                                                outCallback(context, '말씀하신 내용을 학습했어요.');
+                                            }
+                                        }
+                                        else
+                                        {
+                                            done();
+                                        }
+                                    });
                                 });
-                            });
+                            }
+                            else
+                            {
+                                transaction.done(function()
+                                {
+                                    ConversationManager.answer(bot, context, error, function(output)
+                                    {
+                                        output = OutputManager.make(context, output);
+
+                                        for(var i=0; i<context.history.length; i++)
+                                        {
+                                            delete context.history[i].next;
+                                            delete context.history[i].prev;
+                                        }
+
+                                        delete context.bot;
+                                        delete context.channel;
+
+                                        console.log('[[[ Save Context ]]]');
+                                        console.log(context);
+                                        console.log();
+
+                                        that.redis.set(contextKey, JSON.stringify(context), function(err)
+                                        {
+                                            if(err)
+                                            {
+                                                error.delegate(err);
+                                            }
+                                            else
+                                            {
+                                                //테스트 필요
+                                                that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                                                outCallback(output);
+
+                                                console.log(chalk.green('================================'));
+                                                console.log();
+                                            }
+                                        });
+                                    });
+                                });
+                            }
                         });
                     }
                 });

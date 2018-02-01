@@ -1,5 +1,6 @@
 'use strict';
 var path = require('path');
+var fs = require('fs');
 var logger = require(path.resolve('./config/lib/logger'));
 // var loadbalancer = require(path.resolve('engine/bot/engine/loadbalancer/loadbalancer'));
 
@@ -56,6 +57,16 @@ module.exports.start = function start(callback)
     var redis = require('redis');
 
     var client = redis.createClient(6379, config.redis.host);
+
+    console.log('[Load Engine Models START]');
+    var list = fs.readdirSync(path.resolve('./engine2/models'));
+    for(var i=0; i<list.length; i++)
+    {
+        require(path.resolve('./engine2/models/' + list[i]));
+        console.log(list[i]);
+    }
+    console.log('[Load Engine Models END]');
+    console.log();
 
     var Engine = require(path.resolve('./engine2/core.js'));
 

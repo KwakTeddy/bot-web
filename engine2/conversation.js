@@ -1,5 +1,7 @@
 var Transaction = require('./utils/transaction.js');
 
+var autoCorrection = require('./input/nlp/autoCorrection.js');
+
 var QNAManager = require('./output/qa.js');
 var DialogGraphManager = require('./output/dm.js');
 
@@ -18,6 +20,11 @@ var DialogGraphManager = require('./output/dm.js');
         var nlp = conversation.nlu.nlp;
 
         var transaction = new Transaction.async();
+
+        if(bot.useAutoCorrection)
+        {
+            autoCorrection.loadWordCorrections();
+        }
 
         QNAManager.find(bot, nlp, transaction.callback(function(err, matchedList, done)
         {
