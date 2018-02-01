@@ -72,10 +72,10 @@
                     if(key)
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
-                        var list = getValue(context, key);
+                        var list = getValue({ context: context }, key);
                         if(!list)
                         {
-                            list = getValue(conversation, key);
+                            list = getValue({ conversation: conversation }, key);
                         }
 
                         if(list)
@@ -111,10 +111,10 @@
                 {
                     if(key)
                     {
-                        var replaced = getValue(context, key);
+                        var replaced = getValue({ context: context }, key);
                         if(!replaced)
                         {
-                            replaced = getValue(conversation, key);
+                            replaced = getValue({ conversation: conversation }, key);
                         }
 
                         if(replaced)

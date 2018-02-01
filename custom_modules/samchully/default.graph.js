@@ -27,7 +27,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "고객명 : +user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞에 6자리를 입력해주세요.\n예시) 900930",
+                        "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞에 6자리를 입력해주세요.\n예시) 900930",
                         "if": ""
                     }
                 ],
@@ -43,7 +43,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +user.customerName+\n생년월일 : +user.customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
+                                "text": "고객명 : +context.user.customerName+\n생년월일 : +context.user.customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
                             }
                         ],
                         "id": "default49",
@@ -85,7 +85,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "검색 결과입니다.\n\n고객명 : +user.customerName+\n생일 : +user.customerBirth+\n핸드폰번호 : +types.mobile+\n\n인증하시겠습니까?",
+                                                "text": "검색 결과입니다.\n\n고객명 : +context.user.customerName+\n생일 : +context.user.customerBirth+\n핸드폰번호 : +context.types.mobile+\n\n인증하시겠습니까?",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -244,7 +244,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#customerList#+index+. +customerName+/+address+ / +id+\n#",
+                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#+index+. +customerName+/+address+ / +id+\n#",
                 "if": "context.user.auth"
             },
             {
@@ -268,7 +268,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "+curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
+                        "text": "+context.curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -346,7 +346,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +curCustomer.customerName+ 고객님 월별 고지내역입니다.( +noticeNum+ 개월)\n\n#noticeHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
+                                        "text": "[요금] +context.curCustomer.customerName+ 고객님 월별 고지내역입니다.( +context.noticeNum+ 개월)\n\n#context.noticeHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
                                         "buttons": []
                                     }
                                 ],
@@ -419,7 +419,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +curCustomer.customerName+ 월별 납부내역입니다.(+listNum+개월)\n\n#paymentHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#"
+                                        "text": "[요금] +context.curCustomer.customerName+ 월별 납부내역입니다.(+context.listNum+개월)\n\n#context.paymentHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#"
                                     }
                                 ],
                                 "id": "default19",
@@ -500,7 +500,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
+                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default12",
@@ -587,7 +587,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
+                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default23",
@@ -763,7 +763,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지 방법입니다.\n\n\"+user.curNoticeMethod+\"\n\n 전자고지를 신청하거나 변경하시겠습니까?",
+                                        "text": "현재 고지 방법입니다.\n\n\"+context.user.curNoticeMethod+\"\n\n 전자고지를 신청하거나 변경하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -939,7 +939,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지방법입니다.\n\n\"+user.curNoticeMethod+\"\n\n해지하시겠습니까?",
+                                        "text": "현재 고지방법입니다.\n\n\"+context.user.curNoticeMethod+\"\n\n해지하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -991,7 +991,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "자동이체 신청해지",
+                                "text": "현재 납부방법입니다.\n\n+conversation.curPaymentMethod+\n\n자동이체 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -1007,7 +1007,7 @@ var dialogs = [
                         "id": "default9",
                         "children": [
                             {
-                                "name": "자동이체 신청",
+                                "name": "자동이제 신청",
                                 "input": [
                                     {
                                         "text": {
@@ -1019,42 +1019,13 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 납부방법입니다.\n\n자동이체 신청 혹은 변경 하시겠습니까",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "자동이체 신청/변경"
-                                            }
-                                        ]
+                                        "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n1544-3002"
                                     }
                                 ],
-                                "id": "default32",
-                                "children": [
-                                    {
-                                        "name": "자동이체 신청 안내멘트",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "신청",
-                                                    "nlp": "신청"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n1544-3002"
-                                            }
-                                        ],
-                                        "id": "default33"
-                                    }
-                                ],
-                                "task": {
-                                    "name": "getPaymentMethod"
-                                }
+                                "id": "default53"
                             },
                             {
-                                "name": "자동이체 해지",
+                                "name": "자동이제 해지",
                                 "input": [
                                     {
                                         "text": {
@@ -1066,38 +1037,15 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 납부 방법입니다.\n\n해지하시겠습니까?",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "넵"
-                                            }
-                                        ]
+                                        "text": "자동이체 재 신청이 필요하신 고객님께서는 관할 고객센터로 연락 주시기 바랍니다"
                                     }
                                 ],
-                                "id": "default34",
-                                "children": [
-                                    {
-                                        "name": "자동이체 해지 완료 메세지",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "네",
-                                                    "nlp": "네"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "자동이체 재 신청이 필요하신 고객님께서는 관할 고객센터로 연락 주시기 바랍니다"
-                                            }
-                                        ],
-                                        "id": "default35"
-                                    }
-                                ]
+                                "id": "default57"
                             }
-                        ]
+                        ],
+                        "task": {
+                            "name": "getPaymentMethod"
+                        }
                     },
                     {
                         "name": "자가 검침 입력",
@@ -1344,7 +1292,7 @@ var dialogs = [
             },
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#customerList#+index+. +customerName+/+address+ / +id+\n#",
+                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#+index+. +customerName+/+address+ / +id+\n#",
                 "if": ""
             }
         ],
@@ -1362,7 +1310,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "+curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
+                        "text": "+context.curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1612,19 +1560,6 @@ var dialogs = [
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1740,21 +1675,8 @@ var commonDialogs = [
     }
 ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
-};
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
+}

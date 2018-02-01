@@ -545,8 +545,6 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            if(conversation.nlu.inputRaw)
-
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -588,9 +586,7 @@ module.exports = function(bot)
         {
             action: function (conversation, context, callback)
             {
-                if(conversation.nlu.inputRaw)
-
-                    var options = {};
+                var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
                 options.json.name = 'ZCS_GOJI_LMS_REQUEST';
@@ -631,9 +627,7 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            if(conversation.nlu.inputRaw)
-
-                var options = {};
+            var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
@@ -675,9 +669,7 @@ module.exports = function(bot)
         {
             action: function (conversation, context, callback)
             {
-                if(conversation.nlu.inputRaw)
-
-                    var options = {};
+                var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
                 options.json.name = 'ZCS_GOJI_CANCEL';
@@ -720,7 +712,55 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            callback();
+
+            var methodIdex =
+            {
+                'A': '비자동이체',
+                'D': '은행자동이체',
+                'K': '카드자동이체'
+            };
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_GET_PAYMENT_METHOD';
+            options.json.param = [
+                { key: 'I_VKONT', val: '1105391507' }
+            ];
+            options.timeout = 7000;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########')
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        console.log('!@#!#!#!!R#R!R!')
+                        console.log(body['E_EZAWE']);
+                        if(body['E_EZAWE'] == '')
+                        {
+                            body['E_EZAWE'] = 'A'
+                        }
+                        conversation.curPaymentMethod = methodIdex[body['E_EZAWE']];
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(conversation)
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+
+                    callback();
+                }
+            });
         }
     });
 
