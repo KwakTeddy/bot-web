@@ -614,7 +614,7 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            conversation.setNoticeMethodSuccess = true; //TODO conversation으로 교체
+                            conversation.setNoticeMethodSuccess = true;
                             console.log('@@@@@@@@@@@@@@@')
                             console.log(body)
                         }else {
@@ -627,7 +627,51 @@ module.exports = function(bot)
             }
         });
 
-    bot.setTask('setNoticeMethod_eㅇmail',
+    bot.setTask('setNoticeMethod_email',
+    {
+        action: function (conversation, context, callback)
+        {
+            if(conversation.nlu.inputRaw)
+
+                var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
+            options.json.param = [
+                { key: 'I_VKONT', val: '1105391507' },
+                { key: 'I_EMAIL', val: '5709psy@moneybrain.ai' }
+            ];
+            options.timeout = 7000;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########')
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        conversation.setNoticeMethodSuccess = true;
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+
+                    callback();
+                }
+            });
+        }
+    });
+
+    bot.setTask('cancelNoticeMethod',
         {
             action: function (conversation, context, callback)
             {
@@ -636,17 +680,16 @@ module.exports = function(bot)
                     var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
-                options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
+                options.json.name = 'ZCS_GOJI_CANCEL';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '110591507' },
-                    { key: 'I_EMAIL', val: '5709psy@moneybrain.ai' }
+                    { key: 'I_VKONT', val: '1105391507' }
                 ];
+                options.timeout = 7000;
 
                 request.post(options, function(err, response, body)
                 {
-                    console.log(body)
                     if(err)
-                    {
+                    {no
                         console.log(err);
                     }
                     else
@@ -658,7 +701,7 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            conversation.setNoticeMethodSuccess = true; //TODO conversation으로 교체
+                            conversation.setNoticeMethodSuccess = true;
                             console.log('@@@@@@@@@@@@@@@')
                             console.log(body)
                         }else {
@@ -670,6 +713,8 @@ module.exports = function(bot)
                 });
             }
         });
+
+
 
     bot.setTask('getPaymentMethod',
     {
