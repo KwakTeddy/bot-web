@@ -67,10 +67,11 @@ var Logger = require('./logger.js');
                     }
                     else
                     {
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, output.text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-
                         var dialog = bot.dialogMap['noanswer'];
-                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output });
+
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
+
+                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0].text });
                     }
                 });
             }

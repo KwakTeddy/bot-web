@@ -109,7 +109,7 @@ var Globals = require('../globals.js');
                             type = Globals.types[input[key]];
                         }
 
-                        type.typeCheck.call(type, conversation, context, function(matched, parsed)
+                        type.typeCheck.call(type, conversation, context, function(matched, parsed, retry) //TODO retry가 true면 해당 input을 다시 입력받도록 질의 한다. 만약 필요한 값이 더 있다면 그 값도 요구할 수 있다. retry : ['주민등록번로를 다시 입력해주세요 YYMMDD']
                         {
                             if(matched)
                             {
@@ -132,7 +132,7 @@ var Globals = require('../globals.js');
                     }
                     else if(key == 'if')
                     {
-                        result = result && (function(conversation, input)
+                        result = result && (function(conversation, context, input)
                         {
                             if(eval('result = (' + input.if + ' ? true : false);'))
                             {
@@ -141,7 +141,7 @@ var Globals = require('../globals.js');
 
                             return false;
 
-                        })(conversation, input);
+                        })(conversation, context, input);
                     }
                     else
                     {
@@ -303,7 +303,7 @@ var Globals = require('../globals.js');
                 {
                     if(!resultOutput && output[i].if)
                     {
-                        (function(context, o)
+                        (function(context, conversation, o)
                         {
                             var result = false;
                             eval('result = (' + o.if + ' ? true : false);');
@@ -313,7 +313,7 @@ var Globals = require('../globals.js');
                                 resultOutput = o;
                             }
 
-                        })(context, output[i]);
+                        })(context, conversation, output[i]);
                     }
                     else if(!output[i].if)
                     {

@@ -108,7 +108,7 @@
                         }
                         else
                         {
-                            return match;
+                            return '[' + match + '] is undefined';
                         }
                     }
 

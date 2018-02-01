@@ -82,6 +82,10 @@ var Transaction = require('./utils/transaction.js');
                         else
                         {
                             context = JSON.parse(context);
+                            if(!context.user)
+                            {
+                                context.user = {};
+                            }
                         }
 
                         if(inputRaw.startsWith(':'))

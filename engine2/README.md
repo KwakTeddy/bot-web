@@ -1,29 +1,30 @@
 # 엔진 가이드
 
-## 컨텍스트
-사용자가 챗봇과 대화를 했을때 생성되는 데이터.
+## Context
 ```
 {
 	user: Object,
 	bot: Object,
 	channel: String,
-	history: [
-		{
-			nlu:
-          	{
-          		sentence: String,
-          		nlp: Array,
-          		nlpText: String
-          	},
-          	dialog: Object,
-          	next: Object,
-          	prev: Object
-		}
-	],
+	history: [conversation],
 	returnDialog: String,
-	dialogCursor: String
+	dialogCursor: String,
+	types: Object
 }
 ```
+
+### Conversation
+{
+	nlu:
+	{
+		sentence: String,
+		nlp: Array,
+		nlpText: String
+	},
+	dialog: Object,
+	next: Object,
+	prev: Object
+}
 
 ## 다이얼로그 그래프 데이터 구조
 ```
