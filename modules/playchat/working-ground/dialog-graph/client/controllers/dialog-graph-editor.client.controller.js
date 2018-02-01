@@ -160,7 +160,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
 
         var text = $scope.dialog.input[index].text;
-        if(text)
+        if(text.raw.trim())
         {
             DialogGraphsNLPService.get({ botId: chatbot.id, text: text.raw }, function(result)
             {
@@ -192,6 +192,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             // DialogGraph.refresh();
             DialogGraph.reloadDialog(result);
             DialogGraph.setDirty(true);
+            DialogGraph.refreshLine();
             // DialogGraph.focusById(result.id);
 
             if(DialogGraphEditor.saveCallback)
