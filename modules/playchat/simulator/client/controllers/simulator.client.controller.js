@@ -275,6 +275,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             emitMsg(':build', false);
         });
 
+        $scope.$on('simulator-build-without-reset-focus', function()
+        {
+            console.log('빌드');
+            clearBubble();
+            emitMsg(':reload-bot-files', false);
+        });
+
         $scope.$on('set-simulator-content', function(context, data)
         {
             for(var i=data.dialog.length-1; i>=0; i--)

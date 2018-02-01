@@ -368,7 +368,8 @@ var dialogs = [
                                         "id": "default18",
                                         "task": {
                                             "name": "getNoticeDetail"
-                                        }
+                                        },
+                                        "children": []
                                     }
                                 ],
                                 "task": {
@@ -1625,8 +1626,31 @@ var dialogs = [
                 "id": "default42"
             }
         ]
+    },
+    {
+        "name": "New Dialog2",
+        "input": [
+            {
+                "text": {
+                    "raw": "123",
+                    "nlp": "123"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "123"
+            }
+        ],
+        "id": "default68"
     }
 ];
+
+
+
+
+
 
 
 
@@ -1749,6 +1773,11 @@ var commonDialogs = [
         }
     }
 ];
+
+
+
+
+
 
 
 

@@ -107,6 +107,33 @@ var BotManager = require('./bot.js');
         });
     };
 
+    CommandManager.prototype.reloadBotFiles = function(bot, error, callback)
+    {
+        BotManager.load(bot.id, function(err, bot)
+        {
+            if(err)
+            {
+                error.delegate(err);
+            }
+            else
+            {
+                BotManager.reloadBotFiles(bot);
+
+                var output = bot.commonDialogs[0].output;
+                if(typeof output != 'string')
+                {
+                    output = bot.commonDialogs[0].output[0];
+                }
+
+                output = OutputManager.make(context, output);
+                callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+
+                console.log(chalk.green('================================'));
+                console.log();
+            }
+        });
+    };
+
     CommandManager.prototype.execute = function(redis, contextKey, inputRaw, bot, context, error, callback)
     {
         //FIXME 커맨드 실행
@@ -126,6 +153,14 @@ var BotManager = require('./bot.js');
         else if(inputRaw == ':build')
         {
             this.buildBot(redis, contextKey, bot, context, error, callback);
+        }
+        else if(inputRaw == ':reload-bot-files')
+        {
+            this.reloadBotFiles(bot, error, callback);
+        }
+        else
+        {
+            callback(inputRaw + ' is not command');
         }
     };
 
