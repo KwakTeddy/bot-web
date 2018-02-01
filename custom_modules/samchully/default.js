@@ -483,7 +483,27 @@ module.exports = function(bot)
     {
         typeCheck: function (conversation, context, callback)
         {
-            var matched = true;
+            var matched = false;
+            var bankIndex =
+            {
+                '기업' : '003',
+                '국민' : '004',
+                '농협' : '011',
+                '우리' : '020',
+                '신한' : '026',
+                '하나' : '081'
+            };
+
+            for(var i = 0; i < Object.keys(bankIndex).length; i++)
+            {
+
+            }
+
+            if(conversation.nlu.inputRaw)
+
+            console.log(conversation.nlu.inputRaw);
+
+
             callback(matched);
         }
     });
@@ -527,7 +547,8 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        context.user.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
+                        conversation.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
+                        conversation.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
                         console.log('@@@@@@@@@@@@@@@')
                         console.log(body)
                     }else {
@@ -800,7 +821,38 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            callback();
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_CENTER_INFO';
+            options.json.param = [
+                { key: 'I_DONG', val: '목동'}
+            ];
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########');
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        console.log('@@@@@@@@@@@@@@@');
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+
+                    callback();
+                }
+            });
         }
     });
 

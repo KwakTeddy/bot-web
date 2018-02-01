@@ -698,7 +698,7 @@ var dialogs = [
                                 "id": "default24",
                                 "children": [
                                     {
-                                        "name": "입금전용계좌 리스트",
+                                        "name": "입금전용계좌 생성",
                                         "input": [
                                             {
                                                 "types": [
@@ -1158,8 +1158,16 @@ var dialogs = [
                         ],
                         "output": [
                             {
+                                "kind": "Action",
+                                "call": "전자고지 재발행 접수",
+                                "if": "conversation.curNoticeMethodCategory > 1",
+                                "options": {
+                                    "output": "고지서를 재발행하시겠습니까?"
+                                }
+                            },
+                            {
                                 "kind": "Content",
-                                "text": "고지서 재발행"
+                                "text": "고객의 고지방법 : +conversation.curNoticeMethod+\n\n전자고지 고객님만 가능하며 종이고지서 수령을 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다."
                             }
                         ],
                         "id": "default11",
@@ -1177,30 +1185,11 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "재발행하시겠습니까?"
+                                        "text": "재발행되었습니다."
                                     }
                                 ],
                                 "id": "default39",
-                                "children": [
-                                    {
-                                        "name": "고지서 재발행",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "고지서 재발 행",
-                                                    "nlp": "고지서 재발 행"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "재발행되었습니다."
-                                            }
-                                        ],
-                                        "id": "default41"
-                                    }
-                                ]
+                                "children": []
                             },
                             {
                                 "name": "에러메세지",
@@ -1456,7 +1445,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "기타",
+                "text": "원하시는 메뉴를 선택해주세요.",
                 "buttons": [
                     {
                         "url": "http://www.samchully.co.kr/customer/gas/info/usage/new.do",
