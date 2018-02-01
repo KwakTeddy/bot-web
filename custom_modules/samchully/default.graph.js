@@ -85,7 +85,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "검색 결과입니다.\n\n고객명 : \n납부자 번호 : \n주소 : \n\n인증하시겠습니까?",
+                                                "text": "검색 결과입니다.\n\n고객명 : +user.customerName+\n생일 : +user.customerBirth+\n핸드폰번호 : +types.mobile+\n\n인증하시겠습니까?",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -763,7 +763,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지 방법입니다.\n\n\"카카오페이 고지\"\n\n 전자고지를 신청하거나 변경하시겠습니까?",
+                                        "text": "현재 고지 방법입니다.\n\n\"+user.curNoticeMethod+\"\n\n 전자고지를 신청하거나 변경하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -817,6 +817,11 @@ var dialogs = [
                                                     }
                                                 ],
                                                 "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "카카에페이 URL을 발송했습니다.",
+                                                        "if": "context.sendUrlSuccess"
+                                                    },
                                                     {
                                                         "kind": "Content",
                                                         "text": "카카에페이 URL 발송"
@@ -1626,6 +1631,10 @@ var dialogs = [
 
 
 
+
+
+
+
 var commonDialogs = [
     {
         "id": "defaultcommon0",
@@ -1740,6 +1749,10 @@ var commonDialogs = [
         }
     }
 ];
+
+
+
+
 
 
 

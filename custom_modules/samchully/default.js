@@ -43,21 +43,24 @@ module.exports = function(bot)
             {
               	if(err)
                 {
+                    console.log(err);
                 }
 				else
     	        {
                     console.log('개쩐다 : ', typeof body, body);
     	            if(body.E_RETCD == 'E')
                     {
-                        conversation.dialog.output = body.E_RETMG;
+                        // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
                     }
-                    else
+                    else if(body.E_RETCD == 'S')
                     {
                         context.user.customerInfo = {
                             name: context.user.customerName,
                             birth: context.user.customerBirth,
                             phone: context.types.mobile
                         };
+                    }else {
+    	                console.log(body.E_RETCD)
                     }
 
                     callback();
@@ -72,31 +75,69 @@ module.exports = function(bot)
         {
             if(context.user.auth)
             {
-                var data =
-                [
-                    {
-                        customerName: "박준하",
-                        address: "서울시 관악구 행운동12",
-                        id: "1235534"
-                    },
-                    {
-                        customerName: "김지섭",
-                        address: "서울시 도봉구 덕릉로 12344",
-                        id: "45344004"
-                    }
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CUSTOMER_INFO';
+                options.json.param = [
+                    { key: 'I_NAME', val: context.user.customerName },
+                    { key: 'I_BIRTH', val: context.user.customerBirth },
+                    { key: 'I_PHONE', val: context.types.mobile }
                 ];
 
-                context.customerList = data;
-
-                conversation.buttons = [];
-
-                for(var i = 0; i < data.length; i++)
+                request.post(options, function(err, response, body)
                 {
-                    conversation.buttons.push({text: i + 1})
-                }
-            }
+                    if(err)
+                    {
+                        console.log(err);
+                    }
+                    else
+                    {
+                        console.log('개쩐다 : ', typeof body, body);
+                        if(body.E_RETCD == 'E')
+                        {
+                            // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            context.user.customerInfo = {
+                                name: context.user.customerName,
+                                birth: context.user.customerBirth,
+                                phone: context.types.mobile
+                            };
 
-            callback();
+
+                            var data =
+                                [
+                                    {
+                                        customerName: "박준하",
+                                        address: "서울시 관악구 행운동12",
+                                        id: "1235534"
+                                    },
+                                    {
+                                        customerName: "김지섭",
+                                        address: "서울시 도봉구 덕릉로 12344",
+                                        id: "45344004"
+                                    }
+                                ];
+
+                            context.customerList = data;
+
+                            conversation.buttons = [];
+
+                            for(var i = 0; i < data.length; i++)
+                            {
+                                conversation.buttons.push({text: i + 1})
+                            }
+
+                        }else {
+                            console.log(body.E_RETCD)
+                        }
+
+                        callback();
+                    }
+                });
+            }
         }
     });
 
@@ -448,7 +489,50 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            callback();
+            var methodIdex =
+            {
+                '0001' : '우편송달',
+                '0002' : '고객센터송달',
+                '0003' : '이메일송달',
+                '0004' : '모바일송달',
+                '0005' : 'LMS송달',
+                '0006' : '카카오알림톡송달',
+                '0007' : '카카오청구서송달'
+            };
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_GOJI_TYPE_INFO';
+            options.json.param = [
+                { key: 'I_VKONT', val: '105831826'}
+            ];
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        console.log('##########')
+                        console.log(body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        context.sendUrlSuccess = true;
+                        console.log('@@@@@@@@@@@@@@@')
+                        console.log(body)
+                    }else {
+                        console.log(body.E_RETCD)
+                    }
+
+                    callback();
+                }
+            });
         }
     });
 
