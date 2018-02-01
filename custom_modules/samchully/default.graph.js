@@ -346,8 +346,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +context.curCustomer.customerName+ 고객님 월별 고지내역입니다.( +context.noticeNum+ 개월)\n\n#context.noticeHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#",
-                                        "buttons": []
+                                        "text": "[요금] +context.curCustomer.customerName+ 고객님 월별 고지내역입니다.( +context.noticeNum+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#"
                                     }
                                 ],
                                 "id": "default15",
@@ -362,7 +361,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "buttons": []
+                                                "text": "+conversation.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +conversation.noticeDetail.PR_ZWSTNDAB+\n당월지침 : +conversation.noticeDetail.ZWSTNDAB+\n보정계수 : +conversation.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +conversation.noticeDetail.I_ABRMENGE+\n단위열량(MJ) : +conversation.noticeDetail.UNIT_CALORY+\n사용열량(MJ) : +conversation.noticeDetail.USED_CALORY+\n기본요금 : +conversation.noticeDetail.BETRW_GI+\n사용요금 : +conversation.noticeDetail.BETRW_GA+\n경감금액 : +conversation.noticeDetail.BETRW_DC+\n계량기교체비 : +conversation.noticeDetail.ZRESERVE_AMT+\n부가세 : +conversation.noticeDetail.SBETW+\n가산금 : +conversation.noticeDetail.BETRW_D+\n정산금액 : +conversation.noticeDetail.BETRW_JS+\n원단위절사 : +conversation.noticeDetail.BETRW_RO+\n재공급수수료 : +conversation.noticeDetail.BETRW_SS+\n고지금액 : +conversation.noticeDetail.BETRW_TOT+"
                                             }
                                         ],
                                         "id": "default18",
@@ -419,30 +418,11 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +context.curCustomer.customerName+ 월별 납부내역입니다.(+context.listNum+개월)\n\n#context.paymentHistory#+index+. +date+월\n+method+\n고지금액 : +noticeVal+\n납부금액 : +payment+ (+paymentDate+)\n\n#"
+                                        "text": "[요금] +context.curCustomer.customerName+ 월별 납부내역입니다.(+context.listNum+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
                                     }
                                 ],
                                 "id": "default19",
-                                "children": [
-                                    {
-                                        "name": "납부내역 상세화면",
-                                        "input": [
-                                            {
-                                                "if": "true"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "상세화면"
-                                            }
-                                        ],
-                                        "id": "default22",
-                                        "task": {
-                                            "name": "getPaymentDetail"
-                                        }
-                                    }
-                                ],
+                                "children": [],
                                 "task": {
                                     "name": "getPaymentHistory"
                                 }
@@ -509,61 +489,24 @@ var dialogs = [
                                 },
                                 "children": [
                                     {
-                                        "name": "납부연월 선택",
+                                        "name": "신용카드 납부",
                                         "input": [
                                             {
-                                                "types": "number"
+                                                "text": {
+                                                    "raw": "신용카드 납부",
+                                                    "nlp": "신용카드 납부"
+                                                }
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "다음 목록의 납부를 진행합니다.\n\n2017년 3월\n\n핸드폰 번호를 입력하세요",
-                                                "buttons": []
+                                                "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
                                             }
                                         ],
-                                        "id": "default16",
-                                        "children": [
-                                            {
-                                                "name": "핸드폰 입력_",
-                                                "input": [
-                                                    {
-                                                        "types": "mobile"
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
-                                                    }
-                                                ],
-                                                "id": "default17",
-                                                "children": [],
-                                                "task": {
-                                                    "name": ""
-                                                }
-                                            },
-                                            {
-                                                "name": "핸드폰 입력 리피트",
-                                                "input": [
-                                                    {
-                                                        "if": "true"
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Action",
-                                                        "options": {
-                                                            "output": "잘못입력하셨습니다. 다시 입력해주세요."
-                                                        },
-                                                        "type": "repeat"
-                                                    }
-                                                ],
-                                                "id": "default21"
-                                            }
-                                        ],
+                                        "id": "default21",
                                         "task": {
-                                            "name": "addButton"
+                                            "name": "payByARS"
                                         }
                                     }
                                 ]
@@ -593,77 +536,25 @@ var dialogs = [
                                 "id": "default23",
                                 "children": [
                                     {
-                                        "name": "납부연월선택_편의점",
+                                        "name": "편의점 납부",
                                         "input": [
                                             {
-                                                "types": "number"
+                                                "text": {
+                                                    "raw": "편의점 납부",
+                                                    "nlp": "편의점 납부"
+                                                }
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "다음 목록의 납부를 진행합니다.\n\n2017년 3월\n\n핸드폰 번호를 입력하세요."
+                                                "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다."
                                             }
                                         ],
-                                        "id": "default20",
-                                        "children": [
-                                            {
-                                                "name": "핸드폰입력2",
-                                                "input": [
-                                                    {
-                                                        "types": [
-                                                            "mobile"
-                                                        ]
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다."
-                                                    }
-                                                ],
-                                                "id": "default47",
-                                                "task": {
-                                                    "name": ""
-                                                },
-                                                "children": [
-                                                    {
-                                                        "name": "New Dialog1",
-                                                        "input": [
-                                                            {
-                                                                "text": {
-                                                                    "raw": "",
-                                                                    "nlp": ""
-                                                                }
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Content",
-                                                                "text": "",
-                                                                "buttons": []
-                                                            }
-                                                        ],
-                                                        "id": "default56"
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "name": "리피트",
-                                                "input": [
-                                                    {
-                                                        "if": "true"
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Action",
-                                                        "type": "repeat"
-                                                    }
-                                                ],
-                                                "id": "default48"
-                                            }
-                                        ]
+                                        "id": "default16",
+                                        "task": {
+                                            "name": "payByQR"
+                                        }
                                     }
                                 ]
                             },
@@ -698,7 +589,7 @@ var dialogs = [
                                 "id": "default24",
                                 "children": [
                                     {
-                                        "name": "입금전용계좌 리스트",
+                                        "name": "입금전용계좌 생성",
                                         "input": [
                                             {
                                                 "types": [
@@ -709,15 +600,18 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "1, 기업은행\n910-4422-4123\n2, 하나은행\n5302-33-441-3332\n3. 농협은행\n402-0338-4334-11"
+                                                "text": "+conversation.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +conversation.selectedBank+은행\n계좌 : +conversation.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
                                             }
                                         ],
                                         "id": "default25",
-                                        "children": []
+                                        "children": [],
+                                        "task": {
+                                            "name": "createDepositAccount"
+                                        }
                                     }
                                 ],
                                 "task": {
-                                    "name": "getAccoutList"
+                                    "name": "getAccountList"
                                 }
                             }
                         ]
@@ -1159,8 +1053,16 @@ var dialogs = [
                         ],
                         "output": [
                             {
+                                "kind": "Action",
+                                "call": "전자고지 재발행 접수",
+                                "if": "conversation.curNoticeMethodCategory > 1",
+                                "options": {
+                                    "output": "고지서를 재발행하시겠습니까?"
+                                }
+                            },
+                            {
                                 "kind": "Content",
-                                "text": "고지서 재발행"
+                                "text": "고객의 고지방법 : +conversation.curNoticeMethod+\n\n전자고지 고객님만 가능하며 종이고지서 수령을 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다."
                             }
                         ],
                         "id": "default11",
@@ -1178,30 +1080,11 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "재발행하시겠습니까?"
+                                        "text": "재발행되었습니다."
                                     }
                                 ],
                                 "id": "default39",
-                                "children": [
-                                    {
-                                        "name": "고지서 재발행",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "고지서 재발 행",
-                                                    "nlp": "고지서 재발 행"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "재발행되었습니다."
-                                            }
-                                        ],
-                                        "id": "default41"
-                                    }
-                                ]
+                                "children": []
                             },
                             {
                                 "name": "에러메세지",
@@ -1457,7 +1340,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "기타",
+                "text": "원하시는 메뉴를 선택해주세요.",
                 "buttons": [
                     {
                         "url": "http://www.samchully.co.kr/customer/gas/info/usage/new.do",
