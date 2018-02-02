@@ -4,14 +4,15 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Dialog Learning'), '/modules/playchat/gnb/client/imgs/speech.png');
 
+    var chatbot = $cookies.getObject('chatbot');
+
     var DialogsetsFindService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
     var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
-    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId' }, { update: { method: 'PUT' } });
+    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId', language: chatbot.language }, { update: { method: 'PUT' } });
 
     //UI Data
     $scope.topicOpened = false;
 
-    var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
     var openDialogsets = $cookies.getObject('openDialogsets');
     var currentPage = 1;

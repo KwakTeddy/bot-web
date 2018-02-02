@@ -289,7 +289,7 @@ input.search[type="submit"]:hover {
   margin-top: -40px;
 	line-height: 20px;
 }
-.btn02 a{
+.btn02 *{
   color: #fff;
   letter-spacing: 0.3px;
   vertical-align: middle;

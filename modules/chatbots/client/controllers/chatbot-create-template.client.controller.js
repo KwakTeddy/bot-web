@@ -13,11 +13,36 @@
         $scope.templateId = $stateParams.templateId;
 
         var user = $cookies.getObject('user');
+        var language = $cookies.get('language');
         $scope.bot = {
-            language: user.language !== undefined ? user.language: 'en'
+            language: language !== undefined ? language: 'en'
         };
 
-        var user = $cookies.getObject('user');
+        $scope.sampleCategory = [
+            'edu_input_keyword',
+            'edu_input_entity',
+            'edu_input_intent',
+            'edu_input_type',
+            'edu_input_regexp',
+            'edu_input_if',
+            // 'edu_input_variable',
+            'edu_task_crawling',
+            'edu_task_api',
+            'edu_output_variable',
+            'edu_output_if',
+            'edu_output_call',
+            'edu_output_repeat',
+            'edu_output_up',
+            'edu_output_callchild',
+            'edu_output_returncall'
+        ];
+
+        if($scope.templateId == 'sample')
+        {
+            $scope.bot.sampleCategory = $scope.sampleCategory[0]
+        }
+
+
 
         (function()
         {
@@ -100,6 +125,7 @@
 
             $scope.data={};
 
+
             var addUploader = function()
             {
                 $scope.data.uploader = new FileUploader({
@@ -133,9 +159,10 @@
 
             $scope.save = function()
             {
+
                 if(!$scope.bot.id)
                 {
-                    $scope.bot.id = 'blank_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
+                    $scope.bot.id = $scope.templateId + '_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
                 }
 
                 // if(!$scope.bot.id.match(/^[a-zA-Z]+/))
@@ -143,7 +170,7 @@
                 //     return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
                 // }
                 //var data={};
-                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, isSample: $scope.templateId == 'sample' }, function(chatbot)
+                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, isSample: $scope.templateId == 'sample', sampleCategory: $scope.bot.sampleCategory }, function(chatbot)
                 {
                     delete chatbot.user;
                     chatbot.myBotAuth = { read: true, edit: true };

@@ -5,12 +5,12 @@
 
     angular.module('playchat').factory('DialogGraphEditorInput', function ($resource, $cookies, $compile, LanguageService, CaretService)
     {
-        var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
+        var chatbot = $cookies.getObject('chatbot');
+
+        var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: chatbot.language });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' });
-
-        var chatbot = $cookies.getObject('chatbot');
 
         var DialogGraphEditorInput = {};
         DialogGraphEditorInput.init = function($scope)
@@ -66,16 +66,22 @@
                             text = 'if(' + text + ')';
                         }
 
-                        if(text.trim())
+                        if(key == 'text')
                         {
-                            isBinded = true;
-                            if(key == 'text')
+                            if(text.raw.trim())
                             {
-                                var node = document.createTextNode(text);
+                                isBinded = true;
+
+                                var node = document.createTextNode(text.raw);
                                 target.append(node);
                             }
-                            else
+                        }
+                        else
+                        {
+                            if(text.trim())
                             {
+                                isBinded = true;
+
                                 var html = '<span class="' + key + '" data-type="' + key + '">' + text + '</span>';
                                 target.append(html);
                             }
@@ -356,7 +362,7 @@
 
                     for(var i=0; i<result.length; i++)
                     {
-                        if(!name || result[i].indexOf(name))
+                        if(!name || result[i].name.indexOf(name))
                         {
                             html += '<li>$' + result[i].name + '</li>';
                         }
@@ -389,7 +395,7 @@
                 {
                     if(children[i].nodeName == '#text')
                     {
-                        input.text = children[i].textContent;
+                        input.text = { raw: children[i].textContent, nlp: '' };
                     }
                     else if(children[i].nodeName == 'SPAN')
                     {
@@ -736,9 +742,14 @@
                     {
                         if(text.trim())
                         {
+                            console.log('여기는??? : ', text);
                             DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
                             {
+                                console.log('어허 : ', result);
                                 angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
+                            }, function(error)
+                            {
+                                console.log('에러 : ', error);
                             });
                         }
                         else

@@ -4,6 +4,7 @@ module.exports = function(app)
 {
     app.get('/api/:botId/dialog-graphs/:fileName/exist', dialoggraphs.checkFile);
     app.get('/api/:botId/dialog-graphs/:fileName', dialoggraphs.findFile);
+    app.get('/api/:botId/graphfiles/:fileName', dialoggraphs.getGraphFile);
     app.get('/api/:botId/dialog-graphs', dialoggraphs.find);
     app.post('/api/:botId/dialog-graphs/uploadImage', dialoggraphs.uploadImage);
     app.post('/api/:botId/dialog-graphs/uploadFile', dialoggraphs.uploadFile);

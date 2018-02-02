@@ -1,8 +1,8 @@
 angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$rootScope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', 'LanguageService',function ($window, $scope, $rootScope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask, LanguageService)
 {
-    var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
-
     var chatbot = $cookies.getObject('chatbot');
+
+    var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: chatbot.language });
 
     $scope.chatbot = chatbot;
 
@@ -75,88 +75,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 {
                     $scope.isAdvancedMode = true;
                 }
-                else if(dialog.output[i].kind == 'Action')
-                {
-                    $scope.dialog.output[i].text = dialog.output[i].options ? dialog.output[i].options.output : '';
-                    delete $scope.dialog.output[i].options;
-
-                    for(var j=0; j<$scope.actionList.length; j++)
-                    {
-                        if($scope.dialog.output[i][$scope.actionList[j].key])
-                        {
-                            $scope.dialog.output[i].type = $scope.actionList[j].key;
-                            $scope.dialog.output[i].dialog = $scope.dialog.output[i][$scope.actionList[j].key];
-                            $scope.dialog.output[i][$scope.actionList[j].key]
-                            break;
-                        }
-                    }
-                }
             }
 
             console.log('아웃풋 : ', $scope.dialog.output);
-
-            // 옛날방식의 그래프를 읽기 위한 코드인데 일단 필요 없는듯 하니 뺀다. 만약 신한카드가 온다면 어떨까?
-            // if(!$scope.dialog.input.length)
-            // {
-            //     $scope.dialog.input = [$scope.dialog.input];
-            // }
-
-            // if(typeof dialog.output == 'string')
-            // {
-            //     $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
-            // }
-            // else if(typeof dialog.output == 'object')
-            // {
-            //     if(dialog.output.length > 0)
-            //     {
-            //         for(var i=0; i<dialog.output.length; i++)
-            //         {
-            //             //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
-            //             if(dialog.output[i].if)
-            //             {
-            //                 $scope.isAdvancedMode = true;
-            //             }
-            //
-            //             $scope.dialog.output.push(dialog.output[i]);
-            //         }
-            //     }
-                // else
-                // {
-                //     var check = false;
-                //     for(var key in dialog.output)
-                //     {
-                //         if(key == 'options' || key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                //         {
-                //             var actionObject = {};
-                //             actionObject.kind = 'Action';
-                //
-                //             for(var key in dialog.output)
-                //             {
-                //                 if(key == 'repeat' || key == 'call' || key == 'callChild' || key == 'returnCall' || key == 'up' || key == 'return')
-                //                 {
-                //                     actionObject.type = key;
-                //                     actionObject.dialog = dialog.output[key];
-                //                     break;
-                //                 }
-                //             }
-                //
-                //             $scope.dialog.output.push(actionObject);
-                //
-                //             check = true;
-                //             break;
-                //         }
-                //     }
-                //
-                //     if(!check)
-                //     {
-                //         $scope.dialog.output.push(dialog.output);
-                //     }
-                // }
-            // }
-            // else
-            // {
-            //     console.log('처리되지 않은 아웃풋 : ', dialog.output);
-            // }
 
             setTimeout(function()
             {
@@ -216,27 +137,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result.task = $scope.dialog.task;
         }
 
-        for(var i=0; i<result.output.length; i++)
-        {
-            if(result.output[i].kind == 'Action')
-            {
-                var actionObject = { kind: 'Action' };
-                actionObject[result.output[i].type] = result.output[i].type == 'return' ? 1 : result.output[i].dialog;
-
-                if(result.output[i].if)
-                {
-                    actionObject.if = result.output[i].if;
-                }
-
-                if(result.output[i].text)
-                {
-                    actionObject.options = { output : result.output[i].text };
-                }
-
-                result.output[i] = actionObject;
-            }
-        }
-
         console.log(result.output);
 
         result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
@@ -260,11 +160,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
 
         var text = $scope.dialog.input[index].text;
-        if(text)
+        if(text.raw.trim())
         {
-            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+            DialogGraphsNLPService.get({ botId: chatbot.id, text: text.raw }, function(result)
             {
-                $scope.dialog.input[index].text = result.text;
+                $scope.dialog.input[index].text = { raw: text.raw, nlp: result.text };
                 $scope.inputNLU(index+1, done);
             });
         }
@@ -289,15 +189,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             var result = $scope.parseResult();
 
-            // 새로 추가되는 경우 실 데이터에도 추가해줌.
-            // if($scope.parentDialog && !$scope.oldDialog)
-            // {
-            //     DialogGraph.addChildDialog($scope.parentDialog, result);
-            // }
-
-            DialogGraph.refresh();
+            // DialogGraph.refresh();
+            DialogGraph.reloadDialog(result);
             DialogGraph.setDirty(true);
-            DialogGraph.focusById(result.id);
+            DialogGraph.refreshLine();
+            // DialogGraph.focusById(result.id);
 
             if(DialogGraphEditor.saveCallback)
             {
@@ -412,7 +308,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             //새로 추가하는 경우 바로 추가해줌.
             var result = {};
             result.name = DialogGraph.getRandomName();
-            result.input = [{ text: '' }];
+            result.input = [{ text: { raw: '', nlp: '' } }];
             result.output = [{ kind: 'Content', text: '', buttons: [] }];
             result.task = undefined;
 
@@ -420,9 +316,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             DialogGraph.addChildDialog(parent, result);
 
-            DialogGraph.refresh();
+            DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children:first'), dialog);
+            DialogGraph.refreshLine();
+            // DialogGraph.refresh();
             DialogGraph.setDirty(true);
-            DialogGraph.focusById(result.id);
+            // DialogGraph.focusById(result.id);
 
             if(DialogGraphEditor.saveCallback)
             {

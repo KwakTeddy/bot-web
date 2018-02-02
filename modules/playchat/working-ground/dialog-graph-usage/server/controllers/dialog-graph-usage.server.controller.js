@@ -1,7 +1,7 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var UserDialog = mongoose.model('UserDialog');
-var botLib = require(path.resolve('./engine/bot.js'));
+// var botLib = require(path.resolve('./engine2/bot.js'));
 
 exports.dialogGraphUsage = function (req, res)
 {

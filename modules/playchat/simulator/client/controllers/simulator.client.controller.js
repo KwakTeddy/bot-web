@@ -88,7 +88,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
                 template = angular.element(template);
 
@@ -174,11 +174,19 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
-                data = JSON.parse(data);
-                console.log(data);
                 if(data.type == 'dialog')
                 {
-                    $rootScope.$broadcast('dialogGraphTestFocus', data.data.dialogId);
+                    if(data.dialogId)
+                    {
+                        $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
+                    }
+
+                    addBotBubble(data.output);
+                    $rootScope.$broadcast('onmsg', { message: data.output });
+                }
+                else if(data.type == 'log')
+                {
+                    $rootScope.$broadcast('onlog', { message: data });
                 }
                 else
                 {
@@ -188,15 +196,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             catch(err)
             {
-                if(data.indexOf(':log') != -1)
-                {
-                    $rootScope.$broadcast('onlog', { message: data });
-                }
-                else
-                {
-                    addBotBubble(data);
-                    $rootScope.$broadcast('onmsg', { message: data });
-                }
+                console.error(err);
             }
         });
 
@@ -275,6 +275,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             console.log('빌드');
             clearBubble();
             emitMsg(':build', false);
+        });
+
+        $scope.$on('simulator-build-without-reset-focus', function()
+        {
+            console.log('빌드');
+            clearBubble();
+            emitMsg(':reload-bot-files', false);
         });
 
         $scope.$on('set-simulator-content', function(context, data)
