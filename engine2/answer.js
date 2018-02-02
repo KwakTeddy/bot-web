@@ -2,8 +2,6 @@ var chalk = require('chalk');
 
 var Transaction = require('./utils/transaction.js');
 
-var autoCorrection = require('./input/nlp/autoCorrection.js');
-
 var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
 
@@ -21,20 +19,16 @@ var Logger = require('./logger.js');
     AnswerManager.prototype.answer = function(bot, context, error, callback)
     {
         var conversation = context.history[0];
+        var inputRaw = conversation.nlu.inputRaw;
         var nlp = conversation.nlu.nlp;
 
         var transaction = new Transaction.async();
 
-        if(bot.options.useAutoCorrection)
-        {
-            autoCorrection.loadWordCorrections();
-        }
-
-        QNAManager.find(bot, nlp, transaction.callback(function(err, matchedList, done)
+        QNAManager.find(bot, inputRaw, nlp, transaction.callback(function(err, matchedList, done)
         {
             if(matchedList.length > 0)
             {
-                transaction.qa = { type: 'qa', list: matchedList[0].output };
+                transaction.qa = { type: 'qa', dialog: matchedList[0] };
             }
 
             done();
@@ -84,7 +78,7 @@ var Logger = require('./logger.js');
 
                         var dialog = bot.dialogMap['noanswer'];
                         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0].text });
+                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0] });
                     }
                 });
             }
@@ -104,8 +98,8 @@ var Logger = require('./logger.js');
                 console.log(chalk.yellow('[[[ No Answer ]]]'));
 
                 var dialog = bot.dialogMap['noanswer'];
-                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-                callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, dialog.id, dialog.name, '', '', true, 'dialog');
+                callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output[0] });
             }
         });
     };

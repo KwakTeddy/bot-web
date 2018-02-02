@@ -3,6 +3,7 @@ var chalk = require('chalk');
 var NLPManager = require('./input/nlp.js');
 var EntityManager = require('./input/entity.js');
 var IntentManager = require('./input/intent.js');
+var autoCorrection = require('./input/nlp/autoCorrection.js');
 
 (function()
 {
@@ -20,6 +21,11 @@ var IntentManager = require('./input/intent.js');
         console.log('inputRaw : ', inputRaw);
 
         inputRaw = inputRaw.replace(/^\s+|\s+$/g,"");
+
+        if(bot.options.useAutoCorrection)
+        {
+            autoCorrection.loadWordCorrections();
+        }
 
         NLPManager.analysis(bot.language, inputRaw, function(err, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS)
         {

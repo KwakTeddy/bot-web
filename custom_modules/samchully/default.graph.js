@@ -239,6 +239,12 @@ var dialogs = [
                     "raw": "요금",
                     "nlp": "요금"
                 }
+            },
+            {
+                "text": {
+                    "raw": "1",
+                    "nlp": "1"
+                }
             }
         ],
         "output": [
@@ -273,31 +279,31 @@ var dialogs = [
                         "buttons": [
                             {
                                 "url": "",
-                                "text": "월별 고지내역 조회"
+                                "text": "1. 월별 고지내역 조회"
                             },
                             {
                                 "url": "",
-                                "text": "월별 납부내역 조회"
+                                "text": "2. 월별 납부내역 조회"
                             },
                             {
                                 "url": "",
-                                "text": "요금납부"
+                                "text": "3. 요금납부"
                             },
                             {
                                 "url": "",
-                                "text": "전자고지 신청/해지"
+                                "text": "4. 전자고지 신청/해지"
                             },
                             {
                                 "url": "",
-                                "text": "자동이체 신청/해지"
+                                "text": "5. 자동이체 신청/해지"
                             },
                             {
                                 "url": "",
-                                "text": "자가검침 입력"
+                                "text": "6. 자가검침 입력"
                             },
                             {
                                 "url": "",
-                                "text": "고지서 재발행 신청"
+                                "text": "7. 고지서 재발행 신청"
                             }
                         ]
                     }
@@ -309,15 +315,21 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "고 지내역",
-                                    "nlp": "고 지내역"
+                                    "raw": "월별 고지내역 조회",
+                                    "nlp": "월별 고 지내역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "1",
+                                    "nlp": "1"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "원하시는 고지내역 기간을 선택해주세요",
+                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '고지'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -340,13 +352,15 @@ var dialogs = [
                                 "name": "고지내역 3개월",
                                 "input": [
                                     {
-                                        "types": "monthType"
+                                        "types": [
+                                            "monthType"
+                                        ]
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +context.curCustomer.customerName+ 고객님 월별 고지내역입니다.( +context.noticeNum+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#"
+                                        "text": "[고지내역 조회]\n\n+context.curCustomer.customerName+ 고객님 월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
                                     }
                                 ],
                                 "id": "default15",
@@ -373,6 +387,23 @@ var dialogs = [
                                 "task": {
                                     "name": "getNoticeHistory"
                                 }
+                            },
+                            {
+                                "name": "개월수 선택오류",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "type": "repeat",
+                                        "dialog": 1
+                                    }
+                                ],
+                                "id": "default17"
                             }
                         ]
                     },
@@ -381,15 +412,21 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "납부 역",
-                                    "nlp": "납부 역"
+                                    "raw": "월별 납부내역 조회",
+                                    "nlp": "월별 납부 내 역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2",
+                                    "nlp": "2"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "원하시는 납부내역 기간을 선택해주세요",
+                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '납부'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -412,13 +449,15 @@ var dialogs = [
                                 "name": "납부내역 3개월",
                                 "input": [
                                     {
-                                        "types": "monthType"
+                                        "types": [
+                                            "monthType"
+                                        ]
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +context.curCustomer.customerName+ 월별 납부내역입니다.(+context.listNum+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
+                                        "text": "[납부내역 조회]\n\n+context.curCustomer.customerName+ 월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
                                     }
                                 ],
                                 "id": "default19",
@@ -426,6 +465,23 @@ var dialogs = [
                                 "task": {
                                     "name": "getPaymentHistory"
                                 }
+                            },
+                            {
+                                "name": "개월수 선택오류_납부",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "type": "repeat",
+                                        "dialog": 1
+                                    }
+                                ],
+                                "id": "default20"
                             }
                         ]
                     },
@@ -434,8 +490,14 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "요금",
-                                    "nlp": "요금"
+                                    "raw": "요금납부",
+                                    "nlp": "요금 납부"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "3",
+                                    "nlp": "3"
                                 }
                             }
                         ],
@@ -624,16 +686,22 @@ var dialogs = [
                                     "raw": "전자 고지",
                                     "nlp": "전자 고지"
                                 }
+                            },
+                            {
+                                "text": {
+                                    "raw": "4",
+                                    "nlp": "4"
+                                }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "전자고지를 신청하거나 해지하실 수 있습니다.\n원하시는 메뉴를 선택해주세요.",
+                                "text": "현재 고지 방법입니다.\n\n고지방법: +conversation.curNoticeMethod+\n\n 전자고지를 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
-                                        "text": "신청"
+                                        "text": "신청/변경"
                                     },
                                     {
                                         "url": "",
@@ -652,16 +720,30 @@ var dialogs = [
                                             "raw": "신청",
                                             "nlp": "신청"
                                         }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "1",
+                                            "nlp": "1"
+                                        }
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지 방법입니다.\n\n\"+context.user.curNoticeMethod+\"\n\n 전자고지를 신청하거나 변경하시겠습니까?",
+                                        "text": "원하시는 고지 방법을 선택해주세요.",
                                         "buttons": [
                                             {
                                                 "url": "",
-                                                "text": "전자고지 신청/변경"
+                                                "text": "카카오페이 고지"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "LMS 고지"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "이메일 고지"
                                             }
                                         ]
                                     }
@@ -669,156 +751,135 @@ var dialogs = [
                                 "id": "default26",
                                 "children": [
                                     {
-                                        "name": "고지 목록",
+                                        "name": "카카오",
                                         "input": [
                                             {
                                                 "text": {
-                                                    "raw": "전자고지 신청",
-                                                    "nlp": "전자고지 신청"
+                                                    "raw": "카카오페이 고지",
+                                                    "nlp": "카카오 페이 고지"
+                                                }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "1",
+                                                    "nlp": "1"
                                                 }
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "원하시는 고지 방법을 선택해주세요",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "카카오페이 고지"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "LMS 고지"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "이메일 고지"
-                                                    }
-                                                ]
+                                                "text": "정상적으로 처리되셨습니다."
                                             }
                                         ],
-                                        "id": "default27",
-                                        "children": [
+                                        "task": {
+                                            "name": "setNoticeMethod_kkopay"
+                                        },
+                                        "id": "default32"
+                                    },
+                                    {
+                                        "name": "LMS 고지",
+                                        "input": [
                                             {
-                                                "name": "카카오페이 고지",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "카카오 페이",
-                                                            "nlp": "카카오 페이"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "카카에페이 URL을 발송했습니다.",
-                                                        "if": "conversation.setNoticeMethodSuccess"
-                                                    },
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "카카에페이 URL 발송"
-                                                    }
-                                                ],
-                                                "id": "default28",
-                                                "task": {
-                                                    "name": "setNoticeMethod"
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "name": "LMS 고지",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "LMS",
-                                                            "nlp": "LMS"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "정상적으로 처리되었습니다.",
-                                                        "if": "conversation.setNoticeMethodSuccess"
-                                                    },
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "에러가 발생했습니다."
-                                                    }
-                                                ],
-                                                "id": "default29",
-                                                "children": [],
-                                                "task": {
-                                                    "name": "setNoticeMethod_lms"
+                                                "text": {
+                                                    "raw": "LMS 고지",
+                                                    "nlp": "LMS 고지"
                                                 }
                                             },
                                             {
-                                                "name": "이메일 고지",
+                                                "text": {
+                                                    "raw": "2",
+                                                    "nlp": "2"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "정상적으로 처리되셨습니다.",
+                                                "if": "conversation.setNoticeMethodSuccess"
+                                            }
+                                        ],
+                                        "task": {
+                                            "name": "setNoticeMethod_lms"
+                                        },
+                                        "id": "default33"
+                                    },
+                                    {
+                                        "name": "이메일",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "이메일 고지",
+                                                    "nlp": "이메일 고지"
+                                                }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "3",
+                                                    "nlp": "3"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "받으실 이메일 주소를 입력해주세요.",
+                                                "if": "받으실 이메일 주소를 입력해주세요."
+                                            }
+                                        ],
+                                        "task": {
+                                            "name": ""
+                                        },
+                                        "id": "default29",
+                                        "children": [
+                                            {
+                                                "name": "이메일 고지 설정",
                                                 "input": [
                                                     {
-                                                        "text": {
-                                                            "raw": "이메일",
-                                                            "nlp": "이메일"
-                                                        }
+                                                        "types": [
+                                                            "email"
+                                                        ]
                                                     }
                                                 ],
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "받으실 이메일 주소를 입력해주세요."
+                                                        "text": "정상적으로 처리되셨습니다.",
+                                                        "if": "conversation.setNoticeMethodSuccess"
                                                     }
                                                 ],
-                                                "id": "default30",
-                                                "children": [
+                                                "task": {
+                                                    "name": "setNoticeMethod_email"
+                                                },
+                                                "id": "default34"
+                                            },
+                                            {
+                                                "name": "이메일 재질의",
+                                                "input": [
                                                     {
-                                                        "name": "New Dialog",
-                                                        "input": [
-                                                            {
-                                                                "types": [
-                                                                    "email"
-                                                                ]
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Content",
-                                                                "text": "신청 완료되었습니다.",
-                                                                "if": "conversation.setNoticeMethodSuccess"
-                                                            },
-                                                            {
-                                                                "kind": "Content",
-                                                                "text": "에러 났습니다."
-                                                            }
-                                                        ],
-                                                        "id": "default54",
-                                                        "task": {
-                                                            "name": "setNoticeMethod_email"
-                                                        }
-                                                    },
-                                                    {
-                                                        "name": "이메일 재질의",
-                                                        "input": [
-                                                            {
-                                                                "if": "true"
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Action",
-                                                                "type": "repeat"
-                                                            }
-                                                        ],
-                                                        "id": "default58"
+                                                        "text": {
+                                                            "raw": "",
+                                                            "nlp": ""
+                                                        },
+                                                        "if": "true"
                                                     }
-                                                ]
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "text": "",
+                                                        "type": "repeat",
+                                                        "dialog": 1
+                                                    }
+                                                ],
+                                                "id": "default27"
                                             }
                                         ]
                                     }
                                 ],
                                 "task": {
-                                    "name": "getNoticeMethod"
+                                    "name": ""
                                 }
                             },
                             {
@@ -829,54 +890,35 @@ var dialogs = [
                                             "raw": "해지",
                                             "nlp": "해지"
                                         }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "2",
+                                            "nlp": "2"
+                                        }
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "현재 고지방법입니다.\n\n\"+context.user.curNoticeMethod+\"\n\n해지하시겠습니까?",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "네"
-                                            }
-                                        ]
+                                        "text": "전자고지 해지 완료되었습니다.",
+                                        "if": "conversation.cancelNoticeMethodSuccess"
+                                    },
+                                    {
+                                        "kind": "Content",
+                                        "text": "에러"
                                     }
                                 ],
                                 "id": "default31",
-                                "children": [
-                                    {
-                                        "name": "해지완료",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "네",
-                                                    "nlp": "네"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "전자고지 해지 완료되었습니다.",
-                                                "if": "conversation.cancelNoticeMethodSuccess"
-                                            },
-                                            {
-                                                "kind": "Content",
-                                                "text": "에러"
-                                            }
-                                        ],
-                                        "id": "default55",
-                                        "task": {
-                                            "name": "cancelNoticeMethod"
-                                        }
-                                    }
-                                ],
+                                "children": [],
                                 "task": {
-                                    "name": "getNoticeMethod"
+                                    "name": "cancelNoticeMethod"
                                 }
                             }
-                        ]
+                        ],
+                        "task": {
+                            "name": "getNoticeMethod"
+                        }
                     },
                     {
                         "name": "자동이체 신청해지_",
@@ -886,16 +928,22 @@ var dialogs = [
                                     "raw": "자동 이체",
                                     "nlp": "자동 이체"
                                 }
+                            },
+                            {
+                                "text": {
+                                    "raw": "5",
+                                    "nlp": "5"
+                                }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "현재 납부방법입니다.\n\n+conversation.curPaymentMethod+\n\n자동이체 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
+                                "text": "현재 납부방법입니다.\n\n납부방법 : +conversation.curPaymentMethod+\n\n자동이체 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
-                                        "text": "신청"
+                                        "text": "신청/변경"
                                     },
                                     {
                                         "url": "",
@@ -957,6 +1005,12 @@ var dialogs = [
                                 "text": {
                                     "raw": "자가 검침",
                                     "nlp": "자가 검침"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "6",
+                                    "nlp": "6"
                                 }
                             }
                         ],
@@ -1057,6 +1111,12 @@ var dialogs = [
                                     "raw": "고지서 재발 행",
                                     "nlp": "고지서 재발 행"
                                 }
+                            },
+                            {
+                                "text": {
+                                    "raw": "7",
+                                    "nlp": "7"
+                                }
                             }
                         ],
                         "output": [
@@ -1066,7 +1126,10 @@ var dialogs = [
                                 "if": "conversation.curNoticeMethodCategory > 1",
                                 "options": {
                                     "output": "고지서를 재발행하시겠습니까?"
-                                }
+                                },
+                                "type": "call",
+                                "dialogName": "고지 재",
+                                "dialog": "전자고지 재발행 접수"
                             },
                             {
                                 "kind": "Content",
@@ -1132,6 +1195,12 @@ var dialogs = [
                     "raw": "이사",
                     "nlp": "이사"
                 }
+            },
+            {
+                "text": {
+                    "raw": "2",
+                    "nlp": "2"
+                }
             }
         ],
         "output": [
@@ -1171,6 +1240,12 @@ var dialogs = [
                 "text": {
                     "raw": "안전 점검",
                     "nlp": "안전 점검"
+                }
+            },
+            {
+                "text": {
+                    "raw": "3",
+                    "nlp": "3"
                 }
             }
         ],
@@ -1322,6 +1397,12 @@ var dialogs = [
                     "raw": "카카오 톡",
                     "nlp": "카카오 톡"
                 }
+            },
+            {
+                "text": {
+                    "raw": "4",
+                    "nlp": "4"
+                }
             }
         ],
         "output": [
@@ -1342,6 +1423,12 @@ var dialogs = [
                 "text": {
                     "raw": "기타",
                     "nlp": "기타"
+                }
+            },
+            {
+                "text": {
+                    "raw": "5",
+                    "nlp": "5"
                 }
             }
         ],
@@ -1449,6 +1536,27 @@ var dialogs = [
                 "id": "default42"
             }
         ]
+    },
+    {
+        "name": "시작카드 재질의",
+        "input": [
+            {
+                "text": {
+                    "raw": "",
+                    "nlp": ""
+                },
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "text": "",
+                "type": "repeat",
+                "dialog": 1
+            }
+        ],
+        "id": "default22"
     }
 ];
 
@@ -1484,23 +1592,23 @@ var commonDialogs = [
                 "buttons": [
                     {
                         "url": "",
-                        "text": "요금"
+                        "text": "1. 요금"
                     },
                     {
                         "url": "",
-                        "text": "이사/AS"
+                        "text": "2. 이사/AS"
                     },
                     {
                         "url": "",
-                        "text": "안전점검"
+                        "text": "3. 안전점검"
                     },
                     {
                         "url": "",
-                        "text": "카카오톡상담"
+                        "text": "4. 카카오톡상담"
                     },
                     {
                         "url": "",
-                        "text": "기타"
+                        "text": "5. 기타"
                     }
                 ],
                 "image": {

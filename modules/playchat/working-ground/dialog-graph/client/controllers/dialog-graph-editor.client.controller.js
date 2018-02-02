@@ -160,7 +160,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
 
         var text = $scope.dialog.input[index].text;
-        if(text.raw.trim())
+        if(text && text.raw.trim())
         {
             DialogGraphsNLPService.get({ botId: chatbot.id, text: text.raw }, function(result)
             {
