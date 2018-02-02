@@ -238,16 +238,6 @@
             $scope.actionValueChanged = function(dialog)
             {
                 var type = dialog.type;
-                if(type == 'up' || type == 'repeat' || type == 'return')
-                {
-                    dialog.dialog = 1;
-
-                    // if(type == 'return')
-                    // {
-                    //     dialog.dialog = '';
-                    // }
-                }
-
                 dialog.kind = 'Action';
             };
 

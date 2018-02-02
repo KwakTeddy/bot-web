@@ -401,9 +401,10 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Content",
+                                        "kind": "Action",
                                         "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
-                                        "type": ""
+                                        "type": "repeat",
+                                        "dialog": 1
                                     }
                                 ],
                                 "id": "default17"
