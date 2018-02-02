@@ -720,6 +720,12 @@ var dialogs = [
                                             "raw": "신청",
                                             "nlp": "신청"
                                         }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "1",
+                                            "nlp": "1"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -752,17 +758,18 @@ var dialogs = [
                                                     "raw": "카카오페이 고지",
                                                     "nlp": "카카오 페이 고지"
                                                 }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "1",
+                                                    "nlp": "1"
+                                                }
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "발송",
-                                                "if": "conversation.setNoticeMethodSuccess"
-                                            },
-                                            {
-                                                "kind": "Content",
-                                                "text": "에러"
+                                                "text": "정상적으로 처리되셨습니다."
                                             }
                                         ],
                                         "task": {
@@ -778,17 +785,19 @@ var dialogs = [
                                                     "raw": "LMS 고지",
                                                     "nlp": "LMS 고지"
                                                 }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "2",
+                                                    "nlp": "2"
+                                                }
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "성공",
+                                                "text": "정상적으로 처리되셨습니다.",
                                                 "if": "conversation.setNoticeMethodSuccess"
-                                            },
-                                            {
-                                                "kind": "Content",
-                                                "text": "에러"
                                             }
                                         ],
                                         "task": {
@@ -803,6 +812,12 @@ var dialogs = [
                                                 "text": {
                                                     "raw": "이메일 고지",
                                                     "nlp": "이메일 고지"
+                                                }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "3",
+                                                    "nlp": "3"
                                                 }
                                             }
                                         ],
@@ -830,12 +845,8 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "설정",
+                                                        "text": "정상적으로 처리되셨습니다.",
                                                         "if": "conversation.setNoticeMethodSuccess"
-                                                    },
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "에러"
                                                     }
                                                 ],
                                                 "task": {
@@ -878,6 +889,12 @@ var dialogs = [
                                         "text": {
                                             "raw": "해지",
                                             "nlp": "해지"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "2",
+                                            "nlp": "2"
                                         }
                                     }
                                 ],

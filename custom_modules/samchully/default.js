@@ -13,6 +13,19 @@ module.exports = function(bot)
 
     var messages = require(path.resolve('engine2/messages.js'));
 
+    var errorHandler = function (conversation, errData) {
+        console.log(errData);
+
+        if(errData.E_RETCD)
+        {
+            conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  errData.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+        }
+        else
+        {
+            conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+        }
+    };
+
     bot.setTask('defaultTask',
     {
         action: function(conversation, context, callback)
@@ -635,22 +648,20 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        conversation.setNoticeMethodSuccess = true; //TODO conversation으로 교체
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(body)
+                        console.log(body);
+                        conversation.setNoticeMethodSuccess = true;
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
 
                     callback();
@@ -671,27 +682,26 @@ module.exports = function(bot)
                     { key: 'I_VKONT', val: '110591507' },
                     { key: 'I_HPNUM', val: '01088588151' }
                 ];
+                options.timeout = 7000;
 
                 request.post(options, function(err, response, body)
                 {
                     if(err)
                     {
-                        console.log(err);
+                        errorHandler(conversation, err);
                     }
                     else
                     {
                         if(body.E_RETCD == 'E')
                         {
-                            console.log('##########')
-                            console.log(body);
+                            errorHandler(conversation, body);
                         }
                         else if(body.E_RETCD == 'S')
                         {
+                            console.log(body);
                             conversation.setNoticeMethodSuccess = true;
-                            console.log('@@@@@@@@@@@@@@@')
-                            console.log(body)
                         }else {
-                            console.log(body.E_RETCD)
+                            errorHandler(conversation, body);
                         }
 
                         callback();
@@ -718,22 +728,20 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
+                        console.log(body);
                         conversation.setNoticeMethodSuccess = true;
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(body)
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
 
                     callback();
@@ -759,20 +767,18 @@ module.exports = function(bot)
             {
                 if(err)
                 {
+                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                     console.log(err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        conversation.dialog.output[1].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                     }
                     else if(body.E_RETCD == 'S')
                     {
                         conversation.cancelNoticeMethodSuccess = true;
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(body)
                     }else {
                         console.log(body.E_RETCD)
                     }
