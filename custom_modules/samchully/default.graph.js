@@ -796,8 +796,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "정상적으로 처리되셨습니다.",
-                                                "if": "conversation.setNoticeMethodSuccess"
+                                                "text": "정상적으로 처리되셨습니다."
                                             }
                                         ],
                                         "task": {
@@ -824,8 +823,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으실 이메일 주소를 입력해주세요.",
-                                                "if": "받으실 이메일 주소를 입력해주세요."
+                                                "text": "받으실 이메일 주소를 입력해주세요."
                                             }
                                         ],
                                         "task": {
@@ -845,8 +843,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "정상적으로 처리되셨습니다.",
-                                                        "if": "conversation.setNoticeMethodSuccess"
+                                                        "text": "정상적으로 처리되셨습니다."
                                                     }
                                                 ],
                                                 "task": {
@@ -901,12 +898,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "전자고지 해지 완료되었습니다.",
-                                        "if": "conversation.cancelNoticeMethodSuccess"
-                                    },
-                                    {
-                                        "kind": "Content",
-                                        "text": "에러"
+                                        "text": "정상적으로 처리되었습니다."
                                     }
                                 ],
                                 "id": "default31",

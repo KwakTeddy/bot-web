@@ -440,7 +440,15 @@ module.exports = function(bot)
     {
         typeCheck: function (conversation, context, callback)
         {
-            var matched = true;
+            var matched = false;
+
+            var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
+            if(regExp.exec(conversation.nlu.inputRaw))
+            {
+             matched = true;
+            }
+
+
             callback(matched);
         }
     });
@@ -767,20 +775,21 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        conversation.dialog.output[1].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
+                        console.log(body);
                         conversation.cancelNoticeMethodSuccess = true;
-                    }else {
-                        console.log(body.E_RETCD)
+                    }
+                    else {
+                        errorHandler(conversation, body);
                     }
 
                     callback();
