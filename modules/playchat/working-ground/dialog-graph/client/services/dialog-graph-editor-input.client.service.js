@@ -362,7 +362,7 @@
 
                     for(var i=0; i<result.length; i++)
                     {
-                        if(!name || result[i].name.indexOf(name))
+                        if(!name || result[i].name.indexOf(name) != -1)
                         {
                             html += '<li>$' + result[i].name + '</li>';
                         }
@@ -445,7 +445,7 @@
                 angular.element('.dialog-editor-input-box > .dialog-editor-input-guide-box').insertAfter(e.currentTarget.parentElement);
             };
 
-            $scope.onFocus = function(e)
+            $scope.onFocus = function()
             {
                 var selection = window.getSelection();
 
@@ -461,27 +461,27 @@
 
                 if(type == 'intent')
                 {
-                    showIntentInputList(text.replace('#', ''), target, function(text)
+                    showIntentInputList(text.replace('#', ''), target, function(selected)
                     {
-                        target.innerText = text;
+                        target.innerText = selected || text;
                         CaretService.placeCaretAtEnd(target);
                         initInputList(true);
                     });
                 }
                 else if(type == 'entities')
                 {
-                    showEntityInputList(text.replace('@', ''), target, function()
+                    showEntityInputList(text.replace('@', ''), target, function(selected)
                     {
-                        target.innerText = text;
+                        target.innerText = selected || text;
                         CaretService.placeCaretAtEnd(target);
                         initInputList(true);
                     });
                 }
                 else if(type == 'types')
                 {
-                    showTypeInputList(text.replace('$', ''), target, function()
+                    showTypeInputList(text.replace('$', ''), target, function(selected)
                     {
-                        target.innerText = text;
+                        target.innerText = selected || text;
                         CaretService.placeCaretAtEnd(target);
                         initInputList(true);
                     });
@@ -658,45 +658,58 @@
                         var type = target.getAttribute('data-type');
                         if(type == 'intent')
                         {
-                            showIntentInputList(text.replace('#', ''), target, function(text)
+                            showIntentInputList(text.replace('#', ''), target, function(selected)
                             {
-                                target.innerText = text;
+                                target.innerText = selected || text;
+
+                                CaretService.placeCaretAtEnd(target);
 
                                 var span = document.createElement('span');
                                 span.innerText = String.fromCharCode(160);
                                 e.currentTarget.appendChild(span);
 
-                                CaretService.placeCaretAtEnd(span);
+                                setTimeout(function()
+                                {
+                                    CaretService.placeCaretAtEnd(span);
+                                }, 10);
 
                                 initInputList(true);
                             });
                         }
                         else if(type == 'entities')
                         {
-                            showEntityInputList(text.replace('@', ''), target, function()
+                            showEntityInputList(text.replace('@', ''), target, function(selected)
                             {
-                                target.innerText = text;
+                                target.innerText = selected || text;
+
+                                CaretService.placeCaretAtEnd(target);
 
                                 var span = document.createElement('span');
                                 span.innerText = String.fromCharCode(160);
                                 e.currentTarget.appendChild(span);
 
-                                CaretService.placeCaretAtEnd(span);
+                                setTimeout(function()
+                                {
+                                    CaretService.placeCaretAtEnd(span);
+                                }, 10);
 
                                 initInputList(true);
                             });
                         }
                         else if(type == 'types')
                         {
-                            showTypeInputList(text.replace('$', ''), target, function()
+                            showTypeInputList(text.replace('$', ''), target, function(selected)
                             {
-                                target.innerText = text;
+                                target.innerText = selected || text;
 
                                 var span = document.createElement('span');
                                 span.innerText = String.fromCharCode(160);
                                 e.currentTarget.appendChild(span);
 
-                                CaretService.placeCaretAtEnd(span);
+                                setTimeout(function()
+                                {
+                                    CaretService.placeCaretAtEnd(span);
+                                }, 10);
 
                                 initInputList(true);
                             });

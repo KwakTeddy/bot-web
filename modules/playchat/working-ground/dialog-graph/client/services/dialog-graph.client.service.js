@@ -1384,7 +1384,7 @@
         DialogGraph.prototype.bindDialogFunctions = function(dialog)
         {
             var that = this;
-            dialog.find('.graph-dialog-header').on('click', function(e)
+            dialog.find('.graph-dialog-header:first').on('click', function(e)
             {
                 that.focus(this.parentElement);
                 e.stopPropagation();
@@ -1402,7 +1402,7 @@
             // });
 
             //헤더, 인풋, 아웃풋 더블 클릭 별로 포커스 다르게
-            dialog.find('.graph-dialog-header').on('dblclick', function(e)
+            dialog.find('.graph-dialog-header:first').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
@@ -1413,7 +1413,7 @@
                 }
             });
 
-            dialog.find('.graph-dialog-input').on('dblclick', function(e)
+            dialog.find('.graph-dialog-input:first').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
@@ -1424,7 +1424,7 @@
                 }
             });
 
-            dialog.find('.graph-dialog-output').on('dblclick', function(e)
+            dialog.find('.graph-dialog-output:first').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
@@ -1436,7 +1436,7 @@
             });
 
 
-            dialog.find('.dialog-more').on('click', function(e)
+            dialog.find('.dialog-more:first').on('click', function(e)
             {
                 that.openMenu(e, dialog);
                 e.stopPropagation();
