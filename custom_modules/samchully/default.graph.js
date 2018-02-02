@@ -27,7 +27,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞에 6자리를 입력해주세요.\n예시) 900930",
+                        "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
                         "if": ""
                     }
                 ],
@@ -72,7 +72,7 @@ var dialogs = [
                                 ],
                                 "id": "default50",
                                 "task": {
-                                    "name": "searchUser"
+                                    "name": "searchSamchullyUser"
                                 },
                                 "children": [
                                     {
@@ -163,7 +163,8 @@ var dialogs = [
                                                 },
                                                 "type": "call",
                                                 "dialogId": "default3",
-                                                "dialogName": "인증_고객명"
+                                                "dialogName": "인증_고객명",
+                                                "text": "실패했습니다."
                                             }
                                         ],
                                         "id": "default52",
