@@ -22,69 +22,44 @@
         margin: 1px 4px;
         width: 80%;
     }
-    .flower-button
+    /*==button=============================================*/
+    .flower-button-blue
+     {
+         padding: 3px 10px;
+         border: 1px solid #585858;
+         border-radius: 4px;
+         color: #038eda !important;
+         display: inline-block;
+         -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         box-sizing: border-box;
+     }
+    .flower-button-red
     {
-
-        border:solid 1px #585858;
-        color:#585858;
-        border-radius: 3px;
-        font-size: 13px;
-        padding: 5px 15px;
+        padding: 3px 10px;
+        border: 1px solid #585858;
+        border-radius: 4px;
+        color: #FC4C4C !important;
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
-    .case1
+    .flowertext-case1
     {
         background-color: #FFFFFF;
-        color:#272727;
+        color:#fc4c4c !important;
         font-size: 13px;
+        text-align: center;
+        overflow:hidden;
     }
-    .case2
+    .flowertext-case2
     {
         background-color: #FFFFFF;
-        color:#272727;
+        color:#038eda !important;
         font-size: 13px;
-    }
-   /*tb01----------------------------------*/
-    .tb01{
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 8px;
-        border-bottom:#768ea2 solid 2px;
-    }
-    .tb01 thead{
-        background: #f5f5f5;
-        border-bottom: #dbdbdb solid 2px;
-    }
-    .tb01 thead th{
-        padding: 10px 0 10px;
-        font-size: 14px;
-        text-align: left;
-        padding-left: 30px;
-        font-weight: 500;
-        letter-spacing: 0.1px;
-        vertical-align: middle;
-    }
-    .tb01 tbody td{
-        text-align: left;
-        padding: 10px 30px;
-        font-size: 14px;
-        letter-spacing: 0;
-        border-bottom: 1px solid #e9e9e9;
-        vertical-align: middle;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .tb01 tbody td a:hover{
-        color: #038eda !important;
-    }
-    .tb01 tbody td.icon{
-        padding: 7px !important;
-        opacity: 0.3;
-    }
-    .tb01 tbody td.icon:hover{
-        opacity: 1;
-    }
-    .tb01 tbody td.icon:last-child{
-        padding: 7px 16px 7px 5px !important;
+        text-align: center;
+        overflow:hidden;
     }
    /*tb02----------------------------------*/
     .tb02{
@@ -95,34 +70,6 @@
         background: #f5f5f5;
         border-bottom: #dbdbdb solid 1px;
     }
-    .tb02 thead th{
-        padding: 10px 0 10px 0;
-        font-size: 14px;
-        text-align: center;
-        font-weight: 600;
-        letter-spacing: 0.1px;
-        vertical-align: middle;
-    }
-    .tb02 tbody td{
-        text-align: center;
-        font-size: 13px;
-        letter-spacing: 0;
-        border-bottom: 1px solid #e9e9e9;
-        vertical-align: middle;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        height: 38px;
-    }
-    .tb02 tbody td a:hover{
-        color: #038eda !important;
-    }
-    .tb02 tbody td.icon{
-        padding: 7px !important;
-    }
-    .tb02 tbody td.icon:last-child{
-        padding: 7px 16px 7px 5px !important;
-    }
-    /*page----------------------------*/
     .tablePaging {
         position: relative;
         margin-top: 5px;
@@ -187,62 +134,96 @@
         text-align: center;
         vertical-align: middle;
     }
+
 </style>
 
-
-
-<div class="template-body" data-id="complete" ng-controller="flowerReservationScheduleController" style="display: block;">
-
-
-
-    <!--<h1 class="template-title">예약정보관리</h1>-->
-    <!--<div class="daterangepicker dropdown-menu ltr opensleft show-calendar" style="top: 123px; right: 388px; left: auto; display: block;">-->
-
-    <!--<h1 class="template-title">예약정보관리</h1>-->
-    <!--<div class="daterangepicker dropdown-menu ltr opensleft show-calendar" style="top: 123px; right: 388px; left: auto; display: block;">-->
+<div class="template-body" data-id="schedule" ng-controller="flowerReservationScheduleController" style="display: block;">
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
                 <col style="width:10%;">
                 <col style="width: 5%;">
-                <col style="width: 5%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 14%;">
-                <col style="width: 10%;">
-                <col style="width: 21%;">
-                <col style="width: 15%;">
+                <col style="width: 8%;">
+                <col style="width: 8%;">
+                <col style="width: 8%;">
+                <col style="width: 8%;">
+                <col style="width: 20%;">
+                <col style="width: 22%;">
+                <col style="width: 11%;">
             </colgroup>
             <thead>
             <tr>
-                <th>배송날짜</th>
-                <th>배송시간</th>
-                <th>구매자정보</th>
-                <th>상품명 및 코드</th>
+                <th  colspan="2">배송일시</th>
+                <th>구매자</th>
+                <th>상품정보</th>
                 <th>주문시각</th>
-                <th>받는사람 및 연락처</th>
+                <th>받는사람</th>
                 <th>배송지</th>
                 <th>리본문구(좌/우)</th>
                 <th>관리</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="data in datas">
-                <td type="text" ng-model="data.order_deliverydate" class="case1">{{data.order_date}}</td>
-                <td type="text" ng-model="data.order_deliveryhour" class="case1">{{data.order_hour}}</td>
-                <td type="text"><p ng-model="data.order_name" class="case1">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case1">{{data.order_mobile}}</p></td>
-                <td type="text"><p ng-model="data.order_itemname" class="case2">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case2">{{data.order_itemcode}}</p></td>
-                <td type="text"><p ng-model="data.order_date" class="case2">{{data.order_date}}</p><p ng-model="data.order_hour" class="case2">{{data.order_hour}}</p></td>
-                <td type="text"><p ng-model="data.order_receivername" class="case1">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case1">{{data.order_receivermobile}}</p></td>
-                <td type="text" class="case1" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
-                <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
-                <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="accept(orderconfirm)">승인</button> <button type="button" class="flower-button" ng-click="delete(data)">삭체</button>
+            <tr ng-repeat="data in datas | orderBy:'-order_deliverydate'">
+            <!--<tr ng-repeat="data in datas">-->
+                <td id="$index" type="text">
+                    <!--<p ng-switch-when="승인 대기중" ng-if="data.order_deliverydate!=datas[$index-1].order_deliverydate || $index==0" ng-model="data.order_deliverydate" class="flowertext-case1">{{data.order_deliverydate}}</p>-->
+                    <!--<p ng-switch-when="승인 대기중" ng-if="data.order_deliverydate==datas[$index-1].order_deliverydate && $index!=0" ng-model="data.order_deliverydate" class="flowertext-case1"> </p>-->
+                    <!--<p ng-switch-when="승인완료" ng-if="data.order_deliverydate!=datas[$index-1].order_deliverydate || $index==0" ng-model="data.order_deliverydate" class="flowertext-case2">{{data.order_deliverydate}}</p>-->
+                    <!--<p ng-switch-when="승인완료" ng-if="data.order_deliverydate==datas[$index-1].order_deliverydate && $index!=0" ng-model="data.order_deliverydate" class="flowertext-case2"> </p>-->
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_deliverydate" class="flowertext-case1">{{data.order_deliverydate}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_deliverydate" class="flowertext-case2">{{data.order_deliverydate}}</p>
                 </td>
-            </tr>
-            <tr>
-                <td colspan="10">
-                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
+
+                <td type="text">
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_deliveryhour" class="flowertext-case1">{{data.order_deliveryhour}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_deliveryhour" class="flowertext-case2">{{data.order_deliveryhour}}</p>
+                </td>
+
+                <td type="text">
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_name" class="flowertext-case1">{{data.order_name}}</p>
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_mobile" class="flowertext-case1">{{data.order_mobile}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_name" class="flowertext-case2">{{data.order_name}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_mobile" class="flowertext-case2">{{data.order_mobile}}</p>
+                </td>
+
+                <td type="text">
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_itemname" class="flowertext-case1">{{data.order_itemname}}</p>
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_itemcode" class="flowertext-case1">{{data.order_itemcode}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_itemname" class="flowertext-case2">{{data.order_itemname}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_itemcode" class="flowertext-case2">{{data.order_itemcode}}</p>
+                </td>
+
+                <td type="text">
+                        <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_date" class="flowertext-case1">{{data.order_date}}</p>
+                        <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_hour" class="flowertext-case1">{{data.order_hour}}</p>
+                        <p ng-if="data.order_status =='승인완료'" ng-model="data.order_date" class="flowertext-case2">{{data.order_date}}</p>
+                        <p ng-if="data.order_status =='승인완료'" ng-model="data.order_hour" class="flowertext-case2">{{data.order_hour}}</p>
+                </td>
+
+                <td type="text">
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_receivername" class="flowertext-case1">{{data.order_receivername}}</p>
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_receivermobile" class="flowertext-case1">{{data.order_receivermobile}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_receivername" class="flowertext-case2">{{data.order_receivername}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_receivermobile" class="flowertext-case2">{{data.order_receivermobile}}</p>
+                </td>
+
+                <td type="text">
+                    <p ng-if="data.order_status =='승인 대기중'" type="text" ng-model="data.order_receiveraddress" class="flowertext-case1">{{data.order_receiveraddress}}</p>
+                    <p  ng-if="data.order_status =='승인완료'" type="text" ng-model="data.order_receiveraddress" class="flowertext-case2">{{data.order_receiveraddress}}</p>
+                </td>
+
+                <td type="text">
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_greeting" class="flowertext-case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{order_sendername}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_greeting" class="flowertext-case2">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{order_sendername}}</p>
+                </td>
+
+                <td colspan="1">
+                    <a ng-if="data.order_status =='승인 대기중'" data-href="/playchat/templates/contents/reservationScheduleDetailAccept" type="button" class="flower-button-red" ng-click="detail($event,data)">더보기</a>
+                    <a ng-if="data.order_status =='승인완료'" type="button" data-href="/playchat/templates/contents/reservationScheduleDetail" class="flower-button-blue" ng-click="detail($event,data)">더보기</a>
+                    <a ng-if="data.order_status =='승인완료'" type="button" class="flower-button-blue" ng-click="delete(data,index)">삭제</a>
+                    <a ng-if="data.order_status =='승인 대기중'" type="button" class="flower-button-red" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>

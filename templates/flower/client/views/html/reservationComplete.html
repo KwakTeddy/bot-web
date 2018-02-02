@@ -24,12 +24,14 @@
     }
     .flower-button
     {
-
-        border:solid 1px #585858;
-        color:#585858;
-        border-radius: 3px;
-        font-size: 13px;
-        padding: 5px 15px;
+        padding: 3px 10px;
+        border: 1px solid #585858;
+        border-radius: 4px;
+        color: #038eda !important;
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
     .case1
     {
@@ -231,12 +233,7 @@
                 <td type="text"><p ng-model="data.order_deliverydate" class="case2">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case2">{{data.order_deliveryhour}}</p></td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">변경</button> <button type="button" class="flower-button" ng-click="delete($index)">취소</button>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="10">
-                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
+                    <a type="button" class="flower-button" data-href="/playchat/templates/contents/reservationScheduleDetail" ng-click="detail($event,data)">더보기</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>

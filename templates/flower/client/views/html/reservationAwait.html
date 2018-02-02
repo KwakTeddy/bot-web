@@ -24,12 +24,14 @@
     }
     .flower-button
     {
-
-        border:solid 1px #585858;
-        color:#585858;
-        border-radius: 3px;
-        font-size: 13px;
-        padding: 5px 15px;
+        padding: 3px 10px;
+        border: 1px solid #585858;
+        border-radius: 4px;
+        color: #038eda !important;
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
     .case1
     {
@@ -195,7 +197,7 @@
 
 
 
-<div class="template-body" data-id="complete" ng-controller="flowerReservationAwaitController" style="display: block;">
+<div class="template-body" data-id="await" ng-controller="flowerReservationAwaitController" style="display: block;">
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
@@ -210,12 +212,12 @@
             </colgroup>
             <thead>
             <tr>
-                <th>구매자정보</th>
-                <th>상품명 및 코드</th>
+                <th>구매자</th>
+                <th>상품명정보</th>
                 <th>주문시각</th>
-                <th>받는사람 및 연락처</th>
+                <th>받는사람</th>
                 <th>배송지</th>
-                <th>배송날짜 및 시간</th>
+                <th>배송시각</th>
                 <th>리본문구(좌/우)</th>
                 <th>관리</th>
             </tr>
@@ -230,12 +232,7 @@
                 <td type="text"><p ng-model="data.order_deliverydate" class="case2">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case2">{{data.order_deliveryhour}}</p></td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">승인</button> <button type="button" class="flower-button" ng-click="delete($index)">취소</button>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="10">
-                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
+                    <a type="button" class="flower-button" data-href="/playchat/templates/contents/reservationScheduleDetailAccept" ng-click="detail($event,data)">더보기</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>

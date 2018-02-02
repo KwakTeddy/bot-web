@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('flowerDashboardController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
+angular.module('template').controller('flowerDashboardController', ['$scope', '$resource', '$cookies', '$location', '$rootScope','LanguageService', function ($scope, $resource, $cookies, $location,$rootScope,LanguageService)
 
 
 {
@@ -26,4 +26,5 @@ angular.module('template').controller('flowerDashboardController', ['$scope', '$
             alert(err);
         });
     })();
+    $scope.lan=LanguageService;
 }]);

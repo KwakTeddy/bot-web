@@ -844,8 +844,9 @@ var collectorderinfor = {
         var time=myDate.toLocaleTimeString();
         var time1=myDate.getHours();
         context.dialog.orderinfor.time=year+"년"+month+"월"+day+"일"+" "+time;
-        context.dialog.orderinfor.date=year+"년"+month+"월"+day+"일";
-        context.dialog.orderinfor.hour=time1;
+        context.dialog.orderinfor.date=year+"."+month+"."+day;
+        context.dialog.orderinfor.hour='';
+        context.dialog.orderinfor.hour=time1+":00";
 
         //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:
         if(context.user.username!==undefined){
@@ -985,7 +986,7 @@ var addorder = {
             order_deliverydate:context.dialog.orderinfor.deliverydate,
             order_deliveryhour:context.dialog.orderinfor.deliveryhour,
             order_otherrequire:context.dialog.orderinfor.otherrequire,
-            order_status:"주문",
+            order_status:"승인 대기중",
             botId:context.bot.id,
             __v:0
         };
@@ -1389,7 +1390,7 @@ bot.setTask('saveotherrequire', saveotherrequire);
 
 var showorder = {
     action: function (task,context,callback) {
-        order.find({botId:context.bot.id,order_mobile:context.user.mobile,order_status:"주문"}).lean().exec(function(err,docs){
+        order.find({botId:context.bot.id,order_mobile:context.user.mobile,order_status:"승인 대기중"}).lean().exec(function(err,docs){
             context.dialog.orderlist=docs;
             //task.doc={text:"완료된 고객님의 지난 주문내역입니다.\n\n지난 주문내역과 동일한 상품으로 주문을 원하시면 해당 주문내역의 번호를 입력하세요.\n\n"};
 
@@ -1744,7 +1745,8 @@ var dateAndtime = {
             // 判断年、月、日的取值范围是否正确
             matched=IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
             if(matched){
-                context.dialog.dateonly=arr[1]+"년"+arr[2]+"월"+arr[3]+"일";
+                context.dialog.dateonly1=arr[1]+"년"+arr[2]+"월"+arr[3]+"일";
+                context.dialog.dateonly=arr[1]+"."+arr[2]+"."+arr[3];
                 //time格式判断
                 //var strr=context.dialog.inRaw;
                 var strr=context.dialog.inCurRaw;
@@ -1754,7 +1756,7 @@ var dateAndtime = {
                     var textt3=strr.substring(8);
                     // console.log("textt3==========" + textt3);
                     timeTypeCheck1(textt3, type, task, context, callback);
-                    context.dialog.showtime=context.dialog.dateonly+" "+context.dialog.time;
+                    context.dialog.showtime=context.dialog.dateonly1+" "+context.dialog.time;
                     //console.log("context.dialog.showtime===1=======" + context.dialog.showtime);
                     if(context.dialog.time=='re'){
                         matched=false;
@@ -1766,7 +1768,7 @@ var dateAndtime = {
                     if (textt[2] === undefined) {
                         //  console.log("textt[1]==========" + textt[1]);
                         timeTypeCheck1(textt[1], type, task, context, callback);
-                        context.dialog.showtime=context.dialog.dateonly+" "+context.dialog.time;
+                        context.dialog.showtime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
                             matched=false;
                             callback(task, context, matched);
@@ -1778,7 +1780,7 @@ var dateAndtime = {
                         var textt2 = textt[1] + textt[2];
                         //console.log("textt2==========" + textt2);
                         timeTypeCheck1(textt2, type, task, context, callback);
-                        context.dialog.showtime=context.dialog.dateonly+" "+context.dialog.time;
+                        context.dialog.showtime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
                             matched=false;
                             callback(task, context, matched);
@@ -1817,7 +1819,8 @@ var dateAndtime1 = {
             // 判断年、月、日的取值范围是否正确
             matched=IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
             if(matched){
-                context.dialog.dateonly=arr[1]+"년"+arr[2]+"월"+arr[3]+"일";
+                context.dialog.dateonly1=arr[1]+"년"+arr[2]+"월"+arr[3]+"일";
+                context.dialog.dateonly=arr[1]+"."+arr[2]+"."+arr[3];
                 //time格式判断
                 //var strr=context.dialog.inRaw;
                 var strr=context.dialog.inCurRaw;
@@ -1827,7 +1830,7 @@ var dateAndtime1 = {
                     var textt3=strr.substring(8);
                     // console.log("textt3==========" + textt3);
                     timeTypeCheck1(textt3, type, task, context, callback);
-                    context.dialog.deliverytime=context.dialog.dateonly+" "+context.dialog.time;
+                    context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                     if(context.dialog.time=='re'){
                         matched=false;
                         callback(task, context, matched);
@@ -1838,7 +1841,7 @@ var dateAndtime1 = {
                     if (textt[2] === undefined) {
                         //  console.log("textt[1]==========" + textt[1]);
                         timeTypeCheck1(textt[1], type, task, context, callback);
-                        context.dialog.deliverytime=context.dialog.dateonly+" "+context.dialog.time;
+                        context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
                             matched=false;
                             callback(task, context, matched);
@@ -1849,7 +1852,7 @@ var dateAndtime1 = {
                         var textt2 = textt[1] + textt[2];
                         //console.log("textt2==========" + textt2);
                         timeTypeCheck1(textt2, type, task, context, callback);
-                        context.dialog.deliverytime=context.dialog.dateonly+" "+context.dialog.time;
+                        context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
                             matched=false;
                             callback(task, context, matched);

@@ -24,24 +24,26 @@
     }
     .flower-button
     {
-
         border:solid 1px #585858;
         color:#585858;
         border-radius: 3px;
         font-size: 13px;
-        padding: 5px 15px;
+        padding: 10px;
+        margin: 30px auto
     }
-    .case1
+    .flowertext-case1
     {
         background-color: #FFFFFF;
         color:#272727;
         font-size: 13px;
+        text-align: center;
     }
-    .case2
+    .flowertext-case2
     {
         background-color: #FFFFFF;
         color:#272727;
         font-size: 13px;
+        text-align: center;
     }
     /*tb01----------------------------------*/
     .tb01{
@@ -192,12 +194,7 @@
 
 
 <div class="template-body" data-id="complete" ng-controller="flowerBasicinformationController" style="display: block;">
-
-
-
-    <!--<h1 class="template-title">예약정보관리</h1>-->
-    <!--<div class="daterangepicker dropdown-menu ltr opensleft show-calendar" style="top: 123px; right: 388px; left: auto; display: block;">-->
-    <form ng-submit="save($event);">
+    <form>
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
                 <col style="width:20%;">
@@ -214,21 +211,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="data in datas">
-                <td type="text" ng-model="data.category" class="case1">{{data.category}}1</td>
-                <td type="text" ng-model="data.description" class="case2">{{data.description}}4</td>
+            <tr>
+                <td><p id=flowername ng-model="flowername" type="text" class="flowertext-case1">{{ flowername }}</p></td>
+                <td type="text" ng-model="description" class="flowertext-case1">{{description}}</td>
                 <td>
                     <label>
-                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
-                        <img src="{{ data.picture }}" style="width: 50px;" ng-if="data.picture" ng-click="editImage($event);">
+                        <img src="{{ data.image }}" style="width: 150px;height: 100px;" ng-if="data.image">
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
+                        <label type="button" class="flower-button" for="image">업로드</label>
                     </label>
                 </td>
-                <td type="text" ng-model="data.code" class="case2">{{data.code}}3</td>
-            </tr>
-            <tr>
-                <td colspan="10">
-                    <button type="button" class="default-button" ng-click="add();">추가</button>
-                </td>
+                <td type="text" ng-model="phone" class="flowertext-case1">{{phone}}</td>
             </tr>
             </tbody>
         </table>

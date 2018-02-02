@@ -1,123 +1,77 @@
 'use strict';
 
-angular.module('template').controller('flowerBasicinformationController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
+angular.module('template').controller('flowerBasicinformationController', ['$scope', '$resource', '$http','$cookies', 'FileUploader','$rootScope', 'LanguageService', function ($scope, $resource, $http, $cookies, FileUploader,$rootScope,LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('기본정보', '/modules/playchat/gnb/client/imgs/event_grey.png');
+    var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var ChatbotTemplateDataService = $resource('/api/:botId/template-data', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
-
     $scope.datas = [];
+    $scope.list = [];
 
-    (function()
-    {
-        $scope.getList = function()
+        (function()
         {
-            ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
-                {
-                    $scope.template = result;
+            $scope.data={};
+            var addUploader = function()
+            {
+                $scope.data.uploader = new FileUploader({
+                    url: '/api/' + chatbot.id + '/template-contents/upload',
+                    alias: 'uploadImage',
+                    autoUpload: true
+                });
 
-                    DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
-                        {
-                            $scope.datas = list;
-                            console.log(list);
-                            for(var i=0; i<list.length; i++)
+                $scope.data.uploader.onErrorItem = function(item, response, status, headers)
+                {
+                };
+
+                $scope.data.uploader.onSuccessItem = function(item, response, status, headers)
+                {
+                    $scope.data.image = response.url;
+                };
+
+                $scope.data.uploader.onProgressItem = function(fileItem, progress)
+                {
+                    angular.element('.form-box-progress').css('width', progress + '%');
+                };
+            };
+
+            $scope.editImage = function(e)
+            {
+                angular.element(e.currentTarget).next().click();
+            };
+            addUploader();
+            $scope.getList = function()
+            {
+                ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
+                    {
+                        $scope.template = result;
+
+                        ChatbotTemplateDataService.get({ templateId: result.id, botId: chatbot.id }, function(result)
                             {
-                                addUploader(i);
-                            }
-                        },
-                        function(err)
-                        {
-                            alert(err);
-                        });
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-        };
+                                $scope.flowername=result.flowername;
+                                $scope.description=result.description;
+                                $scope.data.image=result.image;
+                                $scope.phone=result.phone;
 
-        var addUploader = function(index)
-        {
-            $scope.datas[index].uploader = new FileUploader({
-                url: '/api/' + chatbot.id + '/template-contents/upload',
-                alias: 'uploadImage',
-                autoUpload: true
-            });
-
-            $scope.datas[index].uploader.onErrorItem = function(item, response, status, headers)
-            {
+                            },
+                            function(err)
+                            {
+                                alert("err:"+err);
+                            });
+                    },
+                    function(err)
+                    {
+                        alert(err);
+                    });
             };
 
-            $scope.datas[index].uploader.onSuccessItem = function(item, response, status, headers)
-            {
-                $scope.datas[index].image = response.url;
-            };
-
-            $scope.datas[index].uploader.onProgressItem = function(fileItem, progress)
-            {
-                angular.element('.form-box-progress').css('width', progress + '%');
-            };
-        };
-
-        $scope.editImage = function(e)
-        {
-            angular.element(e.currentTarget).next().click();
-        };
-
-        $scope.add = function()
-        {
-            $scope.datas.push({ name: '',date:'',description:'', uploader: undefined });
-            addUploader($scope.datas.length-1);
-        };
-
-        $scope.delete = function(index)
-        {
-            $scope.datas.splice(index, 1);
-
-            for(var i=0; i<$scope.datas.length; i++)
-            {
-                delete $scope.datas[i].uploader;
-            }
-
-            var datas = JSON.parse(angular.toJson($scope.datas));
-            DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
-                {
-                    console.log(result);
-                    alert("삭제하였습니다");
-                    $rootScope.$broadcast('simulator-build');
-
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-        };
-
-        $scope.save = function()
-        {
-            for(var i=0; i<$scope.datas.length; i++)
-            {
-                delete $scope.datas[i].uploader;
-            }
-
-            var datas = JSON.parse(angular.toJson($scope.datas));
-            DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
-                {
-                    console.log(result);
-                    alert("저장하였습니다");
-                    $rootScope.$broadcast('simulator-build');
-
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-        };
-    })();
+        })();
 
     $scope.getList();
-}]);
+    $scope.lan=LanguageService;
+
+    }]);

@@ -191,7 +191,7 @@
 
 
 
-<div class="template-body" data-id="complete" ng-controller="flowerReservationCancelController" style="display: block;">
+<div class="template-body" data-id="cancel" ng-controller="flowerReservationCancelController" style="display: block;">
 
 
 
@@ -231,12 +231,7 @@
                 <td type="text"><p ng-model="data.order_deliverydate" class="case2">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case2">{{data.order_deliveryhour}}</p></td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">재동록</button> <button type="button" class="flower-button" ng-click="delete($index)">삭제</button>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="10">
-                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
+                    <a type="button" class="operation-user-dialog-button" data-href="#" ng-click="reinput($event,data)">재동록</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>

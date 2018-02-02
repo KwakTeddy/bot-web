@@ -20,12 +20,15 @@
                     updateCallback();
                 }
             }
+
+            var mm = moment();
+
             var ranges = {};
             ranges[LanguageService('Today')] = [moment(), moment()];
-            ranges[LanguageService('Last 7 days')]= [moment(), moment()];
-            ranges[LanguageService('Last 30 days')]= [moment(), moment()];
-            ranges[LanguageService('This Month')]= [moment(), moment()];
-            ranges[LanguageService('Last Month')]= [moment(), moment()];
+            ranges[LanguageService('Last 7 days')]= [(moment().set({date: moment().get('date') - 7})), moment()];
+            ranges[LanguageService('Last 30 days')]= [moment().set({date: moment().get('date') - 30}), moment()];
+            ranges[LanguageService('This Month')]= [moment().set({month: moment().get('month')}), moment().set({date: moment().endOf('month').get('date')})];
+            ranges[LanguageService('Last Month')]= [moment().set({month: mm.get('month')-1}), moment().set({month: mm.get('month')-1, date: moment().set({month: mm.get('month')-1}).endOf('month').get('date')})];
 
             $(selector).daterangepicker({
                 parentEl: "#date-container",
@@ -34,15 +37,6 @@
                 opens: "left",
                 minDate : moment().subtract(62, 'days'),
                 maxDate : moment().endOf('month'),
-                // ranges: {
-                //     '오늘': [moment(), moment()],
-                //     '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                //     '지난 7 일': [moment().subtract(6, 'days'), moment()],
-                //     '지난 30 일': [moment().subtract(29, 'days'), moment()],
-                //     '이번 달': [moment().startOf('month'), moment().endOf('month')],
-                //     '지난 달': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                // },
-
                 ranges: ranges,
                 locale: {
                     "format": "YYYY/MM/DD",

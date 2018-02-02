@@ -7,11 +7,13 @@ angular.module('template').controller('flowerReservationController', ['$scope', 
 
     var chatbot = $cookies.getObject('chatbot');
 
-    console.log(chatbot);
-
-    $scope.datas = [];
-    $scope.date = {};
-    $scope.list = [];
+    function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式
+        var  oDate1,oDate2,iDays;
+        oDate1  =  new  Date(sDate1);   //转换为12-18-2002格式
+        oDate2  =  new  Date(sDate2);
+        iDays  =  oDate2  -  oDate1;   //把相差的毫秒数转换为天数
+        return  iDays
+    }
 
 
     $scope.changeTab = function(e, name)
@@ -27,34 +29,59 @@ angular.module('template').controller('flowerReservationController', ['$scope', 
         e.preventDefault();
         e.stopPropagation();
     };
+$scope.selectedTab='schedule';
 
     if($location.hash())
     {
+        $scope.selectedTab=$location.hash();
+
         angular.element('.failed-dialog .select_tab').removeClass('select_tab');
         angular.element('.failed-dialog a[href="#' + $location.hash() + '"]').parent().addClass('select_tab');
-
-        setTimeout(function()
-        {
-            console.log('나와라 : ', angular.element('.failed-dialog .tab-body'));
-            angular.element('.failed-dialog .tab-body').hide();
-            angular.element('.failed-dialog .tab-body[data-id="' + $location.hash() + '"]').show();
-        }, 100);
+    setTimeout(function()
+    {
+        angular.element('.failed-dialog .tab-body').hide();
+        angular.element('.failed-dialog .tab-body[data-id="' + $location.hash() + '"]').show();
+    }, 100);
     }
+
+
+    $scope.date = [];
     (function()
     {
-
         $scope.getList = function()
         {
-
+            $scope.datas = [];
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.template = result;
-                    // $scope.list = result;
-                    //alert(" $scope.template"+JSON.stringify( $scope.template));
-                    DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
+                      DataService.query({ templateId: result.id, botId: chatbot.id}, function(list)
                         {
-                            $scope.datas = list;
-                            //alert("$scope.datas"+JSON.stringify($scope.datas));
+                            $scope.datas=list;
+
+                            $scope.await=[];
+                            $scope.accept=[];
+                            $scope.cancel=[];
+
+                            for(var i=0;i<list.length;i++){
+                                var datetime =new Date(list[i].order_deliverydate+" "+list[i].order_deliveryhour);
+                                var datestart=new Date($scope.date.start);
+                                var dateend=new Date($scope.date.end);
+                                var startdate=DateDiff(datetime, datestart);
+                                var enddate=DateDiff(datetime, dateend);
+
+                                if(list[i].order_status==="주문취소" && startdate<=0 && enddate>=0){
+                                    $scope.cancel.push(list[i]);
+                                }
+                                if(list[i].order_status==="승인 대기중" && startdate<=0 && enddate>=0){
+                                    $scope.await.push(list[i]);
+                                }
+                                if(list[i].order_status==="승인완료" && startdate<=0 && enddate>=0){
+                                    $scope.accept.push(list[i]);
+                                }
+                            }
+                            $scope.awaitlength= $scope.await.length;
+                            $scope.acceptlength= $scope.accept.length;
+                            $scope.cancellength= $scope.cancel.length;
                         },
                         function(err)
                         {
@@ -67,52 +94,47 @@ angular.module('template').controller('flowerReservationController', ['$scope', 
                 });
         };
 
-        $scope.add = function()
+        $scope.search = function(e)
         {
-            $scope.datas.push({ order_name: '', order_mobile: '', order_itemname: '', order_itemcode: '', order_date:'',order_hour:'',order_receivername:'',order_receivermobile:'',order_receiveraddress:'',order_deliverydate:'',order_deliveryhour:'',order_greeting:'',order_sendername:''});
+            console.log("--------------------==================--------------");
+            // if(e.keyCode == 13)
+            // {
+            //     $scope.getList(1, e.currentTarget.value);
+            // }
+            // else if(e.keyCode == 8)
+            // {
+            //     //backspace
+            //     if(e.currentTarget.value.length == 1)
+            //     {
+            //         $scope.getList(1);
+            //     }
+            // }
         };
 
-        $scope.delete = function(index)
-        {
-            $scope.datas.splice(index, 1);
-            for(var i=0; i<$scope.datas.length; i++)
-            {
-                delete $scope.datas[i].uploader;
-            }
 
-            var datas = JSON.parse(angular.toJson($scope.datas));
-            DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
-                {
-                    console.log(result);
-                    alert("삭제하였습니다");
-                    $rootScope.$broadcast('simulator-build');
-
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-        };
-
-        $scope.save = function()
-        {
-            var datas = JSON.parse(angular.toJson($scope.datas));
-
-            console.log('데이터스 : ', datas);
-
-            DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
-                {
-                    console.log(result);
-                    alert("저장하였습니다");
-                    $rootScope.$broadcast('simulator-build');
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-        };
     })();
-    DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
+
+    DateRangePickerService.init('#createdRange', $scope.date, function()
+{
+    var hash = $location.hash();
+    if(!hash)
+    {
+        hash = 'schedule';
+    }
+    $scope.getList();
+    $rootScope.$broadcast('reservation_order_date_changed', $scope.date);
+});
+
+    angular.element('#createdRange').get(0).getCurrentDate = function(date)
+    {
+        return $scope.date=date;
+    };
+
+    $scope.$on('delete', function(context, date)
+    {
+        $scope.getList();
+    });
+
     $scope.getList();
     $scope.lan=LanguageService;
 
