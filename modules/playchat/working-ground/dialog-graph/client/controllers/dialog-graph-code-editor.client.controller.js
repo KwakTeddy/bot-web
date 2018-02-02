@@ -96,7 +96,7 @@
                             var split = result.data.split('\n');
                             for(var i=0; i<split.length; i++)
                             {
-                                if(split[i].indexOf('var ' + options.target) != -1)
+                                if(split[i].indexOf(options.target) != -1)
                                 {
                                     editor.setCursor({line: i, ch: 1});
                                 }
@@ -106,9 +106,10 @@
                         {
                             $scope.mode = options.mode;
                             angular.element('.dialog-graph-code-editor-controller').addClass('edit');
-                            editor.setValue(result.data + '\n\n' + options.code);
+                            result = result.data.substring(0, result.data.lastIndexOf('};')) + '\n' + options.code + '\n};';
+                            editor.setValue(result);
                             editor.focus();
-                            editor.setCursor({line: result.data.split('\n').length + 1, ch: 1});
+                            editor.setCursor({line: result.split('\n').length + 1, ch: 1});
                         }
                         else if(options.mode == 'graphsource')
                         {
@@ -142,6 +143,38 @@
                 angular.element(editor.getTextArea()).next().show();
                 angular.element('.dialog-graph-code-editor').show();
 
+                if(options)
+                {
+                    if (options.isView)
+                    {
+                        var content = editor.getValue();
+                        editor.focus();
+
+                        var split = content.split('\n');
+                        for (var i = 0; i < split.length; i++)
+                        {
+                            if (split[i].indexOf(options.target) != -1)
+                            {
+                                editor.setCursor({line: i, ch: 1});
+                                return;
+                            }
+                        }
+                    }
+                    else if(options.isCreate)
+                    {
+                        $scope.mode = options.mode;
+                        angular.element('.dialog-graph-code-editor-controller').addClass('edit');
+
+                        var content = editor.getValue();
+                        var index = content.lastIndexOf('};');
+
+                        var result = content.substring(0, index) + options.code + '\n};';
+                        editor.setValue(result);
+                        editor.focus();
+                        editor.setCursor({line: result.split('\n').length + 1, ch: 1});
+                    }
+                }
+
                 var cursor = editor.getCursor();
                 console.log('커서 : ', cursor);
                 editor.focus();
@@ -162,6 +195,32 @@
         }
 
         angular.element('.dialog-graph-code-editor').get(0).openCodeEditor = openCodeEditor;
+
+        $scope.search = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                var value = e.currentTarget.value;
+
+                var content = editor.getValue();
+                editor.focus();
+
+                var split = content.split('\n');
+                for (var i = 0; i < split.length; i++)
+                {
+                    if (split[i].indexOf(value) != -1)
+                    {
+                        editor.setCursor({line: i + 50, ch: 1});
+                        editor.setCursor({line: i, ch: 1});
+
+                        return;
+                    }
+                }
+
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        };
 
         $scope.save = function()
         {

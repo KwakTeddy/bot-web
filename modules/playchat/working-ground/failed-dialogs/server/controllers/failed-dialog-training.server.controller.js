@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 var stripArray = function(docs)
 {
@@ -133,7 +133,6 @@ module.exports.create = function(req, res)
             return res.status(400).send({ message: err.stack || err });
         }
 
-        console.log('다이얼로그셋 아이디 : ', dialogset._id, dialogset);
         DialogsetDialog.find({ dialogset: dialogset._id }).sort('-id').limit(1).exec(function(err, dialogs)
         {
             if (err)
@@ -152,14 +151,14 @@ module.exports.create = function(req, res)
                 inputRaw = inputRaw.trim();
 
                 var language = req.body.language || 'ko'; //temporary
-                NLPManager.getNlpedText(inputRaw, language, function(err, result)
+                NLPManager.getNlpedText(language, inputRaw, function(err, lastChar, nlpText, nlp)
                 {
                     if(err)
                     {
                         return res.status(400).send({ message: err.stack || err });
                     }
 
-                    inputList.push(result);
+                    inputList.push(nlpText);
                     done();
                 });
             },

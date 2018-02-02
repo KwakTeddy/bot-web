@@ -1,6 +1,6 @@
 var path = require('path');
 
-var bot = require(path.resolve('./engine/bot/server/controllers/bot.server.controller.js'));
+var bot = require(path.resolve('./engine2/bot/server/controllers/bot.server.controller.js'));
 
 var PROTO_PATH = __dirname + '/chatbotservice.proto';
 //

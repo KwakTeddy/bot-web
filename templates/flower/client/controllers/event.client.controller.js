@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('flowerEventController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', function ($scope, $resource, $cookies, FileUploader,$rootScope)
+angular.module('template').controller('flowerEventController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', 'LanguageService', function ($scope, $resource, $cookies, FileUploader,$rootScope,LanguageService )
 {
     $scope.$parent.changeWorkingGroundName('이벤트 관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });

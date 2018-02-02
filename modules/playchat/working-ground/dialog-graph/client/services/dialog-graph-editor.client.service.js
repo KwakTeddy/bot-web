@@ -24,7 +24,7 @@
                 return alert(LanguageService('You do not have permission to edit this bot'));
             }
 
-            angular.element('.graph-body').css('right', '365px');
+            angular.element('.graph-background').css('width', '80%');
             angular.element('#graphDialogEditor').css('right', '0');
 
 
@@ -75,7 +75,7 @@
 
         DialogGraphEditor.prototype.close = function()
         {
-            angular.element('.graph-body').css('right', '');
+            angular.element('.graph-background').css('width', '');
             angular.element('.dialog-editor-creation-panel').css('right', this.rightStyle);
             angular.element('#graphDialogEditor').css('right', this.rightStyle);
             angular.element('.dialog-editor-input-list-modal').hide();

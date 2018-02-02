@@ -641,7 +641,7 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon2",
+        "id": "noanswer",
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",

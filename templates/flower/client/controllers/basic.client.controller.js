@@ -204,4 +204,5 @@ angular.module('template').controller('flowerBasicController', ['$scope', '$reso
             }
         }).open();
     };
+    $scope.lan=LanguageService;
 }]);

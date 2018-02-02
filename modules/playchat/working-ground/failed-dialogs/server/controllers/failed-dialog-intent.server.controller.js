@@ -3,7 +3,7 @@ var UserDialog = mongoose.model('UserDialog');
 var IntentContent = mongoose.model('IntentContent');
 
 var path = require('path');
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 module.exports.analysis = function(req, res)
 {
@@ -99,15 +99,15 @@ module.exports.saveIntentContents = function(req, res)
     intentContents.user = req.user;
     intentContents.name = name;
 
-    var language = req.body.language || 'ko'; //temporary
-    NLPManager.getNlpedText(name, language, function(err, result)
+    var language = req.body.language || 'ko';
+    NLPManager.getNlpedText(language, name, function(err, lastChar, nlpText, nlp)
     {
         if(err)
         {
             return res.status(400).send({ message: err.stack || err });
         }
 
-        intentContents.input = result;
+        intentContents.input = nlpText;
 
         intentContents.save(function(err)
         {

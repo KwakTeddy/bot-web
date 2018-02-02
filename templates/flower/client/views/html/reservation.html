@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <style>
     .tab01 li
     {
@@ -29,3 +30,36 @@
     <div class="tab-body" data-id="complete" ng-include="'/templates/flower/client/views/html/reservationComplete.html'" ng-controller="flowerReservationCompleteController"></div>
     <div class="tab-body" data-id="cancel" ng-include="'/templates/flower/client/views/html/reservationCancel.html'" ng-controller="flowerReservationCancelController"></div>
 </div>
+=======
+<style>
+    .tab01 li
+    {
+        width: 120px;
+    }
+</style>
+<div class="upSide">
+    <form class="inline-block ng-pristine ng-valid">
+        <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+    </form>
+    <div id="createdRange" class="pull-right" style="width: 20%;">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+        <span></span> <b class="caret"></b>
+    </div>
+</div>
+
+<div class="failed-dialog" ng-controller="flowerReservationController">
+    <div class="tab01" style="margin-top: 20px;">
+        <ul class="tabs1">
+            <li class="select_tab" ng-click="changeTab($event, 'schedule');"><a href="#schedule" class="ng-binding">스케줄</a></li>
+            <li ng-click="changeTab($event, 'await');"><a href="#await" class="ng-binding">승인 대기({{ awaitlength }})</a></li>
+            <li ng-click="changeTab($event, 'complete');"><a href="#complete" class="ng-binding">승인 완료({{ acceptlength }})</a></li>
+            <li ng-click="changeTab($event, 'cancel');"><a href="#cancel" class="ng-binding">취소 내역({{ cancellength }})</a></li>
+        </ul>
+    </div>
+    <div class="tab-body" data-id="schedule" ng-include="'/templates/flower/client/views/html/reservationSchedule.html'" style="display: block;"></div>
+    <div class="tab-body" data-id="await" ng-include="'/templates/flower/client/views/html/reservationAwait.html'"></div>
+    <div class="tab-body" data-id="complete" ng-include="'/templates/flower/client/views/html/reservationComplete.html'"></div>
+    <div class="tab-body" data-id="cancel" ng-include="'/templates/flower/client/views/html/reservationCancel.html'"></div>
+
+</div>
+>>>>>>> 55abb6f3e37e4e4855bae10cd8b18fd9490db226

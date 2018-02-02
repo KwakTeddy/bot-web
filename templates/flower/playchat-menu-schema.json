@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "menus" : [ 
         { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard_1.png" },
@@ -11,3 +12,18 @@
         { "name" : "Channel Management", "url": "/channel", "icon": "speech_select_mini.png" }
     ]
 }
+=======
+{
+    "menus" : [
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard_1.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents_1.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basicinformation", "icon" : "basic.png" },
+            { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" },
+            { "name" : "상품관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
+            { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
+        ] },
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini_1.png" },
+        { "name" : "Channel Management", "url": "/channel", "icon": "speech_select_mini.png" }
+    ]
+}
+>>>>>>> 55abb6f3e37e4e4855bae10cd8b18fd9490db226

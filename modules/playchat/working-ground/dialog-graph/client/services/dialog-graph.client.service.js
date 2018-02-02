@@ -8,6 +8,8 @@
 
     angular.module('playchat').factory('DialogGraph', function($window, $rootScope)
     {
+        var PLUS_BUTTON_MARGIN_TOP = 22;
+
         var Menu = function()
         {
             this.currentDialog = undefined;
@@ -149,7 +151,12 @@
             // -30은 스크롤바
             if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
             {
-                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px')
+                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+            }
+
+            if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+            {
+                angular.element('.dialog-menu').css('top', top - 50 + 'px');
             }
 
             e.preventDefault();
@@ -185,7 +192,6 @@
 
         var DialogGraph = function()
         {
-            this.originalFileData = undefined;
             this.graphData = undefined;
             this.template = undefined;
             this.canvas = undefined;
@@ -691,43 +697,21 @@
 
             try
             {
-                data = data.trim();
+                this.commonDialogs = data.commonDialogs;
 
-                this.originalFileData = data;
-
-                var commandMatch = data.match(/var commonDialogs[^;]*;/gi);
-                if(commandMatch && commandMatch.length == 1)
+                var startDialog = this.commonDialogs[0];
+                if(!startDialog)
                 {
-                    var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
-                    this.commonDialogs = JSON.parse(parsed);
-
-                    this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
-
-                    var startDialog = this.commonDialogs[0];
-                    if(!startDialog)
-                        startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
-
-                    var match = data.match(/var dialogs[^;]*;/gi);
-                    if(match && match.length == 1)
-                    {
-                        parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
-
-                        startDialog.children = this.userDialogs = JSON.parse(parsed);
-                        this.graphData = startDialog;
-
-                        this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
-
-                        this.refresh();
-
-                        this.onLoad();
-
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
                 }
+
+                startDialog.children = this.userDialogs = data.dialogs;
+                this.graphData = startDialog;
+
+                this.refresh();
+                this.onLoad();
+
+                return true;
             }
             catch(err)
             {
@@ -856,7 +840,7 @@
                     }
                     else if(key == 'text')
                     {
-                        displayText = input[key];
+                        displayText = input[key].raw;
                     }
                     else if(key == 'if')
                     {
@@ -889,7 +873,7 @@
                 var template = '<div><div><span>' + output.text + '</span></div>';
                 if(output.image)
                 {
-                    // template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                    template += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
                 }
 
                 template += '</div>';
@@ -900,15 +884,9 @@
             {
                 var template = '';
 
-                if(output.kind == 'Action' || output.callChild || output.call || output.returnCall || output.up || output.repeat || output.return)
+                if(output.kind == 'Action')
                 {
-                    for(var key in output)
-                    {
-                        if(key != 'kind' && key != 'options')
-                        {
-                            template = '<div><span>' + (output.return ? '[return]' : '[' + key + '] ' + output[key]) + '</span></div>';
-                        }
-                    }
+                    template = '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
                 }
 
                 if(output.options)
@@ -1160,6 +1138,94 @@
             });
         };
 
+        DialogGraph.prototype.reloadDialog = function(dialog)
+        {
+            var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
+
+            var inputTemplate = '';
+            var outputTemplate = '';
+            var buttonTemplate = '';
+
+            if(typeof dialog.input == 'object' && dialog.input.length)
+            {
+                //or
+                for(var i=0; i<dialog.input.length; i++)
+                {
+                    var input = dialog.input[i];
+                    inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
+                }
+            }
+            else
+            {
+                // 예전 그래프에 input이 리스트가 아닌것도 있었다.
+                inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+
+            if(typeof dialog.output == 'object')
+            {
+                if(dialog.output.length)
+                {
+                    for(var i=0; i<dialog.output.length; i++)
+                    {
+                        var output = dialog.output[i];
+
+                        if(output.kind == 'Text')
+                        {
+                            outputTemplate += '<div>' + output.text + '</div>';
+                        }
+                        else
+                        {
+                            outputTemplate += makeOutputTemplate(output);
+                        }
+
+                        if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
+                        {
+                            buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
+                        }
+
+                        break;
+                    }
+                }
+                else
+                {
+                    outputTemplate = makeOutputTemplate(dialog.output);
+                    if(dialog.output.buttons && dialog.output.buttons.length > 0)
+                    {
+                        buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
+                    }
+                }
+            }
+            else
+            {
+                outputTemplate = makeOutputTemplate(dialog.output);
+            }
+
+
+            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
+            t = angular.element(this.$compile(t)(this.$scope));
+
+            var that = this;
+            t.find('.graph-dialog-output img').on('load', function()
+            {
+                that.refreshLine();
+            });
+
+            t.find('.graph-dialog-item').get(0).dialog = dialog;
+
+            makeDialogDraggable(t.find('.graph-dialog-item').get(0));
+
+            var itemElement = t.find('.graph-dialog-item').get(0);
+
+            var parent = angular.element(this.canvas).find('#' + dialog.id).get(0);
+            parent.replaceChild(itemElement, parent.children[0]);
+
+            this.bindDialogFunctions(angular.element(parent));
+
+            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+
+            this.focusById(dialog.id);
+        };
+
         //아이디가 없으면 생성하게끔 하려고 임시로 넣음.
         var tempIdCount = new Date().getTime();
         DialogGraph.prototype.drawDialog = function(parent, dialog)
@@ -1243,13 +1309,41 @@
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
+            var that = this;
+            t.find('.graph-dialog-output img').on('load', function()
+            {
+                that.refreshLine();
+            });
+
             t.find('.graph-dialog-item').get(0).dialog = dialog;
 
             this.bindDialogFunctions(t);
 
             makeDialogDraggable(t.find('.graph-dialog-item').get(0));
 
-            parent.append(t);
+            var plusButton = parent.children('.plus').get(0);
+            if(plusButton)
+            {
+                t.insertBefore(plusButton);
+
+                var target = t.get(0);
+                if(target)
+                {
+                    plusButton.style.top = '';
+                    plusButton.style.position = '';
+                    var diff = plusButton.offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
+                    if(diff > 50)
+                    {
+                        plusButton.style.top = -(plusButton.offsetTop - target.offsetTop) + (target.children[0].offsetHeight + plusButton.offsetHeight) + 'px';
+                        plusButton.style.position = 'relative';
+                        plusButton.setAttribute('data-diff', diff);
+                    }
+                }
+            }
+            else
+            {
+                parent.append(t);
+            }
 
             if(!dialog.children || dialog.children.length == 0)
             {
@@ -1259,7 +1353,7 @@
                 var half = Math.ceil(target.offsetHeight / 2) + 1.4;
                 if(this.$scope.myBotAuth.edit)
                 {
-                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
+                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > PLUS_BUTTON_MARGIN_TOP ? PLUS_BUTTON_MARGIN_TOP : half) + 'px"');
                 }
             }
             else
@@ -1295,7 +1389,7 @@
         DialogGraph.prototype.bindDialogFunctions = function(dialog)
         {
             var that = this;
-            dialog.find('.graph-dialog-header').on('click', function(e)
+            dialog.find('.graph-dialog-header:first').on('click', function(e)
             {
                 that.focus(this.parentElement);
                 e.stopPropagation();
@@ -1313,7 +1407,7 @@
             // });
 
             //헤더, 인풋, 아웃풋 더블 클릭 별로 포커스 다르게
-            dialog.find('.graph-dialog-header').on('dblclick', function(e)
+            dialog.find('.graph-dialog-header:first').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
@@ -1324,7 +1418,7 @@
                 }
             });
 
-            dialog.find('.graph-dialog-input').on('dblclick', function(e)
+            dialog.find('.graph-dialog-input:first').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
@@ -1335,7 +1429,7 @@
                 }
             });
 
-            dialog.find('.graph-dialog-output').on('dblclick', function(e)
+            dialog.find('.graph-dialog-output:first').on('dblclick', function(e)
             {
                 if(that.$scope.myBotAuth.edit)
                 {
@@ -1347,7 +1441,7 @@
             });
 
 
-            dialog.find('.dialog-more').on('click', function(e)
+            dialog.find('.dialog-more:first').on('click', function(e)
             {
                 that.openMenu(e, dialog);
                 e.stopPropagation();
@@ -1383,7 +1477,7 @@
         {
             var half = src.offsetHeight / 2;
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + (half > 90 ? 90 : half);
+            var y1 = src.offsetTop - 1 + (half > PLUS_BUTTON_MARGIN_TOP ? PLUS_BUTTON_MARGIN_TOP : half);
 
             var x2 = dest.offsetLeft;
             var y2 = dest.offsetTop + dest.offsetHeight / 2;
@@ -1532,9 +1626,19 @@
 
         DialogGraph.prototype.testFocus = function(target)
         {
-            angular.element('.test-selected').removeClass('test-selected');
-            angular.element('#' + target + ' > .graph-dialog-item').addClass('test-selected');
-            this.testFocusedTarget = target;
+            if(target)
+            {
+                target = angular.element('#' + target).get(0);
+                if(target)
+                {
+                    angular.element('.test-selected').removeClass('test-selected');
+                    angular.element(target).children('.graph-dialog-item').addClass('test-selected');
+
+                    this.testFocusedTarget = target.id;
+
+                    this.moveScrollToTarget(target.children[0]);
+                }
+            }
         };
 
         DialogGraph.prototype.focus = function(target)
@@ -1677,7 +1781,7 @@
                 this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
 
-            this.testFocus(this.testFocusedTarget);
+            this.testFocus(this.testFocusedTarget || this.commonDialogs[0].id);
         };
 
         DialogGraph.prototype.refreshLine = function()
@@ -1717,11 +1821,15 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
-            //커먼다이얼로그에 서큘러 JSON이 생기는 문제가 있으므로 정리해야함.
-            var temp = JSON.parse(JSON.stringify(this.commonDialogs));
-            delete temp[0].children;
+            var children = this.commonDialogs[0].children;
+            delete this.commonDialogs[0].children;
 
-            var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
+            var userDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4);
+            var commonDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.commonDialogs)), null, 4);
+
+            this.commonDialogs[0].children = children;
+
+            var data = 'var dialogs = ' + userDialogsString + ';\r\n\r\n' + 'var commonDialogs = ' + commonDialogsString + ';\r\n\r\n' + 'module.exports = function(bot)\r\n{\r\n\tbot.setDialogs(dialogs);\r\n\tbot.setCommonDialogs(commonDialogs);\r\n}';
             return data;
         };
 
