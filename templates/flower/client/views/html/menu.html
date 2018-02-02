@@ -203,9 +203,9 @@
                 <col style="width:15%;">
                 <col style="width: 15%;">
                 <col style="width: 10%;">
+                <col style="width: 25%;">
                 <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
+                <col style="width: 15%;">
             <thead>
             <tr>
                 <th>상품 카테고리</th>
@@ -224,7 +224,7 @@
                 <td type="text" ng-model="data.description" class="case2">{{data.description}}4</td>
                 <td>
                     <label>
-                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
+                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" style="border: none;"/>
                         <img src="{{ data.picture }}" style="width: 50px;" ng-if="data.picture" ng-click="editImage($event);">
                     </label>
                 </td>
@@ -241,17 +241,17 @@
         </table>
     </form>
 
-    <form ng-submit="save($event);">
+    <form ng-submit="save($event);" style="margin-top: 40px;">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width:20%;">
-                <col style="width: 40%;">
+                <col style="width:15%;">
+                <col style="width: 50%;">
                 <col style="width: 20%;">
-                <col style="width: 20%;">
+                <col style="width: 15%;">
             <thead>
             <tr>
                 <th>후기제목</th>
-                <th>내옹</th>
+                <th>내용</th>
                 <th>이미지</th>
                 <th>관리</th>
             </tr>
@@ -262,7 +262,7 @@
                 <td type="text" ng-model="data.description" class="case2">{{data.description}}4</td>
                 <td>
                     <label>
-                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
+                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" style="border: none;"/>
                         <img src="{{ data.picture }}" style="width: 50px;" ng-if="data.picture" ng-click="editImage($event);">
                     </label>
                 </td>

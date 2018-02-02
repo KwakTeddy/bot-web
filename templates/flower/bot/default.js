@@ -348,6 +348,11 @@ var mobileidentification = {
                 "name":"임보훈",
                 "mobile":"01062588718",
                 "email":"rayim@moneybrain.ai"
+            },
+            {
+                "name":"손보경",
+                "mobile":"01021244141",
+                "email":"sbk@moneybrain.ai"
             }
         ];
         context.dialog.isvipornot=false;

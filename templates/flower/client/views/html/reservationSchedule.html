@@ -111,7 +111,7 @@
         vertical-align: middle;
         text-overflow: ellipsis;
         white-space: nowrap;
-        height: 38px;
+        padding: 2px 6px;
     }
     .tb02 tbody td a:hover{
         color: #038eda !important;
@@ -203,24 +203,24 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width:10%;">
-                <col style="width: 5%;">
-                <col style="width: 5%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 14%;">
-                <col style="width: 10%;">
-                <col style="width: 21%;">
-                <col style="width: 15%;">
+                <col style="width:9%;">
+                <col style="width: 6%;">
+                <col style="width: 8%;">
+                <col style="width: 17%;">
+                <col style="width: 8%;">
+                <col style="width: 8%;">
+                <col style="width: 12%;">
+                <col style="width: 20%;">
+                <col style="width: 12%;">
             </colgroup>
             <thead>
             <tr>
                 <th>배송날짜</th>
                 <th>배송시간</th>
                 <th>구매자정보</th>
-                <th>상품명 및 코드</th>
+                <th>상품정보</th>
                 <th>주문시각</th>
-                <th>받는사람 및 연락처</th>
+                <th>받는사람</th>
                 <th>배송지</th>
                 <th>리본문구(좌/우)</th>
                 <th>관리</th>
@@ -230,14 +230,14 @@
             <tr ng-repeat="data in datas">
                 <td type="text" ng-model="data.order_deliverydate" class="case1">{{data.order_date}}</td>
                 <td type="text" ng-model="data.order_deliveryhour" class="case1">{{data.order_hour}}</td>
-                <td type="text"><p ng-model="data.order_name" class="case1">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case1">{{data.order_mobile}}</p></td>
-                <td type="text"><p ng-model="data.order_itemname" class="case2">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case2">{{data.order_itemcode}}</p></td>
+                <td type="text"><p ng-model="data.order_name" class="case3">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case3">{{data.order_mobile}}</p></td>
+                <td type="text"><p ng-model="data.order_itemname" class="case3">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case2">{{data.order_itemcode}}</p></td>
                 <td type="text"><p ng-model="data.order_date" class="case2">{{data.order_date}}</p><p ng-model="data.order_hour" class="case2">{{data.order_hour}}</p></td>
-                <td type="text"><p ng-model="data.order_receivername" class="case1">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case1">{{data.order_receivermobile}}</p></td>
-                <td type="text" class="case1" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
+                <td type="text"><p ng-model="data.order_receivername" class="case3">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case3">{{data.order_receivermobile}}</p></td>
+                <td type="text" class="case3" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <button type="button" class="operation-user-dialog-button" ng-click="delete($index)">승인</button> <button type="button" class="flower-button" ng-click="delete($index)">취소</button>
+                    <button type="button" class="operation-user-dialog-button">더보기</button> <button type="button" class="flower-button" ng-click="delete($index)">삭제</button>
                 </td>
             </tr>
             <tr>

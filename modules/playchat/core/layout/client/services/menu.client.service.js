@@ -33,16 +33,16 @@
             ] };
 
             this.contents = { name: LanguageService('Contents'), icon: 'contents.png' };
-            this.channel = { name: LanguageService('Channel'), url: '/channel', icon: 'channel.png' };
+            this.channel = { name: LanguageService('Channel'), url: '/channel', icon: 'channel_1.png' };
 
-            this.operation = { name: LanguageService('Operation'), icon: 'operat.png', url: '/operation', childMenus: [
+            this.operation = { name: LanguageService('Operation'), icon: 'operat_1.png', url: '/operation', childMenus: [
                 { name: LanguageService('User'), url: '/operation/user', icon: 'user_mini.png' },
                 { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
                 { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
                 { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
-            this.analysis = { name: LanguageService('Analysis'), icon: 'analysis.png', url: '/analysis', childMenus: [
+            this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
                 { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
                 { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
                 { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
