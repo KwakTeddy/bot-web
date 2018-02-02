@@ -7,7 +7,6 @@
             { "name" : "상품관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
             { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" }
         ] },
-        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini_1.png" },
-        { "name" : "Channel Management", "url": "/channel", "icon": "speech_select_mini.png" }
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini_1.png" }
     ]
 }

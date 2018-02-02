@@ -1,8 +1,13 @@
 {
     "category" : "String",
     "name" : "String",
-    "hotmenus" : "Boolean",
     "price" : "Number",
     "image" : "String",
-    "description" : "String"
+    "description" : "String",
+    "code" : "String",
+    "sale_price" : "Number",
+    "picture" : "String",
+    "delivery" : "String",
+    "VIP" : "String",
+    "status":"String"
 }

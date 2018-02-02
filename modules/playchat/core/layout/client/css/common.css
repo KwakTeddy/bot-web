@@ -401,7 +401,7 @@ input[type="checkbox"]{
 label{
 	display: inline-block;
     max-width: 100%;
-    margin-bottom: 5px;
+    margin: 2px 0;
 }
 .styled-checkbox + label{
 	position: relative;
@@ -691,10 +691,19 @@ div.slide>input[type=checkbox]{
 	padding: 2px 0;
 	text-align: left;
 	padding-left: 20px;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .tb02 tbody td .case2{
 	padding: 2px 0;
 	text-align: center;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.tb02 tbody td .case3{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 /*input_type01*/
 .input_type01{
