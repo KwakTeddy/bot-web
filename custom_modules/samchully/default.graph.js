@@ -239,6 +239,12 @@ var dialogs = [
                     "raw": "요금",
                     "nlp": "요금"
                 }
+            },
+            {
+                "text": {
+                    "raw": "1",
+                    "nlp": "1"
+                }
             }
         ],
         "output": [
@@ -309,15 +315,21 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "고 지내역",
-                                    "nlp": "고 지내역"
+                                    "raw": "월별 고지내역 조회",
+                                    "nlp": "월별 고 지내역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "1",
+                                    "nlp": "1"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "원하시는 고지내역 기간을 선택해주세요",
+                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '고지'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -340,13 +352,15 @@ var dialogs = [
                                 "name": "고지내역 3개월",
                                 "input": [
                                     {
-                                        "types": "monthType"
+                                        "types": [
+                                            "monthType"
+                                        ]
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +context.curCustomer.customerName+ 고객님 월별 고지내역입니다.( +context.noticeNum+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#"
+                                        "text": "[고지내역 조회]\n\n+context.curCustomer.customerName+ 고객님 월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
                                     }
                                 ],
                                 "id": "default15",
@@ -373,6 +387,26 @@ var dialogs = [
                                 "task": {
                                     "name": "getNoticeHistory"
                                 }
+                            },
+                            {
+                                "name": "개월수 선택오류",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "",
+                                            "nlp": ""
+                                        },
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "type": ""
+                                    }
+                                ],
+                                "id": "default17"
                             }
                         ]
                     },
@@ -381,15 +415,21 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "납부 역",
-                                    "nlp": "납부 역"
+                                    "raw": "월별 납부내역 조회",
+                                    "nlp": "월별 납부 내 역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2",
+                                    "nlp": "2"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "원하시는 납부내역 기간을 선택해주세요",
+                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '납부'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -412,13 +452,15 @@ var dialogs = [
                                 "name": "납부내역 3개월",
                                 "input": [
                                     {
-                                        "types": "monthType"
+                                        "types": [
+                                            "monthType"
+                                        ]
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[요금] +context.curCustomer.customerName+ 월별 납부내역입니다.(+context.listNum+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
+                                        "text": "[납부내역 조회]\n\n+context.curCustomer.customerName+ 월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
                                     }
                                 ],
                                 "id": "default19",
@@ -426,6 +468,25 @@ var dialogs = [
                                 "task": {
                                     "name": "getPaymentHistory"
                                 }
+                            },
+                            {
+                                "name": "개월수 선택오류_납부",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "",
+                                            "nlp": ""
+                                        },
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요."
+                                    }
+                                ],
+                                "id": "default20"
                             }
                         ]
                     },
@@ -434,8 +495,14 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "요금",
-                                    "nlp": "요금"
+                                    "raw": "요금납부",
+                                    "nlp": "요금 납부"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "3",
+                                    "nlp": "3"
                                 }
                             }
                         ],
@@ -623,6 +690,12 @@ var dialogs = [
                                 "text": {
                                     "raw": "전자 고지",
                                     "nlp": "전자 고지"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "4",
+                                    "nlp": "4"
                                 }
                             }
                         ],
@@ -886,6 +959,12 @@ var dialogs = [
                                     "raw": "자동 이체",
                                     "nlp": "자동 이체"
                                 }
+                            },
+                            {
+                                "text": {
+                                    "raw": "5",
+                                    "nlp": "5"
+                                }
                             }
                         ],
                         "output": [
@@ -957,6 +1036,12 @@ var dialogs = [
                                 "text": {
                                     "raw": "자가 검침",
                                     "nlp": "자가 검침"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "6",
+                                    "nlp": "6"
                                 }
                             }
                         ],
@@ -1057,6 +1142,12 @@ var dialogs = [
                                     "raw": "고지서 재발 행",
                                     "nlp": "고지서 재발 행"
                                 }
+                            },
+                            {
+                                "text": {
+                                    "raw": "7",
+                                    "nlp": "7"
+                                }
                             }
                         ],
                         "output": [
@@ -1066,7 +1157,10 @@ var dialogs = [
                                 "if": "conversation.curNoticeMethodCategory > 1",
                                 "options": {
                                     "output": "고지서를 재발행하시겠습니까?"
-                                }
+                                },
+                                "type": "call",
+                                "dialogName": "고지 재",
+                                "dialog": "전자고지 재발행 접수"
                             },
                             {
                                 "kind": "Content",
@@ -1132,6 +1226,12 @@ var dialogs = [
                     "raw": "이사",
                     "nlp": "이사"
                 }
+            },
+            {
+                "text": {
+                    "raw": "2",
+                    "nlp": "2"
+                }
             }
         ],
         "output": [
@@ -1171,6 +1271,12 @@ var dialogs = [
                 "text": {
                     "raw": "안전 점검",
                     "nlp": "안전 점검"
+                }
+            },
+            {
+                "text": {
+                    "raw": "3",
+                    "nlp": "3"
                 }
             }
         ],
@@ -1322,6 +1428,12 @@ var dialogs = [
                     "raw": "카카오 톡",
                     "nlp": "카카오 톡"
                 }
+            },
+            {
+                "text": {
+                    "raw": "4",
+                    "nlp": "4"
+                }
             }
         ],
         "output": [
@@ -1342,6 +1454,12 @@ var dialogs = [
                 "text": {
                     "raw": "기타",
                     "nlp": "기타"
+                }
+            },
+            {
+                "text": {
+                    "raw": "5",
+                    "nlp": "5"
                 }
             }
         ],
@@ -1449,6 +1567,26 @@ var dialogs = [
                 "id": "default42"
             }
         ]
+    },
+    {
+        "name": "시작대화 재질의",
+        "input": [
+            {
+                "text": {
+                    "raw": "",
+                    "nlp": ""
+                },
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "ㄴㅇㄹ",
+                "type": "repeat"
+            }
+        ],
+        "id": "default22"
     }
 ];
 

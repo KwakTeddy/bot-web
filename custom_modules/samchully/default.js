@@ -4,6 +4,13 @@ var request = require('request');
 module.exports = function(bot)
 {
     var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
+    var monthIndex =
+        {
+            3 : 1,
+            6: 2,
+            12: 3
+        };
+
     var messages = require(path.resolve('engine2/messages.js'));
 
     bot.setTask('defaultTask',
@@ -181,8 +188,11 @@ module.exports = function(bot)
         typeCheck: function (conversation, context, callback)
         {
             var matched = false;
-            if(conversation.nlu.inputRaw.includes("개월") > 0)
+            var word = conversation.nlu.inputRaw;
+            var num = parseInt(word);
+            if(num == 3 || num == 6 || num == 12)
             {
+                context.selectedMonth = num;
                 matched = true;
             }
 
@@ -194,35 +204,38 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            var word = conversation.nlu.inputRaw;
-            var num = parseInt(word);
 
+            var monthIdx = monthIndex[context.selectedMonth];
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_LIST';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'},
-                { key: 'I_GUBUN', val: num/3 }
+                { key: 'I_VKONT', val: '105831826000'},
+                { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
+            options.timeout = 7000;
+
             request.post(options, function(err, response, body)
             {
                 if(err)
                 {
                     console.log(err);
+                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
+                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
 
                     }
                     else if(body.E_RETCD == 'S')
                     {
                         var data = body.data.ET_TABLE;
-                        context.noticeNum = num;
                         context.noticeHistory = data;
 
                         conversation.dialog.output[0].buttons = [];
@@ -233,7 +246,8 @@ module.exports = function(bot)
 
 
                     }else {
-                        console.log(body.E_RETCD)
+                        console.log(body.E_RETCD);
+                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                     }
                     callback();
 
@@ -263,9 +277,7 @@ module.exports = function(bot)
     {
         action: function (conversation, context, callback)
         {
-            var word = conversation.nlu.inputRaw;
-            var num = parseInt(word);
-
+            var monthIdx = monthIndex[context.selectedMonth];
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -273,7 +285,7 @@ module.exports = function(bot)
             options.json.name = 'ZFC_MS_PAYMENT';
             options.json.param = [
                 { key: 'I_VKONT', val: '105831826'},
-                { key: 'I_GUBUN', val: num/3 }
+                { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
             request.post(options, function(err, response, body)
@@ -295,7 +307,6 @@ module.exports = function(bot)
                         console.log(body)
 
                         var data = body.data.ET_TABLE;
-                        context.listNum = num;
                         context.paymentHistory = data;
 
                     }else {
