@@ -41,7 +41,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
                 for(var i=0; i<list.length; i++)
                 {
-                    if(!checkDuplicate[list[i]._id]) // exclude도 제외시킨다.
+                    if(!checkDuplicate[list[i]._id])
                     {
                         checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
                         checkDuplicate[list[i]._id].matchCount = 1;
