@@ -11,7 +11,6 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
     console.log(chatbot);
 
 
-    alert('=============3==');
     var addUploader = function(index)
     {
         $scope.datas[index].uploader = new FileUploader({
@@ -36,7 +35,7 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
     };
 
     (function()
-    {alert("----------");
+    {
         $scope.getList = function()
         {
             var hash = location.hash;
@@ -45,7 +44,6 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
             console.log('데이터 : ', data);
 
             $scope.data = data;
-            alert('=============2==');
 
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
                 {   $scope.datas = [];
@@ -82,16 +80,11 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
         {
             for(var i=0; i<$scope.datas.length; i++) {
                 if ($scope.datas[i]._id===$scope.data._id) {
+                    $scope.datas[i].code= $scope.data.code;
                     $scope.datas[i].category= $scope.data.category;
                     $scope.datas[i].name= $scope.data.name;
                     $scope.datas[i].price= $scope.data.price;
                     $scope.datas[i].image= $scope.data.image;
-                    $scope.datas[i].description= $scope.data.description;
-                    $scope.datas[i].code= $scope.data.code;
-                    $scope.datas[i].sale_price= $scope.data.sale_price;
-                    $scope.datas[i].picture= $scope.data.picture;
-                    $scope.datas[i].delivery= $scope.data.delivery;
-                    $scope.datas[i].VIP= $scope.data.VIP;
                 }
             }
 
@@ -104,8 +97,12 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                         templateId: result.id,
                         botId: chatbot.id,
                         datas: datas
-                    }, function (result1) {
-                        console.log(result1);
+                    }, function (list) {
+                        for(var i=0; i<list.length; i++)
+                        {
+                            addUploader(i);
+                        }
+                        console.log(list);
                         alert("저장했습니다");
                         $rootScope.$broadcast('simulator-build');
                     },
