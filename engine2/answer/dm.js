@@ -305,17 +305,30 @@ var Globals = require('../globals.js');
                 {
                     if(!resultOutput && output[i].if)
                     {
-                        (function(context, conversation, o)
+                        if(output.length == 1)
                         {
-                            var result = false;
-                            eval('result = (' + o.if + ' ? true : false);');
-
-                            if(result)
+                            resultOutput = output[i];
+                        }
+                        else
+                        {
+                            (function(context, conversation, o)
                             {
-                                resultOutput = o;
-                            }
+                                try
+                                {
+                                    var result = false;
+                                    eval('result = (' + o.if + ' ? true : false);');
 
-                        })(context, conversation, output[i]);
+                                    if(result)
+                                    {
+                                        resultOutput = o;
+                                    }
+                                }
+                                catch(err)
+                                {
+                                    console.error(chalk.red(err));
+                                }
+                            })(context, conversation, output[i]);
+                        }
                     }
                     else if(!output[i].if)
                     {

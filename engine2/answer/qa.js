@@ -13,7 +13,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         //봇별로 과연 여기 옵션들을 건드릴까?
     };
 
-    QA.prototype.find = function(bot, nlp, callback)
+    QA.prototype.find = function(bot, inputRaw, nlp, callback)
     {
         var that = this;
 
@@ -44,12 +44,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     if(!checkDuplicate[list[i]._id])
                     {
                         checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
-                        checkDuplicate[list[i]._id].matchCount = 1;
                         matchedList.push(checkDuplicate[list[i]._id]);
-                    }
-                    else
-                    {
-                        checkDuplicate[list[i]._id].matchCount++;
                     }
                 }
 
@@ -58,9 +53,42 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         },
         function()
         {
+            for(var i=0; i<matchedList.length; i++)
+            {
+                if(matchedList[i].inputRaw == inputRaw)
+                {
+                    matchedList[i].matchRate = 1;
+                }
+                else
+                {
+                    var maxCount = -1;
+                    var targetInput = undefined;
+                    for(var k=0; k<matchedList[i].input.length; k++)
+                    {
+                        var count = 0;
+                        for(var j=0; j<nlp.length; j++)
+                        {
+                            if(matchedList[i].input[k].indexOf(nlp[j].text) != -1)
+                            {
+                                count++;
+                            }
+                        }
+
+                        if(maxCount == -1)
+                        {
+                            maxCount = count;
+                            targetInput = matchedList[i].input[k];
+                        }
+                    }
+
+                    var inputs = targetInput.split(' ');
+                    matchedList[i].matchRate = (maxCount / inputs.length);
+                }
+            }
+
             matchedList.sort(function(a, b)
             {
-                return b.matchCount - a.matchCount;
+                return b.matchRate - a.matchRate;
             });
 
             callback(null, matchedList);

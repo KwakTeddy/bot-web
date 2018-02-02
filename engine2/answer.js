@@ -19,15 +19,16 @@ var Logger = require('./logger.js');
     AnswerManager.prototype.answer = function(bot, context, error, callback)
     {
         var conversation = context.history[0];
+        var inputRaw = conversation.nlu.inputRaw;
         var nlp = conversation.nlu.nlp;
 
         var transaction = new Transaction.async();
 
-        QNAManager.find(bot, nlp, transaction.callback(function(err, matchedList, done)
+        QNAManager.find(bot, inputRaw, nlp, transaction.callback(function(err, matchedList, done)
         {
             if(matchedList.length > 0)
             {
-                transaction.qa = { type: 'qa', list: matchedList[0].output };
+                transaction.qa = { type: 'qa', dialog: matchedList[0] };
             }
 
             done();
