@@ -18,7 +18,7 @@ module.exports = function(bot)
 
         if(errData.E_RETCD)
         {
-            conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  errData.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            conversation.dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
         else
         {
@@ -815,22 +815,20 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
                         conversation.setNoticeMethodSuccess = true;
-                        console.log('@@@@@@@@@@@@@@@')
                         console.log(body)
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
 
                     callback();
@@ -864,31 +862,26 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log('!@#!#!#!!R#R!R!')
-                        console.log(body['E_EZAWE']);
                         if(body['E_EZAWE'] == '')
                         {
                             body['E_EZAWE'] = 'A'
                         }
+
                         conversation.curPaymentMethod = methodIdex[body['E_EZAWE']];
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(conversation)
                         console.log(body)
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, err);
                     }
-
                     callback();
                 }
             });
