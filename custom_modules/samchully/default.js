@@ -288,29 +288,29 @@ module.exports = function(bot)
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
+            options.timeout = 7000;
+
             request.post(options, function(err, response, body)
             {
                 if(err)
                 {
                     console.log(err);
+                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(body)
-
                         var data = body.data.ET_TABLE;
                         context.paymentHistory = data;
 
                     }else {
-                        console.log(body.E_RETCD)
+                        console.log(body.E_RETCD);
+                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                     }
                     callback();
                 }
@@ -585,27 +585,29 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '105831826'}
             ];
+            options.timeout = 7000;
+
 
             request.post(options, function(err, response, body)
             {
                 if(err)
                 {
+                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                     console.log(err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+
                     }
                     else if(body.E_RETCD == 'S')
                     {
                         conversation.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
                         conversation.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(body)
                     }else {
+                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
                         console.log(body.E_RETCD)
                     }
 
