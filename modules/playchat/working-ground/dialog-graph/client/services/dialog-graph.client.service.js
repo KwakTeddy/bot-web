@@ -151,7 +151,12 @@
             // -30은 스크롤바
             if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
             {
-                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px')
+                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+            }
+
+            if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+            {
+                angular.element('.dialog-menu').css('top', top - 50 + 'px');
             }
 
             e.preventDefault();

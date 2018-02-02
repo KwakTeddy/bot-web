@@ -77,7 +77,7 @@ var Logger = require('./logger.js');
 
                         var dialog = bot.dialogMap['noanswer'];
                         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0].text });
+                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0] });
                     }
                 });
             }
@@ -97,8 +97,8 @@ var Logger = require('./logger.js');
                 console.log(chalk.yellow('[[[ No Answer ]]]'));
 
                 var dialog = bot.dialogMap['noanswer'];
-                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-                callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output });
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, dialog.id, dialog.name, '', '', true, 'dialog');
+                callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output[0] });
             }
         });
     };
