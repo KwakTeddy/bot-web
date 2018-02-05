@@ -19,11 +19,11 @@ module.exports = function(bot)
 
         if(errData.E_RETCD)
         {
-            dialog.output.text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
         else
         {
-            dialog.output.text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
     };
     
@@ -331,6 +331,7 @@ module.exports = function(bot)
             ];
             options.json.isTable = true;
             options.timeout = timeout;
+            console.log(JSON.stringify(options))
 
             request.post(options, function(err, response, body)
             {
@@ -348,6 +349,7 @@ module.exports = function(bot)
                     {
                         var data = body.data.ET_TABLE;
                         context.noticeHistory = data;
+                        console.log(context.noticeHistory)
 
                         dialog.dialog.output[0].buttons = [];
                         for(var i = 0; i < data.length; i++)

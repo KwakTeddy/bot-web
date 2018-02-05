@@ -60,7 +60,17 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "삼천리 고객 검색 결과입니다.\n\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?"
+                                        "text": "삼천리 고객 검색 결과입니다.\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "네"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "아니요"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default50",
@@ -75,6 +85,12 @@ var dialogs = [
                                                 "text": {
                                                     "raw": "네",
                                                     "nlp": "네"
+                                                }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "1",
+                                                    "nlp": "1"
                                                 }
                                             }
                                         ],
@@ -99,6 +115,12 @@ var dialogs = [
                                                 "text": {
                                                     "raw": "아니다",
                                                     "nlp": "아니다"
+                                                }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "2",
+                                                    "nlp": "2"
                                                 }
                                             }
                                         ],
