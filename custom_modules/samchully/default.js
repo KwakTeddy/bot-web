@@ -242,7 +242,9 @@ module.exports = function(bot)
               	{ key: 'I_BIRTH', val: context.user.customerBirth },
                 { key: 'I_PHONE', val: context.types.mobile }
             ];
-          
+            options.json.isTable = true;
+            options.timeout = 7000;
+
           	request.post(options, function(err, response, body)
             {
               	if(err)
@@ -251,19 +253,14 @@ module.exports = function(bot)
                 }
 				else
     	        {
-                    console.log('개쩐다 : ', typeof body, body);
     	            if(body.E_RETCD == 'E')
                     {
                         errorHandler(conversation, body);
-                        // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        context.user.customerInfo = {
-                            name: context.user.customerName,
-                            birth: context.user.customerBirth,
-                            phone: context.types.mobile
-                        };
+                        console.log(body);
+                        context.customerList = body.data.E_TAB;
                     }else {
                         errorHandler(conversation, body);
                     }
@@ -289,6 +286,8 @@ module.exports = function(bot)
                     { key: 'I_BIRTH', val: context.user.customerBirth },
                     { key: 'I_PHONE', val: context.types.mobile }
                 ];
+                options.json.isTable = true;
+                options.timeout = 7000;
 
                 request.post(options, function(err, response, body)
                 {
@@ -298,36 +297,13 @@ module.exports = function(bot)
                     }
                     else
                     {
-                        console.log('개쩐다 : ', typeof body, body);
                         if(body.E_RETCD == 'E')
                         {
                             errorHandler(conversation, body);
-                            // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            context.user.customerInfo = {
-                                name: context.user.customerName,
-                                birth: context.user.customerBirth,
-                                phone: context.types.mobile
-                            };
-
-
-                            var data =
-                                [
-                                    {
-                                        customerName: "박준하",
-                                        address: "서울시 관악구 행운동12",
-                                        id: "1235534"
-                                    },
-                                    {
-                                        customerName: "김지섭",
-                                        address: "서울시 도봉구 덕릉로 12344",
-                                        id: "45344004"
-                                    }
-                                ];
-
-                            context.customerList = data;
+                            context.customerList = body.data.E_TAB;
 
                             conversation.buttons = [];
 

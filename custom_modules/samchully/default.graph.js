@@ -52,22 +52,15 @@ var dialogs = [
                                 "name": "고객 검색",
                                 "input": [
                                     {
-                                        "types": "mobile"
+                                        "types": [
+                                            "mobile"
+                                        ]
                                     }
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Action",
-                                        "if": "context.user.customerInfo",
-                                        "type": "call",
-                                        "dialogId": "default64",
-                                        "dialogName": "인증동의"
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "type": "call",
-                                        "dialogId": "default52",
-                                        "dialogName": "인증실패"
+                                        "kind": "Content",
+                                        "text": "삼천리 고객 검색 결과입니다.\n\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?"
                                     }
                                 ],
                                 "id": "default50",
