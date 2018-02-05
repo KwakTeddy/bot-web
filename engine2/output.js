@@ -41,7 +41,7 @@ var chalk = require('chalk');
 
     };
 
-    OutputManager.prototype.make = function(context, target)
+    OutputManager.prototype.make = function(context, dialog, target)
     {
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
@@ -56,7 +56,6 @@ var chalk = require('chalk');
         }
 
         var bot = context.bot;
-        var dialog = context.session.currentDialog;
 
         target = JSON.parse(JSON.stringify(target));
 
@@ -74,7 +73,17 @@ var chalk = require('chalk');
                     target.output.text = target.output;
                 }
 
-                target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                if(context.channel.name == 'kakao')
+                {
+                    if(target.output.buttons && target.output.buttons.length > 0)
+                    {
+                        target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                    }
+                }
+                else
+                {
+                    target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                }
             }
 
             if(target.output && target.output.text)
