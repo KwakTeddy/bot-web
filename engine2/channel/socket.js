@@ -14,7 +14,7 @@ module.exports.init = function(socket)
 
     socket.on('send_msg', function(msg)
     {
-        Engine.process(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg.options, function(out)
+        Engine.process(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg.options, function(context, out)
         {
             socket.emit('send_msg', out);
 
