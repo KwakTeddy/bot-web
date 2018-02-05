@@ -672,6 +672,7 @@ module.exports = function(bot)
                         console.log(body);
                         dialog.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
                         dialog.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
+                        console.log(dialog.curNoticeMethod)
                     }else {
                         errorHandler(dialog, body);
                     }
