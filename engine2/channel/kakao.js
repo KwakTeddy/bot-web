@@ -1,27 +1,29 @@
-var net = require('net');
-var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
 var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
-var fs = require('fs');
 var config = require(path.resolve('config/config'));
 var master = require(path.resolve('engine2/loadbalancer/master.js'));
 
+var engine = require(path.resolve('./engine2/core.js'));
+
 
 var util = require('util');
-exports.keyboard = function (req, res) {
-  console.log("kakao keyboard");
+exports.keyboard = function (req, res)
+{
+    console.log("kakao keyboard");
+    Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
+    {
+        var sendMsg = context.bot.kakao.keyboard;
+        if(sendMsg == undefined)
+        {
+            sendMsg = {type: 'text'};
+        }
 
-  contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
-    var sendMsg = context.bot.kakao.keyboard;
-    if(sendMsg == undefined) sendMsg = { type: 'text'};
-    console.log(util.inspect(sendMsg))
-    res.write(JSON.stringify(sendMsg));
-    res.end();
-
-  });
+        res.write(JSON.stringify(sendMsg));
+        res.end();
+    });
 };
 
 exports.message = function (req, res)
@@ -38,6 +40,18 @@ exports.message = function (req, res)
             req.body.url = req.body.content;
             delete req.body.content;
         }
+
+        Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
+        {
+            var sendMsg = context.bot.kakao.keyboard;
+            if(sendMsg == undefined)
+            {
+                sendMsg = {type: 'text'};
+            }
+
+            res.write(JSON.stringify(sendMsg));
+            res.end();
+        });
 
         master.routing('kakao', from, req.params.bot, text, req.body, function (serverText, json)
         {
@@ -69,25 +83,15 @@ exports.deleteChatRoom = function (req, res) {
 };
 
 
-function respondMessage(res, text, json) {
-  // console.log('text: ' + text);
-  // console.log('json: ' + util.inspect(json));
-  var sendMsg =
-  {
-    "message": {
-      "text": text
-    }
-  };
+function respondMessage(res, text, json)
+{
+    var sendMsg =
+    {
+        message: { text: text }
+    };
 
-  // if(json && json.photoUrl) {
-  //   sendMsg.message.photo = {
-  //     "url": json.photoUrl,
-  //     "width": json.photoWidth || 640,
-  //     "height":json.photoHeight || 480
-  //   }
-  // }
-
-  if(json && json.result && json.result.image) {
+    if(json && json.result && json.result.image)
+    {
     sendMsg.message.photo = {
       "url": json.result.image.url,
       "width": json.result.image.width || 640,

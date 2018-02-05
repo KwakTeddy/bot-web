@@ -53,14 +53,24 @@ var dialogs = [
                                 "input": [
                                     {
                                         "types": [
-                                            "mobile"
+                                            "saveCustomerMobile"
                                         ]
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "삼천리 고객 검색 결과입니다.\n\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?"
+                                        "text": "삼천리 고객 검색 결과입니다.\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "네"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "아니요"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default50",
@@ -76,6 +86,12 @@ var dialogs = [
                                                     "raw": "네",
                                                     "nlp": "네"
                                                 }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "1",
+                                                    "nlp": "1"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -84,7 +100,7 @@ var dialogs = [
                                                 "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
                                                 "type": "call",
                                                 "dialogName": "시작",
-                                                "dialog": "시작"
+                                                "dialogId": "defaultcommon0"
                                             }
                                         ],
                                         "task": {
@@ -100,6 +116,12 @@ var dialogs = [
                                                     "raw": "아니다",
                                                     "nlp": "아니다"
                                                 }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "2",
+                                                    "nlp": "2"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -108,7 +130,7 @@ var dialogs = [
                                                 "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
                                                 "type": "call",
                                                 "dialogName": "시작",
-                                                "dialog": "시작"
+                                                "dialogId": "defaultcommon0"
                                             }
                                         ],
                                         "id": "default48"
@@ -218,7 +240,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "+context.curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -273,7 +295,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '고지'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -304,7 +326,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n+context.curCustomer.customerName+ 고객님 월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
+                                        "text": "[고지내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
                                     }
                                 ],
                                 "id": "default15",
@@ -370,7 +392,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '납부'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -401,7 +423,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[납부내역 조회]\n\n+context.curCustomer.customerName+ 월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
+                                        "text": "[납부내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
                                     }
                                 ],
                                 "id": "default19",
@@ -1705,10 +1727,10 @@ var commonDialogs = [
                 }
             }
         ],
-        "output": {
+        "output": [{
             "kind": "Action",
             "type": "up"
-        }
+        }]
     },
     {
         "id": "noanswer",

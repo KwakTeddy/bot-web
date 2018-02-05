@@ -142,6 +142,7 @@ var Transaction = require('./utils/transaction.js');
                                         delete context.bot;
                                         delete context.channel;
                                         delete context.globals;
+                                        delete context.session.currentDialog;
 
                                         that.redis.set(contextKey, JSON.stringify(context), function(err)
                                         {
@@ -154,7 +155,8 @@ var Transaction = require('./utils/transaction.js');
                                                 //테스트 필요
                                                 that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                                                outCallback(output);
+                                                context.bot = bot;
+                                                outCallback(context, output);
 
                                                 console.log(chalk.green('================================================================'));
                                                 console.log();

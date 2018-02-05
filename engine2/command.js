@@ -34,7 +34,7 @@ var BotManager = require('./bot.js');
                 }
 
                 output = OutputManager.make(context, output);
-                callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                 console.log(chalk.green('================================'));
                 console.log();
@@ -72,7 +72,7 @@ var BotManager = require('./bot.js');
                         }
 
                         output = OutputManager.make(context, output);
-                        callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                        callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
                     }
                 });
 
@@ -114,7 +114,7 @@ var BotManager = require('./bot.js');
                         }
 
                         output = OutputManager.make(context, output);
-                        callback({ type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                        callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
                     }
                 });
 
@@ -143,7 +143,7 @@ var BotManager = require('./bot.js');
                 }
 
                 output = OutputManager.make(context, output);
-                callback({ type: 'dialog', output: output});
+                callback(null, { type: 'dialog', output: output});
 
                 console.log(chalk.green('================================'));
                 console.log();
@@ -176,11 +176,12 @@ var BotManager = require('./bot.js');
         {
             bot.dialogs = [];
             bot.commonDialogs = [];
+            context.session.dialogCursor = undefined;
             this.reloadBotFiles(bot, context, error, callback);
         }
         else
         {
-            callback(inputRaw + ' is not command');
+            callback(context, inputRaw + ' is not command');
         }
     };
 
