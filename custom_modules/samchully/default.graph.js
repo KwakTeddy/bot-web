@@ -84,7 +84,7 @@ var dialogs = [
                                                 "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
                                                 "type": "call",
                                                 "dialogName": "시작",
-                                                "dialog": "시작"
+                                                "dialogId": "defaultcommon0"
                                             }
                                         ],
                                         "task": {
@@ -108,7 +108,7 @@ var dialogs = [
                                                 "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
                                                 "type": "call",
                                                 "dialogName": "시작",
-                                                "dialog": "시작"
+                                                "dialogId": "defaultcommon0"
                                             }
                                         ],
                                         "id": "default48"

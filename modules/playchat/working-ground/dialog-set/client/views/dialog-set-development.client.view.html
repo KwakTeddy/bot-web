@@ -56,7 +56,7 @@
             <!--</a>-->
         <!--</div>-->
     </div>
-    <div class="tab01">
+    <div class="tab01" style="margin-top: 10px;">
         <ul class="tabs1">
             <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
@@ -122,26 +122,32 @@
                     <div>
                         <div>
                             <p>Topic 1</p>
-                            <select class="data-select" tabindex="-1">
-                                <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
-                            </select>
+                            <div class="select-wrapper">
+                                <select class="data-select" tabindex="-1">
+                                    <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
+                                </select>
+                            </div>
                         </div>
                         <div>
                             <p>Topic 2</p>
-                            <select class="data-select" tabindex="-1">
-                                <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
-                            </select>
+                            <div class="select-wrapper">
+                                <select class="data-select" tabindex="-1">
+                                    <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
+                                </select>
+                            </div>
                         </div>
                         <div>
                             <p>Topic 3</p>
-                            <select class="data-select" tabindex="-1">
-                                <option ng-if="dialog.context">{{ dialog.context.name }}</option>
-                            </select>
+                            <div class="select-wrapper">
+                                <select class="data-select" tabindex="-1">
+                                    <option ng-if="dialog.context">{{ dialog.context.name }}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="question-area">
-                    <div style="position: relative;" ng-repeat="input in dialog.inputRaw track by $index">
+                    <div ng-repeat="input in dialog.inputRaw track by $index">
                         <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw', input);" ng-if="isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
                         <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
                     </div>
@@ -149,7 +155,7 @@
                     <span class="plus-button" ng-click="addInput($event, dialog, 'inputRaw');" ng-required="true"></span>
                 </div>
                 <div class="answer-area">
-                    <div style="position: relative;" ng-repeat="output in dialog.output track by $index">
+                    <div ng-repeat="output in dialog.output track by $index">
                         <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output', output);" ng-if="isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
                         <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
                     </div>

@@ -142,6 +142,7 @@ var Transaction = require('./utils/transaction.js');
                                         delete context.bot;
                                         delete context.channel;
                                         delete context.globals;
+                                        delete context.session.currentDialog;
 
                                         that.redis.set(contextKey, JSON.stringify(context), function(err)
                                         {

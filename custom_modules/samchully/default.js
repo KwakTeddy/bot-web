@@ -276,7 +276,6 @@ module.exports = function(bot)
     	        {
     	            if(body.E_RETCD == 'E')
                     {
-
                         errorHandler(dialog, body);
                     }
                     else if(body.E_RETCD == 'S')
@@ -300,11 +299,11 @@ module.exports = function(bot)
             if(context.user.auth)
             {
                 var customerList = context.customerList;
-                dialog.output.buttons = [];
+                dialog.output[0].buttons = [];
 
                 for(var i = 0; i < customerList.length; i++)
                 {
-                    dialog.output.buttons.push({text: i + 1})
+                    dialog.output[0].buttons.push({text: i + 1});
                 }
             }
 

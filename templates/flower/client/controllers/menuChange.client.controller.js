@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('flowerMenuAddController', ['$scope', '$resource', '$cookies', '$rootScope','LanguageService','FileUploader',function ($scope, $resource, $cookies,$rootScope,LanguageService, FileUploader)
+angular.module('template').controller('flowerMenuChangeController', ['$scope', '$resource', '$cookies', '$rootScope','LanguageService','FileUploader',function ($scope, $resource, $cookies,$rootScope,LanguageService, FileUploader)
 {
     $scope.$parent.changeWorkingGroundName('상품관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
@@ -9,6 +9,7 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
+
 
 
     (function()
@@ -50,10 +51,16 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
             {
                 angular.element(e.currentTarget).next().click();
             };
-            addUploader();
 
         $scope.getList = function()
         {
+            var hash = location.hash;
+
+            var data = JSON.parse(decodeURIComponent(hash.substring(1)));
+            console.log('데이터 : ', data);
+
+            $scope.data = data;
+
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
                 {   $scope.datas = [];
                     $scope.template = result;
@@ -75,11 +82,24 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
         };
 
 
-        $scope.save = function(event,data)
+
+
+        $scope.save = function()
         {
-            $scope.datas.push({ category:data.category,name:data.name, price:data.price,picture:data.picture,code:data.code,status:"정상"});
+            for(var i=0; i<$scope.datas.length; i++) {
+                if ($scope.datas[i]._id===$scope.data._id) {
+                    $scope.datas[i].code= $scope.data.code;
+                    $scope.datas[i].category= $scope.data.category;
+                    $scope.datas[i].name= $scope.data.name;
+                    $scope.datas[i].price= $scope.data.price;
+                    $scope.datas[i].picture= $scope.data.picture;
+                }
+            }
+
             var datas = JSON.parse(angular.toJson($scope.datas));
+
             console.log('데이터스 : ', datas);
+
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result) {
                 DataService.save({
                         templateId: result.id,

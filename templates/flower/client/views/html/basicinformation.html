@@ -217,8 +217,8 @@
                 <td>
                     <label>
                         <img src="{{ data.image }}" style="width: 150px;height: 100px;" ng-if="data.image">
-                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
-                        <label type="button" class="flower-button" for="image">업로드</label>
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" style="border: none;"/>
+                        <!--<label type="button" class="flower-button" for="image">업로드</label>-->
                     </label>
                 </td>
                 <td type="text" ng-model="phone" class="flowertext-case1">{{phone}}</td>

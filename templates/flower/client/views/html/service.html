@@ -191,7 +191,7 @@
 
 
 
-<div class="template-body" data-id="complete" ng-controller="flowerEventController" style="display: block;">
+<div class="template-body" data-id="complete" ng-controller="flowerServiceController" style="display: block;">
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
@@ -202,8 +202,8 @@
                 <col style="width: 20%;">
             <thead>
             <tr>
-                <th>이벤트 제목</th>
-                <th>이벤트 내용</th>
+                <th>후기제목</th>
+                <th>상품명</th>
                 <th>내용</th>
                 <th>이미지</th>
                 <th>관리</th>
@@ -211,8 +211,8 @@
             </thead>
             <tbody>
             <tr ng-repeat="data in datas">
-                <td type="text" ng-model="data.name" class="case1">{{data.name}}</td>
-                <td type="text" ng-model="data.context" class="case2">{{data.context}}</td>
+                <td type="text" ng-model="data.topic" class="case1">{{data.topic}}</td>
+                <td type="text" ng-model="data.name" class="case2">{{data.name}}</td>
                 <td type="text" ng-model="data.description" class="case2">{{data.description}}</td>
                 <td>
                 <label>
@@ -221,12 +221,12 @@
                 </label>
                 </td>
                 <td>
-                    <a type="button" data-href="/playchat/templates/contents/eventChange" class="operation-user-dialog-button" ng-click="change($event,data)">수정</a> <a type="button" class="flower-button" ng-click="delete($event,data)">삭제</a>
+                    <a type="button" data-href="/playchat/templates/contents/serviceChange" class="operation-user-dialog-button" ng-click="change($event,data)">수정</a> <a type="button" class="flower-button" ng-click="delete($event,data)">삭제</a>
                 </td>
             </tr>
             <tr>
                 <td colspan="10">
-                    <a type="button" href="/playchat/templates/contents/eventAdd" class="default-button">추가</a>
+                    <a type="button" href="/playchat/templates/contents/serviceAdd" class="default-button">추가</a>
                 </td>
             </tr>
             </tbody>
