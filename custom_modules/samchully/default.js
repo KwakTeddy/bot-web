@@ -6,6 +6,8 @@ module.exports = function(bot)
 
     //Variable Area
 
+    var curCustomer;
+
     var monthIndex =
     {
             3 : 1,
@@ -130,6 +132,25 @@ module.exports = function(bot)
         }
     });
 
+    bot.setType('saveCustomerMobile',
+    {
+        typeCheck: function (dialog, context, callback)
+        {
+            var matched = false;
+            var word = dialog.input.text;
+
+            var regExp = new RegExp('\\b((?:010[-.]?\\d{4}|01[1|6|7|8|9][-.]?\\d{3,4})[-.]?\\d{4})\\b', 'g');
+            if(regExp.exec(word))
+            {
+                matched = true;
+                context.user.customerMobile = word;
+            }
+
+
+            callback(matched);
+        }
+    });
+
     bot.setType('multiMonthType',
     {
         typeCheck: function (dialog, context, callback)
@@ -240,7 +261,7 @@ module.exports = function(bot)
           	options.json.param = [
             	{ key: 'I_NAME', val: context.user.customerName },
               	{ key: 'I_BIRTH', val: context.user.customerBirth },
-                { key: 'I_PHONE', val: context.types.mobile }
+                { key: 'I_PHONE', val: context.user.customerMobile }
             ];
             options.json.isTable = true;
             options.timeout = 7000;
@@ -298,13 +319,14 @@ module.exports = function(bot)
         {
 
             var monthIdx = monthIndex[context.selectedMonth];
+            var curCustomer = context.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_LIST';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826000'},
+                { key: 'I_VKONT', val: curCustomer.VKONT},
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
@@ -366,13 +388,14 @@ module.exports = function(bot)
         action: function (dialog, context, callback)
         {
             var monthIdx = monthIndex[context.selectedMonth];
+            var curCustomer = context.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZFC_MS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'},
+                { key: 'I_VKONT', val: curCustomer.VKONT},
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
@@ -425,12 +448,14 @@ module.exports = function(bot)
         action: function (dialog, context, callback)
         {
 
+            var curCustomer = context.curCustomer;
+
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_CHECK_NOTI_AMT';
             options.json.param = [
-                { key: 'I_VKONT', val: '110591507'}
+                { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
             options.json.isTable = true;
             options.timeout = 7000;
@@ -489,13 +514,14 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_CB_COMMON_ACCINFO';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'}
+                { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
             options.json.isTable = true;
             request.post(options, function(err, response, body)
@@ -554,13 +580,14 @@ module.exports = function(bot)
                     '하나' : '081'
                 };
                 var selectedBank = bankIndex[dialog.selectedBank];
+                var curCustomer = context.curCustomer;
 
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
                 options.json.name = 'ZCS_CB_COMMON_ACCCRE';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '105831826'},
+                    { key: 'I_VKONT', val: curCustomer.VKONT},
                     { key: 'I_BANKK', val: selectedBank }
                 ];
 
@@ -604,13 +631,14 @@ module.exports = function(bot)
                 '0006' : '카카오알림톡송달',
                 '0007' : '카카오청구서송달'
             };
+            var curCustomer = context.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GOJI_TYPE_INFO';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'}
+                { key: 'I_VKONT', val: curCustomer}
             ];
             options.timeout = 7000;
 
@@ -646,13 +674,14 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: '110591507' },
-                { key: 'I_HPNUM', val: '01088588151' }
+                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
 
             request.post(options, function(err, response, body)
@@ -685,13 +714,14 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GOJI_LMS_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: '110591507' },
-                { key: 'I_HPNUM', val: '01088588151' }
+                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
             options.timeout = 7000;
 
@@ -725,12 +755,14 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
+
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: '1105391507' },
+                { key: 'I_VKONT', val: curCustomer.VKONT },
                 { key: 'I_EMAIL', val: '5709psy@moneybrain.ai' }
             ];
             options.timeout = 7000;
@@ -765,12 +797,13 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GOJI_CANCEL';
             options.json.param = [
-                { key: 'I_VKONT', val: '1105391507' }
+                { key: 'I_VKONT', val: curCustomer.VKONT }
             ];
             options.timeout = 7000;
 
@@ -805,12 +838,14 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
+
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_RESEND';
             options.json.param = [
-                { key: 'I_VKONT', val: '1105391507' }
+                { key: 'I_VKONT', val: curCustomer.VKONT }
             ];
             options.timeout = 7000;
 
@@ -851,13 +886,14 @@ module.exports = function(bot)
                 'D': '은행자동이체',
                 'K': '카드자동이체'
             };
+            var curCustomer = context.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
             options.json.name = 'ZCS_GET_PAYMENT_METHOD';
             options.json.param = [
-                { key: 'I_VKONT', val: '1105391507' }
+                { key: 'I_VKONT', val: curCustomer.VKONT }
             ];
             options.timeout = 7000;
 
@@ -967,6 +1003,10 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            for(var i = 0; i < context.customerList.length; i ++)
+            {
+                context.customerList[i]['mobile'] = context.user.customerMobile;
+            }
             context.user.auth = true;
             callback();
         }
@@ -981,8 +1021,8 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_ARS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: '110591507'},
-                { key: 'I_HPNUM', val: '01088588151' },
+                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_HPNUM', val: curCustomer.mobile },
                 { key: 'I_BETRWP', val: context.totalSelectedNonpayment}
             ];
             request.post(options, function(err, response, body)
@@ -1028,7 +1068,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_EXPIRE_SO';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'}
+                { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
             request.post(options, function(err, response, body)
             {
