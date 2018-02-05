@@ -400,6 +400,15 @@ var Globals = require('../globals.js');
                             console.log(chalk.yellow('[[[ Action - up ]]]'));
                             console.log(grandParent.id, grandParent.name);
 
+                            grandParent.originalInput = grandParent.input;
+                            grandParent.originalOutput = grandParent.output;
+                            grandParent.input = dialog.input;
+
+                            for(var key in dialog)
+                            {
+                                grandParent[key] = dialog[key];
+                            }
+
                             that.exec(bot, context, grandParent, callback);
                         }
                         else
@@ -407,6 +416,15 @@ var Globals = require('../globals.js');
                             console.log();
                             console.log(chalk.yellow('[[[ Action - up ]]]'));
                             console.log(parent.id, parent.name);
+
+                            parent.originalInput = parent.input;
+                            parent.originalOutput = parent.output;
+                            parent.input = dialog.input;
+
+                            for(var key in dialog)
+                            {
+                                parent[key] = dialog[key];
+                            }
 
                             that.exec(bot, context, parent, callback);
                         }
@@ -424,13 +442,17 @@ var Globals = require('../globals.js');
                 {
                     if(resultOutput.dialogId)
                     {
-                        var dialog = bot.dialogMap[resultOutput.dialogId];
+                        var foundDialog = bot.dialogMap[resultOutput.dialogId];
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - call ]]]'));
-                        console.log(dialog);
+                        console.log(foundDialog);
 
-                        that.exec(bot, context, dialog, callback);
+                        foundDialog.originalInput = foundDialog.input;
+                        foundDialog.originalOutput = foundDialog.output;
+                        foundDialog.input = dialog.input;
+
+                        that.exec(bot, context, foundDialog, callback);
                     }
                     else
                     {
@@ -448,6 +470,15 @@ var Globals = require('../globals.js');
                             console.log(chalk.yellow('[[[ Action - callChild ]]]'));
                             console.log(foundDialog.id);
 
+                            foundDialog.originalInput = foundDialog.input;
+                            foundDialog.originalOutput = foundDialog.output;
+                            foundDialog.input = dialog.input;
+
+                            for(var key in dialog)
+                            {
+                                foundDialog[key] = dialog[key];
+                            }
+
                             that.exec(bot, context, foundDialog, callback);
                         }
                         else
@@ -460,25 +491,43 @@ var Globals = require('../globals.js');
                 {
                     context.session.returnDialog = dialogId;
 
-                    var dialog = bot.dialogMap[resultOutput.dialogId];
+                    var foundDialog = bot.dialogMap[resultOutput.dialogId];
 
                     console.log();
                     console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
-                    console.log(dialog.id);
+                    console.log(foundDialog.id);
 
-                    that.exec(bot, context, dialog, callback);
+                    foundDialog.originalInput = foundDialog.input;
+                    foundDialog.originalOutput = foundDialog.output;
+                    foundDialog.input = dialog.input;
+
+                    for(var key in dialog)
+                    {
+                        foundDialog[key] = dialog[key];
+                    }
+
+                    that.exec(bot, context, foundDialog, callback);
                 }
                 else if(resultOutput.type == 'return')
                 {
                     if(context.session.returnDialog)
                     {
-                        var dialog = bot.parentDialogMap[context.session.returnDialog];
+                        var foundDialog = bot.parentDialogMap[context.session.returnDialog];
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - return ]]]'));
-                        console.log(dialog.id);
+                        console.log(foundDialog.id);
 
-                        that.exec(bot, context, dialog, callback);
+                        foundDialog.originalInput = foundDialog.input;
+                        foundDialog.originalOutput = foundDialog.output;
+                        foundDialog.input = dialog.input;
+
+                        for(var key in dialog)
+                        {
+                            foundDialog[key] = dialog[key];
+                        }
+
+                        that.exec(bot, context, foundDialog, callback);
                     }
                     else
                     {

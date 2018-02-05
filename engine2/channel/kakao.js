@@ -1,20 +1,23 @@
-var net = require('net');
-var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
 var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
-var fs = require('fs');
 var config = require(path.resolve('config/config'));
 var master = require(path.resolve('engine2/loadbalancer/master.js'));
 
+var engine = require(path.resolve('./engine2/core.js'));
+
 
 var util = require('util');
-exports.keyboard = function (req, res) {
-  console.log("kakao keyboard");
+exports.keyboard = function (req, res)
+{
+    console.log("kakao keyboard");
+    Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(out)
+    {
 
-  contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
+    });
+    contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
     var sendMsg = context.bot.kakao.keyboard;
     if(sendMsg == undefined) sendMsg = { type: 'text'};
     console.log(util.inspect(sendMsg))
