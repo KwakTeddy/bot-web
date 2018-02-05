@@ -417,6 +417,7 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
+                        console.log(JSON.stringify(body, null, 4));
                         var data = body.data.ET_TABLE;
                         context.paymentHistory = data;
 
