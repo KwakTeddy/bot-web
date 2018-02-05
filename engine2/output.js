@@ -69,7 +69,12 @@ var chalk = require('chalk');
                     target.output.buttons = [];
                 }
 
-                target.output.buttons = target.output.buttons.concat(context.bot.options.commonButtons);
+                if(typeof target.output == 'string')
+                {
+                    target.output.text = target.output;
+                }
+
+                target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
             }
 
             if(target.output && target.output.text)
