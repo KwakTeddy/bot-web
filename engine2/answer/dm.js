@@ -390,44 +390,17 @@ var Globals = require('../globals.js');
                 else if(resultOutput.type == 'up')
                 {
                     var parent = bot.parentDialogMap[context.session.previousDialogId];
-                    var grandParent = undefined;
                     if(parent)
                     {
-                        grandParent = bot.parentDialogMap[parent.id];
-                        if(grandParent)
-                        {
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - up ]]]'));
-                            console.log(grandParent.id, grandParent.name);
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - up ]]]'));
+                        console.log(parent.id, parent.name);
 
-                            grandParent.originalInput = grandParent.input;
-                            grandParent.originalOutput = grandParent.output;
-                            grandParent.input = dialog.input;
+                        parent.originalInput = parent.input;
+                        parent.originalOutput = parent.output;
+                        parent.input = dialog.input;
 
-                            for(var key in dialog)
-                            {
-                                grandParent[key] = dialog[key];
-                            }
-
-                            that.exec(bot, context, grandParent, callback);
-                        }
-                        else
-                        {
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - up ]]]'));
-                            console.log(parent.id, parent.name);
-
-                            parent.originalInput = parent.input;
-                            parent.originalOutput = parent.output;
-                            parent.input = dialog.input;
-
-                            for(var key in dialog)
-                            {
-                                parent[key] = dialog[key];
-                            }
-
-                            that.exec(bot, context, parent, callback);
-                        }
+                        that.exec(bot, context, parent, callback);
                     }
                     else
                     {
