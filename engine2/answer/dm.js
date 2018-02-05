@@ -116,7 +116,7 @@ var Globals = require('../globals.js');
 
                                 if(parsed)
                                 {
-                                    context.types[type.name] = parsed;
+                                    dialog.input.types[type.name] = parsed;
                                 }
                             }
                             else
@@ -201,7 +201,7 @@ var Globals = require('../globals.js');
         var foundDialog = undefined;
         transaction.call(function(done)
         {
-            if(!dialog)
+            if(!foundDialog)
             {
                 that.findDialog(bot, context, dialog, intents, entities, bot.commonDialogs, function(result)
                 {
@@ -268,8 +268,8 @@ var Globals = require('../globals.js');
 
     DialogGraphManager.prototype.exec = function(bot, context, dialog, callback)
     {
-        dialog.previous = context.session.currentDialog;
-        context.session.currentDialog = dialog;
+        context.session.previousDialogId = context.session.currentDialogId;
+        context.session.currentDialogId = dialog.id;
 
         console.log();
         console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
@@ -278,25 +278,29 @@ var Globals = require('../globals.js');
 
         context.session.dialogCursor = dialog.id;
 
+        var output = [];
+        for(var i=0; i<dialog.originalOutput.length; i++)
+        {
+            output.push(dialog.originalOutput[i]);
+        }
+
+        dialog.output = output;
+
         var sync = new Transaction.sync();
+        sync.dialog = dialog;
         if(dialog.task)
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, context, dialog, dialog.task.name, done);
+                TaskManager.exec(bot, context, sync.dialog, dialog.task.name, done);
             });
         }
 
         sync.done(function()
         {
-            var dialog = context.session.currentDialog;
+            var dialog = sync.dialog;
             var dialogId = dialog.id;
-            var output = dialog.originalOutput;
-
-            if(Object.keys(dialog.output).length > 0)
-            {
-                output = dialog.output;
-            }
+            var output = dialog.output;
 
             if(typeof output == 'string')
             {
@@ -347,6 +351,7 @@ var Globals = require('../globals.js');
                 if(!resultOutput)
                 {
                     resultOutput = elseList[utils.getRandomInt(0, elseList.length-1)];
+                    output.output = resultOutput;
                 }
             }
             else
@@ -384,7 +389,7 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'up')
                 {
-                    var parent = bot.parentDialogMap[dialog.id];
+                    var parent = bot.parentDialogMap[context.session.previousDialogId];
                     var grandParent = undefined;
                     if(parent)
                     {

@@ -56,24 +56,20 @@ var chalk = require('chalk');
         }
 
         var bot = context.bot;
-        var conversation = context.history[0];
-        if(!conversation)
-        {
-            conversation = {};
-        }
+        var dialog = context.session.currentDialog;
 
         target = JSON.parse(JSON.stringify(target));
 
         if(typeof target == 'object')
         {
-            if(context.bot && context.bot.commonButtons)
+            if(context.bot && context.bot.options && context.bot.options.commonButtons)
             {
                 if(!target.output.buttons)
                 {
                     target.output.buttons = [];
                 }
 
-                target.output.buttons = target.output.buttons.concat(context.bot.commonButtons);
+                target.output.buttons = target.output.buttons.concat(context.bot.options.commonButtons);
             }
 
             if(target.output && target.output.text)
@@ -83,7 +79,7 @@ var chalk = require('chalk');
                     if(key)
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
-                        var list = getValue({ context: context, conversation: conversation, bot: bot }, key);
+                        var list = getValue({ context: context, dialog: dialog, bot: bot }, key);
                         if(list)
                         {
                             var resultText = '';
@@ -117,7 +113,7 @@ var chalk = require('chalk');
                 {
                     if(key)
                     {
-                        var replaced = getValue({ context: context, conversation: conversation, bot: bot }, key);
+                        var replaced = getValue({ context: context, dialog: dialog, bot: bot }, key);
                         if(replaced)
                         {
                             return replaced;

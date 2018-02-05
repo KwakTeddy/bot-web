@@ -240,7 +240,7 @@ module.exports = function(bot)
           	options.json.param = [
             	{ key: 'I_NAME', val: context.user.customerName },
               	{ key: 'I_BIRTH', val: context.user.customerBirth },
-                { key: 'I_PHONE', val: context.types.mobile }
+                { key: 'I_PHONE', val: dialog.input.types.mobile }
             ];
             options.json.isTable = true;
             options.timeout = 7000;
@@ -255,7 +255,6 @@ module.exports = function(bot)
     	        {
     	            if(body.E_RETCD == 'E')
                     {
-
                         errorHandler(dialog, body);
                     }
                     else if(body.E_RETCD == 'S')
@@ -279,11 +278,11 @@ module.exports = function(bot)
             if(context.user.auth)
             {
                 var customerList = context.customerList;
-                dialog.output.buttons = [];
+                dialog.output[0].buttons = [];
 
                 for(var i = 0; i < customerList.length; i++)
                 {
-                    dialog.output.buttons.push({text: i + 1})
+                    dialog.output[0].buttons.push({text: i + 1});
                 }
             }
 

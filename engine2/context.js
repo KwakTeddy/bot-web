@@ -27,11 +27,13 @@
         var dialog = {};
         dialog.originalInput = [];
         dialog.originalOutput = [];
-        dialog.input = {};
+        dialog.input = {
+            types: {}
+        };
         dialog.task = {};
         dialog.data = {};
         dialog.options = {};
-        dialog.output = {};
+        dialog.output = [];
 
         return dialog;
     };
