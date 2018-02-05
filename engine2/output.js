@@ -73,7 +73,17 @@ var chalk = require('chalk');
                     target.output.text = target.output;
                 }
 
-                target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                if(context.channel.name == 'kakao')
+                {
+                    if(target.output.buttons)
+                    {
+                        target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                    }
+                }
+                else
+                {
+                    target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                }
             }
 
             if(target.output && target.output.text)

@@ -89,11 +89,11 @@ function respondMessage(res, result)
             height: result.output.image.height || 480
         };
 
-        sendMsg.message.message_button =
-        {
-            label: '이미지보기',
-            url: result.output.image.url
-        };
+        // sendMsg.message.message_button =
+        // {
+        //     label: '이미지보기',
+        //     url: result.output.image.url
+        // };
     }
 
     // if(json && json.url)
