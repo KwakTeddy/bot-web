@@ -1,9 +1,9 @@
 var path = require('path');
 var config = require(path.resolve('config/config'));
-var Engine = require(path.resolve('./engine2/core.js'));
 
 exports.keyboard = function (req, res)
 {
+    var Engine = require('../core.js');
     console.log("kakao keyboard");
     Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
     {
@@ -15,11 +15,16 @@ exports.keyboard = function (req, res)
 
         res.write(JSON.stringify(sendMsg));
         res.end();
+    },
+    function(err)
+    {
+        respondMessage(res, { output: { text: JSON.stringify(err) } });
     });
 };
 
 exports.message = function (req, res)
 {
+    var Engine = require('../core.js');
     if(req.body && req.body.user_key && req.body.content)
     {
         var from = req.body.user_key;
@@ -36,6 +41,10 @@ exports.message = function (req, res)
         Engine.process(req.params.bot, 'kakao', from, text, {}, function (context, out)
         {
             respondMessage(res, out);
+        },
+        function(err)
+        {
+            respondMessage(res, { output: { text: JSON.stringify(err) } });
         });
     }
 };
@@ -55,10 +64,15 @@ exports.deleteFriend = function (req, res)
 
 exports.deleteChatRoom = function (req, res)
 {
+    var Engine = require('../core.js');
     console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
     Engine.process(req.params.bot, 'kakao', from, ':reset user', {}, function (context, out)
     {
         res.end();
+    },
+    function(err)
+    {
+        respondMessage(res, { output: { text: JSON.stringify(err) } });
     });
 };
 

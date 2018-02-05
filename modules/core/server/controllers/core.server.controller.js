@@ -18,6 +18,11 @@ var UserLog = mongoose.model('UserLog');
  */
 exports.renderIndex = function (req, res, next)
 {
+    if(req.path.startsWith('/kakao') || req.path.startsWith('/line') || req.path.startsWith('/facebook') || req.path.startsWith('/navertalk') || req.path.startsWith('/wechat'))
+    {
+        return next();
+    }
+
     if(req.path == '/')
     {
         var lanCategory = ['ko', 'en', 'zh', 'jp'];
