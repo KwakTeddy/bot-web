@@ -16,17 +16,22 @@ var Globals = require('../globals.js');
 
     DialogGraphManager.prototype.checkInputText = function(nlpText, text)
     {
-        var words = text.split(/\s/);
-        for(var i=0; i<words.length; i++)
+        var count = 0;
+
+        if(nlpText.trim())
         {
-            var word = RegExp.escape(words[i]);
-            if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+            var words = text.split(/\s/);
+            for(var i=0; i<words.length; i++)
             {
-                return true;
+                var word = RegExp.escape(words[i]);
+                if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+                {
+                    count++;
+                }
             }
         }
 
-        return false;
+        return count;
     };
 
     DialogGraphManager.prototype.checkEntities = function(src, dest)
@@ -64,6 +69,7 @@ var Globals = require('../globals.js');
 
         var selectedDialog = [];
 
+        var rawText = dialog.input.text;
         var nlpText = dialog.input.nlpText;
         async.eachSeries(dialogs, function(originalDialog, next)
         {
@@ -97,13 +103,24 @@ var Globals = require('../globals.js');
                 {
                     if(key == 'text')
                     {
-                        var check = that.checkInputText(nlpText, input.text.nlp);
-                        if(check)
+                        if(rawText == input.text.raw)
                         {
-                            originalDialog.matchCount++;
+                            result = result && true;
+                            originalDialog.matchCount = 100000;
                         }
-
-                        result = result && check;
+                        else
+                        {
+                            var matchCount = that.checkInputText(nlpText, input.text.nlp);
+                            if(matchCount > 0)
+                            {
+                                originalDialog.matchCount += matchCount;
+                                result = result && true;
+                            }
+                            else
+                            {
+                                result = result && false;
+                            }
+                        }
                     }
                     else if(key == 'entities')
                     {

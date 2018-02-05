@@ -1659,10 +1659,6 @@ var dialogs = [
         "name": "시작카드 재질의",
         "input": [
             {
-                "text": {
-                    "raw": "",
-                    "nlp": ""
-                },
                 "if": "true"
             }
         ],
