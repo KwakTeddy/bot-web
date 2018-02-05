@@ -37,11 +37,10 @@
         color:#272727;
         font-size: 13px;
     }
-    .case2
-    {
-        background-color: #FFFFFF;
-        color:#272727;
-        font-size: 13px;
+    .case2{
+        text-align: left;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     /*tb01----------------------------------*/
     .tb01{
@@ -105,7 +104,6 @@
     }
 
     .tb02 tr td input {
-        width: 60%;
         text-align: center;
         font-size: 13px;
         letter-spacing: 0;
@@ -113,7 +111,6 @@
         vertical-align: middle;
         /*text-overflow: ellipsis;*/
         white-space: nowrap;
-        height: 40px;
         overflow:hidden;
     }
 
@@ -214,8 +211,8 @@
                 <col style="width: 20%;">
                 <col style="width: 20%;">
                 <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
+                <col style="width: 10%;">
+                <col style="width: 30%;">
             <thead>
             <tr>
                 <th>상품 카테고리</th>
@@ -227,24 +224,19 @@
             </thead>
             <tbody>
             <tr>
-                <td><input type="text" ng-model="data.category" class="case1"></td>
+                <td><input type="text" ng-model="data.category" class="case2" style="padding: 8px 0;"></td>
                 <td><input type="text" ng-model="data.name" class="case2"></td>
                 <td><input type="text" ng-model="data.code" class="case2"></td>
                 <td><input type="number" ng-model="data.price" class="case2">원</td>
                 <td>
                     <label>
-                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" style="border: none;"/>
                         <img src="{{ data.picture }}" style="width: 100px;height:100px;" ng-if="data.picture " ng-click="editImage($event);">
-                        <label type="button" class="flower-button" for="image">업로드</label>
                     </label>
                 </td>
             </tr>
             </tbody>
         </table>
-        <tr>
-            <td colspan="10">
-                <a href="/playchat/templates/contents/menu" type="button" class="default-button" ng-click="save($event,data);">저장</a>
-            </td>
-        </tr>
     </form>
+    <a href="/playchat/templates/contents/menu" type="button" class="default-button" ng-click="save($event,data);">저장</a>
 </div>
