@@ -3,22 +3,23 @@ var request = require('request');
 
 module.exports = function(bot)
 {
-    var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
+
+    //Variable Area
+
     var monthIndex =
-        {
+    {
             3 : 1,
             6: 2,
             12: 3
-        };
+    };
 
-    var messages = require(path.resolve('engine2/messages.js'));
-
-    var errorHandler = function (conversation, errData) {
+    var errorHandler = function (conversation, errData)
+    {
         console.log(errData);
 
         if(errData.E_RETCD)
         {
-            conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  errData.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            conversation.dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
         else
         {
@@ -26,144 +27,8 @@ module.exports = function(bot)
         }
     };
 
-    bot.setTask('defaultTask',
-    {
-        action: function(conversation, context, callback)
-        {
-            callback();
-        }
-    });
 
-    bot.setTask('addButton',
-    {
-        action: function (conversation, context, callback)
-        {
-            callback();
-        }
-    });
-
-
-    bot.setTask('searchUser',
-    {
-        action: function (conversation, context, callback)
-        {
-            console.log('컨텍스트 : ', context.user);
-
-          	var options = {};
-          	options.url = 'http://sam.moneybrain.ai:3000/api';
-          	options.json = {};
-          	options.json.name = 'ZCS_CUSTOMER_INFO';
-          	options.json.param = [
-            	{ key: 'I_NAME', val: context.user.customerName },
-              	{ key: 'I_BIRTH', val: context.user.customerBirth },
-                { key: 'I_PHONE', val: context.types.mobile }
-            ];
-          
-          	request.post(options, function(err, response, body)
-            {
-              	if(err)
-                {
-                    console.log(err);
-                }
-				else
-    	        {
-                    console.log('개쩐다 : ', typeof body, body);
-    	            if(body.E_RETCD == 'E')
-                    {
-                        // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        context.user.customerInfo = {
-                            name: context.user.customerName,
-                            birth: context.user.customerBirth,
-                            phone: context.types.mobile
-                        };
-                    }else {
-    	                console.log(body.E_RETCD)
-                    }
-
-                    callback();
-                }
-            });
-        }
-    });
-
-    bot.setTask('getCustomerList',
-    {
-        action: function (conversation, context, callback)
-        {
-            if(context.user.auth)
-            {
-                var options = {};
-                options.url = 'http://sam.moneybrain.ai:3000/api';
-                options.json = {};
-                options.json.name = 'ZCS_CUSTOMER_INFO';
-                options.json.param = [
-                    { key: 'I_NAME', val: context.user.customerName },
-                    { key: 'I_BIRTH', val: context.user.customerBirth },
-                    { key: 'I_PHONE', val: context.types.mobile }
-                ];
-
-                request.post(options, function(err, response, body)
-                {
-                    if(err)
-                    {
-                        console.log(err);
-                    }
-                    else
-                    {
-                        console.log('개쩐다 : ', typeof body, body);
-                        if(body.E_RETCD == 'E')
-                        {
-                            // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
-                        }
-                        else if(body.E_RETCD == 'S')
-                        {
-                            context.user.customerInfo = {
-                                name: context.user.customerName,
-                                birth: context.user.customerBirth,
-                                phone: context.types.mobile
-                            };
-
-
-                            var data =
-                                [
-                                    {
-                                        customerName: "박준하",
-                                        address: "서울시 관악구 행운동12",
-                                        id: "1235534"
-                                    },
-                                    {
-                                        customerName: "김지섭",
-                                        address: "서울시 도봉구 덕릉로 12344",
-                                        id: "45344004"
-                                    }
-                                ];
-
-                            context.customerList = data;
-
-                            conversation.buttons = [];
-
-                            for(var i = 0; i < data.length; i++)
-                            {
-                                conversation.buttons.push({text: i + 1})
-                            }
-
-                        }else {
-                            console.log(body.E_RETCD)
-                        }
-
-                        callback();
-                    }
-                });
-            }
-            else
-            {
-                callback();
-            }
-        }
-    });
+    //Type Area
 
     bot.setType('customerListType',
     {
@@ -213,6 +78,220 @@ module.exports = function(bot)
         }
     });
 
+    bot.setType('saveCustomerName',
+    {
+        typeCheck: function (conversation, context, callback)
+        {
+            var matched = false;
+            var word = conversation.nlu.inputRaw;
+            var regExp = new RegExp('[가-힣]{2,4}', "g");
+            if(regExp.exec(word))
+            {
+                context.user.customerName = word;
+                matched = true;
+            }
+
+            callback(matched);
+        }
+    });
+
+    bot.setType('saveCustomerBirth',
+    {
+        typeCheck: function (conversation, context, callback)
+        {
+            var matched = false;
+            var word = conversation.nlu.inputRaw;
+            var regexp = new RegExp("[0-9]{6}", "g");
+
+            if(regexp.exec(word))
+            {
+                context.user.customerBirth = word;
+                matched = true;
+            }
+
+            callback(matched);
+        }
+    });
+
+    bot.setType('email',
+    {
+        typeCheck: function (conversation, context, callback)
+        {
+            var matched = false;
+
+            var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
+            if(regExp.exec(conversation.nlu.inputRaw))
+            {
+                matched = true;
+            }
+
+
+            callback(matched);
+        }
+    });
+
+    bot.setType('selectedAccountType',
+    {
+        typeCheck: function (conversation, context, callback)
+        {
+            var matched = false;
+            var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
+
+
+            for(var i = 0; i < bankArr.length; i++)
+            {
+                if(conversation.nlu.inputRaw.indexOf(bankArr[i]) != -1)
+                {
+                    conversation.selectedBank = bankArr[i];
+                    matched = true;
+                    break;
+                }
+            }
+
+            callback(matched);
+        }
+    });
+
+    //Task Area
+
+    bot.setTask('defaultTask',
+    {
+        action: function(conversation, context, callback)
+        {
+            callback();
+        }
+    });
+
+    bot.setTask('addButton',
+    {
+        action: function (conversation, context, callback)
+        {
+            callback();
+        }
+    });
+
+    bot.setTask('searchSamchullyUser',
+    {
+        action: function (conversation, context, callback)
+        {
+          	var options = {};
+          	options.url = 'http://sam.moneybrain.ai:3000/api';
+          	options.json = {};
+          	options.json.name = 'ZCS_CUSTOMER_INFO';
+          	options.json.param = [
+            	{ key: 'I_NAME', val: context.user.customerName },
+              	{ key: 'I_BIRTH', val: context.user.customerBirth },
+                { key: 'I_PHONE', val: context.types.mobile }
+            ];
+          
+          	request.post(options, function(err, response, body)
+            {
+              	if(err)
+                {
+                    errorHandler(conversation, err);
+                }
+				else
+    	        {
+                    console.log('개쩐다 : ', typeof body, body);
+    	            if(body.E_RETCD == 'E')
+                    {
+                        errorHandler(conversation, body);
+                        // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        context.user.customerInfo = {
+                            name: context.user.customerName,
+                            birth: context.user.customerBirth,
+                            phone: context.types.mobile
+                        };
+                    }else {
+                        errorHandler(conversation, body);
+                    }
+
+                    callback();
+                }
+            });
+        }
+    });
+
+    bot.setTask('getCustomerList',
+    {
+        action: function (conversation, context, callback)
+        {
+            if(context.user.auth)
+            {
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CUSTOMER_INFO';
+                options.json.param = [
+                    { key: 'I_NAME', val: context.user.customerName },
+                    { key: 'I_BIRTH', val: context.user.customerBirth },
+                    { key: 'I_PHONE', val: context.types.mobile }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(conversation, err);
+                    }
+                    else
+                    {
+                        console.log('개쩐다 : ', typeof body, body);
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(conversation, body);
+                            // conversation.dialog.output = body.E_RETMG + '\n다시 인증을 부탁드립니다.';
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            context.user.customerInfo = {
+                                name: context.user.customerName,
+                                birth: context.user.customerBirth,
+                                phone: context.types.mobile
+                            };
+
+
+                            var data =
+                                [
+                                    {
+                                        customerName: "박준하",
+                                        address: "서울시 관악구 행운동12",
+                                        id: "1235534"
+                                    },
+                                    {
+                                        customerName: "김지섭",
+                                        address: "서울시 도봉구 덕릉로 12344",
+                                        id: "45344004"
+                                    }
+                                ];
+
+                            context.customerList = data;
+
+                            conversation.buttons = [];
+
+                            for(var i = 0; i < data.length; i++)
+                            {
+                                conversation.buttons.push({text: i + 1})
+                            }
+
+                        }else {
+                            errorHandler(conversation, body);
+                        }
+
+                        callback();
+                    }
+                });
+            }
+            else
+            {
+                callback();
+            }
+        }
+    });
+
     bot.setTask('getNoticeHistory',
     {
         action: function (conversation, context, callback)
@@ -235,16 +314,13 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
-                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
-
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
-
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
@@ -259,8 +335,7 @@ module.exports = function(bot)
 
 
                     }else {
-                        console.log(body.E_RETCD);
-                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+                        errorHandler(conversation, body);
                     }
                     callback();
 
@@ -307,14 +382,13 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
-                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
@@ -322,8 +396,7 @@ module.exports = function(bot)
                         context.paymentHistory = data;
 
                     }else {
-                        console.log(body.E_RETCD);
-                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+                        errorHandler(conversation, body);
                     }
                     callback();
                 }
@@ -347,7 +420,6 @@ module.exports = function(bot)
         }
     });
 
-
     bot.setTask('getNonpaymentList',
     {
         action: function (conversation, context, callback)
@@ -364,13 +436,13 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        conversation.dialog.output[0].text = body.E_RETMG;
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
@@ -378,47 +450,12 @@ module.exports = function(bot)
                     }
                     else
                     {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
                     callback();
 
                 }
             });
-        }
-    });
-
-    bot.setType('saveCustomerName',
-    {
-        typeCheck: function (conversation, context, callback)
-        {
-            var matched = false;
-            var word = conversation.nlu.inputRaw;
-            var regExp = new RegExp('[가-힣]{2,4}', "g");
-            if(regExp.exec(word))
-            {
-                context.user.customerName = word;
-                matched = true;
-            }
-
-            callback(matched);
-        }
-    });
-
-    bot.setType('saveCustomerBirth',
-    {
-        typeCheck: function (conversation, context, callback)
-        {
-            var matched = false;
-            var word = conversation.nlu.inputRaw;
-            var regexp = new RegExp("[0-9]{6}", "g");
-
-            if(regexp.exec(word))
-            {
-                context.user.customerBirth = word;
-                matched = true;
-            }
-
-            callback(matched);
         }
     });
 
@@ -435,24 +472,6 @@ module.exports = function(bot)
             callback();
         }
     });
-
-    bot.setType('email',
-    {
-        typeCheck: function (conversation, context, callback)
-        {
-            var matched = false;
-
-            var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
-            if(regExp.exec(conversation.nlu.inputRaw))
-            {
-             matched = true;
-            }
-
-
-            callback(matched);
-        }
-    });
-
 
     bot.setTask('getAccountList',
     {
@@ -471,13 +490,13 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
@@ -500,7 +519,7 @@ module.exports = function(bot)
                         }
 
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
                     callback();
 
@@ -509,32 +528,10 @@ module.exports = function(bot)
         }
     });
 
-    bot.setType('selectedAccountType',
-    {
-        typeCheck: function (conversation, context, callback)
-        {
-            var matched = false;
-            var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
-
-
-            for(var i = 0; i < bankArr.length; i++)
-            {
-                if(conversation.nlu.inputRaw.indexOf(bankArr[i]) != -1)
-                {
-                    conversation.selectedBank = bankArr[i];
-                    matched = true;
-                    break;
-                }
-            }
-
-            callback(matched);
-        }
-    });
-
     bot.setTask('createDepositAccount',
+    {
+        action: function (conversation, context, callback)
         {
-            action: function (conversation, context, callback)
-            {
                 var bankIndex =
                 {
                     '기업' : '003',
@@ -559,22 +556,20 @@ module.exports = function(bot)
                 {
                     if(err)
                     {
-                        console.log(err);
+                        errorHandler(conversation, err);
                     }
                     else
                     {
                         if(body.E_RETCD == 'E')
                         {
-                            console.log('##########')
-                            console.log(body);
+                            errorHandler(conversation, body);
                         }
                         else if(body.E_RETCD == 'S')
                         {
                             conversation.createdBankAccount = body.E_BANKN;
-                            console.log('@@@@@@@@@@@@@@@')
                             console.log(body)
                         }else {
-                            console.log(body.E_RETCD)
+                            errorHandler(conversation, body);
                         }
 
                         callback();
@@ -582,7 +577,6 @@ module.exports = function(bot)
                 });
             }
     });
-
 
     bot.setTask('getNoticeMethod',
     {
@@ -613,23 +607,21 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "' +  body.E_RETMG + '"\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
-
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
+                        console.log(body);
                         conversation.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
                         conversation.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
                     }else {
-                        conversation.dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
 
                     callback();
@@ -637,7 +629,6 @@ module.exports = function(bot)
             });
         }
     });
-
 
     bot.setTask('setNoticeMethod_kkopay',
     {
@@ -679,44 +670,44 @@ module.exports = function(bot)
     });
 
     bot.setTask('setNoticeMethod_lms',
+    {
+        action: function (conversation, context, callback)
         {
-            action: function (conversation, context, callback)
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_GOJI_LMS_REQUEST';
+            options.json.param = [
+                { key: 'I_VKONT', val: '110591507' },
+                { key: 'I_HPNUM', val: '01088588151' }
+            ];
+            options.timeout = 7000;
+
+            request.post(options, function(err, response, body)
             {
-                var options = {};
-                options.url = 'http://sam.moneybrain.ai:3000/api';
-                options.json = {};
-                options.json.name = 'ZCS_GOJI_LMS_REQUEST';
-                options.json.param = [
-                    { key: 'I_VKONT', val: '110591507' },
-                    { key: 'I_HPNUM', val: '01088588151' }
-                ];
-                options.timeout = 7000;
-
-                request.post(options, function(err, response, body)
+                if(err)
                 {
-                    if(err)
+                    errorHandler(conversation, err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
                     {
-                        errorHandler(conversation, err);
+                        errorHandler(conversation, body);
                     }
-                    else
+                    else if(body.E_RETCD == 'S')
                     {
-                        if(body.E_RETCD == 'E')
-                        {
-                            errorHandler(conversation, body);
-                        }
-                        else if(body.E_RETCD == 'S')
-                        {
-                            console.log(body);
-                            conversation.setNoticeMethodSuccess = true;
-                        }else {
-                            errorHandler(conversation, body);
-                        }
+                        console.log(body);
+                        conversation.setNoticeMethodSuccess = true;
+                    }else {
+                        errorHandler(conversation, body);
+                    }
 
-                        callback();
-                    }
-                });
-            }
-        });
+                    callback();
+                }
+            });
+        }
+    });
 
     bot.setTask('setNoticeMethod_email',
     {
@@ -815,22 +806,20 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
                         conversation.setNoticeMethodSuccess = true;
-                        console.log('@@@@@@@@@@@@@@@')
                         console.log(body)
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
 
                     callback();
@@ -864,31 +853,26 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########')
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log('!@#!#!#!!R#R!R!')
-                        console.log(body['E_EZAWE']);
                         if(body['E_EZAWE'] == '')
                         {
                             body['E_EZAWE'] = 'A'
                         }
+
                         conversation.curPaymentMethod = methodIdex[body['E_EZAWE']];
-                        console.log('@@@@@@@@@@@@@@@')
-                        console.log(conversation)
                         console.log(body)
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, err);
                     }
-
                     callback();
                 }
             });
@@ -943,21 +927,19 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        console.log('##########');
-                        console.log(body);
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log('@@@@@@@@@@@@@@@');
                         console.log(body)
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
 
                     callback();
@@ -986,31 +968,26 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '105831826'},
                 { key: 'I_HPNUM', val: '01088588151' },
-                { key: 'I_BETRWP', val: '0' },
+                { key: 'I_BETRWP', val: '0' }
             ];
             request.post(options, function(err, response, body)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
-                    console.log(body)
 
                     if(body.E_RETCD == 'E')
                     {
-
-                        console.log(body)
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
-
                         console.log(body)
-
-
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
                     callback();
 
@@ -1042,25 +1019,20 @@ module.exports = function(bot)
             {
                 if(err)
                 {
-                    console.log(err);
+                    errorHandler(conversation, err);
                 }
                 else
                 {
-                    console.log(body)
 
                     if(body.E_RETCD == 'E')
                     {
-
-                        console.log(body)
+                        errorHandler(conversation, body);
                     }
                     else if(body.E_RETCD == 'S')
                     {
-
                         console.log(body)
-
-
                     }else {
-                        console.log(body.E_RETCD)
+                        errorHandler(conversation, body);
                     }
                     callback();
 
@@ -1069,7 +1041,4 @@ module.exports = function(bot)
 
         }
     });
-
-
-
 };

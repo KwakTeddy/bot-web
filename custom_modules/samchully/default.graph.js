@@ -27,7 +27,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞에 6자리를 입력해주세요.\n예시) 900930",
+                        "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
                         "if": ""
                     }
                 ],
@@ -72,7 +72,7 @@ var dialogs = [
                                 ],
                                 "id": "default50",
                                 "task": {
-                                    "name": "searchUser"
+                                    "name": "searchSamchullyUser"
                                 },
                                 "children": [
                                     {
@@ -163,7 +163,8 @@ var dialogs = [
                                                 },
                                                 "type": "call",
                                                 "dialogId": "default3",
-                                                "dialogName": "인증_고객명"
+                                                "dialogName": "인증_고객명",
+                                                "text": "실패했습니다."
                                             }
                                         ],
                                         "id": "default52",
@@ -713,7 +714,7 @@ var dialogs = [
                         "id": "default2",
                         "children": [
                             {
-                                "name": "신청",
+                                "name": "전자고지 신청",
                                 "input": [
                                     {
                                         "text": {
@@ -880,7 +881,7 @@ var dialogs = [
                                 }
                             },
                             {
-                                "name": "해지",
+                                "name": "전자고지 해지",
                                 "input": [
                                     {
                                         "text": {
@@ -954,12 +955,18 @@ var dialogs = [
                                             "raw": "신청",
                                             "nlp": "신청"
                                         }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "1",
+                                            "nlp": "1"
+                                        }
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n1544-3002"
+                                        "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터 전화번호 안내 (1544-3002 연결)"
                                     }
                                 ],
                                 "id": "default53"
@@ -971,6 +978,12 @@ var dialogs = [
                                         "text": {
                                             "raw": "해지",
                                             "nlp": "해지"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "2",
+                                            "nlp": "2"
                                         }
                                     }
                                 ],
@@ -1113,63 +1126,14 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Action",
-                                "call": "전자고지 재발행 접수",
-                                "if": "conversation.curNoticeMethodCategory > 1",
-                                "options": {
-                                    "output": "고지서를 재발행하시겠습니까?"
-                                },
-                                "type": "call",
-                                "dialogName": "고지 재",
-                                "dialog": "전자고지 재발행 접수"
-                            },
-                            {
                                 "kind": "Content",
-                                "text": "고객의 고지방법 : +conversation.curNoticeMethod+\n\n전자고지 고객님만 가능하며 종이고지서 수령을 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다."
+                                "text": "현재 고지방법 : +conversation.curNoticeMethod+"
                             }
                         ],
                         "id": "default11",
-                        "children": [
-                            {
-                                "name": "전자고지 재발행 접수",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "재발 행",
-                                            "nlp": "재발 행"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "재발행되었습니다."
-                                    }
-                                ],
-                                "id": "default39",
-                                "children": []
-                            },
-                            {
-                                "name": "에러메세지",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "에러",
-                                            "nlp": "에러"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "전자고지 고객님만 가능하며 종이고지서 수령을  원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다."
-                                    }
-                                ],
-                                "id": "default40"
-                            }
-                        ],
+                        "children": [],
                         "task": {
-                            "name": "getNoticeMethod"
+                            "name": "resendNotice"
                         }
                     }
                 ]
@@ -1400,7 +1364,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "카카오톡"
+                "text": "고객 인증이 되어 있는 경우 \n1) 고객의 관할 고객센터명 및 코드 ex)동인천(11)를 카카오상담톡 플러스 아이디로 알림톡 전송\n\n고객 인증이 되어 있지 않은 경우 \n2) 고객 인증 화면 이동 결과 중 선택한 주소의 관할 고객센터명 및 코드 ex) 동인천(11) 를 카카오 상담톡 플러스아이디로 알림톡 전송"
             }
         ],
         "id": "default7",
