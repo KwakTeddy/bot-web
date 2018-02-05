@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('template').controller('flowerMenuAddController', ['$scope', '$resource', '$cookies', '$rootScope','LanguageService','FileUploader',function ($scope, $resource, $cookies,$rootScope,LanguageService, FileUploader)
+angular.module('template').controller('flowerEventAddController', ['$scope', '$resource', '$cookies', '$rootScope','LanguageService','FileUploader',function ($scope, $resource, $cookies,$rootScope,LanguageService, FileUploader)
 {
-    $scope.$parent.changeWorkingGroundName('상품관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
+    $scope.$parent.changeWorkingGroundName('이벤트 관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
@@ -77,7 +77,7 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
 
         $scope.save = function(event,data)
         {
-            $scope.datas.push({ category:data.category,name:data.name, price:data.price,picture:data.picture,code:data.code,status:"정상"});
+            $scope.datas.push({ context:data.context,name:data.name, picture:data.picture,description:data.description,status:"정상"});
             var datas = JSON.parse(angular.toJson($scope.datas));
             console.log('데이터스 : ', datas);
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result) {
