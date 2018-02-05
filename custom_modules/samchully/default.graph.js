@@ -69,99 +69,49 @@ var dialogs = [
                                 },
                                 "children": [
                                     {
-                                        "name": "인증동의",
+                                        "name": "인증동의_",
                                         "input": [
                                             {
-                                                "if": "false"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "검색 결과입니다.\n\n고객명 : +context.user.customerName+\n생일 : +context.user.customerBirth+\n핸드폰번호 : +context.types.mobile+\n\n인증하시겠습니까?",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "네"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "아니요"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default64",
-                                        "children": [
-                                            {
-                                                "name": "인증완료",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "네",
-                                                            "nlp": "네"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Action",
-                                                        "type": "call",
-                                                        "dialogId": "defaultcommon0",
-                                                        "dialogName": "시작"
-                                                    }
-                                                ],
-                                                "id": "default65",
-                                                "task": {
-                                                    "name": "authConfirm"
+                                                "text": {
+                                                    "raw": "네",
+                                                    "nlp": "네"
                                                 }
-                                            },
-                                            {
-                                                "name": "인증거절",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "아니다",
-                                                            "nlp": "아니다"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Action",
-                                                        "type": "call",
-                                                        "dialogId": "defaultcommon0",
-                                                        "dialogName": "시작"
-                                                    }
-                                                ],
-                                                "id": "default66"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "searchUser"
-                                        }
-                                    },
-                                    {
-                                        "name": "인증실패",
-                                        "input": [
-                                            {
-                                                "if": "false"
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "options": {
-                                                    "output": "고객 인증에 실패했습니다."
-                                                },
+                                                "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
                                                 "type": "call",
-                                                "dialogId": "default3",
-                                                "dialogName": "인증_고객명",
-                                                "text": "실패했습니다."
+                                                "dialogName": "시작",
+                                                "dialog": "시작"
                                             }
                                         ],
-                                        "id": "default52",
-                                        "children": []
+                                        "task": {
+                                            "name": "authConfirm"
+                                        },
+                                        "id": "default47"
+                                    },
+                                    {
+                                        "name": "인증거절_",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "아니다",
+                                                    "nlp": "아니다"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
+                                                "type": "call",
+                                                "dialogName": "시작",
+                                                "dialog": "시작"
+                                            }
+                                        ],
+                                        "id": "default48"
                                     }
                                 ]
                             },
