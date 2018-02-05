@@ -29,16 +29,16 @@ module.exports =
             env_remaster:
             {
                 "PORT": 443,
-                "HOST": "http://localhost:8443",
+                "HOST": "https://remaster.moneybrain.ai",
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-                "REDIS": "13.125.126.30",
+                "REDIS": "52.79.198.109",
                 "LB_MASTER": true,
                 "LB_USE": true,
-                "NODE_ENV": "development"
+                "NODE_ENV": "remaster"
             },
             env_development:
             {
@@ -49,10 +49,10 @@ module.exports =
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-                "REDIS": "13.125.126.30",
+                "REDIS": "172.31.5.26",
                 "LB_MASTER": true,
                 "LB_USE": true,
-                "NODE_ENV": "remaster"
+                "NODE_ENV": "development"
             },
             env_production:
             {

@@ -11,7 +11,10 @@ var Logger = require('./logger.js');
     Error.prototype.delegate = function(err)
     {
         Logger.error(err);
-        this.callback(err);
+        if(this.callback)
+        {
+            this.callback(err);
+        }
     };
 
     module.exports = Error;

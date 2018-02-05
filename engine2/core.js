@@ -6,7 +6,6 @@ var Logger = require('./logger.js');
 
 var globals = require('./globals.js');
 var channel = require('./channel.js');
-var loadBalancer = require('./loadbalancer.js');
 
 var Context = require('./context.js');
 var Command = require('./command.js');
@@ -42,6 +41,23 @@ var Transaction = require('./utils/transaction.js');
     {
         channel.init(app, io);
         // loadBalancer.init(app, io);
+    };
+
+    Core.prototype.getBot = function(botId, callback, errCallback)
+    {
+        var error = new Error(errCallback);
+
+        BotManager.load(botId, function(err, bot)
+        {
+            if(err)
+            {
+                error.delegate(err);
+            }
+            else
+            {
+                callback(bot);
+            }
+        });
     };
 
     Core.prototype.process = function(botId, channel, userKey, inputRaw, options, outCallback, errCallback)
@@ -94,7 +110,7 @@ var Transaction = require('./utils/transaction.js');
                         context.globals = globals;
                         context.user.userKey = userKey;
                         context.bot = bot;
-                        context.channel.name = channel;
+                        context.channel.name = 'kakao';
 
                         var dialog = Context.createDialog();
                         dialog.input.text = inputRaw;
@@ -137,7 +153,7 @@ var Transaction = require('./utils/transaction.js');
                                 {
                                     AnswerManager.answer(bot, context, dialog, error, function(output)
                                     {
-                                        output = OutputManager.make(context, output);
+                                        output = OutputManager.make(context, dialog, output);
 
                                         delete context.bot;
                                         delete context.channel;

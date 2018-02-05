@@ -17,10 +17,11 @@ angular.module('template').controller('flowerReservationAwaitController', ['$sco
         iDays  =  oDate2  -  oDate1;   //把相差的毫秒数转换为天数
         return  iDays
     }
+    $scope.searchword="";
     (function()
     {
 
-        $scope.getList = function()
+        $scope.getList = function(searchword)
         {
 
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
@@ -29,8 +30,7 @@ angular.module('template').controller('flowerReservationAwaitController', ['$sco
                     $scope.list = [];
                     $scope.template = result;
                     $scope.datass=[];
-                    // $scope.list = result;
-                    //alert(" $scope.template"+JSON.stringify( $scope.template));
+
                     DataService.query({ templateId: result.id, botId: chatbot.id}, function(list)
                         {
                             $scope.datass = list;
@@ -40,10 +40,17 @@ angular.module('template').controller('flowerReservationAwaitController', ['$sco
                                 var dateend=new Date($scope.date.end);
                                 var startdate=DateDiff(datetime, datestart);
                                 var enddate=DateDiff(datetime, dateend);
-
-                                if(list[i].order_status==="승인 대기중" && startdate<=0 && enddate>=0){
-                                    $scope.datas.push(list[i]);
-                                }
+if(searchword===undefined) {
+    if (list[i].order_status === "승인 대기중" && startdate <= 0 && enddate >= 0) {
+        $scope.datas.push(list[i]);
+    }
+}
+else{
+    if (list[i].order_status === "승인 대기중" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+        $scope.datas.push(list[i]);
+    }
+}
+                                $scope.searchword="";
                             }
                         },
                         function(err)
@@ -104,6 +111,11 @@ angular.module('template').controller('flowerReservationAwaitController', ['$sco
     {
         $scope.date = date;
         $scope.getList();
+    });
+    $scope.$on('reservation_search_changed', function(context, data)
+    {
+        $scope.searchword = data;
+        $scope.getList($scope.searchword);
     });
     $scope.getList();
     $scope.lan=LanguageService;

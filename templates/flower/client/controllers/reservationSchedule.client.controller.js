@@ -19,10 +19,10 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
            iDays  =  oDate2  -  oDate1;   //把相差的毫秒数转换为天数
            return  iDays
        }
-
+       $scope.searchword=undefined;
     (function()
     {
-        $scope.getList = function()
+        $scope.getList = function(searchword)
         {
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
@@ -37,10 +37,16 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
                                     var dateend=new Date($scope.date.end);
                                     var startdate=DateDiff(datetime, datestart);
                                     var enddate=DateDiff(datetime, dateend);
-
-                                    if(list[i].order_status!=="주문취소" && list[i].order_status!=="주문취소" && startdate<=0 && enddate>=0){
-                                        $scope.datas.push(list[i]);
-                                    }
+if(searchword===undefined) {
+    if (list[i].order_status !== "주문취소" && list[i].order_status !== "주문삭제" && startdate <= 0 && enddate >= 0) {
+        $scope.datas.push(list[i]);
+    }
+}
+else{
+    if (list[i].order_status !== "주문취소" && list[i].order_name === searchword && list[i].order_status !== "주문삭제" && startdate <= 0 && enddate >= 0) {
+        $scope.datas.push(list[i]);
+    }
+}
                                 }
                         },
                         function(err)
@@ -92,11 +98,6 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
             location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
         };
 
-        $scope.search = function(e)
-        {
-            console.log("--------------------==================--------------");
-
-        };
     })();
 
        $rootScope.$on('reservation_order_date_changed', function(context, date)
@@ -104,6 +105,11 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
         $scope.date = date;
         $scope.getList();
     });
+       $scope.$on('reservation_search_changed', function(context, date)
+       {
+           $scope.searchword = date;
+           $scope.getList($scope.searchword);
+       });
 
     $scope.getList();
     $scope.lan=LanguageService;

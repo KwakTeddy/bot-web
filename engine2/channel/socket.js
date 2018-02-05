@@ -16,23 +16,8 @@ module.exports.init = function(socket)
     {
         Engine.process(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg.options, function(context, out)
         {
+            console.log('아웃풋', out);
             socket.emit('send_msg', out);
-
-            // if(task == undefined || (task.result == undefined && task.image == undefined && task.buttons == undefined && task.items == undefined))
-            // {
-            //     socket.emit('send_msg', out);
-            // }
-            // else if(task.result)
-            // {
-            //     if(task.result.text == undefined) task.result.text = out;
-            //     socket.emit('send_msg', JSON.stringify(task.result));
-            // }
-            // else
-            // {
-            //     task.text = out;
-            //     task.topTask = undefined;
-            //     socket.emit('send_msg', JSON.stringify(task));
-            // }
         },
         function(err)
         {

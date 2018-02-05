@@ -9,7 +9,7 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
-
+        $scope.searchword=undefined;
 
         function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式
             var  oDate1,oDate2,iDays;
@@ -26,7 +26,7 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
         //     $scope.getList(1, value);
         // };
 
-        $scope.getList = function()
+        $scope.getList = function(searchword)
         {
 
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
@@ -45,10 +45,16 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
                                 var dateend=new Date($scope.date.end);
                                 var startdate=DateDiff(datetime, datestart);
                                 var enddate=DateDiff(datetime, dateend);
-
+if(searchword===undefined){
                                 if(list[i].order_status==="주문취소" && startdate<=0 && enddate>=0){
                                     $scope.datas.push(list[i]);
                                 }
+}
+else{
+    if(list[i].order_status==="주문취소" && list[i].order_name===searchword && startdate<=0 && enddate>=0){
+        $scope.datas.push(list[i]);
+    }
+}
                             }
                         },
                         function(err)
@@ -156,6 +162,11 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
         {
             $scope.date = date;
             $scope.getList();
+        });
+        $scope.$on('reservation_search_changed', function(context, data)
+        {
+            $scope.searchword = data;
+            $scope.getList($scope.searchword);
         });
     $scope.getList();
     $scope.lan=LanguageService;
