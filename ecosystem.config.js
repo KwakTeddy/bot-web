@@ -38,7 +38,7 @@ module.exports =
                 "REDIS": "172.31.5.26",
                 "LB_MASTER": true,
                 "LB_USE": true,
-                "NODE_ENV": "development"
+                "NODE_ENV": "remaster"
             },
             env_development:
             {
