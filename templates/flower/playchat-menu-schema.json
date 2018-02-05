@@ -5,7 +5,7 @@
             { "name" : "기본정보", "url" : "/templates/contents/basicinformation", "icon" : "basic.png" },
             { "name" : "주문관리", "url" : "/templates/contents/reservation", "icon" : "reservation.png" },
             { "name" : "상품관리", "url" : "/templates/contents/menu", "icon" : "menu.png" },
-            { "name" : "후기관리", "url" : "/templates/contents/service", "icon" : "event.png" },
+            { "name" : "후기관리", "url" : "/templates/contents/service", "icon" : "menu.png" },
             { "name" : "이벤트관리", "url" : "/templates/contents/event", "icon" : "event.png" }
 
         ] },
