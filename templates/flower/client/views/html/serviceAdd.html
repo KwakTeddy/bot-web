@@ -105,7 +105,6 @@
     }
 
     .tb02 tr td input {
-        width: 60%;
         text-align: center;
         font-size: 13px;
         letter-spacing: 0;
@@ -113,7 +112,6 @@
         vertical-align: middle;
         /*text-overflow: ellipsis;*/
         white-space: nowrap;
-        height: 40px;
         overflow:hidden;
     }
 
@@ -213,8 +211,8 @@
             <colgroup>
                 <col style="width:20%;">
                 <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
+                <col style="width: 30%;">
+                <col style="width: 30%;">
             <thead>
             <tr>
                 <th>후기제목</th>
@@ -230,18 +228,15 @@
                 <td><input type="text" ng-model="data.description" class="case2"></td>
                 <td>
                     <label>
-                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" style="border: none;"/>
                         <img src="{{ data.picture }}" style="width: 100px;height:100px;" ng-if="data.picture " ng-click="editImage($event);">
-                        <label type="button" class="flower-button" for="image">업로드</label>
                     </label>
                 </td>
             </tr>
             </tbody>
         </table>
-        <tr>
-            <td colspan="10">
-                <a href="/playchat/templates/contents/service" type="button" class="default-button" ng-click="save($event,data);">저장</a>
-            </td>
-        </tr>
     </form>
+    <div class="btn04" style="width: 110px;float: right;margin-top:10px;">
+        <a href="/playchat/templates/contents/service" type="button" ng-click="save($event,data);">저장</a>
+    </div>
 </div>

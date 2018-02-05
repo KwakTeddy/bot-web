@@ -112,6 +112,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         height: 38px;
+        padding: 2px 0;
     }
     .tb02 tbody td a:hover{
         color: #038eda !important;
@@ -216,7 +217,7 @@
                 <td type="text" ng-model="data.description" class="case2">{{data.description}}</td>
                 <td>
                 <label>
-                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" style="border: none;"/>
                     <img src="{{ data.picture }}" style="width: 50px;" ng-if="data.picture" ng-click="editImage($event);">
                 </label>
                 </td>

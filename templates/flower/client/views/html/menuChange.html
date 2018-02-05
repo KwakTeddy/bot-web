@@ -105,7 +105,6 @@
     }
 
     .tb02 tr td input {
-        width: 60%;
         text-align: center;
         font-size: 13px;
         letter-spacing: 0;
@@ -113,7 +112,6 @@
         vertical-align: middle;
         /*text-overflow: ellipsis;*/
         white-space: nowrap;
-        height: 40px;
         overflow:hidden;
     }
 
@@ -235,18 +233,13 @@
                     <label>
                         <!--<img src="{{ data.picture }}" style="width: 150px;height: 100px;" ng-if="data.picture">-->
                         <!--<input id="image" value="업로드" type="file" nv-file-select uploader="uploader" ng-show="!data.picture" style="border: none;"/>-->
-                        <input id="image" value="업로드" type="file" nv-file-select uploader="uploader" ng-show="!data.picture" />
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="uploader" ng-show="!data.picture"  style="border: none;"/>
                         <img src="{{ data.picture }}" style="width: 100px;height:100px;" ng-if="data.picture ">
-                        <label type="button" class="flower-button" for="image">업로드</label>
                     </label>
                 </td>
             </tr>
             </tbody>
         </table>
-        <tr>
-            <td colspan="10">
-                <a href="/playchat/templates/contents/menu" type="button" class="default-button" ng-click="save($event,data);">저장</a>
-            </td>
-        </tr>
     </form>
+    <a href="/playchat/templates/contents/menu" type="button" class="default-button" ng-click="save($event,data);">저장</a>
 </div>
