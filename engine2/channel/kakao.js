@@ -7,11 +7,7 @@ exports.keyboard = function (req, res)
     console.log("kakao keyboard");
     // Engine.process(req.params.bot, 'kakao', '', '', {}, function(context, out)
     // {
-        var sendMsg = context.bot.kakao.keyboard;
-        if(sendMsg == undefined)
-        {
-            sendMsg = {type: 'text'};
-        }
+        var sendMsg = {type: 'text'};
 
         res.write(JSON.stringify(sendMsg));
         res.end();
