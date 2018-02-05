@@ -351,10 +351,10 @@ module.exports = function(bot)
                         context.noticeHistory = data;
                         console.log(context.noticeHistory)
 
-                        dialog.dialog.output[0].buttons = [];
+                        dialog.output[0].buttons = [];
                         for(var i = 0; i < data.length; i++)
                         {
-                            dialog.dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
+                            dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                         }
 
 
