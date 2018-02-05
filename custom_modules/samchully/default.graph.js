@@ -53,7 +53,7 @@ var dialogs = [
                                 "input": [
                                     {
                                         "types": [
-                                            "mobile"
+                                            "saveCustomerMobile"
                                         ]
                                     }
                                 ],
@@ -218,7 +218,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "+context.curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -273,7 +273,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '고지'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -304,7 +304,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n+context.curCustomer.customerName+ 고객님 월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
+                                        "text": "[고지내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
                                     }
                                 ],
                                 "id": "default15",
@@ -370,7 +370,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "[+context.curCustomer.customerName+]\n\n조회할 '납부'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -401,7 +401,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[납부내역 조회]\n\n+context.curCustomer.customerName+ 월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
+                                        "text": "[납부내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
                                     }
                                 ],
                                 "id": "default19",
