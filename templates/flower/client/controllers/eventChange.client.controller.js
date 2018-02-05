@@ -14,30 +14,25 @@ angular.module('template').controller('flowerEventChangeController', ['$scope', 
 
     (function()
     {
-         var addUploader = function()
+        var addUploader = function()
         {
-            $scope.data={};
-            $scope.data.uploader = new FileUploader({
+            $scope.uploader={};
+            $scope.uploader = new FileUploader({
                 url: '/api/' + chatbot.id + '/template-contents/upload',
                 alias: 'uploadImage',
                 autoUpload: true
             });
 
-            $scope.data.uploader.onErrorItem = function(item, response, status, headers)
+            $scope.uploader.onErrorItem = function(item, response, status, headers)
             {
             };
 
-            $scope.data.uploader.onSuccessItem = function(item, response, status, headers)
+            $scope.uploader.onSuccessItem = function(item, response, status, headers)
             {
                 $scope.data.picture = response.url;
-                var hash = location.hash;
-
-                var data = JSON.parse(decodeURIComponent(hash.substring(1)));
-                console.log('데이터 : ', data);
-
             };
 
-            $scope.data.uploader.onProgressItem = function(fileItem, progress)
+            $scope.uploader.onProgressItem = function(fileItem, progress)
             {
                 angular.element('.form-box-progress').css('width', progress + '%');
             };
