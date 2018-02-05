@@ -278,53 +278,17 @@ module.exports = function(bot)
         {
             if(context.user.auth)
             {
-                var options = {};
-                options.url = 'http://sam.moneybrain.ai:3000/api';
-                options.json = {};
-                options.json.name = 'ZCS_CUSTOMER_INFO';
-                options.json.param = [
-                    { key: 'I_NAME', val: context.user.customerName },
-                    { key: 'I_BIRTH', val: context.user.customerBirth },
-                    { key: 'I_PHONE', val: context.types.mobile }
-                ];
-                options.json.isTable = true;
-                options.timeout = 7000;
+                var customerList = context.customerList;
+                dialog.output.buttons = [];
 
-                request.post(options, function(err, response, body)
+                for(var i = 0; i < customerList.length; i++)
                 {
-                    if(err)
-                    {
-                        errorHandler(dialog, err);
-                    }
-                    else
-                    {
-                        if(body.E_RETCD == 'E')
-                        {
-                            errorHandler(dialog, body);
-                        }
-                        else if(body.E_RETCD == 'S')
-                        {
-                            context.customerList = body.data.E_TAB;
-
-                            dialog.buttons = [];
-
-                            for(var i = 0; i < data.length; i++)
-                            {
-                                dialog.buttons.push({text: i + 1})
-                            }
-
-                        }else {
-                            errorHandler(dialog, body);
-                        }
-
-                        callback();
-                    }
-                });
+                    dialog.output.buttons.push({text: i + 1})
+                }
             }
-            else
-            {
-                callback();
-            }
+
+            callback();
+
         }
     });
 

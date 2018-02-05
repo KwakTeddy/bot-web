@@ -194,7 +194,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#+index+. +customerName+/+address+ / +id+\n#",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
                 "if": "context.user.auth"
             },
             {
