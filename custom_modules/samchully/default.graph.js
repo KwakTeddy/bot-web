@@ -1299,7 +1299,7 @@ var dialogs = [
             },
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#+index+. +customerName+/+address+ / +id+\n#",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
                 "if": ""
             }
         ],
@@ -1317,7 +1317,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "+context.curCustomer.customerName+님이 선택되었습니다.\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1339,6 +1339,12 @@ var dialogs = [
                                 "text": {
                                     "raw": "안전 전검",
                                     "nlp": "안전 전검"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "1",
+                                    "nlp": "1"
                                 }
                             }
                         ],
@@ -1368,6 +1374,12 @@ var dialogs = [
                                             "raw": "안전 점검 월 조회",
                                             "nlp": "안전 점검 월 조회"
                                         }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "1",
+                                            "nlp": "1"
+                                        }
                                     }
                                 ],
                                 "output": [
@@ -1388,6 +1400,12 @@ var dialogs = [
                                         "text": {
                                             "raw": "안전 점검 결과 역",
                                             "nlp": "안전 점검 결과 역"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "2",
+                                            "nlp": "2"
                                         }
                                     }
                                 ],
@@ -1411,6 +1429,12 @@ var dialogs = [
                                 "text": {
                                     "raw": "누 추다 화재 긴급 연결",
                                     "nlp": "누 추다 화재 긴급 연결"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2",
+                                    "nlp": "2"
                                 }
                             }
                         ],
@@ -1745,10 +1769,10 @@ var commonDialogs = [
                 }
             }
         ],
-        "output": [{
+        "output": {
             "kind": "Action",
             "type": "up"
-        }]
+        }
     },
     {
         "id": "noanswer",
