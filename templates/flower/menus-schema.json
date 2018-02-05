@@ -1,4 +1,5 @@
 {
+    "botId":"String",
     "category" : "String",
     "name" : "String",
     "price" : "Number",

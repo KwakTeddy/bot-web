@@ -1,14 +1,15 @@
 'use strict';
 
-angular.module('template').controller('flowerMenuAddController', ['$scope', '$resource', '$cookies', '$rootScope','LanguageService','FileUploader',function ($scope, $resource, $cookies,$rootScope,LanguageService, FileUploader)
+angular.module('template').controller('flowerServiceChangeController', ['$scope', '$resource', '$cookies', '$rootScope','LanguageService','FileUploader',function ($scope, $resource, $cookies,$rootScope,LanguageService, FileUploader)
 {
     $scope.$parent.changeWorkingGroundName('상품관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/services', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
+
 
 
     (function()
@@ -34,10 +35,6 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                 var data = JSON.parse(decodeURIComponent(hash.substring(1)));
                 console.log('데이터 : ', data);
 
-                // $scope.data.category = data.category;
-                // $scope.data.name = data.name;
-                // $scope.data.code = data.code;
-                // $scope.data.price = data.price;
             };
 
             $scope.data.uploader.onProgressItem = function(fileItem, progress)
@@ -54,6 +51,13 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
 
         $scope.getList = function()
         {
+            var hash = location.hash;
+
+            var data = JSON.parse(decodeURIComponent(hash.substring(1)));
+            console.log('데이터 : ', data);
+
+            $scope.data = data;
+
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
                 {   $scope.datas = [];
                     $scope.template = result;
@@ -74,12 +78,21 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                 });
         };
 
-
-        $scope.save = function(event,data)
+        $scope.save = function()
         {
-            $scope.datas.push({ category:data.category,name:data.name, price:data.price,picture:data.picture,code:data.code,status:"정상"});
+            for(var i=0; i<$scope.datas.length; i++) {
+                if ($scope.datas[i]._id===$scope.data._id) {
+                    $scope.datas[i].name= $scope.data.name;
+                    $scope.datas[i].topic= $scope.data.topic;
+                    $scope.datas[i].description= $scope.data.description;
+                    $scope.datas[i].picture= $scope.data.picture;
+                }
+            }
+
             var datas = JSON.parse(angular.toJson($scope.datas));
+
             console.log('데이터스 : ', datas);
+
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result) {
                 DataService.save({
                         templateId: result.id,
@@ -99,8 +112,6 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                     });
             });
         };
-
     })();
-
     $scope.getList();
 }]);

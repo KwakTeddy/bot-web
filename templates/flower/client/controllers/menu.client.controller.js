@@ -1,16 +1,15 @@
 'use strict';
 
-angular.module('template').controller('flowerEventController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', 'LanguageService', function ($scope, $resource, $cookies, FileUploader,$rootScope,LanguageService )
+angular.module('template').controller('flowerMenuController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope','LanguageService', function ($scope, $resource, $cookies, FileUploader,$rootScope,LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('이벤트 관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
+    $scope.$parent.changeWorkingGroundName('상품관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/events', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
 
-    $scope.datas = [];
 
     (function()
     {
@@ -50,7 +49,6 @@ angular.module('template').controller('flowerEventController', ['$scope', '$reso
         $scope.change=function(event,data){
             var target = angular.element(event.currentTarget);
             var href = target.attr('data-href');
-            //alert('=============data=='+data);
             location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
         };
 
