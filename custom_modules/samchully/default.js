@@ -6,8 +6,6 @@ module.exports = function(bot)
 
     //Variable Area
 
-    var curCustomer;
-
     var monthIndex =
     {
             3 : 1,
@@ -28,6 +26,8 @@ module.exports = function(bot)
             dialog.output.text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
     };
+    
+    var timeout = 7000;
 
 
     //Type Area
@@ -124,6 +124,7 @@ module.exports = function(bot)
             var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
             if(regExp.exec(dialog.input.text))
             {
+                context.curCustomer.email = dialog.input.text;
                 matched = true;
             }
 
@@ -264,7 +265,7 @@ module.exports = function(bot)
                 { key: 'I_PHONE', val: context.user.customerMobile }
             ];
             options.json.isTable = true;
-            options.timeout = 7000;
+            options.timeout = timeout;
 
           	request.post(options, function(err, response, body)
             {
@@ -329,7 +330,7 @@ module.exports = function(bot)
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -398,7 +399,7 @@ module.exports = function(bot)
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -457,7 +458,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
             options.json.isTable = true;
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -522,6 +523,8 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
+            options.timeout = timeout;
+
             options.json.isTable = true;
             request.post(options, function(err, response, body)
             {
@@ -589,8 +592,10 @@ module.exports = function(bot)
                     { key: 'I_VKONT', val: curCustomer.VKONT},
                     { key: 'I_BANKK', val: selectedBank }
                 ];
+                options.timeout = timeout;
 
-                request.post(options, function(err, response, body)
+
+            request.post(options, function(err, response, body)
                 {
                     if(err)
                     {
@@ -639,7 +644,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer}
             ];
-            options.timeout = 7000;
+            options.timeout = timeout;
 
 
             request.post(options, function(err, response, body)
@@ -682,6 +687,8 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
+            options.timeout = timeout;
+
 
             request.post(options, function(err, response, body)
             {
@@ -722,7 +729,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -762,9 +769,9 @@ module.exports = function(bot)
             options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT },
-                { key: 'I_EMAIL', val: '5709psy@moneybrain.ai' }
+                { key: 'I_EMAIL', val: curCustomer.email }
             ];
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -804,7 +811,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT }
             ];
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -846,7 +853,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT }
             ];
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -894,7 +901,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT }
             ];
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -970,7 +977,7 @@ module.exports = function(bot)
                 { key: 'I_DONG', val: context.centerAddress}
             ];
             options.json.isTable = true;
-            options.timeout = 7000;
+            options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1015,6 +1022,8 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
+
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -1024,6 +1033,8 @@ module.exports = function(bot)
                 { key: 'I_HPNUM', val: curCustomer.mobile },
                 { key: 'I_BETRWP', val: context.totalSelectedNonpayment}
             ];
+            options.timeout = timeout;
+
             request.post(options, function(err, response, body)
             {
                 if(err)
@@ -1062,6 +1073,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            var curCustomer = context.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -1069,6 +1081,8 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
+            options.timeout = timeout;
+
             request.post(options, function(err, response, body)
             {
                 if(err)
