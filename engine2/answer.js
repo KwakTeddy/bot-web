@@ -2,6 +2,8 @@ var chalk = require('chalk');
 
 var Transaction = require('./utils/transaction.js');
 
+var utils = require('./utils/utils.js');
+
 var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
 
@@ -16,13 +18,13 @@ var Logger = require('./logger.js');
 
     };
 
-    AnswerManager.prototype.answer = function(bot, context, error, callback)
+    AnswerManager.prototype.answer = function(bot, context, dialog, error, callback)
     {
-        var conversation = context.history[0];
-        var inputRaw = conversation.nlu.inputRaw;
-        var nlp = conversation.nlu.nlp;
+        var inputRaw = dialog.input.text;
+        var nlp = dialog.input.nlp;
 
         var transaction = new Transaction.async();
+        transaction.dialog = dialog;
 
         QNAManager.find(bot, inputRaw, nlp, transaction.callback(function(err, matchedList, done)
         {
@@ -34,11 +36,11 @@ var Logger = require('./logger.js');
             done();
         }));
 
-        DialogGraphManager.find(bot, context, conversation, transaction.callback(function(err, dialog, done)
+        DialogGraphManager.find(bot, context, dialog, transaction.callback(function(err, foundDialog, done)
         {
-            if(dialog)
+            if(foundDialog)
             {
-                transaction.dm = { type: 'dm', dialog: dialog };
+                transaction.dm = { type: 'dm', dialog: foundDialog };
             }
 
             done();
@@ -46,30 +48,52 @@ var Logger = require('./logger.js');
 
         transaction.done(function()
         {
+            var dialog = this.dialog;
+
             if(this.dm)
             {
-                conversation.dialog = this.dm.dialog;
-                DialogGraphManager.exec(bot, context, conversation, function(output)
+                for(var key in this.dm.dialog)
                 {
-                    var prev = {};
-                    if(conversation.prev)
-                        prev = conversation.prev;
+                    if(key == 'input')
+                    {
+                        dialog.originalInput = this.dm.dialog.input;
+                    }
+                    else if(key == 'output')
+                    {
+                        dialog.originalOutput = this.dm.dialog.output;
+                    }
+                    else
+                    {
+                        dialog[key] = this.dm.dialog[key];
+                    }
+                }
+
+                DialogGraphManager.exec(bot, context, dialog, function(output)
+                {
+                    var currentDialog = context.session.currentDialog;
+                    if(!currentDialog.previous)
+                    {
+                        currentDialog.previous = {};
+                    }
 
                     if(output)
                     {
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, output.text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, false, 'dialog');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, output.text, currentDialog.id, currentDialog.name, currentDialog.previous.id, currentDialog.previous.name, false, 'dialog');
 
-                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: output });
+                        callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
                     }
                     else if(this.qa)
                     {
+                        var text = this.qa.dialog.output[utils.getRandomInt(0, this.qa.dialog.output.length-1)];
+
                         console.log();
                         console.log(chalk.yellow('[[[ Q&A ]]]'));
-                        console.log(this.qa.list);
+                        console.log(this.qa.dialog);
+                        console.log(text);
 
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, this.qa.list[0], '', '', '', '', false, 'qna');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, text, '', '', '', '', false, 'qna');
 
-                        callback({ type: 'qa', output: this.qa.list[0] });
+                        callback({ type: 'qa', text: text });
                     }
                     else
                     {
@@ -77,20 +101,22 @@ var Logger = require('./logger.js');
                         console.log(chalk.yellow('[[[ No Answer ]]]'));
 
                         var dialog = bot.dialogMap['noanswer'];
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, conversation.dialog.id, conversation.dialog.name, prev.id, prev.name, true, 'dialog');
-                        callback({ type: 'dialog', dialogId: context.dialogCursor, output: dialog.output[0] });
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, currentDialog.previous.id, currentDialog.previous.name, true, 'dialog');
+                        callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: dialog.output[0] });
                     }
                 });
             }
             else if(this.qa)
             {
+                var text = this.qa.dialog.output[utils.getRandomInt(0, this.qa.dialog.output.length-1)];
                 console.log();
                 console.log(chalk.yellow('[[[ Q&A ]]]'));
-                console.log(this.qa.list);
+                console.log(this.qa.dialog);
+                console.log(text);
 
-                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, this.qa.list[0], '', '', '', '', false, 'qna');
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, dialog.input.text, dialog.input.nlpText, text, '', '', '', '', false, 'qna');
 
-                callback({ type: 'qa', output: this.qa.list[0] });
+                callback({ type: 'qa', text: text });
             }
             else
             {
@@ -98,7 +124,7 @@ var Logger = require('./logger.js');
                 console.log(chalk.yellow('[[[ No Answer ]]]'));
 
                 var dialog = bot.dialogMap['noanswer'];
-                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, conversation.nlu.inputRaw, conversation.nlu.nlpText, dialog.output[0].text, dialog.id, dialog.name, '', '', true, 'dialog');
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, dialog.input.text, dialog.input.nlpText, dialog.output[0].text, dialog.id, dialog.name, '', '', true, 'dialog');
                 callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output[0] });
             }
         });

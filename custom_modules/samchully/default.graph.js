@@ -52,22 +52,15 @@ var dialogs = [
                                 "name": "고객 검색",
                                 "input": [
                                     {
-                                        "types": "mobile"
+                                        "types": [
+                                            "mobile"
+                                        ]
                                     }
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Action",
-                                        "if": "context.user.customerInfo",
-                                        "type": "call",
-                                        "dialogId": "default64",
-                                        "dialogName": "인증동의"
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "type": "call",
-                                        "dialogId": "default52",
-                                        "dialogName": "인증실패"
+                                        "kind": "Content",
+                                        "text": "삼천리 고객 검색 결과입니다.\n\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?"
                                     }
                                 ],
                                 "id": "default50",
@@ -76,99 +69,49 @@ var dialogs = [
                                 },
                                 "children": [
                                     {
-                                        "name": "인증동의",
+                                        "name": "인증동의_",
                                         "input": [
                                             {
-                                                "if": "false"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "검색 결과입니다.\n\n고객명 : +context.user.customerName+\n생일 : +context.user.customerBirth+\n핸드폰번호 : +context.types.mobile+\n\n인증하시겠습니까?",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "네"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "아니요"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default64",
-                                        "children": [
-                                            {
-                                                "name": "인증완료",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "네",
-                                                            "nlp": "네"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Action",
-                                                        "type": "call",
-                                                        "dialogId": "defaultcommon0",
-                                                        "dialogName": "시작"
-                                                    }
-                                                ],
-                                                "id": "default65",
-                                                "task": {
-                                                    "name": "authConfirm"
+                                                "text": {
+                                                    "raw": "네",
+                                                    "nlp": "네"
                                                 }
-                                            },
-                                            {
-                                                "name": "인증거절",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "아니다",
-                                                            "nlp": "아니다"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Action",
-                                                        "type": "call",
-                                                        "dialogId": "defaultcommon0",
-                                                        "dialogName": "시작"
-                                                    }
-                                                ],
-                                                "id": "default66"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "searchUser"
-                                        }
-                                    },
-                                    {
-                                        "name": "인증실패",
-                                        "input": [
-                                            {
-                                                "if": "false"
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "options": {
-                                                    "output": "고객 인증에 실패했습니다."
-                                                },
+                                                "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
                                                 "type": "call",
-                                                "dialogId": "default3",
-                                                "dialogName": "인증_고객명",
-                                                "text": "실패했습니다."
+                                                "dialogName": "시작",
+                                                "dialog": "시작"
                                             }
                                         ],
-                                        "id": "default52",
-                                        "children": []
+                                        "task": {
+                                            "name": "authConfirm"
+                                        },
+                                        "id": "default47"
+                                    },
+                                    {
+                                        "name": "인증거절_",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "아니다",
+                                                    "nlp": "아니다"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
+                                                "type": "call",
+                                                "dialogName": "시작",
+                                                "dialog": "시작"
+                                            }
+                                        ],
+                                        "id": "default48"
                                     }
                                 ]
                             },
@@ -251,7 +194,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객리스트입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#+index+. +customerName+/+address+ / +id+\n#",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
                 "if": "context.user.auth"
             },
             {
@@ -543,7 +486,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
+                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default12",
@@ -552,25 +495,74 @@ var dialogs = [
                                 },
                                 "children": [
                                     {
-                                        "name": "신용카드 납부",
+                                        "name": "납부연월 선택확인 신용카드",
                                         "input": [
                                             {
                                                 "text": {
-                                                    "raw": "신용카드 납부",
-                                                    "nlp": "신용카드 납부"
-                                                }
+                                                    "raw": "",
+                                                    "nlp": ""
+                                                },
+                                                "types": [
+                                                    "multiMonthType"
+                                                ]
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "신용카드 납부"
+                                                    }
+                                                ]
                                             }
                                         ],
-                                        "id": "default21",
-                                        "task": {
-                                            "name": "payByARS"
-                                        }
+                                        "id": "default28",
+                                        "children": [
+                                            {
+                                                "name": "신용카드 납부",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "신용카드 납부",
+                                                            "nlp": "신용카드 납부"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "payByARS"
+                                                },
+                                                "id": "default21"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "납부연월 선택 재질의",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "",
+                                                    "nlp": ""
+                                                },
+                                                "if": "true"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "text": "",
+                                                "type": "repeat"
+                                            }
+                                        ],
+                                        "id": "default30"
                                     }
                                 ]
                             },
@@ -593,33 +585,85 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#+index+. +date+\n고지년월 : +noticeVal+\n고지금액 : +payment+\n미납금액 : +payment+\n납기일자 : +date+\n\n#납부하실 고지년월을 다음과 같이 입력해주세요.\n예시  : 3 4"
+                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default23",
                                 "children": [
                                     {
-                                        "name": "편의점 납부",
+                                        "name": "납부연월 선택확인 QR",
                                         "input": [
                                             {
                                                 "text": {
-                                                    "raw": "편의점 납부",
-                                                    "nlp": "편의점 납부"
-                                                }
+                                                    "raw": "",
+                                                    "nlp": ""
+                                                },
+                                                "types": [
+                                                    "multiMonthType"
+                                                ]
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다."
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "QR 코드 납부"
+                                                    }
+                                                ]
                                             }
                                         ],
-                                        "id": "default16",
-                                        "task": {
-                                            "name": "payByQR"
-                                        }
+                                        "id": "default35",
+                                        "children": [
+                                            {
+                                                "name": "QR코드 납부",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "QR 코드 납부",
+                                                            "nlp": "QR 코드 납부"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다."
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "payByQR"
+                                                },
+                                                "id": "default16"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "납부연월 선택 QR 재질의",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "",
+                                                    "nlp": ""
+                                                },
+                                                "if": "true"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "text": "",
+                                                "type": "repeat"
+                                            }
+                                        ],
+                                        "id": "default39"
                                     }
-                                ]
+                                ],
+                                "task": {
+                                    "name": "getNonpaymentList"
+                                }
                             },
                             {
                                 "name": "입금전용계좌 조회",
@@ -1395,15 +1439,15 @@ var dialogs = [
                 "buttons": [
                     {
                         "url": "http://www.samchully.co.kr/customer/gas/info/usage/new.do",
-                        "text": "도시가스 이용가이드"
+                        "text": "1. 도시가스 이용가이드"
                     },
                     {
                         "url": "",
-                        "text": "자주 묻는 질문"
+                        "text": "2. 자주 묻는 질문"
                     },
                     {
                         "url": "",
-                        "text": "관할 고객센터 조회"
+                        "text": "3. 관할 고객센터 조회"
                     }
                 ]
             }
@@ -1417,6 +1461,12 @@ var dialogs = [
                         "text": {
                             "raw": "자주 묻다 질문",
                             "nlp": "자주 묻다 질문"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
                         }
                     }
                 ],
@@ -1471,25 +1521,73 @@ var dialogs = [
                 "id": "default44"
             },
             {
-                "name": "관할 고객센터 조회",
+                "name": "동명 입력",
                 "input": [
                     {
                         "text": {
                             "raw": "관할 고객 센터 조회",
                             "nlp": "관할 고객 센터 조회"
                         }
+                    },
+                    {
+                        "text": {
+                            "raw": "3",
+                            "nlp": "3"
+                        }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "관할 고객센터는\n\n입니다."
+                        "text": "찾고자하시는 동명을 입력해주세요."
                     }
                 ],
                 "task": {
-                    "name": "searchCustomerCenter"
+                    "name": ""
                 },
-                "id": "default42"
+                "id": "default42",
+                "children": [
+                    {
+                        "name": "관할 고객센터 조회_",
+                        "input": [
+                            {
+                                "types": [
+                                    "centerAddressType"
+                                ]
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "+context.centerAddress+ 관할 고객센터입니다.\n#context.centerAddressList#\n+index+.\n+MESSAGE+\n\n#"
+                            }
+                        ],
+                        "task": {
+                            "name": "searchCustomerCenter"
+                        },
+                        "id": "default40"
+                    },
+                    {
+                        "name": "동명 재질의",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "repeat"
+                            }
+                        ],
+                        "id": "default41"
+                    }
+                ]
             }
         ]
     },
