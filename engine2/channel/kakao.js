@@ -5,8 +5,8 @@ exports.keyboard = function (req, res)
 {
     var Engine = require('../core.js');
     console.log("kakao keyboard");
-    Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
-    {
+    // Engine.process(req.params.bot, 'kakao', '', '', {}, function(context, out)
+    // {
         var sendMsg = context.bot.kakao.keyboard;
         if(sendMsg == undefined)
         {
@@ -15,11 +15,11 @@ exports.keyboard = function (req, res)
 
         res.write(JSON.stringify(sendMsg));
         res.end();
-    },
-    function(err)
-    {
-        respondMessage(res, { output: { text: JSON.stringify(err) } });
-    });
+    // },
+    // function(err)
+    // {
+    //     respondMessage(res, { output: { text: JSON.stringify(err) } });
+    // });
 };
 
 exports.message = function (req, res)
@@ -64,6 +64,7 @@ exports.deleteFriend = function (req, res)
 
 exports.deleteChatRoom = function (req, res)
 {
+    var from = req.body.user_key;
     var Engine = require('../core.js');
     console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
     Engine.process(req.params.bot, 'kakao', from, ':reset user', {}, function (context, out)
