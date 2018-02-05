@@ -551,6 +551,18 @@ var dialogs = [
                                                             "raw": "신용카드 납부",
                                                             "nlp": "신용카드 납부"
                                                         }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "1",
+                                                            "nlp": "1"
+                                                        }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "2",
+                                                            "nlp": "2"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
@@ -647,6 +659,12 @@ var dialogs = [
                                                             "raw": "QR 코드 납부",
                                                             "nlp": "QR 코드 납부"
                                                         }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "1",
+                                                            "nlp": "1"
+                                                        }
                                                     }
                                                 ],
                                                 "output": [
@@ -729,7 +747,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+conversation.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +conversation.selectedBank+은행\n계좌 : +conversation.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
+                                                "text": "+dialog.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
                                             }
                                         ],
                                         "id": "default25",
@@ -764,7 +782,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "현재 고지 방법입니다.\n\n고지방법: +conversation.curNoticeMethod+\n\n 전자고지를 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
+                                "text": "현재 고지 방법입니다.\n\n고지방법: +dialog.curNoticeMethod+\n\n 전자고지를 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
                                 "buttons": [
                                     {
                                         "url": "",

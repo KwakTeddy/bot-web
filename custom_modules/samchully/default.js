@@ -546,7 +546,9 @@ module.exports = function(bot)
                         context.nonpaymentHistory = [];
 
                         var data = body.data.ET_TABLE;
-                        dialog.dialog.output[0].buttons = [];
+                        dialog.output[0].buttons = [];
+
+                        var idx = 1;
 
                         for(var i = 0; i < data.length; i++)
                         {
@@ -556,7 +558,10 @@ module.exports = function(bot)
                             }
                             else
                             {
-                                dialog.dialog.output[0].buttons.push({text: data[i].BANKA + '입금전용계좌 생성'});
+
+                                dialog.output[0].buttons.push({text: data[i].BANKA + '입금전용계좌 생성'});
+                                // dialog.output[0].buttons.push({text: idx + '. ' + data[i].BANKA + '입금전용계좌 생성'});
+                                idx++;
 
                             }
                         }
@@ -645,7 +650,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_TYPE_INFO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer}
+                { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
