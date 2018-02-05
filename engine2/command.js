@@ -176,6 +176,7 @@ var BotManager = require('./bot.js');
         {
             bot.dialogs = [];
             bot.commonDialogs = [];
+            context.session.dialogCursor = undefined;
             this.reloadBotFiles(bot, context, error, callback);
         }
         else

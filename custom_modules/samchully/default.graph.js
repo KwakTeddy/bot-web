@@ -1745,10 +1745,10 @@ var commonDialogs = [
                 }
             }
         ],
-        "output": {
+        "output": [{
             "kind": "Action",
             "type": "up"
-        }
+        }]
     },
     {
         "id": "noanswer",

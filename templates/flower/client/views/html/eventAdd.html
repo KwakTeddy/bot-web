@@ -113,7 +113,6 @@
         vertical-align: middle;
         /*text-overflow: ellipsis;*/
         white-space: nowrap;
-        height: 40px;
         overflow:hidden;
     }
 
@@ -225,14 +224,13 @@
             </thead>
             <tbody>
             <tr>
-                <td><input type="text" ng-model="data.name" class="case1"></td>
-                <td><input type="text" ng-model="data.context" class="case2"></td>
-                <td><input type="text" ng-model="data.description" class="case2"></td>
+                <td><input type="text" ng-model="data.name"></td>
+                <td><input type="text" ng-model="data.context"></td>
+                <td><input type="text" ng-model="data.description"></td>
                 <td>
                     <label>
-                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" style="border: none;"/>
                         <img src="{{ data.picture }}" style="width: 100px;height:100px;" ng-if="data.picture " ng-click="editImage($event);">
-                        <label type="button" class="flower-button" for="image">업로드</label>
                     </label>
                 </td>
             </tr>
