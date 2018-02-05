@@ -35,7 +35,7 @@ module.exports =
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-                "REDIS": "13.125.126.30",
+                "REDIS": "172.31.5.26",
                 "LB_MASTER": true,
                 "LB_USE": true,
                 "NODE_ENV": "development"
