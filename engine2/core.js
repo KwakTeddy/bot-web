@@ -43,6 +43,23 @@ var Transaction = require('./utils/transaction.js');
         // loadBalancer.init(app, io);
     };
 
+    Core.prototype.getBot = function(botId, callback, errCallback)
+    {
+        var error = new Error(errCallback);
+
+        BotManager.load(botId, function(err, bot)
+        {
+            if(err)
+            {
+                error.delegate(err);
+            }
+            else
+            {
+                callback(bot);
+            }
+        });
+    };
+
     Core.prototype.process = function(botId, channel, userKey, inputRaw, options, outCallback, errCallback)
     {
         var that = this;

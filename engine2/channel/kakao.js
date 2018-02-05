@@ -5,17 +5,17 @@ exports.keyboard = function (req, res)
 {
     var Engine = require('../core.js');
     console.log("kakao keyboard");
-    // Engine.process(req.params.bot, 'kakao', '', '', {}, function(context, out)
-    // {
-        var sendMsg = {type: 'text'};
+    Engine.getBot(req.params.bot, function(bot)
+    {
+        var sendMsg = bot.options.kakao || { type: 'text' };
 
         res.write(JSON.stringify(sendMsg));
         res.end();
-    // },
-    // function(err)
-    // {
-    //     respondMessage(res, { output: { text: JSON.stringify(err) } });
-    // });
+    },
+    function(err)
+    {
+        respondMessage(res, { output: { text: JSON.stringify(err) } });
+    });
 };
 
 exports.message = function (req, res)
