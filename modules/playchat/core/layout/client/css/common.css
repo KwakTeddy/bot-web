@@ -690,15 +690,12 @@ div.slide>input[type=checkbox]{
 	padding: 7px 16px 7px 5px !important;
 }
 .tb02 tbody td .case1{
-	padding: 2px 0;
 	text-align: left;
-	padding-left: 20px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
 .tb02 tbody td .case2{
-	padding: 2px 0;
-	text-align: center;
+	text-align: left;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
@@ -1554,4 +1551,14 @@ input::-webkit-input-placeholder { color:#cacaca; font-size: 12px;}
 input::-moz-input-placeholder { color:#cacaca; font-size: 12px;}
 
 textarea:disabled{background: #f2f2f2;border: 1px solid #f2f2f2;}
+
+.flower-button
+{
+    border:solid 1px #585858;
+    color:#585858;
+    border-radius: 3px;
+    font-size: 13px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
 
