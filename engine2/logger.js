@@ -119,7 +119,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
 
                     if(!check)
                     {
-                        botUserCache.push({userKey: userKey, channel: channel, created: new Date()});
+                        botUserCache.push({userKey: userKey, botId: [botId], channel: channel, created: new Date()});
                     }
                 }
 

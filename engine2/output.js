@@ -55,6 +55,7 @@ var chalk = require('chalk');
             }
         }
 
+        var bot = context.bot;
         var conversation = context.history[0];
         if(!conversation)
         {
@@ -82,12 +83,7 @@ var chalk = require('chalk');
                     if(key)
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
-                        var list = getValue({ context: context }, key);
-                        if(!list)
-                        {
-                            list = getValue({ conversation: conversation }, key);
-                        }
-
+                        var list = getValue({ context: context, conversation: conversation, bot: bot }, key);
                         if(list)
                         {
                             var resultText = '';
@@ -121,12 +117,7 @@ var chalk = require('chalk');
                 {
                     if(key)
                     {
-                        var replaced = getValue({ context: context }, key);
-                        if(!replaced)
-                        {
-                            replaced = getValue({ conversation: conversation }, key);
-                        }
-
+                        var replaced = getValue({ context: context, conversation: conversation, bot: bot }, key);
                         if(replaced)
                         {
                             return replaced;
