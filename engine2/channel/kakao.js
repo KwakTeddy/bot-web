@@ -13,18 +13,17 @@ var util = require('util');
 exports.keyboard = function (req, res)
 {
     console.log("kakao keyboard");
-    Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(out)
+    Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
     {
+        var sendMsg = context.bot.kakao.keyboard;
+        if(sendMsg == undefined)
+        {
+            sendMsg = {type: 'text'};
+        }
 
+        res.write(JSON.stringify(sendMsg));
+        res.end();
     });
-    contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
-    var sendMsg = context.bot.kakao.keyboard;
-    if(sendMsg == undefined) sendMsg = { type: 'text'};
-    console.log(util.inspect(sendMsg))
-    res.write(JSON.stringify(sendMsg));
-    res.end();
-
-  });
 };
 
 exports.message = function (req, res)
@@ -41,6 +40,18 @@ exports.message = function (req, res)
             req.body.url = req.body.content;
             delete req.body.content;
         }
+
+        Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
+        {
+            var sendMsg = context.bot.kakao.keyboard;
+            if(sendMsg == undefined)
+            {
+                sendMsg = {type: 'text'};
+            }
+
+            res.write(JSON.stringify(sendMsg));
+            res.end();
+        });
 
         master.routing('kakao', from, req.params.bot, text, req.body, function (serverText, json)
         {
@@ -72,25 +83,15 @@ exports.deleteChatRoom = function (req, res) {
 };
 
 
-function respondMessage(res, text, json) {
-  // console.log('text: ' + text);
-  // console.log('json: ' + util.inspect(json));
-  var sendMsg =
-  {
-    "message": {
-      "text": text
-    }
-  };
+function respondMessage(res, text, json)
+{
+    var sendMsg =
+    {
+        message: { text: text }
+    };
 
-  // if(json && json.photoUrl) {
-  //   sendMsg.message.photo = {
-  //     "url": json.photoUrl,
-  //     "width": json.photoWidth || 640,
-  //     "height":json.photoHeight || 480
-  //   }
-  // }
-
-  if(json && json.result && json.result.image) {
+    if(json && json.result && json.result.image)
+    {
     sendMsg.message.photo = {
       "url": json.result.image.url,
       "width": json.result.image.width || 640,
