@@ -304,7 +304,7 @@ module.exports = function(bot)
 
                 for(var i = 0; i < customerList.length; i++)
                 {
-                    dialog.output[0].buttons.push({text: i + 1});
+                    dialog.output[0].buttons.push({text: (i + 1) + ''});
                 }
             }
 
