@@ -1,15 +1,7 @@
 var path = require('path');
-var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
-var contextModule = require(path.resolve('engine2/bot/engine/common/context'));
-var mongoose = require('mongoose');
-var Media = mongoose.model('Media');
 var config = require(path.resolve('config/config'));
-var master = require(path.resolve('engine2/loadbalancer/master.js'));
+var Engine = require(path.resolve('./engine2/core.js'));
 
-var engine = require(path.resolve('./engine2/core.js'));
-
-
-var util = require('util');
 exports.keyboard = function (req, res)
 {
     console.log("kakao keyboard");
@@ -41,34 +33,34 @@ exports.message = function (req, res)
             delete req.body.content;
         }
 
-        Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
+        Engine.process(req.params.bot, 'kakao', from, text, {}, function (context, out)
         {
             respondMessage(res, out);
         });
+    }
 };
 
 
-exports.friend = function (req, res) {
-  console.log("kakao friend");
-  res.end();
+exports.friend = function (req, res)
+{
+    console.log("kakao friend");
+    res.end();
 };
 
-exports.deleteFriend = function (req, res) {
-  console.log("kakao friend delete");
-  res.end();
+exports.deleteFriend = function (req, res)
+{
+    console.log("kakao friend delete");
+    res.end();
 };
 
-exports.deleteChatRoom = function (req, res) {
-  console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
-
-  chat.write('kakao', req.params.user_key, req.params.bot, ":reset user", null, function (serverText, json) {
-    // respondMessage(res, serverText, json)
-  });
-
-
-  res.end();
+exports.deleteChatRoom = function (req, res)
+{
+    console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
+    Engine.process(req.params.bot, 'kakao', from, ':reset user', {}, function (context, out)
+    {
+        res.end();
+    });
 };
-
 
 function respondMessage(res, result)
 {
@@ -81,7 +73,7 @@ function respondMessage(res, result)
     {
         sendMsg.message.photo =
         {
-            url: result.output.image.url,
+            url: config.host + result.output.image.url,
             width: result.output.image.width || 640,
             height: result.output.image.height || 480
         };
@@ -128,25 +120,16 @@ function respondMessage(res, result)
         }
     }
 
-    if(result.output && result.output.image)
-    {
-        if (result.output.image.url.substring(0,4) !== 'http')
-        {
-            result.output.image.url = config.host + result.output.image.url
-        }
-    }
+    // if(result.smartReply)
+    // {
+    //     sendMsg.keyboard =
+    //     {
+    //         type: 'buttons',
+    //         buttons: json.result.smartReply
+    //     };
+    // }
 
-
-  if(json && json.result && json.result.smartReply) {
-    sendMsg.keyboard =
-      {
-        "type": "buttons",
-        "buttons": json.result.smartReply
-      };
-  }
-
-  // console.log(JSON.stringify(sendMsg));
-  res.write(JSON.stringify(sendMsg));
-  res.end();
+    res.write(JSON.stringify(sendMsg));
+    res.end();
 }
 
