@@ -130,6 +130,51 @@ module.exports = function(bot)
         }
     });
 
+    bot.setType('multiMonthType',
+    {
+        typeCheck: function (conversation, context, callback)
+        {
+            var matched = false;
+            var userInput = conversation.nlu.inputRaw.split(' ');
+            var nonPaymentList = context.nonpaymentHistory;
+            var selected = context.selectedNonpayment = [];
+            var total = 0;
+
+            for(var i = 0; i < userInput.length; i++)
+            {
+                if(nonPaymentList[userInput[i] - 1])
+                {
+                    var alreadySelected = false;
+                    for(var j = 0; j < selected.length; j++)
+                    {
+                        if(selected[j] == nonPaymentList[userInput[i] - 1])
+                        {
+                            alreadySelected = true;
+                        }
+                    }
+                    if(!alreadySelected)
+                    {
+                        selected.push(nonPaymentList[userInput[i] - 1]);
+                        matched = true;
+                    }
+                }
+            }
+
+            for(var k = 0; k < selected.length; k++)
+            {
+                total += parseInt(selected[k].BETRWP.replace(',', ''));
+            }
+
+            context.totalSelectedNonpayment = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g , ',');
+
+            selected.sort(function (a, b)
+            {
+                return a.YYYYMM-b.YYYYMM;
+            });
+            callback(matched);
+        }
+    });
+
     bot.setType('selectedAccountType',
     {
         typeCheck: function (conversation, context, callback)
@@ -146,6 +191,20 @@ module.exports = function(bot)
                     matched = true;
                     break;
                 }
+            }
+
+            callback(matched);
+        }
+    });
+
+    bot.setType('centerAddressType', {
+        typeCheck: function (conversation, context, callback) {
+            var matched = false;
+
+            if(true)
+            {
+                context.centerAddress = conversation.nlu.inputRaw;
+                matched =true;
             }
 
             callback(matched);
@@ -430,8 +489,11 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CHECK_NOTI_AMT';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'}
+                { key: 'I_VKONT', val: '110591507'}
             ];
+            options.json.isTable = true;
+            options.timeout = 7000;
+
             request.post(options, function(err, response, body)
             {
                 if(err)
@@ -446,7 +508,16 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        // context.nonpaymentHistory = data;
+                        if(body.data)
+                        {
+                            console.log(JSON.stringify(body, null, 4));
+                            context.nonpaymentHistory = body.data.E_TAB;
+                        }
+                        else
+                        {
+                            body.E_RETMG = '테이블 데이터를 요구하지 않았습니다. 관리자에게 문의해주세요.';
+                            errorHandler(conversation, body);
+                        }
                     }
                     else
                     {
@@ -920,8 +991,10 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CENTER_INFO';
             options.json.param = [
-                { key: 'I_DONG', val: '목동'}
+                { key: 'I_DONG', val: context.centerAddress}
             ];
+            options.json.isTable = true;
+            options.timeout = 7000;
 
             request.post(options, function(err, response, body)
             {
@@ -937,7 +1010,8 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(body)
+                        console.log(JSON.stringify(body, null, 4))
+                        context.centerAddressList = body.data.E_TAB;
                     }else {
                         errorHandler(conversation, body);
                     }
@@ -966,9 +1040,9 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_ARS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: '105831826'},
+                { key: 'I_VKONT', val: '110591507'},
                 { key: 'I_HPNUM', val: '01088588151' },
-                { key: 'I_BETRWP', val: '0' }
+                { key: 'I_BETRWP', val: context.totalSelectedNonpayment}
             ];
             request.post(options, function(err, response, body)
             {
@@ -1041,4 +1115,5 @@ module.exports = function(bot)
 
         }
     });
+
 };
