@@ -6,7 +6,6 @@ var Logger = require('./logger.js');
 
 var globals = require('./globals.js');
 var channel = require('./channel.js');
-var loadBalancer = require('./loadbalancer.js');
 
 var Context = require('./context.js');
 var Command = require('./command.js');
