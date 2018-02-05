@@ -82,7 +82,7 @@ module.exports.start = function start(callback)
 
         app.server.listen(config.port, function ()
         {
-            Engine.init(app, app.io);
+            Engine.init(app.app, app.io);
 
             console.log();
             console.log(chalk.green('================= Server Started ==================='));
