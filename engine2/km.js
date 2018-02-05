@@ -8,7 +8,7 @@ var KnowledgeGraphModel = mongoose.model('KnowledgeGraph');
 
     };
 
-    KnowledgeMemoryManager.prototype.memory = function(bot, conversation, error, callback)
+    KnowledgeMemoryManager.prototype.memory = function(bot, dialog, error, callback)
     {
         if(conversation.nlu.sentenceType == 1 || conversation.nlu.sentenceType != 0)
         {

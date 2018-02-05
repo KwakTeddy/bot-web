@@ -58,14 +58,14 @@ var Globals = require('../globals.js');
         return false;
     };
 
-    DialogGraphManager.prototype.findDialog = function(bot, context, conversation, intents, entities, dialogs, callback)
+    DialogGraphManager.prototype.findDialog = function(bot, context, dialog, intents, entities, dialogs, callback)
     {
         var that = this;
 
-        var nlpText = conversation.nlu.nlpText;
-        async.eachSeries(dialogs, function(dialog, next)
+        var nlpText = dialog.input.nlpText;
+        async.eachSeries(dialogs, function(originalDialog, next)
         {
-            var inputs = dialog.input;
+            var inputs = originalDialog.input;
             if(!inputs || !inputs.length || inputs.length <= 0)
             {
                 return next();
@@ -108,7 +108,7 @@ var Globals = require('../globals.js');
                             type = Globals.types[input[key]];
                         }
 
-                        type.typeCheck.call(type, conversation, context, function(matched, parsed, retry) //TODO retry가 true면 해당 input을 다시 입력받도록 질의 한다. 만약 필요한 값이 더 있다면 그 값도 요구할 수 있다. retry : ['주민등록번로를 다시 입력해주세요 YYMMDD']
+                        type.typeCheck.call(type, dialog, context, function(matched, parsed, retry) //TODO retry가 true면 해당 input을 다시 입력받도록 질의 한다. 만약 필요한 값이 더 있다면 그 값도 요구할 수 있다. retry : ['주민등록번로를 다시 입력해주세요 YYMMDD']
                         {
                             if(matched)
                             {
@@ -131,7 +131,7 @@ var Globals = require('../globals.js');
                     }
                     else if(key == 'if')
                     {
-                        result = result && (function(conversation, context, input)
+                        result = result && (function(dialog, context, input)
                         {
                             if(eval('result = (' + input.if + ' ? true : false);'))
                             {
@@ -140,7 +140,7 @@ var Globals = require('../globals.js');
 
                             return false;
 
-                        })(conversation, context, input);
+                        })(dialog, context, input);
                     }
                     else
                     {
@@ -153,7 +153,7 @@ var Globals = require('../globals.js');
                 {
                     if(result)
                     {
-                        return callback(dialog);
+                        return callback(originalDialog);
                     }
 
                     next();
@@ -189,23 +189,23 @@ var Globals = require('../globals.js');
         }
     };
 
-    DialogGraphManager.prototype.find = function(bot, context, conversation, callback)
+    DialogGraphManager.prototype.find = function(bot, context, dialog, callback)
     {
         var that = this;
 
-        var intents = conversation.nlu.intents;
-        var entities = conversation.nlu.entities;
+        var intents = dialog.input.intents;
+        var entities = dialog.input.entities;
 
         var transaction = new Transaction.sync();
 
-        var dialog = undefined;
+        var foundDialog = undefined;
         transaction.call(function(done)
         {
             if(!dialog)
             {
-                that.findDialog(bot, context, conversation, intents, entities, bot.commonDialogs, function(result)
+                that.findDialog(bot, context, dialog, intents, entities, bot.commonDialogs, function(result)
                 {
-                    dialog = result;
+                    foundDialog = result;
                     done();
                 });
             }
@@ -217,19 +217,19 @@ var Globals = require('../globals.js');
 
         transaction.call(function(done)
         {
-            if(context.dialogCursor && !dialog)
+            if(context.session.dialogCursor && !foundDialog)
             {
-                var dialogs = that.getNextDialogs(context.dialogCursor, bot.commonDialogs);
+                var dialogs = that.getNextDialogs(context.session.dialogCursor, bot.commonDialogs);
                 if(!dialogs)
                 {
-                    dialogs = that.getNextDialogs(context.dialogCursor, bot.dialogs);
+                    dialogs = that.getNextDialogs(context.session.dialogCursor, bot.dialogs);
                 }
 
                 if(dialogs)
                 {
-                    that.findDialog(bot, context, conversation, intents, entities, dialogs, function(result)
+                    that.findDialog(bot, context, dialog, intents, entities, dialogs, function(result)
                     {
-                        dialog = result;
+                        foundDialog = result;
                         done();
                     });
                 }
@@ -246,11 +246,11 @@ var Globals = require('../globals.js');
 
         transaction.call(function(done)
         {
-            if(!dialog)
+            if(!foundDialog)
             {
-                that.findDialog(bot, context, conversation, intents, entities, bot.dialogs, function(result)
+                that.findDialog(bot, context, dialog, intents, entities, bot.dialogs, function(result)
                 {
-                    dialog = result;
+                    foundDialog = result;
                     done();
                 });
             }
@@ -262,33 +262,41 @@ var Globals = require('../globals.js');
 
         transaction.done(function()
         {
-            callback(null, dialog);
+            callback(null, foundDialog);
         });
     };
 
-    DialogGraphManager.prototype.exec = function(bot, context, conversation, callback)
+    DialogGraphManager.prototype.exec = function(bot, context, dialog, callback)
     {
+        dialog.previous = context.session.currentDialog;
+        context.session.currentDialog = dialog;
+
         console.log();
         console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
 
         var that = this;
 
-        var dialog = conversation.dialog;
-        context.dialogCursor = dialog.id;
+        context.session.dialogCursor = dialog.id;
 
         var sync = new Transaction.sync();
         if(dialog.task)
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, context, conversation, dialog.task.name, done);
+                TaskManager.exec(bot, context, dialog, dialog.task.name, done);
             });
         }
 
-        sync.done(function(options)
+        sync.done(function()
         {
-            var dialogId = conversation.dialog.id;
-            var output = conversation.dialog.output;
+            var dialog = context.session.currentDialog;
+            var dialogId = dialog.id;
+            var output = dialog.originalOutput;
+
+            if(Object.keys(dialog.output).length > 0)
+            {
+                output = dialog.output;
+            }
 
             if(typeof output == 'string')
             {
@@ -311,7 +319,7 @@ var Globals = require('../globals.js');
                         }
                         else
                         {
-                            (function(context, conversation, o)
+                            (function(context, dialog, o)
                             {
                                 try
                                 {
@@ -327,7 +335,7 @@ var Globals = require('../globals.js');
                                 {
                                     console.error(chalk.red(err));
                                 }
-                            })(context, conversation, output[i]);
+                            })(context, dialog, output[i]);
                         }
                     }
                     else if(!output[i].if)
@@ -350,26 +358,20 @@ var Globals = require('../globals.js');
             console.log(chalk.yellow('[[[ Output ]]]'));
             console.log(resultOutput);
 
-            if(options)
-            {
-
-            }
-
             if(resultOutput.kind == 'Action')
             {
-                //call, callChild, reutrnCall, up, repeat, return
                 if(resultOutput.type == 'repeat')
                 {
                     // 커서를 부모다이얼로그로 옮긴다.
-                    var prev = conversation.prev;
-                    if(prev)
+                    var parent = bot.parentDialogMap[dialog.id];
+                    if(parent)
                     {
                         console.log();
                         console.log(chalk.yellow('[[[ Action - repeat ]]]'));
-                        console.log(prev.dialog.id);
+                        console.log(parent);
 
-                        context.dialogCursor = prev.dialog.id;
-                        callback(resultOutput.text);
+                        context.session.dialogCursor = parent.id;
+                        callback(resultOutput.text || parent.output[0]);
                     }
                     else
                     {
@@ -382,20 +384,27 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'up')
                 {
-                    context.history.splice(0, 2);
-                    var prev = conversation.prev;
-                    if(prev)
+                    var parent = bot.parentDialogMap[dialog.id];
+                    var grandParent = undefined;
+                    if(parent)
                     {
-                        if(prev.prev)
+                        grandParent = bot.parentDialogMap[parent.id];
+                        if(grandParent)
                         {
-                            prev = prev.prev;
+                            console.log();
+                            console.log(chalk.yellow('[[[ Action - up ]]]'));
+                            console.log(grandParent.id, grandParent.name);
+
+                            that.exec(bot, context, grandParent, callback);
                         }
+                        else
+                        {
+                            console.log();
+                            console.log(chalk.yellow('[[[ Action - up ]]]'));
+                            console.log(parent.id, parent.name);
 
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - up ]]]'));
-                        console.log(prev.dialog.id);
-
-                        that.exec(bot, context, prev, callback);
+                            that.exec(bot, context, parent, callback);
+                        }
                     }
                     else
                     {
@@ -408,30 +417,33 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'call')
                 {
-                    var dialog = bot.dialogMap[resultOutput.dialogId];
-                    conversation.dialog = dialog;
+                    if(resultOutput.dialogId)
+                    {
+                        var dialog = bot.dialogMap[resultOutput.dialogId];
 
-                    console.log();
-                    console.log(chalk.yellow('[[[ Action - call ]]]'));
-                    console.log(resultOutput.dialogId);
-                    console.log(resultOutput.dialogName);
+                        console.log();
+                        console.log(chalk.yellow('[[[ Action - call ]]]'));
+                        console.log(dialog);
 
-                    that.exec(bot, context, conversation, callback);
+                        that.exec(bot, context, dialog, callback);
+                    }
+                    else
+                    {
+                        callback({ output: { text: 'Call 타겟을 찾을 수 없습니다.' }});
+                    }
                 }
                 else if(resultOutput.type == 'callChild')
                 {
                     var dialog = bot.dialogMap[resultOutput.dialogId];
-                    context.dialogCursor = dialog.id;
-                    that.find(bot, context, conversation, function(err, dialog)
+                    that.find(bot, context, dialog, function(err, foundDialog)
                     {
-                        if(dialog)
+                        if(foundDialog)
                         {
                             console.log();
                             console.log(chalk.yellow('[[[ Action - callChild ]]]'));
-                            console.log(dialog.id);
+                            console.log(foundDialog.id);
 
-                            conversation.dialog = dialog;
-                            that.exec(bot, context, conversation, callback);
+                            that.exec(bot, context, foundDialog, callback);
                         }
                         else
                         {
@@ -441,29 +453,27 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'returnCall')
                 {
-                    context.returnDialog = dialogId;
+                    context.session.returnDialog = dialogId;
 
                     var dialog = bot.dialogMap[resultOutput.dialogId];
-                    conversation.dialog = dialog;
 
                     console.log();
                     console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
                     console.log(dialog.id);
 
-                    that.exec(bot, context, conversation, callback);
+                    that.exec(bot, context, dialog, callback);
                 }
                 else if(resultOutput.type == 'return')
                 {
-                    if(context.returnDialog)
+                    if(context.session.returnDialog)
                     {
-                        var dialog = bot.parentDialogMap[context.returnDialog];
-                        conversation.dialog = dialog;
+                        var dialog = bot.parentDialogMap[context.session.returnDialog];
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - return ]]]'));
                         console.log(dialog.id);
 
-                        that.exec(bot, context, conversation, callback);
+                        that.exec(bot, context, dialog, callback);
                     }
                     else
                     {

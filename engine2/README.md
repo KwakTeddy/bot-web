@@ -121,13 +121,16 @@
 ## Context 데이터 구조
 ```
 {
+	globals: Object,
 	user: Object,
 	bot: Object,
-	channel: String,
-	history: [conversation],
-	returnDialog: String,
-	dialogCursor: String,
-	types: Object
+	channel: Object,
+	session:
+	{
+		history: [Object],
+		returnDialog: String,
+    	dialogCursor: String,
+	}
 }
 ```
 

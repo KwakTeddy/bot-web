@@ -12,9 +12,9 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
 
     };
 
-    InputManager.prototype.analysis = function(bot, input, error, callback)
+    InputManager.prototype.analysis = function(bot, dialog, error, callback)
     {
-        var inputRaw = input.nlu.sentence;
+        var inputRaw = dialog.input.text;
 
         console.log();
         console.log(chalk.yellow('[[[ INPUT ]]]'));
@@ -34,12 +34,12 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
                 return error.delegate(err);
             }
 
-            input.nlu.nlp = nlp;
-            input.nlu.json = nlpJsonPOS;
-            input.nlu.sentenceInfo = sentenceInfo;
-            input.nlu.turnTaking = turnTaking;
-            input.nlu.nlpText = nlpText;
-            input.nlu.lastChar = lastChar;
+            dialog.input.nlp = nlp;
+            dialog.input.json = nlpJsonPOS;
+            dialog.input.sentence = sentenceInfo;
+            dialog.input.turnTaking = turnTaking;
+            dialog.input.nlpText = nlpText;
+            dialog.input.lastChar = lastChar;
 
             console.log('nlp: ', nlp);
 
@@ -51,7 +51,7 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
                 }
 
                 console.log('엔티티 : ', entities);
-                input.nlu.entities = entities;
+                dialog.input.entities = entities;
 
                 IntentManager.analysis(bot, nlp, function(err, intents)
                 {
@@ -61,9 +61,7 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
                     }
 
                     console.log('인텐트 : ', intents);
-                    input.nlu.intents = intents;
-
-                    console.log();
+                    dialog.input.intents = intents;
 
                     callback();
                 });

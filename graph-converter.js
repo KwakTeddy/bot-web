@@ -15,7 +15,7 @@ Bot.prototype.setCommonDialogs = function(commonDialogs)
 };
 
 var b = new Bot();
-require('./custom_modules/samchully/default.graph.js')(b);
+require('./custom_modules/sample_com2best_1517227988450/default.graph.js')(b);
 
 
 var convert = function(dialogs)
