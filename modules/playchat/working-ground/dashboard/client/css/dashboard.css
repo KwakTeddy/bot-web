@@ -251,6 +251,13 @@
     font-weight: 700;
     font-size: 14px;
 }
+.dashboard-dialog-management-newcard > div > div
+{
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-size: 14px;
+}
 .dashboard-dialog-management-card > div > div a>img{
     margin-right: 5px;
     margin-top: -2px;

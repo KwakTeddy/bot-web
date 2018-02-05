@@ -2,7 +2,7 @@
 
 angular.module('template').controller('flowerBasicinformationController', ['$scope', '$resource', '$http','$cookies', 'FileUploader','$rootScope', 'LanguageService', function ($scope, $resource, $http, $cookies, FileUploader,$rootScope,LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName('기본정보', '/modules/playchat/gnb/client/imgs/event_grey.png');
+    $scope.$parent.changeWorkingGroundName('기본정보', '/modules/playchat/gnb/client/imgs/basic_grey.png');
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateDataService = $resource('/api/:botId/template-data', { botId: '@botId' }, { update: { method: 'PUT' } });
@@ -50,12 +50,16 @@ angular.module('template').controller('flowerBasicinformationController', ['$sco
                     {
                         $scope.template = result;
 
+                        console.log('asdf', chatbot);
+
                         ChatbotTemplateDataService.get({ templateId: result.id, botId: chatbot.id }, function(result)
                             {
                                 $scope.flowername=result.flowername;
                                 $scope.description=result.description;
                                 $scope.data.image=result.image;
                                 $scope.phone=result.phone;
+
+                                console.log('데이터 : ', $scope.data);
 
                             },
                             function(err)
