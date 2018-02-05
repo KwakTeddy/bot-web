@@ -2,7 +2,7 @@
 
 angular.module('template').controller('flowerServiceController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', 'LanguageService', function ($scope, $resource, $cookies, FileUploader,$rootScope,LanguageService )
 {
-    $scope.$parent.changeWorkingGroundName('후기관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
+    $scope.$parent.changeWorkingGroundName('후기관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/services', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 

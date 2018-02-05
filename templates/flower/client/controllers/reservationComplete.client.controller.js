@@ -18,6 +18,7 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
           iDays  =  oDate2  -  oDate1;   //把相差的毫秒数转换为天数
           return  iDays
       }
+      $scope.searchword=undefined;
     (function()
     {
         // $scope.search = function()
@@ -26,7 +27,7 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
         //     $scope.getList(1, value);
         // };
 
-        $scope.getList = function()
+        $scope.getList = function(searchword)
         {
             $scope.datas = [];
             $scope.datass = [];
@@ -46,9 +47,15 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
                                 var dateend=new Date($scope.date.end);
                                 var startdate=DateDiff(datetime, datestart);
                                 var enddate=DateDiff(datetime, dateend);
-
-                                if(list[i].order_status==="승인완료" && startdate<=0 && enddate>=0){
-                                    $scope.datas.push(list[i]);
+                                if(searchword===undefined) {
+                                    if (list[i].order_status === "승인완료" && startdate <= 0 && enddate >= 0) {
+                                        $scope.datas.push(list[i]);
+                                    }
+                                }
+                                else{
+                                    if (list[i].order_status === "승인완료" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                        $scope.datas.push(list[i]);
+                                    }
                                 }
                             }
                         },
@@ -107,6 +114,11 @@ angular.module('template').controller('flowerReservationCompleteController', ['$
       {
           $scope.date = date;
           $scope.getList();
+      });
+      $scope.$on('reservation_search_changed', function(context, date)
+      {
+          $scope.searchword = date;
+          $scope.getList($scope.searchword);
       });
     $scope.getList();
     $scope.lan=LanguageService;

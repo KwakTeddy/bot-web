@@ -73,9 +73,6 @@ angular.module('template').controller('flowerEventChangeController', ['$scope', 
                 });
         };
 
-
-
-
         $scope.save = function()
         {
             for(var i=0; i<$scope.datas.length; i++) {

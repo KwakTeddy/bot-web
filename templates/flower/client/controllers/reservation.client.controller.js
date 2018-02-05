@@ -44,11 +44,11 @@ $scope.selectedTab='schedule';
     }, 100);
     }
 
-
     $scope.date = [];
+    $scope.searchword=undefined;
     (function()
     {
-        $scope.getList = function()
+        $scope.getList = function(searchword)
         {
             $scope.datas = [];
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
@@ -61,27 +61,43 @@ $scope.selectedTab='schedule';
                             $scope.await=[];
                             $scope.accept=[];
                             $scope.cancel=[];
+                            $scope.awaitlength= "0";
+                            $scope.acceptlength= "0";
+                            $scope.cancellength= "0";
 
-                            for(var i=0;i<list.length;i++){
-                                var datetime =new Date(list[i].order_deliverydate+" "+list[i].order_deliveryhour);
-                                var datestart=new Date($scope.date.start);
-                                var dateend=new Date($scope.date.end);
-                                var startdate=DateDiff(datetime, datestart);
-                                var enddate=DateDiff(datetime, dateend);
-
-                                if(list[i].order_status==="주문취소" && startdate<=0 && enddate>=0){
-                                    $scope.cancel.push(list[i]);
+                            for(var i=0;i<list.length;i++) {
+                                var datetime = new Date(list[i].order_deliverydate + " " + list[i].order_deliveryhour);
+                                var datestart = new Date($scope.date.start);
+                                var dateend = new Date($scope.date.end);
+                                var startdate = DateDiff(datetime, datestart);
+                                var enddate = DateDiff(datetime, dateend);
+                                if (searchword===undefined) {
+                                    if (list[i].order_status === "주문취소" && startdate <= 0 && enddate >= 0) {
+                                        $scope.cancel.push(list[i]);
+                                    }
+                                    if (list[i].order_status === "승인 대기중" && startdate <= 0 && enddate >= 0) {
+                                        $scope.await.push(list[i]);
+                                    }
+                                    if (list[i].order_status === "승인완료" && startdate <= 0 && enddate >= 0) {
+                                        $scope.accept.push(list[i]);
+                                    }
                                 }
-                                if(list[i].order_status==="승인 대기중" && startdate<=0 && enddate>=0){
-                                    $scope.await.push(list[i]);
-                                }
-                                if(list[i].order_status==="승인완료" && startdate<=0 && enddate>=0){
-                                    $scope.accept.push(list[i]);
+                                else{
+                                    if (list[i].order_status === "주문취소" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                        $scope.cancel.push(list[i]);
+                                    }
+                                    if (list[i].order_status === "승인 대기중" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                        $scope.await.push(list[i]);
+                                    }
+                                    if (list[i].order_status === "승인완료" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                        $scope.accept.push(list[i]);
+                                    }
                                 }
                             }
                             $scope.awaitlength= $scope.await.length;
                             $scope.acceptlength= $scope.accept.length;
                             $scope.cancellength= $scope.cancel.length;
+                            $scope.searchword=undefined;
                         },
                         function(err)
                         {
@@ -96,20 +112,35 @@ $scope.selectedTab='schedule';
 
         $scope.search = function(e)
         {
-            console.log("--------------------==================--------------");
-            // if(e.keyCode == 13)
-            // {
-            //     $scope.getList(1, e.currentTarget.value);
-            // }
-            // else if(e.keyCode == 8)
-            // {
-            //     //backspace
-            //     if(e.currentTarget.value.length == 1)
-            //     {
-            //         $scope.getList(1);
-            //     }
-            // }
+            if(e.keyCode == 13)
+            {
+                // $scope.getList(1, e.currentTarget.value);
+                if(e.currentTarget.value) {
+                    $scope.searchword = e.currentTarget.value;
+                    $scope.getList(e.currentTarget.value);
+                    $rootScope.$broadcast('reservation_search_changed', $scope.searchword);
+                }
+                else{
+                    $scope.searchword = undefined;
+                    $scope.getList($scope.searchword);
+                    $rootScope.$broadcast('reservation_search_changed', $scope.searchword);
+                }
+            }
+            else if(e.keyCode == 8)
+            {
+                //backspace
+
+                if(e.currentTarget.value.length == 1)
+                {
+                    // $scope.getList(1);
+                    $scope.searchword=undefined;
+                    rootScope.$broadcast('reservation_search_changed', $scope.searchword);
+                    $scope.getList($scope.searchword);
+                }
+            }
         };
+
+
 
 
     })();
