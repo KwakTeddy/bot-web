@@ -62,9 +62,16 @@ var Globals = require('../globals.js');
     {
         var that = this;
 
+        var selectedDialog = [];
+
         var nlpText = dialog.input.nlpText;
         async.eachSeries(dialogs, function(originalDialog, next)
         {
+            if(!originalDialog.matchCount)
+            {
+                originalDialog.matchCount = 0;
+            }
+
             var inputs = originalDialog.input;
             if(!inputs || !inputs.length || inputs.length <= 0)
             {
@@ -90,15 +97,33 @@ var Globals = require('../globals.js');
                 {
                     if(key == 'text')
                     {
-                        result = result && that.checkInputText(nlpText, input.text.nlp);
+                        var check = that.checkInputText(nlpText, input.text.nlp);
+                        if(check)
+                        {
+                            originalDialog.matchCount++;
+                        }
+
+                        result = result && check;
                     }
                     else if(key == 'entities')
                     {
-                        result = result && that.checkEntities(input.entities, entities);
+                        var check = that.checkEntities(input.entities, entities);
+                        if(check)
+                        {
+                            originalDialog.matchCount++;
+                        }
+
+                        result = result && check;
                     }
                     else if(key == 'intent')
                     {
-                        result = result && (intents.length > 0 && input.intent == intents[0].intentName);
+                        var check = (intents.length > 0 && input.intent == intents[0].intentName);
+                        if(check)
+                        {
+                            originalDialog.matchCount++;
+                        }
+
+                        result = result && check;
                     }
                     else if(key == 'types')
                     {
@@ -113,6 +138,8 @@ var Globals = require('../globals.js');
                             if(matched)
                             {
                                 result = result && true;
+
+                                originalDialog.matchCount++;
 
                                 if(parsed)
                                 {
@@ -135,6 +162,7 @@ var Globals = require('../globals.js');
                         {
                             if(eval('result = (' + input.if + ' ? true : false);'))
                             {
+                                originalDialog.matchCount++;
                                 return true;
                             }
 
@@ -153,7 +181,8 @@ var Globals = require('../globals.js');
                 {
                     if(result)
                     {
-                        return callback(originalDialog);
+                        // return callback(originalDialog);
+                        selectedDialog.push(originalDialog);
                     }
 
                     next();
@@ -166,7 +195,26 @@ var Globals = require('../globals.js');
         },
         function()
         {
-            callback();
+            console.log('오리지날 : ', selectedDialog);
+
+            selectedDialog.sort(function(a, b)
+            {
+                return b.matchCount - a.matchCount;
+            });
+
+            for(var i=0; i<dialogs.length; i++)
+            {
+                delete dialogs[i].matchCount;
+            }
+
+            if(selectedDialog.length > 0)
+            {
+                callback(selectedDialog[0]);
+            }
+            else
+            {
+                callback();
+            }
         });
     };
 
