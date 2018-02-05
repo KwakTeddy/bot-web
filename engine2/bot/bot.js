@@ -595,6 +595,11 @@ var Dialogset = mongoose.model('Dialogset');
     {
         this.commonDialogs = this.commonDialogs.concat(dialogs);
         this.setDialogMap(dialogs);
+
+        for(var i=0; i<this.dialogs.length; i++)
+        {
+            this.parentDialogMap[this.dialogs[i].id] = this.commonDialogs[0];
+        }
     };
 
     Bot.prototype.setTask = function(taskName, task)
