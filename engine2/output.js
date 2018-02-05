@@ -75,7 +75,7 @@ var chalk = require('chalk');
 
                 if(context.channel.name == 'kakao')
                 {
-                    if(target.output.buttons)
+                    if(target.output.buttons && target.output.buttons.length > 0)
                     {
                         target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
                     }
