@@ -11,31 +11,38 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
     console.log(chatbot);
 
 
-    var addUploader = function(index)
-    {
-        $scope.datas[index].uploader = new FileUploader({
-            url: '/api/' + chatbot.id + '/template-contents/upload',
-            alias: 'uploadImage',
-            autoUpload: true
-        });
-
-        $scope.datas[index].uploader.onErrorItem = function(item, response, status, headers)
-        {
-        };
-
-        $scope.datas[index].uploader.onSuccessItem = function(item, response, status, headers)
-        {
-            $scope.datas[index].image = response.url;
-        };
-
-        $scope.datas[index].uploader.onProgressItem = function(fileItem, progress)
-        {
-            angular.element('.form-box-progress').css('width', progress + '%');
-        };
-    };
 
     (function()
     {
+         var addUploader = function()
+        {
+            $scope.data.uploader = new FileUploader({
+                url: '/api/' + chatbot.id + '/template-contents/upload',
+                alias: 'uploadImage',
+                autoUpload: true
+            });
+
+            $scope.data.uploader.onErrorItem = function(item, response, status, headers)
+            {
+            };
+
+            $scope.data.uploader.onSuccessItem = function(item, response, status, headers)
+            {
+                $scope.data.image = response.url;
+            };
+
+            $scope.data.uploader.onProgressItem = function(fileItem, progress)
+            {
+                angular.element('.form-box-progress').css('width', progress + '%');
+            };
+        };
+
+            $scope.editImage = function(e)
+            {
+                angular.element(e.currentTarget).next().click();
+            };
+            addUploader();
+
         $scope.getList = function()
         {
             var hash = location.hash;
@@ -53,10 +60,6 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                         {
                             $scope.datas=list;
                             console.log(list);
-                            for(var i=0; i<list.length; i++)
-                            {
-                                addUploader(i);
-                            }
                         },
                         function(err)
                         {
@@ -71,10 +74,6 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
 
 
 
-        $scope.editImage = function(e)
-        {
-            angular.element(e.currentTarget).next().click();
-        };
 
         $scope.save = function()
         {
@@ -84,7 +83,7 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                     $scope.datas[i].category= $scope.data.category;
                     $scope.datas[i].name= $scope.data.name;
                     $scope.datas[i].price= $scope.data.price;
-                    $scope.datas[i].image= $scope.data.image;
+                    $scope.datas[i].picture= $scope.data.picture;
                 }
             }
 
@@ -98,11 +97,11 @@ angular.module('template').controller('flowerMenuAddController', ['$scope', '$re
                         botId: chatbot.id,
                         datas: datas
                     }, function (list) {
+                        console.log(list);
                         for(var i=0; i<list.length; i++)
                         {
                             addUploader(i);
                         }
-                        console.log(list);
                         alert("저장했습니다");
                         $rootScope.$broadcast('simulator-build');
                     },

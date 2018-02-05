@@ -233,8 +233,8 @@
                 <td><input type="number" ng-model="data.price" class="case2">원</td>
                 <td>
                     <label>
-                        <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.image" />
-                        <img src="{{ data.image }}" id="image" style="width: 50px;" ng-if="data.image" ng-click="editImage($event);">
+                        <img src="{{ data.picture }}" style="width: 150px;height: 100px;" ng-if="data.picture ">
+                        <input id="image" value="업로드" type="file" nv-file-select uploader="data.uploader" ng-show="!data.picture" />
                         <label type="button" class="flower-button" for="image">업로드</label>
                     </label>
                 </td>

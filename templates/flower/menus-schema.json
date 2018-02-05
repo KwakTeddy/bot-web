@@ -2,7 +2,7 @@
     "category" : "String",
     "name" : "String",
     "price" : "Number",
-    "image" : "String",
+    "picture" : "String",
     "description" : "String",
     "code" : "String",
     "sale_price" : "Number",
