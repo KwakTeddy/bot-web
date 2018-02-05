@@ -41,7 +41,7 @@ var chalk = require('chalk');
 
     };
 
-    OutputManager.prototype.make = function(context, target)
+    OutputManager.prototype.make = function(context, dialog, target)
     {
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
@@ -56,7 +56,6 @@ var chalk = require('chalk');
         }
 
         var bot = context.bot;
-        var dialog = context.session.currentDialog;
 
         target = JSON.parse(JSON.stringify(target));
 

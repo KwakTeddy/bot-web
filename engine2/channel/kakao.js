@@ -43,21 +43,8 @@ exports.message = function (req, res)
 
         Engine.process(req.params.bot, 'kakao', req.params.user_key, '', {}, function(context, out)
         {
-            var sendMsg = context.bot.kakao.keyboard;
-            if(sendMsg == undefined)
-            {
-                sendMsg = {type: 'text'};
-            }
-
-            res.write(JSON.stringify(sendMsg));
-            res.end();
+            respondMessage(res, out);
         });
-
-        master.routing('kakao', from, req.params.bot, text, req.body, function (serverText, json)
-        {
-            respondMessage(res, serverText, json)
-        });
-    }
 };
 
 
@@ -83,74 +70,71 @@ exports.deleteChatRoom = function (req, res) {
 };
 
 
-function respondMessage(res, text, json)
+function respondMessage(res, result)
 {
     var sendMsg =
     {
-        message: { text: text }
+        message: { text: result.output.text }
     };
 
-    if(json && json.result && json.result.image)
+    if(result.output.image)
     {
-    sendMsg.message.photo = {
-      "url": json.result.image.url,
-      "width": json.result.image.width || 640,
-      "height":json.result.image.height || 480
-    };
-
-    if(!json.url) {
-      sendMsg.message.message_button =
+        sendMsg.message.photo =
         {
-          "label": (json.urlMessage ? json.urlMessage : "이미지보기"),
-          "url": json.result.image.url
+            url: result.output.image.url,
+            width: result.output.image.width || 640,
+            height: result.output.image.height || 480
+        };
+
+        sendMsg.message.message_button =
+        {
+            label: '이미지보기',
+            url: result.output.image.url
         };
     }
-  }
 
-  if(json && json.url) {
-    sendMsg.message.message_button =
-    {
-      "label": (json.urlMessage ? json.urlMessage : "상세정보보기"),
-      "url": json.url
-    };
-  }
-
-  if(json && json.buttons) {
-
-    for(var i = 0; i < json.buttons.length; i++){
-      if ( json.buttons[i].url){
-        sendMsg.message.message_button =
-          {
-            "label": json.buttons[i].text,
-            "url": json.buttons[i].url
-          };
-      }else {
-        if (!sendMsg.keyboard){
-          sendMsg['keyboard'] = {};
-          sendMsg.keyboard['buttons'] = [];
-          sendMsg.keyboard['type'] = 'buttons';
-        }
-        sendMsg.keyboard.buttons.push(json.buttons[i].text);
-      }
-    }
-    // sendMsg.keyboard =
+    // if(json && json.url)
     // {
-    //   "type": "buttons",
-    //   "buttons": json.buttons
-    // };
-  }
+    //     sendMsg.message.message_button =
+    //     {
+    //       "label": (json.urlMessage ? json.urlMessage : "상세정보보기"),
+    //       "url": json.url
+    //     };
+    // }
 
-  if(json && json.image){
-    if (json.image.url.substring(0,4) !== 'http'){
-      json.image.url = config.host + json.image.url
+    if(result.output.buttons)
+    {
+        for(var i = 0; i < result.output.buttons.length; i++)
+        {
+            if (result.output.buttons[i].url)
+            {
+                sendMsg.message.message_button =
+                {
+                    label: result.output.buttons[i].text,
+                    url: result.output.buttons[i].url
+                };
+            }
+            else
+            {
+                if (!sendMsg.keyboard)
+                {
+                    sendMsg.keyboard = {};
+                    sendMsg.keyboard.buttons = [];
+                    sendMsg.keyboard.type = 'buttons';
+                }
+
+                sendMsg.keyboard.buttons.push(result.output.buttons[i].text);
+            }
+        }
     }
-    sendMsg.message.photo =
-      {
-        "url": json.image.url,
-        "width" : 720,
-        "height" : 630
-      }
-  }
+
+    if(result.output && result.output.image)
+    {
+        if (result.output.image.url.substring(0,4) !== 'http')
+        {
+            result.output.image.url = config.host + result.output.image.url
+        }
+    }
 
 
   if(json && json.result && json.result.smartReply) {

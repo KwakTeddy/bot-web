@@ -137,7 +137,7 @@ var Transaction = require('./utils/transaction.js');
                                 {
                                     AnswerManager.answer(bot, context, dialog, error, function(output)
                                     {
-                                        output = OutputManager.make(context, output);
+                                        output = OutputManager.make(context, dialog, output);
 
                                         delete context.bot;
                                         delete context.channel;
