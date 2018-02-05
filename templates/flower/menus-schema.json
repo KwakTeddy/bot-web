@@ -1,12 +1,12 @@
 {
+    "botId":"String",
     "category" : "String",
     "name" : "String",
     "price" : "Number",
-    "image" : "String",
+    "picture" : "String",
     "description" : "String",
     "code" : "String",
     "sale_price" : "Number",
-    "picture" : "String",
     "delivery" : "String",
     "VIP" : "String",
     "status":"String"

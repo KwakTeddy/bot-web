@@ -1,14 +1,14 @@
 module.exports = function(globals)
 {
-    globals.setTypeChecks('regexpTypeCheck', function (conversation, context, callback)
+    globals.setTypeChecks('regexpTypeCheck', function (dialog, context, callback)
     {
         var type = this;
         var parsed = undefined;
         var re = type.regexp;
         var matched = false;
 
-        var inputRaw = conversation.nlu.inputRaw;
-        conversation.nlu.inputRaw = inputRaw.replace(re, function(match, p1)
+        var inputRaw = dialog.input.text;
+        dialog.input.text = inputRaw.replace(re, function(match, p1)
         {
             matched = true;
             parsed = p1;

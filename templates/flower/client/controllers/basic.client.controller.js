@@ -42,6 +42,7 @@ angular.module('template').controller('flowerBasicController', ['$scope', '$reso
         {
             angular.element(e.currentTarget).next().click();
         };
+
         addUploader();
         ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
             {
@@ -127,6 +128,7 @@ angular.module('template').controller('flowerBasicController', ['$scope', '$reso
 
         ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description}, function()
             {
+                alert("chatbot.id------------------"+chatbot.id);
                 ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.data._id, data: data }, function(result)
                     {
                         console.log(result);

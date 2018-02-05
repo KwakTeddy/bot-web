@@ -14,7 +14,7 @@ var BotManager = require('./bot.js');
     CommandManager.prototype.resetUser = function(redis, contextKey, bot, context, error, callback)
     {
         context.returnDialog = undefined;
-        context.dialogCursor = undefined;
+        context.session.dialogCursor = undefined;
 
         redis.set(contextKey, JSON.stringify(context), function(err, reply)
         {
@@ -85,7 +85,7 @@ var BotManager = require('./bot.js');
     CommandManager.prototype.buildBot = function(redis, contextKey, bot, context, error, callback)
     {
         context.returnDialog = undefined;
-        context.dialogCursor = undefined;
+        context.session.dialogCursor = undefined;
 
         redis.set(contextKey, JSON.stringify(context), function(err, reply)
         {

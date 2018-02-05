@@ -1,39 +1,16 @@
 'use strict';
 
-angular.module('template').controller('flowerMenuController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope','LanguageService', function ($scope, $resource, $cookies, FileUploader,$rootScope,LanguageService)
+angular.module('template').controller('flowerServiceController', ['$scope', '$resource', '$cookies', 'FileUploader','$rootScope', 'LanguageService', function ($scope, $resource, $cookies, FileUploader,$rootScope,LanguageService )
 {
-    $scope.$parent.changeWorkingGroundName('상품관리', '/modules/playchat/gnb/client/imgs/menu_grey.png');
+    $scope.$parent.changeWorkingGroundName('후기관리', '/modules/playchat/gnb/client/imgs/event_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/services', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
     console.log(chatbot);
 
-
-   var addUploader = function(index)
-    {
-        $scope.datas[index].uploader = new FileUploader({
-            url: '/api/' + chatbot.id + '/template-contents/upload',
-            alias: 'uploadImage',
-            autoUpload: true
-        });
-
-        $scope.datas[index].uploader.onErrorItem = function(item, response, status, headers)
-        {
-        };
-
-        $scope.datas[index].uploader.onSuccessItem = function(item, response, status, headers)
-        {
-            $scope.datas[index].image = response.url;
-        };
-
-        $scope.datas[index].uploader.onProgressItem = function(fileItem, progress)
-        {
-            angular.element('.form-box-progress').css('width', progress + '%');
-        };
-    };
-
+    $scope.datas = [];
 
     (function()
     {
@@ -54,10 +31,10 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
                             }
                             console.log(list);
 
-                            for(var i=0; i<list.length; i++)
-                            {
-                                addUploader(i);
-                            }
+                            // for(var i=0; i<list.length; i++)
+                            // {
+                            //     addUploader(i);
+                            // }
                         },
                         function(err)
                         {
@@ -69,13 +46,6 @@ angular.module('template').controller('flowerMenuController', ['$scope', '$resou
                     alert(err);
                 });
         };
-
-        $scope.add = function()
-        {
-            $scope.datas.push({ category: '',name:'', price:'',image:"",description:'',code:"",sale_price:"",delivery:"",VIP:"",uploader: undefined });
-            addUploader($scope.datas.length-1);
-        };
-
 
         $scope.change=function(event,data){
             var target = angular.element(event.currentTarget);

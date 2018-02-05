@@ -82,10 +82,7 @@ var Transaction = require('./utils/transaction.js');
                         else
                         {
                             context = JSON.parse(context);
-                            if(!context.user)
-                            {
-                                context.user = {};
-                            }
+                            Context.init(context);
                         }
 
                         if(inputRaw.startsWith(':'))
@@ -94,44 +91,15 @@ var Transaction = require('./utils/transaction.js');
                             return;
                         }
 
+                        context.globals = globals;
                         context.user.userKey = userKey;
                         context.bot = bot;
-                        context.channel = channel;
+                        context.channel.name = channel;
 
-                        for(var i=0; i<context.history.length; i++)
-                        {
-                            if(i < context.history.length - 1)
-                            {
-                                context.history[i].prev = context.history[i+1];
-                            }
+                        var dialog = Context.createDialog();
+                        dialog.input.text = inputRaw;
 
-                            if(i > 0)
-                            {
-                                context.history[i].next = context.history[i-1];
-                            }
-                        }
-
-                        var conversation = {};
-
-                        if(context.history.length > 0)
-                        {
-                            conversation.prev = context.history[0];
-                            context.history[0].next = conversation;
-                        }
-
-                        context.history.splice(0, 0, conversation);
-
-                        if(context.history.length > 10)
-                        {
-                            context.history.splice(10, 1);
-                        }
-
-                        conversation.nlu = {
-                            sentence: inputRaw,
-                            inputRaw: inputRaw
-                        };
-
-                        InputManager.analysis(bot, conversation, error, function()
+                        InputManager.analysis(bot, dialog, error, function()
                         {
                             var transaction = new Transaction.sync();
 
@@ -139,7 +107,7 @@ var Transaction = require('./utils/transaction.js');
                             {
                                 transaction.call(function(done)
                                 {
-                                    KnowledgeGraph.memory(conversation, error, function(numAffected)
+                                    KnowledgeGraph.memory(bot, dialog, error, function(numAffected)
                                     {
                                         if(numAffected && numAffected.ok == 1 && numAffected.n > 0)
                                         {
@@ -167,18 +135,13 @@ var Transaction = require('./utils/transaction.js');
                             {
                                 transaction.done(function()
                                 {
-                                    AnswerManager.answer(bot, context, error, function(output)
+                                    AnswerManager.answer(bot, context, dialog, error, function(output)
                                     {
                                         output = OutputManager.make(context, output);
 
-                                        for(var i=0; i<context.history.length; i++)
-                                        {
-                                            delete context.history[i].next;
-                                            delete context.history[i].prev;
-                                        }
-
                                         delete context.bot;
                                         delete context.channel;
+                                        delete context.globals;
 
                                         that.redis.set(contextKey, JSON.stringify(context), function(err)
                                         {
