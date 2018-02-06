@@ -54,7 +54,12 @@ $scope.selectedTab='schedule';
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.template = result;
-                      DataService.query({ templateId: result.id, botId: chatbot.id}, function(list)
+                    var startDate=$scope.date.start.getTime();
+                    var endDate=$scope.date.end.getTime();
+                      DataService.query({
+                              templateId: result.id,
+                              botId: chatbot.id,
+                              query:{order_deliverytime: {$lte: endDate, $gte: startDate}}}, function(list)
                         {
                             $scope.datas=list;
 
@@ -66,30 +71,35 @@ $scope.selectedTab='schedule';
                             $scope.cancellength= "0";
 
                             for(var i=0;i<list.length;i++) {
-                                var datetime = new Date(list[i].order_deliverydate + " " + list[i].order_deliveryhour);
-                                var datestart = new Date($scope.date.start);
-                                var dateend = new Date($scope.date.end);
-                                var startdate = DateDiff(datetime, datestart);
-                                var enddate = DateDiff(datetime, dateend);
+
                                 if (searchword===undefined) {
-                                    if (list[i].order_status === "주문취소" && startdate <= 0 && enddate >= 0) {
+                                    if (list[i].order_status === "주문취소") {
                                         $scope.cancel.push(list[i]);
                                     }
-                                    if (list[i].order_status === "승인 대기중" && startdate <= 0 && enddate >= 0) {
+                                    if (list[i].order_status === "승인 대기중") {
                                         $scope.await.push(list[i]);
                                     }
-                                    if (list[i].order_status === "승인완료" && startdate <= 0 && enddate >= 0) {
+                                    if (list[i].order_status === "승인완료") {
                                         $scope.accept.push(list[i]);
                                     }
                                 }
                                 else{
-                                    if (list[i].order_status === "주문취소" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                    if (list[i].order_status === "주문취소" && (list[i].order_name=== searchword || list[i].order_mobile===searchword ||
+                                        list[i].order_itemname===searchword || list[i].order_itemcode===searchword || list[i].order_date===searchword || list[i].order_hour===searchword || list[i].order_receivername===searchword || list[i].order_receivermobile===searchword
+                                    || list[i].order_receiveraddress===searchword || list[i].order_deliverydate===searchword ||
+                                    list[i].order_deliveryhour===searchword || list[i].order_greeting===searchword)) {
                                         $scope.cancel.push(list[i]);
                                     }
-                                    if (list[i].order_status === "승인 대기중" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                    if (list[i].order_status === "승인 대기중" && (list[i].order_name=== searchword || list[i].order_mobile===searchword ||
+                                            list[i].order_itemname===searchword || list[i].order_itemcode===searchword || list[i].order_date===searchword || list[i].order_hour===searchword || list[i].order_receivername===searchword || list[i].order_receivermobile===searchword
+                                            || list[i].order_receiveraddress===searchword || list[i].order_deliverydate===searchword ||
+                                            list[i].order_deliveryhour===searchword || list[i].order_greeting===searchword)) {
                                         $scope.await.push(list[i]);
                                     }
-                                    if (list[i].order_status === "승인완료" && list[i].order_name === searchword && startdate <= 0 && enddate >= 0) {
+                                    if (list[i].order_status === "승인완료" && (list[i].order_name=== searchword || list[i].order_mobile===searchword ||
+                                            list[i].order_itemname===searchword || list[i].order_itemcode===searchword || list[i].order_date===searchword || list[i].order_hour===searchword || list[i].order_receivername===searchword || list[i].order_receivermobile===searchword
+                                            || list[i].order_receiveraddress===searchword || list[i].order_deliverydate===searchword ||
+                                            list[i].order_deliveryhour===searchword || list[i].order_greeting===searchword)) {
                                         $scope.accept.push(list[i]);
                                     }
                                 }
@@ -134,7 +144,7 @@ $scope.selectedTab='schedule';
                 {
                     // $scope.getList(1);
                     $scope.searchword=undefined;
-                    rootScope.$broadcast('reservation_search_changed', $scope.searchword);
+                    $rootScope.$broadcast('reservation_search_changed', $scope.searchword);
                     $scope.getList($scope.searchword);
                 }
             }
