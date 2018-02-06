@@ -4,6 +4,7 @@ var chalk = require('chalk');
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
+var ContextManager = require('../context.js');
 var TaskManager = require('./task.js');
 var Globals = require('../globals.js');
 
@@ -438,10 +439,7 @@ var Globals = require('../globals.js');
                     {
                         context.session.dialogCursor = parent.id;
 
-                        var cloneDialog = utils.clone(parent);
-                        cloneDialog.originalInput = cloneDialog.input;
-                        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.userInput = targetDialog.userInput;
+                        var cloneDialog = ContextManager.createDialog(parent, targetDialog.userInput);
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - repeat ]]]'));
@@ -461,20 +459,14 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'up')
                 {
-                    context.session.history.splice(0, 1);
-                    context.session.history.splice(0, 1);
+                    context.session.history.splice(0, 2); // 이전 입력시 생긴 카드
 
-                    var parent = bot.parentDialogMap[context.session.history[0].id];
+                    var parent = context.session.history[0];
                     if(parent)
                     {
                         context.session.dialogCursor = parent.id;
 
-                        context.session.history.splice(0, 1);
-
-                        var cloneDialog = utils.clone(parent);
-                        cloneDialog.originalInput = cloneDialog.input;
-                        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.userInput = targetDialog.userInput;
+                        var cloneDialog = ContextManager.createDialog(parent, targetDialog.userInput);
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - up ]]]'));
@@ -498,10 +490,12 @@ var Globals = require('../globals.js');
                         var foundDialog = bot.dialogMap[resultOutput.dialogId];
                         if(foundDialog)
                         {
-                            var cloneDialog = utils.clone(foundDialog);
-                            cloneDialog.originalInput = cloneDialog.input;
-                            cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.userInput = targetDialog.userInput;
+                            var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
+
+                            if(resultOutput.text)
+                            {
+                                cloneDialog.options.outputText = resultOutput.text;
+                            }
 
                             console.log();
                             console.log(chalk.yellow('[[[ Action - call ]]]'));
@@ -530,10 +524,7 @@ var Globals = require('../globals.js');
                             console.log(chalk.yellow('[[[ Action - callChild ]]]'));
                             console.log(foundDialog.id);
 
-                            var cloneDialog = utils.clone(foundDialog);
-                            cloneDialog.originalInput = cloneDialog.input;
-                            cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.userInput = targetDialog.userInput;
+                            var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
 
                             that.execWithRecord(bot, context, cloneDialog, callback);
                         }
@@ -554,10 +545,7 @@ var Globals = require('../globals.js');
                         console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
                         console.log(foundDialog.id);
 
-                        var cloneDialog = utils.clone(foundDialog);
-                        cloneDialog.originalInput = cloneDialog.input;
-                        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.userInput = targetDialog.userInput;
+                        var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
 
                         that.execWithRecord(bot, context, cloneDialog, callback);
                     }
@@ -577,10 +565,7 @@ var Globals = require('../globals.js');
                             console.log(chalk.yellow('[[[ Action - return ]]]'));
                             console.log(foundDialog.id);
 
-                            var cloneDialog = utils.clone(foundDialog);
-                            cloneDialog.originalInput = cloneDialog.input;
-                            cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.userInput = targetDialog.userInput;
+                            var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
 
                             that.execWithRecord(bot, context, cloneDialog, callback);
                         }
@@ -603,6 +588,13 @@ var Globals = require('../globals.js');
             }
             else
             {
+                if(targetDialog.options.outputText)
+                {
+                    resultOutput.text = targetDialog.options.outputText;
+                }
+
+                console.log('옵션??? : ', targetDialog.options);
+
                 callback(resultOutput);
             }
         });

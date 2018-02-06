@@ -4,6 +4,7 @@ var Transaction = require('./utils/transaction.js');
 
 var utils = require('./utils/utils.js');
 
+var ContextManager = require('./context.js');
 var OutputManager = require('./output.js');
 var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
@@ -49,11 +50,7 @@ var Logger = require('./logger.js');
         {
             if(this.dm)
             {
-                var cloneDialog = utils.clone(this.dm.foundDialog);
-                cloneDialog.originalInput = cloneDialog.input;
-                cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                cloneDialog.userInput = userInput;
-
+                var cloneDialog = ContextManager.createDialog(this.dm.foundDialog, userInput);
                 DialogGraphManager.execWithRecord(bot, context, cloneDialog, function(output)
                 {
                     cloneDialog.output = output;
