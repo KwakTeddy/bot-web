@@ -4,6 +4,7 @@ var Transaction = require('./utils/transaction.js');
 
 var utils = require('./utils/utils.js');
 
+var OutputManager = require('./output.js');
 var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
 
@@ -18,29 +19,27 @@ var Logger = require('./logger.js');
 
     };
 
-    AnswerManager.prototype.answer = function(bot, context, dialog, error, callback)
+    AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
     {
-        var inputRaw = dialog.input.text;
-        var nlp = dialog.input.nlp;
+        var inputRaw = userInput.text;
+        var nlp = userInput.nlp;
 
         var transaction = new Transaction.async();
-        transaction.dialog = dialog;
-
         QNAManager.find(bot, inputRaw, nlp, transaction.callback(function(err, matchedList, done)
         {
             if(matchedList.length > 0)
             {
-                transaction.qa = { type: 'qa', dialog: matchedList[0] };
+                transaction.qa = { type: 'qa', foundDialog: matchedList[0] };
             }
 
             done();
         }));
 
-        DialogGraphManager.find(bot, context, dialog, transaction.callback(function(err, foundDialog, done)
+        DialogGraphManager.find(bot, context, userInput, transaction.callback(function(err, foundDialog, done)
         {
             if(foundDialog)
             {
-                transaction.dm = { type: 'dm', dialog: foundDialog };
+                transaction.dm = { type: 'dm', foundDialog: foundDialog };
             }
 
             done();
@@ -48,42 +47,32 @@ var Logger = require('./logger.js');
 
         transaction.done(function()
         {
-            var dialog = this.dialog;
-
             if(this.dm)
             {
-                for(var key in this.dm.dialog)
-                {
-                    if(key == 'input')
-                    {
-                        dialog.originalInput = this.dm.dialog.input;
-                    }
-                    else if(key == 'output')
-                    {
-                        dialog.originalOutput = this.dm.dialog.output;
-                    }
-                    else
-                    {
-                        dialog[key] = this.dm.dialog[key];
-                    }
-                }
+                var cloneDialog = utils.clone(this.dm.foundDialog);
+                cloneDialog.originalInput = cloneDialog.input;
+                cloneDialog.originalOutput = utils.clone(cloneDialog.output);
+                cloneDialog.input = userInput;
 
-                DialogGraphManager.exec(bot, context, dialog, function(output)
+                DialogGraphManager.execWithRecord(bot, context, cloneDialog, function(output)
                 {
-                    var currentDialogId = bot.dialogMap[context.session.currentDialogId];
-                    var previousDialogId = undefined;
-                    if(context.session.previousDialogId)
+                    cloneDialog.output = output;
+                    output = OutputManager.make(context, cloneDialog);
+
+                    var currentDialog = context.session.history[0];
+                    var previousDialog = undefined;
+                    if(context.session.history.length > 1)
                     {
-                        previousDialogId = bot.dialogMap[context.session.previousDialogId];
+                        previousDialog = context.session.history[1];
                     }
                     else
                     {
-                        previousDialogId = {};
+                        previousDialog = {};
                     }
 
                     if(output)
                     {
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialogId.input.text, currentDialogId.input.nlpText, output.text, currentDialogId.id, currentDialogId.name, previousDialogId.id, previousDialogId.name, false, 'dialog');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
 
                         callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
                     }
@@ -96,7 +85,7 @@ var Logger = require('./logger.js');
                         console.log(this.qa.dialog);
                         console.log(text);
 
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialogId.input.text, currentDialogId.input.nlpText, text, '', '', '', '', false, 'qna');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, text, '', '', '', '', false, 'qna');
 
                         callback({ type: 'qa', text: text });
                     }
@@ -106,7 +95,7 @@ var Logger = require('./logger.js');
                         console.log(chalk.yellow('[[[ No Answer ]]]'));
 
                         var dialog = bot.dialogMap['noanswer'];
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialogId.input.text, currentDialogId.input.nlpText, currentDialogId.output[0].text, currentDialogId.id, currentDialogId.name, previousDialogId.id, previousDialogId.name, true, 'dialog');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
                         callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: dialog.output[0] });
                     }
                 });

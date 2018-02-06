@@ -1,4 +1,5 @@
 var chalk = require('chalk');
+var utils = require('./utils/utils.js');
 
 (function()
 {
@@ -41,54 +42,54 @@ var chalk = require('chalk');
 
     };
 
-    OutputManager.prototype.make = function(context, dialog, target)
+    OutputManager.prototype.make = function(context, dialog)
     {
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
-        console.log(target.text || target.output.text);
-        if(target.output && target.output.buttons)
+        console.log(dialog.output.text);
+        if(dialog.output && dialog.output.buttons)
         {
             console.log('-- buttons --');
-            for(var i=0; i<target.output.buttons.length; i++)
+            for(var i=0; i<dialog.output.buttons.length; i++)
             {
-                console.log('[ ' + target.output.buttons[i].text + ' ]');
+                console.log('[ ' + dialog.output.buttons[i].text + ' ]');
             }
         }
 
         var bot = context.bot;
 
-        target = JSON.parse(JSON.stringify(target));
+        dialog = utils.clone(dialog);
 
-        if(typeof target == 'object')
+        if(typeof dialog == 'object')
         {
             if(context.bot && context.bot.options && context.bot.options.commonButtons)
             {
-                if(!target.output.buttons)
+                if(!dialog.output.buttons)
                 {
-                    target.output.buttons = [];
+                    dialog.output.buttons = [];
                 }
 
-                if(typeof target.output == 'string')
+                if(typeof dialog.output == 'string')
                 {
-                    target.output.text = target.output;
+                    dialog.output.text = dialog.output;
                 }
 
                 if(context.channel.name == 'kakao')
                 {
-                    if(target.output.buttons && target.output.buttons.length > 0)
+                    if(dialog.output.buttons && dialog.output.buttons.length > 0)
                     {
-                        target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                        dialog.output.buttons = (dialog.output.buttons || []).concat(context.bot.options.commonButtons);
                     }
                 }
                 else
                 {
-                    target.output.buttons = (target.output.buttons || []).concat(context.bot.options.commonButtons);
+                    dialog.output.buttons = (dialog.output.buttons || []).concat(context.bot.options.commonButtons);
                 }
             }
 
-            if(target.output && target.output.text)
+            if(dialog.output && dialog.output.text)
             {
-                var result = target.output.text.replace(new RegExp(ARRAY_TAG + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG + "([^" + ARRAY_TAG + "]*)" + ARRAY_TAG, "g"), function replacer(match, key)
+                var result = dialog.output.text.replace(new RegExp(ARRAY_TAG + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG + "([^" + ARRAY_TAG + "]*)" + ARRAY_TAG, "g"), function replacer(match, key)
                 {
                     if(key)
                     {
@@ -141,23 +142,23 @@ var chalk = require('chalk');
                     return '';
                 });
 
-                target.output.text = result;
+                dialog.output.text = result;
             }
         }
 
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup After ]]]'));
-        console.log(target.text || target.output.text);
-        if(target.output && target.output.buttons)
+        console.log(dialog.output.text);
+        if(dialog.output && dialog.output.buttons)
         {
             console.log('-- buttons --');
-            for(var i=0; i<target.output.buttons.length; i++)
+            for(var i=0; i<dialog.output.buttons.length; i++)
             {
-                console.log('[ ' + target.output.buttons[i].text + ' ]');
+                console.log('[ ' + dialog.output.buttons[i].text + ' ]');
             }
         }
 
-        return target;
+        return dialog.output;
     };
 
     module.exports = new OutputManager();

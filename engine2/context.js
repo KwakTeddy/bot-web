@@ -14,7 +14,7 @@
         context.session =
         {
             history: [],
-            currentDialog: undefined, // dialogCursor가 있는 dialog previousDialog는 이전에 실행된. parent는 논리적인 부모
+            currentDialog: undefined,
             returnDialog: undefined,
             dialogCursor: undefined
         };
