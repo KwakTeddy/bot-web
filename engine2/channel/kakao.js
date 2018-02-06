@@ -63,7 +63,7 @@ exports.deleteChatRoom = function (req, res)
     var from = req.body.user_key;
     var Engine = require('../core.js');
     console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
-    Engine.process(req.params.bot, 'kakao', from, ':reset user', {}, function (context, out)
+    Engine.process(req.params.bot, 'kakao', from, ':reset memory', {}, function (context, out)
     {
         res.end();
     },
