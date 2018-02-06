@@ -73,26 +73,26 @@ exports.deleteChatRoom = function (req, res)
     });
 };
 
-function respondMessage(res, result)
+function respondMessage(res, output)
 {
     var sendMsg =
     {
-        message: { text: result.output.text }
+        message: { text: output.text }
     };
 
-    if(result.output.image)
+    if(output.image)
     {
         sendMsg.message.photo =
         {
-            url: config.host + result.output.image.url,
-            width: result.output.image.width || 640,
-            height: result.output.image.height || 480
+            url: config.host + output.image.url,
+            width: output.image.width || 640,
+            height: output.image.height || 480
         };
 
         // sendMsg.message.message_button =
         // {
         //     label: '이미지보기',
-        //     url: result.output.image.url
+        //     url: output.image.url
         // };
     }
 
@@ -105,16 +105,16 @@ function respondMessage(res, result)
     //     };
     // }
 
-    if(result.output.buttons)
+    if(output.buttons)
     {
-        for(var i = 0; i < result.output.buttons.length; i++)
+        for(var i = 0; i < output.buttons.length; i++)
         {
-            if (result.output.buttons[i].url)
+            if (output.buttons[i].url)
             {
                 sendMsg.message.message_button =
                 {
-                    label: result.output.buttons[i].text,
-                    url: result.output.buttons[i].url
+                    label: output.buttons[i].text,
+                    url: output.buttons[i].url
                 };
             }
             else
@@ -126,17 +126,17 @@ function respondMessage(res, result)
                     sendMsg.keyboard.type = 'buttons';
                 }
 
-                sendMsg.keyboard.buttons.push(result.output.buttons[i].text);
+                sendMsg.keyboard.buttons.push(output.buttons[i].text);
             }
         }
     }
 
-    // if(result.smartReply)
+    // if(smartReply)
     // {
     //     sendMsg.keyboard =
     //     {
     //         type: 'buttons',
-    //         buttons: json.result.smartReply
+    //         buttons: json.smartReply
     //     };
     // }
 
