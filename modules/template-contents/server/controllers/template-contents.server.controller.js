@@ -12,6 +12,16 @@ module.exports.findDatas = function(req, res)
     var templateId = req.params.templateId;
     var datasKey = req.params.datas;
 
+    var query = { botId: botId };
+    if(req.query.query)
+    {
+        var q = JSON.parse(req.query.query);
+        for(var key in q)
+        {
+            query[key] = q[key];
+        }
+    }
+
     fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
     {
         if(err)
@@ -38,7 +48,7 @@ module.exports.findDatas = function(req, res)
 
         console.log('모델명 : ', name, botId);
 
-        model.find({ botId: botId }).exec(function(err, list)
+        model.find(query).exec(function(err, list)
         {
             if(err)
             {
