@@ -147,9 +147,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "options": {
-                                            "output": "잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요."
-                                        },
+                                        "text": "고객명 : +context.user.customerName+\n생년월일 : +context.user.customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -167,9 +165,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "options": {
-                                    "output": "잘못 입력하셨습니다.\n\n주민등록번호 앞에 6자리 형식에 맞게 입력해주세요.\n\n예시) 900930"
-                                },
+                                "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n주민등록번호 앞 6자리 형식에 맞게 입력해주세요.\n예시) 900930",
                                 "type": "repeat"
                             }
                         ],
@@ -187,9 +183,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "options": {
-                            "output": "잘못 입력하셨습니다.\n\n한글 이름 형식에 맞게 다시 입력해주세요."
-                        },
+                        "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)",
                         "type": "repeat"
                     }
                 ],
@@ -341,7 +335,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+conversation.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +conversation.noticeDetail.PR_ZWSTNDAB+\n당월지침 : +conversation.noticeDetail.ZWSTNDAB+\n보정계수 : +conversation.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +conversation.noticeDetail.I_ABRMENGE+\n단위열량(MJ) : +conversation.noticeDetail.UNIT_CALORY+\n사용열량(MJ) : +conversation.noticeDetail.USED_CALORY+\n기본요금 : +conversation.noticeDetail.BETRW_GI+\n사용요금 : +conversation.noticeDetail.BETRW_GA+\n경감금액 : +conversation.noticeDetail.BETRW_DC+\n계량기교체비 : +conversation.noticeDetail.ZRESERVE_AMT+\n부가세 : +conversation.noticeDetail.SBETW+\n가산금 : +conversation.noticeDetail.BETRW_D+\n정산금액 : +conversation.noticeDetail.BETRW_JS+\n원단위절사 : +conversation.noticeDetail.BETRW_RO+\n재공급수수료 : +conversation.noticeDetail.BETRW_SS+\n고지금액 : +conversation.noticeDetail.BETRW_TOT+"
+                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+\n기본요금 : +dialog.noticeDetail.BETRW_GI+\n사용요금 : +dialog.noticeDetail.BETRW_GA+\n경감금액 : +dialog.noticeDetail.BETRW_DC+\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+\n부가세 : +dialog.noticeDetail.SBETW+\n가산금 : +dialog.noticeDetail.BETRW_D+\n정산금액 : +dialog.noticeDetail.BETRW_JS+\n원단위절사 : +dialog.noticeDetail.BETRW_RO+\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+\n고지금액 : +dialog.noticeDetail.BETRW_TOT+"
                                             }
                                         ],
                                         "id": "default18",
@@ -592,7 +586,6 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -694,7 +687,6 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -747,7 +739,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
+                                                "text": "+dialog.input.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.input.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
                                             }
                                         ],
                                         "id": "default25",
@@ -950,7 +942,6 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "",
                                                         "type": "repeat",
                                                         "dialog": 1
                                                     }
@@ -1016,7 +1007,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "현재 납부방법입니다.\n\n납부방법 : +conversation.curPaymentMethod+\n\n자동이체 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
+                                "text": "현재 납부방법입니다.\n\n납부방법 : +dialog.curPaymentMethod+\n\n자동이체 신청(변경)이나 해지를 원하시면 아래의 버튼을 눌러주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -1211,7 +1202,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "현재 고지방법 : +conversation.curNoticeMethod+"
+                                "text": "현재 고지방법 : +dialog.curNoticeMethod+"
                             }
                         ],
                         "id": "default11",
@@ -1645,7 +1636,6 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "",
                                 "type": "repeat"
                             }
                         ],
@@ -1659,19 +1649,13 @@ var dialogs = [
         "name": "시작카드 재질의",
         "input": [
             {
-                "text": {
-                    "raw": "",
-                    "nlp": ""
-                },
                 "if": "true"
             }
         ],
         "output": [
             {
                 "kind": "Action",
-                "text": "",
-                "type": "repeat",
-                "dialog": 1
+                "type": "repeat"
             }
         ],
         "id": "default22"
@@ -1769,10 +1753,12 @@ var commonDialogs = [
                 }
             }
         ],
-        "output": {
-            "kind": "Action",
-            "type": "up"
-        }
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
     },
     {
         "id": "noanswer",

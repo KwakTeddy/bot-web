@@ -12,6 +12,19 @@ module.exports.findDatas = function(req, res)
     var templateId = req.params.templateId;
     var datasKey = req.params.datas;
 
+    var page = req.query.page || 1;
+    var countPerPage = parseInt(req.query.countPerPage) || 10;
+
+    var query = { botId: botId };
+    if(req.query.query)
+    {
+        var q = JSON.parse(req.query.query);
+        for(var key in q)
+        {
+            query[key] = q[key];
+        }
+    }
+
     fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
     {
         if(err)
@@ -38,16 +51,25 @@ module.exports.findDatas = function(req, res)
 
         console.log('모델명 : ', name, botId);
 
-        model.find({ botId: botId }).exec(function(err, list)
-        {
-            if(err)
-            {
-                console.error(err);
-                return res.status(400).send({ error: err });
-            }
+    if(req.query.page!==undefined) {
+    model.find(query).skip(countPerPage * (page - 1)).limit(countPerPage).exec(function (err, list) {
+        if (err) {
+            console.error(err);
+            return res.status(400).send({error: err});
+        }
 
-            res.jsonp(list);
-        });
+        res.jsonp(list);
+    });
+    }
+    else{
+    model.find(query).exec(function (err, list) {
+        if (err) {
+            console.error(err);
+            return res.status(400).send({error: err});
+        }
+        res.jsonp(list);
+    });
+}
     });
 };
 

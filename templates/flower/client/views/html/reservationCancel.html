@@ -237,12 +237,11 @@
         </table>
         <div class="tablePaging">
             <div class="tablePagingC">
-                <a href="/playchat/templates/contents/reservation?page=1" ng-click="toPage(pageOptions.prev);" class="direction">
+                <a href="/playchat/templates/contents/reservation#cancel?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
                 </a>
-                 <!--ngRepeat: page in pageOptions.pages <a ng-repeat="page in pageOptions.pages" href="/playchat/templates/contents/reservation?page=1" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''" class="ng-binding ng-scope selected">1</a> end ngRepeat: page in pageOptions.pages -->
-                <!-- ngRepeat: page in pageOptions.pages --><a href="/playchat/templates/contents/reservation?page=1" ng-click="toPage(page);" class="ng-binding ng-scope selected">1</a><!-- end ngRepeat: page in pageOptions.pages -->
-                <a href="/playchat/templates/contents/reservation?page=0" ng-click="toPage(pageOptions.next);" class="direction">
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/templates/contents/reservation#cancel?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/templates/contents/reservation#cancel?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
                 </a>
             </div>

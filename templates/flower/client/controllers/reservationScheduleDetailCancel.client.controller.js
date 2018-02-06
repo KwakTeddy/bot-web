@@ -72,7 +72,6 @@ angular.module('template').controller('flowerReservationScheduleDetailCancelCont
 
                $scope.save = function()
                {
-                   alert("====3===");
                    for(var i=0; i<$scope.datas.length; i++) {
                        if ($scope.datas[i]._id===$scope.data._id) {
                            $scope.datas[i]= $scope.data;

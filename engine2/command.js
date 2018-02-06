@@ -33,7 +33,7 @@ var BotManager = require('./bot.js');
                     output = bot.commonDialogs[0].output[0];
                 }
 
-                output = OutputManager.make(context, {}, output);
+                output = OutputManager.make(context, { output: output });
                 callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                 console.log(chalk.green('================================'));
@@ -71,7 +71,7 @@ var BotManager = require('./bot.js');
                             output = bot.commonDialogs[0].output[0];
                         }
 
-                        output = OutputManager.make(context, {}, output);
+                        output = OutputManager.make(context, { output: output });
                         callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
                     }
                 });
@@ -113,7 +113,7 @@ var BotManager = require('./bot.js');
                             output = bot.commonDialogs[0].output[0];
                         }
 
-                        output = OutputManager.make(context, {}, output);
+                        output = OutputManager.make(context, { output: output });
                         callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
                     }
                 });
@@ -142,7 +142,7 @@ var BotManager = require('./bot.js');
                     output = bot.commonDialogs[0].output[0];
                 }
 
-                output = OutputManager.make(context, {}, output);
+                output = OutputManager.make(context, { output: output });
                 callback(null, { type: 'dialog', output: output});
 
                 console.log(chalk.green('================================'));
