@@ -1,4 +1,3 @@
-var path = require('path');
 var request = require('request');
 
 module.exports = function(bot)
@@ -20,6 +19,7 @@ module.exports = function(bot)
         if(errData.E_RETCD)
         {
             dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            dialog.output[0].buttons = [];
         }
         else
         {
@@ -41,7 +41,7 @@ module.exports = function(bot)
             var customerList = context.customerList;
             for(var i = 0; i < customerList.length; i++)
             {
-                if(i + 1 == dialog.input.text)
+                if(i + 1 == dialog.userInput.text)
                 {
                     selected = customerList[i];
                     break;
@@ -68,7 +68,7 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = dialog.input.text;
+            var word = dialog.userInput.text;
             var num = parseInt(word);
             if(num == 3 || num == 6 || num == 12)
             {
@@ -85,7 +85,7 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = dialog.input.text;
+            var word = dialog.userInput.text;
             var regExp = new RegExp('[가-힣]{2,4}', "g");
             if(regExp.exec(word))
             {
@@ -102,7 +102,7 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = dialog.input.text;
+            var word = dialog.userInput.text;
             var regexp = new RegExp("[0-9]{6}", "g");
 
             if(regexp.exec(word))
@@ -121,10 +121,12 @@ module.exports = function(bot)
         {
             var matched = false;
 
-            var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
-            if(regExp.exec(dialog.input.text))
+            var regExp = new RegExp('^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$', 'g');
+            var result = regExp.exec(dialog.userInput.text);
+
+            if(result)
             {
-                context.curCustomer.email = dialog.input.text;
+                context.curCustomer.email = dialog.userInput.text;
                 matched = true;
             }
 
@@ -138,7 +140,7 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = dialog.input.text;
+            var word = dialog.userInput.text;
 
             var regExp = new RegExp('\\b((?:010[-.]?\\d{4}|01[1|6|7|8|9][-.]?\\d{3,4})[-.]?\\d{4})\\b', 'g');
             if(regExp.exec(word))
@@ -157,7 +159,7 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var userInput = dialog.input.text.split(' ');
+            var userInput = dialog.userInput.text.split(' ');
             var nonPaymentList = context.nonpaymentHistory;
             var selected = context.selectedNonpayment = [];
             var total = 0;
@@ -207,9 +209,9 @@ module.exports = function(bot)
 
             for(var i = 0; i < bankArr.length; i++)
             {
-                if(dialog.input.text.indexOf(bankArr[i]) != -1)
+                if(dialog.userInput.text.indexOf(bankArr[i]) != -1)
                 {
-                    dialog.input.selectedBank = bankArr[i];
+                    dialog.userInput.selectedBank = bankArr[i];
                     matched = true;
                     break;
                 }
@@ -225,7 +227,7 @@ module.exports = function(bot)
 
             if(true)
             {
-                context.centerAddress = dialog.input.text;
+                context.centerAddress = dialog.userInput.text;
                 matched =true;
             }
 
@@ -375,7 +377,7 @@ module.exports = function(bot)
         {
             for(var i = 0; i < context.noticeHistory.length; i++)
             {
-                if(context.noticeHistory[i].BILLING_PERIOD == dialog.input.text)
+                if(context.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
                 {
                     dialog.noticeDetail = context.noticeHistory[i];
                     break;
@@ -436,7 +438,7 @@ module.exports = function(bot)
         {
             for(var i = 0; i < context.paymentHistory.length; i++)
             {
-                if(context.paymentHistory[i].YYYYMM == dialog.input.text)
+                if(context.paymentHistory[i].YYYYMM == dialog.userInput.text)
                 {
                     dialog.paymentDetail = context.paymentHistory[i];
                     break;
@@ -589,7 +591,7 @@ module.exports = function(bot)
                     '신한' : '026',
                     '하나' : '081'
                 };
-                var selectedBank = bankIndex[dialog.input.selectedBank];
+                var selectedBank = bankIndex[dialog.userInput.selectedBank];
                 var curCustomer = context.curCustomer;
 
                 var options = {};

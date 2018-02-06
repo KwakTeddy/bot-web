@@ -52,7 +52,7 @@ var Logger = require('./logger.js');
                 var cloneDialog = utils.clone(this.dm.foundDialog);
                 cloneDialog.originalInput = cloneDialog.input;
                 cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                cloneDialog.input = userInput;
+                cloneDialog.userInput = userInput;
 
                 DialogGraphManager.execWithRecord(bot, context, cloneDialog, function(output)
                 {

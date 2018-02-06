@@ -150,13 +150,13 @@ var Globals = require('../globals.js');
                             type = Globals.types[input[key]];
                         }
 
-                        type.typeCheck.call(type, { input: userInput }, context, function(matched, parsed, retry) //TODO retry가 true면 해당 input을 다시 입력받도록 질의 한다. 만약 필요한 값이 더 있다면 그 값도 요구할 수 있다. retry : ['주민등록번로를 다시 입력해주세요 YYMMDD']
+                        type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry) //TODO retry가 true면 해당 input을 다시 입력받도록 질의 한다. 만약 필요한 값이 더 있다면 그 값도 요구할 수 있다. retry : ['주민등록번로를 다시 입력해주세요 YYMMDD']
                         {
                             if(matched)
                             {
                                 result = result && true;
 
-                                dialog.matchCount++;
+                                dialog.matchCount += 100;
 
                                 if(parsed)
                                 {
@@ -434,7 +434,7 @@ var Globals = require('../globals.js');
                         var cloneDialog = utils.clone(parent);
                         cloneDialog.originalInput = cloneDialog.input;
                         cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.input = targetDialog.input;
+                        cloneDialog.userInput = targetDialog.userInput;
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - repeat ]]]'));
@@ -461,10 +461,12 @@ var Globals = require('../globals.js');
                     {
                         context.session.dialogCursor = parent.id;
 
+                        context.session.history.splice(0, 1);
+
                         var cloneDialog = utils.clone(parent);
                         cloneDialog.originalInput = cloneDialog.input;
                         cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.input = targetDialog.input;
+                        cloneDialog.userInput = targetDialog.userInput;
 
                         console.log();
                         console.log(chalk.yellow('[[[ Action - up ]]]'));
@@ -491,7 +493,7 @@ var Globals = require('../globals.js');
                             var cloneDialog = utils.clone(foundDialog);
                             cloneDialog.originalInput = cloneDialog.input;
                             cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.input = targetDialog.input;
+                            cloneDialog.userInput = targetDialog.userInput;
 
                             console.log();
                             console.log(chalk.yellow('[[[ Action - call ]]]'));
@@ -523,7 +525,7 @@ var Globals = require('../globals.js');
                             var cloneDialog = utils.clone(foundDialog);
                             cloneDialog.originalInput = cloneDialog.input;
                             cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.input = targetDialog.input;
+                            cloneDialog.userInput = targetDialog.userInput;
 
                             that.execWithRecord(bot, context, cloneDialog, callback);
                         }
@@ -547,7 +549,7 @@ var Globals = require('../globals.js');
                         var cloneDialog = utils.clone(foundDialog);
                         cloneDialog.originalInput = cloneDialog.input;
                         cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.input = targetDialog.input;
+                        cloneDialog.userInput = targetDialog.userInput;
 
                         that.execWithRecord(bot, context, cloneDialog, callback);
                     }
@@ -570,7 +572,7 @@ var Globals = require('../globals.js');
                             var cloneDialog = utils.clone(foundDialog);
                             cloneDialog.originalInput = cloneDialog.input;
                             cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.input = targetDialog.input;
+                            cloneDialog.userInput = targetDialog.userInput;
 
                             that.execWithRecord(bot, context, cloneDialog, callback);
                         }
