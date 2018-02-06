@@ -303,9 +303,8 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-
-                    callback();
                 }
+                callback();
             });
         }
     });
@@ -377,9 +376,9 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
-
                 }
+                callback();
+
             });
 
         }
@@ -447,8 +446,8 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
                 }
+                callback();
             });
         }
     });
@@ -523,9 +522,10 @@ module.exports = function(bot)
                     {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
         }
     });
@@ -600,9 +600,10 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
         }
     });
@@ -654,8 +655,8 @@ module.exports = function(bot)
                             errorHandler(dialog, body);
                         }
 
-                        callback();
                     }
+                    callback();
                 });
             }
     });
@@ -708,8 +709,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -750,8 +752,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -791,8 +794,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -832,9 +836,8 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-
-                    callback();
                 }
+                callback();
             });
         }
     });
@@ -874,8 +877,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -915,8 +919,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -967,8 +972,9 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, err);
                     }
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -1039,8 +1045,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -1094,9 +1101,10 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
         }
     });
@@ -1142,9 +1150,10 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
 
         }
