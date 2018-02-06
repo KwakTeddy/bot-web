@@ -461,6 +461,8 @@ var Globals = require('../globals.js');
                     {
                         context.session.dialogCursor = parent.id;
 
+                        context.session.history.splice(0, 1);
+
                         var cloneDialog = utils.clone(parent);
                         cloneDialog.originalInput = cloneDialog.input;
                         cloneDialog.originalOutput = utils.clone(cloneDialog.output);

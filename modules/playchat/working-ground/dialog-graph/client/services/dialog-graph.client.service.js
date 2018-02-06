@@ -870,7 +870,15 @@
             }
             else if(output.text)
             {
-                var template = '<div><div><span>' + output.text + '</span></div>';
+                var template = '<div>';
+
+                if(output.kind == 'Action')
+                {
+                    template += '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
+                }
+
+                template += '<div><span>' + output.text + '</span></div>';
+
                 if(output.image)
                 {
                     template += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
