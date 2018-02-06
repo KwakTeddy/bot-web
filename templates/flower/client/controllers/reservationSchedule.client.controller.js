@@ -1,40 +1,59 @@
 'use strict';
 
-angular.module('template').controller('flowerReservationScheduleController', ['$scope', '$resource', '$cookies','$http', 'FileUploader', 'LanguageService','$rootScope','DateRangePickerService',function ($scope, $resource, $cookies,  $http, FileUploader, LanguageService, $rootScope,DateRangePickerService)
+angular.module('template').controller('flowerReservationScheduleController', ['$scope', '$resource', '$cookies','$http', 'FileUploader', 'LanguageService','$rootScope','$location','PagingService','DateRangePickerService',function ($scope, $resource, $cookies,  $http, FileUploader, LanguageService, $rootScope,$location,PagingService,DateRangePickerService)
    {
     $scope.$parent.changeWorkingGroundName('주문관리', '/modules/playchat/gnb/client/imgs/reservation_grey.png');
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var DataService = $resource('/api/:templateId/:botId/reservations', { templateId : '@templateId', botId: '@botId'}, { update: { method: 'PUT' } });
-
+    // var PageService = $resource('/api/chatbots/totalpage', { botId: '@botId' });
     var chatbot = $cookies.getObject('chatbot');
 
-
-
-       function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式
-           var  oDate1,oDate2,iDays;
-           oDate1  =  new  Date(sDate1);   //转换为12-18-2002格式
-           oDate2  =  new  Date(sDate2);
-           iDays  =  oDate2  -  oDate1;   //把相差的毫秒数转换为天数
-           return  iDays
-       }
        $scope.searchword=undefined;
     (function()
     {
-        $scope.getList = function(searchword)
+        $scope.getList = function(page,searchword)
         {
+            var startDate=$scope.date.start.getTime();
+            var endDate=$scope.date.end.getTime();
+
+            var page = page || $location.search().page || 1;
+
+            var countPerPage = $location.search().countPerPage || 10;
+
+
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.datas = [];
                     $scope.list = [];
                     $scope.template = result;
-                    var startDate=$scope.date.start.getTime();
-                    var endDate=$scope.date.end.getTime();
+
                     if(searchword===undefined) {
                         DataService.query({
                                 templateId: result.id,
                                 botId: chatbot.id,
                                 query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate}}
                             }, function (list) {
+                                var total = list.length/countPerPage;
+                                if(total<=1){
+                                    var totalPage = 1;
+                                }
+                                else{
+                                    var totalPage = Math.ceil(total);
+                                }
+                                $scope.pageOptions = PagingService(page, totalPage);
+                            },
+                            function (err) {
+                                alert(err);
+                            });
+
+                        DataService.query({
+                                templateId: result.id,
+                                botId: chatbot.id,
+                                page:page,
+                                countPerPage:countPerPage,
+                                query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate}}
+                            }, function (list) {
+
                                 $scope.datas = list;
                                 console.log('결과 : ', list);
                                 $scope.searchword = undefined;
@@ -47,6 +66,32 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
                         DataService.query({
                                 templateId: result.id,
                                 botId: chatbot.id,
+                                query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate},
+                                    $or:[{order_name:searchword},{order_mobile:searchword},
+                                        {order_itemname:searchword},{order_itemcode:searchword},
+                                        {order_date:searchword},{order_hour:searchword},
+                                        {order_receivername:searchword},{order_receivermobile:searchword},
+                                        {order_receiveraddress:searchword},{order_deliverydate:searchword},
+                                        {order_deliveryhour:searchword},{order_greeting:searchword}]}
+                            }, function (list) {
+                                var total = list.length/countPerPage;
+                                if(total<=1){
+                                    var totalPage = 1;
+                                }
+                                else{
+                                    var totalPage = Math.ceil(total);
+                                }
+                                $scope.pageOptions = PagingService(page, totalPage);
+                            },
+                            function (err) {
+                                alert(err);
+                            });
+
+
+                        DataService.query({
+                                templateId: result.id,
+                                botId: chatbot.id,
+                                page: page, countPerPage: countPerPage,
                                 query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate},
                                     $or:[{order_name:searchword},{order_mobile:searchword},
                                         {order_itemname:searchword},{order_itemcode:searchword},
@@ -68,6 +113,11 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
                 {
                     alert(err);
                 });
+        };
+
+        $scope.toPage = function(page)
+        {
+            $scope.getList(page);
         };
 
         $scope.delete = function(data,index)
@@ -118,7 +168,7 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
        $scope.$on('reservation_search_changed', function(context, date)
        {
            $scope.searchword = date;
-           $scope.getList($scope.searchword);
+           $scope.getList(1,$scope.searchword);
        });
 
     $scope.getList();
