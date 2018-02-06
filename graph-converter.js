@@ -15,7 +15,7 @@ Bot.prototype.setCommonDialogs = function(commonDialogs)
 };
 
 var b = new Bot();
-require('./custom_modules/blank_user1_1517907429241/default.graph.js')(b);
+require('./custom_modules/flowermania/quible.js')(b);
 
 
 var convert = function(dialogs)
@@ -143,7 +143,11 @@ var convert = function(dialogs)
 };
 
 convert(b.dialogs);
-convert(b.commonDialogs);
+
+if(b.commonDialogs)
+{
+    convert(b.commonDialogs);
+}
 
 var fs = require('fs');
 

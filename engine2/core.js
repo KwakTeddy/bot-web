@@ -100,16 +100,16 @@ var Transaction = require('./utils/transaction.js');
                             Context.init(context);
                         }
 
+                        context.globals = globals;
+                        context.user.userKey = userKey;
+                        context.bot = bot;
+                        context.channel.name = 'kakao';
+
                         if(inputRaw.startsWith(':'))
                         {
                             Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
                             return;
                         }
-
-                        context.globals = globals;
-                        context.user.userKey = userKey;
-                        context.bot = bot;
-                        context.channel.name = 'kakao';
 
                         if(context.session.history.length > 10)
                         {

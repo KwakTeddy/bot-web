@@ -11,7 +11,7 @@ var Globals = require('../globals.js');
 {
     var DialogGraphManager = function()
     {
-
+        this.exclude = ['하다', '이다'];
     };
 
     DialogGraphManager.prototype.checkInputText = function(nlpText, text)
@@ -24,9 +24,12 @@ var Globals = require('../globals.js');
             for(var i=0; i<words.length; i++)
             {
                 var word = RegExp.escape(words[i]);
-                if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+                if(this.exclude.indexOf(word) == -1)
                 {
-                    count++;
+                    if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+                    {
+                        count++;
+                    }
                 }
             }
         }
@@ -113,6 +116,7 @@ var Globals = require('../globals.js');
                             var matchCount = that.checkInputText(nlpText, input.text.nlp);
                             if(matchCount > 0)
                             {
+                                console.log('머지 : ', nlpText, input.text.nlp);
                                 dialog.matchCount += matchCount;
                                 result = result && true;
                             }
@@ -199,7 +203,10 @@ var Globals = require('../globals.js');
                     if(result)
                     {
                         // return callback(dialog);
-                        selectedDialog.push(dialog);
+                        if(selectedDialog.indexOf(dialog) == -1)
+                        {
+                            selectedDialog.push(dialog);
+                        }
                     }
 
                     next();
