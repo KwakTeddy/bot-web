@@ -19,6 +19,7 @@ module.exports = function(bot)
         if(errData.E_RETCD)
         {
             dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            dialog.output[0].buttons = [];
         }
         else
         {
@@ -120,8 +121,10 @@ module.exports = function(bot)
         {
             var matched = false;
 
-            var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
-            if(regExp.exec(dialog.input.text))
+            var regExp = new RegExp('^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$', 'g');
+            var result = regExp.exec(dialog.input.text);
+
+            if(result)
             {
                 context.curCustomer.email = dialog.input.text;
                 matched = true;
@@ -210,8 +213,6 @@ module.exports = function(bot)
                 {
                     dialog.input.selectedBank = bankArr[i];
                     matched = true;
-                    console.log('$$$$$$$$$$$');
-                    console.log(userInput.selectedBank)
                     break;
                 }
             }
