@@ -15,7 +15,7 @@ Bot.prototype.setCommonDialogs = function(commonDialogs)
 };
 
 var b = new Bot();
-require('./custom_modules/sample_com2best_1517227988450/default.graph.js')(b);
+require('./custom_modules/blank_user1_1517907429241/default.graph.js')(b);
 
 
 var convert = function(dialogs)
@@ -38,6 +38,7 @@ var convert = function(dialogs)
         for(var j=0; j<dialogs[i].output.length; j++)
         {
             var output = dialogs[i].output[j];
+            delete output.uploader;
             if(output.kind == 'Action')
             {
                 var type = '';
@@ -73,6 +74,63 @@ var convert = function(dialogs)
                 {
                     output.type = 'up';
                     delete output.up;
+                }
+
+                output.dialogName = output.dialog;
+                delete output.dialog;
+            }
+            else
+            {
+                if(output.call)
+                {
+                    output.type = 'call';
+                    output.dialogName = output.call;
+                    delete output.call;
+                    output.dialogName = output.dialog;
+                    delete output.dialog;
+                    output.kind = 'Action';
+                }
+                else if(output.callChild)
+                {
+                    output.type = 'callChild';
+                    output.dialogName = output.callChild;
+                    delete output.callChild;
+                    output.dialogName = output.dialog;
+                    delete output.dialog;
+                    output.kind = 'Action';
+                }
+                else if(output.return)
+                {
+                    output.type = 'return';
+                    delete output.return;
+                    output.dialogName = output.dialog;
+                    delete output.dialog;
+                    output.kind = 'Action';
+                }
+                else if(output.returnCall)
+                {
+                    output.type = 'returnCall';
+                    output.dialogName = output.returnCall;
+                    delete output.returnCall;
+                    output.dialogName = output.dialog;
+                    delete output.dialog;
+                    output.kind = 'Action';
+                }
+                else if(output.repeat)
+                {
+                    output.type = 'repeat';
+                    delete output.repeat;
+                    output.dialogName = output.dialog;
+                    delete output.dialog;
+                    output.kind = 'Action';
+                }
+                else if(output.up)
+                {
+                    output.type = 'up';
+                    delete output.up;
+                    output.dialogName = output.dialog;
+                    delete output.dialog;
+                    output.kind = 'Action';
                 }
             }
         }
