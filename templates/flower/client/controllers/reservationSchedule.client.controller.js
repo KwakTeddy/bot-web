@@ -9,8 +9,6 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
     var chatbot = $cookies.getObject('chatbot');
 
 
-    // $scope.date = angular.element('#createdRange').get(0).getCurrentDate();
-    // $scope.list = [];
 
        function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式
            var  oDate1,oDate2,iDays;
@@ -26,33 +24,45 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
         {
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
-                    $scope.datass=[];
-                    $scope.datas=[];
+                    $scope.datas = [];
+                    $scope.list = [];
                     $scope.template = result;
-                            DataService.query({ templateId: result.id, botId: chatbot.id }, function(list)
-                            {
-                                for(var i=0;i<list.length;i++){
-                                    var datetime =new Date(list[i].order_deliverydate+" "+list[i].order_deliveryhour);
-                                    var datestart=new Date($scope.date.start);
-                                    var dateend=new Date($scope.date.end);
-                                    var startdate=DateDiff(datetime, datestart);
-                                    var enddate=DateDiff(datetime, dateend);
-if(searchword===undefined) {
-    if (list[i].order_status !== "주문취소" && list[i].order_status !== "주문삭제" && startdate <= 0 && enddate >= 0) {
-        $scope.datas.push(list[i]);
-    }
-}
-else{
-    if (list[i].order_status !== "주문취소" && list[i].order_name === searchword && list[i].order_status !== "주문삭제" && startdate <= 0 && enddate >= 0) {
-        $scope.datas.push(list[i]);
-    }
-}
-                                }
-                        },
-                        function(err)
-                        {
-                            alert(err);
-                        });
+                    var startDate=$scope.date.start.getTime();
+                    var endDate=$scope.date.end.getTime();
+                    if(searchword===undefined) {
+                        DataService.query({
+                                templateId: result.id,
+                                botId: chatbot.id,
+                                query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate}}
+                            }, function (list) {
+                                $scope.datas = list;
+                                console.log('결과 : ', list);
+                                $scope.searchword = undefined;
+                            },
+                            function (err) {
+                                alert(err);
+                            });
+                    }
+                    else{
+                        DataService.query({
+                                templateId: result.id,
+                                botId: chatbot.id,
+                                query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate},
+                                    $or:[{order_name:searchword},{order_mobile:searchword},
+                                        {order_itemname:searchword},{order_itemcode:searchword},
+                                        {order_date:searchword},{order_hour:searchword},
+                                        {order_receivername:searchword},{order_receivermobile:searchword},
+                                        {order_receiveraddress:searchword},{order_deliverydate:searchword},
+                                        {order_deliveryhour:searchword},{order_greeting:searchword}]}
+                            }, function (list) {
+                                $scope.datas = list;
+                                console.log('결과 : ', list);
+                                $scope.searchword = undefined;
+                            },
+                            function (err) {
+                                alert(err);
+                            });
+                    }
                 },
                 function(err)
                 {
