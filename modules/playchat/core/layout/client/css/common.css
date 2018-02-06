@@ -361,7 +361,6 @@ input.search[type="submit"]:hover {
 .btn04 a{
   color: #fff;
   letter-spacing: 0.3px;
-  vertical-align: middle;
 }
 .btn04:active{
 	background: #129de9;
