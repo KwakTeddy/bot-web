@@ -34,14 +34,14 @@ module.exports = function(bot)
 
     bot.setType('customerListType',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
             var selected = undefined;
             var customerList = context.customerList;
             for(var i = 0; i < customerList.length; i++)
             {
-                if(i + 1 == userInput.text)
+                if(i + 1 == dialog.input.text)
                 {
                     selected = customerList[i];
                     break;
@@ -65,10 +65,10 @@ module.exports = function(bot)
 
     bot.setType('monthType',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = userInput.text;
+            var word = dialog.input.text;
             var num = parseInt(word);
             if(num == 3 || num == 6 || num == 12)
             {
@@ -82,10 +82,10 @@ module.exports = function(bot)
 
     bot.setType('saveCustomerName',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = userInput.text;
+            var word = dialog.input.text;
             var regExp = new RegExp('[가-힣]{2,4}', "g");
             if(regExp.exec(word))
             {
@@ -99,10 +99,10 @@ module.exports = function(bot)
 
     bot.setType('saveCustomerBirth',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = userInput.text;
+            var word = dialog.input.text;
             var regexp = new RegExp("[0-9]{6}", "g");
 
             if(regexp.exec(word))
@@ -117,12 +117,12 @@ module.exports = function(bot)
 
     bot.setType('email',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
 
             var regExp = new RegExp('^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$', 'g');
-            if(regExp.exec(userInput.text))
+            if(regExp.exec(dialog.input.text))
             {
                 context.curCustomer.email = dialog.input.text;
                 matched = true;
@@ -135,10 +135,10 @@ module.exports = function(bot)
 
     bot.setType('saveCustomerMobile',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var word = userInput.text;
+            var word = dialog.input.text;
 
             var regExp = new RegExp('\\b((?:010[-.]?\\d{4}|01[1|6|7|8|9][-.]?\\d{3,4})[-.]?\\d{4})\\b', 'g');
             if(regExp.exec(word))
@@ -154,10 +154,10 @@ module.exports = function(bot)
 
     bot.setType('multiMonthType',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var userInput = userInput.text.split(' ');
+            var userInput = dialog.input.text.split(' ');
             var nonPaymentList = context.nonpaymentHistory;
             var selected = context.selectedNonpayment = [];
             var total = 0;
@@ -199,7 +199,7 @@ module.exports = function(bot)
 
     bot.setType('selectedAccountType',
     {
-        typeCheck: function (userInput, context, callback)
+        typeCheck: function (dialog, context, callback)
         {
             var matched = false;
             var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
@@ -207,9 +207,9 @@ module.exports = function(bot)
 
             for(var i = 0; i < bankArr.length; i++)
             {
-                if(userInput.text.indexOf(bankArr[i]) != -1)
+                if(dialog.input.text.indexOf(bankArr[i]) != -1)
                 {
-                    userInput.selectedBank = bankArr[i];
+                    dialog.input.selectedBank = bankArr[i];
                     matched = true;
                     break;
                 }
@@ -220,12 +220,12 @@ module.exports = function(bot)
     });
 
     bot.setType('centerAddressType', {
-        typeCheck: function (userInput, context, callback) {
+        typeCheck: function (dialog, context, callback) {
             var matched = false;
 
             if(true)
             {
-                context.centerAddress = userInput.text;
+                context.centerAddress = dialog.input.text;
                 matched =true;
             }
 
@@ -589,7 +589,7 @@ module.exports = function(bot)
                     '신한' : '026',
                     '하나' : '081'
                 };
-                var selectedBank = bankIndex[dialog.selectedBank];
+                var selectedBank = bankIndex[dialog.input.selectedBank];
                 var curCustomer = context.curCustomer;
 
                 var options = {};

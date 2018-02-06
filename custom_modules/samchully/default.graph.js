@@ -747,7 +747,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
+                                                "text": "+dialog.input.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.input.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
                                             }
                                         ],
                                         "id": "default25",
