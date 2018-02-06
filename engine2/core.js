@@ -13,7 +13,6 @@ var BotManager = require('./bot.js');
 var InputManager = require('./input.js');
 var KnowledgeGraph = require('./km.js');
 var AnswerManager = require('./answer.js');
-var OutputManager = require('./output.js');
 
 var Transaction = require('./utils/transaction.js');
 
@@ -112,10 +111,13 @@ var Transaction = require('./utils/transaction.js');
                         context.bot = bot;
                         context.channel.name = 'kakao';
 
-                        var dialog = Context.createDialog();
-                        dialog.input.text = inputRaw;
+                        if(context.session.history.length > 10)
+                        {
+                            context.session.history.splice(context.session.history.length-1, 1);
+                        }
 
-                        InputManager.analysis(bot, dialog, error, function()
+                        var userInput = { text: inputRaw };
+                        InputManager.analysis(bot, userInput, error, function()
                         {
                             var transaction = new Transaction.sync();
 
@@ -123,7 +125,7 @@ var Transaction = require('./utils/transaction.js');
                             {
                                 transaction.call(function(done)
                                 {
-                                    KnowledgeGraph.memory(bot, dialog, error, function(numAffected)
+                                    KnowledgeGraph.memory(bot, userInput, error, function(numAffected)
                                     {
                                         if(numAffected && numAffected.ok == 1 && numAffected.n > 0)
                                         {
@@ -151,14 +153,14 @@ var Transaction = require('./utils/transaction.js');
                             {
                                 transaction.done(function()
                                 {
-                                    AnswerManager.answer(bot, context, dialog, error, function(output)
+                                    AnswerManager.answer(bot, context, userInput, error, function(dialog)
                                     {
-                                        output = OutputManager.make(context, dialog, output);
-
                                         delete context.bot;
                                         delete context.channel;
                                         delete context.globals;
                                         delete context.session.currentDialog;
+
+                                        console.log('저장되는 : ', context.session.dialogCursor);
 
                                         that.redis.set(contextKey, JSON.stringify(context), function(err)
                                         {
@@ -172,7 +174,7 @@ var Transaction = require('./utils/transaction.js');
                                                 that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                                 context.bot = bot;
-                                                outCallback(context, output);
+                                                outCallback(context, dialog.output);
 
                                                 console.log(chalk.green('================================================================'));
                                                 console.log();

@@ -209,7 +209,7 @@ module.exports = function(bot)
             {
                 if(dialog.input.text.indexOf(bankArr[i]) != -1)
                 {
-                    dialog.selectedBank = bankArr[i];
+                    dialog.input.selectedBank = bankArr[i];
                     matched = true;
                     break;
                 }
@@ -589,7 +589,7 @@ module.exports = function(bot)
                     '신한' : '026',
                     '하나' : '081'
                 };
-                var selectedBank = bankIndex[dialog.selectedBank];
+                var selectedBank = bankIndex[dialog.input.selectedBank];
                 var curCustomer = context.curCustomer;
 
                 var options = {};
