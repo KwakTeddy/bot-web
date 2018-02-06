@@ -26,6 +26,20 @@ module.exports = function(bot)
             dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
     };
+
+    var dateFormatChange = function (dateString) {
+        var newStr;
+        if(dateString && dateString.length == 6)
+        {
+            newStr = dateString.slice(0, 4) + '년 ' + dateString.slice(4, 6) + '월';
+
+        }
+        else if(dateString && dateString.length == 8)
+        {
+            newStr = dateString.slice(0, 4) + '년 ' + dateString.slice(4, 6) + '월 ' + dateString.slice(6, 8) + '일';
+        }
+        return newStr ? newStr : dateString;
+    };
     
     var timeout = 7000;
 
@@ -178,6 +192,7 @@ module.exports = function(bot)
                     }
                     if(!alreadySelected)
                     {
+                        nonPaymentList[userInput[i] - 1].userIdx = userInput[i];
                         selected.push(nonPaymentList[userInput[i] - 1]);
                         matched = true;
                     }
@@ -333,7 +348,6 @@ module.exports = function(bot)
             ];
             options.json.isTable = true;
             options.timeout = timeout;
-            console.log(JSON.stringify(options))
 
             request.post(options, function(err, response, body)
             {
@@ -350,15 +364,15 @@ module.exports = function(bot)
                     else if(body.E_RETCD == 'S')
                     {
                         var data = body.data.ET_TABLE;
-                        context.noticeHistory = data;
-                        console.log(context.noticeHistory)
-
                         dialog.output[0].buttons = [];
                         for(var i = 0; i < data.length; i++)
                         {
+                            data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
+                            data[i].FAEDN = dateFormatChange(data[i].FAEDN);
                             dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                         }
-
+                        context.noticeHistory = data;
+                        console.log(context.noticeHistory);
 
                     }else {
                         errorHandler(dialog, body);
@@ -421,6 +435,13 @@ module.exports = function(bot)
                     {
                         console.log(JSON.stringify(body, null, 4));
                         var data = body.data.ET_TABLE;
+
+                        for(var i = 0; i < data.length; i++)
+                        {
+                            data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
+                            data[i].BUDAT = dateFormatChange(data[i].BUDAT);
+                        }
+
                         context.paymentHistory = data;
 
                     }else {
@@ -482,7 +503,15 @@ module.exports = function(bot)
                         if(body.data)
                         {
                             console.log(JSON.stringify(body, null, 4));
-                            context.nonpaymentHistory = body.data.E_TAB;
+                            var data = body.data.E_TAB;
+
+                            for(var i = 0 ; i < data.length; i++)
+                            {
+                                data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
+                                data[i].FAEDN = dateFormatChange(data[i].FAEDN);
+
+                            }
+                            context.nonpaymentHistory = data;
                         }
                         else
                         {
@@ -561,7 +590,7 @@ module.exports = function(bot)
                             else
                             {
 
-                                dialog.output[0].buttons.push({text: data[i].BANKA + '입금전용계좌 생성'});
+                                dialog.output[0].buttons.push({text: data[i].BANKA + ' 입금전용계좌 생성'});
                                 // dialog.output[0].buttons.push({text: idx + '. ' + data[i].BANKA + '입금전용계좌 생성'});
                                 idx++;
 
