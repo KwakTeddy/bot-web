@@ -441,7 +441,7 @@ var Globals = require('../globals.js');
                         console.log(cloneDialog);
 
                         context.session.dialogCursor = cloneDialog.id;
-                        callback(resultOutput.text || cloneDialog.output[0]);
+                        callback({ text: resultOutput.text || cloneDialog.output[0] });
                     }
                     else
                     {
@@ -454,6 +454,7 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'up')
                 {
+                    context.session.history.splice(0, 1);
                     context.session.history.splice(0, 1);
 
                     var parent = bot.parentDialogMap[context.session.history[0].id];
@@ -480,7 +481,7 @@ var Globals = require('../globals.js');
                         console.log(chalk.yellow('[[[ Action - up ]]]'));
                         console.log('prev is undefined');
 
-                        callback({ output: { text: '[up] prev가 없습니다' } });
+                        callback({ text: '[up] prev가 없습니다' });
                     }
                 }
                 else if(resultOutput.type == 'call')
@@ -503,12 +504,12 @@ var Globals = require('../globals.js');
                         }
                         else
                         {
-                            callback({ output: { text: 'Call 타겟을 찾을 수 없습니다.' }});
+                            callback({ text: 'Call 타겟을 찾을 수 없습니다.' });
                         }
                     }
                     else
                     {
-                        callback({ output: { text: 'Call 타겟을 찾을 수 없습니다.' }});
+                        callback({ text: 'Call 타겟을 찾을 수 없습니다.' });
                     }
                 }
                 else if(resultOutput.type == 'callChild')
@@ -531,7 +532,7 @@ var Globals = require('../globals.js');
                         }
                         else
                         {
-                            callback({ output: { text: 'CallChild 타겟을 찾을 수 없습니다.' }});
+                            callback({ text: 'CallChild 타겟을 찾을 수 없습니다.' });
                         }
                     });
                 }
@@ -555,7 +556,7 @@ var Globals = require('../globals.js');
                     }
                     else
                     {
-                        callback({ output: { text: 'Return Call 타겟을 찾을 수 없습니다.' }});
+                        callback({ text: 'Return Call 타겟을 찾을 수 없습니다.' });
                     }
                 }
                 else if(resultOutput.type == 'return')
@@ -578,7 +579,7 @@ var Globals = require('../globals.js');
                         }
                         else
                         {
-                            callback({ output: { text: 'Return 타겟을 찾을 수 없습니다.' }});
+                            callback({ text: 'Return 타겟을 찾을 수 없습니다.' });
                         }
                     }
                     else
