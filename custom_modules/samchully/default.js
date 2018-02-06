@@ -1,4 +1,3 @@
-var path = require('path');
 var request = require('request');
 
 module.exports = function(bot)
@@ -207,10 +206,13 @@ module.exports = function(bot)
 
             for(var i = 0; i < bankArr.length; i++)
             {
+                console.log(userInput.text);
                 if(userInput.text.indexOf(bankArr[i]) != -1)
                 {
                     userInput.selectedBank = bankArr[i];
                     matched = true;
+                    console.log('$$$$$$$$$$$');
+                    console.log(userInput.selectedBank)
                     break;
                 }
             }

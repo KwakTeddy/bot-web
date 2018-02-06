@@ -1765,10 +1765,12 @@ var commonDialogs = [
                 }
             }
         ],
-        "output": [{
-            "kind": "Action",
-            "type": "up"
-        }]
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
     },
     {
         "id": "noanswer",
