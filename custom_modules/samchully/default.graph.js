@@ -1484,7 +1484,7 @@ var dialogs = [
                 "text": "원하시는 메뉴를 선택해주세요.",
                 "buttons": [
                     {
-                        "url": "http://www.samchully.co.kr/customer/gas/info/usage/new.do",
+                        "url": "",
                         "text": "1. 도시가스 이용가이드"
                     },
                     {
@@ -1500,6 +1500,24 @@ var dialogs = [
         ],
         "id": "default8",
         "children": [
+            {
+                "name": "도시가스 이용가이드",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "도시가스 이용가이드",
+                            "nlp": "도시가스 이용 가이드"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "도시가스 이용가이드 URL"
+                    }
+                ],
+                "id": "default52"
+            },
             {
                 "name": "자주 묻는 질문",
                 "input": [
