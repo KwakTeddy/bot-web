@@ -926,10 +926,6 @@ var dialogs = [
                                                 "name": "이메일 재질의",
                                                 "input": [
                                                     {
-                                                        "text": {
-                                                            "raw": "",
-                                                            "nlp": ""
-                                                        },
                                                         "if": "true"
                                                     }
                                                 ],
@@ -937,7 +933,8 @@ var dialogs = [
                                                     {
                                                         "kind": "Action",
                                                         "type": "repeat",
-                                                        "dialog": 1
+                                                        "dialog": 1,
+                                                        "text": "잘못 입력하셨습니다.\n\n이메일 형식에 맞게 다시 입력해주세요."
                                                     }
                                                 ],
                                                 "id": "default27"

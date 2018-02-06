@@ -368,6 +368,7 @@ module.exports = function(bot)
                         for(var i = 0; i < data.length; i++)
                         {
                             data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
+                            data[i].FAEDN = dateFormatChange(data[i].FAEDN);
                             dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                         }
                         context.noticeHistory = data;
