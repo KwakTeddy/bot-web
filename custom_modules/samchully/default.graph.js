@@ -526,7 +526,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -633,7 +633,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -716,13 +716,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.nonpaymentHistory#\n+index+.\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "농협 입금전용계좌 생성"
-                                            }
-                                        ]
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#"
                                     }
                                 ],
                                 "id": "default24",
@@ -739,7 +733,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.input.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.input.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
+                                                "text": "+dialog.userInput.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.userInput.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
                                             }
                                         ],
                                         "id": "default25",
@@ -1097,7 +1091,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "자가 검침"
+                                "text": "미구현된 기능입니다."
                             }
                         ],
                         "id": "default10",
