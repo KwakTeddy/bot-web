@@ -14,7 +14,7 @@ exports.keyboard = function (req, res)
     },
     function(err)
     {
-        respondMessage(res, { output: { text: JSON.stringify(err) } });
+        respondMessage(res, { text: JSON.stringify(err) });
     });
 };
 
@@ -40,7 +40,7 @@ exports.message = function (req, res)
         },
         function(err)
         {
-            respondMessage(res, { output: { text: JSON.stringify(err) } });
+            respondMessage(res,{ text: JSON.stringify(err) });
         });
     }
 };
