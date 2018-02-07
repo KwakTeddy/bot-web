@@ -337,35 +337,37 @@ var Globals = require('../globals.js');
         });
     };
 
-    DialogGraphManager.prototype.execWithRecord = function(bot, context, targetDialog, callback)
+    // 실행된 dialogInstance를 히스토리에 기록.
+    DialogGraphManager.prototype.execWithRecord = function(bot, context, dialogInstance, callback)
     {
-        context.session.history.splice(0, 0, targetDialog);
-        context.session.dialogCursor = targetDialog.id;
+        context.session.history.splice(0, 0, dialogInstance);
+        context.session.dialogCursor = dialogInstance.id;
 
-        this.exec(bot, context, targetDialog, callback);
+        this.exec(bot, context, dialogInstance, callback);
     };
 
-    DialogGraphManager.prototype.exec = function(bot, context, targetDialog, callback)
+    DialogGraphManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
         var that = this;
 
         console.log();
         console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
+        console.log(dialogInstance);
 
         var sync = new Transaction.sync();
-        sync.targetDialog = targetDialog;
-        if(targetDialog.task)
+        sync.dialogInstance = dialogInstance;
+        if(dialogInstance.task)
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, context, sync.targetDialog, done);
+                TaskManager.exec(bot, context, sync.dialogInstance, done);
             });
         }
 
         sync.done(function()
         {
-            var targetDialog = sync.targetDialog;
-            var output = targetDialog.output;
+            var dialogInstance = sync.dialogInstance;
+            var output = dialogInstance.output;
 
             if(typeof output == 'string')
             {
@@ -404,7 +406,7 @@ var Globals = require('../globals.js');
                                 {
                                     console.error(chalk.red(err));
                                 }
-                            })(context, targetDialog, output[i]);
+                            })(context, dialogInstance, output[i]);
                         }
                     }
                     else if(!output[i].if)
@@ -425,28 +427,27 @@ var Globals = require('../globals.js');
             }
 
             console.log();
-            console.log(chalk.yellow('[[[ Output ]]]'));
+            console.log(chalk.yellow('[[[ Selected Output ]]]'));
             console.log(resultOutput);
 
             if(resultOutput.kind == 'Action')
             {
                 if(resultOutput.type == 'repeat')
                 {
+                    // Repeat을 위한 다이얼로그 인스턴스가 실행되어 history에 쌓였으므로 제거해준다.
                     context.session.history.splice(0, 1);
 
-                    var parent = bot.parentDialogMap[targetDialog.id];
+                    // Repeat은 무조건 부모 다이얼로그를 실행한다.
+                    var parent = bot.parentDialogMap[dialogInstance.id];
                     if(parent)
                     {
                         context.session.dialogCursor = parent.id;
 
-                        var cloneDialog = ContextManager.createDialog(parent, targetDialog.userInput);
-
                         console.log();
                         console.log(chalk.yellow('[[[ Action - repeat ]]]'));
-                        console.log(cloneDialog);
+                        console.log(parent.id, parent.name);
 
-                        context.session.dialogCursor = cloneDialog.id;
-                        callback({ text: resultOutput.text || cloneDialog.output[0] });
+                        that.exec(bot, context, parent, callback);
                     }
                     else
                     {
@@ -459,20 +460,18 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'up')
                 {
-                    context.session.history.splice(0, 2); // 이전 입력시 생긴 카드
+                    context.session.history.splice(0, 2); // up을 입력해서 실행한 카드, 그 전에 실행한 카드, 그 이전으로 돌아가야 하므로 앞 2개를 제거한다.
 
                     var parent = context.session.history[0];
                     if(parent)
                     {
                         context.session.dialogCursor = parent.id;
 
-                        var cloneDialog = ContextManager.createDialog(parent, targetDialog.userInput);
-
                         console.log();
                         console.log(chalk.yellow('[[[ Action - up ]]]'));
-                        console.log(cloneDialog.id, cloneDialog.name);
+                        console.log(parent.id, parent.name);
 
-                        that.exec(bot, context, cloneDialog, callback);
+                        that.exec(bot, context, parent, callback);
                     }
                     else
                     {
@@ -487,21 +486,21 @@ var Globals = require('../globals.js');
                 {
                     if(resultOutput.dialogId)
                     {
-                        var foundDialog = bot.dialogMap[resultOutput.dialogId];
-                        if(foundDialog)
+                        var matchedDialog = bot.dialogMap[resultOutput.dialogId];
+                        if(matchedDialog)
                         {
-                            var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
+                            var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
 
                             if(resultOutput.text)
                             {
-                                cloneDialog.options.outputText = resultOutput.text;
+                                tempDialogInstance.options.outputText = resultOutput.text;
                             }
 
                             console.log();
                             console.log(chalk.yellow('[[[ Action - call ]]]'));
-                            console.log(cloneDialog);
+                            console.log(tempDialogInstance);
 
-                            that.execWithRecord(bot, context, cloneDialog, callback);
+                            that.execWithRecord(bot, context, tempDialogInstance, callback);
                         }
                         else
                         {
@@ -516,17 +515,17 @@ var Globals = require('../globals.js');
                 else if(resultOutput.type == 'callChild')
                 {
                     var dialog = utils.clone(bot.dialogMap[resultOutput.dialogId]);
-                    that.find(bot, context, dialog, function(err, foundDialog)
+                    that.find(bot, context, dialog, function(err, matchedDialog)
                     {
-                        if(foundDialog)
+                        if(matchedDialog)
                         {
                             console.log();
                             console.log(chalk.yellow('[[[ Action - callChild ]]]'));
-                            console.log(foundDialog.id);
+                            console.log(matchedDialog.id);
 
-                            var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
+                            var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
 
-                            that.execWithRecord(bot, context, cloneDialog, callback);
+                            that.execWithRecord(bot, context, tempDialogInstance, callback);
                         }
                         else
                         {
@@ -536,18 +535,18 @@ var Globals = require('../globals.js');
                 }
                 else if(resultOutput.type == 'returnCall')
                 {
-                    context.session.returnDialog = targetDialog.id;
+                    context.session.returnDialog = dialogInstance.id;
 
-                    var foundDialog = bot.dialogMap[resultOutput.dialogId];
-                    if(foundDialog)
+                    var matchedDialog = bot.dialogMap[resultOutput.dialogId];
+                    if(matchedDialog)
                     {
                         console.log();
                         console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
-                        console.log(foundDialog.id);
+                        console.log(matchedDialog.id);
 
-                        var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
+                        var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
 
-                        that.execWithRecord(bot, context, cloneDialog, callback);
+                        that.execWithRecord(bot, context, tempDialogInstance, callback);
                     }
                     else
                     {
@@ -558,16 +557,16 @@ var Globals = require('../globals.js');
                 {
                     if(context.session.returnDialog)
                     {
-                        var foundDialog = bot.parentDialogMap[context.session.returnDialog];
-                        if(foundDialog)
+                        var matchedDialog = bot.parentDialogMap[context.session.returnDialog];
+                        if(matchedDialog)
                         {
                             console.log();
                             console.log(chalk.yellow('[[[ Action - return ]]]'));
-                            console.log(foundDialog.id);
+                            console.log(matchedDialog.id);
 
-                            var cloneDialog = ContextManager.createDialog(foundDialog, targetDialog.userInput);
+                            var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
 
-                            that.execWithRecord(bot, context, cloneDialog, callback);
+                            that.execWithRecord(bot, context, tempDialogInstance, callback);
                         }
                         else
                         {
@@ -588,12 +587,10 @@ var Globals = require('../globals.js');
             }
             else
             {
-                if(targetDialog.options.outputText)
+                if(dialogInstance.options.outputText)
                 {
-                    resultOutput.text = targetDialog.options.outputText;
+                    resultOutput.text = dialogInstance.options.outputText;
                 }
-
-                console.log('옵션??? : ', targetDialog.options);
 
                 callback(resultOutput);
             }

@@ -34,8 +34,8 @@ var DialogGraphManager = require('./answer/dm.js');
                 //     output = bot.commonDialogs[0].output[0];
                 // }
 
-                var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
-                DialogGraphManager.exec(bot, context, cloneDialog, function(output)
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
                     output = OutputManager.make(context, {}, output);
                     callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
@@ -70,8 +70,8 @@ var DialogGraphManager = require('./answer/dm.js');
                     }
                     else
                     {
-                        var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
-                        DialogGraphManager.exec(bot, context, cloneDialog, function(output)
+                        var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                         {
                             output = OutputManager.make(context, {}, output);
                             callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
@@ -113,8 +113,8 @@ var DialogGraphManager = require('./answer/dm.js');
                     }
                     else
                     {
-                        var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
-                        DialogGraphManager.exec(bot, context, cloneDialog, function(output)
+                        var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                         {
                             output = OutputManager.make(context, {}, output);
                             callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
@@ -143,8 +143,8 @@ var DialogGraphManager = require('./answer/dm.js');
             {
                 BotManager.reloadBotFiles(bot);
 
-                var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
-                DialogGraphManager.exec(bot, context, cloneDialog, function(output)
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
                     output = OutputManager.make(context, { }, output);
                     callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
