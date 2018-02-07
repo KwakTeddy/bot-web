@@ -37,7 +37,7 @@ var DialogGraphManager = require('./answer/dm.js');
                 var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
                 DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                 {
-                    output = OutputManager.make(context, { output: output });
+                    output = OutputManager.make(context, {}, output);
                     callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                     console.log(chalk.green('================================'));
@@ -73,7 +73,7 @@ var DialogGraphManager = require('./answer/dm.js');
                         var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
                         DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                         {
-                            output = OutputManager.make(context, { output: output });
+                            output = OutputManager.make(context, {}, output);
                             callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                             console.log(chalk.green('================================'));
@@ -116,7 +116,7 @@ var DialogGraphManager = require('./answer/dm.js');
                         var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
                         DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                         {
-                            output = OutputManager.make(context, { output: output });
+                            output = OutputManager.make(context, {}, output);
                             callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                             console.log(chalk.green('================================'));
@@ -146,7 +146,7 @@ var DialogGraphManager = require('./answer/dm.js');
                 var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
                 DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                 {
-                    output = OutputManager.make(context, { output: output });
+                    output = OutputManager.make(context, { }, output);
                     callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                     console.log(chalk.green('================================'));

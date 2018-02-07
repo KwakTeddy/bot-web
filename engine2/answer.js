@@ -53,8 +53,8 @@ var Logger = require('./logger.js');
                 var cloneDialog = ContextManager.createDialog(this.dm.foundDialog, userInput);
                 DialogGraphManager.execWithRecord(bot, context, cloneDialog, function(output)
                 {
-                    cloneDialog.output = output;
-                    output = OutputManager.make(context, cloneDialog);
+                    // cloneDialog.output = output;
+                    output = OutputManager.make(context, cloneDialog, output);
 
                     var currentDialog = context.session.history[0];
                     var previousDialog = undefined;
