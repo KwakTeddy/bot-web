@@ -14,7 +14,7 @@ exports.keyboard = function (req, res)
     },
     function(err)
     {
-        respondMessage(res, { output: { text: JSON.stringify(err) } });
+        respondMessage(res, { text: JSON.stringify(err) });
     });
 };
 
@@ -36,11 +36,11 @@ exports.message = function (req, res)
 
         Engine.process(req.params.bot, 'kakao', from, text, {}, function (context, out)
         {
-            respondMessage(res, out);
+            respondMessage(res, out.output);
         },
         function(err)
         {
-            respondMessage(res, { output: { text: JSON.stringify(err) } });
+            respondMessage(res,{ text: JSON.stringify(err) });
         });
     }
 };

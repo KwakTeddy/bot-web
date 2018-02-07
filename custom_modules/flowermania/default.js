@@ -1531,29 +1531,31 @@ module.exports = function(bot)
 
     bot.setTask('addbuttons', addbuttons);
 
-
-    var startbuttons = {
-        action: function (task,context,callback) {
-            task.image={url:'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg'};
-            task.buttons=[
+    bot.setTask('startbuttons',
+    {
+        action: function (dialog, context, callback)
+        {
+            dialog.output[0].image = { url:'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg' };
+            dialog.output[0].buttons = [
                 {
                     text: '1.자주하는 질문',
-                    url: ""
+                    url: ''
                 },
                 {
                     text: '2.상품주문하기',
-                    url: ""
+                    url: ''
                 },
                 {
                     text: '3.문의하기',
-                    url: ""
+                    url: ''
                 }
             ];
-            callback(task,context);
-        }
-    };
 
-    bot.setTask('startbuttons', startbuttons);
+            console.log('으 다이얼로그 : ', dialog);
+
+            callback();
+        }
+    });
 
 
     var neworder = {

@@ -100,16 +100,16 @@ var Transaction = require('./utils/transaction.js');
                             Context.init(context);
                         }
 
+                        context.globals = globals;
+                        context.user.userKey = userKey;
+                        context.bot = bot;
+                        context.channel.name = 'kakao';
+
                         if(inputRaw.startsWith(':'))
                         {
                             Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
                             return;
                         }
-
-                        context.globals = globals;
-                        context.user.userKey = userKey;
-                        context.bot = bot;
-                        context.channel.name = 'kakao';
 
                         if(context.session.history.length > 10)
                         {
@@ -160,8 +160,6 @@ var Transaction = require('./utils/transaction.js');
                                         delete context.globals;
                                         delete context.session.currentDialog;
 
-                                        console.log('저장되는 : ', context.session.dialogCursor);
-
                                         that.redis.set(contextKey, JSON.stringify(context), function(err)
                                         {
                                             if(err)
@@ -174,7 +172,7 @@ var Transaction = require('./utils/transaction.js');
                                                 that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                                 context.bot = bot;
-                                                outCallback(context, dialog.output);
+                                                outCallback(context, dialog);
 
                                                 console.log(chalk.green('================================================================'));
                                                 console.log();

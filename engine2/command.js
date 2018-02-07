@@ -1,8 +1,9 @@
 var chalk = require('chalk');
 
 var OutputManager = require('./output.js');
-var Context = require('./context.js');
+var ContextManager = require('./context.js');
 var BotManager = require('./bot.js');
+var DialogGraphManager = require('./answer/dm.js');
 
 (function()
 {
@@ -27,24 +28,28 @@ var BotManager = require('./bot.js');
                 //테스트 필요
                 redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                var output = bot.commonDialogs[0].output;
-                if(typeof output != 'string')
+                // var output = bot.commonDialogs[0].output;
+                // if(typeof output != 'string')
+                // {
+                //     output = bot.commonDialogs[0].output[0];
+                // }
+
+                var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
+                DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                 {
-                    output = bot.commonDialogs[0].output[0];
-                }
+                    output = OutputManager.make(context, { output: output });
+                    callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                output = OutputManager.make(context, { output: output });
-                callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
-
-                console.log(chalk.green('================================'));
-                console.log();
+                    console.log(chalk.green('================================'));
+                    console.log();
+                });
             }
         });
     };
 
     CommandManager.prototype.resetMemory = function(redis, contextKey, bot, error, callback)
     {
-        var context = Context.create();
+        var context = ContextManager.create();
         redis.set(contextKey, JSON.stringify(context), function(err, reply)
         {
             if(err)
@@ -65,14 +70,15 @@ var BotManager = require('./bot.js');
                     }
                     else
                     {
-                        var output = bot.commonDialogs[0].output;
-                        if(typeof output != 'string')
+                        var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
+                        DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                         {
-                            output = bot.commonDialogs[0].output[0];
-                        }
+                            output = OutputManager.make(context, { output: output });
+                            callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                        output = OutputManager.make(context, { output: output });
-                        callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                            console.log(chalk.green('================================'));
+                            console.log();
+                        });
                     }
                 });
 
@@ -107,14 +113,15 @@ var BotManager = require('./bot.js');
                     }
                     else
                     {
-                        var output = bot.commonDialogs[0].output;
-                        if(typeof output != 'string')
+                        var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
+                        DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                         {
-                            output = bot.commonDialogs[0].output[0];
-                        }
+                            output = OutputManager.make(context, { output: output });
+                            callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                        output = OutputManager.make(context, { output: output });
-                        callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                            console.log(chalk.green('================================'));
+                            console.log();
+                        });
                     }
                 });
 
@@ -136,14 +143,15 @@ var BotManager = require('./bot.js');
             {
                 BotManager.reloadBotFiles(bot);
 
-                var output = bot.commonDialogs[0].output;
-                if(typeof output != 'string')
+                var cloneDialog = ContextManager.createDialog(bot.commonDialogs[0], {});
+                DialogGraphManager.exec(bot, context, cloneDialog, function(output)
                 {
-                    output = bot.commonDialogs[0].output[0];
-                }
+                    output = OutputManager.make(context, { output: output });
+                    callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                output = OutputManager.make(context, { output: output });
-                callback(null, { type: 'dialog', output: output});
+                    console.log(chalk.green('================================'));
+                    console.log();
+                });
 
                 console.log(chalk.green('================================'));
                 console.log();

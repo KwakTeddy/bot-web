@@ -1,3 +1,5 @@
+var utils = require('./utils/utils.js');
+
 (function()
 {
     var Context = function()
@@ -22,20 +24,15 @@
         return context;
     };
 
-    Context.prototype.createDialog = function()
+    Context.prototype.createDialog = function(srcDialog, userInput)
     {
-        var dialog = {};
-        dialog.originalInput = [];
-        dialog.originalOutput = [];
-        dialog.input = {
-            types: {}
-        };
-        dialog.task = {};
-        dialog.data = {};
-        dialog.options = {};
-        dialog.output = [];
+        var cloneDialog = utils.clone(srcDialog);
+        cloneDialog.originalInput = cloneDialog.input;
+        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
+        cloneDialog.userInput = userInput;
+        cloneDialog.options = {};
 
-        return dialog;
+        return cloneDialog;
     };
 
     Context.prototype.init = function(context)
