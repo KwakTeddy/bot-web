@@ -1,4 +1,5 @@
 var request = require('request');
+var async = require('async');
 
 module.exports = function(bot)
 {
@@ -41,7 +42,7 @@ module.exports = function(bot)
         return newStr ? newStr : dateString;
     };
     
-    var timeout = 7000;
+    var timeout = 9500;
 
 
     //Type Area
