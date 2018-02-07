@@ -1365,20 +1365,16 @@ var dialogs = [
         ],
         "output": [
             {
-                "kind": "Content",
-                "if": "context.user.auth",
+                "kind": "Action",
+                "if": "!context.user.auth",
                 "type": "call",
                 "dialogId": "default3",
-                "dialogName": "인증_고객명",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#"
+                "dialogName": "인증_고객명"
             },
             {
-                "kind": "Action",
-                "text": "",
-                "if": "",
-                "type": "call",
-                "dialogName": "인증_고객명",
-                "dialog": "인증_고객명"
+                "kind": "Content",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": ""
             }
         ],
         "id": "default6",
@@ -2068,6 +2064,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }
