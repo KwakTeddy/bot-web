@@ -1365,16 +1365,16 @@ var dialogs = [
         ],
         "output": [
             {
+                "kind": "Content",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.user.auth"
+            },
+            {
                 "kind": "Action",
                 "if": "!context.user.auth",
                 "type": "call",
                 "dialogId": "default3",
                 "dialogName": "인증_고객명"
-            },
-            {
-                "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": ""
             }
         ],
         "id": "default6",
@@ -1459,7 +1459,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가스용도 : ○ ○ ○\n안전점검월 : ○월, ○월\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
+                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month1+월, +dialog.data.month2+월\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
                                     }
                                 ],
                                 "id": "default43",

@@ -31,6 +31,7 @@ var utils = require('./utils/utils.js');
         cloneDialog.originalOutput = utils.clone(cloneDialog.output);
         cloneDialog.userInput = userInput;
         cloneDialog.options = {};
+        cloneDialog.data = {};
 
         return cloneDialog;
     };

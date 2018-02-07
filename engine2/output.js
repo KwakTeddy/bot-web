@@ -42,17 +42,17 @@ var utils = require('./utils/utils.js');
 
     };
 
-    OutputManager.prototype.make = function(context, dialog)
+    OutputManager.prototype.make = function(context, dialog, output)
     {
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
-        console.log(dialog.output.text);
-        if(dialog.output && dialog.output.buttons)
+        console.log(output.text);
+        if(output && output.buttons)
         {
             console.log('-- buttons --');
-            for(var i=0; i<dialog.output.buttons.length; i++)
+            for(var i=0; i<output.buttons.length; i++)
             {
-                console.log('[ ' + dialog.output.buttons[i].text + ' ]');
+                console.log('[ ' + output.buttons[i].text + ' ]');
             }
         }
 
@@ -64,32 +64,32 @@ var utils = require('./utils/utils.js');
         {
             if(context.bot && context.bot.options && context.bot.options.commonButtons)
             {
-                if(!dialog.output.buttons)
+                if(!output.buttons)
                 {
-                    dialog.output.buttons = [];
+                    output.buttons = [];
                 }
 
-                if(typeof dialog.output == 'string')
+                if(typeof output == 'string')
                 {
-                    dialog.output.text = dialog.output;
+                    output.text = output;
                 }
 
                 if(context.channel.name == 'kakao')
                 {
-                    if(dialog.output.buttons && dialog.output.buttons.length > 0)
+                    if(output.buttons && output.buttons.length > 0)
                     {
-                        dialog.output.buttons = (dialog.output.buttons || []).concat(context.bot.options.commonButtons);
+                        output.buttons = (output.buttons || []).concat(context.bot.options.commonButtons);
                     }
                 }
                 else
                 {
-                    dialog.output.buttons = (dialog.output.buttons || []).concat(context.bot.options.commonButtons);
+                    output.buttons = (output.buttons || []).concat(context.bot.options.commonButtons);
                 }
             }
 
-            if(dialog.output && dialog.output.text)
+            if(output && output.text)
             {
-                var result = dialog.output.text.replace(new RegExp(ARRAY_TAG + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG + "([^" + ARRAY_TAG + "]*)" + ARRAY_TAG, "g"), function replacer(match, key)
+                var result = output.text.replace(new RegExp(ARRAY_TAG + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG + "([^" + ARRAY_TAG + "]*)" + ARRAY_TAG, "g"), function replacer(match, key)
                 {
                     if(key)
                     {
@@ -142,23 +142,23 @@ var utils = require('./utils/utils.js');
                     return '';
                 });
 
-                dialog.output.text = result;
+                output.text = result;
             }
         }
 
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup After ]]]'));
-        console.log(dialog.output.text);
-        if(dialog.output && dialog.output.buttons)
+        console.log(output.text);
+        if(output && output.buttons)
         {
             console.log('-- buttons --');
-            for(var i=0; i<dialog.output.buttons.length; i++)
+            for(var i=0; i<output.buttons.length; i++)
             {
-                console.log('[ ' + dialog.output.buttons[i].text + ' ]');
+                console.log('[ ' + output.buttons[i].text + ' ]');
             }
         }
 
-        return dialog.output;
+        return output;
     };
 
     module.exports = new OutputManager();
