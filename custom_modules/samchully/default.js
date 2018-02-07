@@ -999,7 +999,56 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            callback();
+            var curCustomer = context.curCustomer;
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'MS_IF_CM0013';
+            options.json.param = [
+                { key: 'I_VKONT', val: curCustomer.VKONT}
+            ];
+            options.isTable = true;
+            options.timeout = timeout;
+
+            console.log('커 커스터머 : ', curCustomer.VKONT);
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        {
+                            dialog.output[0].text = body.E_RETMSG;
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        console.log(JSON.stringify(body, null, 4))
+
+                        dialog.data.month1 = body.E_FCNTMM;
+                        dialog.data.month2 = body.E_SCNTMM;
+                        dialog.data.gasType = body.E_AKLASSE;
+                    }
+                    else
+                    {
+                        errorHandler(dialog, body);
+                    }
+
+                }
+                callback();
+
+            });
         }
     });
 
