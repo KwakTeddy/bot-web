@@ -823,7 +823,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_EMAIL', val: curCustomer.email }
             ];
-            options.timeout = timeout;
+            // options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
