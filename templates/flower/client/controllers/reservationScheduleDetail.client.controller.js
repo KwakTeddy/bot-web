@@ -73,6 +73,7 @@ angular.module('template').controller('flowerReservationScheduleDetailController
         {
             for(var i=0; i<$scope.datas.length; i++) {
                 if ($scope.datas[i]._id===$scope.data._id) {
+                    // alert("botId======="+$scope.datas[i].botId);
                     $scope.datas[i].order_date= $scope.data.order_date;
                     $scope.datas[i].order_hour= $scope.data.order_hour;
                     $scope.datas[i].order_name= $scope.data.order_name;
