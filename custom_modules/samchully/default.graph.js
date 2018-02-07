@@ -1247,7 +1247,7 @@ var dialogs = [
                         "text": "4. 예약 확인/변경"
                     },
                     {
-                        "url": "www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                        "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
                         "text": "5. 연결비 안내"
                     }
                 ]
