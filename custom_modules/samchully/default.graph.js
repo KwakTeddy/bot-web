@@ -502,7 +502,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
+                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default12",
@@ -1231,23 +1231,23 @@ var dialogs = [
                 "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
                 "buttons": [
                     {
-                        "url": "",
+                        "url": "http://59.6.157.142/Simple/MoveIn",
                         "text": "1. 이사 들어오실 때"
                     },
                     {
-                        "url": "",
+                        "url": "http://59.6.157.142/Simple/MoveOut",
                         "text": "2. 이사 나가실 때"
                     },
                     {
-                        "url": "",
+                        "url": "http://59.6.157.142/Simple/AfterService",
                         "text": "3. AS (렌지연결 등)"
                     },
                     {
-                        "url": "",
+                        "url": "http://59.6.157.142/Simple/CheckService",
                         "text": "4. 예약 확인/변경"
                     },
                     {
-                        "url": "",
+                        "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
                         "text": "5. 연결비 안내"
                     }
                 ]

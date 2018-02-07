@@ -823,8 +823,9 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_EMAIL', val: curCustomer.email }
             ];
-            options.timeout = timeout;
+            options.timeout = 1000 * 60;
 
+            var start = new Date().getTime();
             request.post(options, function(err, response, body)
             {
                 if(err)
@@ -839,7 +840,7 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(body);
+                        console.log(body, ((new Date().getTime()) - start) / 1000 + 'ms');
                         dialog.setNoticeMethodSuccess = true;
                     }else {
                         errorHandler(dialog, body);
@@ -1022,7 +1023,7 @@ module.exports = function(bot)
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1 || body.E_RETMSG.indexOf('결과가 없습니다') != -1)
                         {
                             dialog.output[0].text = body.E_RETMSG;
                         }
