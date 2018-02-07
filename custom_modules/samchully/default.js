@@ -1016,6 +1016,7 @@ module.exports = function(bot)
                 if(err)
                 {
                     errorHandler(dialog, err);
+                    callback();
                 }
                 else
                 {
@@ -1029,6 +1030,7 @@ module.exports = function(bot)
                         {
                             errorHandler(dialog, body);
                         }
+                        callback();
                     }
                     else if(body.E_RETCD == 'S')
                     {
@@ -1036,92 +1038,127 @@ module.exports = function(bot)
 
                         console.log('성공 데이터 : ', dialog.data.list);
                         var outputText = [];
-                        for(var i=0; i<dialog.data.list.length; i++)
+
+                        async.eachSeries(dialog.data.list, function(item, next)
                         {
-                            var test = '안전점검일: ' + dialog.data.list[i].CHK_YYMM + '\n';
-                            test += '확인자: ' + dialog.data.list[i].SCR_MGR_NO + '\n';
-                            if(dialog.data.list[i].SCR_MGR_CLF == '01')
+                            var test = '안전점검일: ' + item.CHK_YYMM + '\n';
+                            test += '확인자: ' + item.SCR_MGR_NO + '\n';
+                            if(item.SCR_MGR_CLF == '01')
                             {
-                                dialog.data.list[i].SCR_MGR_CLF = '본인';
+                                test += '확인자와의 관계: 본인';
                             }
-                            else if(dialog.data.list[i].SCR_MGR_CLF == '02')
+                            else if(item.SCR_MGR_CLF == '02')
                             {
-                                dialog.data.list[i].SCR_MGR_CLF = '가족';
+                                test += '확인자와의 관계: 가족';
                             }
-                            else if(dialog.data.list[i].SCR_MGR_CLF == '03')
+                            else if(item.SCR_MGR_CLF == '03')
                             {
-                                dialog.data.list[i].SCR_MGR_CLF = '관리인';
+                                test += '확인자와의 관계: 관리인';
                             }
-                            else if(dialog.data.list[i].SCR_MGR_CLF == '04')
+                            else if(item.SCR_MGR_CLF == '04')
                             {
-                                dialog.data.list[i].SCR_MGR_CLF = '기타';
+                                test += '확인자와의 관계: 기타';
                             }
 
-                            if(dialog.data.list[i].CHK_YN == 'Y')
+                            if(item.CHK_YN == 'Y')
                             {
-                                if(dialog.data.list[i].FITN_YN == 'Y')
+                                if(item.FITN_YN == 'N')
                                 {
                                     test += '점검결과: 적합\n';
                                 }
                                 else
                                 {
                                     test += '점검결과: 부적합\n';
+
+                                    var options = {};
+                                    options.url = 'http://sam.moneybrain.ai:3000/api';
+                                    options.json = {};
+                                    options.json.name = 'ZPM_USERSAFE_12';
+                                    options.json.param = [
+                                        { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
+                                        { key: 'I_ADV_ORD', val: '1' },
+                                        { key: 'I_DATA_TYPE', val: 'D' }
+                                    ];
+                                    options.json.isTable = true;
+                                    options.timeout = timeout;
+
+                                    request.post(options, function(err, response, body)
+                                    {
+                                        if(err)
+                                        {
+                                            console.log('에러 : ', err);
+                                        }
+                                        else
+                                        {
+                                            console.log('부적합 결과 : ', body);
+                                            test += '부적합 결과: ' + body.E_RETMSG + '\n';
+                                            test += '부적합 시설: ' + '';
+
+                                            outputText.push(test);
+
+                                            next();
+                                        }
+                                    });
+
+                                    return;
                                 }
                             }
                             else
                             {
                                 test += '미점검사유: ';
-                                if(dialog.data.list[i].UCHK_RSN == '1')
+                                if(item.UCHK_RSN == '1')
                                 {
                                     test += '공가\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '2')
+                                else if(item.UCHK_RSN == '2')
                                 {
                                     test += '미입주\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '3')
+                                else if(item.UCHK_RSN == '3')
                                 {
                                     test += '미사용\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '4')
+                                else if(item.UCHK_RSN == '4')
                                 {
                                     test += '중폐지\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '5')
+                                else if(item.UCHK_RSN == '5')
                                 {
                                     test += '이사\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '6')
+                                else if(item.UCHK_RSN == '6')
                                 {
                                     test += '체납중지\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '7')
+                                else if(item.UCHK_RSN == '7')
                                 {
                                     test += '요청중지\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '8')
+                                else if(item.UCHK_RSN == '8')
                                 {
                                     test += '철거\n';
                                 }
-                                else if(dialog.data.list[i].UCHK_RSN == '9')
+                                else if(item.UCHK_RSN == '9')
                                 {
                                     test += '점검거부\n';
                                 }
                             }
 
                             outputText.push(test);
-                        }
-
-                        dialog.output[0].text = outputText.join('\n');
+                            next();
+                        },
+                        function()
+                        {
+                            dialog.output[0].text = outputText.join('\n');
+                            callback();
+                        });
                     }
                     else
                     {
                         errorHandler(dialog, body);
+                        callback();
                     }
-
                 }
-                callback();
-
             });
         }
     });
