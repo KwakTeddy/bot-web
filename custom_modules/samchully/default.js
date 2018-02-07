@@ -41,7 +41,7 @@ module.exports = function(bot)
         return newStr ? newStr : dateString;
     };
     
-    var timeout = 3000;
+    var timeout = 7000;
 
 
     //Type Area
@@ -298,7 +298,6 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(body);
                         context.customerList = body.data.E_TAB;
                     }else {
                         errorHandler(dialog, body);
@@ -991,7 +990,136 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            callback();
+            var curCustomer = context.curCustomer;
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'MS_IF_CM0014';
+            options.json.param = [
+                { key: 'I_VKONT', val: curCustomer.VKONT}
+            ];
+            options.json.isTable = true;
+            options.timeout = timeout;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        {
+                            dialog.output[0].text = body.E_RETMSG;
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        dialog.data.list = body.data.T_OUT;
+
+                        console.log('성공 데이터 : ', dialog.data.list);
+
+                        for(var i=0; i<dialog.data.list.length; i++)
+                        {
+                            if(dialog.data.list[i].SCR_MGR_CLF == '01')
+                            {
+                                dialog.data.list[i].SCR_MGR_CLF = '본인';
+                            }
+                            else if(dialog.data.list[i].SCR_MGR_CLF == '02')
+                            {
+                                dialog.data.list[i].SCR_MGR_CLF = '가족';
+                            }
+                            else if(dialog.data.list[i].SCR_MGR_CLF == '03')
+                            {
+                                dialog.data.list[i].SCR_MGR_CLF = '관리인';
+                            }
+                            else if(dialog.data.list[i].SCR_MGR_CLF == '04')
+                            {
+                                dialog.data.list[i].SCR_MGR_CLF = '기타';
+                            }
+                        }
+
+                        var outputText = [];
+                        for(var i=0; i<dialog.data.list.length; i++)
+                        {
+                            var test = '안전점검일: ' + dialog.data.list[i].CHK_YYMM + '\n';
+                            test += '확인자: ' + dialog.data.list[i].SCR_MGR_NO + '\n';
+                            test += '확인자와의 관게: ' + dialog.data.list[i].SCR_MGR_CLF + '\n';
+
+                            if(dialog.data.list[i].CHK_YN == 'Y')
+                            {
+                                if(dialog.data.list[i].FITN_YN == 'Y')
+                                {
+                                    test += '점검결과: 적합\n';
+                                }
+                                else
+                                {
+                                    test += '점검결과: 부적합\n';
+                                }
+                            }
+                            else
+                            {
+                                test += '미점검사유: ';
+                                if(dialog.data.list[i].UCHK_RSN == '1')
+                                {
+                                    test += '공가\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '2')
+                                {
+                                    test += '미입주\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '3')
+                                {
+                                    test += '미사용\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '4')
+                                {
+                                    test += '중폐지\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '5')
+                                {
+                                    test += '이사\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '6')
+                                {
+                                    test += '체납중지\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '7')
+                                {
+                                    test += '요청중지\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '8')
+                                {
+                                    test += '철거\n';
+                                }
+                                else if(dialog.data.list[i].UCHK_RSN == '9')
+                                {
+                                    test += '점검거부\n';
+                                }
+                            }
+
+                            outputText.push(test);
+                        }
+
+                        dialog.output[0].text = outputText.join('\n');
+                    }
+                    else
+                    {
+                        errorHandler(dialog, body);
+                    }
+
+                }
+                callback();
+
+            });
         }
     });
 
@@ -1008,10 +1136,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: curCustomer.VKONT}
             ];
-            options.isTable = true;
             options.timeout = timeout;
-
-            console.log('커 커스터머 : ', curCustomer.VKONT);
 
             request.post(options, function(err, response, body)
             {

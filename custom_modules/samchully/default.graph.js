@@ -1486,7 +1486,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "안전점검 결과 내역입니다\n\n안전점검일 : \n점검 참여자 : \n계약자와 관계 : \n점검결과 :"
+                                        "text": "안전점검 결과 내역입니다\n\n#dialog.data.list#안전점검일 : +CHK_YYMM+\n확인자: +SCR_MGR_NO+\n확인자와의 관계: +SCR_MGR_CLF+\n점검결과 :+CHK_YN+\n\n#"
                                     }
                                 ],
                                 "task": {
