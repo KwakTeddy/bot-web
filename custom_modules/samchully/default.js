@@ -1045,19 +1045,19 @@ module.exports = function(bot)
                             test += '확인자: ' + item.SCR_MGR_NO + '\n';
                             if(item.SCR_MGR_CLF == '01')
                             {
-                                test += '확인자와의 관계: 본인';
+                                test += '확인자와의 관계: 본인\n';
                             }
                             else if(item.SCR_MGR_CLF == '02')
                             {
-                                test += '확인자와의 관계: 가족';
+                                test += '확인자와의 관계: 가족\n';
                             }
                             else if(item.SCR_MGR_CLF == '03')
                             {
-                                test += '확인자와의 관계: 관리인';
+                                test += '확인자와의 관계: 관리인\n';
                             }
                             else if(item.SCR_MGR_CLF == '04')
                             {
-                                test += '확인자와의 관계: 기타';
+                                test += '확인자와의 관계: 기타\n';
                             }
 
                             if(item.CHK_YN == 'Y')
@@ -1092,7 +1092,7 @@ module.exports = function(bot)
                                         {
                                             console.log('부적합 결과 : ', body);
                                             test += '부적합 결과: ' + body.E_RETMSG + '\n';
-                                            test += '부적합 시설: ' + '';
+                                            test += '부적합 시설: ' + '\n\n';
 
                                             outputText.push(test);
 
@@ -1144,7 +1144,7 @@ module.exports = function(bot)
                                 }
                             }
 
-                            outputText.push(test);
+                            outputText.push(test + '\n\n');
                             next();
                         },
                         function()
