@@ -1365,16 +1365,20 @@ var dialogs = [
         ],
         "output": [
             {
-                "kind": "Action",
-                "if": "!context.user.auth",
+                "kind": "Content",
+                "if": "context.user.auth",
                 "type": "call",
                 "dialogId": "default3",
-                "dialogName": "인증_고객명"
+                "dialogName": "인증_고객명",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#"
             },
             {
-                "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": ""
+                "kind": "Action",
+                "text": "",
+                "if": "",
+                "type": "call",
+                "dialogName": "인증_고객명",
+                "dialog": "인증_고객명"
             }
         ],
         "id": "default6",
