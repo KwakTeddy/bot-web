@@ -1,4 +1,5 @@
 var request = require('request');
+var async = require('async');
 
 module.exports = function(bot)
 {
@@ -41,7 +42,7 @@ module.exports = function(bot)
         return newStr ? newStr : dateString;
     };
     
-    var timeout = 3000;
+    var timeout = 9500;
 
 
     //Type Area
@@ -298,8 +299,15 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(body);
                         context.customerList = body.data.E_TAB;
+
+                        for(var i=0; i<context.customerList.length; i++)
+                        {
+                            if(context.customerList[i].VKONT.startsWith('000'))
+                            {
+                                context.customerList[i].VKONT = context.customerList[i].VKONT.substring(3);
+                            }
+                        }
                     }else {
                         errorHandler(dialog, body);
                     }
@@ -342,7 +350,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_LIST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
@@ -412,7 +420,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZFC_MS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
@@ -480,7 +488,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CHECK_NOTI_AMT';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.json.isTable = true;
             options.timeout = timeout;
@@ -555,7 +563,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CB_COMMON_ACCINFO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
@@ -629,7 +637,7 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_CB_COMMON_ACCCRE';
                 options.json.param = [
-                    { key: 'I_VKONT', val: curCustomer.VKONT},
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                     { key: 'I_BANKK', val: selectedBank }
                 ];
                 options.timeout = timeout;
@@ -682,7 +690,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_TYPE_INFO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
@@ -726,7 +734,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
             options.timeout = timeout;
@@ -769,7 +777,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_LMS_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
             options.timeout = timeout;
@@ -812,7 +820,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_EMAIL', val: curCustomer.email }
             ];
             options.timeout = timeout;
@@ -852,7 +860,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_CANCEL';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT }
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
             options.timeout = timeout;
 
@@ -895,7 +903,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_RESEND';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT }
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
             options.timeout = timeout;
 
@@ -944,7 +952,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GET_PAYMENT_METHOD';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT }
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
             options.timeout = timeout;
 
@@ -991,7 +999,167 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            callback();
+            var curCustomer = context.curCustomer;
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'MS_IF_CM0014';
+            options.json.param = [
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+            ];
+            options.json.isTable = true;
+            options.timeout = timeout;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                    callback();
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        {
+                            dialog.output[0].text = body.E_RETMSG;
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        callback();
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        dialog.data.list = body.data.T_OUT;
+
+                        console.log('성공 데이터 : ', dialog.data.list);
+                        var outputText = [];
+
+                        async.eachSeries(dialog.data.list, function(item, next)
+                        {
+                            var test = '안전점검일: ' + item.CHK_YYMM + '\n';
+                            test += '확인자: ' + item.SCR_MGR_NO + '\n';
+                            if(item.SCR_MGR_CLF == '01')
+                            {
+                                test += '확인자와의 관계: 본인\n';
+                            }
+                            else if(item.SCR_MGR_CLF == '02')
+                            {
+                                test += '확인자와의 관계: 가족\n';
+                            }
+                            else if(item.SCR_MGR_CLF == '03')
+                            {
+                                test += '확인자와의 관계: 관리인\n';
+                            }
+                            else if(item.SCR_MGR_CLF == '04')
+                            {
+                                test += '확인자와의 관계: 기타\n';
+                            }
+
+                            if(item.CHK_YN == 'Y')
+                            {
+                                if(item.FITN_YN == 'N')
+                                {
+                                    test += '점검결과: 적합\n';
+                                }
+                                else
+                                {
+                                    test += '점검결과: 부적합\n';
+
+                                    var options = {};
+                                    options.url = 'http://sam.moneybrain.ai:3000/api';
+                                    options.json = {};
+                                    options.json.name = 'ZPM_USERSAFE_12';
+                                    options.json.param = [
+                                        { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
+                                        { key: 'I_ADV_ORD', val: '1' },
+                                        { key: 'I_DATA_TYPE', val: 'D' }
+                                    ];
+                                    options.json.isTable = true;
+                                    options.timeout = timeout;
+
+                                    request.post(options, function(err, response, body)
+                                    {
+                                        if(err)
+                                        {
+                                            console.log('에러 : ', err);
+                                        }
+                                        else
+                                        {
+                                            console.log('부적합 결과 : ', body);
+                                            test += '부적합 결과: ' + body.E_RETMSG + '\n';
+                                            test += '부적합 시설: ' + '\n\n';
+
+                                            outputText.push(test);
+
+                                            next();
+                                        }
+                                    });
+
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                test += '미점검사유: ';
+                                if(item.UCHK_RSN == '1')
+                                {
+                                    test += '공가\n';
+                                }
+                                else if(item.UCHK_RSN == '2')
+                                {
+                                    test += '미입주\n';
+                                }
+                                else if(item.UCHK_RSN == '3')
+                                {
+                                    test += '미사용\n';
+                                }
+                                else if(item.UCHK_RSN == '4')
+                                {
+                                    test += '중폐지\n';
+                                }
+                                else if(item.UCHK_RSN == '5')
+                                {
+                                    test += '이사\n';
+                                }
+                                else if(item.UCHK_RSN == '6')
+                                {
+                                    test += '체납중지\n';
+                                }
+                                else if(item.UCHK_RSN == '7')
+                                {
+                                    test += '요청중지\n';
+                                }
+                                else if(item.UCHK_RSN == '8')
+                                {
+                                    test += '철거\n';
+                                }
+                                else if(item.UCHK_RSN == '9')
+                                {
+                                    test += '점검거부\n';
+                                }
+                            }
+
+                            outputText.push(test + '\n\n');
+                            next();
+                        },
+                        function()
+                        {
+                            dialog.output[0].text = outputText.join('\n');
+                            callback();
+                        });
+                    }
+                    else
+                    {
+                        errorHandler(dialog, body);
+                        callback();
+                    }
+                }
+            });
         }
     });
 
@@ -1006,12 +1174,9 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'MS_IF_CM0013';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
-            options.isTable = true;
             options.timeout = timeout;
-
-            console.log('커 커스터머 : ', curCustomer.VKONT);
 
             request.post(options, function(err, response, body)
             {
@@ -1088,7 +1253,7 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(JSON.stringify(body, null, 4))
+                        console.log(JSON.stringify(body, null, 4));
                         context.centerAddressList = body.data.E_TAB;
                     }else {
                         errorHandler(dialog, body);
@@ -1125,7 +1290,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_ARS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_HPNUM', val: curCustomer.mobile },
                 { key: 'I_BETRWP', val: context.totalSelectedNonpayment}
             ];
@@ -1176,7 +1341,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_EXPIRE_SO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
