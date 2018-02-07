@@ -42,13 +42,6 @@ angular.module('template').controller('flowerReservationScheduleDetailCancelCont
 
                $scope.accept = function(event,data)
                {
-                   var target = angular.element(event.currentTarget);
-
-                   var href = target.attr('data-href');
-
-                   location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
-
-
                    for(var i=0; i<$scope.datas.length; i++) {
                        if ($scope.datas[i]._id===data._id) {
                            $scope.datas[i].order_status = "승인 대기중";

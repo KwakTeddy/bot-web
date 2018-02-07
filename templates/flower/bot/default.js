@@ -1773,19 +1773,16 @@ var dateAndtime = {
                             matched=false;
                             callback(task, context, matched);
                         }
-                        //console.log("context.dialog.showtime===2=======" + context.dialog.showtime);
                         callback(task, context, matched);
                     }
                     else {
                         var textt2 = textt[1] + textt[2];
-                        //console.log("textt2==========" + textt2);
                         timeTypeCheck1(textt2, type, task, context, callback);
                         context.dialog.showtime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
                             matched=false;
                             callback(task, context, matched);
                         }
-                        //console.log("context.dialog.showtime===3=======" + context.dialog.showtime);
                         callback(task, context, matched);
                     }
                 }
@@ -1839,7 +1836,6 @@ var dateAndtime1 = {
                 }
                 else {
                     if (textt[2] === undefined) {
-                        //  console.log("textt[1]==========" + textt[1]);
                         timeTypeCheck1(textt[1], type, task, context, callback);
                         context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
@@ -1850,7 +1846,6 @@ var dateAndtime1 = {
                     }
                     else {
                         var textt2 = textt[1] + textt[2];
-                        //console.log("textt2==========" + textt2);
                         timeTypeCheck1(textt2, type, task, context, callback);
                         context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
