@@ -1023,7 +1023,7 @@ module.exports = function(bot)
                 {
                     if(body.E_RETCD == 'E')
                     {
-                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1 || body.E_RETMSG.indexOf('결과가 없습니다') != -1)
                         {
                             dialog.output[0].text = body.E_RETMSG;
                         }
