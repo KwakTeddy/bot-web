@@ -82,11 +82,12 @@ module.exports = function (bot) {
     bot.setType("categorylist", {
         typeCheck: function (dialog, context, callback)
         {
-            var text = dialog.userInput.text.substring(3);
+            var text = dialog.userInput.text.split(".");
+            text[1]=text[1].substring(1);
 
             for(var i=0; i<context.session.category.length; i++)
             {
-                if(context.session.category[i].indexOf(text) != -1)
+                if(context.session.category[i].indexOf(text[1]) !== -1)
                 {
                     return callback(true, context.session.category[i]);
                 }
@@ -104,7 +105,6 @@ module.exports = function (bot) {
             // if (context.session.categorylist !== undefined) {
             //     context.session.categorylist = context.session.categorylist;
             // }
-            console.log("dialog.userInput.types.categorylist*****"+JSON.stringify(dialog.userInput.types.categorylist));
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -120,7 +120,6 @@ module.exports = function (bot) {
                 else
                 {
                     console.log(response.statusCode);
-                    console.log(body);
 
                     body = JSON.parse(body);
 
@@ -142,9 +141,21 @@ module.exports = function (bot) {
 
 
     bot.setType('categorylist1',{
-        name: "category1",
-        listName: "category1",
-        typeCheck: "listTypeCheck"
+        typeCheck: function (dialog, context, callback)
+        {
+            console.log("dialog.userInput.text*******"+dialog.userInput.text);
+            var text = dialog.userInput.text.split(".");
+              text[1]=text[1].substring(1);
+            for(var i=0; i<context.session.category1.length; i++)
+            {
+                var namecode=context.session.category1[i].name+" "+context.session.category1[i].code;
+                if(namecode.indexOf(text[1]) !== -1)
+                {
+                    return callback(true, context.session.category1[i]);
+                }
+            }
+            callback(false);
+        }
     });
 
 
@@ -153,13 +164,18 @@ module.exports = function (bot) {
             // if (context.user.categorylist1 !== undefined) {
             //     context.user.categorylist1 = context.user.categorylist1;
             // }
+
+            // console.log("dialog.userInput.types.categorylist1***2**"+dialog.userInput.types.categorylist1.name);
+            //
+
+            console.log('ㅁㄴㅇㄹ충공깽', dialog.userInput.types.categorylist1);
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.json = {
-                // category: context.session.categorylist1.category,
-                // name: context.session.categorylist1.name,
-                // code: context.session.categorylist1.code
+            options.qs = {
+                // category: dialog.userInput.types.categorylist1.category,
+                // name: dialog.userInput.types.categorylist1.name,
+                // code: dialog.userInput.types.categorylist1.code
                 _id:dialog.userInput.types.categorylist1._id
             };
             request.get(options, function (err, response, body) {
@@ -168,48 +184,48 @@ module.exports = function (bot) {
                 }
                 else {
                     console.log(response.statusCode);
-                    console.log(body);
+                    // console.log(body);
 
-                context.session.item = body;
-
-                context.session.selecteditem = {};
-                context.session.selecteditem = context.session.item[0];
-
-                context.session.selecteditem.sale_price = context.session.item[0].sale_price;
-                if (context.session.selectchange !== 1) {
-                    if (context.session.item[0].picture !== undefined) {
-                        task.image = {url: context.session.item[0].picture};
-                        task.buttons = [
-                            {
-                                text: '자세히보기',
-                                url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
-                            },
-                            {
-                                text: '이 상품으로 주문하기',
-                                url: ""
-                            },
-                            {
-                                text: '다른 상품 더보기',
-                                url: ""
-                            }
-                        ];
-                    }
-                }
-                else {
-                    if (context.session.item[0].picture !== undefined) {
-                        dialog.output[0].image = {url: context.session.item[0].picture};
-                        dialog.output[0].buttons = [
-                            {
-                                text: '주문서 확인하기',
-                                url: ""
-                            }
-                        ];
-                    }
-                }
-                callback();
-                    }
+                // context.session.item = body;
+                //     console.log("context.session.item ***1**"+context.session.item.length);
+                //
+                // context.session.selecteditem = {};
+                // context.session.selecteditem = context.session.item[0];
+                //
+                // context.session.selecteditem.sale_price = context.session.item[0].sale_price;
+                // if (context.session.selectchange !== 1) {
+                //     if (context.session.item[0].picture !== undefined) {
+                //         dialog.output[0].image = {url: context.session.item[0].picture};
+                //         dialog.output[0].buttons = [
+                //             {
+                //                 text: '자세히보기',
+                //                 url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                //             },
+                //             {
+                //                 text: '이 상품으로 주문하기',
+                //                 url: ""
+                //             },
+                //             {
+                //                 text: '다른 상품 더보기',
+                //                 url: ""
+                //             }
+                //         ];
+                //     }
+                // }
+                // else {
+                //     if (context.session.item[0].picture !== undefined) {
+                //         dialog.output[0].image = {url: context.session.item[0].picture};
+                //         dialog.output[0].buttons = [
+                //             {
+                //                 text: '주문서 확인하기',
+                //                 url: ""
+                //             }
+                //         ];
+                //     }
+                // }
                     callback();
-                });
+                }
+            });
         }
     });
 

@@ -62,7 +62,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#item#**+name+**\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                "text": "#context.session.item#**+name+**\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                             }
                         ],
                         "task": {
@@ -169,7 +169,10 @@ var dialogs = [
                         "name": "1.카테고리 중 입력 틀린 경우",
                         "input": [
                             {
-                                "if": "true"
+                                "text": {
+                                    "raw": "ffff",
+                                    "nlp": "ffff"
+                                }
                             }
                         ],
                         "output": [
