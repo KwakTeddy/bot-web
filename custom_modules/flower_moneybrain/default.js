@@ -90,15 +90,17 @@ module.exports = function (bot) {
     bot.setTask('showcategory',{
         action: function (dialog, context, callback)
         {
-            context.session.categorylist1 = undefined;
+            // context.session.categorylist1 = undefined;
             // if (context.session.categorylist !== undefined) {
             //     context.session.categorylist = context.session.categorylist;
             // }
+
+
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.json = {
-                category: context.session.categorylist
+                category: dialog.userInput.types.categorylist
             };
             request.get(options, function (err, response, body) {
                 if (err) {
@@ -145,7 +147,7 @@ module.exports = function (bot) {
                 // category: context.session.categorylist1.category,
                 // name: context.session.categorylist1.name,
                 // code: context.session.categorylist1.code
-                _id:context.session.categorylist1._id
+                _id:dialog.userInput.types.categorylist1._id
             };
             request.get(options, function (err, response, body) {
                 if (err) {
@@ -181,9 +183,9 @@ module.exports = function (bot) {
                     }
                 }
                 else {
-                    if (context.user.item[0].picture !== undefined) {
-                        task.image = {url: context.user.item[0].picture};
-                        task.buttons = [
+                    if (context.session.item[0].picture !== undefined) {
+                        dialog.output[0].image = {url: context.session.item[0].picture};
+                        dialog.output[0].buttons = [
                             {
                                 text: '주문서 확인하기',
                                 url: ""

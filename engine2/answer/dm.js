@@ -155,6 +155,11 @@ var ActionManager = require('./action.js');
                             type = Globals.types[input[key]];
                         }
 
+                        if(typeof type.typeCheck == 'string')
+                        {
+                            type.typeCheck = Globals.typeChecks[type.typeCheck];
+                        }
+
                         type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
                         {
                             if(matched)
