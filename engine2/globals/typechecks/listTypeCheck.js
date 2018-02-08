@@ -2,17 +2,28 @@ module.exports = function(globals)
 {
     globals.setTypeChecks('listTypeCheck', function(dialog, context, callback)
     {
-        if(this.listName && this.field)
+        if(this.listName)
         {
-            var text = dialog.userInput.text.replace(/\s/g, '');
+            var nlp = dialog.userInput.nlp;
             var listName = this.listName || this.name;
             var list = context.session[listName];
 
             for (var j = 0; list && j < list.length; j++)
             {
-                if(list[j][this.field].indexOf(text) != -1)
+                for(var i=0; i<nlp.length; i++)
                 {
-                    return callback(true, list[j][this.field]);
+                    if(nlp[i].pos == 'Noun')
+                    {
+                        var text = nlp[i].text;
+                        if(this.field && list[j][this.field].indexOf(text) != -1)
+                        {
+                            return callback(true, list[j][this.field]);
+                        }
+                        else if(list[j].indexOf(text) != -1)
+                        {
+                            return callback(true, list[j]);
+                        }
+                    }
                 }
             }
         }

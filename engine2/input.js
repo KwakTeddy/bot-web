@@ -40,6 +40,7 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
             userInput.turnTaking = turnTaking;
             userInput.nlpText = nlpText;
             userInput.lastChar = lastChar;
+            userInput.types = {};
 
             console.log('nlp: ', nlp);
 
