@@ -56,7 +56,9 @@ var dialogs = [
                         "name": "1.상품선택",
                         "input": [
                             {
-                                "types": "categorylist1"
+                                "types": [
+                                    "itemlist"
+                                ]
                             }
                         ],
                         "output": [
@@ -82,14 +84,17 @@ var dialogs = [
                                     {
                                         "text": {
                                             "raw": "확인하기",
-                                            "nlp": "확인하기"
+                                            "nlp": "확인 하다"
                                         }
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.주문서 확인",
+                                        "dialog": "3.주문서 확인",
+                                        "dialogId": "default41"
                                     }
                                 ],
                                 "id": "default60"
@@ -113,7 +118,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.상품 주문하기",
+                                        "dialog": "3.상품 주문하기",
+                                        "dialogId": "default6"
                                     }
                                 ],
                                 "id": "default8"
@@ -143,7 +151,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialog": "1.카테고리 대",
+                                        "dialogName": "1.카테고리 대",
+                                        "dialogId": "default0"
                                     }
                                 ],
                                 "id": "default9"
@@ -158,7 +169,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialog": "시작",
+                                        "dialogName": "시작",
+                                        "dialogId": "defaultcommon0"
                                     }
                                 ],
                                 "id": "default58"
@@ -169,24 +183,16 @@ var dialogs = [
                         "name": "1.카테고리 중 입력 틀린 경우",
                         "input": [
                             {
-                                "text": {
-                                    "raw": "ffff",
-                                    "nlp": "ffff"
-                                }
+                                "if": "true"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Action",
-                                "type": "call",
-                                "dialogName": "1.카테고리 중",
                                 "buttons": [
                                     {
-                                        "url": "",
                                         "text": "다시 입력"
                                     },
                                     {
-                                        "url": "",
                                         "text": "시작"
                                     }
                                 ],
@@ -214,7 +220,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialog": "1.카테고리 중",
+                                        "dialogName": "1.카테고리 중",
+                                        "dialogId": "default1"
                                     }
                                 ],
                                 "id": "default94"
@@ -240,11 +249,9 @@ var dialogs = [
                         },
                         "buttons": [
                             {
-                                "url": "",
                                 "text": "다시 입력"
                             },
                             {
-                                "url": "",
                                 "text": "시작"
                             }
                         ],
@@ -264,15 +271,18 @@ var dialogs = [
                             },
                             {
                                 "text": {
-                                    "raw": "선택",
-                                    "nlp": "선택"
+                                    "raw": "입력",
+                                    "nlp": "입력"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "1.카테고리 대",
+                                "dialog": "1.카테고리 대",
+                                "dialogId": "default0"
                             }
                         ],
                         "id": "default93"
@@ -364,7 +374,9 @@ var dialogs = [
                 "name": "2.질문 토픽 중",
                 "input": [
                     {
-                        "types": "categorylist"
+                        "types": [
+                            "faqcategorylist"
+                        ]
                     }
                 ],
                 "output": [
@@ -382,13 +394,15 @@ var dialogs = [
                         "name": "2.질문 답",
                         "input": [
                             {
-                                "types": "categorylist1"
+                                "types": [
+                                    "faqitemlist"
+                                ]
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#item#**question** \n+question+\n\n**answer** \n+answer+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                "text": "#context.session.faqitem#**question** \n+question+\n\n**answer** \n+answer+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                             }
                         ],
                         "task": {
