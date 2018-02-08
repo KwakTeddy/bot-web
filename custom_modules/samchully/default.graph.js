@@ -1929,6 +1929,19 @@ var dialogs = [
         ]
     },
     {
+        "name": "테스트",
+        "input": [
+            { "text": { "nlp": "테스트", "raw": "테스트"} }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "테스트 타입 +dialog.userInput.types.testType+"
+            }
+        ],
+        "id": "test1234"
+    },
+    {
         "name": "시작카드 재질의",
         "input": [
             {
