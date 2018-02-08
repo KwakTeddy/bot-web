@@ -80,9 +80,20 @@ module.exports = function (bot) {
     });
 
     bot.setType("categorylist", {
-        name: "category",
-        listName: "category",
-        typeCheck: "listTypeCheck"
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.substring(3);
+
+            for(var i=0; i<context.session.category.length; i++)
+            {
+                if(context.session.category[i].indexOf(text) != -1)
+                {
+                    return callback(true, context.session.category[i]);
+                }
+            }
+
+            callback(false);
+        }
     });
 
 
@@ -97,29 +108,34 @@ module.exports = function (bot) {
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.json = {
+            options.qs = {
                 category: dialog.userInput.types.categorylist
             };
-            request.get(options, function (err, response, body) {
-                if (err) {
+            request.get(options, function (err, response, body)
+            {
+                if (err)
+                {
                     console.log('err:' + err);
                 }
-                else {
+                else
+                {
                     console.log(response.statusCode);
                     console.log(body);
 
-                context.session.category1 = [];
-                context.session.category1 = body;
+                    body = JSON.parse(body);
 
-                dialog.output[0].buttons= [];
-                for (var i = 0; i < context.session.category1.length; i++)
-                {
-                    var ss = "" + (i + 1) + ". " + context.session.category1[i].name + " " + context.session.category1[i].code;
-                    dialog.output[0].buttons.push({text: ss});
+                    context.session.category1 = [];
+                    context.session.category1 = body;
+
+                    dialog.output[0].buttons= [];
+                    for (var i = 0; i < context.session.category1.length; i++)
+                    {
+                        var ss = "" + (i + 1) + ". " + context.session.category1[i].name + " " + context.session.category1[i].code;
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+
+                    callback();
                 }
-                callback();
-                }
-                callback();
             });
         }
     });
