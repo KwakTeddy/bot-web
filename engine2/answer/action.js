@@ -118,7 +118,10 @@ var ContextManager = require('../context.js');
                 console.log(chalk.yellow('[[[ Action - call ]]]'));
                 console.log(tempDialogInstance);
 
-                this.dm.execWithRecord(bot, context, tempDialogInstance, callback);
+                dialogInstance.nextCall = tempDialogInstance;
+                tempDialogInstance.prevCall = dialogInstance;
+
+                this.dm.exec(bot, context, tempDialogInstance, callback);
             }
             else
             {
@@ -145,7 +148,10 @@ var ContextManager = require('../context.js');
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
                 tempDialogInstance.options.outputText = this.makeOption(resultOutput);
 
-                this.dm.execWithRecord(bot, context, tempDialogInstance, callback);
+                dialogInstance.nextCall = tempDialogInstance;
+                tempDialogInstance.prevCall = dialogInstance;
+
+                this.dm.exec(bot, context, tempDialogInstance, callback);
             }
             else
             {
@@ -168,7 +174,10 @@ var ContextManager = require('../context.js');
             var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
             tempDialogInstance.options.outputText = this.makeOption(resultOutput);
 
-            this.dm.execWithRecord(bot, context, tempDialogInstance, callback);
+            dialogInstance.nextCall = tempDialogInstance;
+            tempDialogInstance.prevCall = dialogInstance;
+
+            this.dm.exec(bot, context, tempDialogInstance, callback);
         }
         else
         {
@@ -188,8 +197,7 @@ var ContextManager = require('../context.js');
                 console.log(matchedDialog.id);
 
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
-
-                this.dm.execWithRecord(bot, context, tempDialogInstance, callback);
+                this.dm.exec(bot, context, tempDialogInstance, callback);
             }
             else
             {

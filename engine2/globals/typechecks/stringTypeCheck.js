@@ -1,8 +1,7 @@
 module.exports = function(globals)
 {
-    globals.setTypeChecks('stringTypeCheck', function(text, type, task, context, callback)
+    globals.setTypeChecks('stringTypeCheck', function(dialog, context, callback)
     {
-        task[type.name] = text;
-        callback(text, task, true);
+        callback(true, dialog.userInput.text);
     });
 }

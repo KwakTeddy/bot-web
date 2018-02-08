@@ -364,7 +364,10 @@ var ActionManager = require('./action.js');
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, context, sync.dialogInstance, done);
+                TaskManager.exec(bot, context, sync.dialogInstance, function(retry)
+                {
+                    done();
+                });
             });
         }
 

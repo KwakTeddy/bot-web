@@ -1,13 +1,16 @@
 module.exports = function(globals)
 {
-    globals.setTypeChecks('timeTypeCheck', function(text, type, task, context, callback)
+    globals.setTypeChecks('timeTypeCheck', function(dialog, context, callback)
     {
+        var text = dialog.userInput.text;
+
         var name = 'time';
         var re = /(오전|오후|새벽|아침|낮|저녁|밤|am|pm|a.m|p.m)?\s*(\d{1,2})\s*(?:시|:)\s*(?:(\d{1,2}|반)\s*분?)?/g;
         var matched = false;
 
 
-        text = text.replace(re, function(match, g1, g2, g3){
+        text = text.replace(re, function(match, g1, g2, g3)
+        {
             matched = true;
             var time;
             // var timeform = ':00';
@@ -52,6 +55,6 @@ module.exports = function(globals)
             return matchTime(name, task, time);
         });
 
-        callback(text, task, matched);
+        callback(matched, text);
     });
 };
