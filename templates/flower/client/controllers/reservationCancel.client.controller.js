@@ -25,8 +25,16 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.datas = [];
+                    $scope.datass = [];
                     $scope.list = [];
                     $scope.template = result;
+                    DataService.query({templateId: result.id, botId: chatbot.id
+                        }, function (list) {
+                            $scope.datass = list;
+                        },
+                        function (err) {
+                            alert(err);
+                        });
 
                     if(searchword===undefined) {
 
@@ -127,13 +135,13 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
 
             if (confirms === false) {
                 alert("'승인 대기중'상태로 등록해드려습니다.");
-                for (var i = 0; i < $scope.datas.length; i++) {
-                    if ($scope.datas[i]._id === data._id) {
-                        $scope.datas[i].order_status = "승인 대기중";
+                for (var i = 0; i < $scope.datass.length; i++) {
+                    if ($scope.datass[i]._id === data._id) {
+                        $scope.datass[i].order_status = "승인 대기중";
                     }
                 }
 
-                var datas = JSON.parse(angular.toJson($scope.datas));
+                var datas = JSON.parse(angular.toJson($scope.datass));
                 ChatbotTemplateService.get({templateId: chatbot.templateId._id}, function (result) {
                     DataService.save({
                             templateId: result.id,
@@ -149,23 +157,23 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
                             alert(err);
                         });
                 });
-                location.href = '/playchat/templates/contents/reservation';
+                 location.href = '/playchat/templates/contents/reservation';
             }
             else {
                 if (confirms === true) {
                     alert("'승인완료'상태로 등록해드려습니다.");
-                    for (var i = 0; i < $scope.datas.length; i++) {
-                        if ($scope.datas[i]._id === data._id) {
-                            $scope.datas[i].order_status = "승인완료";
+                    for (var i = 0; i < $scope.datass.length; i++) {
+                        if ($scope.datass[i]._id === data._id) {
+                            $scope.datass[i].order_status = "승인완료";
                         }
                     }
 
-                    var datas = JSON.parse(angular.toJson($scope.datas));
+                     var datass = JSON.parse(angular.toJson($scope.datass));
                     ChatbotTemplateService.get({templateId: chatbot.templateId._id}, function (result) {
                         DataService.save({
                                 templateId: result.id,
                                 botId: chatbot.id,
-                                datas: datas
+                                datas : datass
                             }, function (result1) {
                                 console.log(result1);
                                 $scope.datas.splice(index, 1);
@@ -176,7 +184,7 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
                                 alert(err);
                             });
                     });
-                    location.href = '/playchat/templates/contents/reservation';
+                     location.href = '/playchat/templates/contents/reservation';
                 }
             }
         };
@@ -185,13 +193,13 @@ angular.module('template').controller('flowerReservationCancelController', ['$sc
         {
             var confirmresult=confirm("정말로 삭제하겠습니까?");
             if(confirmresult===true) {
-                for(var i=0; i<$scope.datas.length; i++) {
-                    if ($scope.datas[i]._id===data._id) {
-                        $scope.datas[i].order_status = "주문삭제";
+                for(var i=0; i<$scope.datass.length; i++) {
+                    if ($scope.datass[i]._id===data._id) {
+                        $scope.datass[i].order_status = "주문삭제";
                     }
                 }
 
-                var datas = JSON.parse(angular.toJson($scope.datas));
+                var datas = JSON.parse(angular.toJson($scope.datass));
                 ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result) {
                     DataService.save({
                             templateId: result.id,

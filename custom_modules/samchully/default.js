@@ -1,4 +1,5 @@
 var request = require('request');
+var async = require('async');
 
 module.exports = function(bot)
 {
@@ -26,8 +27,22 @@ module.exports = function(bot)
             dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
         }
     };
+
+    var dateFormatChange = function (dateString) {
+        var newStr;
+        if(dateString && dateString.length == 6)
+        {
+            newStr = dateString.slice(0, 4) + '년 ' + dateString.slice(4, 6) + '월';
+
+        }
+        else if(dateString && dateString.length == 8)
+        {
+            newStr = dateString.slice(0, 4) + '년 ' + dateString.slice(4, 6) + '월 ' + dateString.slice(6, 8) + '일';
+        }
+        return newStr ? newStr : dateString;
+    };
     
-    var timeout = 7000;
+    var timeout = 9500;
 
 
     //Type Area
@@ -178,6 +193,7 @@ module.exports = function(bot)
                     }
                     if(!alreadySelected)
                     {
+                        nonPaymentList[userInput[i] - 1].userIdx = userInput[i];
                         selected.push(nonPaymentList[userInput[i] - 1]);
                         matched = true;
                     }
@@ -283,14 +299,20 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(body);
                         context.customerList = body.data.E_TAB;
+
+                        for(var i=0; i<context.customerList.length; i++)
+                        {
+                            if(context.customerList[i].VKONT.startsWith('000'))
+                            {
+                                context.customerList[i].VKONT = context.customerList[i].VKONT.substring(3);
+                            }
+                        }
                     }else {
                         errorHandler(dialog, body);
                     }
-
-                    callback();
                 }
+                callback();
             });
         }
     });
@@ -328,12 +350,11 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_LIST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
             options.timeout = timeout;
-            console.log(JSON.stringify(options))
 
             request.post(options, function(err, response, body)
             {
@@ -350,22 +371,22 @@ module.exports = function(bot)
                     else if(body.E_RETCD == 'S')
                     {
                         var data = body.data.ET_TABLE;
-                        context.noticeHistory = data;
-                        console.log(context.noticeHistory)
-
                         dialog.output[0].buttons = [];
                         for(var i = 0; i < data.length; i++)
                         {
+                            data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
+                            data[i].FAEDN = dateFormatChange(data[i].FAEDN);
                             dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                         }
-
+                        context.noticeHistory = data;
+                        console.log(context.noticeHistory);
 
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
-
                 }
+                callback();
+
             });
 
         }
@@ -375,6 +396,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            console.log('노티스 히스토리 : ', context.noticeHistory);
             for(var i = 0; i < context.noticeHistory.length; i++)
             {
                 if(context.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
@@ -399,7 +421,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZFC_MS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
@@ -421,13 +443,20 @@ module.exports = function(bot)
                     {
                         console.log(JSON.stringify(body, null, 4));
                         var data = body.data.ET_TABLE;
+
+                        for(var i = 0; i < data.length; i++)
+                        {
+                            data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
+                            data[i].BUDAT = dateFormatChange(data[i].BUDAT);
+                        }
+
                         context.paymentHistory = data;
 
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
                 }
+                callback();
             });
         }
     });
@@ -460,7 +489,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CHECK_NOTI_AMT';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.json.isTable = true;
             options.timeout = timeout;
@@ -482,7 +511,15 @@ module.exports = function(bot)
                         if(body.data)
                         {
                             console.log(JSON.stringify(body, null, 4));
-                            context.nonpaymentHistory = body.data.E_TAB;
+                            var data = body.data.E_TAB;
+
+                            for(var i = 0 ; i < data.length; i++)
+                            {
+                                data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
+                                data[i].FAEDN = dateFormatChange(data[i].FAEDN);
+
+                            }
+                            context.nonpaymentHistory = data;
                         }
                         else
                         {
@@ -494,9 +531,10 @@ module.exports = function(bot)
                     {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
         }
     });
@@ -526,7 +564,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CB_COMMON_ACCINFO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
@@ -561,7 +599,7 @@ module.exports = function(bot)
                             else
                             {
 
-                                dialog.output[0].buttons.push({text: data[i].BANKA + '입금전용계좌 생성'});
+                                dialog.output[0].buttons.push({text: data[i].BANKA + ' 입금전용계좌 생성'});
                                 // dialog.output[0].buttons.push({text: idx + '. ' + data[i].BANKA + '입금전용계좌 생성'});
                                 idx++;
 
@@ -571,9 +609,10 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
         }
     });
@@ -599,7 +638,7 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_CB_COMMON_ACCCRE';
                 options.json.param = [
-                    { key: 'I_VKONT', val: curCustomer.VKONT},
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                     { key: 'I_BANKK', val: selectedBank }
                 ];
                 options.timeout = timeout;
@@ -625,8 +664,8 @@ module.exports = function(bot)
                             errorHandler(dialog, body);
                         }
 
-                        callback();
                     }
+                    callback();
                 });
             }
     });
@@ -652,7 +691,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_TYPE_INFO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
@@ -679,8 +718,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -695,7 +735,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
             options.timeout = timeout;
@@ -721,8 +761,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -737,7 +778,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_LMS_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
             options.timeout = timeout;
@@ -762,8 +803,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -779,11 +821,12 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT },
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_EMAIL', val: curCustomer.email }
             ];
-            options.timeout = timeout;
+            options.timeout = 1000 * 60;
 
+            var start = new Date().getTime();
             request.post(options, function(err, response, body)
             {
                 if(err)
@@ -798,14 +841,13 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(body);
+                        console.log(body, ((new Date().getTime()) - start) / 1000 + 'ms');
                         dialog.setNoticeMethodSuccess = true;
                     }else {
                         errorHandler(dialog, body);
                     }
-
-                    callback();
                 }
+                callback();
             });
         }
     });
@@ -820,7 +862,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GOJI_CANCEL';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT }
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
             options.timeout = timeout;
 
@@ -845,8 +887,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -862,7 +905,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZBI_MS_GOJI_RESEND';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT }
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
             options.timeout = timeout;
 
@@ -886,8 +929,9 @@ module.exports = function(bot)
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -910,7 +954,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_GET_PAYMENT_METHOD';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT }
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
             options.timeout = timeout;
 
@@ -938,8 +982,9 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, err);
                     }
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -956,7 +1001,167 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            callback();
+            var curCustomer = context.curCustomer;
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'MS_IF_CM0014';
+            options.json.param = [
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+            ];
+            options.json.isTable = true;
+            options.timeout = timeout;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                    callback();
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1 || body.E_RETMSG.indexOf('결과가 없습니다') != -1)
+                        {
+                            dialog.output[0].text = body.E_RETMSG;
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        callback();
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        dialog.data.list = body.data.T_OUT;
+
+                        console.log('성공 데이터 : ', dialog.data.list);
+                        var outputText = [];
+
+                        async.eachSeries(dialog.data.list, function(item, next)
+                        {
+                            var test = '안전점검일: ' + item.CHK_YYMM + '\n';
+                            test += '확인자: ' + item.SCR_MGR_NO + '\n';
+                            if(item.SCR_MGR_CLF == '01')
+                            {
+                                test += '확인자와의 관계: 본인\n';
+                            }
+                            else if(item.SCR_MGR_CLF == '02')
+                            {
+                                test += '확인자와의 관계: 가족\n';
+                            }
+                            else if(item.SCR_MGR_CLF == '03')
+                            {
+                                test += '확인자와의 관계: 관리인\n';
+                            }
+                            else if(item.SCR_MGR_CLF == '04')
+                            {
+                                test += '확인자와의 관계: 기타\n';
+                            }
+
+                            if(item.CHK_YN == 'Y')
+                            {
+                                if(item.FITN_YN == 'N')
+                                {
+                                    test += '점검결과: 적합\n';
+                                }
+                                else
+                                {
+                                    test += '점검결과: 부적합\n';
+
+                                    var options = {};
+                                    options.url = 'http://sam.moneybrain.ai:3000/api';
+                                    options.json = {};
+                                    options.json.name = 'ZPM_USERSAFE_12';
+                                    options.json.param = [
+                                        { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
+                                        { key: 'I_ADV_ORD', val: '1' },
+                                        { key: 'I_DATA_TYPE', val: 'D' }
+                                    ];
+                                    options.json.isTable = true;
+                                    options.timeout = timeout;
+
+                                    request.post(options, function(err, response, body)
+                                    {
+                                        if(err)
+                                        {
+                                            console.log('에러 : ', err);
+                                        }
+                                        else
+                                        {
+                                            console.log('부적합 결과 : ', body);
+                                            test += '부적합 결과: ' + body.E_RETMSG + '\n';
+                                            test += '부적합 시설: ' + '\n\n';
+
+                                            outputText.push(test);
+
+                                            next();
+                                        }
+                                    });
+
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                test += '미점검사유: ';
+                                if(item.UCHK_RSN == '1')
+                                {
+                                    test += '공가\n';
+                                }
+                                else if(item.UCHK_RSN == '2')
+                                {
+                                    test += '미입주\n';
+                                }
+                                else if(item.UCHK_RSN == '3')
+                                {
+                                    test += '미사용\n';
+                                }
+                                else if(item.UCHK_RSN == '4')
+                                {
+                                    test += '중폐지\n';
+                                }
+                                else if(item.UCHK_RSN == '5')
+                                {
+                                    test += '이사\n';
+                                }
+                                else if(item.UCHK_RSN == '6')
+                                {
+                                    test += '체납중지\n';
+                                }
+                                else if(item.UCHK_RSN == '7')
+                                {
+                                    test += '요청중지\n';
+                                }
+                                else if(item.UCHK_RSN == '8')
+                                {
+                                    test += '철거\n';
+                                }
+                                else if(item.UCHK_RSN == '9')
+                                {
+                                    test += '점검거부\n';
+                                }
+                            }
+
+                            outputText.push(test + '\n\n');
+                            next();
+                        },
+                        function()
+                        {
+                            dialog.output[0].text = outputText.join('\n');
+                            callback();
+                        });
+                    }
+                    else
+                    {
+                        errorHandler(dialog, body);
+                        callback();
+                    }
+                }
+            });
         }
     });
 
@@ -964,7 +1169,53 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            callback();
+            var curCustomer = context.curCustomer;
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'MS_IF_CM0013';
+            options.json.param = [
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+            ];
+            options.timeout = timeout;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                }
+                else
+                {
+                    if(body.E_RETCD == 'E')
+                    {
+                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        {
+                            dialog.output[0].text = body.E_RETMSG;
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        console.log(JSON.stringify(body, null, 4))
+
+                        dialog.data.month1 = body.E_FCNTMM;
+                        dialog.data.month2 = body.E_SCNTMM;
+                        dialog.data.gasType = body.E_AKLASSE;
+                    }
+                    else
+                    {
+                        errorHandler(dialog, body);
+                    }
+
+                }
+                callback();
+
+            });
         }
     });
 
@@ -1004,14 +1255,15 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(JSON.stringify(body, null, 4))
+                        console.log(JSON.stringify(body, null, 4));
                         context.centerAddressList = body.data.E_TAB;
                     }else {
                         errorHandler(dialog, body);
                     }
 
-                    callback();
                 }
+                callback();
+
             });
         }
     });
@@ -1040,7 +1292,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_ARS_PAYMENT';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT},
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_HPNUM', val: curCustomer.mobile },
                 { key: 'I_BETRWP', val: context.totalSelectedNonpayment}
             ];
@@ -1065,9 +1317,10 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
         }
     });
@@ -1090,7 +1343,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_EXPIRE_SO';
             options.json.param = [
-                { key: 'I_VKONT', val: curCustomer.VKONT}
+                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.timeout = timeout;
 
@@ -1113,9 +1366,10 @@ module.exports = function(bot)
                     }else {
                         errorHandler(dialog, body);
                     }
-                    callback();
 
                 }
+                callback();
+
             });
 
         }

@@ -4,6 +4,7 @@ var Transaction = require('./utils/transaction.js');
 
 var utils = require('./utils/utils.js');
 
+var ContextManager = require('./context.js');
 var OutputManager = require('./output.js');
 var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
@@ -29,17 +30,17 @@ var Logger = require('./logger.js');
         {
             if(matchedList.length > 0)
             {
-                transaction.qa = { type: 'qa', foundDialog: matchedList[0] };
+                transaction.qa = { type: 'qa', matchedDialog: matchedList[0] };
             }
 
             done();
         }));
 
-        DialogGraphManager.find(bot, context, userInput, transaction.callback(function(err, foundDialog, done)
+        DialogGraphManager.find(bot, context, userInput, transaction.callback(function(err, matchedDialog, done)
         {
-            if(foundDialog)
+            if(matchedDialog)
             {
-                transaction.dm = { type: 'dm', foundDialog: foundDialog };
+                transaction.dm = { type: 'dm', matchedDialog: matchedDialog };
             }
 
             done();
@@ -49,15 +50,11 @@ var Logger = require('./logger.js');
         {
             if(this.dm)
             {
-                var cloneDialog = utils.clone(this.dm.foundDialog);
-                cloneDialog.originalInput = cloneDialog.input;
-                cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                cloneDialog.userInput = userInput;
-
-                DialogGraphManager.execWithRecord(bot, context, cloneDialog, function(output)
+                var dialogInstance = ContextManager.createDialogInstance(this.dm.matchedDialog, userInput);
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
-                    cloneDialog.output = output;
-                    output = OutputManager.make(context, cloneDialog);
+                    // cloneDialog.output = output;
+                    output = OutputManager.make(context, dialogInstance, output);
 
                     var currentDialog = context.session.history[0];
                     var previousDialog = undefined;
@@ -72,7 +69,7 @@ var Logger = require('./logger.js');
 
                     if(output)
                     {
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
 
                         callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
                     }
@@ -85,7 +82,7 @@ var Logger = require('./logger.js');
                         console.log(this.qa.dialog);
                         console.log(text);
 
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, text, '', '', '', '', false, 'qna');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, text, '', '', '', '', false, 'qna');
 
                         callback({ type: 'qa', text: text });
                     }
@@ -95,7 +92,7 @@ var Logger = require('./logger.js');
                         console.log(chalk.yellow('[[[ No Answer ]]]'));
 
                         var dialog = bot.dialogMap['noanswer'];
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.input.text, currentDialog.input.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
                         callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: dialog.output[0] });
                     }
                 });

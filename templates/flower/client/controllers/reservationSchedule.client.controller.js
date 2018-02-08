@@ -24,8 +24,20 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
             ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result)
                 {
                     $scope.datas = [];
+                    $scope.datass = [];
                     $scope.list = [];
                     $scope.template = result;
+
+                    DataService.query({
+                            templateId: result.id,
+                            botId: chatbot.id,
+                            query: {order_status: {$in:['승인 대기중','승인완료']}, order_deliverytime: {$lte: endDate, $gte: startDate}}
+                        }, function (list) {
+                            $scope.datass = list;
+                        },
+                        function (err) {
+                            alert(err);
+                        });
 
                     if(searchword===undefined) {
                         DataService.query({
@@ -124,12 +136,12 @@ angular.module('template').controller('flowerReservationScheduleController', ['$
         {
             var confirmresult=confirm("정말로 삭제하겠습니까?");
             if(confirmresult===true) {
-                for(var i=0; i<$scope.datas.length; i++) {
-                    if ($scope.datas[i]._id===data._id) {
-                        $scope.datas[i].order_status = "주문취소";
+                for(var i=0; i<$scope.datass.length; i++) {
+                    if ($scope.datass[i]._id===data._id) {
+                        $scope.datass[i].order_status = "주문취소";
                     }
                 }
-                var datas = JSON.parse(angular.toJson($scope.datas));
+                var datas = JSON.parse(angular.toJson($scope.datass));
                 ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result) {
                     DataService.save({
                             templateId: result.id,

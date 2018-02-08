@@ -1,6 +1,10 @@
 module.exports = function(globals)
 {
-    function dateTypeCheck(text, type, task, context, callback) {
+    function dateTypeCheck(dialog, context, callback)
+    {
+        var type = this;
+        var text = dialog.userInput.text;
+        
         var name = 'date';
         var re = /(?:(올해|이번 년|작년|내년|20[12]\d{1}\s*[-/.년]?)?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*[-/.월 ])\s?(오늘|어저께|그저께|어제|내일|모레|글피|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*[일]?)|(올해|이번 년|작년|내년|\d{4}\s*[-/.년])?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*월)|(?:(?:(오늘|어저께|그저께|어제|내일|모레|글피|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9]))\s*일)|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*[년해]|((?:[0-9]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두))\s*(?:개월|달)|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*주[일]?|(하루|이틀|며칠|(?:[0-9]+|삼|사|오|육|칠|팔|구|십)\s*일))\s*(전|후|뒤)?)|(오늘|어저께|그저께|어제|내일|모레|글피)|(이\s?번\s?주|저\s?번\s?주|지\s?난\s?주|다\s?음\s?주|다\s?다\s?음\s?주)\s*([월화수목금토일])요?일?/g;
         var matched = false;
@@ -395,7 +399,7 @@ module.exports = function(globals)
             return matchDate(name, task, date);
         });
 
-        callback(text, task, matched);
+        callback(matched, text);(text, task, matched);
     };
 
     globals.setTypeChecks('dateTypeCheck', dateTypeCheck);

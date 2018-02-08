@@ -4,14 +4,16 @@ var chalk = require('chalk');
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
-var TaskManager = require('./task.js');
 var Globals = require('../globals.js');
+var TaskManager = require('./task.js');
+var ActionManager = require('./action.js');
 
 (function()
 {
     var DialogGraphManager = function()
     {
-
+        this.exclude = ['하다', '이다'];
+        ActionManager.dm = this;
     };
 
     DialogGraphManager.prototype.checkInputText = function(nlpText, text)
@@ -24,9 +26,12 @@ var Globals = require('../globals.js');
             for(var i=0; i<words.length; i++)
             {
                 var word = RegExp.escape(words[i]);
-                if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+                if(this.exclude.indexOf(word) == -1)
                 {
-                    count++;
+                    if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+                    {
+                        count++;
+                    }
                 }
             }
         }
@@ -113,6 +118,7 @@ var Globals = require('../globals.js');
                             var matchCount = that.checkInputText(nlpText, input.text.nlp);
                             if(matchCount > 0)
                             {
+                                console.log('머지 : ', nlpText, input.text.nlp);
                                 dialog.matchCount += matchCount;
                                 result = result && true;
                             }
@@ -199,7 +205,10 @@ var Globals = require('../globals.js');
                     if(result)
                     {
                         // return callback(dialog);
-                        selectedDialog.push(dialog);
+                        if(selectedDialog.indexOf(dialog) == -1)
+                        {
+                            selectedDialog.push(dialog);
+                        }
                     }
 
                     next();
@@ -329,35 +338,43 @@ var Globals = require('../globals.js');
         });
     };
 
-    DialogGraphManager.prototype.execWithRecord = function(bot, context, targetDialog, callback)
+    // 실행된 dialogInstance를 히스토리에 기록.
+    DialogGraphManager.prototype.execWithRecord = function(bot, context, dialogInstance, callback)
     {
-        context.session.history.splice(0, 0, targetDialog);
-        context.session.dialogCursor = targetDialog.id;
+        if(dialogInstance.id == 'startDialog')
+        {
+            context.session.history = [];
+        }
 
-        this.exec(bot, context, targetDialog, callback);
+        context.session.history.splice(0, 0, dialogInstance);
+        context.session.dialogCursor = dialogInstance.id;
+
+        this.exec(bot, context, dialogInstance, callback);
     };
 
-    DialogGraphManager.prototype.exec = function(bot, context, targetDialog, callback)
+    DialogGraphManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
-        var that = this;
-
         console.log();
         console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
+        console.log(dialogInstance);
 
         var sync = new Transaction.sync();
-        sync.targetDialog = targetDialog;
-        if(targetDialog.task)
+        sync.dialogInstance = dialogInstance;
+        if(dialogInstance.task)
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, context, sync.targetDialog, done);
+                TaskManager.exec(bot, context, sync.dialogInstance, function(retry)
+                {
+                    done();
+                });
             });
         }
 
         sync.done(function()
         {
-            var targetDialog = sync.targetDialog;
-            var output = targetDialog.output;
+            var dialogInstance = sync.dialogInstance;
+            var output = dialogInstance.output;
 
             if(typeof output == 'string')
             {
@@ -396,7 +413,7 @@ var Globals = require('../globals.js');
                                 {
                                     console.error(chalk.red(err));
                                 }
-                            })(context, targetDialog, output[i]);
+                            })(context, dialogInstance, output[i]);
                         }
                     }
                     else if(!output[i].if)
@@ -417,184 +434,20 @@ var Globals = require('../globals.js');
             }
 
             console.log();
-            console.log(chalk.yellow('[[[ Output ]]]'));
+            console.log(chalk.yellow('[[[ Selected Output ]]]'));
             console.log(resultOutput);
 
             if(resultOutput.kind == 'Action')
             {
-                if(resultOutput.type == 'repeat')
-                {
-                    context.session.history.splice(0, 1);
-
-                    var parent = bot.parentDialogMap[targetDialog.id];
-                    if(parent)
-                    {
-                        context.session.dialogCursor = parent.id;
-
-                        var cloneDialog = utils.clone(parent);
-                        cloneDialog.originalInput = cloneDialog.input;
-                        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.userInput = targetDialog.userInput;
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - repeat ]]]'));
-                        console.log(cloneDialog);
-
-                        context.session.dialogCursor = cloneDialog.id;
-                        callback(resultOutput.text || cloneDialog.output[0]);
-                    }
-                    else
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - repeat ]]]'));
-                        console.log('prev is undefined');
-
-                        callback('[repeat] prev가 없습니다');
-                    }
-                }
-                else if(resultOutput.type == 'up')
-                {
-                    context.session.history.splice(0, 1);
-
-                    var parent = bot.parentDialogMap[context.session.history[0].id];
-                    if(parent)
-                    {
-                        context.session.dialogCursor = parent.id;
-
-                        context.session.history.splice(0, 1);
-
-                        var cloneDialog = utils.clone(parent);
-                        cloneDialog.originalInput = cloneDialog.input;
-                        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.userInput = targetDialog.userInput;
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - up ]]]'));
-                        console.log(cloneDialog.id, cloneDialog.name);
-
-                        that.exec(bot, context, cloneDialog, callback);
-                    }
-                    else
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - up ]]]'));
-                        console.log('prev is undefined');
-
-                        callback({ output: { text: '[up] prev가 없습니다' } });
-                    }
-                }
-                else if(resultOutput.type == 'call')
-                {
-                    if(resultOutput.dialogId)
-                    {
-                        var foundDialog = bot.dialogMap[resultOutput.dialogId];
-                        if(foundDialog)
-                        {
-                            var cloneDialog = utils.clone(foundDialog);
-                            cloneDialog.originalInput = cloneDialog.input;
-                            cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.userInput = targetDialog.userInput;
-
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - call ]]]'));
-                            console.log(cloneDialog);
-
-                            that.execWithRecord(bot, context, cloneDialog, callback);
-                        }
-                        else
-                        {
-                            callback({ output: { text: 'Call 타겟을 찾을 수 없습니다.' }});
-                        }
-                    }
-                    else
-                    {
-                        callback({ output: { text: 'Call 타겟을 찾을 수 없습니다.' }});
-                    }
-                }
-                else if(resultOutput.type == 'callChild')
-                {
-                    var dialog = utils.clone(bot.dialogMap[resultOutput.dialogId]);
-                    that.find(bot, context, dialog, function(err, foundDialog)
-                    {
-                        if(foundDialog)
-                        {
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - callChild ]]]'));
-                            console.log(foundDialog.id);
-
-                            var cloneDialog = utils.clone(foundDialog);
-                            cloneDialog.originalInput = cloneDialog.input;
-                            cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.userInput = targetDialog.userInput;
-
-                            that.execWithRecord(bot, context, cloneDialog, callback);
-                        }
-                        else
-                        {
-                            callback({ output: { text: 'CallChild 타겟을 찾을 수 없습니다.' }});
-                        }
-                    });
-                }
-                else if(resultOutput.type == 'returnCall')
-                {
-                    context.session.returnDialog = targetDialog.id;
-
-                    var foundDialog = bot.dialogMap[resultOutput.dialogId];
-                    if(foundDialog)
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
-                        console.log(foundDialog.id);
-
-                        var cloneDialog = utils.clone(foundDialog);
-                        cloneDialog.originalInput = cloneDialog.input;
-                        cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                        cloneDialog.userInput = targetDialog.userInput;
-
-                        that.execWithRecord(bot, context, cloneDialog, callback);
-                    }
-                    else
-                    {
-                        callback({ output: { text: 'Return Call 타겟을 찾을 수 없습니다.' }});
-                    }
-                }
-                else if(resultOutput.type == 'return')
-                {
-                    if(context.session.returnDialog)
-                    {
-                        var foundDialog = bot.parentDialogMap[context.session.returnDialog];
-                        if(foundDialog)
-                        {
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - return ]]]'));
-                            console.log(foundDialog.id);
-
-                            var cloneDialog = utils.clone(foundDialog);
-                            cloneDialog.originalInput = cloneDialog.input;
-                            cloneDialog.originalOutput = utils.clone(cloneDialog.output);
-                            cloneDialog.userInput = targetDialog.userInput;
-
-                            that.execWithRecord(bot, context, cloneDialog, callback);
-                        }
-                        else
-                        {
-                            callback({ output: { text: 'Return 타겟을 찾을 수 없습니다.' }});
-                        }
-                    }
-                    else
-                    {
-                        // 모르겟어요?
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - return ]]]'));
-                        console.log('context.returnDialog is undefined');
-
-                        callback(null);
-                    }
-                }
+                ActionManager.exec(bot, context, dialogInstance, resultOutput, callback);
             }
             else
             {
+                if(dialogInstance.options.outputText)
+                {
+                    resultOutput.text = dialogInstance.options.outputText;
+                }
+
                 callback(resultOutput);
             }
         });

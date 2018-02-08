@@ -1,35 +1,75 @@
 var path = require('path');
-var bot = require(path.resolve('engine/bot.js')).getTemplateBot('flower');
-var request = require('request');
-var mongo = require(path.resolve('./engine/bot/action/common/mongo'));
-var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var mongoose = require('mongoose');
-var type = require(path.resolve('./engine/bot/action/common/type'));
+var mongo = require(path.resolve('./engine2/utils/mongo-wrapper.js'));
 var config = require(path.resolve('./config/config'));
-var logger = require(path.resolve('./config/lib/logger'));
-var _ = require('lodash');
-var async = require('async');
-var utils = require(path.resolve('engine/bot/action/common/utils'));
-var category= mongo.getModel('flower-categories');
-var faq= mongo.getModel('flower-faqs');
-var greeting= mongo.getModel('flower-greetings');
-var order= mongo.getModel('flower-reservations');
-var messages = require(path.resolve('engine/messages/server/controllers/messages.server.controller'));
+var messages = require(path.resolve('engine2/messages.js'));
 var nodemailer = require('nodemailer');
+var mongoose = require('mongoose');
+var db= mongoose.connect('mongodb://localhost:27017/bot-dev');
+
+db.connection.on("error",function(error){
+    console.log("数据库连接失败:"+error);
+});
+
+db.connection.on("open",function(){
+    console.log("数据库连接成功");
+});
+
+var Schema = mongoose.Schema;
+
+var ReservationSchema = new Schema({
+    "order_name": "String",
+    "order_mobile": "String",
+    "order_itemname": "String",
+    "order_itemcode": "String",
+    "order_date": "String",
+    "order_hour": "String",
+    "order_receivername": "String",
+    "order_receivermobile": "String",
+    "order_receiveraddress": "String",
+    "order_deliverydate": "String",
+    "order_deliveryhour": "String",
+    "order_greeting": "String",
+    "order_sendername": "String",
+    "order_status": "String",
+    "order_time": "String",
+    "order_price": "Number",
+    "order_itemimage": "String",
+    "order_itemnumber": "Number",
+    "order_email": "String",
+    "order_bride": "String",
+    "order_showtime": "String",
+    "order_deliveryway": "String",
+    "order_decorateway": "String",
+    "order_bill": "String",
+    "order_payway": "String",
+    "order_allprice": "Number",
+    "order_deliverytime": "String",
+    "order_otherrequire": "String"
+});
+
+var categorySchema = new Schema({
+    "category": "String",
+    "name": "String",
+    "price": "Number",
+    "picture": "String",
+    "description": "String",
+    "code": "String",
+    "sale_price": "Number",
+    "delivery": "String",
+    "VIP": "String",
+    "status": "String"
+});
+
+var faqSchema = new Schema({
+    "category": "String",
+    "question": "String",
+    "answer": "String"
+});
+
+//var db  = mongoose.connection;
 
 
-const IN_TAG_START = '{';
-const IN_TAG_END = '}';
-
-//
-// var defaultTask = {
-//     name: 'defaultTask',
-//     action: function(task, context, callback) {
-//         callback(task, context);
-//     }
-// };
-// bot.setTask("defaultTask", defaultTask);
-
+module.exports = function (bot) {
 
 var getcategory = {
     action: function (task, context, callback) {
@@ -1773,19 +1813,16 @@ var dateAndtime = {
                             matched=false;
                             callback(task, context, matched);
                         }
-                        //console.log("context.dialog.showtime===2=======" + context.dialog.showtime);
                         callback(task, context, matched);
                     }
                     else {
                         var textt2 = textt[1] + textt[2];
-                        //console.log("textt2==========" + textt2);
                         timeTypeCheck1(textt2, type, task, context, callback);
                         context.dialog.showtime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
                             matched=false;
                             callback(task, context, matched);
                         }
-                        //console.log("context.dialog.showtime===3=======" + context.dialog.showtime);
                         callback(task, context, matched);
                     }
                 }
@@ -1839,7 +1876,6 @@ var dateAndtime1 = {
                 }
                 else {
                     if (textt[2] === undefined) {
-                        //  console.log("textt[1]==========" + textt[1]);
                         timeTypeCheck1(textt[1], type, task, context, callback);
                         context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
@@ -1850,7 +1886,6 @@ var dateAndtime1 = {
                     }
                     else {
                         var textt2 = textt[1] + textt[2];
-                        //console.log("textt2==========" + textt2);
                         timeTypeCheck1(textt2, type, task, context, callback);
                         context.dialog.deliverytime=context.dialog.dateonly1+" "+context.dialog.time;
                         if(context.dialog.time=='re'){
@@ -1871,7 +1906,7 @@ var dateAndtime1 = {
 
 bot.setType('dateAndtime1', dateAndtime1);
 
-
+};
 
 
 

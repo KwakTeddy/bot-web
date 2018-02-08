@@ -502,7 +502,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
+                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default12",
@@ -526,7 +526,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -633,7 +633,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -716,13 +716,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.nonpaymentHistory#\n+index+.\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "농협 입금전용계좌 생성"
-                                            }
-                                        ]
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#"
                                     }
                                 ],
                                 "id": "default24",
@@ -739,7 +733,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.input.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.input.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
+                                                "text": "+dialog.userInput.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.userInput.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
                                             }
                                         ],
                                         "id": "default25",
@@ -932,10 +926,6 @@ var dialogs = [
                                                 "name": "이메일 재질의",
                                                 "input": [
                                                     {
-                                                        "text": {
-                                                            "raw": "",
-                                                            "nlp": ""
-                                                        },
                                                         "if": "true"
                                                     }
                                                 ],
@@ -943,7 +933,8 @@ var dialogs = [
                                                     {
                                                         "kind": "Action",
                                                         "type": "repeat",
-                                                        "dialog": 1
+                                                        "dialog": 1,
+                                                        "text": "잘못 입력하셨습니다.\n\n이메일 형식에 맞게 다시 입력해주세요."
                                                     }
                                                 ],
                                                 "id": "default27"
@@ -1097,7 +1088,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "자가 검침"
+                                "text": "미구현된 기능입니다."
                             }
                         ],
                         "id": "default10",
@@ -1240,29 +1231,121 @@ var dialogs = [
                 "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
                 "buttons": [
                     {
-                        "url": "",
-                        "text": "이사 들어오실 때"
+                        "url": "http://59.6.157.142/Simple/MoveIn",
+                        "text": "1. 이사 들어오실 때"
                     },
                     {
-                        "url": "",
-                        "text": "이사 나가실 때"
+                        "url": "http://59.6.157.142/Simple/MoveOut",
+                        "text": "2. 이사 나가실 때"
                     },
                     {
-                        "url": "",
-                        "text": "AS (렌지연결 등)"
+                        "url": "http://59.6.157.142/Simple/AfterService",
+                        "text": "3. AS (렌지연결 등)"
                     },
                     {
-                        "url": "",
-                        "text": "예약 확인/변경"
+                        "url": "http://59.6.157.142/Simple/CheckService",
+                        "text": "4. 예약 확인/변경"
                     },
                     {
-                        "url": "",
-                        "text": "연결비 안내"
+                        "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                        "text": "5. 연결비 안내"
                     }
                 ]
             }
         ],
-        "id": "default5"
+        "id": "default5",
+        "children": [
+            {
+                "name": "이사 들어오실 때",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이사 들어오실 때",
+                            "nlp": "이사 들어오다 때"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "이사 들어오실 때 URL"
+                    }
+                ],
+                "id": "default54"
+            },
+            {
+                "name": "이사 나가실 때",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이사 나가실 때",
+                            "nlp": "이사 나가다 때"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "이사 나가실 때 URL"
+                    }
+                ],
+                "id": "default55"
+            },
+            {
+                "name": "AS (렌지연결 등)",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "AS (렌지연결 등)",
+                            "nlp": "AS ( 렌 지 연결 등 )"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "AS (렌지연결 등) URL"
+                    }
+                ],
+                "id": "default56"
+            },
+            {
+                "name": "예약 확인/변경",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "예약 확인/변경",
+                            "nlp": "예약 확인 / 변경"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "예약 확인/변경 URL"
+                    }
+                ],
+                "id": "default58"
+            },
+            {
+                "name": "연결비 안내",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "연결비 안내",
+                            "nlp": "연결 비 안내"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "연결비 안내 URL"
+                    }
+                ],
+                "id": "default64"
+            }
+        ]
     },
     {
         "name": "안전점검",
@@ -1282,16 +1365,16 @@ var dialogs = [
         ],
         "output": [
             {
+                "kind": "Content",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.user.auth"
+            },
+            {
                 "kind": "Action",
                 "if": "!context.user.auth",
                 "type": "call",
                 "dialogId": "default3",
                 "dialogName": "인증_고객명"
-            },
-            {
-                "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": ""
             }
         ],
         "id": "default6",
@@ -1376,7 +1459,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가스용도 : ○ ○ ○\n안전점검월 : ○월, ○월\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
+                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month1+월, +dialog.data.month2+월\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
                                     }
                                 ],
                                 "id": "default43",
@@ -1403,7 +1486,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "안전점검 결과 내역입니다\n\n안전점검일 : \n점검 참여자 : \n계약자와 관계 : \n점검결과 :"
+                                        "text": "안전점검 결과 내역입니다\n\n#dialog.data.list#안전점검일 : +CHK_YYMM+\n확인자: +SCR_MGR_NO+\n확인자와의 관계: +SCR_MGR_CLF+\n점검결과 :+CHK_YN+\n\n#"
                                     }
                                 ],
                                 "task": {
@@ -1493,7 +1576,7 @@ var dialogs = [
                 "text": "원하시는 메뉴를 선택해주세요.",
                 "buttons": [
                     {
-                        "url": "http://www.samchully.co.kr/customer/gas/info/usage/new.do",
+                        "url": "",
                         "text": "1. 도시가스 이용가이드"
                     },
                     {
@@ -1509,6 +1592,24 @@ var dialogs = [
         ],
         "id": "default8",
         "children": [
+            {
+                "name": "도시가스 이용가이드",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "도시가스 이용가이드",
+                            "nlp": "도시가스 이용 가이드"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "도시가스 이용가이드 URL"
+                    }
+                ],
+                "id": "default52"
+            },
             {
                 "name": "자주 묻는 질문",
                 "input": [
@@ -1532,48 +1633,230 @@ var dialogs = [
                         "buttons": [
                             {
                                 "url": "",
-                                "text": "요금체납 시 중단 시기"
+                                "text": "1. 요금체납 시 중단 시기"
                             },
                             {
                                 "url": "",
-                                "text": "가스요금 납부방법"
+                                "text": "2. 가스요금 납부방법"
                             },
                             {
                                 "url": "",
-                                "text": "자동이체 적용시기"
+                                "text": "3. 자동이체 적용시기"
                             },
                             {
                                 "url": "",
-                                "text": "사회적 배려대상 요금경감제도"
+                                "text": "4. 사회적 배려대상 요금경감제도"
                             },
                             {
                                 "url": "",
-                                "text": "이중수납 환불제도"
+                                "text": "5. 이중수납 환불제도"
                             },
                             {
                                 "url": "",
-                                "text": "갑자기 요금이 많이 나왔을때"
+                                "text": "6. 갑자기 요금이 많이 나왔을때"
                             },
                             {
                                 "url": "",
-                                "text": "서비스 품질보상 제도 안내"
+                                "text": "7. 서비스 품질보상 제도 안내"
                             },
                             {
                                 "url": "",
-                                "text": "연체가산금 안내"
+                                "text": "8. 연체가산금 안내"
                             },
                             {
                                 "url": "",
-                                "text": "고지서 명의변경 방법"
+                                "text": "9. 고지서 명의변경 방법"
                             },
                             {
                                 "url": "",
-                                "text": "자동이체 통장 잔액부족"
+                                "text": "10. 자동이체 통장 잔액부족"
                             }
                         ]
                     }
                 ],
-                "id": "default44"
+                "id": "default44",
+                "children": [
+                    {
+                        "name": "요금체납 시 중단 시기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "요금체납 시 중단 시기",
+                                    "nlp": "요금 체납 시 중단 시기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "요금체납 시 중단 시기 URL"
+                            }
+                        ],
+                        "id": "default65"
+                    },
+                    {
+                        "name": "가스요금 납부방법",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "가스요금 납부방법",
+                                    "nlp": "가스요금 납부 방법"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "가스요금 납부방법 URL"
+                            }
+                        ],
+                        "id": "default66"
+                    },
+                    {
+                        "name": "자동이체 적용시기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "자동이체 적용시기",
+                                    "nlp": "자동 이체 적용 시기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "자동이체 적용시기 URL"
+                            }
+                        ],
+                        "id": "default68"
+                    },
+                    {
+                        "name": "사회적 배려대상 요금경감제도",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "사회적 배려대상 요금경감제도",
+                                    "nlp": "사회 적 배려 대상 요금 경감 제도"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "사회적 배려대상 요금경감제도 URL"
+                            }
+                        ],
+                        "id": "default69"
+                    },
+                    {
+                        "name": "이중수납 환불제도",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "이중수납 환불제도",
+                                    "nlp": "이중 수납 환불 제도"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "이중수납 환불제도 URL"
+                            }
+                        ],
+                        "id": "default70"
+                    },
+                    {
+                        "name": "갑자기 요금이 많이 나왔을때",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "갑자기 요금이 많이 나왔을때",
+                                    "nlp": "갑자기 요금 이 많이 나오다 때"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "갑자기 요금이 많이 나왔을때 URL"
+                            }
+                        ],
+                        "id": "default71"
+                    },
+                    {
+                        "name": "서비스 품질보상제도 안내",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "서비스 품질보상제도 안내",
+                                    "nlp": "서비스 품질 보상 제도 안내"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "서비스 품질보상제도 안내 URL"
+                            }
+                        ],
+                        "id": "default72"
+                    },
+                    {
+                        "name": "연체가산금 안내",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "연체가산금 안내",
+                                    "nlp": "연체 가산금 안내"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "연체가산금 안내 URL"
+                            }
+                        ],
+                        "id": "default73"
+                    },
+                    {
+                        "name": "고지서 명의변경 방법",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "고지서 명의변경 방법",
+                                    "nlp": "고지서 명의 변경 방법"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "고지서 명의변경 방법 URL"
+                            }
+                        ],
+                        "id": "default74"
+                    },
+                    {
+                        "name": "자동이체 통장 잔액부족",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "자동이체 통장 잔액부족",
+                                    "nlp": "자동 이체 통장 잔액 부족"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "자동이체 통장 잔액부족 URL"
+                            }
+                        ],
+                        "id": "default75"
+                    }
+                ]
             },
             {
                 "name": "동명 입력",
@@ -1664,8 +1947,7 @@ var dialogs = [
 
 var commonDialogs = [
     {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
+        "id": "startDialog",
         "name": "시작",
         "input": [
             {
@@ -1724,8 +2006,7 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
+        "id": "upDialog",
         "name": "상위",
         "input": [
             {
@@ -1736,14 +2017,26 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "back",
-                    "nlp": "back"
-                }
-            },
-            {
-                "text": {
                     "raw": "상위",
                     "nlp": "상위"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "backDialog",
+        "name": "이전",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
                 }
             },
             {
@@ -1756,17 +2049,14 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Action",
-                "type": "up"
+                "type": "back"
             }
         ]
     },
     {
         "id": "noanswer",
-        "filename": "defaultcommon",
         "name": "답변없음",
-        "input": [
-            ""
-        ],
+        "input": [{}],
         "output": [
             {
                 "kind": "Content",
@@ -1781,6 +2071,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }

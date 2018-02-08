@@ -43,11 +43,6 @@ angular.module('template').controller('flowerReservationScheduleDetailController
 
         $scope.delete = function(event,data)
         {
-            var target = angular.element(event.currentTarget);
-            var href = target.attr('data-href');
-            location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
-
-
                 for(var i=0; i<$scope.datas.length; i++) {
                     if ($scope.datas[i]._id===data._id) {
                         $scope.datas[i].order_status = "주문취소";
@@ -73,6 +68,7 @@ angular.module('template').controller('flowerReservationScheduleDetailController
         {
             for(var i=0; i<$scope.datas.length; i++) {
                 if ($scope.datas[i]._id===$scope.data._id) {
+                    // alert("botId======="+$scope.datas[i].botId);
                     $scope.datas[i].order_date= $scope.data.order_date;
                     $scope.datas[i].order_hour= $scope.data.order_hour;
                     $scope.datas[i].order_name= $scope.data.order_name;

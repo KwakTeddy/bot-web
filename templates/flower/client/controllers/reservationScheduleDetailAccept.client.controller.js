@@ -42,20 +42,16 @@ angular.module('template').controller('flowerReservationScheduleDetailAcceptCont
 
            $scope.accept = function(event,data)
            {
-               var target = angular.element(event.currentTarget);
-
-               var href = target.attr('data-href');
-
-               location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
-
-
                for(var i=0; i<$scope.datas.length; i++) {
                    if ($scope.datas[i]._id===data._id) {
+                       //alert("$scope.datas[i]"+$scope.datas[i].botId);
                        $scope.datas[i].order_status = "승인완료";
                    }
                }
                var datas = JSON.parse(angular.toJson($scope.datas));
                ChatbotTemplateService.get({ templateId: chatbot.templateId._id}, function(result) {
+                   //alert("datas==="+JSON.stringify(datas));
+                  // alert("chatbot.id==="+chatbot.id);
                    DataService.save({
                            templateId: result.id,
                            botId: chatbot.id,
@@ -74,6 +70,7 @@ angular.module('template').controller('flowerReservationScheduleDetailAcceptCont
            {
                for(var i=0; i<$scope.datas.length; i++) {
                    if ($scope.datas[i]._id===$scope.data._id) {
+                       $scope.datas[i].botId= $scope.data.botId;
                        $scope.datas[i].order_date= $scope.data.order_date;
                        $scope.datas[i].order_hour= $scope.data.order_hour;
                        $scope.datas[i].order_name= $scope.data.order_name;

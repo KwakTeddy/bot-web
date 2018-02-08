@@ -1,8 +1,9 @@
 var chalk = require('chalk');
 
 var OutputManager = require('./output.js');
-var Context = require('./context.js');
+var ContextManager = require('./context.js');
 var BotManager = require('./bot.js');
+var DialogGraphManager = require('./answer/dm.js');
 
 (function()
 {
@@ -15,69 +16,65 @@ var BotManager = require('./bot.js');
     {
         context.returnDialog = undefined;
         context.session.dialogCursor = undefined;
+        context.session.history = [];
 
-        redis.set(contextKey, JSON.stringify(context), function(err, reply)
+        var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
         {
-            if(err)
+            redis.set(contextKey, JSON.stringify(context), function(err, reply)
             {
-                error.delegate(err);
-            }
-            else
-            {
-                //테스트 필요
-                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                var output = bot.commonDialogs[0].output;
-                if(typeof output != 'string')
+                if(err)
                 {
-                    output = bot.commonDialogs[0].output[0];
+                    error.delegate(err);
                 }
+                else
+                {
+                    redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                output = OutputManager.make(context, { output: output });
-                callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+                    output = OutputManager.make(context, {}, output);
+                    callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                console.log(chalk.green('================================'));
-                console.log();
-            }
+                    console.log(chalk.green('================================'));
+                    console.log()
+                }
+            });
         });
     };
 
     CommandManager.prototype.resetMemory = function(redis, contextKey, bot, error, callback)
     {
-        var context = Context.create();
-        redis.set(contextKey, JSON.stringify(context), function(err, reply)
+        var context = ContextManager.create();
+        BotManager.reset(bot.id);
+        BotManager.load(bot.id, function(err, bot)
         {
-            if(err)
+            if (err)
             {
                 error.delegate(err);
             }
             else
             {
-                //테스트 필요
-                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                BotManager.reset(bot.id);
-                BotManager.load(bot.id, function(err, bot)
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
-                    if (err)
+                    redis.set(contextKey, JSON.stringify(context), function(err, reply)
                     {
-                        error.delegate(err);
-                    }
-                    else
-                    {
-                        var output = bot.commonDialogs[0].output;
-                        if(typeof output != 'string')
+                        if(err)
                         {
-                            output = bot.commonDialogs[0].output[0];
+                            error.delegate(err);
                         }
+                        else
+                        {
+                            //테스트 필요
+                            redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                        output = OutputManager.make(context, { output: output });
-                        callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
-                    }
+                            output = OutputManager.make(context, {}, output);
+                            callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+
+                            console.log(chalk.green('================================'));
+                            console.log();
+                        }
+                    });
                 });
-
-                console.log(chalk.green('================================'));
-                console.log();
             }
         });
     };
@@ -87,39 +84,37 @@ var BotManager = require('./bot.js');
         context.returnDialog = undefined;
         context.session.dialogCursor = undefined;
 
-        redis.set(contextKey, JSON.stringify(context), function(err, reply)
+        BotManager.reset(bot.id);
+        BotManager.load(bot.id, function(err, bot)
         {
-            if(err)
+            if (err)
             {
                 error.delegate(err);
             }
             else
             {
-                //테스트 필요
-                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                BotManager.reset(bot.id);
-                BotManager.load(bot.id, function(err, bot)
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
-                    if (err)
+                    redis.set(contextKey, JSON.stringify(context), function(err, reply)
                     {
-                        error.delegate(err);
-                    }
-                    else
-                    {
-                        var output = bot.commonDialogs[0].output;
-                        if(typeof output != 'string')
+                        if(err)
                         {
-                            output = bot.commonDialogs[0].output[0];
+                            error.delegate(err);
                         }
+                        else
+                        {
+                            //테스트 필요
+                            redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
-                        output = OutputManager.make(context, { output: output });
-                        callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
-                    }
+                            output = OutputManager.make(context, {}, output);
+                            callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
+
+                            console.log(chalk.green('================================'));
+                            console.log();
+                        }
+                    });
                 });
-
-                console.log(chalk.green('================================'));
-                console.log();
             }
         });
     };
@@ -136,14 +131,15 @@ var BotManager = require('./bot.js');
             {
                 BotManager.reloadBotFiles(bot);
 
-                var output = bot.commonDialogs[0].output;
-                if(typeof output != 'string')
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
-                    output = bot.commonDialogs[0].output[0];
-                }
+                    output = OutputManager.make(context, { }, output);
+                    callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
-                output = OutputManager.make(context, { output: output });
-                callback(null, { type: 'dialog', output: output});
+                    console.log(chalk.green('================================'));
+                    console.log();
+                });
 
                 console.log(chalk.green('================================'));
                 console.log();
