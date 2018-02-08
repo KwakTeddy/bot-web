@@ -4,15 +4,16 @@ var chalk = require('chalk');
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
-var ContextManager = require('../context.js');
-var TaskManager = require('./task.js');
 var Globals = require('../globals.js');
+var TaskManager = require('./task.js');
+var ActionManager = require('./action.js');
 
 (function()
 {
     var DialogGraphManager = function()
     {
         this.exclude = ['하다', '이다'];
+        ActionManager.dm = this;
     };
 
     DialogGraphManager.prototype.checkInputText = function(nlpText, text)
@@ -340,6 +341,11 @@ var Globals = require('../globals.js');
     // 실행된 dialogInstance를 히스토리에 기록.
     DialogGraphManager.prototype.execWithRecord = function(bot, context, dialogInstance, callback)
     {
+        if(dialogInstance.id == 'startDialog')
+        {
+            context.session.history = [];
+        }
+
         context.session.history.splice(0, 0, dialogInstance);
         context.session.dialogCursor = dialogInstance.id;
 
@@ -348,8 +354,6 @@ var Globals = require('../globals.js');
 
     DialogGraphManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
-        var that = this;
-
         console.log();
         console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
         console.log(dialogInstance);
@@ -432,158 +436,7 @@ var Globals = require('../globals.js');
 
             if(resultOutput.kind == 'Action')
             {
-                if(resultOutput.type == 'repeat')
-                {
-                    // Repeat을 위한 다이얼로그 인스턴스가 실행되어 history에 쌓였으므로 제거해준다.
-                    context.session.history.splice(0, 1);
-
-                    // Repeat은 무조건 부모 다이얼로그를 실행한다.
-                    var parent = bot.parentDialogMap[dialogInstance.id];
-                    if(parent)
-                    {
-                        context.session.dialogCursor = parent.id;
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - repeat ]]]'));
-                        console.log(parent.id, parent.name);
-
-                        that.exec(bot, context, parent, callback);
-                    }
-                    else
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - repeat ]]]'));
-                        console.log('prev is undefined');
-
-                        callback('[repeat] prev가 없습니다');
-                    }
-                }
-                else if(resultOutput.type == 'up')
-                {
-                    context.session.history.splice(0, 2); // up을 입력해서 실행한 카드, 그 전에 실행한 카드, 그 이전으로 돌아가야 하므로 앞 2개를 제거한다.
-
-                    var parent = context.session.history[0];
-                    if(parent)
-                    {
-                        context.session.dialogCursor = parent.id;
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - up ]]]'));
-                        console.log(parent.id, parent.name);
-
-                        that.exec(bot, context, parent, callback);
-                    }
-                    else
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - up ]]]'));
-                        console.log('prev is undefined');
-
-                        callback({ text: '[up] prev가 없습니다' });
-                    }
-                }
-                else if(resultOutput.type == 'call')
-                {
-                    if(resultOutput.dialogId)
-                    {
-                        var matchedDialog = bot.dialogMap[resultOutput.dialogId];
-                        if(matchedDialog)
-                        {
-                            var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
-
-                            if(resultOutput.text)
-                            {
-                                tempDialogInstance.options.outputText = resultOutput.text;
-                            }
-
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - call ]]]'));
-                            console.log(tempDialogInstance);
-
-                            that.execWithRecord(bot, context, tempDialogInstance, callback);
-                        }
-                        else
-                        {
-                            callback({ text: 'Call 타겟을 찾을 수 없습니다.' });
-                        }
-                    }
-                    else
-                    {
-                        callback({ text: 'Call 타겟을 찾을 수 없습니다.' });
-                    }
-                }
-                else if(resultOutput.type == 'callChild')
-                {
-                    var dialog = utils.clone(bot.dialogMap[resultOutput.dialogId]);
-                    that.find(bot, context, dialog, function(err, matchedDialog)
-                    {
-                        if(matchedDialog)
-                        {
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - callChild ]]]'));
-                            console.log(matchedDialog.id);
-
-                            var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
-
-                            that.execWithRecord(bot, context, tempDialogInstance, callback);
-                        }
-                        else
-                        {
-                            callback({ text: 'CallChild 타겟을 찾을 수 없습니다.' });
-                        }
-                    });
-                }
-                else if(resultOutput.type == 'returnCall')
-                {
-                    context.session.returnDialog = dialogInstance.id;
-
-                    var matchedDialog = bot.dialogMap[resultOutput.dialogId];
-                    if(matchedDialog)
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - returnCall ]]]'));
-                        console.log(matchedDialog.id);
-
-                        var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
-
-                        that.execWithRecord(bot, context, tempDialogInstance, callback);
-                    }
-                    else
-                    {
-                        callback({ text: 'Return Call 타겟을 찾을 수 없습니다.' });
-                    }
-                }
-                else if(resultOutput.type == 'return')
-                {
-                    if(context.session.returnDialog)
-                    {
-                        var matchedDialog = bot.parentDialogMap[context.session.returnDialog];
-                        if(matchedDialog)
-                        {
-                            console.log();
-                            console.log(chalk.yellow('[[[ Action - return ]]]'));
-                            console.log(matchedDialog.id);
-
-                            var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
-
-                            that.execWithRecord(bot, context, tempDialogInstance, callback);
-                        }
-                        else
-                        {
-                            callback({ text: 'Return 타겟을 찾을 수 없습니다.' });
-                        }
-                    }
-                    else
-                    {
-                        // 모르겟어요?
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Action - return ]]]'));
-                        console.log('context.returnDialog is undefined');
-
-                        callback(null);
-                    }
-                }
+                ActionManager.exec(bot, context, dialogInstance, resultOutput, callback);
             }
             else
             {
