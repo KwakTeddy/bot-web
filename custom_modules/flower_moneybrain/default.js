@@ -93,7 +93,7 @@ module.exports = function (bot) {
             // if (context.session.categorylist !== undefined) {
             //     context.session.categorylist = context.session.categorylist;
             // }
-
+            console.log("dialog.userInput.types.categorylist*****"+JSON.stringify(dialog.userInput.types.categorylist));
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
