@@ -1384,4 +1384,14 @@ module.exports = function(bot)
         }
     });
 
+    bot.setTask('testTask',
+    {
+        paramDefs: [
+            { type: 'mobileType', description: '핸드폰번호를 입력해주세요' }
+        ],
+        action: function (dialog, context, callback)
+        {
+            callback(true, dialog.userInput.text);
+        }
+    });
 };
