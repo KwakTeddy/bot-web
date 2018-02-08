@@ -16,74 +16,65 @@ var DialogGraphManager = require('./answer/dm.js');
     {
         context.returnDialog = undefined;
         context.session.dialogCursor = undefined;
+        context.session.history = [];
 
-        redis.set(contextKey, JSON.stringify(context), function(err, reply)
+        var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
         {
-            if(err)
+            redis.set(contextKey, JSON.stringify(context), function(err, reply)
             {
-                error.delegate(err);
-            }
-            else
-            {
-                //테스트 필요
-                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                // var output = bot.commonDialogs[0].output;
-                // if(typeof output != 'string')
-                // {
-                //     output = bot.commonDialogs[0].output[0];
-                // }
-
-                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
-                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
+                if(err)
                 {
+                    error.delegate(err);
+                }
+                else
+                {
+                    redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
                     output = OutputManager.make(context, {}, output);
                     callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                     console.log(chalk.green('================================'));
-                    console.log();
-                });
-            }
+                    console.log()
+                }
+            });
         });
     };
 
     CommandManager.prototype.resetMemory = function(redis, contextKey, bot, error, callback)
     {
         var context = ContextManager.create();
-        redis.set(contextKey, JSON.stringify(context), function(err, reply)
+        BotManager.reset(bot.id);
+        BotManager.load(bot.id, function(err, bot)
         {
-            if(err)
+            if (err)
             {
                 error.delegate(err);
             }
             else
             {
-                //테스트 필요
-                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                BotManager.reset(bot.id);
-                BotManager.load(bot.id, function(err, bot)
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
-                    if (err)
+                    redis.set(contextKey, JSON.stringify(context), function(err, reply)
                     {
-                        error.delegate(err);
-                    }
-                    else
-                    {
-                        var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
-                        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
+                        if(err)
                         {
+                            error.delegate(err);
+                        }
+                        else
+                        {
+                            //테스트 필요
+                            redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
                             output = OutputManager.make(context, {}, output);
                             callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                             console.log(chalk.green('================================'));
                             console.log();
-                        });
-                    }
+                        }
+                    });
                 });
-
-                console.log(chalk.green('================================'));
-                console.log();
             }
         });
     };
@@ -93,40 +84,37 @@ var DialogGraphManager = require('./answer/dm.js');
         context.returnDialog = undefined;
         context.session.dialogCursor = undefined;
 
-        redis.set(contextKey, JSON.stringify(context), function(err, reply)
+        BotManager.reset(bot.id);
+        BotManager.load(bot.id, function(err, bot)
         {
-            if(err)
+            if (err)
             {
                 error.delegate(err);
             }
             else
             {
-                //테스트 필요
-                redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                BotManager.reset(bot.id);
-                BotManager.load(bot.id, function(err, bot)
+                var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
+                DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
-                    if (err)
+                    redis.set(contextKey, JSON.stringify(context), function(err, reply)
                     {
-                        error.delegate(err);
-                    }
-                    else
-                    {
-                        var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
-                        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
+                        if(err)
                         {
+                            error.delegate(err);
+                        }
+                        else
+                        {
+                            //테스트 필요
+                            redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
                             output = OutputManager.make(context, {}, output);
                             callback(null, { type: 'dialog', dialogId: bot.commonDialogs[0].id, output: output});
 
                             console.log(chalk.green('================================'));
                             console.log();
-                        });
-                    }
+                        }
+                    });
                 });
-
-                console.log(chalk.green('================================'));
-                console.log();
             }
         });
     };

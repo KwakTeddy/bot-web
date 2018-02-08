@@ -2175,6 +2175,19 @@ var dialogs = [
         ]
     },
     {
+        "name": "테스트",
+        "input": [
+            { "text": { "nlp": "테스트", "raw": "테스트"} }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "테스트 타입 +dialog.userInput.types.testType+"
+            }
+        ],
+        "id": "test1234"
+    },
+    {
         "name": "시작카드 재질의",
         "input": [
             {
@@ -2193,8 +2206,7 @@ var dialogs = [
 
 var commonDialogs = [
     {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
+        "id": "startDialog",
         "name": "시작",
         "input": [
             {
@@ -2253,8 +2265,7 @@ var commonDialogs = [
         }
     },
     {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
+        "id": "upDialog",
         "name": "상위",
         "input": [
             {
@@ -2265,14 +2276,26 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "back",
-                    "nlp": "back"
-                }
-            },
-            {
-                "text": {
                     "raw": "상위",
                     "nlp": "상위"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "backDialog",
+        "name": "이전",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
                 }
             },
             {
@@ -2285,17 +2308,14 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Action",
-                "type": "up"
+                "type": "back"
             }
         ]
     },
     {
         "id": "noanswer",
-        "filename": "defaultcommon",
         "name": "답변없음",
-        "input": [
-            ""
-        ],
+        "input": [{}],
         "output": [
             {
                 "kind": "Content",
