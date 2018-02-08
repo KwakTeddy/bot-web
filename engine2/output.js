@@ -44,6 +44,8 @@ var utils = require('./utils/utils.js');
 
     OutputManager.prototype.make = function(context, dialog, output)
     {
+        output = utils.clone(output);
+
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
         console.log(output.text);
@@ -129,7 +131,7 @@ var utils = require('./utils/utils.js');
                     if(key)
                     {
                         var replaced = getValue({ context: context, dialog: dialog, bot: bot }, key);
-                        if(replaced)
+                        if(replaced !== undefined && replaced !== null)
                         {
                             return replaced;
                         }

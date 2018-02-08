@@ -396,6 +396,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
+            console.log('노티스 히스토리 : ', context.noticeHistory);
             for(var i = 0; i < context.noticeHistory.length; i++)
             {
                 if(context.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
