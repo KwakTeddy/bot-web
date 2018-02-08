@@ -36,7 +36,9 @@ var dialogs = [
                 "name": "1.카테고리 중",
                 "input": [
                     {
-                        "types": "categorylist"
+                        "types": [
+                            "categorylist"
+                        ]
                     }
                 ],
                 "output": [
@@ -3819,6 +3821,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
-};
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
+}
