@@ -41,6 +41,12 @@ module.exports = function(bot)
         }
         return newStr ? newStr : dateString;
     };
+
+    var addDefaultButton = function (dialog) {
+
+        dialog.output[0].buttons.push({text: '이전'});
+        dialog.output[0].buttons.push({text: '시작'});
+    };
     
     var timeout = 9500;
 
@@ -325,11 +331,12 @@ module.exports = function(bot)
             {
                 var customerList = context.customerList;
                 dialog.output[0].buttons = [];
-
                 for(var i = 0; i < customerList.length; i++)
                 {
                     dialog.output[0].buttons.push({text: (i + 1) + ''});
                 }
+
+                addDefaultButton(dialog);
             }
 
             callback();
@@ -1314,7 +1321,9 @@ module.exports = function(bot)
                     else if(body.E_RETCD == 'S')
                     {
                         console.log(body)
-                    }else {
+                    }
+                    else
+                    {
                         errorHandler(dialog, body);
                     }
 

@@ -264,6 +264,14 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "7. 고지서 재발행 신청"
+                            },
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
                             }
                         ]
                     }
@@ -302,6 +310,14 @@ var dialogs = [
                                     {
                                         "url": "",
                                         "text": "12개월"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
@@ -368,84 +384,6 @@ var dialogs = [
                         ]
                     },
                     {
-                        "name": "월별 납부내역 조회",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "월별 납부내역 조회",
-                                    "nlp": "월별 납부 내 역 조회"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "2",
-                                    "nlp": "2"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "3개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "6개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "12개월"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default4",
-                        "children": [
-                            {
-                                "name": "납부내역 3개월",
-                                "input": [
-                                    {
-                                        "types": [
-                                            "monthType"
-                                        ]
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "[납부내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#"
-                                    }
-                                ],
-                                "id": "default19",
-                                "children": [],
-                                "task": {
-                                    "name": "getPaymentHistory"
-                                }
-                            },
-                            {
-                                "name": "개월수 선택오류_납부",
-                                "input": [
-                                    {
-                                        "if": "true"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
-                                        "type": "repeat",
-                                        "dialog": 1
-                                    }
-                                ],
-                                "id": "default20"
-                            }
-                        ]
-                    },
-                    {
                         "name": "요금납부",
                         "input": [
                             {
@@ -477,6 +415,14 @@ var dialogs = [
                                     {
                                         "url": "",
                                         "text": "입금전용계좌 조회"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
@@ -531,6 +477,14 @@ var dialogs = [
                                                     {
                                                         "url": "",
                                                         "text": "신용카드 납부"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
                                                     }
                                                 ]
                                             }
@@ -562,7 +516,13 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다."
+                                                        "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "url": "",
+                                                                "text": "처음"
+                                                            }
+                                                        ]
                                                     }
                                                 ],
                                                 "task": {
@@ -638,6 +598,14 @@ var dialogs = [
                                                     {
                                                         "url": "",
                                                         "text": "QR 코드 납부"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "시작"
                                                     }
                                                 ]
                                             }
@@ -663,7 +631,13 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다."
+                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "url": "",
+                                                                "text": "처음"
+                                                            }
+                                                        ]
                                                     }
                                                 ],
                                                 "task": {
@@ -777,6 +751,14 @@ var dialogs = [
                                     {
                                         "url": "",
                                         "text": "해지"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
@@ -815,6 +797,14 @@ var dialogs = [
                                             {
                                                 "url": "",
                                                 "text": "이메일 고지"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
                                             }
                                         ]
                                     }
@@ -840,7 +830,13 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "정상적으로 처리되셨습니다."
+                                                "text": "정상적으로 처리되셨습니다.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
                                             }
                                         ],
                                         "task": {
@@ -867,7 +863,13 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "정상적으로 처리되셨습니다."
+                                                "text": "정상적으로 처리되셨습니다.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
                                             }
                                         ],
                                         "task": {
@@ -894,7 +896,17 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으실 이메일 주소를 입력해주세요."
+                                                "text": "받으실 이메일 주소를 입력해주세요.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
                                             }
                                         ],
                                         "task": {
@@ -914,7 +926,13 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "정상적으로 처리되셨습니다."
+                                                        "text": "정상적으로 처리되셨습니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "url": "",
+                                                                "text": "처음"
+                                                            }
+                                                        ]
                                                     }
                                                 ],
                                                 "task": {
@@ -965,7 +983,13 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "정상적으로 처리되었습니다."
+                                        "text": "정상적으로 처리되었습니다.",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default31",
@@ -1007,6 +1031,14 @@ var dialogs = [
                                     {
                                         "url": "",
                                         "text": "해지"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
@@ -1249,6 +1281,14 @@ var dialogs = [
                     {
                         "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
                         "text": "5. 연결비 안내"
+                    },
+                    {
+                        "url": "",
+                        "text": "이전"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음"
                     }
                 ]
             }
@@ -1586,6 +1626,14 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "3. 관할 고객센터 조회"
+                    },
+                    {
+                        "url": "",
+                        "text": "이전"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음"
                     }
                 ]
             }
@@ -1670,6 +1718,14 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "10. 자동이체 통장 잔액부족"
+                            },
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
                             }
                         ]
                     }
@@ -1877,7 +1933,17 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "찾고자하시는 동명을 입력해주세요."
+                        "text": "찾고자하시는 동명을 입력해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
                     }
                 ],
                 "task": {
@@ -2064,6 +2130,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
 }
