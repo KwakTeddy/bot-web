@@ -66,7 +66,6 @@ module.exports = function (bot) {
                         }
                     }
                     context.session.category = str;
-                    console.log("context.session.category=="+JSON.stringify(context.session.category));
 
                     dialog.output[0].buttons = [];
                     for (var i = 0; i < context.session.category.length; i++) {
@@ -105,7 +104,6 @@ module.exports = function (bot) {
             // if (context.session.categorylist !== undefined) {
             //     context.session.categorylist = context.session.categorylist;
             // }
-
 
             var modelname = "flower_moneybrain_category";
             var options = {};
@@ -148,7 +146,6 @@ module.exports = function (bot) {
         listName: "category1",
         typeCheck: "listTypeCheck"
     });
-
 
 
     bot.setTask('showitem',{
@@ -219,23 +216,41 @@ module.exports = function (bot) {
 
     bot.setTask('getFAQcategory',{
         action: function (dialog, context, callback) {
-            // faq.find({}).lean().exec(function (err, docs) {
-            //     context.user.category = [];
-            //     context.user.categorylist = undefined;
-            //     var str = [];
-            //     for (var j = 0; j < docs.length; j++) {
-            //         if (str.indexOf(docs[j].category) < 0) {
-            //             str.push(docs[j].category);
-            //         }
-            //     }
-            //     context.user.category = str;
-            //     task.buttons = [];
-            //     for (var i = 0; i < context.user.category.length; i++) {
-            //         var ss = "" + (i + 1) + ". " + context.user.category[i];
-            //         task.buttons.push({text: ss});
-            //     }
-            //     callback();
-            // })
+            var modelname = "flower_moneybrain_faq";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.json = {
+                // category: context.session.categorylist1.category,
+                // name: context.session.categorylist1.name,
+                // code: context.session.categorylist1.code
+                _id:dialog.userInput.types.categorylist1._id
+            };
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    console.log(response.statusCode);
+                    console.log(body);
+
+                context.session.category = [];
+                context.user.categorylist = undefined;
+                var str = [];
+                for (var j = 0; j < docs.length; j++) {
+                    if (str.indexOf(docs[j].category) < 0) {
+                        str.push(docs[j].category);
+                    }
+                }
+                context.user.category = str;
+                task.buttons = [];
+                for (var i = 0; i < context.user.category.length; i++) {
+                    var ss = "" + (i + 1) + ". " + context.user.category[i];
+                    task.buttons.push({text: ss});
+                }
+                callback();
+                    }
+                    callback();
+                });
         }
     });
 
