@@ -211,7 +211,9 @@ var dialogs = [
             {
                 "kind": "Content",
                 "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.user.auth"
+                "if": "context.user.auth",
+                "type": "call",
+                "dialogName": "요금"
             },
             {
                 "kind": "Action",
@@ -351,7 +353,17 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+\n기본요금 : +dialog.noticeDetail.BETRW_GI+\n사용요금 : +dialog.noticeDetail.BETRW_GA+\n경감금액 : +dialog.noticeDetail.BETRW_DC+\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+\n부가세 : +dialog.noticeDetail.SBETW+\n가산금 : +dialog.noticeDetail.BETRW_D+\n정산금액 : +dialog.noticeDetail.BETRW_JS+\n원단위절사 : +dialog.noticeDetail.BETRW_RO+\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+\n고지금액 : +dialog.noticeDetail.BETRW_TOT+"
+                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+\n기본요금 : +dialog.noticeDetail.BETRW_GI+\n사용요금 : +dialog.noticeDetail.BETRW_GA+\n경감금액 : +dialog.noticeDetail.BETRW_DC+\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+\n부가세 : +dialog.noticeDetail.SBETW+\n가산금 : +dialog.noticeDetail.BETRW_D+\n정산금액 : +dialog.noticeDetail.BETRW_JS+\n원단위절사 : +dialog.noticeDetail.BETRW_RO+\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+\n고지금액 : +dialog.noticeDetail.BETRW_TOT+",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
                                             }
                                         ],
                                         "id": "default18",
@@ -380,6 +392,102 @@ var dialogs = [
                                     }
                                 ],
                                 "id": "default17"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "월별 납부내역 조회",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "월별 납부내역 조회",
+                                    "nlp": "월별 납부 내 역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2",
+                                    "nlp": "2"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "3개월"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "6개월"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "12개월"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default4",
+                        "children": [
+                            {
+                                "name": "납부내역 3개월",
+                                "input": [
+                                    {
+                                        "types": [
+                                            "monthType"
+                                        ]
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "[납부내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "default19",
+                                "children": [],
+                                "task": {
+                                    "name": "getPaymentHistory"
+                                }
+                            },
+                            {
+                                "name": "개월수 선택오류_납부",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "type": "repeat",
+                                        "dialog": 1
+                                    }
+                                ],
+                                "id": "default20"
                             }
                         ]
                     },
@@ -605,7 +713,7 @@ var dialogs = [
                                                     },
                                                     {
                                                         "url": "",
-                                                        "text": "시작"
+                                                        "text": "처음"
                                                     }
                                                 ]
                                             }
@@ -707,7 +815,17 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.userInput.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.userInput.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다."
+                                                "text": "+dialog.userInput.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.userInput.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
                                             }
                                         ],
                                         "id": "default25",
@@ -1064,7 +1182,17 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터 전화번호 안내 (1544-3002 연결)"
+                                        "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터 전화번호 안내 (1544-3002 연결)",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default53"
@@ -1088,7 +1216,17 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "자동이체 재 신청이 필요하신 고객님께서는 관할 고객센터로 연락 주시기 바랍니다"
+                                        "text": "자동이체 재 신청이 필요하신 고객님께서는 관할 고객센터로 연락 주시기 바랍니다",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default57",
@@ -1225,7 +1363,13 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "현재 고지방법 : +dialog.curNoticeMethod+"
+                                "text": "현재 고지방법 : +dialog.curNoticeMethod+",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "처음"
+                                    }
+                                ]
                             }
                         ],
                         "id": "default11",
@@ -1440,6 +1584,14 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "누출 화재 긴급연결"
+                            },
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
                             }
                         ]
                     }
@@ -1474,6 +1626,14 @@ var dialogs = [
                                     {
                                         "url": "",
                                         "text": "안전점검 결과 내역"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
@@ -1555,7 +1715,17 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "종합상황실 : 080-3002-119\n\n\n가스 누출 또는 화재 등 \n사고관련 신고 이외 민원은\n1544-3002로 문의 바랍니다"
+                                "text": "종합상황실 : 080-3002-119\n\n\n가스 누출 또는 화재 등 \n사고관련 신고 이외 민원은\n1544-3002로 문의 바랍니다",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
+                                    }
+                                ]
                             }
                         ],
                         "id": "default45"
@@ -1963,7 +2133,17 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "+context.centerAddress+ 관할 고객센터입니다.\n#context.centerAddressList#\n+index+.\n+MESSAGE+\n\n#"
+                                "text": "+context.centerAddress+ 관할 고객센터입니다.\n#context.centerAddressList#\n+index+.\n+MESSAGE+\n\n#",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
+                                    }
+                                ]
                             }
                         ],
                         "task": {
