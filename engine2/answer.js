@@ -112,8 +112,12 @@ var Logger = require('./logger.js');
                 if(this.dm)
                 {
                     var dialogInstance = ContextManager.createDialogInstance(this.dm.matchedDialog, userInput);
-                    DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
+                    DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)
                     {
+                        if(d)
+                        {
+                            dialogInstance = d;
+                        }
                         // cloneDialog.output = output;
                         output = OutputManager.make(context, dialogInstance, output);
 

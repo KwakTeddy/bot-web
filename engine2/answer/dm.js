@@ -472,7 +472,7 @@ var ActionManager = require('./action.js');
                     resultOutput.text = dialogInstance.options.outputText;
                 }
 
-                callback(resultOutput);
+                callback(resultOutput, dialogInstance);
             }
         });
     };
