@@ -18,8 +18,6 @@ var Transaction = require('../utils/transaction.js');
             var transaction = new Transaction.sync();
 
             console.log();
-            console.log(chalk.yellow('[[[ Task ]]]'));
-
             if(task.paramDefs && Array.instanceOf(task.paramDefs))
             {
                 context.session.retryInput = [];

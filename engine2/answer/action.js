@@ -121,6 +121,8 @@ var ContextManager = require('../context.js');
                 // dialogInstance.nextCall = tempDialogInstance;
                 // tempDialogInstance.prevCall = dialogInstance;
 
+                context.session.dialogCursor = tempDialogInstance.id;
+
                 this.dm.exec(bot, context, tempDialogInstance, callback);
             }
             else
@@ -148,6 +150,8 @@ var ContextManager = require('../context.js');
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
                 tempDialogInstance.options = this.makeOption(resultOutput);
 
+                context.session.dialogCursor = tempDialogInstance.id;
+
                 // dialogInstance.nextCall = tempDialogInstance;
                 // tempDialogInstance.prevCall = dialogInstance;
 
@@ -174,6 +178,8 @@ var ContextManager = require('../context.js');
             var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
             tempDialogInstance.options = this.makeOption(resultOutput);
 
+            context.session.dialogCursor = tempDialogInstance.id;
+
             // dialogInstance.nextCall = tempDialogInstance;
             // tempDialogInstance.prevCall = dialogInstance;
 
@@ -197,6 +203,9 @@ var ContextManager = require('../context.js');
                 console.log(matchedDialog.id);
 
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
+
+                context.session.dialogCursor = tempDialogInstance.id;
+
                 this.dm.exec(bot, context, tempDialogInstance, callback);
             }
             else
