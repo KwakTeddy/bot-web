@@ -18,6 +18,10 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "아니요"
+                    },
+                    {
+                        "url": "https://s3.ap-northeast-2.amazonaws.com/mb-playchat/production/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%82%E1%85%A2%E1%84%86%E1%85%AE%E1%86%AB.jpg",
+                        "text": "자세히보기"
                     }
                 ]
             }
@@ -1445,7 +1449,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveIn",
+                        "text": "자세히 보기를 클릭해주세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1454,6 +1458,10 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/MoveIn",
+                                "text": "자세히보기"
                             }
                         ]
                     }
@@ -1473,7 +1481,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveOut",
+                        "text": "자세히 보기를 클릭해주세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1482,6 +1490,10 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/MoveOut",
+                                "text": "자세히보기"
                             }
                         ]
                     }
@@ -1501,7 +1513,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/AfterService",
+                        "text": "자세히 보기를 클릭해주세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1510,6 +1522,10 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/AfterService",
+                                "text": "자세히보기"
                             }
                         ]
                     }
@@ -1529,7 +1545,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/CheckService",
+                        "text": "자세히 보기를 클릭해주세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1538,6 +1554,10 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/CheckService",
+                                "text": "자세히보기"
                             }
                         ]
                     }
@@ -1557,7 +1577,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                        "text": "자세히 보기를 클릭해주세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1566,6 +1586,10 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "처음"
+                            },
+                            {
+                                "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                                "text": "자세히보기"
                             }
                         ]
                     }
@@ -1893,7 +1917,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래의 URL을 눌러주세요.\n\nhttp://www.samchully.co.kr/customer/gas/info/usage/new.do",
+                        "text": "자세히보기를 클릭해주세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1902,6 +1926,10 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "처음"
+                            },
+                            {
+                                "url": "http://www.samchully.co.kr/customer/gas/info/usage/new.do",
+                                "text": "자세히보기"
                             }
                         ]
                     }

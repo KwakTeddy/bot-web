@@ -1111,25 +1111,23 @@ module.exports = function(bot)
                         {
                             var item = dialog.data.list[i];
                             var test = '안전점검일: ' + item.CHK_DAT + '\n';
-                            test += '확인자: ' + item.SCR_MGR_NO + '\n';
+                            test += '점검참여자: ' + item.SCR_MGR_NO + '\n';
                             if(item.SCR_MGR_CLF == '01')
                             {
-                                test += '확인자와의 관계: 본인\n';
+                                test += '계약자와관계: 본인\n';
                             }
                             else if(item.SCR_MGR_CLF == '02')
                             {
-                                test += '확인자와의 관계: 가족\n';
+                                test += '계약자와관계: 가족\n';
                             }
                             else if(item.SCR_MGR_CLF == '03')
                             {
-                                test += '확인자와의 관계: 관리인\n';
+                                test += '계약자와관계: 관리인\n';
                             }
                             else if(item.SCR_MGR_CLF == '04')
                             {
-                                test += '확인자와의 관계: 기타\n';
+                                test += '계약자와관계: 기타\n';
                             }
-
-                            test += '점검 항목명: ' + item.CHK_ITM_NM + '\n';
 
                             if(item.CHK_YN == 'Y')
                             {
@@ -1139,17 +1137,18 @@ module.exports = function(bot)
                                 }
                                 else
                                 {
+                                    test += '점검결과: 부적합\n';
 
                                     if(item.IMPV_YN == 'Y')
                                     {
-                                        test += '점검결과: 부적합 개선완료\n';
+                                        test += '부적합개선여부: 개선완료\n';
                                     }
                                     else
                                     {
-                                        test += '점검결과: 부적합 미개선\n';
+                                        test += '부적합개선여부: 미개선\n';
                                     }
 
-
+                                    test += '부적합시설: ' + item.CHK_ITM_NM + '\n';
 
                                     // test += '점검결과: 부적합\n';
 
