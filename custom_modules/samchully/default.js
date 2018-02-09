@@ -1286,11 +1286,11 @@ module.exports = function(bot)
 
                         if(body.E_FCNTMM != '00')
                         {
-                            msg += body.E_FCNTMM + '월, ';
+                            msg += body.E_FCNTMM + '월';
                         }
                         if(body.E_SCNTMM != '00')
                         {
-                            msg += body.E_SCNTMM + '월';
+                            msg += ', ' + body.E_SCNTMM + '월';
                         }
                         if(!msg.length)
                         {

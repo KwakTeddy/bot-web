@@ -1445,7 +1445,17 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveIn"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveIn",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
                     }
                 ],
                 "id": "default54"
@@ -1463,7 +1473,17 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveOut"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveOut",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
                     }
                 ],
                 "id": "default55"
@@ -1481,7 +1501,17 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/AfterService"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/AfterService",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
                     }
                 ],
                 "id": "default56"
@@ -1499,7 +1529,17 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/CheckService"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/CheckService",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
                     }
                 ],
                 "id": "default58"
@@ -1517,7 +1557,17 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "아래 링크를 클릭해주세요.\n\nhttp://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
                     }
                 ],
                 "id": "default64"
