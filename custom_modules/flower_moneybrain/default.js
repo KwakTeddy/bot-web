@@ -49,14 +49,14 @@ module.exports = function (bot) {
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.json = {};
+            options.qs = {};
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
+                    body = JSON.parse(body);
                     console.log(response.statusCode);
-                    console.log(body);
 
                     context.session.categorylist = undefined;
                     var str = [];
@@ -83,16 +83,17 @@ module.exports = function (bot) {
         typeCheck: function (dialog, context, callback)
         {
             var text = dialog.userInput.text.split(".");
-            text[1]=text[1].substring(1);
+            if(text[1]!==undefined){
+                text[1]=text[1].substring(1);
 
-            for(var i=0; i<context.session.category.length; i++)
-            {
-                if(context.session.category[i].indexOf(text[1]) !== -1)
+                for(var i=0; i<context.session.category.length; i++)
                 {
-                    return callback(true, context.session.category[i]);
+                    if(context.session.category[i].indexOf(text[1]) !== -1)
+                    {
+                        return callback(true, context.session.category[i]);
+                    }
                 }
             }
-
             callback(false);
         }
     });
@@ -101,10 +102,6 @@ module.exports = function (bot) {
     bot.setTask('showcategory',{
         action: function (dialog, context, callback)
         {
-            // context.session.categorylist1 = undefined;
-            // if (context.session.categorylist !== undefined) {
-            //     context.session.categorylist = context.session.categorylist;
-            // }
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -119,17 +116,16 @@ module.exports = function (bot) {
                 }
                 else
                 {
+                    body = JSON.parse(body);
                     console.log(response.statusCode);
 
-                    body = JSON.parse(body);
-
-                    context.session.category1 = [];
-                    context.session.category1 = body;
+                    context.session.itemcategory = [];
+                    context.session.itemcategory = body;
 
                     dialog.output[0].buttons= [];
-                    for (var i = 0; i < context.session.category1.length; i++)
+                    for (var i = 0; i < context.session.itemcategory.length; i++)
                     {
-                        var ss = "" + (i + 1) + ". " + context.session.category1[i].name + " " + context.session.category1[i].code;
+                        var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
                         dialog.output[0].buttons.push({text: ss});
                     }
 
@@ -140,18 +136,19 @@ module.exports = function (bot) {
     });
 
 
-    bot.setType('categorylist1',{
+    bot.setType('itemlist',{
         typeCheck: function (dialog, context, callback)
         {
-            console.log("dialog.userInput.text*******"+dialog.userInput.text);
             var text = dialog.userInput.text.split(".");
-              text[1]=text[1].substring(1);
-            for(var i=0; i<context.session.category1.length; i++)
-            {
-                var namecode=context.session.category1[i].name+" "+context.session.category1[i].code;
-                if(namecode.indexOf(text[1]) !== -1)
-                {
-                    return callback(true, context.session.category1[i]);
+            if(text[1]!==undefined) {
+                text[1] = text[1].substring(1);
+
+                for (var i = 0; i < context.session.itemcategory.length; i++) {
+                    var namecode = context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
+
+                    if (namecode.indexOf(text[1]) !== -1) {
+                        return callback(true, context.session.itemcategory[i]);
+                    }
                 }
             }
             callback(false);
@@ -161,68 +158,56 @@ module.exports = function (bot) {
 
     bot.setTask('showitem',{
         action: function (dialog, context, callback) {
-            // if (context.user.categorylist1 !== undefined) {
-            //     context.user.categorylist1 = context.user.categorylist1;
-            // }
-
-            // console.log("dialog.userInput.types.categorylist1***2**"+dialog.userInput.types.categorylist1.name);
-            //
-
-            console.log('ㅁㄴㅇㄹ충공깽', dialog.userInput.types.categorylist1);
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
-                // category: dialog.userInput.types.categorylist1.category,
-                // name: dialog.userInput.types.categorylist1.name,
-                // code: dialog.userInput.types.categorylist1.code
-                _id:dialog.userInput.types.categorylist1._id
+                _id:dialog.userInput.types.itemlist._id
             };
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
+                    body=JSON.parse(body);
                     console.log(response.statusCode);
-                    // console.log(body);
 
-                // context.session.item = body;
-                //     console.log("context.session.item ***1**"+context.session.item.length);
-                //
-                // context.session.selecteditem = {};
-                // context.session.selecteditem = context.session.item[0];
-                //
-                // context.session.selecteditem.sale_price = context.session.item[0].sale_price;
-                // if (context.session.selectchange !== 1) {
-                //     if (context.session.item[0].picture !== undefined) {
-                //         dialog.output[0].image = {url: context.session.item[0].picture};
-                //         dialog.output[0].buttons = [
-                //             {
-                //                 text: '자세히보기',
-                //                 url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
-                //             },
-                //             {
-                //                 text: '이 상품으로 주문하기',
-                //                 url: ""
-                //             },
-                //             {
-                //                 text: '다른 상품 더보기',
-                //                 url: ""
-                //             }
-                //         ];
-                //     }
-                // }
-                // else {
-                //     if (context.session.item[0].picture !== undefined) {
-                //         dialog.output[0].image = {url: context.session.item[0].picture};
-                //         dialog.output[0].buttons = [
-                //             {
-                //                 text: '주문서 확인하기',
-                //                 url: ""
-                //             }
-                //         ];
-                //     }
-                // }
+                    context.session.item = body;
+
+                    context.session.selecteditem = {};
+                    context.session.selecteditem = context.session.item[0];
+
+                    context.session.selecteditem.sale_price = context.session.item[0].sale_price;
+                    if (context.session.selectchange !== 1) {
+                        if (context.session.item[0].picture !== undefined) {
+                            dialog.output[0].image = {url: context.session.item[0].picture};
+                            dialog.output[0].buttons = [
+                                {
+                                    text: '자세히보기',
+                                    url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                                },
+                                {
+                                    text: '이 상품으로 주문하기',
+                                    url: ""
+                                },
+                                {
+                                    text: '다른 상품 더보기',
+                                    url: ""
+                                }
+                            ];
+                        }
+                    }
+                    else {
+                        if (context.session.item[0].picture !== undefined) {
+                            dialog.output[0].image = {url: context.session.item[0].picture};
+                            dialog.output[0].buttons = [
+                                {
+                                    text: '주문서 확인하기',
+                                    url: ""
+                                }
+                            ];
+                        }
+                    }
                     callback();
                 }
             });
@@ -235,72 +220,131 @@ module.exports = function (bot) {
             var modelname = "flower_moneybrain_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.json = {
-                // category: context.session.categorylist1.category,
-                // name: context.session.categorylist1.name,
-                // code: context.session.categorylist1.code
-                _id:dialog.userInput.types.categorylist1._id
-            };
+            options.qs = {};
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
+                    body=JSON.parse(body);
                     console.log(response.statusCode);
-                    console.log(body);
 
-                context.session.category = [];
-                context.user.categorylist = undefined;
-                var str = [];
-                for (var j = 0; j < docs.length; j++) {
-                    if (str.indexOf(docs[j].category) < 0) {
-                        str.push(docs[j].category);
+                    var str = [];
+                    for (var j = 0; j < body.length; j++) {
+                        if (str.indexOf(body[j].category) < 0) {
+                            str.push(body[j].category);
+                        }
                     }
-                }
-                context.user.category = str;
-                task.buttons = [];
-                for (var i = 0; i < context.user.category.length; i++) {
-                    var ss = "" + (i + 1) + ". " + context.user.category[i];
-                    task.buttons.push({text: ss});
-                }
-                callback();
+                    context.session.faqcategory = str;
+
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.faqcategory.length; i++) {
+                        var ss = "" + (i + 1) + ". " + context.session.faqcategory[i];
+                        dialog.output[0].buttons.push({text: ss});
                     }
                     callback();
-                });
-        }
-    });
-
-
-    bot.setTask('showfaqlist',{
-        action: function (dialog, context, callback) {
-            context.user.categorylist1 = undefined;
-            if (context.user.categorylist !== undefined) {
-                context.user.categorylist = context.user.categorylist;
-            }
-            faq.find({category: context.user.categorylist}).lean().exec(function (err, docs) {
-                context.user.category1 = [];
-                context.user.category1 = docs;
-                task.buttons = [];
-                for (var i = 0; i < context.user.category1.length; i++) {
-                    var ss = "" + (i + 1) + ". " + context.user.category1[i].question;
-                    task.buttons.push({text: ss});
                 }
                 callback();
             });
         }
     });
 
+    bot.setType("faqcategorylist", {
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.split(".");
+            if(text[1]!==undefined) {
+                text[1] = text[1].substring(1);
+
+                for (var i = 0; i < context.session.faqcategory.length; i++) {
+                    if (context.session.faqcategory[i].indexOf(text[1]) !== -1) {
+                        return callback(true, context.session.faqcategory[i]);
+                    }
+                }
+            }
+            callback(false);
+        }
+    });
+
+
+    bot.setTask('showfaqlist',{
+        action: function (dialog, context, callback) {
+
+            var modelname = "flower_moneybrain_faq";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                category: dialog.userInput.types.faqcategorylist
+            };
+            request.get(options, function (err, response, body)
+            {
+                if (err)
+                {
+                    console.log('err:' + err);
+                }
+                else
+                {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.faqitemcategory = [];
+                    context.session.faqitemcategory = body;
+
+                    dialog.output[0].buttons= [];
+                    for (var i = 0; i < context.session.faqitemcategory.length; i++)
+                    {
+                        var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+
+                    callback();
+                }
+            });
+        }
+    });
+
+    bot.setType('faqitemlist',{
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.split(".");
+            if(text[1]!==undefined) {
+                text[1] = text[1].substring(1);
+
+                for (var i = 0; i < context.session.faqitemcategory.length; i++) {
+                    if (context.session.faqitemcategory[i].question.indexOf(text[1]) !== -1) {
+                        return callback(true, context.session.faqitemcategory[i]);
+                    }
+                }
+            }
+            callback(false);
+        }
+    });
+
 
     bot.setTask('showfaq',{
         action: function (dialog, context, callback) {
-            faq.find({question: context.user.categorylist1.question}).lean().exec(function (err, docs) {
-                context.user.item = docs;
-                task.buttons = [
-                    {
-                        text: '시작',
-                        url: ""
-                    }
-                ];
+            var modelname = "flower_moneybrain_faq";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                _id:dialog.userInput.types.faqitemlist._id
+            };
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.faqitem = body;
+                    dialog.output[0].buttons = [
+                        {
+                            text: '시작',
+                            url: ""
+                        }
+                    ];
+                }
                 callback();
             });
         }
