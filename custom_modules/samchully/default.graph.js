@@ -1659,7 +1659,17 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month+\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
+                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month+\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다.",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default43",
@@ -1686,7 +1696,17 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "안전점검 결과 내역입니다\n\n#dialog.data.list#\n안전점검일 : +CHK_YYMM+\n확인자: +SCR_MGR_NO+\n확인자와의 관계: +SCR_MGR_CLF+\n점검결과 :+CHK_YN+\n\n#"
+                                        "text": "안전점검 결과 내역입니다\n\n#dialog.data.list#\n안전점검일 : +CHK_YYMM+\n확인자: +SCR_MGR_NO+\n확인자와의 관계: +SCR_MGR_CLF+\n점검결과 :+CHK_YN+\n\n#",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "task": {
