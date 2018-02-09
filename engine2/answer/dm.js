@@ -118,7 +118,6 @@ var ActionManager = require('./action.js');
                             var matchCount = that.checkInputText(nlpText, input.text.nlp);
                             if(matchCount > 0)
                             {
-                                console.log('머지 : ', nlpText, input.text.nlp);
                                 dialog.matchCount += matchCount;
                                 result = result && true;
                             }
@@ -156,7 +155,12 @@ var ActionManager = require('./action.js');
                             type = Globals.types[input[key]];
                         }
 
-                        type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry) //TODO retry가 true면 해당 input을 다시 입력받도록 질의 한다. 만약 필요한 값이 더 있다면 그 값도 요구할 수 있다. retry : ['주민등록번로를 다시 입력해주세요 YYMMDD']
+                        if(typeof type.typeCheck == 'string')
+                        {
+                            type.typeCheck = Globals.typeChecks[type.typeCheck];
+                        }
+
+                        type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
                         {
                             if(matched)
                             {
@@ -364,9 +368,24 @@ var ActionManager = require('./action.js');
         {
             sync.call(function(done)
             {
-                TaskManager.exec(bot, context, sync.dialogInstance, function(retry)
+                TaskManager.exec(bot, context, sync.dialogInstance, function(isRetry, retryMessage)
                 {
-                    done();
+                    if(isRetry)
+                    {
+                        context.session.retryDialogInstance = sync.dialogInstance;
+                        // 필요한 입력값을 갖기 위해 재 질의를 한다고 하면.
+                        // text로 재 질의를 유도하고.
+                        // 그런데 다시 입력을 했을때 다른 서버로 튈수가 있어. 그러므로 session에 어떤식으로 저장을 해둬야 한다.
+                        // input이 들어오면 그 text를 일단 분석하고, 특정 type을 이용해 데이터를 뽑아내거나.
+                        // task에서 처리 할 수 있다.
+
+                        callback({ text: retryMessage });
+                    }
+                    else
+                    {
+                        delete context.session.retryDialogInstance;
+                        done();
+                    }
                 });
             });
         }

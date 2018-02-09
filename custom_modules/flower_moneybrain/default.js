@@ -7,10 +7,10 @@ var request = require('request');
 
 module.exports = function (bot) {
 
-    var defaultTask = {
+    bot.setTask('defaultTask',{
         name: 'defaultTask',
 
-        action: function (task, context, callback)
+        action: function (dialog, context, callback)
         {
             var modelname="flower_test";
             var options = {};
@@ -37,243 +37,325 @@ module.exports = function (bot) {
                     console.log(response.statusCode);
                     console.log(body);
                 }
-                callback(task, context);
+                callback();
             });
 
 
         }
-    };
-    bot.setTask("defaultTask", defaultTask);
+    });
 
-
-    var getcategory = {
-        action: function (task, context, callback) {
-            //context.user.mobile=undefined;
-            category.find({}).lean().exec(function (err, docs) {
-                context.user.category = [];
-                context.user.categorylist = undefined;
-                var str = [];
-                for (var j = 0; j < docs.length; j++) {
-                    if (str.indexOf(docs[j].category) < 0) {
-                        str.push(docs[j].category);
-                    }
-                }
-                context.user.category = str;
-                task.buttons = [];
-                for (var i = 0; i < context.user.category.length; i++) {
-                    var ss = "" + (i + 1) + ". " + context.user.category[i];
-                    task.buttons.push({text: ss});
-                }
-                callback(task, context);
-            })
-        }
-    };
-
-    bot.setTask('getcategory', getcategory);
-
-    var categorylist = {
-        name: "category",
-        listName: "category",
-        typeCheck: "listTypeCheck"
-    };
-    bot.setType("categorylist", categorylist);
-
-
-    var showcategory = {
-        action: function (task, context, callback) {
-            context.user.categorylist1 = undefined;
-            if (context.user.categorylist !== undefined) {
-                context.user.categorylist = context.user.categorylist;
-            }
-            category.find({category: context.user.categorylist}).lean().exec(function (err, docs) {
-                context.user.category1 = [];
-                context.user.category1 = docs;
-                task.buttons = [];
-                for (var i = 0; i < context.user.category1.length; i++) {
-                    var ss = "" + (i + 1) + ". " + context.user.category1[i].name + " " + context.user.category1[i].code;
-                    task.buttons.push({text: ss});
-                }
-                callback(task, context);
-            });
-        }
-    };
-
-    bot.setTask('showcategory', showcategory);
-
-    var categorylist1 = {
-        name: "category1",
-        listName: "category1",
-        typeCheck: "listTypeCheck"
-    };
-    bot.setType("categorylist1", categorylist1);
-
-
-    var showitem = {
-        action: function (task, context, callback) {
-            if (context.user.categorylist1 !== undefined) {
-                context.user.categorylist1 = context.user.categorylist1;
-            }
-            category.find({
-                category: context.user.categorylist1.category,
-                name: context.user.categorylist1.name,
-                code: context.user.categorylist1.code
-            }).lean().exec(function (err, docs) {
-                context.user.item = docs;
-                context.user.selecteditem = {};
-                context.user.selecteditem = context.user.item[0];
-                context.user.selecteditem.sale_price = context.user.item[0].sale_price;
-                if (context.user.selectchange !== 1) {
-                    if (context.user.item[0].picture !== undefined) {
-                        task.image = {url: context.user.item[0].picture};
-                        task.buttons = [
-                            {
-                                text: '자세히보기',
-                                url: context.user.item[0].picture.startsWith('http') ? context.user.item[0].picture : config.host + context.user.item[0].picture
-                            },
-                            {
-                                text: '이 상품으로 주문하기',
-                                url: ""
-                            },
-                            {
-                                text: '다른 상품 더보기',
-                                url: ""
-                            }
-                        ];
-                    }
+    bot.setTask("getcategory", {
+        action: function (dialog, context, callback) {
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {};
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
                 }
                 else {
-                    if (context.user.item[0].picture !== undefined) {
-                        task.image = {url: context.user.item[0].picture};
-                        task.buttons = [
-                            {
-                                text: '주문서 확인하기',
-                                url: ""
-                            }
-                        ];
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.categorylist = undefined;
+                    var str = [];
+                    for (var j = 0; j < body.length; j++) {
+                        if (str.indexOf(body[j].category) < 0) {
+                            str.push(body[j].category);
+                        }
                     }
+                    context.session.category = str;
+
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.category.length; i++) {
+                        var ss = "" + (i + 1) + ". " + context.session.category[i];
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+                    callback();
                 }
-                callback(task, context);
+                callback();
             });
         }
-    };
+    });
 
-    bot.setTask('showitem', showitem);
+    bot.setType("categorylist", {
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.split(".");
+            if(text[1]!==undefined){
+                text[1]=text[1].substring(1);
 
-
-    var getFAQcategory = {
-        action: function (task, context, callback) {
-            // faq.find({}).lean().exec(function (err, docs) {
-            //     context.user.category = [];
-            //     context.user.categorylist = undefined;
-            //     var str = [];
-            //     for (var j = 0; j < docs.length; j++) {
-            //         if (str.indexOf(docs[j].category) < 0) {
-            //             str.push(docs[j].category);
-            //         }
-            //     }
-            //     context.user.category = str;
-            //     task.buttons = [];
-            //     for (var i = 0; i < context.user.category.length; i++) {
-            //         var ss = "" + (i + 1) + ". " + context.user.category[i];
-            //         task.buttons.push({text: ss});
-            //     }
-            //     callback(task, context);
-            // })
-        }
-    };
-
-    bot.setTask('getFAQcategory', getFAQcategory);
-
-    var showfaqlist = {
-        action: function (task, context, callback) {
-            context.user.categorylist1 = undefined;
-            if (context.user.categorylist !== undefined) {
-                context.user.categorylist = context.user.categorylist;
-            }
-            faq.find({category: context.user.categorylist}).lean().exec(function (err, docs) {
-                context.user.category1 = [];
-                context.user.category1 = docs;
-                task.buttons = [];
-                for (var i = 0; i < context.user.category1.length; i++) {
-                    var ss = "" + (i + 1) + ". " + context.user.category1[i].question;
-                    task.buttons.push({text: ss});
-                }
-                callback(task, context);
-            });
-        }
-    };
-
-    bot.setTask('showfaqlist', showfaqlist);
-
-    var showfaq = {
-        action: function (task, context, callback) {
-            faq.find({question: context.user.categorylist1.question}).lean().exec(function (err, docs) {
-                context.user.item = docs;
-                task.buttons = [
+                for(var i=0; i<context.session.category.length; i++)
+                {
+                    if(context.session.category[i].indexOf(text[1]) !== -1)
                     {
-                        text: '시작',
-                        url: ""
+                        return callback(true, context.session.category[i]);
                     }
-                ];
-                callback(task, context);
-            });
+                }
+            }
+            callback(false);
         }
-    };
-
-    bot.setTask('showfaq', showfaq);
+    });
 
 
-    var categorycheck = {
-        action: function (task, context, callback) {
-            var str = "";
-            if (context.user.inCurRaw !== undefined) {
-                str = context.user.inCurRaw;
-            }
-            else {
-                str = context.user.inRaw;
-            }
-            category.find({}).lean().exec(function (err, docs) {
-                for (var i = 0; i < docs.length; i++) {
-                    if (str == docs[i].name) {
-                        category.find({"name": str}).lean().exec(function (err, docs) {
-                            context.user.item = docs;
-                            //console.log(context.user.item[0]+'////////////////');
-                            if (context.user.item[0].picture !== undefined) {
-                                task.result = {
-                                    text: "선택하신 **" + context.user.item[0].name + "**에 대한 정보입니다.\n\n상품 번호: " + context.user.item[0].code + "\n" +
-                                    "배송 안내: " + context.user.item[0].delivery + "\n" +
-                                    "회원 혜택: " + context.user.item[0].VIP + "\n" +
-                                    "\n" + "가격:\n" +
-                                    "       일반가: " + context.user.item[0].price + "원\n" +
-                                    "       회원할인가: " + context.user.item[0].sale_price + "원\n\n" +
-                                    "상품안내: " + context.user.item[0].description + "\n\n" +
-                                    "이 상품으로 주문하시겠습니까?",
-                                    image: {url: context.user.item[0].picture},
-                                    buttons: [
-                                        {
-                                            text: '자세히보기',
-                                            url: context.user.item[0].picture.startsWith('http') ? context.user.item[0].picture : config.host + context.user.item[0].picture
-                                        },
-                                        {
-                                            text: '네 주문하기',
-                                            url: ""
-                                        }
-                                    ]
-                                };
-                            }
-                            callback(task, context);
-                        });
+    bot.setTask('showcategory',{
+        action: function (dialog, context, callback)
+        {
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                category: dialog.userInput.types.categorylist
+            };
+            request.get(options, function (err, response, body)
+            {
+                if (err)
+                {
+                    console.log('err:' + err);
+                }
+                else
+                {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.itemcategory = [];
+                    context.session.itemcategory = body;
+
+                    dialog.output[0].buttons= [];
+                    for (var i = 0; i < context.session.itemcategory.length; i++)
+                    {
+                        var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
+                        dialog.output[0].buttons.push({text: ss});
                     }
+
+                    callback();
                 }
             });
         }
-    };
-
-    bot.setTask('categorycheck', categorycheck);
+    });
 
 
-    var newuser = {
-        action: function (task, context, callback) {
+    bot.setType('itemlist',{
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.split(".");
+            if(text[1]!==undefined) {
+                text[1] = text[1].substring(1);
+
+                for (var i = 0; i < context.session.itemcategory.length; i++) {
+                    var namecode = context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
+
+                    if (namecode.indexOf(text[1]) !== -1) {
+                        return callback(true, context.session.itemcategory[i]);
+                    }
+                }
+            }
+            callback(false);
+        }
+    });
+
+
+    bot.setTask('showitem',{
+        action: function (dialog, context, callback) {
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                _id:dialog.userInput.types.itemlist._id
+            };
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body=JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.item = body;
+
+                    context.session.selecteditem = {};
+                    context.session.selecteditem = context.session.item[0];
+
+                    context.session.selecteditem.sale_price = context.session.item[0].sale_price;
+                    if (context.session.selectchange !== 1) {
+                        if (context.session.item[0].picture !== undefined) {
+                            dialog.output[0].image = {url: context.session.item[0].picture};
+                            dialog.output[0].buttons = [
+                                {
+                                    text: '자세히보기',
+                                    url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                                },
+                                {
+                                    text: '이 상품으로 주문하기',
+                                    url: ""
+                                },
+                                {
+                                    text: '다른 상품 더보기',
+                                    url: ""
+                                }
+                            ];
+                        }
+                    }
+                    else {
+                        if (context.session.item[0].picture !== undefined) {
+                            dialog.output[0].image = {url: context.session.item[0].picture};
+                            dialog.output[0].buttons = [
+                                {
+                                    text: '주문서 확인하기',
+                                    url: ""
+                                }
+                            ];
+                        }
+                    }
+                    callback();
+                }
+            });
+        }
+    });
+
+
+    bot.setTask('getFAQcategory',{
+        action: function (dialog, context, callback) {
+            var modelname = "flower_moneybrain_faq";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {};
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body=JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    var str = [];
+                    for (var j = 0; j < body.length; j++) {
+                        if (str.indexOf(body[j].category) < 0) {
+                            str.push(body[j].category);
+                        }
+                    }
+                    context.session.faqcategory = str;
+
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.faqcategory.length; i++) {
+                        var ss = "" + (i + 1) + ". " + context.session.faqcategory[i];
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+                    callback();
+                }
+                callback();
+            });
+        }
+    });
+
+    bot.setType("faqcategorylist", {
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.split(".");
+            if(text[1]!==undefined) {
+                text[1] = text[1].substring(1);
+
+                for (var i = 0; i < context.session.faqcategory.length; i++) {
+                    if (context.session.faqcategory[i].indexOf(text[1]) !== -1) {
+                        return callback(true, context.session.faqcategory[i]);
+                    }
+                }
+            }
+            callback(false);
+        }
+    });
+
+
+    bot.setTask('showfaqlist',{
+        action: function (dialog, context, callback) {
+
+            var modelname = "flower_moneybrain_faq";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                category: dialog.userInput.types.faqcategorylist
+            };
+            request.get(options, function (err, response, body)
+            {
+                if (err)
+                {
+                    console.log('err:' + err);
+                }
+                else
+                {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.faqitemcategory = [];
+                    context.session.faqitemcategory = body;
+
+                    dialog.output[0].buttons= [];
+                    for (var i = 0; i < context.session.faqitemcategory.length; i++)
+                    {
+                        var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+
+                    callback();
+                }
+            });
+        }
+    });
+
+    bot.setType('faqitemlist',{
+        typeCheck: function (dialog, context, callback)
+        {
+            var text = dialog.userInput.text.split(".");
+            if(text[1]!==undefined) {
+                text[1] = text[1].substring(1);
+
+                for (var i = 0; i < context.session.faqitemcategory.length; i++) {
+                    if (context.session.faqitemcategory[i].question.indexOf(text[1]) !== -1) {
+                        return callback(true, context.session.faqitemcategory[i]);
+                    }
+                }
+            }
+            callback(false);
+        }
+    });
+
+
+    bot.setTask('showfaq',{
+        action: function (dialog, context, callback) {
+            var modelname = "flower_moneybrain_faq";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                _id:dialog.userInput.types.faqitemlist._id
+            };
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.faqitem = body;
+                    dialog.output[0].buttons = [
+                        {
+                            text: '시작',
+                            url: ""
+                        }
+                    ];
+                }
+                callback();
+            });
+        }
+    });
+
+
+
+
+
+    bot.setTask('newuser',{
+        action: function (dialog, context, callback) {
             task.buttons = [
                 {
                     text: '회원가입하기',
@@ -288,31 +370,29 @@ module.exports = function (bot) {
                     url: ""
                 }
             ];
-            callback(task, context);
+            callback();
         }
-    };
-
-    bot.setTask('newuser', newuser);
+    });
 
 
-    var savename = {
-        action: function (task, context, callback) {
+
+    bot.setTask('savename',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 context.user.username = "";
                 //console.log("context.user.inCurRaw=====" + context.user.inCurRaw);
                 context.user.username = context.user.inCurRaw;
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
+    });
 
-    bot.setTask('savename', savename);
 
-    var email = {
-        typeCheck: function (text, type, task, context, callback) {
+    bot.setType('email', {
+        typeCheck: function (text, type, dialog, context, callback) {
             var matched = true;
             var str = context.user.inCurRaw;
             var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -320,34 +400,32 @@ module.exports = function (bot) {
             {
                 matched = true;
                 context.user.useremail = str;
-                callback(text, task, matched);
+                callback(text, dialog, matched);
             }
             else {
                 matched = false;
-                callback(text, task, matched);
+                callback(text, dialog, matched);
             }
 
         }
-    };
-
-    bot.setType('email', email);
+    });
 
 
-    var savemobile = {
-        preCallback: function (task, context, callback) {
+
+    bot.setTask('savemobile',{
+        preCallback: function (dialog, context, callback) {
 
             context.user.usermobile = "";
             context.user.usermobile = context.user.mobile;
             if (task.mobile === undefined) task.mobile = context.user.mobile;
-            callback(task, context);
+            callback();
         },
         action: messages.sendSMSAuth
-    };
+    });
 
-    bot.setTask('savemobile', savemobile);
 
-    var mobileidentification = {
-        preCallback: function (task, context, callback) {
+    bot.setTask('mobileidentification',{
+        preCallback: function (dialog, context, callback) {
             var str = context.user.mobile;
             var userinfor = [
                 {
@@ -391,31 +469,28 @@ module.exports = function (bot) {
                     // console.log("context.user.mobile======="+context.user.mobile);
                 }
             }
-            callback(task, context);
+            callback();
         },
         action: messages.sendSMSAuth
-    };
+    });
 
-    bot.setTask('mobileidentification', mobileidentification);
 
-    var identification = {
-        typeCheck: function (text, type, task, context, callback) {
+    bot.setType('identification',{
+        typeCheck: function (text, type, dialog, context, callback) {
             var matched = false;
             if (text === context.user.smsAuth) {
                 matched = true;
-                callback(text, task, matched);
+                callback(text, dialog, matched);
             }
             else {
-                callback(text, task, matched);
+                callback(text, dialog, matched);
             }
         }
-    };
-
-    bot.setType('identification', identification);
+    });
 
 
-    var bridegroomorbride = {
-        action: function (task, context, callback) {
+    bot.setTask('bridegroomorbride',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 var str = context.user.inCurRaw;
                 if (str.indexOf("신랑") >= 0) {
@@ -424,60 +499,54 @@ module.exports = function (bot) {
                 else {
                     context.user.brideornot = "신부측"
                 }
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
+    });
 
-    bot.setTask('bridegroomorbride', bridegroomorbride);
 
-    var saveshowtime = {
-        action: function (task, context, callback) {
+    bot.setTask('saveshowtime',{
+        action: function (dialog, context, callback) {
             //context.user.showtime=context.user.inCurRaw;
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('saveshowtime', saveshowtime);
 
-    var savefriendname = {
-        action: function (task, context, callback) {
+    bot.setTask('savefriendname',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 context.user.friendname = context.user.inCurRaw;
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
+    });
 
-    bot.setTask('savefriendname', savefriendname);
 
-    var savefriendmobile = {
-        action: function (task, context, callback) {
+    bot.setTask('savefriendmobile',{
+        action: function (dialog, context, callback) {
             context.user.friendmobile = context.user.mobile;
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('savefriendmobile', savefriendmobile);
 
-    var savefriendaddress = {
-        action: function (task, context, callback) {
+    bot.setTask('savefriendaddress',{
+        action: function (dialog, context, callback) {
             //context.user.friendaddress=context.user.address;
             context.user.friendaddress = context.user.address.지번주소;
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('savefriendaddress', savefriendaddress);
-
-    var savedeliverytime = {
-        action: function (task, context, callback) {
+    bot.setTask('savedeliverytime',{
+        action: function (dialog, context, callback) {
             //context.user.deliverytime=context.user.inCurRaw;
             task.buttons = [
                 {
@@ -489,28 +558,24 @@ module.exports = function (bot) {
                     url: ""
                 }
             ];
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('savedeliverytime', savedeliverytime);
-
-    var savedeliveryway = {
-        action: function (task, context, callback) {
+    bot.setTask('savedeliveryway',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 context.user.deliveryway = context.user.inCurRaw;
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
+    });
 
-    bot.setTask('savedeliveryway', savedeliveryway);
-
-    var savedecorate = {
-        action: function (task, context, callback) {
+    bot.setTask('savedecorate',{
+        action: function (dialog, context, callback) {
             console.log("==============context.user.inCurRaw==============" + context.user.inCurRaw);
 
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
@@ -525,7 +590,7 @@ module.exports = function (bot) {
                                 url: ""
                             }
                         ];
-                        callback(task, context);
+                        callback();
                     }
                     else {
                         console.log("==============2==============");
@@ -540,7 +605,7 @@ module.exports = function (bot) {
                                 url: ""
                             }
                         ];
-                        callback(task, context);
+                        callback();
                     }
                 }
                 else {
@@ -554,7 +619,7 @@ module.exports = function (bot) {
                                 url: ""
                             }
                         ];
-                        callback(task, context);
+                        callback();
                     }
                     else {
                         context.user.decorate = "리본";
@@ -569,22 +634,20 @@ module.exports = function (bot) {
                                 url: ""
                             }
                         ];
-                        callback(task, context);
+                        callback();
                     }
 
                 }
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
+    });
 
-    bot.setTask('savedecorate', savedecorate);
-
-    var getgreeting = {
-        action: function (task, context, callback) {
+    bot.setTask('getgreeting',{
+        action: function (dialog, context, callback) {
             //console.log('context.user.decorate============'+context.user.decorate);
             if (context.user.decorate === "리본") {
                 //console.log('context.user.decorate1============'+context.user.decorate);
@@ -603,7 +666,7 @@ module.exports = function (bot) {
                         var ss = "" + (i + 1) + ". " + context.user.category[i];
                         task.buttons.push({text: ss});
                     }
-                    callback(task, context);
+                    callback();
 
                 })
             }
@@ -624,24 +687,22 @@ module.exports = function (bot) {
                         var ss = "" + (i + 1) + ". " + context.user.category[i];
                         task.buttons.push({text: ss});
                     }
-                    callback(task, context);
+                    callback();
                 })
             }
         }
-    };
+    });
 
-    bot.setTask('getgreeting', getgreeting);
 
-    var categorylist2 = {
+    bot.setTask('categorylist2', {
         name: "category",
         listName: "category",
         typeCheck: "listTypeCheck"
-    };
-    bot.setType("categorylist2", categorylist2);
+    });
 
 
-    var savesendname = {
-        action: function (task, context, callback) {
+    bot.setTask('savesendname', {
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "아니요" && context.user.inCurRaw !== "이전") {
                 if (context.user.inCurRaw.indexOf("익명") >= 0) {
                     context.user.sendname = "익명";
@@ -669,7 +730,7 @@ module.exports = function (bot) {
                         url: ""
                     }
                 ];
-                callback(task, context);
+                callback();
             }
             else {
                 task.buttons = [
@@ -678,15 +739,14 @@ module.exports = function (bot) {
                         url: ""
                     }
                 ];
-                callback(task, context);
+                callback();
             }
         }
-    };
+    });
 
-    bot.setTask('savesendname', savesendname);
 
-    var showgreeting = {
-        action: function (task, context, callback) {
+    bot.setTask('showgreeting',{
+        action: function (dialog, context, callback) {
             context.user.greeting = [];
             context.user.categorylist3 = undefined;
             if (context.user.categorylist2 !== undefined) {
@@ -723,7 +783,7 @@ module.exports = function (bot) {
                         var ss = "" + (i + 1) + ". " + context.user.greeting[i];
                         task.buttons.push({text: ss});
                     }
-                    callback(task, context);
+                    callback();
                 });
             }
             else if (context.user.decorate === "카드") {
@@ -757,24 +817,22 @@ module.exports = function (bot) {
                         var ss = "" + (i + 1) + ". " + context.user.greeting[i];
                         task.buttons.push({text: ss});
                     }
-                    callback(task, context);
+                    callback();
                 });
             }
         }
-    };
+    });
 
-    bot.setTask('showgreeting', showgreeting);
 
-    var categorylist3 = {
+    bot.setTask('categorylist3',{
         name: "greeting",
         listName: "greeting",
         typeCheck: "listTypeCheck"
-    };
-    bot.setType("categorylist3", categorylist3);
+    });
 
 
-    var savebill = {
-        action: function (task, context, callback) {
+    bot.setTask('savebill',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 if (context.user.inCurRaw === "필요없음" || context.user.inCurRaw === "1") {
                     context.user.bill = "필요없음";
@@ -785,19 +843,17 @@ module.exports = function (bot) {
                 else if (context.user.inCurRaw === "현금 영수증 발급" || context.user.inCurRaw === "3") {
                     context.user.bill = "현금 영수증 발급";
                 }
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
-
-    bot.setTask('savebill', savebill);
+    });
 
 
-    var savegreeting = {
-        action: function (task, context, callback) {
+    bot.setTask('savegreeting',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 if (context.user.selectchange !== 1) {
                     if (context.user.categorylist3 !== undefined) {
@@ -809,7 +865,7 @@ module.exports = function (bot) {
                     task.result = {
                         text: "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!"
                     };
-                    callback(task, context);
+                    callback();
                 }
                 else {
                     if (context.user.categorylist3 !== undefined) {
@@ -827,22 +883,21 @@ module.exports = function (bot) {
                             }
                         ]
                     };
-                    callback(task, context);
+                    callback();
                 }
 
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
-
-    bot.setTask('savegreeting', savegreeting);
+    });
 
 
-    var savepayway = {
-        action: function (task, context, callback) {
+
+    bot.setTask('savepayway', {
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 if (context.user.inCurRaw === "카드 결제하기" || context.user.inCurRaw === "1") {
                     context.user.payway = "카드";
@@ -853,19 +908,18 @@ module.exports = function (bot) {
                 else if (context.user.inCurRaw === "카카오페이" || context.user.inCurRaw === "3") {
                     context.user.payway = "카카오페이";
                 }
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
-
-    bot.setTask('savepayway', savepayway);
+    });
 
 
-    var collectorderinfor = {
-        action: function (task, context, callback) {
+
+    bot.setTask('collectorderinfor', {
+        action: function (dialog, context, callback) {
             //console.log("context.user.itemnumber:========="+context.user.itemnumber);
             //console.log("context.user.username:========="+context.user.username);
 
@@ -978,16 +1032,14 @@ module.exports = function (bot) {
             ];
             //};
             //task.image={url:context.user.orderinfor.itemimage};
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
 
-    bot.setTask('collectorderinfor', collectorderinfor);
 
-
-    var addorder = {
-        action: function (task, context, callback) {
+    bot.setTask('addorder',{
+        action: function (dialog, context, callback) {
             var neworder = {
                 order_time: context.user.orderinfor.time,
                 order_name: context.user.orderinfor.name,
@@ -1151,7 +1203,7 @@ module.exports = function (bot) {
                                 },
                                 function (error, response, body) {
                                     console.log("error:", error);
-                                    callback(task, context);
+                                    callback();
                                 }
                             );
                             //================================================================================
@@ -1177,7 +1229,7 @@ module.exports = function (bot) {
                             //      },
                             //      function (error, response, body) {
                             //          console.log("error:", error);
-                            //          callback(task, context);
+                            //          callback();
                             //      }
                             //  );
                             // //----------------------------------------------------------------------------
@@ -1201,7 +1253,7 @@ module.exports = function (bot) {
                             //      },
                             //      function (error, response, body) {
                             //          console.log("error:", error);
-                            //          callback(task, context);
+                            //          callback();
                             //      }
                             //  );
                             //
@@ -1226,7 +1278,7 @@ module.exports = function (bot) {
                             //      },
                             //      function (error, response, body) {
                             //          console.log("error:", error);
-                            //          callback(task, context);
+                            //          callback();
                             //      }
                             //  );
                             //  //--------------------------------------------------------------------------
@@ -1251,7 +1303,7 @@ module.exports = function (bot) {
                             //      },
                             //      function (error, response, body) {
                             //          console.log("error:", error);
-                            //          callback(task, context);
+                            //          callback();
                             //      }
                             //  );
                             //  //--------------------------------------------------------------------------
@@ -1276,44 +1328,41 @@ module.exports = function (bot) {
                             //      },
                             //      function (error, response, body) {
                             //          console.log("error:", error);
-                            //          callback(task, context);
+                            //          callback();
                             //      }
                             //  );
                             //  //--------------------------------------------------------------------------
 
                         } else {
-                            callback(task, context);
+                            callback();
                         }
                     });
                 } else {
-                    callback(task, context);
+                    callback();
                 }
-                callback(task, context);
+                callback();
             });
         }
-    };
-
-    bot.setTask('addorder', addorder);
+    });
 
 
-    var nobride = {
-        action: function (task, context, callback) {
+
+    bot.setTask('nobride',{
+        action: function (dialog, context, callback) {
             if (context.user.showtime === undefined) {
                 context.user.brideornot = "없음";
                 context.user.showtime = "없음";
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
-
-    bot.setTask('nobride', nobride);
+    });
 
 
-    var selectchange = {
-        action: function (task, context, callback) {
+    bot.setTask('selectchange', {
+        action: function (dialog, context, callback) {
             context.user.selectchange = 1;
             // task.result={text:"다음중 변경하고 싶으신 부분을 선택해주세요.\n\n[주문내역]\n-주문일시:\n"
             // +context.user.orderinfor.time+"\n-고객성함: "
@@ -1360,15 +1409,12 @@ module.exports = function (bot) {
                 }
             ];
             // };
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('selectchange', selectchange);
-
-
-    var deletegreeting = {
-        action: function (task, context, callback) {
+    bot.setTask('deletegreeting', {
+        action: function (dialog, context, callback) {
             context.user.categorylist3 = undefined;
             task.buttons = [
                 {
@@ -1376,45 +1422,41 @@ module.exports = function (bot) {
                     url: ""
                 }
             ];
-            callback(task, context);
+            callback();
         }
-    };
-
-    bot.setTask('deletegreeting', deletegreeting);
+    });
 
 
-    var saveitemnumber = {
-        action: function (task, context, callback) {
+
+    bot.setTask('saveitemnumber',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 context.user.itemnumber = context.user.inCurRaw;
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
-
-    bot.setTask('saveitemnumber', saveitemnumber);
+    });
 
 
-    var saveotherrequire = {
-        action: function (task, context, callback) {
+    bot.setTask('saveotherrequire',{
+        action: function (dialog, context, callback) {
             if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
                 context.user.otherrequire = context.user.inCurRaw;
-                callback(task, context);
+                callback();
             }
             else {
-                callback(task, context);
+                callback();
             }
         }
-    };
-
-    bot.setTask('saveotherrequire', saveotherrequire);
+    });
 
 
-    var showorder = {
-        action: function (task, context, callback) {
+
+    bot.setTask('showorder',{
+        action: function (dialog, context, callback) {
             order.find({
                 botId: context.bot.id,
                 order_mobile: context.user.mobile,
@@ -1428,23 +1470,19 @@ module.exports = function (bot) {
                     var ss = "" + (i + 1) + ". " + context.user.orderlist[i].order_itemname + " " + context.user.orderlist[i].order_deliverytime + " " + context.user.orderlist[i].order_receivername;
                     task.buttons.push({text: ss});
                 }
-                callback(task, context);
+                callback();
             });
         }
-    };
+    });
 
-    bot.setTask('showorder', showorder);
-
-    var orderlist = {
+    bot.setType('orderlist',{
         name: "orderlist",
         listName: "orderlist",
         typeCheck: "listTypeCheck"
-    };
-    bot.setType("orderlist", orderlist);
+    });
 
-
-    var showorder1 = {
-        action: function (task, context, callback) {
+    bot.setTask('showorder1',{
+        action: function (dialog, context, callback) {
             // task.result={text:"주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시:\n"
             // +context.user.orderlist.order_time+"\n-고객성함: "
             // +context.user.orderlist.order_name+"\n-보내시는분 성함: "
@@ -1468,25 +1506,21 @@ module.exports = function (bot) {
             ];
             //};
             context.user.findorder = undefined;
-            callback(task, context);
+            callback();
         }
-    };
-
-    bot.setTask('showorder1', showorder1);
+    });
 
 
-    var recordorder = {
-        action: function (task, context, callback) {
+    bot.setTask('recordorder',{
+        action: function (dialog, context, callback) {
             context.user.findorder = 1;
-            callback(task, context);
+            callback();
         }
-    };
-
-    bot.setTask('recordorder', recordorder);
+    });
 
 
-    var addvip = {
-        action: function (task, context, callback) {
+    bot.setTask('addvip', {
+        action: function (dialog, context, callback) {
             task.buttons = [
                 {
                     text: '회원가입하기',
@@ -1497,37 +1531,30 @@ module.exports = function (bot) {
                     url: ""
                 }
             ];
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('addvip', addvip);
-
-
-    var sendidentification = {
-        preCallback: function (task, context, callback) {
+    bot.setTask('sendidentification', {
+        preCallback: function (dialog, context, callback) {
             if (task.mobile === undefined) task.mobile = context.user.mobile;
-            callback(task, context);
+            callback();
         },
         action: messages.sendSMSAuth
-    };
-
-    bot.setTask('sendidentification', sendidentification);
+    });
 
 
-    var addbuttons = {
-        action: function (task, context, callback) {
+    bot.setTask('addbuttons',{
+        action: function (dialog, context, callback) {
             task.buttons = [
                 {
                     text: '시작',
                     url: ""
                 }
             ];
-            callback(task, context);
+            callback();
         }
-    };
-
-    bot.setTask('addbuttons', addbuttons);
+    });
 
     bot.setTask('startbuttons',
         {
@@ -1555,8 +1582,8 @@ module.exports = function (bot) {
         });
 
 
-    var neworder = {
-        action: function (task, context, callback) {
+    bot.setTask('neworder',{
+        action: function (dialog, context, callback) {
             context.user.sendname = undefined;
             //받는분 성함:
             context.user.friendname = undefined;
@@ -1591,33 +1618,96 @@ module.exports = function (bot) {
             context.user.username = undefined;
             context.user.useremail = undefined;
             context.user.usermobile = undefined;
-            callback(task, context);
+            callback();
         }
-    };
-
-    bot.setTask('neworder', neworder);
+    });
 
 
-    var allname = {
-        action: function (task, context, callback) {
-            category.find({}).lean().exec(function (err, docs) {
-                context.user.allname = [];
-                for (i = 0; i < docs.length; i++) {
-                    context.user.allname.push(docs[i].name);
+    bot.setTask('allname', {
+        action: function (dialog, context, callback) {
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {};
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
                 }
-                callback(task, context);
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.allname = [];
+                    for (var i = 0; i < body.length; i++) {
+                        context.session.allname.push(body[i].name);
+                    }
+                    console.log("context.session.allname======="+context.session.allname);
+                }
+                callback();
             });
         }
-    };
+    });
 
-    bot.setTask('allname', allname);
 
-    var allnamelist = {
-        name: "allname",
-        listName: "allname",
-        typeCheck: "listTypeCheck"
-    };
-    bot.setType("allnamelist", allnamelist);
+    bot.setType('allnamelist', {
+        typeCheck: function (dialog, context, callback) {
+            var text = dialog.userInput.text;
+
+            for (var i = 0; i < context.session.allname.length; i++) {
+                if (text.indexOf(context.session.allname[i]) >=0) {
+                    return callback(true, context.session.allname[i]);
+                }
+            }
+            callback(false);
+        }
+    });
+
+    bot.setTask('categorycheck', {
+        action: function (dialog, context, callback) {
+            var str = "";
+            str = dialog.userInput.text;
+
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                name: dialog.userInput.types.allnamelist
+            };
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.item = body;
+                    if (context.session.item[0].picture !== undefined) {
+                        // dialog.output[0].text = "선택하신 **" + context.session.item[0].name + "**에 대한 정보입니다.\n\n상품 번호: " + context.session.item[0].code + "\n" +
+                        //     "배송 안내: " + context.session.item[0].delivery + "\n" +
+                        //     "회원 혜택: " + context.session.item[0].VIP + "\n" +
+                        //     "\n" + "가격:\n" +
+                        //     "       일반가: " + context.session.item[0].price + "원\n" +
+                        //     "       회원할인가: " + context.session.item[0].sale_price + "원\n\n" +
+                        //     "상품안내: " + context.session.item[0].description + "\n\n" +
+                        //     "이 상품으로 주문하시겠습니까?";
+                        dialog.output[0].image = {url: context.session.item[0].picture};
+                        dialog.output[0].buttons = [
+                            {
+                                text: '자세히보기',
+                                url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                            },
+                            {
+                                text: '네 주문하기',
+                                url: ""
+                            }
+                        ]
+                    }
+                    callback();
+                }
+            });
+        }
+    });
 
 
     function IsMonthAndDateCorrect(nYear, nMonth, nDay) {
@@ -1677,7 +1767,7 @@ module.exports = function (bot) {
         return (nYear % 400 == 0);
     }
 
-    function timeTypeCheck1(text, type, task, context, callback) {
+    function timeTypeCheck1(text, type, dialog, context, callback) {
         var name = 'time';
         var re = /(오전|오후|새벽|아침|낮|저녁|밤|am|pm|a.m|p.m)?\s*(\d{1,2})\s*(?:시|:)\s*(?:(\d{1,2}|반)\s*분?)?/g;
         var matched = false;
@@ -1734,11 +1824,11 @@ module.exports = function (bot) {
             }
             //console.log("context.user.time========"+context.user.time);
         });
-        callback(text, task, matched);
+        callback(text, dialog, matched);
     }
 
-    var addbuttons1 = {
-        action: function (task, context, callback) {
+    bot.setTask('addbuttons1',{
+        action: function (dialog, context, callback) {
             task.buttons = [
                 {
                     text: "재발송",
@@ -1749,21 +1839,19 @@ module.exports = function (bot) {
                     url: ""
                 }
             ];
-            callback(task, context);
+            callback();
         }
-    };
+    });
 
-    bot.setTask('addbuttons1', addbuttons1);
-
-    var dateAndtime = {
-        typeCheck: function (text, type, task, context, callback) {
+    bot.setType('dateAndtime',{
+        typeCheck: function (text, type, dialog, context, callback) {
             var matched = false;
             // 判断年、月、日的取值范围是否正确
             // 先判断格式上是否正确
             var regDate = /^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})/;
             if (!regDate.test(text)) {
                 matched = false;
-                callback(text, task, matched);
+                callback(text, dialog, matched);
 
             }
             else {
@@ -1781,61 +1869,59 @@ module.exports = function (bot) {
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         // console.log("textt3==========" + textt3);
-                        timeTypeCheck1(textt3, type, task, context, callback);
+                        timeTypeCheck1(textt3, type, dialog, context, callback);
                         context.user.showtime = context.user.dateonly + " " + context.user.time;
                         //console.log("context.user.showtime===1=======" + context.user.showtime);
                         if (context.user.time == 're') {
                             matched = false;
-                            callback(task, context, matched);
+                            callback(dialog, context, matched);
                         }
-                        callback(task, context, matched);
+                        callback(dialog, context, matched);
                     }
                     else {
                         if (textt[2] === undefined) {
                             //  console.log("textt[1]==========" + textt[1]);
-                            timeTypeCheck1(textt[1], type, task, context, callback);
+                            timeTypeCheck1(textt[1], type, dialog, context, callback);
                             context.user.showtime = context.user.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
-                                callback(task, context, matched);
+                                callback(dialog, context, matched);
                             }
                             //console.log("context.user.showtime===2=======" + context.user.showtime);
-                            callback(task, context, matched);
+                            callback(dialog, context, matched);
                         }
                         else {
                             var textt2 = textt[1] + textt[2];
                             //console.log("textt2==========" + textt2);
-                            timeTypeCheck1(textt2, type, task, context, callback);
+                            timeTypeCheck1(textt2, type, dialog, context, callback);
                             context.user.showtime = context.user.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
-                                callback(task, context, matched);
+                                callback(dialog, context, matched);
                             }
                             //console.log("context.user.showtime===3=======" + context.user.showtime);
-                            callback(task, context, matched);
+                            callback(dialog, context, matched);
                         }
                     }
                 }
                 else {
                     context.user.weddingdate = undefined;
-                    callback(task, context, matched);
+                    callback(dialog, context, matched);
                 }
             }
         }
-    };
-
-    bot.setType('dateAndtime', dateAndtime);
+    });
 
 
-    var dateAndtime1 = {
-        typeCheck: function (text, type, task, context, callback) {
+    bot.setType('dateAndtime1',{
+        typeCheck: function (text, type, dialog, context, callback) {
             var matched = false;
             // 判断年、月、日的取值范围是否正确
             // 先判断格式上是否正确
             var regDate = /^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})/;
             if (!regDate.test(text)) {
                 matched = false;
-                callback(text, task, matched);
+                callback(text, dialog, matched);
 
             }
             else {
@@ -1853,47 +1939,45 @@ module.exports = function (bot) {
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         // console.log("textt3==========" + textt3);
-                        timeTypeCheck1(textt3, type, task, context, callback);
+                        timeTypeCheck1(textt3, type, dialog, context, callback);
                         context.user.deliverytime = context.user.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
                             matched = false;
-                            callback(task, context, matched);
+                            callback(dialog, context, matched);
                         }
-                        callback(task, context, matched);
+                        callback(dialog, context, matched);
                     }
                     else {
                         if (textt[2] === undefined) {
                             //  console.log("textt[1]==========" + textt[1]);
-                            timeTypeCheck1(textt[1], type, task, context, callback);
+                            timeTypeCheck1(textt[1], type, dialog, context, callback);
                             context.user.deliverytime = context.user.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
-                                callback(task, context, matched);
+                                callback(dialog, context, matched);
                             }
-                            callback(task, context, matched);
+                            callback(dialog, context, matched);
                         }
                         else {
                             var textt2 = textt[1] + textt[2];
                             //console.log("textt2==========" + textt2);
-                            timeTypeCheck1(textt2, type, task, context, callback);
+                            timeTypeCheck1(textt2, type, dialog, context, callback);
                             context.user.deliverytime = context.user.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
-                                callback(task, context, matched);
+                                callback(dialog, context, matched);
                             }
-                            callback(task, context, matched);
+                            callback(dialog, context, matched);
                         }
                     }
                 }
                 else {
                     context.user.weddingdate = undefined;
-                    callback(task, context, matched);
+                    callback(dialog, context, matched);
                 }
             }
         }
-    };
-
-    bot.setType('dateAndtime1', dateAndtime1);
+    });
 };
 
 

@@ -22,20 +22,24 @@ var Transaction = require('../utils/transaction.js');
 
             if(task.paramDefs && Array.instanceOf(task.paramDefs))
             {
+                context.session.retryInput = [];
+
                 var retryMessage = '';
                 for(var i=0; i<task.paramDefs.length; i++)
                 {
                     var param = task.paramDefs[i];
                     if(!dialogInstance.userInput.types[param.type])
                     {
+                        context.session.retryInput.push(param.type);
                         retryMessage += param.description + '\n';
                     }
                 }
 
                 callback(true, retryMessage);
-                // [
-                //     {name: '휴대폰', type: mobileType, require: false, dialog: '휴대폰Dialog'},
-                // ]
+            }
+            else
+            {
+                delete context.session.retryInput;
             }
 
             if(typeof task.preCallback == 'function')
@@ -89,7 +93,10 @@ var Transaction = require('../utils/transaction.js');
                 });
             }
 
-            transaction.done = callback;
+            transaction.done(function()
+            {
+                callback();
+            });
         }
         else
         {

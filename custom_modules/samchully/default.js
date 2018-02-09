@@ -13,6 +13,19 @@ module.exports = function(bot)
             12: 3
     };
 
+    var addDefaultButton = function (dialog, onlyStart) {
+
+        if(onlyStart)
+        {
+            dialog.output[0].buttons.push({text: '처음'});
+        }
+        else
+        {
+            dialog.output[0].buttons.push({text: '이전'});
+            dialog.output[0].buttons.push({text: '처음'});
+        }
+    };
+
     var errorHandler = function (dialog, errData)
     {
         console.log(errData);
@@ -21,6 +34,7 @@ module.exports = function(bot)
         {
             dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
             dialog.output[0].buttons = [];
+            addDefaultButton(dialog);
         }
         else
         {
@@ -321,15 +335,22 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            if(context.user.auth)
-            {
-                var customerList = context.customerList;
-                dialog.output[0].buttons = [];
+            var customerList = context.customerList;
 
+            if(context.user.auth && customerList.length != 1)
+            {
+
+                dialog.output[0].buttons = [];
                 for(var i = 0; i < customerList.length; i++)
                 {
                     dialog.output[0].buttons.push({text: (i + 1) + ''});
                 }
+
+                addDefaultButton(dialog);
+            }
+            else if(context.user.auth && customerList.length == 1)
+            {
+                context.curCustomer = customerList[0];
             }
 
             callback();
@@ -374,12 +395,14 @@ module.exports = function(bot)
                         dialog.output[0].buttons = [];
                         for(var i = 0; i < data.length; i++)
                         {
+                            data[i].PR_ZWSTNDAB = data[i].PR_ZWSTNDAB + '㎥';
                             data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
                             data[i].FAEDN = dateFormatChange(data[i].FAEDN);
                             dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                         }
                         context.noticeHistory = data;
                         console.log(context.noticeHistory);
+                        addDefaultButton(dialog);
 
                     }else {
                         errorHandler(dialog, body);
@@ -449,6 +472,7 @@ module.exports = function(bot)
                             data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
                             data[i].BUDAT = dateFormatChange(data[i].BUDAT);
                         }
+                        addDefaultButton(dialog);
 
                         context.paymentHistory = data;
 
@@ -519,6 +543,8 @@ module.exports = function(bot)
                                 data[i].FAEDN = dateFormatChange(data[i].FAEDN);
 
                             }
+                            addDefaultButton(dialog);
+
                             context.nonpaymentHistory = data;
                         }
                         else
@@ -605,6 +631,8 @@ module.exports = function(bot)
 
                             }
                         }
+
+                        addDefaultButton(dialog);
 
                     }else {
                         errorHandler(dialog, body);
@@ -1314,7 +1342,9 @@ module.exports = function(bot)
                     else if(body.E_RETCD == 'S')
                     {
                         console.log(body)
-                    }else {
+                    }
+                    else
+                    {
                         errorHandler(dialog, body);
                     }
 
@@ -1375,4 +1405,14 @@ module.exports = function(bot)
         }
     });
 
+    bot.setTask('testTask',
+    {
+        paramDefs: [
+            { type: 'mobileType', description: '핸드폰번호를 입력해주세요' }
+        ],
+        action: function (dialog, context, callback)
+        {
+            callback(true, dialog.userInput.text);
+        }
+    });
 };
