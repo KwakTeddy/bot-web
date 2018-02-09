@@ -21,15 +21,6 @@
         margin: 1px 4px;
         width: 80%;
     }
-    .flower-button
-    {
-        border:solid 1px #585858;
-        color:#585858;
-        border-radius: 3px;
-        font-size: 13px;
-        padding: 5px 15px;
-        cursor: pointer;
-    }
     .case1
     {
         background-color: #FFFFFF;
@@ -110,7 +101,7 @@
         vertical-align: middle;
         text-overflow: ellipsis;
         white-space: nowrap;
-        height: 38px;
+        padding: 6px 8px;
     }
     .tb02 tbody td a:hover{
         color: #038eda !important;
@@ -199,12 +190,12 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width:10%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 14%;">
-                <col style="width: 10%;">
+                <col style="width:9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 21%;">
+                <col style="width: 7%;">
                 <col style="width: 21%;">
                 <col style="width: 15%;">
             </colgroup>
@@ -222,15 +213,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="data in datas">
-                <td type="text"><p ng-model="data.order_name" class="case1">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case1">{{data.order_mobile}}</p></td>
-                <td type="text"><p ng-model="data.order_itemname" class="case2">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case2">{{data.order_itemcode}}</p></td>
-                <td type="text"><p ng-model="data.order_date" class="case2">{{data.order_date}}</p><p ng-model="data.order_hour" class="case2">{{data.order_hour}}</p></td>
-                <td type="text"><p ng-model="data.order_receivername" class="case1">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case1">{{data.order_receivermobile}}</p></td>
+                <td type="text"><p ng-model="data.order_name" class="case3">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case3">{{data.order_mobile}}</p></td>
+                <td type="text"><p ng-model="data.order_itemname" class="case3">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case3">{{data.order_itemcode}}</p></td>
+                <td type="text"><p ng-model="data.order_date" class="case3">{{data.order_date}}</p><p ng-model="data.order_hour" class="case3">{{data.order_hour}}</p></td>
+                <td type="text"><p ng-model="data.order_receivername" class="case3">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case3">{{data.order_receivermobile}}</p></td>
                 <td type="text" class="case1" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
-                <td type="text"><p ng-model="data.order_deliverydate" class="case2">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case2">{{data.order_deliveryhour}}</p></td>
+                <td type="text"><p ng-model="data.order_deliverydate" class="case3">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case3">{{data.order_deliveryhour}}</p></td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <a type="button" class="operation-user-dialog-button" data-href="#" ng-click="reinput($event,data)">재동록</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
+                    <a type="button" class="operation-user-dialog-button" data-href="#" ng-click="reinput($event,data)">재등록</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>

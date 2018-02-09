@@ -23,16 +23,6 @@
         width: 80%;
     }
     /*==button=============================================*/
-    .flower-button-blue
-    {
-        padding: 5px 15px;
-        border: 1px solid #585858;
-        border-radius: 4px;
-        display: inline-block;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
     .button-red
     {
         padding: 5px 15px;
@@ -44,7 +34,7 @@
         -moz-box-sizing: border-box;
         box-sizing: border-box;
     }
-    .flower-blue-button
+    .flower-button-big
     {
         outline: 0;
         text-align: center;
@@ -84,7 +74,6 @@
     }
     .tb02 tr th{
         width: 20%;
-        padding: 10px 0 10px 0;
         font-size: 14px;
         text-align: center;
         font-weight: 600;
@@ -92,9 +81,9 @@
         vertical-align: middle;
         background: #f5f5f5;
         border-right:#dbdbdb solid 1px;
+        border-left: #dbdbdb solid 1px;
     }
     .tb02 tr td input {
-        width: 60%;
         text-align: center;
         font-size: 13px;
         letter-spacing: 0;
@@ -102,8 +91,9 @@
         vertical-align: middle;
         /*text-overflow: ellipsis;*/
         white-space: nowrap;
-        height: 40px;
+        height: 20px;
         overflow:hidden;
+        border: none;
     }
     .tb02td1 {
         width: 20%;
@@ -159,38 +149,38 @@
         <table class="tb02">
             <tr>
                 <th class="tb02 tr th">구매자</th>
-                <td>
+                <td class="text">
                     <input type="text" ng-model="data.order_name" class="tb02 tr td input">
                 </td>
-                <td>
-                    <input type="text" ng-model="data.order_mobile" class="tb02td1">
+                <td class="tb02td1">
+                    <input type="text" ng-model="data.order_mobile" class="">
                 </td>
             </tr>
             <tr>
                 <th class="tb02 tr th">상품정보</th>
-                <td>
+                <td class="text">
                     <input type="text" ng-model="data.order_itemname" class="tb02 tr td input">
                 </td>
-                <td>
-                    <input type="text" ng-model="data.order_itemcode" class="tb02td1">
+                <td class="tb02td1">
+                    <input type="text" ng-model="data.order_itemcode" class="">
                 </td>
             </tr>
             <tr>
                 <th class="tb02 tr th">주문시각</th>
-                <td>
+                <td class="text">
                     <input type="text" ng-model="data.order_date" class="tb02 tr td input">
                 </td>
-                <td>
-                    <input type="text" ng-model="data.order_hour" class="tb02td1">
+                <td class="tb02td1">
+                    <input type="text" ng-model="data.order_hour" class="">
                 </td>
             </tr>
             <tr>
                 <th class="tb02 tr th">받는사람</th>
-                <td>
+                <td class="text">
                     <input type="text" ng-model="data.order_receivername" class="tb02 tr td input">
                 </td>
-                <td>
-                    <input type="text" ng-model="data.order_receivermobile" class="tb02td1">
+                <td class="tb02td1">
+                    <input type="text" ng-model="data.order_receivermobile" class="">
                 </td>
             </tr>
             <tr>
@@ -199,24 +189,24 @@
                 <td type="text" class="tb02td1"></td>
             </tr>
             <tr>
-                <th class="tb02 tr th">배송기각</th>
-                <td><input type="text" ng-model="data.order_deliverydate" class="tb02 tr td input"></td>
-                <td><input type="text" ng-model="data.order_deliveryhour" class="tb02td1"></td>
+                <th class="tb02 tr th">배송기간</th>
+                <td class="text"><input type="text" ng-model="data.order_deliverydate" class="tb02 tr td input"></td>
+                <td class="tb02td1"><input type="text" ng-model="data.order_deliveryhour"></td>
             </tr>
             <tr>
                 <th class="tb02 tr th">리본문구(좌/우)</th>
-                <td><input type="text" ng-model="data.order_greeting" class="tb02 tr td input"></td>
-                <td><input type="text" ng-model="data.order_sendername" class="tb02td1"></td>
+                <td class="text"><input type="text" ng-model="data.order_greeting" class="tb02 tr td input"></td>
+                <td class="tb02td1"><input type="text" ng-model="data.order_sendername"></td>
             </tr>
             <tr>
-                <th class="tb02 tr th">상테</th>
+                <th class="tb02 tr th">상태</th>
                 <td><input type="text" ng-model="data.order_status" class="tb02 tr td input"></td>
                 <td type="text" class="tb02td1"></td>
             </tr>
         </table>
         <div class="tab-footer" style="border-top: 0;">
-            <a href="/playchat/templates/contents/reservation" type="button" class="flower-red-button" ng-click="accept($event,data);">승인 하기</a>
-            <a class="flower-blue-button" type="button" ng-click="save($event,data);">저장</a>
+            <a href="/playchat/templates/contents/reservation" type="button" class="flower-button" ng-click="accept($event,data);">승인 취소</a>
+            <a class="flower-button-blue" type="button" ng-click="save($event,data);">저장</a>
         </div>
     </form>
 </div>

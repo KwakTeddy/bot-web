@@ -12,7 +12,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, fo
 	letter-spacing: -0.02em; 
 	font-weight:normal; 
 	color:#393939; 
-	font-family:'Noto Sans', 'nanumsquare', 'Nanum Gothic', 'Malgun Gothic', 'AppleSDGothicNeo-Light', 'AppleSDGothicNeo', sans-serif, Arial,dotum,'돋움';
+	font-family:'Nanum Gothic', 'Malgun Gothic', 'AppleSDGothicNeo-Light', 'AppleSDGothicNeo', sans-serif, Arial,dotum,'돋움';
 } 
 /*-webkit-text-size-adjust: none(글자크기 자동조정 방지) , auto (화면의 폭에 맞추어서 텍스트의 크기를 자동으로 조절 , 100%(폰트크기를 지정된사이즈로 변경);*/ 
 html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, table , tr , td , dl, dt, dd, a ,img,input,button, select,textarea { margin: 0px; padding: 0px; list-style:none; }
@@ -1550,14 +1550,3 @@ input::-webkit-input-placeholder { color:#cacaca; font-size: 12px;}
 input::-moz-input-placeholder { color:#cacaca; font-size: 12px;}
 
 textarea:disabled{background: #f2f2f2;border: 1px solid #f2f2f2;}
-
-.flower-button
-{
-    border:solid 1px #585858;
-    color:#585858;
-    border-radius: 3px;
-    font-size: 13px;
-    padding: 5px 15px;
-    cursor: pointer;
-}
-
