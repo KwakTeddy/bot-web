@@ -351,51 +351,6 @@ module.exports = function (bot) {
     });
 
 
-    bot.setTask('categorycheck',{
-        action: function (dialog, context, callback) {
-            var str = "";
-            if (context.user.inCurRaw !== undefined) {
-                str = context.user.inCurRaw;
-            }
-            else {
-                str = context.user.inRaw;
-            }
-            category.find({}).lean().exec(function (err, docs) {
-                for (var i = 0; i < docs.length; i++) {
-                    if (str == docs[i].name) {
-                        category.find({"name": str}).lean().exec(function (err, docs) {
-                            context.user.item = docs;
-                            //console.log(context.user.item[0]+'////////////////');
-                            if (context.user.item[0].picture !== undefined) {
-                                task.result = {
-                                    text: "선택하신 **" + context.user.item[0].name + "**에 대한 정보입니다.\n\n상품 번호: " + context.user.item[0].code + "\n" +
-                                    "배송 안내: " + context.user.item[0].delivery + "\n" +
-                                    "회원 혜택: " + context.user.item[0].VIP + "\n" +
-                                    "\n" + "가격:\n" +
-                                    "       일반가: " + context.user.item[0].price + "원\n" +
-                                    "       회원할인가: " + context.user.item[0].sale_price + "원\n\n" +
-                                    "상품안내: " + context.user.item[0].description + "\n\n" +
-                                    "이 상품으로 주문하시겠습니까?",
-                                    image: {url: context.user.item[0].picture},
-                                    buttons: [
-                                        {
-                                            text: '자세히보기',
-                                            url: context.user.item[0].picture.startsWith('http') ? context.user.item[0].picture : config.host + context.user.item[0].picture
-                                        },
-                                        {
-                                            text: '네 주문하기',
-                                            url: ""
-                                        }
-                                    ]
-                                };
-                            }
-                            callback();
-                        });
-                    }
-                }
-            });
-        }
-    });
 
 
 
@@ -1629,51 +1584,64 @@ module.exports = function (bot) {
 
     bot.setTask('neworder',{
         action: function (dialog, context, callback) {
-            context.user.sendname = undefined;
+            // context.user.sendname = undefined;
             //받는분 성함:
-            context.user.friendname = undefined;
+            context.session.friendname = undefined;
             //받는분 연락처:
-            context.user.friendmobile = undefined;
+            context.session.friendmobile = undefined;
             //배달주소:
-            context.user.friendaddress = undefined;
+            context.session.friendaddress = undefined;
             //배달일자:
-            context.user.deliverytime = undefined;
+            context.session.deliverytime = undefined;
             //남기시는 메세지:
-            context.user.selectedgreeting = undefined;
+            context.session.selectedgreeting = undefined;
             //상품:
-            //context.user.selecteditem=undefined;
+            //context.session.selecteditem=undefined;
             //수량---------------------------------------
-            context.user.itemnumber = undefined;
+            context.session.itemnumber = undefined;
             //신부신랑:
-            context.user.brideornot = undefined;
+            context.session.brideornot = undefined;
             //신부신랑 전시 시간:
-            context.user.showtime = undefined;
+            context.session.showtime = undefined;
             //배송방식:
-            context.user.deliveryway = undefined;
+            context.session.deliveryway = undefined;
             //포장방식:
-            context.user.decorate = undefined;
+            context.session.decorate = undefined;
             //계산서 필요할건지:
-            context.user.bill = undefined;
+            context.session.bill = undefined;
             //결제 방식:
-            context.user.payway = undefined;
+            context.session.payway = undefined;
             //변경:
-            context.user.selectchange = undefined;
+            context.session.selectchange = undefined;
             //다른 요구사항
-            context.user.otherrequire = undefined;
-            context.user.username = undefined;
-            context.user.useremail = undefined;
-            context.user.usermobile = undefined;
+            context.session.otherrequire = undefined;
+            context.session.username = undefined;
+            context.session.useremail = undefined;
+            context.session.usermobile = undefined;
             callback();
         }
     });
 
 
-    bot.setTask('allname',{
+    bot.setTask('allname', {
         action: function (dialog, context, callback) {
-            category.find({}).lean().exec(function (err, docs) {
-                context.user.allname = [];
-                for (i = 0; i < docs.length; i++) {
-                    context.user.allname.push(docs[i].name);
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {};
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.allname = [];
+                    for (var i = 0; i < body.length; i++) {
+                        context.session.allname.push(body[i].name);
+                    }
+                    console.log("context.session.allname======="+context.session.allname);
                 }
                 callback();
             });
@@ -1681,10 +1649,64 @@ module.exports = function (bot) {
     });
 
 
-    bot.setType('allnamelist',{
-        name: "allname",
-        listName: "allname",
-        typeCheck: "listTypeCheck"
+    bot.setType('allnamelist', {
+        typeCheck: function (dialog, context, callback) {
+            var text = dialog.userInput.text;
+
+            for (var i = 0; i < context.session.allname.length; i++) {
+                if (text.indexOf(context.session.allname[i]) >=0) {
+                    return callback(true, context.session.allname[i]);
+                }
+            }
+            callback(false);
+        }
+    });
+
+    bot.setTask('categorycheck', {
+        action: function (dialog, context, callback) {
+            var str = "";
+            str = dialog.userInput.text;
+
+            var modelname = "flower_moneybrain_category";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {
+                name: dialog.userInput.types.allnamelist
+            };
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    context.session.item = body;
+                    if (context.session.item[0].picture !== undefined) {
+                        // dialog.output[0].text = "선택하신 **" + context.session.item[0].name + "**에 대한 정보입니다.\n\n상품 번호: " + context.session.item[0].code + "\n" +
+                        //     "배송 안내: " + context.session.item[0].delivery + "\n" +
+                        //     "회원 혜택: " + context.session.item[0].VIP + "\n" +
+                        //     "\n" + "가격:\n" +
+                        //     "       일반가: " + context.session.item[0].price + "원\n" +
+                        //     "       회원할인가: " + context.session.item[0].sale_price + "원\n\n" +
+                        //     "상품안내: " + context.session.item[0].description + "\n\n" +
+                        //     "이 상품으로 주문하시겠습니까?";
+                        dialog.output[0].image = {url: context.session.item[0].picture};
+                        dialog.output[0].buttons = [
+                            {
+                                text: '자세히보기',
+                                url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                            },
+                            {
+                                text: '네 주문하기',
+                                url: ""
+                            }
+                        ]
+                    }
+                    callback();
+                }
+            });
+        }
     });
 
 

@@ -292,6 +292,266 @@ var dialogs = [
         ]
     },
     {
+        "name": "3.상품 주문하기",
+        "input": [
+            {
+                "text": {
+                    "raw": "2",
+                    "nlp": "2"
+                }
+            },
+            {
+                "text": {
+                    "raw": "주문",
+                    "nlp": "주문"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상품 주문하기",
+                    "nlp": "상품 주문 하다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "주문하기",
+                    "nlp": "주문 하다"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "상품 주문을 도와드릴께요.\n\n원하시는 상품이름을 아신다면, 입력해주세요\n\n추천상품을 안내를 원하신다면 '추천해줘'라고 입력하시면 됩니다",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "추천해줘"
+                    }
+                ]
+            }
+        ],
+        "id": "default6",
+        "children": [
+            {
+                "name": "3.\"추천\"입력",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "추천",
+                            "nlp": "추천"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "type": "call",
+                        "dialog": "1.카테고리 대",
+                        "dialogName": "1.카테고리 대",
+                        "dialogId": "default0"
+                    }
+                ],
+                "id": "default7"
+            },
+            {
+                "name": "3.선택 상품 확인",
+                "input": [
+                    {
+                        "types": "allnamelist"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "#context.session.item#선택하신 **+name+**에 대한 정보입니다.\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n이 상품으로 주문하시겠습니까?",
+                        "if": "3.상품 이름을 입력성공"
+                    }
+                ],
+                "id": "default10",
+                "task": {
+                    "name": "categorycheck"
+                },
+                "children": [
+                    {
+                        "name": "3.기준및 신규",
+                        "input": [
+                            {
+                                "intent": "네"
+                            },
+                            {
+                                "text": {
+                                    "raw": "네",
+                                    "nlp": "네"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "주문",
+                                    "nlp": "주문"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "if": "context.user.mobile==undefined",
+                                "options": {
+                                    "output": "플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
+                                },
+                                "type": "call"
+                            },
+                            {
+                                "kind": "Action",
+                                "if": "context.user.mobile!==undefined",
+                                "options": {
+                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                },
+                                "type": "call"
+                            }
+                        ],
+                        "id": "default11",
+                        "task": {
+                            "name": "neworder"
+                        }
+                    },
+                    {
+                        "name": "3.선택 상품 확인 다시",
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "type": "up",
+                                "dialog": 1,
+                                "options": {
+                                    "output": ""
+                                },
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "다시 확인"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "시작"
+                                    }
+                                ],
+                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 확인 하고 싶은면 \"다시 확인\"버튼을 누르세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                            }
+                        ],
+                        "id": "default87",
+                        "children": [
+                            {
+                                "name": "3.선택 상품 확인 다시 버튼",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "다시",
+                                            "nlp": "다시"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "확인",
+                                            "nlp": "확인"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "type": "call"
+                                    }
+                                ],
+                                "id": "default88"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "100",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "죄송합니다. 고객님이 입력하신 상품명이 없습니다. 다시 입력하시고 싶으면 “다시 입력“을 입력해주세요.\n\n추천 상품을 보고 싶으시면 \"추천\"을 입력해주세요.\n\n처음으로 가려면“시작“이라고 입력해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "다시 입력"
+                            },
+                            {
+                                "url": "",
+                                "text": "추천"
+                            },
+                            {
+                                "url": "",
+                                "text": "시작"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default138",
+                "children": [
+                    {
+                        "name": "101",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "다시",
+                                    "nlp": "다시"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "입력",
+                                    "nlp": "입력"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "type": "call"
+                            }
+                        ],
+                        "id": "default139"
+                    },
+                    {
+                        "name": "102",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "추천",
+                                    "nlp": "추천"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "type": "call"
+                            }
+                        ],
+                        "id": "default140"
+                    }
+                ]
+            }
+        ],
+        "task": {
+            "name": "allname"
+        }
+    },
+    {
         "name": "6.내 주문 확인하기",
         "input": [
             {
@@ -519,258 +779,6 @@ var dialogs = [
                 ]
             }
         ]
-    },
-    {
-        "name": "3.상품 주문하기",
-        "input": [
-            {
-                "text": {
-                    "raw": "2",
-                    "nlp": "2"
-                }
-            },
-            {
-                "text": {
-                    "raw": "주문하기",
-                    "nlp": "주문하기"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상품 주문하기",
-                    "nlp": "상품 주문하기"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "상품 주문을 도와드릴께요.\n\n원하시는 상품이름을 아신다면, 입력해주세요\n\n추천상품을 안내를 원하신다면 '추천해줘'라고 입력하시면 됩니다",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "추천해줘"
-                    }
-                ]
-            }
-        ],
-        "id": "default6",
-        "children": [
-            {
-                "name": "3.\"추천\"입력",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "추천",
-                            "nlp": "추천"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "type": "call"
-                    }
-                ],
-                "id": "default7"
-            },
-            {
-                "name": "3.선택 상품 확인",
-                "input": [
-                    {
-                        "types": "allnamelist"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "#item#선택하신 **+name+**에 대한 정보입니다.\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n이 상품으로 주문하시겠습니까?",
-                        "if": "3.상품 이름을 입력성공",
-                        "buttons": []
-                    }
-                ],
-                "id": "default10",
-                "task": {
-                    "name": "categorycheck"
-                },
-                "children": [
-                    {
-                        "name": "3.기준및 신규",
-                        "input": [
-                            {
-                                "intent": "네"
-                            },
-                            {
-                                "text": {
-                                    "raw": "네",
-                                    "nlp": "네"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "주문",
-                                    "nlp": "주문"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "context.user.mobile==undefined",
-                                "options": {
-                                    "output": "플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
-                                },
-                                "type": "call"
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "context.user.mobile!==undefined",
-                                "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
-                                },
-                                "type": "call"
-                            }
-                        ],
-                        "id": "default11",
-                        "task": {
-                            "name": "neworder"
-                        }
-                    },
-                    {
-                        "name": "3.선택 상품 확인 다시",
-                        "input": [
-                            {
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "type": "up",
-                                "dialog": 1,
-                                "options": {
-                                    "output": ""
-                                },
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "다시 확인"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "시작"
-                                    }
-                                ],
-                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 확인 하고 싶은면 \"다시 확인\"버튼을 누르세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
-                            }
-                        ],
-                        "id": "default87",
-                        "children": [
-                            {
-                                "name": "3.선택 상품 확인 다시 버튼",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "다시",
-                                            "nlp": "다시"
-                                        }
-                                    },
-                                    {
-                                        "text": {
-                                            "raw": "확인",
-                                            "nlp": "확인"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "type": "call"
-                                    }
-                                ],
-                                "id": "default88"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "100",
-                "input": [
-                    {
-                        "if": "true"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "죄송합니다. 고객님이 입력하신 상품명이 없습니다. 다시 입력하시고 싶으면 “다시 입력“을 입력해주세요.\n\n추천 상품을 보고 싶으시면 \"추천\"을 입력해주세요.\n\n처음으로 가려면“시작“이라고 입력해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "다시 입력"
-                            },
-                            {
-                                "url": "",
-                                "text": "추천"
-                            },
-                            {
-                                "url": "",
-                                "text": "시작"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default138",
-                "children": [
-                    {
-                        "name": "101",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "다시",
-                                    "nlp": "다시"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "입력",
-                                    "nlp": "입력"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "type": "call"
-                            }
-                        ],
-                        "id": "default139"
-                    },
-                    {
-                        "name": "102",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "추천",
-                                    "nlp": "추천"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "type": "call"
-                            }
-                        ],
-                        "id": "default140"
-                    }
-                ]
-            }
-        ],
-        "task": {
-            "name": "allname"
-        }
     },
     {
         "name": "3.신규회원",
