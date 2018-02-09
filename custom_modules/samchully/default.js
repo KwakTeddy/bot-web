@@ -1105,25 +1105,28 @@ module.exports = function(bot)
                         console.log('성공 데이터 : ', dialog.data.list);
                         var outputText = [];
 
-                        async.eachSeries(dialog.data.list, function(item, next)
+                        // async.eachSeries(dialog.data.list, function(item, next)
+                        //
+                        for(var i=0; i<dialog.data.list.length; i++)
                         {
-                            var test = '안전점검일: ' + item.CHK_YYMM + '\n';
-                            test += '확인자: ' + item.SCR_MGR_NO + '\n';
+                            var item = dialog.data.list[i];
+                            var test = '안전점검일: ' + item.CHK_DAT + '\n';
+                            test += '점검참여자: ' + item.SCR_MGR_NO + '\n';
                             if(item.SCR_MGR_CLF == '01')
                             {
-                                test += '확인자와의 관계: 본인\n';
+                                test += '계약자와관계: 본인\n';
                             }
                             else if(item.SCR_MGR_CLF == '02')
                             {
-                                test += '확인자와의 관계: 가족\n';
+                                test += '계약자와관계: 가족\n';
                             }
                             else if(item.SCR_MGR_CLF == '03')
                             {
-                                test += '확인자와의 관계: 관리인\n';
+                                test += '계약자와관계: 관리인\n';
                             }
                             else if(item.SCR_MGR_CLF == '04')
                             {
-                                test += '확인자와의 관계: 기타\n';
+                                test += '계약자와관계: 기타\n';
                             }
 
                             if(item.CHK_YN == 'Y')
@@ -1136,37 +1139,51 @@ module.exports = function(bot)
                                 {
                                     test += '점검결과: 부적합\n';
 
-                                    var options = {};
-                                    options.url = 'http://sam.moneybrain.ai:3000/api';
-                                    options.json = {};
-                                    options.json.name = 'ZPM_USERSAFE_12';
-                                    options.json.param = [
-                                        { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
-                                        { key: 'I_ADV_ORD', val: '1' },
-                                        { key: 'I_DATA_TYPE', val: 'D' }
-                                    ];
-                                    options.json.isTable = true;
-                                    options.timeout = timeout;
-
-                                    request.post(options, function(err, response, body)
+                                    if(item.IMPV_YN == 'Y')
                                     {
-                                        if(err)
-                                        {
-                                            console.log('에러 : ', err);
-                                        }
-                                        else
-                                        {
-                                            console.log('부적합 결과 : ', body);
-                                            test += '부적합 결과: ' + body.E_RETMSG + '\n';
-                                            test += '부적합 시설: ' + '\n\n';
+                                        test += '부적합개선여부: 개선완료\n';
+                                    }
+                                    else
+                                    {
+                                        test += '부적합개선여부: 미개선\n';
+                                    }
 
-                                            outputText.push(test);
+                                    test += '부적합시설: ' + item.CHK_ITM_NM + '\n';
 
-                                            next();
-                                        }
-                                    });
+                                    // test += '점검결과: 부적합\n';
 
-                                    return;
+
+                                    // var options = {};
+                                    // options.url = 'http://sam.moneybrain.ai:3000/api';
+                                    // options.json = {};
+                                    // options.json.name = 'ZPM_USERSAFE_12';
+                                    // options.json.param = [
+                                    //     { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
+                                    //     { key: 'I_ADV_ORD', val: '1' },
+                                    //     { key: 'I_DATA_TYPE', val: 'D' }
+                                    // ];
+                                    // options.json.isTable = true;
+                                    // options.timeout = timeout;
+                                    //
+                                    // request.post(options, function(err, response, body)
+                                    // {
+                                    //     if(err)
+                                    //     {
+                                    //         console.log('에러 : ', err);
+                                    //     }
+                                    //     else
+                                    //     {
+                                    //         console.log('부적합 결과 : ', body);
+                                    //         test += '부적합 결과: ' + body.E_RETMSG + '\n';
+                                    //         test += '부적합 시설: ' + '\n\n';
+                                    //
+                                    //         outputText.push(test);
+                                    //
+                                    //         next();
+                                    //     }
+                                    // });
+
+                                    // return;
                                 }
                             }
                             else
@@ -1210,14 +1227,11 @@ module.exports = function(bot)
                                 }
                             }
 
-                            outputText.push(test + '\n\n');
-                            next();
-                        },
-                        function()
-                        {
-                            dialog.output[0].text = outputText.join('\n');
-                            callback();
-                        });
+                            outputText.push(test + (i == dialog.data.list.length - 1 ? '\n' : '\n\n'));
+                        }
+
+                        dialog.output[0].text = outputText.join('\n');
+                        callback();
                     }
                     else
                     {
@@ -1271,11 +1285,11 @@ module.exports = function(bot)
 
                         if(body.E_FCNTMM != '00')
                         {
-                            msg += body.E_FCNTMM + '월, ';
+                            msg += body.E_FCNTMM + '월';
                         }
                         if(body.E_SCNTMM != '00')
                         {
-                            msg += body.E_SCNTMM + '월';
+                            msg += ', ' + body.E_SCNTMM + '월';
                         }
                         if(!msg.length)
                         {
