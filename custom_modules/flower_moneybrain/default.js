@@ -49,14 +49,14 @@ module.exports = function (bot) {
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {};
+            options.json = {};
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
-                    body = JSON.parse(body);
                     console.log(response.statusCode);
+                    console.log(body);
 
                     context.session.categorylist = undefined;
                     var str = [];
@@ -83,7 +83,6 @@ module.exports = function (bot) {
         typeCheck: function (dialog, context, callback)
         {
             var text = dialog.userInput.text.split(".");
-           if(text[1]!==undefined){
             text[1]=text[1].substring(1);
 
             for(var i=0; i<context.session.category.length; i++)
@@ -93,7 +92,7 @@ module.exports = function (bot) {
                     return callback(true, context.session.category[i]);
                 }
             }
-           }
+
             callback(false);
         }
     });
@@ -102,6 +101,10 @@ module.exports = function (bot) {
     bot.setTask('showcategory',{
         action: function (dialog, context, callback)
         {
+            // context.session.categorylist1 = undefined;
+            // if (context.session.categorylist !== undefined) {
+            //     context.session.categorylist = context.session.categorylist;
+            // }
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -116,16 +119,17 @@ module.exports = function (bot) {
                 }
                 else
                 {
-                    body = JSON.parse(body);
                     console.log(response.statusCode);
 
-                    context.session.itemcategory = [];
-                    context.session.itemcategory = body;
+                    body = JSON.parse(body);
+
+                    context.session.category1 = [];
+                    context.session.category1 = body;
 
                     dialog.output[0].buttons= [];
-                    for (var i = 0; i < context.session.itemcategory.length; i++)
+                    for (var i = 0; i < context.session.category1.length; i++)
                     {
-                        var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
+                        var ss = "" + (i + 1) + ". " + context.session.category1[i].name + " " + context.session.category1[i].code;
                         dialog.output[0].buttons.push({text: ss});
                     }
 
@@ -136,19 +140,18 @@ module.exports = function (bot) {
     });
 
 
-    bot.setType('itemlist',{
+    bot.setType('categorylist1',{
         typeCheck: function (dialog, context, callback)
         {
+            console.log("dialog.userInput.text*******"+dialog.userInput.text);
             var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined) {
-                text[1] = text[1].substring(1);
-
-                for (var i = 0; i < context.session.itemcategory.length; i++) {
-                    var namecode = context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
-
-                    if (namecode.indexOf(text[1]) !== -1) {
-                        return callback(true, context.session.itemcategory[i]);
-                    }
+              text[1]=text[1].substring(1);
+            for(var i=0; i<context.session.category1.length; i++)
+            {
+                var namecode=context.session.category1[i].name+" "+context.session.category1[i].code;
+                if(namecode.indexOf(text[1]) !== -1)
+                {
+                    return callback(true, context.session.category1[i]);
                 }
             }
             callback(false);
@@ -158,56 +161,68 @@ module.exports = function (bot) {
 
     bot.setTask('showitem',{
         action: function (dialog, context, callback) {
+            // if (context.user.categorylist1 !== undefined) {
+            //     context.user.categorylist1 = context.user.categorylist1;
+            // }
+
+            // console.log("dialog.userInput.types.categorylist1***2**"+dialog.userInput.types.categorylist1.name);
+            //
+
+            console.log('ㅁㄴㅇㄹ충공깽', dialog.userInput.types.categorylist1);
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
-                _id:dialog.userInput.types.itemlist._id
+                // category: dialog.userInput.types.categorylist1.category,
+                // name: dialog.userInput.types.categorylist1.name,
+                // code: dialog.userInput.types.categorylist1.code
+                _id:dialog.userInput.types.categorylist1._id
             };
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
-                    body=JSON.parse(body);
                     console.log(response.statusCode);
+                    // console.log(body);
 
-                context.session.item = body;
-
-                context.session.selecteditem = {};
-                context.session.selecteditem = context.session.item[0];
-
-                context.session.selecteditem.sale_price = context.session.item[0].sale_price;
-                if (context.session.selectchange !== 1) {
-                    if (context.session.item[0].picture !== undefined) {
-                        dialog.output[0].image = {url: context.session.item[0].picture};
-                        dialog.output[0].buttons = [
-                            {
-                                text: '자세히보기',
-                                url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
-                            },
-                            {
-                                text: '이 상품으로 주문하기',
-                                url: ""
-                            },
-                            {
-                                text: '다른 상품 더보기',
-                                url: ""
-                            }
-                        ];
-                    }
-                }
-                else {
-                    if (context.session.item[0].picture !== undefined) {
-                        dialog.output[0].image = {url: context.session.item[0].picture};
-                        dialog.output[0].buttons = [
-                            {
-                                text: '주문서 확인하기',
-                                url: ""
-                            }
-                        ];
-                    }
-                }
+                // context.session.item = body;
+                //     console.log("context.session.item ***1**"+context.session.item.length);
+                //
+                // context.session.selecteditem = {};
+                // context.session.selecteditem = context.session.item[0];
+                //
+                // context.session.selecteditem.sale_price = context.session.item[0].sale_price;
+                // if (context.session.selectchange !== 1) {
+                //     if (context.session.item[0].picture !== undefined) {
+                //         dialog.output[0].image = {url: context.session.item[0].picture};
+                //         dialog.output[0].buttons = [
+                //             {
+                //                 text: '자세히보기',
+                //                 url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                //             },
+                //             {
+                //                 text: '이 상품으로 주문하기',
+                //                 url: ""
+                //             },
+                //             {
+                //                 text: '다른 상품 더보기',
+                //                 url: ""
+                //             }
+                //         ];
+                //     }
+                // }
+                // else {
+                //     if (context.session.item[0].picture !== undefined) {
+                //         dialog.output[0].image = {url: context.session.item[0].picture};
+                //         dialog.output[0].buttons = [
+                //             {
+                //                 text: '주문서 확인하기',
+                //                 url: ""
+                //             }
+                //         ];
+                //     }
+                // }
                     callback();
                 }
             });
@@ -220,130 +235,55 @@ module.exports = function (bot) {
             var modelname = "flower_moneybrain_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {};
+            options.json = {
+                // category: context.session.categorylist1.category,
+                // name: context.session.categorylist1.name,
+                // code: context.session.categorylist1.code
+                _id:dialog.userInput.types.categorylist1._id
+            };
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
-                    body=JSON.parse(body);
                     console.log(response.statusCode);
+                    console.log(body);
 
+                context.session.category = [];
+                context.user.categorylist = undefined;
                 var str = [];
-                for (var j = 0; j < body.length; j++) {
-                    if (str.indexOf(body[j].category) < 0) {
-                        str.push(body[j].category);
+                for (var j = 0; j < docs.length; j++) {
+                    if (str.indexOf(docs[j].category) < 0) {
+                        str.push(docs[j].category);
                     }
                 }
-                context.session.faqcategory = str;
-
-                dialog.output[0].buttons = [];
-                for (var i = 0; i < context.session.faqcategory.length; i++) {
-                    var ss = "" + (i + 1) + ". " + context.session.faqcategory[i];
-                    dialog.output[0].buttons.push({text: ss});
+                context.user.category = str;
+                task.buttons = [];
+                for (var i = 0; i < context.user.category.length; i++) {
+                    var ss = "" + (i + 1) + ". " + context.user.category[i];
+                    task.buttons.push({text: ss});
                 }
                 callback();
-                }
-                callback();
-            });
-        }
-    });
-
-    bot.setType("faqcategorylist", {
-        typeCheck: function (dialog, context, callback)
-        {
-            var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined) {
-                text[1] = text[1].substring(1);
-
-                for (var i = 0; i < context.session.faqcategory.length; i++) {
-                    if (context.session.faqcategory[i].indexOf(text[1]) !== -1) {
-                        return callback(true, context.session.faqcategory[i]);
                     }
-                }
-            }
-            callback(false);
+                    callback();
+                });
         }
     });
 
 
     bot.setTask('showfaqlist',{
         action: function (dialog, context, callback) {
-
-            var modelname = "flower_moneybrain_faq";
-            var options = {};
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {
-                category: dialog.userInput.types.faqcategorylist
-            };
-            request.get(options, function (err, response, body)
-            {
-                if (err)
-                {
-                    console.log('err:' + err);
-                }
-                else
-                {
-                    body = JSON.parse(body);
-                    console.log(response.statusCode);
-
-                    context.session.faqitemcategory = [];
-                    context.session.faqitemcategory = body;
-
-                    dialog.output[0].buttons= [];
-                    for (var i = 0; i < context.session.faqitemcategory.length; i++)
-                    {
-                        var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
-                        dialog.output[0].buttons.push({text: ss});
-                    }
-
-                    callback();
-                }
-            });
-        }
-    });
-
-    bot.setType('faqitemlist',{
-        typeCheck: function (dialog, context, callback)
-        {
-            var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined) {
-                text[1] = text[1].substring(1);
-
-                for (var i = 0; i < context.session.faqitemcategory.length; i++) {
-                    if (context.session.faqitemcategory[i].question.indexOf(text[1]) !== -1) {
-                        return callback(true, context.session.faqitemcategory[i]);
-                    }
-                }
+            context.user.categorylist1 = undefined;
+            if (context.user.categorylist !== undefined) {
+                context.user.categorylist = context.user.categorylist;
             }
-            callback(false);
-        }
-    });
-
-
-    bot.setTask('showfaq',{
-        action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_faq";
-            var options = {};
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {
-                _id:dialog.userInput.types.faqitemlist._id
-            };
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log('err:' + err);
-                }
-                else {
-                    body = JSON.parse(body);
-                    console.log(response.statusCode);
-
-                    context.session.faqitem = body;
-                    dialog.output[0].buttons = [
-                        {
-                            text: '시작',
-                            url: ""
-                        }
-                    ];
+            faq.find({category: context.user.categorylist}).lean().exec(function (err, docs) {
+                context.user.category1 = [];
+                context.user.category1 = docs;
+                task.buttons = [];
+                for (var i = 0; i < context.user.category1.length; i++) {
+                    var ss = "" + (i + 1) + ". " + context.user.category1[i].question;
+                    task.buttons.push({text: ss});
                 }
                 callback();
             });
@@ -351,6 +291,67 @@ module.exports = function (bot) {
     });
 
 
+    bot.setTask('showfaq',{
+        action: function (dialog, context, callback) {
+            faq.find({question: context.user.categorylist1.question}).lean().exec(function (err, docs) {
+                context.user.item = docs;
+                task.buttons = [
+                    {
+                        text: '시작',
+                        url: ""
+                    }
+                ];
+                callback();
+            });
+        }
+    });
+
+
+    bot.setTask('categorycheck',{
+        action: function (dialog, context, callback) {
+            var str = "";
+            if (context.user.inCurRaw !== undefined) {
+                str = context.user.inCurRaw;
+            }
+            else {
+                str = context.user.inRaw;
+            }
+            category.find({}).lean().exec(function (err, docs) {
+                for (var i = 0; i < docs.length; i++) {
+                    if (str == docs[i].name) {
+                        category.find({"name": str}).lean().exec(function (err, docs) {
+                            context.user.item = docs;
+                            //console.log(context.user.item[0]+'////////////////');
+                            if (context.user.item[0].picture !== undefined) {
+                                task.result = {
+                                    text: "선택하신 **" + context.user.item[0].name + "**에 대한 정보입니다.\n\n상품 번호: " + context.user.item[0].code + "\n" +
+                                    "배송 안내: " + context.user.item[0].delivery + "\n" +
+                                    "회원 혜택: " + context.user.item[0].VIP + "\n" +
+                                    "\n" + "가격:\n" +
+                                    "       일반가: " + context.user.item[0].price + "원\n" +
+                                    "       회원할인가: " + context.user.item[0].sale_price + "원\n\n" +
+                                    "상품안내: " + context.user.item[0].description + "\n\n" +
+                                    "이 상품으로 주문하시겠습니까?",
+                                    image: {url: context.user.item[0].picture},
+                                    buttons: [
+                                        {
+                                            text: '자세히보기',
+                                            url: context.user.item[0].picture.startsWith('http') ? context.user.item[0].picture : config.host + context.user.item[0].picture
+                                        },
+                                        {
+                                            text: '네 주문하기',
+                                            url: ""
+                                        }
+                                    ]
+                                };
+                            }
+                            callback();
+                        });
+                    }
+                }
+            });
+        }
+    });
 
 
 
@@ -1584,64 +1585,51 @@ module.exports = function (bot) {
 
     bot.setTask('neworder',{
         action: function (dialog, context, callback) {
-            // context.user.sendname = undefined;
+            context.user.sendname = undefined;
             //받는분 성함:
-            context.session.friendname = undefined;
+            context.user.friendname = undefined;
             //받는분 연락처:
-            context.session.friendmobile = undefined;
+            context.user.friendmobile = undefined;
             //배달주소:
-            context.session.friendaddress = undefined;
+            context.user.friendaddress = undefined;
             //배달일자:
-            context.session.deliverytime = undefined;
+            context.user.deliverytime = undefined;
             //남기시는 메세지:
-            context.session.selectedgreeting = undefined;
+            context.user.selectedgreeting = undefined;
             //상품:
-            //context.session.selecteditem=undefined;
+            //context.user.selecteditem=undefined;
             //수량---------------------------------------
-            context.session.itemnumber = undefined;
+            context.user.itemnumber = undefined;
             //신부신랑:
-            context.session.brideornot = undefined;
+            context.user.brideornot = undefined;
             //신부신랑 전시 시간:
-            context.session.showtime = undefined;
+            context.user.showtime = undefined;
             //배송방식:
-            context.session.deliveryway = undefined;
+            context.user.deliveryway = undefined;
             //포장방식:
-            context.session.decorate = undefined;
+            context.user.decorate = undefined;
             //계산서 필요할건지:
-            context.session.bill = undefined;
+            context.user.bill = undefined;
             //결제 방식:
-            context.session.payway = undefined;
+            context.user.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
+            context.user.selectchange = undefined;
             //다른 요구사항
-            context.session.otherrequire = undefined;
-            context.session.username = undefined;
-            context.session.useremail = undefined;
-            context.session.usermobile = undefined;
+            context.user.otherrequire = undefined;
+            context.user.username = undefined;
+            context.user.useremail = undefined;
+            context.user.usermobile = undefined;
             callback();
         }
     });
 
 
-    bot.setTask('allname', {
+    bot.setTask('allname',{
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_category";
-            var options = {};
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {};
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log('err:' + err);
-                }
-                else {
-                    body = JSON.parse(body);
-                    console.log(response.statusCode);
-
-                    context.session.allname = [];
-                    for (var i = 0; i < body.length; i++) {
-                        context.session.allname.push(body[i].name);
-                    }
-                    console.log("context.session.allname======="+context.session.allname);
+            category.find({}).lean().exec(function (err, docs) {
+                context.user.allname = [];
+                for (i = 0; i < docs.length; i++) {
+                    context.user.allname.push(docs[i].name);
                 }
                 callback();
             });
@@ -1649,64 +1637,10 @@ module.exports = function (bot) {
     });
 
 
-    bot.setType('allnamelist', {
-        typeCheck: function (dialog, context, callback) {
-            var text = dialog.userInput.text;
-
-            for (var i = 0; i < context.session.allname.length; i++) {
-                if (text.indexOf(context.session.allname[i]) >=0) {
-                    return callback(true, context.session.allname[i]);
-                }
-            }
-            callback(false);
-        }
-    });
-
-    bot.setTask('categorycheck', {
-        action: function (dialog, context, callback) {
-            var str = "";
-            str = dialog.userInput.text;
-
-            var modelname = "flower_moneybrain_category";
-            var options = {};
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {
-                name: dialog.userInput.types.allnamelist
-            };
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log('err:' + err);
-                }
-                else {
-                    body = JSON.parse(body);
-                    console.log(response.statusCode);
-
-                    context.session.item = body;
-                    if (context.session.item[0].picture !== undefined) {
-                        // dialog.output[0].text = "선택하신 **" + context.session.item[0].name + "**에 대한 정보입니다.\n\n상품 번호: " + context.session.item[0].code + "\n" +
-                        //     "배송 안내: " + context.session.item[0].delivery + "\n" +
-                        //     "회원 혜택: " + context.session.item[0].VIP + "\n" +
-                        //     "\n" + "가격:\n" +
-                        //     "       일반가: " + context.session.item[0].price + "원\n" +
-                        //     "       회원할인가: " + context.session.item[0].sale_price + "원\n\n" +
-                        //     "상품안내: " + context.session.item[0].description + "\n\n" +
-                        //     "이 상품으로 주문하시겠습니까?";
-                        dialog.output[0].image = {url: context.session.item[0].picture};
-                        dialog.output[0].buttons = [
-                            {
-                                text: '자세히보기',
-                                url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
-                            },
-                            {
-                                text: '네 주문하기',
-                                url: ""
-                            }
-                        ]
-                    }
-                    callback();
-                }
-            });
-        }
+    bot.setType('allnamelist',{
+        name: "allname",
+        listName: "allname",
+        typeCheck: "listTypeCheck"
     });
 
 
