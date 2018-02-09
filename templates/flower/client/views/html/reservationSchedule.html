@@ -23,16 +23,7 @@
         width: 80%;
     }
     /*==button=============================================*/
-    .flower-button-blue
-     {
-         padding: 3px 10px;
-         border: 1px solid #585858;
-         border-radius: 4px;
-         display: inline-block;
-         -webkit-box-sizing: border-box;
-         -moz-box-sizing: border-box;
-         box-sizing: border-box;
-     }
+
     .flower-button-red
     {
         padding: 3px 10px;
@@ -43,22 +34,7 @@
         -moz-box-sizing: border-box;
         box-sizing: border-box;
     }
-    .flowertext-case1
-    {
-        background-color: #FFFFFF;
-        color:#fc4c4c !important;
-        font-size: 13px;
-        text-align: center;
-        overflow:hidden;
-    }
-    .flowertext-case2
-    {
-        background-color: #FFFFFF;
-        color:#038eda !important;
-        font-size: 13px;
-        text-align: center;
-        overflow:hidden;
-    }
+
    /*tb02----------------------------------*/
     .tb02{
         width: 100%;
@@ -139,19 +115,18 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width:10%;">
+                <col style="width:9%;">
+                <col style="width: 8%;">
+                <col style="width: 10%;">
                 <col style="width: 5%;">
                 <col style="width: 8%;">
-                <col style="width: 8%;">
-                <col style="width: 8%;">
-                <col style="width: 8%;">
                 <col style="width: 20%;">
-                <col style="width: 22%;">
+                <col style="width: 29%;">
                 <col style="width: 11%;">
             </colgroup>
             <thead>
             <tr>
-                <th  colspan="2">배송일시</th>
+                <th>배송일시</th>
                 <th>구매자</th>
                 <th>상품정보</th>
                 <th>주문시각</th>
@@ -170,14 +145,15 @@
                     <!--<p ng-switch-when="승인 대기중" ng-if="data.order_deliverydate==datas[$index-1].order_deliverydate && $index!=0" ng-model="data.order_deliverydate" class="flowertext-case1"> </p>-->
                     <!--<p ng-switch-when="승인완료" ng-if="data.order_deliverydate!=datas[$index-1].order_deliverydate || $index==0" ng-model="data.order_deliverydate" class="flowertext-case2">{{data.order_deliverydate}}</p>-->
                     <!--<p ng-switch-when="승인완료" ng-if="data.order_deliverydate==datas[$index-1].order_deliverydate && $index!=0" ng-model="data.order_deliverydate" class="flowertext-case2"> </p>-->
-                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_deliverydate" class="flowertext-case1">{{data.order_deliverydate}}</p>
-                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_deliverydate" class="flowertext-case2">{{data.order_deliverydate}}</p>
+                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_deliverydate" class="flowertext-case1">{{data.order_deliverydate}} {{data.order_deliveryhour}}</p>
+                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_deliverydate" class="flowertext-case2">{{data.order_deliverydate}} {{data.order_deliveryhour}}</p>
+                    <!--<p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_deliveryhour" class="flowertext-case1">{{data.order_deliveryhour}} {{data.order_deliveryhour}}</p>-->
+                    <!--<p ng-if="data.order_status =='승인완료'" ng-model="data.order_deliveryhour" class="flowertext-case2">{{data.order_deliveryhour}}</p>-->
                 </td>
 
-                <td type="text">
-                    <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_deliveryhour" class="flowertext-case1">{{data.order_deliveryhour}}</p>
-                    <p ng-if="data.order_status =='승인완료'" ng-model="data.order_deliveryhour" class="flowertext-case2">{{data.order_deliveryhour}}</p>
-                </td>
+                <!--<td type="text">-->
+
+                <!--</td>-->
 
                 <td type="text">
                     <p ng-if="data.order_status =='승인 대기중'" ng-model="data.order_name" class="flowertext-case1">{{data.order_name}}</p>
@@ -218,10 +194,10 @@
                 </td>
 
                 <td colspan="1">
-                    <a ng-if="data.order_status =='승인 대기중'" data-href="/playchat/templates/contents/reservationScheduleDetailAccept" type="button" class="flower-button-red" ng-click="detail($event,data)">더보기</a>
-                    <a ng-if="data.order_status =='승인완료'" type="button" data-href="/playchat/templates/contents/reservationScheduleDetail" class="flower-button-blue" ng-click="detail($event,data)">더보기</a>
-                    <a ng-if="data.order_status =='승인완료'" type="button" class="flower-button-blue" ng-click="delete(data,index)">삭제</a>
-                    <a ng-if="data.order_status =='승인 대기중'" type="button" class="flower-button-red" ng-click="delete(data,index)">삭제</a>
+                    <a ng-if="data.order_status =='승인 대기중'" data-href="/playchat/templates/contents/reservationScheduleDetailAccept" type="button" class="operation-user-dialog-button" ng-click="detail($event,data)">더보기</a>
+                    <a ng-if="data.order_status =='승인완료'" type="button" data-href="/playchat/templates/contents/reservationScheduleDetail" class="operation-user-dialog-button" ng-click="detail($event,data)">더보기</a>
+                    <a ng-if="data.order_status =='승인완료'" type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
+                    <a ng-if="data.order_status =='승인 대기중'" type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>

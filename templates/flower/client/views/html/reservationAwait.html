@@ -22,17 +22,6 @@
         margin: 1px 4px;
         width: 80%;
     }
-    .flower-button
-    {
-        padding: 3px 10px;
-        border: 1px solid #585858;
-        border-radius: 4px;
-        color: #038eda !important;
-        display: inline-block;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
     .case1
     {
         background-color: #FFFFFF;
@@ -48,6 +37,15 @@
         word-wrap: normal;
         color:#272727;
         font-size: 13px;
+    }
+    .case3
+    {
+        background-color: #FFFFFF;
+        word-break:break-all;
+        word-wrap: normal;
+        color:#272727;
+        font-size: 13px;
+        text-align: center;
     }
    /*tb01----------------------------------*/
     .tb01{
@@ -109,16 +107,7 @@
         letter-spacing: 0.1px;
         vertical-align: middle;
     }
-    .tb02 tbody td{
-        text-align: center;
-        font-size: 13px;
-        letter-spacing: 0;
-        border-bottom: 1px solid #e9e9e9;
-        vertical-align: middle;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        height: 38px;
-    }
+
     .tb02 tbody td a:hover{
         color: #038eda !important;
     }
@@ -201,12 +190,12 @@
     <form ng-submit="save($event);">
         <table class="tb02" style="table-layout:fixed;">
             <colgroup>
-                <col style="width:10%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 10%;">
-                <col style="width: 14%;">
-                <col style="width: 10%;">
+                <col style="width:9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 21%;">
+                <col style="width: 7%;">
                 <col style="width: 21%;">
                 <col style="width: 15%;">
             </colgroup>
@@ -224,15 +213,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="data in datas">
-                <td type="text"><p ng-model="data.order_name" class="case1">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case1">{{data.order_mobile}}</p></td>
-                <td type="text"><p ng-model="data.order_itemname" class="case2">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case2">{{data.order_itemcode}}</p></td>
-                <td type="text"><p ng-model="data.order_date" class="case2">{{data.order_date}}</p><p ng-model="data.order_hour" class="case2">{{data.order_hour}}</p></td>
-                <td type="text"><p ng-model="data.order_receivername" class="case1">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case1">{{data.order_receivermobile}}</p></td>
+                <td type="text"><p ng-model="data.order_name" class="case3">{{data.order_name}}</p><p ng-model="data.order_mobile" class="case3">{{data.order_mobile}}</p></td>
+                <td type="text"><p ng-model="data.order_itemname" class="case3">{{data.order_itemname}}</p><p ng-model="data.order_itemcode" class="case3">{{data.order_itemcode}}</p></td>
+                <td type="text"><p ng-model="data.order_date" class="case3">{{data.order_date}}</p><p ng-model="data.order_hour" class="case3">{{data.order_hour}}</p></td>
+                <td type="text"><p ng-model="data.order_receivername" class="case3">{{data.order_receivername}}</p><p ng-model="data.order_receivermobile" class="case3">{{data.order_receivermobile}}</p></td>
                 <td type="text" class="case1" ng-model="data.order_receiveraddress" >{{data.order_receiveraddress}}</td>
                 <td type="text"><p ng-model="data.order_deliverydate" class="case2">{{data.order_deliverydate}}</p><p ng-model="data.order_deliveryhour" class="case2">{{data.order_deliveryhour}}</p></td>
                 <td type="text"><p ng-model="data.order_greeting" class="case1">{{data.order_greeting}}&nbsp;&#47;&nbsp;{{data.order_name}}</p></td>
                 <td colspan="1">
-                    <a type="button" class="flower-button" data-href="/playchat/templates/contents/reservationScheduleDetailAccept" ng-click="detail($event,data)">더보기</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
+                    <a type="button" class="flower-button-blue" data-href="/playchat/templates/contents/reservationScheduleDetailAccept" ng-click="detail($event,data)">더보기</a> <a type="button" class="flower-button" ng-click="delete(data,index)">삭제</a>
                 </td>
             </tr>
             </tbody>
