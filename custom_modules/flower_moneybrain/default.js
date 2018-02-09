@@ -157,7 +157,6 @@ module.exports = function (bot) {
 
     bot.setTask('showitem',{
         action: function (dialog, context, callback) {
-            console.log("-----------------1---------------");
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -169,7 +168,6 @@ module.exports = function (bot) {
                     console.log('err:' + err);
                 }
                 else {
-                    console.log("-----------------2---------------");
                     body=JSON.parse(body);
                     console.log(response.statusCode);
 
@@ -180,7 +178,6 @@ module.exports = function (bot) {
 
                     context.session.selecteditem.sale_price = context.session.item[0].sale_price;
                     if (context.session.selectchange !== 1) {
-                        console.log("-----------------3---------------");
                         if (context.session.item[0].picture !== undefined) {
                             dialog.output[0].image = {url: context.session.item[0].picture};
                             dialog.output[0].buttons = [
@@ -271,7 +268,6 @@ module.exports = function (bot) {
 
     bot.setTask('showfaqlist',{
         action: function (dialog, context, callback) {
-
             var modelname = "flower_moneybrain_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
