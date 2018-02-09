@@ -1546,7 +1546,7 @@ module.exports = function (bot) {
 
     bot.setTask('addbuttons',{
         action: function (dialog, context, callback) {
-            task.buttons = [
+            dialog.output[0].buttons = [
                 {
                     text: '시작',
                     url: ""
