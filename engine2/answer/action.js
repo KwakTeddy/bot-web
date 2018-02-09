@@ -118,8 +118,8 @@ var ContextManager = require('../context.js');
                 console.log(chalk.yellow('[[[ Action - call ]]]'));
                 console.log(tempDialogInstance);
 
-                dialogInstance.nextCall = tempDialogInstance;
-                tempDialogInstance.prevCall = dialogInstance;
+                // dialogInstance.nextCall = tempDialogInstance;
+                // tempDialogInstance.prevCall = dialogInstance;
 
                 this.dm.exec(bot, context, tempDialogInstance, callback);
             }
@@ -148,8 +148,8 @@ var ContextManager = require('../context.js');
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
                 tempDialogInstance.options.outputText = this.makeOption(resultOutput);
 
-                dialogInstance.nextCall = tempDialogInstance;
-                tempDialogInstance.prevCall = dialogInstance;
+                // dialogInstance.nextCall = tempDialogInstance;
+                // tempDialogInstance.prevCall = dialogInstance;
 
                 this.dm.exec(bot, context, tempDialogInstance, callback);
             }
@@ -174,8 +174,8 @@ var ContextManager = require('../context.js');
             var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
             tempDialogInstance.options.outputText = this.makeOption(resultOutput);
 
-            dialogInstance.nextCall = tempDialogInstance;
-            tempDialogInstance.prevCall = dialogInstance;
+            // dialogInstance.nextCall = tempDialogInstance;
+            // tempDialogInstance.prevCall = dialogInstance;
 
             this.dm.exec(bot, context, tempDialogInstance, callback);
         }

@@ -26,6 +26,9 @@ var utils = require('./utils/utils.js');
 
     Context.prototype.createDialogInstance = function(srcDialog, userInput)
     {
+        var children = srcDialog.children;
+        delete srcDialog.children;
+
         var dialogInstance = utils.clone(srcDialog);
         dialogInstance.originalInput = dialogInstance.input;
         dialogInstance.originalOutput = utils.clone(dialogInstance.output);
@@ -34,6 +37,8 @@ var utils = require('./utils/utils.js');
         dialogInstance.data = {};
 
         delete dialogInstance.input;
+
+        srcDialog.children = children;
 
         return dialogInstance;
     };
