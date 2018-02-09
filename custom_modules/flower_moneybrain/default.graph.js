@@ -399,7 +399,10 @@ var dialogs = [
                                 "options": {
                                     "output": "플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialog": "3.신규회원",
+                                "dialogName": "3.신규회원",
+                                "dialogId": "default12"
                             },
                             {
                                 "kind": "Action",
@@ -407,7 +410,10 @@ var dialogs = [
                                 "options": {
                                     "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "id": "default11",
