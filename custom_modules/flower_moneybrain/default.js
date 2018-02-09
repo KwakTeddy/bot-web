@@ -128,7 +128,6 @@ module.exports = function (bot) {
                         var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
                         dialog.output[0].buttons.push({text: ss});
                     }
-
                     callback();
                 }
             });
@@ -141,13 +140,13 @@ module.exports = function (bot) {
         {
             var text = dialog.userInput.text.split(".");
             if(text[1]!==undefined) {
-                text[1] = text[1].substring(1);
-
+                text[1] = text[1].trim();
                 for (var i = 0; i < context.session.itemcategory.length; i++) {
                     var namecode = context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
 
                     if (namecode.indexOf(text[1]) !== -1) {
-                        return callback(true, context.session.itemcategory[i]);
+                        dialog.userInput.types.itemlist=context.session.itemcategory[i];
+                        return callback(true);
                     }
                 }
             }
@@ -158,6 +157,7 @@ module.exports = function (bot) {
 
     bot.setTask('showitem',{
         action: function (dialog, context, callback) {
+            console.log("-----------------1---------------");
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -169,6 +169,7 @@ module.exports = function (bot) {
                     console.log('err:' + err);
                 }
                 else {
+                    console.log("-----------------2---------------");
                     body=JSON.parse(body);
                     console.log(response.statusCode);
 
@@ -179,6 +180,7 @@ module.exports = function (bot) {
 
                     context.session.selecteditem.sale_price = context.session.item[0].sale_price;
                     if (context.session.selectchange !== 1) {
+                        console.log("-----------------3---------------");
                         if (context.session.item[0].picture !== undefined) {
                             dialog.output[0].image = {url: context.session.item[0].picture};
                             dialog.output[0].buttons = [
@@ -356,7 +358,7 @@ module.exports = function (bot) {
 
     bot.setTask('newuser',{
         action: function (dialog, context, callback) {
-            task.buttons = [
+            dialog.output[0].buttons = [
                 {
                     text: '회원가입하기',
                     url: 'http://flowermania.co.kr/cgi-bin/member/registration.php'
@@ -392,9 +394,9 @@ module.exports = function (bot) {
 
 
     bot.setType('email', {
-        typeCheck: function (text, type, dialog, context, callback) {
+        typeCheck: function (dialog, context, callback) {
             var matched = true;
-            var str = context.user.inCurRaw;
+            var str = dialog.userInput.text;
             var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
             if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
             {
@@ -426,64 +428,68 @@ module.exports = function (bot) {
 
     bot.setTask('mobileidentification',{
         preCallback: function (dialog, context, callback) {
-            var str = context.user.mobile;
-            var userinfor = [
-                {
-                    "name": "조수앙",
-                    "mobile": "01066389310",
-                    "email": "zsslovelyg@moneybrain.ai"
-                },
-                {
-                    "name": "김성훈",
-                    "mobile": "01095020541",
-                    "email": "kshchlee@moneybrain.ai"
-                },
-                {
-                    "name": "박지현",
-                    "mobile": "01042369555",
-                    "email": "jipark@moneybrain.ai"
-                },
-                {
-                    "name": "장세영",
-                    "mobile": "01063165683",
-                    "email": "com2best@moneybrain.ai"
-                },
-                {
-                    "name": "임보훈",
-                    "mobile": "01062588718",
-                    "email": "rayim@moneybrain.ai"
+            var str = dialog.userInput.types.mobile;
+            // var modelname = "flower_moneybrain_vipUser";
+            var modelname = "flower_moneybrain_user";
+            var options = {};
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+            options.qs = {};
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
                 }
-            ];
-            context.user.isvipornot = false;
-            for (var i = 0; i < userinfor.length; i++) {
-                if (userinfor[i].mobile === str) {
-                    context.user.isvipornot = true;
-                    context.user.mobile = str;
-                    console.log(userinfor[i].name + '==========================userinfor[i].name==');
-                    console.log(context.user.name2 + '=1=========================context.user.name2==');
-                    context.user.name2 = userinfor[i].name;
-                    context.user.email2 = userinfor[i].email;
-                    console.log(context.user.name2 + '=2=========================context.user.name2==');
-                    // console.log("context.user.email2======="+context.user.email2);
-                    // console.log("context.user.name2======="+context.user.name2);
-                    // console.log("context.user.mobile======="+context.user.mobile);
+                else {
+                    body = JSON.parse(body);
+                    console.log("response.statusCode=="+response.statusCode);
+
+                    var userinfor = body;
+                    context.session.isvipornot = false;
+                    for (var i = 0; i < userinfor.length; i++) {
+                        if (userinfor[i].mobile === str) {
+                            context.session.isvipornot = true;
+                            context.session.mobile = str;
+                            context.session.name2 = userinfor[i].name;
+                            context.session.email2 = userinfor[i].email;
+                        }
+                    }
+
+                    var randomNum = '';
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+                    randomNum += '' + Math.floor(Math.random() * 10);
+
+                    var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
+
+                    request.post(
+                        'https://bot.moneybrain.ai/api/messages/sms/send',
+                        {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
+                        function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                console.log("response.statusCode:"+response.statusCode);
+                                context.session.smsAuth = randomNum;
+                                callback();
+                            } else {
+                                console.log("error:"+error);
+                            }
+                        }
+                    );
+                    callback();
                 }
-            }
-            callback();
-        },
-        action: messages.sendSMSAuth
+            });
+        }
     });
 
 
     bot.setType('identification',{
-        typeCheck: function (text, type, dialog, context, callback) {
+        typeCheck: function (dialog, context, callback) {
             var matched = false;
-            if (text === context.user.smsAuth) {
+            if (dialog.userInput.text == context.session.smsAuth) {
                 matched = true;
-                callback(text, dialog, matched);
+                callback(matched);
             }
             else {
-                callback(text, dialog, matched);
+                callback(matched);
             }
         }
     });
@@ -1615,9 +1621,9 @@ module.exports = function (bot) {
             context.user.selectchange = undefined;
             //다른 요구사항
             context.user.otherrequire = undefined;
-            context.user.username = undefined;
-            context.user.useremail = undefined;
-            context.user.usermobile = undefined;
+            // context.user.username = undefined;
+            // context.user.useremail = undefined;
+            // context.user.usermobile = undefined;
             callback();
         }
     });
