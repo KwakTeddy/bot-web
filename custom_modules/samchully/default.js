@@ -30,6 +30,8 @@ module.exports = function(bot)
 
     var addDefaultButton = function (dialog, onlyStart) {
 
+        if(!dialog.output[0].buttons) dialog.output[0].buttons =[];
+
         if(onlyStart)
         {
             dialog.output[0].buttons.push({text: '처음'});
@@ -563,7 +565,6 @@ module.exports = function(bot)
                                 data[i].FAEDN = dateFormatChange(data[i].FAEDN);
 
                             }
-                            addDefaultButton(dialog);
 
                             context.session.nonpaymentHistory = data;
                         }
@@ -595,7 +596,7 @@ module.exports = function(bot)
                 //있으면 context.session.auth = true;
             }
 
-            if(context.session.auth)
+            if(context.session.auth && dialog.output[0].buttons.length < 6)
             {
                 dialog.output[0].buttons.push({text: '로그아웃'});
             }
@@ -1255,10 +1256,23 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        console.log(JSON.stringify(body, null, 4))
+                        console.log(JSON.stringify(body, null, 4));
+                        
+                        var msg = '';
 
-                        dialog.data.month1 = body.E_FCNTMM;
-                        dialog.data.month2 = body.E_SCNTMM;
+                        if(body.E_FCNTMM != '00')
+                        {
+                            msg += body.E_FCNTMM + '월, ';
+                        }
+                        if(body.E_SCNTMM != '00')
+                        {
+                            msg += body.E_SCNTMM + '월';
+                        }
+                        if(!msg.length)
+                        {
+                            msg = '없음';
+                        }
+                        dialog.data.month = msg;
                         dialog.data.gasType = body.E_AKLASSE;
                     }
                     else

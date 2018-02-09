@@ -138,7 +138,7 @@ var dialogs = [
                                                         "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
                                                         "type": "call",
                                                         "dialogName": "시작",
-                                                        "dialogId": "defaultcommon0"
+                                                        "dialogId": "startDialog"
                                                     }
                                                 ],
                                                 "task": {
@@ -168,7 +168,7 @@ var dialogs = [
                                                         "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
                                                         "type": "call",
                                                         "dialogName": "시작",
-                                                        "dialogId": "defaultcommon0"
+                                                        "dialogId": "startDialog"
                                                     }
                                                 ],
                                                 "id": "default48"
@@ -203,7 +203,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.",
+                                        "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -1621,12 +1621,12 @@ var dialogs = [
             {
                 "kind": "Content",
                 "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.session.auth && customerList.length != 1"
+                "if": "context.session.auth && context.session.customerList.length != 1"
             },
             {
                 "kind": "Action",
                 "type": "call",
-                "if": "context.session.auth && customerList.length == 1",
+                "if": "context.session.auth && context.session.customerList.length == 1",
                 "dialogId": "default60",
                 "dialogName": "안전점검메뉴선택"
             },
@@ -1736,7 +1736,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month1+월, +dialog.data.month2+월\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
+                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month+\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
                                     }
                                 ],
                                 "id": "default43",
@@ -2258,6 +2258,12 @@ var dialogs = [
                 "text": {
                     "raw": "로그아웃",
                     "nlp": "로그아웃"
+                }
+            },
+            {
+                "text": {
+                    "raw": "6",
+                    "nlp": "6"
                 }
             }
         ],
