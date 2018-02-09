@@ -108,22 +108,25 @@ var ActionManager = require('./action.js');
                 {
                     if(key == 'text')
                     {
-                        if(rawText == input.text.raw)
+                        if(input.text.raw && input.text.nlp)
                         {
-                            result = result && true;
-                            dialog.matchCount = 100000;
-                        }
-                        else
-                        {
-                            var matchCount = that.checkInputText(nlpText, input.text.nlp);
-                            if(matchCount > 0)
+                            if(rawText == input.text.raw)
                             {
-                                dialog.matchCount += matchCount;
                                 result = result && true;
+                                dialog.matchCount = 100000;
                             }
                             else
                             {
-                                result = result && false;
+                                var matchCount = that.checkInputText(nlpText, input.text.nlp);
+                                if(matchCount > 0)
+                                {
+                                    dialog.matchCount += matchCount;
+                                    result = result && true;
+                                }
+                                else
+                                {
+                                    result = result && false;
+                                }
                             }
                         }
                     }
@@ -431,6 +434,8 @@ var ActionManager = require('./action.js');
                                 catch(err)
                                 {
                                     console.error(chalk.red(err));
+
+                                    return callback({ text: err.message });
                                 }
                             })(context, dialogInstance, output[i]);
                         }
