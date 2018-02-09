@@ -36,9 +36,7 @@ var dialogs = [
                 "name": "1.카테고리 중",
                 "input": [
                     {
-                        "types": [
-                            "categorylist"
-                        ]
+                        "types": "categorylist"
                     }
                 ],
                 "output": [
@@ -56,15 +54,13 @@ var dialogs = [
                         "name": "1.상품선택",
                         "input": [
                             {
-                                "types": [
-                                    "itemlist"
-                                ]
+                                "types": "categorylist1"
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                "text": "#item#**+name+**\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                             }
                         ],
                         "task": {
@@ -84,17 +80,14 @@ var dialogs = [
                                     {
                                         "text": {
                                             "raw": "확인하기",
-                                            "nlp": "확인 하다"
+                                            "nlp": "확인하기"
                                         }
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call",
-                                        "dialogName": "3.주문서 확인",
-                                        "dialog": "3.주문서 확인",
-                                        "dialogId": "default41"
+                                        "type": "call"
                                     }
                                 ],
                                 "id": "default60"
@@ -118,10 +111,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call",
-                                        "dialogName": "3.기준및 신규",
-                                        "dialog": "3.기준및 신규",
-                                        "dialogId": "default11"
+                                        "type": "call"
                                     }
                                 ],
                                 "id": "default8"
@@ -151,10 +141,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call",
-                                        "dialog": "1.카테고리 대",
-                                        "dialogName": "1.카테고리 대",
-                                        "dialogId": "default0"
+                                        "type": "call"
                                     }
                                 ],
                                 "id": "default9"
@@ -169,10 +156,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call",
-                                        "dialog": "시작",
-                                        "dialogName": "시작",
-                                        "dialogId": "defaultcommon0"
+                                        "type": "call"
                                     }
                                 ],
                                 "id": "default58"
@@ -188,11 +172,16 @@ var dialogs = [
                         ],
                         "output": [
                             {
+                                "kind": "Action",
+                                "type": "call",
+                                "dialogName": "1.카테고리 중",
                                 "buttons": [
                                     {
+                                        "url": "",
                                         "text": "다시 입력"
                                     },
                                     {
+                                        "url": "",
                                         "text": "시작"
                                     }
                                 ],
@@ -220,10 +209,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call",
-                                        "dialog": "1.카테고리 중",
-                                        "dialogName": "1.카테고리 중",
-                                        "dialogId": "default1"
+                                        "type": "call"
                                     }
                                 ],
                                 "id": "default94"
@@ -249,9 +235,11 @@ var dialogs = [
                         },
                         "buttons": [
                             {
+                                "url": "",
                                 "text": "다시 입력"
                             },
                             {
+                                "url": "",
                                 "text": "시작"
                             }
                         ],
@@ -271,21 +259,243 @@ var dialogs = [
                             },
                             {
                                 "text": {
-                                    "raw": "입력",
-                                    "nlp": "입력"
+                                    "raw": "선택",
+                                    "nlp": "선택"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call",
-                                "dialogName": "1.카테고리 대",
-                                "dialog": "1.카테고리 대",
-                                "dialogId": "default0"
+                                "type": "call"
                             }
                         ],
                         "id": "default93"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "6.내 주문 확인하기",
+        "input": [
+            {
+                "text": {
+                    "raw": "4",
+                    "nlp": "4"
+                }
+            },
+            {
+                "text": {
+                    "raw": "내 주문 확인 하다",
+                    "nlp": "내 주문 확인 하다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "주문 확인",
+                    "nlp": "주문 확인"
+                }
+            },
+            {
+                "text": {
+                    "raw": "내 주문 확인하기",
+                    "nlp": "내 주문 확인하기"
+                }
+            },
+            {
+                "text": {
+                    "raw": "확인",
+                    "nlp": "확인"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "if": "context.user.mobile===undefined",
+                "type": "call"
+            },
+            {
+                "kind": "Action",
+                "if": "context.user.mobile!==undefined",
+                "type": "call"
+            }
+        ],
+        "id": "default54",
+        "task": {
+            "name": "recordorder"
+        }
+    },
+    {
+        "name": "2.자주하는 질문 대",
+        "input": [
+            {
+                "text": {
+                    "raw": "1",
+                    "nlp": "1"
+                }
+            },
+            {
+                "text": {
+                    "raw": "질문",
+                    "nlp": "질문"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요.",
+                "buttons": []
+            }
+        ],
+        "id": "default3",
+        "task": {
+            "name": "getFAQcategory"
+        },
+        "children": [
+            {
+                "name": "2.질문 토픽 중",
+                "input": [
+                    {
+                        "types": "categorylist"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "무엇이 궁금하신가요? 선택해주세요!"
+                    }
+                ],
+                "id": "default4",
+                "task": {
+                    "name": "showfaqlist"
+                },
+                "children": [
+                    {
+                        "name": "2.질문 답",
+                        "input": [
+                            {
+                                "types": "categorylist1"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "#item#**question** \n+question+\n\n**answer** \n+answer+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                            }
+                        ],
+                        "task": {
+                            "name": "showfaq"
+                        },
+                        "id": "default5"
+                    },
+                    {
+                        "name": "2.질문 토픽 중 다시",
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "type": "call",
+                                "dialog": "2.질문 토픽 중",
+                                "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "다시 입력"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "시작"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default86",
+                        "children": [
+                            {
+                                "name": "57",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "다시",
+                                            "nlp": "다시"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "선택",
+                                            "nlp": "선택"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "type": "call"
+                                    }
+                                ],
+                                "id": "default95"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "2.질문 대 다시",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "type": "call",
+                        "dialog": "2.자주하는 질문 대",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "다시 입력"
+                            },
+                            {
+                                "url": "",
+                                "text": "시작"
+                            }
+                        ],
+                        "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요."
+                    }
+                ],
+                "id": "default85",
+                "children": [
+                    {
+                        "name": "58",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "다시",
+                                    "nlp": "다시"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "선택",
+                                    "nlp": "선택"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "type": "call"
+                            }
+                        ],
+                        "id": "default96"
                     }
                 ]
             }
@@ -302,20 +512,14 @@ var dialogs = [
             },
             {
                 "text": {
-                    "raw": "주문",
-                    "nlp": "주문"
+                    "raw": "주문하기",
+                    "nlp": "주문하기"
                 }
             },
             {
                 "text": {
                     "raw": "상품 주문하기",
-                    "nlp": "상품 주문 하다"
-                }
-            },
-            {
-                "text": {
-                    "raw": "주문하기",
-                    "nlp": "주문 하다"
+                    "nlp": "상품 주문하기"
                 }
             }
         ],
@@ -346,10 +550,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "type": "call",
-                        "dialog": "1.카테고리 대",
-                        "dialogName": "1.카테고리 대",
-                        "dialogId": "default0"
+                        "type": "call"
                     }
                 ],
                 "id": "default7"
@@ -364,8 +565,9 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "#context.session.item#선택하신 **+name+**에 대한 정보입니다.\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n이 상품으로 주문하시겠습니까?",
-                        "if": "3.상품 이름을 입력성공"
+                        "text": "#item#선택하신 **+name+**에 대한 정보입니다.\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n이 상품으로 주문하시겠습니까?",
+                        "if": "3.상품 이름을 입력성공",
+                        "buttons": []
                     }
                 ],
                 "id": "default10",
@@ -399,10 +601,7 @@ var dialogs = [
                                 "options": {
                                     "output": "플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
                                 },
-                                "type": "call",
-                                "dialog": "3.신규회원",
-                                "dialogName": "3.신규회원",
-                                "dialogId": "default12"
+                                "type": "call"
                             },
                             {
                                 "kind": "Action",
@@ -410,10 +609,7 @@ var dialogs = [
                                 "options": {
                                     "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
                                 },
-                                "type": "call",
-                                "dialogName": "3.기존회원",
-                                "dialog": "3.기존회원",
-                                "dialogId": "default21"
+                                "type": "call"
                             }
                         ],
                         "id": "default11",
@@ -556,235 +752,6 @@ var dialogs = [
         "task": {
             "name": "allname"
         }
-    },
-    {
-        "name": "6.내 주문 확인하기",
-        "input": [
-            {
-                "text": {
-                    "raw": "4",
-                    "nlp": "4"
-                }
-            },
-            {
-                "text": {
-                    "raw": "내 주문 확인 하다",
-                    "nlp": "내 주문 확인 하다"
-                }
-            },
-            {
-                "text": {
-                    "raw": "주문 확인",
-                    "nlp": "주문 확인"
-                }
-            },
-            {
-                "text": {
-                    "raw": "내 주문 확인하기",
-                    "nlp": "내 주문 확인하기"
-                }
-            },
-            {
-                "text": {
-                    "raw": "확인",
-                    "nlp": "확인"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Action",
-                "if": "context.user.mobile===undefined",
-                "type": "call"
-            },
-            {
-                "kind": "Action",
-                "if": "context.user.mobile!==undefined",
-                "type": "call"
-            }
-        ],
-        "id": "default54",
-        "task": {
-            "name": "recordorder"
-        }
-    },
-    {
-        "name": "2.자주하는 질문 대",
-        "input": [
-            {
-                "text": {
-                    "raw": "1",
-                    "nlp": "1"
-                }
-            },
-            {
-                "text": {
-                    "raw": "질문",
-                    "nlp": "질문"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요.",
-                "buttons": []
-            }
-        ],
-        "id": "default3",
-        "task": {
-            "name": "getFAQcategory"
-        },
-        "children": [
-            {
-                "name": "2.질문 토픽 중",
-                "input": [
-                    {
-                        "types": [
-                            "faqcategorylist"
-                        ]
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "무엇이 궁금하신가요? 선택해주세요!"
-                    }
-                ],
-                "id": "default4",
-                "task": {
-                    "name": "showfaqlist"
-                },
-                "children": [
-                    {
-                        "name": "2.질문 답",
-                        "input": [
-                            {
-                                "types": [
-                                    "faqitemlist"
-                                ]
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "#context.session.faqitem#**question** \n+question+\n\n**answer** \n+answer+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
-                            }
-                        ],
-                        "task": {
-                            "name": "showfaq"
-                        },
-                        "id": "default5"
-                    },
-                    {
-                        "name": "2.질문 토픽 중 다시",
-                        "input": [
-                            {
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "type": "call",
-                                "dialog": "2.질문 토픽 중",
-                                "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "다시 입력"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "시작"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default86",
-                        "children": [
-                            {
-                                "name": "57",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "다시",
-                                            "nlp": "다시"
-                                        }
-                                    },
-                                    {
-                                        "text": {
-                                            "raw": "선택",
-                                            "nlp": "선택"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "type": "call"
-                                    }
-                                ],
-                                "id": "default95"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "2.질문 대 다시",
-                "input": [
-                    {
-                        "if": "true"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "type": "call",
-                        "dialog": "2.자주하는 질문 대",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "다시 입력"
-                            },
-                            {
-                                "url": "",
-                                "text": "시작"
-                            }
-                        ],
-                        "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요."
-                    }
-                ],
-                "id": "default85",
-                "children": [
-                    {
-                        "name": "58",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "다시",
-                                    "nlp": "다시"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "선택",
-                                    "nlp": "선택"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "type": "call"
-                            }
-                        ],
-                        "id": "default96"
-                    }
-                ]
-            }
-        ]
     },
     {
         "name": "3.신규회원",
@@ -1023,6 +990,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "text": "회원 가입된 휴대폰 번호를 입력해주세요.\n(ex: 01012345678)",
+                        "buttons": []
                     }
                 ],
                 "id": "default14",
@@ -1037,36 +1005,27 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "if": "context.session.isvipornot==false && context.session.findorder===1",
+                                "if": "context.dialog.isvipornot==false && context.dialog.findorder===1",
                                 "options": {
                                     "output": "고객님께서는 비회원이시기 때문에 주문내역을 확인해드릴 수가 없습니다.\n\n플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
                                 },
-                                "type": "call",
-                                "dialogName": "6.신규회원 경우 회원가입 여부 묻기",
-                                "dialog": "6.신규회원 경우 회원가입 여부 묻기",
-                                "dialogId": "default82"
+                                "type": "call"
                             },
                             {
                                 "kind": "Action",
-                                "if": "context.session.isvipornot==false && context.session.findorder!==1",
+                                "if": "context.dialog.isvipornot==false && context.dialog.findorder!==1",
                                 "options": {
                                     "output": "입력해주신 전화번호가 회원번호가 아닙니다.\n다시 입력해주세요."
                                 },
-                                "type": "call",
-                                "dialogName": "3.휴대폰번호를 틀린 경우 다시입력",
-                                "dialog": "3.휴대폰번호를 틀린 경우 다시입력",
-                                "dialogId": "default83"
+                                "type": "call"
                             },
                             {
                                 "kind": "Action",
-                                "if": "context.session.isvipornot==true",
+                                "if": "context.dialog.isvipornot==true",
                                 "options": {
                                     "output": "받으신 인증번호를 입력해주세요."
                                 },
-                                "type": "call",
-                                "dialogName": "3.인증번호를 확인",
-                                "dialog": "3.인증번호를 확인",
-                                "dialogId": "default19"
+                                "type": "call"
                             }
                         ],
                         "id": "default18",
@@ -3815,7 +3774,7 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요 < +bot.name+ >입니다!\n꽃은 청렴한 사람이 받을수있는 선물입니다."
+                "text": "안녕하세요 < +name+ >입니다!\n꽃은 청렴한 사람이 받을수있는 선물입니다."
             }
         ],
         "task": {
@@ -3860,6 +3819,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
-}
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};
