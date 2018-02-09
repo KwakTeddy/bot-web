@@ -13,6 +13,21 @@ module.exports = function(bot)
             12: 3
     };
 
+    var mobileFormatChange = function (mobile) {
+        return mobile.replace(/-/g, '');
+    };
+
+    var minusDataFormatChange = function (data)
+    {
+        for(var key in data)
+        {
+            if(data[key].slice(-1) == '-')
+            {
+                data[key] = '-' + data[key].slice(0, data[key].length - 1);
+            }
+        }
+    };
+
     var addDefaultButton = function (dialog, onlyStart) {
 
         if(onlyStart)
@@ -67,7 +82,7 @@ module.exports = function(bot)
         {
             var matched = false;
             var selected = undefined;
-            var customerList = context.customerList;
+            var customerList = context.session.customerList;
             for(var i = 0; i < customerList.length; i++)
             {
                 if(i + 1 == dialog.userInput.text)
@@ -79,12 +94,12 @@ module.exports = function(bot)
 
             if(selected)
             {
-                context.curCustomer = selected;
+                context.session.curCustomer = selected;
                 matched = true;
             }
             else
             {
-                context.curCustomer = undefined;
+                context.session.curCustomer = undefined;
                 matched = false;
             }
 
@@ -101,7 +116,7 @@ module.exports = function(bot)
             var num = parseInt(word);
             if(num == 3 || num == 6 || num == 12)
             {
-                context.selectedMonth = num;
+                context.session.selectedMonth = num;
                 matched = true;
             }
 
@@ -118,7 +133,7 @@ module.exports = function(bot)
             var regExp = new RegExp('[가-힣]{2,4}', "g");
             if(regExp.exec(word))
             {
-                context.user.customerName = word;
+                context.session.customerName = word;
                 matched = true;
             }
 
@@ -136,7 +151,7 @@ module.exports = function(bot)
 
             if(regexp.exec(word))
             {
-                context.user.customerBirth = word;
+                context.session.customerBirth = word;
                 matched = true;
             }
 
@@ -155,7 +170,7 @@ module.exports = function(bot)
 
             if(result)
             {
-                context.curCustomer.email = dialog.userInput.text;
+                context.session.curCustomer.email = dialog.userInput.text;
                 matched = true;
             }
 
@@ -175,7 +190,9 @@ module.exports = function(bot)
             if(regExp.exec(word))
             {
                 matched = true;
-                context.user.customerMobile = word;
+
+                if(word.indexOf('-') != -1) word = mobileFormatChange(word);
+                context.session.customerMobile = word;
             }
 
 
@@ -189,8 +206,8 @@ module.exports = function(bot)
         {
             var matched = false;
             var userInput = dialog.userInput.text.split(' ');
-            var nonPaymentList = context.nonpaymentHistory;
-            var selected = context.selectedNonpayment = [];
+            var nonPaymentList = context.session.nonpaymentHistory;
+            var selected = context.session.selectedNonpayment = [];
             var total = 0;
 
             for(var i = 0; i < userInput.length; i++)
@@ -219,7 +236,7 @@ module.exports = function(bot)
                 total += parseInt(selected[k].BETRWP.replace(',', ''));
             }
 
-            context.totalSelectedNonpayment = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g , ',');
+            context.session.totalSelectedNonpayment = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g , ',');
 
             selected.sort(function (a, b)
             {
@@ -257,7 +274,7 @@ module.exports = function(bot)
 
             if(true)
             {
-                context.centerAddress = dialog.userInput.text;
+                context.session.centerAddress = dialog.userInput.text;
                 matched =true;
             }
 
@@ -292,9 +309,9 @@ module.exports = function(bot)
           	options.json = {};
           	options.json.name = 'ZCS_CUSTOMER_INFO';
           	options.json.param = [
-            	{ key: 'I_NAME', val: context.user.customerName },
-              	{ key: 'I_BIRTH', val: context.user.customerBirth },
-                { key: 'I_PHONE', val: context.user.customerMobile }
+            	{ key: 'I_NAME', val: context.session.customerName },
+              	{ key: 'I_BIRTH', val: context.session.customerBirth },
+                { key: 'I_PHONE', val: context.session.customerMobile }
             ];
             options.json.isTable = true;
             options.timeout = timeout;
@@ -313,13 +330,13 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        context.customerList = body.data.E_TAB;
+                        context.session.customerList = body.data.E_TAB;
 
-                        for(var i=0; i<context.customerList.length; i++)
+                        for(var i=0; i<context.session.customerList.length; i++)
                         {
-                            if(context.customerList[i].VKONT.startsWith('000'))
+                            if(context.session.customerList[i].VKONT.startsWith('000'))
                             {
-                                context.customerList[i].VKONT = context.customerList[i].VKONT.substring(3);
+                                context.session.customerList[i].VKONT = context.session.customerList[i].VKONT.substring(3);
                             }
                         }
                     }else {
@@ -335,9 +352,9 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var customerList = context.customerList;
+            var customerList = context.session.customerList;
 
-            if(context.user.auth && customerList.length != 1)
+            if(context.session.auth && customerList.length != 1)
             {
 
                 dialog.output[0].buttons = [];
@@ -348,9 +365,9 @@ module.exports = function(bot)
 
                 addDefaultButton(dialog);
             }
-            else if(context.user.auth && customerList.length == 1)
+            else if(context.session.auth && customerList.length == 1)
             {
-                context.curCustomer = customerList[0];
+                context.session.curCustomer = customerList[0];
             }
 
             callback();
@@ -363,8 +380,8 @@ module.exports = function(bot)
         action: function (dialog, context, callback)
         {
 
-            var monthIdx = monthIndex[context.selectedMonth];
-            var curCustomer = context.curCustomer;
+            var monthIdx = monthIndex[context.session.selectedMonth];
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -395,13 +412,16 @@ module.exports = function(bot)
                         dialog.output[0].buttons = [];
                         for(var i = 0; i < data.length; i++)
                         {
-                            data[i].PR_ZWSTNDAB = data[i].PR_ZWSTNDAB + '㎥';
+
+
+                            minusDataFormatChange(data[i]);
+
                             data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
                             data[i].FAEDN = dateFormatChange(data[i].FAEDN);
                             dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                         }
-                        context.noticeHistory = data;
-                        console.log(context.noticeHistory);
+                        context.session.noticeHistory = data;
+                        console.log(context.session.noticeHistory);
                         addDefaultButton(dialog);
 
                     }else {
@@ -419,12 +439,12 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            console.log('노티스 히스토리 : ', context.noticeHistory);
-            for(var i = 0; i < context.noticeHistory.length; i++)
+            console.log('노티스 히스토리 : ', context.session.noticeHistory);
+            for(var i = 0; i < context.session.noticeHistory.length; i++)
             {
-                if(context.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
+                if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
                 {
-                    dialog.noticeDetail = context.noticeHistory[i];
+                    dialog.noticeDetail = context.session.noticeHistory[i];
                     break;
                 }
             }
@@ -436,8 +456,8 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var monthIdx = monthIndex[context.selectedMonth];
-            var curCustomer = context.curCustomer;
+            var monthIdx = monthIndex[context.session.selectedMonth];
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -474,7 +494,7 @@ module.exports = function(bot)
                         }
                         addDefaultButton(dialog);
 
-                        context.paymentHistory = data;
+                        context.session.paymentHistory = data;
 
                     }else {
                         errorHandler(dialog, body);
@@ -489,11 +509,11 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            for(var i = 0; i < context.paymentHistory.length; i++)
+            for(var i = 0; i < context.session.paymentHistory.length; i++)
             {
-                if(context.paymentHistory[i].YYYYMM == dialog.userInput.text)
+                if(context.session.paymentHistory[i].YYYYMM == dialog.userInput.text)
                 {
-                    dialog.paymentDetail = context.paymentHistory[i];
+                    dialog.paymentDetail = context.session.paymentHistory[i];
                     break;
                 }
             }
@@ -506,7 +526,7 @@ module.exports = function(bot)
         action: function (dialog, context, callback)
         {
 
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -545,7 +565,7 @@ module.exports = function(bot)
                             }
                             addDefaultButton(dialog);
 
-                            context.nonpaymentHistory = data;
+                            context.session.nonpaymentHistory = data;
                         }
                         else
                         {
@@ -569,11 +589,17 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            if(!context.user.auth)
+            if(!context.session.auth)
             {
                 //DB연동
-                //있으면 context.user.auth = true;
+                //있으면 context.session.auth = true;
             }
+
+            if(context.session.auth)
+            {
+                dialog.output[0].buttons.push({text: '로그아웃'});
+            }
+
 
             callback();
         }
@@ -583,7 +609,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -609,7 +635,7 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        context.nonpaymentHistory = [];
+                        context.session.nonpaymentHistory = [];
 
                         var data = body.data.ET_TABLE;
                         dialog.output[0].buttons = [];
@@ -620,7 +646,7 @@ module.exports = function(bot)
                         {
                             if(data[i].BANKN != '')
                             {
-                                context.nonpaymentHistory.push(data[i]);
+                                context.session.nonpaymentHistory.push(data[i]);
                             }
                             else
                             {
@@ -659,7 +685,7 @@ module.exports = function(bot)
                     '하나' : '081'
                 };
                 var selectedBank = bankIndex[dialog.userInput.selectedBank];
-                var curCustomer = context.curCustomer;
+                var curCustomer = context.session.curCustomer;
 
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -712,7 +738,7 @@ module.exports = function(bot)
                 '0006' : '카카오알림톡송달',
                 '0007' : '카카오청구서송달'
             };
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -757,7 +783,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -800,7 +826,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -842,7 +868,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -884,7 +910,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -926,7 +952,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -975,7 +1001,7 @@ module.exports = function(bot)
                 'D': '은행자동이체',
                 'K': '카드자동이체'
             };
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -1029,7 +1055,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -1197,7 +1223,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -1264,7 +1290,7 @@ module.exports = function(bot)
             options.json = {};
             options.json.name = 'ZCS_CENTER_INFO';
             options.json.param = [
-                { key: 'I_DONG', val: context.centerAddress}
+                { key: 'I_DONG', val: context.session.centerAddress}
             ];
             options.json.isTable = true;
             options.timeout = timeout;
@@ -1284,7 +1310,7 @@ module.exports = function(bot)
                     else if(body.E_RETCD == 'S')
                     {
                         console.log(JSON.stringify(body, null, 4));
-                        context.centerAddressList = body.data.E_TAB;
+                        context.session.centerAddressList = body.data.E_TAB;
                     }else {
                         errorHandler(dialog, body);
                     }
@@ -1300,11 +1326,11 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            for(var i = 0; i < context.customerList.length; i ++)
+            for(var i = 0; i < context.session.customerList.length; i ++)
             {
-                context.customerList[i]['mobile'] = context.user.customerMobile;
+                context.session.customerList[i]['mobile'] = context.session.customerMobile;
             }
-            context.user.auth = true;
+            context.session.auth = true;
             callback();
         }
     });
@@ -1313,7 +1339,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
 
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
@@ -1322,7 +1348,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                 { key: 'I_HPNUM', val: curCustomer.mobile },
-                { key: 'I_BETRWP', val: context.totalSelectedNonpayment}
+                { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
             ];
             options.timeout = timeout;
 
@@ -1367,7 +1393,7 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            var curCustomer = context.curCustomer;
+            var curCustomer = context.session.curCustomer;
             var options = {};
             options.url = 'http://sam.moneybrain.ai:3000/api';
             options.json = {};
@@ -1415,4 +1441,14 @@ module.exports = function(bot)
             callback(true, dialog.userInput.text);
         }
     });
+
+	bot.setTask('logout', 
+	{
+		action: function (conversation, context, callback)
+		{
+		    context.session = undefined;
+
+		    callback();
+		}
+	});
 };
