@@ -154,8 +154,6 @@ var DialogGraphManager = require('./answer/dm.js');
         console.log(chalk.yellow('[[[ Execute Command ]]]'));
         console.log(inputRaw);
 
-        context.history = [{ dialog: bot.commonDialogs[0] }];
-
         if(inputRaw == ':reset user')
         {
             this.resetUser(redis, contextKey, bot, context, error, callback);
