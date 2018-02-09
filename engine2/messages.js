@@ -318,7 +318,7 @@ function sendVMSReq(req, res) {
 
 exports.sendVMSReq = sendVMSReq;
 
-function sendSMSAuth(conversation, context, callback)
+function sendSMSAuth(dialog, context, callback)
 {
     var request = require('request');
 
