@@ -1,6 +1,6 @@
 var dialogs = [
     {
-        "name": "인증_고객명",
+        "name": "고객정보 취득동의",
         "input": [
             {
                 "if": "false"
@@ -9,47 +9,67 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)"
+                "text": "고객정보 취득동의에 동의하셔야 합니다.\n[안내]\n\n동의하시겠습니까?",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "네"
+                    },
+                    {
+                        "url": "",
+                        "text": "아니요"
+                    }
+                ]
             }
         ],
-        "id": "default3",
-        "task": {
-            "name": ""
-        },
+        "id": "default76",
         "children": [
             {
-                "name": "인증_생년월일",
+                "name": "인증_고객명",
                 "input": [
                     {
-                        "types": "saveCustomerName"
+                        "text": {
+                            "raw": "네",
+                            "nlp": "네"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
+                        }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
-                        "if": ""
+                        "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)"
                     }
                 ],
-                "id": "default46",
+                "id": "default3",
+                "task": {
+                    "name": ""
+                },
                 "children": [
                     {
                         "name": "인증_휴대폰번호",
                         "input": [
                             {
-                                "types": "saveCustomerBirth"
+                                "types": [
+                                    "saveCustomerName"
+                                ]
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.user.customerName+\n생년월일 : +context.user.customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
+                                "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
                             }
                         ],
                         "id": "default49",
                         "children": [
                             {
-                                "name": "고객 검색",
+                                "name": "인증_생년월일",
                                 "input": [
                                     {
                                         "types": [
@@ -60,80 +80,116 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "삼천리 고객 검색 결과입니다.\n#context.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "네"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "아니요"
-                                            }
-                                        ]
+                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
+                                        "if": ""
                                     }
                                 ],
-                                "id": "default50",
-                                "task": {
-                                    "name": "searchSamchullyUser"
-                                },
+                                "id": "default46",
                                 "children": [
                                     {
-                                        "name": "인증동의_",
+                                        "name": "고객 검색",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "네",
-                                                    "nlp": "네"
-                                                }
-                                            },
-                                            {
-                                                "text": {
-                                                    "raw": "1",
-                                                    "nlp": "1"
-                                                }
+                                                "types": [
+                                                    "saveCustomerBirth"
+                                                ]
                                             }
                                         ],
                                         "output": [
                                             {
-                                                "kind": "Action",
-                                                "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
-                                                "type": "call",
-                                                "dialogName": "시작",
-                                                "dialogId": "defaultcommon0"
+                                                "kind": "Content",
+                                                "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "네"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "아니요"
+                                                    }
+                                                ]
                                             }
                                         ],
+                                        "id": "default50",
                                         "task": {
-                                            "name": "authConfirm"
+                                            "name": "searchSamchullyUser"
                                         },
-                                        "id": "default47"
+                                        "children": [
+                                            {
+                                                "name": "인증동의_",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "네",
+                                                            "nlp": "네"
+                                                        }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "1",
+                                                            "nlp": "1"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
+                                                        "type": "call",
+                                                        "dialogName": "시작",
+                                                        "dialogId": "startDialog"
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "authConfirm"
+                                                },
+                                                "id": "default47"
+                                            },
+                                            {
+                                                "name": "인증거절_",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "아니다",
+                                                            "nlp": "아니다"
+                                                        }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "2",
+                                                            "nlp": "2"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
+                                                        "type": "call",
+                                                        "dialogName": "시작",
+                                                        "dialogId": "startDialog"
+                                                    }
+                                                ],
+                                                "id": "default48"
+                                            }
+                                        ]
                                     },
                                     {
-                                        "name": "인증거절_",
+                                        "name": "생년월일 재질의",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "아니다",
-                                                    "nlp": "아니다"
-                                                }
-                                            },
-                                            {
-                                                "text": {
-                                                    "raw": "2",
-                                                    "nlp": "2"
-                                                }
+                                                "if": "true"
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
-                                                "type": "call",
-                                                "dialogName": "시작",
-                                                "dialogId": "defaultcommon0"
+                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n주민등록번호 앞 6자리 형식에 맞게 입력해주세요.\n예시) 900930",
+                                                "type": "repeat"
                                             }
                                         ],
-                                        "id": "default48"
+                                        "id": "default63"
                                     }
                                 ]
                             },
@@ -147,7 +203,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.user.customerName+\n생년월일 : +context.user.customerBirth+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.",
+                                        "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -156,7 +212,7 @@ var dialogs = [
                         ]
                     },
                     {
-                        "name": "생년월일 재질의",
+                        "name": "이름입력 재질의",
                         "input": [
                             {
                                 "if": "true"
@@ -165,29 +221,36 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "고객명 : +context.user.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n주민등록번호 앞 6자리 형식에 맞게 입력해주세요.\n예시) 900930",
+                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)",
                                 "type": "repeat"
                             }
                         ],
-                        "id": "default63"
+                        "id": "default67"
                     }
                 ]
             },
             {
-                "name": "이름입력 재질의",
+                "name": "취득 거부",
                 "input": [
                     {
+                        "text": {
+                            "raw": "",
+                            "nlp": ""
+                        },
                         "if": "true"
                     }
                 ],
                 "output": [
                     {
                         "kind": "Action",
-                        "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)",
-                        "type": "repeat"
+                        "text": "취득 거부",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작",
+                        "dialog": "시작"
                     }
                 ],
-                "id": "default67"
+                "id": "default78"
             }
         ]
     },
@@ -210,16 +273,23 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.user.auth",
-                "type": "call",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.session.auth && context.session.customerList.length != 1",
                 "dialogName": "요금"
             },
             {
                 "kind": "Action",
                 "type": "call",
-                "dialogId": "default3",
-                "dialogName": "인증_고객명"
+                "dialogId": "default13",
+                "if": "context.session.auth && context.session.customerList.length == 1",
+                "dialogName": "요금 메뉴 선택"
+            },
+            {
+                "kind": "Action",
+                "type": "call",
+                "dialogId": "default76",
+                "dialogName": "고객정보 취득동의",
+                "dialog": "고객정보 취득동의"
             }
         ],
         "id": "default0",
@@ -236,7 +306,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -299,7 +369,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -338,7 +408,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.selectedMonth+ 개월)\n\n#context.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+\n미납금액 : +DFAMT+\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
+                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
                                     }
                                 ],
                                 "id": "default15",
@@ -353,7 +423,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+\n기본요금 : +dialog.noticeDetail.BETRW_GI+\n사용요금 : +dialog.noticeDetail.BETRW_GA+\n경감금액 : +dialog.noticeDetail.BETRW_DC+\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+\n부가세 : +dialog.noticeDetail.SBETW+\n가산금 : +dialog.noticeDetail.BETRW_D+\n정산금액 : +dialog.noticeDetail.BETRW_JS+\n원단위절사 : +dialog.noticeDetail.BETRW_RO+\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+\n고지금액 : +dialog.noticeDetail.BETRW_TOT+",
+                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+㎥\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+㎥\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+㎥\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+MJ\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+MJ\n기본요금 : +dialog.noticeDetail.BETRW_GI+원\n사용요금 : +dialog.noticeDetail.BETRW_GA+원\n경감금액 : +dialog.noticeDetail.BETRW_DC+원\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+원\n부가세 : +dialog.noticeDetail.SBETW+원\n가산금 : +dialog.noticeDetail.BETRW_D+원\n정산금액 : +dialog.noticeDetail.BETRW_JS+원\n원단위절사 : +dialog.noticeDetail.BETRW_RO+원\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+원\n고지금액 : +dialog.noticeDetail.BETRW_TOT+원",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -414,7 +484,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -453,7 +523,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[납부내역 조회]\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.selectedMonth+개월)\n\n#context.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+\n납부금액 : +BETRWS+\n\n#",
+                                        "text": "[납부내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.session.selectedMonth+개월)\n\n#context.session.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+원\n납부금액 : +BETRWS+원\n\n#",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -556,7 +626,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
+                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default12",
@@ -580,7 +650,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.session.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.session.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -680,7 +750,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "미납금액 목록입니다.\n\n#context.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
+                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n미납금액 목록입니다.\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
                                     }
                                 ],
                                 "id": "default23",
@@ -701,7 +771,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.session.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.session.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -798,7 +868,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#"
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.session.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#\n\n다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요."
                                     }
                                 ],
                                 "id": "default24",
@@ -1216,7 +1286,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "자동이체 재 신청이 필요하신 고객님께서는 관할 고객센터로 연락 주시기 바랍니다",
+                                        "text": "정상처리 되었습니다.",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -1407,23 +1477,23 @@ var dialogs = [
                 "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
                 "buttons": [
                     {
-                        "url": "http://59.6.157.142/Simple/MoveIn",
+                        "url": "",
                         "text": "1. 이사 들어오실 때"
                     },
                     {
-                        "url": "http://59.6.157.142/Simple/MoveOut",
+                        "url": "",
                         "text": "2. 이사 나가실 때"
                     },
                     {
-                        "url": "http://59.6.157.142/Simple/AfterService",
+                        "url": "",
                         "text": "3. AS (렌지연결 등)"
                     },
                     {
-                        "url": "http://59.6.157.142/Simple/CheckService",
+                        "url": "",
                         "text": "4. 예약 확인/변경"
                     },
                     {
-                        "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                        "url": "",
                         "text": "5. 연결비 안내"
                     },
                     {
@@ -1452,7 +1522,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "이사 들어오실 때 URL"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveIn"
                     }
                 ],
                 "id": "default54"
@@ -1470,7 +1540,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "이사 나가실 때 URL"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/MoveOut"
                     }
                 ],
                 "id": "default55"
@@ -1488,7 +1558,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "AS (렌지연결 등) URL"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/AfterService"
                     }
                 ],
                 "id": "default56"
@@ -1506,7 +1576,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "예약 확인/변경 URL"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://59.6.157.142/Simple/CheckService"
                     }
                 ],
                 "id": "default58"
@@ -1524,7 +1594,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "연결비 안내 URL"
+                        "text": "아래 링크를 클릭해주세요.\n\nhttp://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do"
                     }
                 ],
                 "id": "default64"
@@ -1550,12 +1620,19 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.user.auth"
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.session.auth && context.session.customerList.length != 1"
             },
             {
                 "kind": "Action",
-                "if": "!context.user.auth",
+                "type": "call",
+                "if": "context.session.auth && context.session.customerList.length == 1",
+                "dialogId": "default60",
+                "dialogName": "안전점검메뉴선택"
+            },
+            {
+                "kind": "Action",
+                "if": "!context.session.auth",
                 "type": "call",
                 "dialogId": "default3",
                 "dialogName": "인증_고객명"
@@ -1575,7 +1652,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.curCustomer.NAME+\n주소:  +context.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -1659,7 +1736,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month1+월, +dialog.data.month2+월\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
+                                        "text": "가스용도 : +dialog.data.gasType+\n안전점검월 : +dialog.data.month+\n ※ 도시가스사업법에 따라 \n    취사용 1년 1회, 그외 1년 2회\n    안전점검이 시행됩니다."
                                     }
                                 ],
                                 "id": "default43",
@@ -2133,7 +2210,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "+context.centerAddress+ 관할 고객센터입니다.\n#context.centerAddressList#\n+index+.\n+MESSAGE+\n\n#",
+                                "text": "+context.session.centerAddress+ 관할 고객센터입니다.\n#context.session.centerAddressList#\n+index+.\n+MESSAGE+\n\n#",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -2175,17 +2252,37 @@ var dialogs = [
         ]
     },
     {
-        "name": "테스트",
+        "name": "로그아웃",
         "input": [
-            { "text": { "nlp": "테스트", "raw": "테스트"} }
+            {
+                "text": {
+                    "raw": "로그아웃",
+                    "nlp": "로그아웃"
+                }
+            },
+            {
+                "text": {
+                    "raw": "6",
+                    "nlp": "6"
+                }
+            }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "테스트 타입 +dialog.userInput.types.testType+"
+                "text": "로그아웃되셨습니다.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "처음"
+                    }
+                ]
             }
         ],
-        "id": "test1234"
+        "id": "test1234",
+        "task": {
+            "name": "logout"
+        }
     },
     {
         "name": "시작카드 재질의",
@@ -2315,7 +2412,9 @@ var commonDialogs = [
     {
         "id": "noanswer",
         "name": "답변없음",
-        "input": [{}],
+        "input": [
+            {}
+        ],
         "output": [
             {
                 "kind": "Content",
