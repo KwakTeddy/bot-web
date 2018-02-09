@@ -47,8 +47,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('makeNewType', function(context, name, sourceFileName)
         {
-            var text = 'var ' + name + ' = {\n' +
-                       '  typeCheck: function (conversation, context, callback) {\n' +
+            var text = '\nvar ' + name + ' = {\n' +
+                       '  typeCheck: function (dialog, context, callback) {\n' +
                        '    var matched = true;\n' +
                        '    var parsedData = \'example\';\n' +
                        '    \n' +
@@ -74,7 +74,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('makeNewTask', function(context, name, sourceFileName)
         {
-            var text = '\tbot.setTask(\'' + name + '\', \n\t{\n\t\taction: function (conversation, context, callback)\n\t\t{\n\n\t\t}\n\t});';
+            var text = '\tbot.setTask(\'' + name + '\', \n\t{\n\t\taction: function (dialog, context, callback)\n\t\t{\n\t\t\tcallback();\n\t\t}\n\t});';
             for(var i=0; i<$scope.fileList.length; i++)
             {
                 if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
