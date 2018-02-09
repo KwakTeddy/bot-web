@@ -2465,8 +2465,8 @@ var commonDialogs = [
                     }
                 ],
                 "image": {
-                    "url": "/files/samchully-1515459210907-samchully.png",
-                    "displayname": "samchully.png"
+                    "url": "/files/samchully-1518159068905-1.png",
+                    "displayname": "1.png"
                 }
             }
         ],
