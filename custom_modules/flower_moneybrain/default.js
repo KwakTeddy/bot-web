@@ -46,7 +46,7 @@ module.exports = function (bot) {
 
     bot.setTask("getcategory", {
         action: function (dialog, context, callback) {
-            // context.user.mobile=undefined;
+            //context.user.mobile=undefined;
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -126,7 +126,7 @@ module.exports = function (bot) {
                     dialog.output[0].buttons= [];
                     for (var i = 0; i < context.session.itemcategory.length; i++)
                     {
-                        var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
+                        var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name;
                         dialog.output[0].buttons.push({text: ss});
                     }
                     callback();
@@ -143,7 +143,7 @@ module.exports = function (bot) {
             if(text[1]!==undefined) {
                 text[1] = text[1].trim();
                 for (var i = 0; i < context.session.itemcategory.length; i++) {
-                    var namecode = context.session.itemcategory[i].name + " " + context.session.itemcategory[i].code;
+                    var namecode = context.session.itemcategory[i].name;
 
                     if (namecode.indexOf(text[1]) !== -1) {
                         dialog.userInput.types.itemlist=context.session.itemcategory[i];
@@ -173,6 +173,11 @@ module.exports = function (bot) {
                     console.log(response.statusCode);
 
                     context.session.item = body;
+                    var outputcount=1;
+                    if(context.session.item[0].category==="기획상품(택배배송)"){
+                        outputcount=0;
+                    }
+
 
                     context.session.selecteditem = {};
                     context.session.selecteditem = context.session.item[0];
@@ -180,8 +185,8 @@ module.exports = function (bot) {
                     context.session.selecteditem.sale_price = context.session.item[0].sale_price;
                     if (context.session.selectchange !== 1) {
                         if (context.session.item[0].picture !== undefined) {
-                            dialog.output[0].image = {url: context.session.item[0].picture};
-                            dialog.output[0].buttons = [
+                            dialog.output[outputcount].image = {url: context.session.item[0].picture};
+                            dialog.output[outputcount].buttons = [
                                 {
                                     text: '자세히보기',
                                     url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
@@ -199,8 +204,8 @@ module.exports = function (bot) {
                     }
                     else {
                         if (context.session.item[0].picture !== undefined) {
-                            dialog.output[0].image = {url: context.session.item[0].picture};
-                            dialog.output[0].buttons = [
+                            dialog.output[outputcount].image = {url: context.session.item[0].picture};
+                            dialog.output[outputcount].buttons = [
                                 {
                                     text: '주문서 확인하기',
                                     url: ""
@@ -352,35 +357,26 @@ module.exports = function (bot) {
 
 
 
-
-    bot.setTask('newuser',{
-        action: function (dialog, context, callback) {
-            dialog.output[0].buttons = [
-                {
-                    text: '회원가입하기',
-                    url: 'http://flowermania.co.kr/cgi-bin/member/registration.php'
-                },
-                {
-                    text: '휴대폰번호로 회원인증하기',
-                    url: ""
-                },
-                {
-                    text: '비회원으로 구매하기',
-                    url: ""
-                }
-            ];
-            callback();
-        }
-    });
+    //
+    // bot.setTask('newuser',{
+    //     action: function (dialog, context, callback) {
+    //         dialog.output[0].buttons = [
+    //             {
+    //                 text: '휴대폰번호로 회원인증하기',
+    //                 url: ""
+    //             }
+    //         ];
+    //         callback();
+    //     }
+    // });
 
 
 
     bot.setTask('savename',{
         action: function (dialog, context, callback) {
             if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
-                context.user.username = "";
-                //console.log("context.user.inCurRaw=====" + context.user.inCurRaw);
-                context.user.username = dialog.userInput.text;
+                context.user.name = "";
+                context.user.name = dialog.userInput.text;
                 callback();
             }
             else {
@@ -398,8 +394,28 @@ module.exports = function (bot) {
             if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
             {
                 matched = true;
-                context.user.useremail = str;
-                callback(matched);
+                context.user.email = str;
+                var newuser = {
+                    name: context.user.name,
+                    mobile: context.user.mobile,
+                    email: context.user.email,
+                    botId: bot.id
+                };
+                var modelname="flower_moneybrain_user";
+                var options = {};
+
+                options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+                options.json = newuser;
+
+                request.post(options, function(err, response, body) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log("response.statusCode=" + response.statusCode);
+                        return callback(matched);
+                    }
+                });
             }
             else {
                 matched = false;
@@ -414,15 +430,14 @@ module.exports = function (bot) {
     bot.setTask('savemobile',{
         preCallback: function (dialog, context, callback) {
 
-            context.user.usermobile = "";
-            context.user.usermobile = dialog.userInput.types.mobile;
+            context.user.mobile = dialog.userInput.types.mobile;
             var randomNum = '';
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
             context.session.smsAuth = randomNum;
-            var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
+            var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
             request.post(
                 'https://bot.moneybrain.ai/api/messages/sms/send',
                 {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
@@ -441,58 +456,58 @@ module.exports = function (bot) {
     });
 
 
-    bot.setTask('mobileidentification',{
-        preCallback: function (dialog, context, callback) {
-            var str = dialog.userInput.types.mobile;
-            // var modelname = "flower_moneybrain_vipUser";
-            var modelname = "flower_moneybrain_vipUser";
-            var options = {};
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {};
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log('err:' + err);
-                }
-                else {
-                    body = JSON.parse(body);
-                    console.log("response.statusCode=="+response.statusCode);
-
-                    var userinfor = body;
-                    context.session.isvipornot = false;
-                    for (var i = 0; i < userinfor.length; i++) {
-                        if (userinfor[i].mobile === str) {
-                            context.session.isvipornot = true;
-                            context.user.mobile = str;
-                            context.user.name2 = userinfor[i].name;
-                            context.user.email2 = userinfor[i].email;
-                        }
-                    }
-
-                    var randomNum = '';
-                    randomNum += '' + Math.floor(Math.random() * 10);
-                    randomNum += '' + Math.floor(Math.random() * 10);
-                    randomNum += '' + Math.floor(Math.random() * 10);
-                    randomNum += '' + Math.floor(Math.random() * 10);
-                    context.session.smsAuth = randomNum;
-                    var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
-                    request.post(
-                        'https://bot.moneybrain.ai/api/messages/sms/send',
-                        {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
-                        function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                console.log("response.statusCode:"+response.statusCode);
-                                console.log("context.session.smsAuth="+context.session.smsAuth);
-                                return callback();
-                            } else {
-                                console.log("error:"+error);
-                            }
-                        }
-                    );
-                    callback();
-                }
-            });
-        }
-    });
+    // bot.setTask('mobileidentification',{
+    //     preCallback: function (dialog, context, callback) {
+    //         var str = dialog.userInput.types.mobile;
+    //         // var modelname = "flower_moneybrain_vipUser";
+    //         var modelname = "flower_moneybrain_vipUser";
+    //         var options = {};
+    //         options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+    //         options.qs = {};
+    //         request.get(options, function (err, response, body) {
+    //             if (err) {
+    //                 console.log('err:' + err);
+    //             }
+    //             else {
+    //                 body = JSON.parse(body);
+    //                 console.log("response.statusCode=="+response.statusCode);
+    //
+    //                 var userinfor = body;
+    //                 context.session.isvipornot = false;
+    //                 for (var i = 0; i < userinfor.length; i++) {
+    //                     if (userinfor[i].mobile === str) {
+    //                         context.session.isvipornot = true;
+    //                         context.user.mobile = str;
+    //                         context.user.name2 = userinfor[i].name;
+    //                         context.user.email2 = userinfor[i].email;
+    //                     }
+    //                 }
+    //
+    //                 var randomNum = '';
+    //                 randomNum += '' + Math.floor(Math.random() * 10);
+    //                 randomNum += '' + Math.floor(Math.random() * 10);
+    //                 randomNum += '' + Math.floor(Math.random() * 10);
+    //                 randomNum += '' + Math.floor(Math.random() * 10);
+    //                 context.session.smsAuth = randomNum;
+    //                 var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
+    //                 request.post(
+    //                     'https://bot.moneybrain.ai/api/messages/sms/send',
+    //                     {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
+    //                     function (error, response, body) {
+    //                         if (!error && response.statusCode == 200) {
+    //                             console.log("response.statusCode:"+response.statusCode);
+    //                             console.log("context.session.smsAuth="+context.session.smsAuth);
+    //                             return callback();
+    //                         } else {
+    //                             console.log("error:"+error);
+    //                         }
+    //                     }
+    //                 );
+    //                 callback();
+    //             }
+    //         });
+    //     }
+    // });
 
 
     bot.setType('identification',{
@@ -500,12 +515,42 @@ module.exports = function (bot) {
             var matched = false;
             if (dialog.userInput.text == context.session.smsAuth) {
                 matched = true;
-                return callback(matched);
+                var modelname = "flower_moneybrain_user";
+                var options = {};
+                options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+                options.qs = {
+                    mobile: context.user.mobile
+                };
+                request.get(options, function (err, response, body)
+                {
+                    if (err)
+                    {
+                        console.log('err:' + err);
+                    }
+                    else
+                    {
+                        body = JSON.parse(body);
+                        console.log(response.statusCode);
+                        if(body.length>0){
+                            context.session.olduser=true;
+                            context.user.name=body[0].name;
+                            context.user.email=body[0].email;
+                            return callback(matched);
+                        }
+                        else{
+                            context.session.olduser=false;
+                            return callback(matched);
+                        }
+                    }
+                });
+
+             //==========================================================
+
             }
             else {
                 callback(matched);
             }
-        }
+    }
     });
 
 
@@ -527,13 +572,13 @@ module.exports = function (bot) {
         }
     });
 
-
-    bot.setTask('saveshowtime',{
-        action: function (dialog, context, callback) {
-            //context.user.showtime=context.user.inCurRaw;
-            callback();
-        }
-    });
+    //
+    // bot.setTask('saveshowtime',{
+    //     action: function (dialog, context, callback) {
+    //         context.session.showtime=dialog.userinput.text;
+    //         callback();
+    //     }
+    // });
 
 
     bot.setTask('savefriendname',{
@@ -663,13 +708,11 @@ module.exports = function (bot) {
 
     bot.setTask('getgreeting',{
         action: function (dialog, context, callback) {
-            console.log('context.session.decorate============'+context.session.decorate);
             if (context.session.decorate === "카드") {
-                console.log('context.session.decorate=====1======='+context.session.decorate);
                 var modelname = "flower_moneybrain_greeting";
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-                options.qs = {"decorate": {"$ne": "카드"}};
+                options.qs = {"decorate": {"$ne": "리본"}};
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log('err:' + err);
@@ -677,7 +720,6 @@ module.exports = function (bot) {
                     else {
                         body = JSON.parse(body);
                         console.log(response.statusCode);
-                        console.log(' body=====1.1======='+JSON.stringify(body));
 
                         var str = [];
                         for (var j = 0; j < body.length; j++) {
@@ -696,7 +738,6 @@ module.exports = function (bot) {
                 })
             }
             else if (context.session.decorate === "리본") {
-                console.log('context.session.decorate=====2======='+context.session.decorate);
                 var modelname = "flower_moneybrain_greeting";
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -732,7 +773,9 @@ module.exports = function (bot) {
     bot.setType("greetiongcategorylist", {
         typeCheck: function (dialog, context, callback)
         {
-            var text = dialog.userInput.text.substring(3);
+            var text = dialog.userInput.text.split(".");
+            text[1]=text[1].trim();
+
                 for(var i=0; i<context.session.greetingcategory.length; i++)
                 {
                     if(context.session.greetingcategory[i].indexOf(text[1]) !== -1)
@@ -753,12 +796,7 @@ module.exports = function (bot) {
                     context.session.sendname = "익명";
                 }
                 else if (dialog.userInput.text === "네") {
-                    if (context.user.username !== undefined) {
-                        context.session.sendname = context.user.username;
-                    }
-                    else {
-                        context.session.sendname = context.user.name2;
-                    }
+                        context.session.sendname = context.user.name;
                 }
                 else {
                     context.session.sendname = dialog.userInput.text;
@@ -796,7 +834,7 @@ module.exports = function (bot) {
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
                     category: dialog.userInput.greetingcategorylist,
-                    decorate: {"$ne": ["카드", "리본카드"]}
+                    decorate: {"$ne": "카드"}
                 };
                 request.get(options, function (err, response, body) {
                     if (err) {
@@ -838,7 +876,7 @@ module.exports = function (bot) {
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
                     category: dialog.userInput.greetingcategorylist,
-                    decorate: {"$ne": ["리본", "리본카드"]}
+                    decorate: {"$ne": "리본"}
                 };
                 request.get(options, function (err, response, body) {
                     if (err) {
@@ -864,7 +902,6 @@ module.exports = function (bot) {
                             xx.push(context.session.greetingcategory1[0][word]);
                         }
                         context.session.greeting = xx;
-                        console.log("== context.session.greeting===1============="+JSON.stringify( context.session.greeting));
                         dialog.output[0].buttons = [];
                         for (var i = 0; i < context.session.greeting.length; i++) {
                             var ss = "" + (i + 1) + ". " + context.session.greeting[i];
@@ -996,18 +1033,10 @@ module.exports = function (bot) {
             var time = myDate.toLocaleTimeString();
             context.session.orderinfor.time = year + "년" + month + "월" + day + "일" + " " + time;
             //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:
-            if (context.user.username !== undefined) {
-                context.session.orderinfor.name = context.user.username;
-                context.session.orderinfor.mobile = context.user.usermobile;
-                context.session.orderinfor.email = context.user.useremail;
-                context.session.orderinfor.itemprice = context.session.selecteditem.price;
-            }
-            else {
-                context.session.orderinfor.name = context.user.name2;
+                context.session.orderinfor.name = context.user.name;
                 context.session.orderinfor.mobile = context.user.mobile;
-                context.session.orderinfor.email = context.user.email2;
-                context.session.orderinfor.itemprice = context.session.selecteditem.sale_price;
-            }
+                context.session.orderinfor.email = context.user.email;
+                context.session.orderinfor.itemprice = context.session.selecteditem.price;
             //보내시는분 성함:
             if (context.session.decorate === "리본") {
                 context.session.orderinfor.sendername = context.session.sendname;
@@ -1060,21 +1089,6 @@ module.exports = function (bot) {
             context.session.orderinfor.allprice=String(context.session.orderinfor.allprice);
             context.session.orderinfor.otherrequire = context.session.otherrequire;
 
-            //task.result={
-            // text:"고객님의 주문내역입니다.\n\n이대로 주문신청을 할까요\n\n"+"【주문내역】\n\n-주문일시:\n"
-            //  +context.user.orderinfor.time+"\n-고객성함: "
-            //  +context.user.orderinfor.name+"\n-보내시는분 성함: "
-            //  +context.user.orderinfor.sendername+"\n-고객 휴대폰 번호: "
-            //  +context.user.orderinfor.mobile+"\n-받는분 성함: "
-            //  +context.user.orderinfor.receivername+"\n-받는분 연락처: "
-            //  +context.user.orderinfor.receivermobile+"\n-배달주소: "
-            //  +context.user.orderinfor.receiveraddress+"\n-배달일자: "
-            //  +context.user.orderinfor.deliverytime+"\n-남기시는 메세지: "
-            //  +context.user.orderinfor.greeting+"\n-상품명: "
-            //  +context.user.orderinfor.itemname+"\n-상품금액: "
-            //  +context.user.orderinfor.itemprice+"원\n-수량: "
-            //  +context.user.orderinfor.itemnumber+"\n\n총 "+
-            // +context.user.orderinfor.allprice+"원"+"\n\n[상품 이미지]",
             dialog.output[0].image = {url: context.session.orderinfor.itemimage};
             dialog.output[0].buttons = [
                 {
@@ -1124,10 +1138,10 @@ module.exports = function (bot) {
             var modelname="flower_moneybrain_reservation";
             var options = {};
 
-            console.log("neworder==================================="+'\n'+JSON.stringify(neworder));
+
             options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
             options.json = neworder;
-            console.log("options.json==================================="+'\n'+JSON.stringify(options.json));
+
             request.post(options, function(err, response, body)
             {
                 if(err)
@@ -1135,8 +1149,20 @@ module.exports = function (bot) {
                     console.log(err);
                 }
                 else {
-                    console.log("body==========="+body);
-                    console.log("response.statusCode========"+response.statusCode);
+                    console.log("response.statusCode="+response.statusCode);
+
+                    dialog.output[0].buttons=[
+                        {
+                            text: '결제하러 가기',
+                            url: context.session.selecteditem.pay
+                        },
+                        {
+                            text: '내 주문 확인하기'
+                        },
+                        {
+                            text: '시작'
+                        }
+                    ];
 
                     //보내시는분 성함:
                     context.session.sendname = undefined;
@@ -1151,7 +1177,7 @@ module.exports = function (bot) {
                     //남기시는 메세지:
                     context.session.selectedgreeting = undefined;
                     //상품:
-                    context.session.selecteditem = undefined;
+                    // context.session.selecteditem = undefined;
                     //수량---------------------------------------
                     context.session.itemnumber = undefined;
                     //신부신랑:
@@ -1170,9 +1196,7 @@ module.exports = function (bot) {
                     context.session.selectchange = undefined;
                     //다른 요구사항
                     context.session.otherrequire = undefined;
-                    context.user.username = undefined;
-                    context.user.useremail = undefined;
-                    context.user.usermobile = undefined;
+                    context.session.olduser=undefined;
                     //매세지:
 
 
@@ -1457,10 +1481,6 @@ module.exports = function (bot) {
                 {
                     text: '상품 변경',
                     url: ""
-                },
-                {
-                    text: '상품수량 변경',
-                    url: ""
                 }
             ];
             callback();
@@ -1612,9 +1632,9 @@ module.exports = function (bot) {
             context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
-            context.user.username = undefined;
-            context.user.useremail = undefined;
-            context.user.usermobile = undefined;
+            context.session.olduser=undefined;
+            context.session.greetingitemlist=undefined;
+
             context.session.findorder = 1;
             callback();
         }
@@ -1735,9 +1755,9 @@ module.exports = function (bot) {
             context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
-            context.user.username = undefined;
-            context.user.useremail = undefined;
-            context.user.usermobile = undefined;
+            context.session.olduser=undefined;
+            context.session.greetingitemlist=undefined;
+
             callback();
         }
     });

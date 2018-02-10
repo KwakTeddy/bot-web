@@ -47,7 +47,7 @@ module.exports = function (bot) {
     bot.setTask("getcategory", {
         action: function (dialog, context, callback) {
             // context.user.mobile=undefined;
-            var modelname = "flower_moneybrain_category";
+            var modelname = "flower_flowermania_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {};
@@ -103,7 +103,7 @@ module.exports = function (bot) {
     bot.setTask('showcategory',{
         action: function (dialog, context, callback)
         {
-            var modelname = "flower_moneybrain_category";
+            var modelname = "flower_flowermania_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
@@ -158,7 +158,7 @@ module.exports = function (bot) {
 
     bot.setTask('showitem',{
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_category";
+            var modelname = "flower_flowermania_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
@@ -217,7 +217,7 @@ module.exports = function (bot) {
 
     bot.setTask('getFAQcategory',{
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_faq";
+            var modelname = "flower_flowermania_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {};
@@ -269,7 +269,7 @@ module.exports = function (bot) {
 
     bot.setTask('showfaqlist',{
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_faq";
+            var modelname = "flower_flowermania_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
@@ -322,7 +322,7 @@ module.exports = function (bot) {
 
     bot.setTask('showfaq',{
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_faq";
+            var modelname = "flower_flowermania_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
@@ -445,7 +445,7 @@ module.exports = function (bot) {
         preCallback: function (dialog, context, callback) {
             var str = dialog.userInput.types.mobile;
             // var modelname = "flower_moneybrain_vipUser";
-            var modelname = "flower_moneybrain_vipUser";
+            var modelname = "flower_flowermania_vipUser";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {};
@@ -666,7 +666,7 @@ module.exports = function (bot) {
             console.log('context.session.decorate============'+context.session.decorate);
             if (context.session.decorate === "카드") {
                 console.log('context.session.decorate=====1======='+context.session.decorate);
-                var modelname = "flower_moneybrain_greeting";
+                var modelname = "flower_flowermania_greeting";
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {"decorate": {"$ne": "카드"}};
@@ -697,7 +697,7 @@ module.exports = function (bot) {
             }
             else if (context.session.decorate === "리본") {
                 console.log('context.session.decorate=====2======='+context.session.decorate);
-                var modelname = "flower_moneybrain_greeting";
+                var modelname = "flower_flowermania_greeting";
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {"decorate": {"$ne": "카드"}};
@@ -791,7 +791,7 @@ module.exports = function (bot) {
             //     context.user.categorylist2 = context.user.categorylist2;
             // }
             if (context.session.decorate === "리본") {
-                var modelname = "flower_moneybrain_greeting";
+                var modelname = "flower_flowermania_greeting";
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
@@ -833,7 +833,7 @@ module.exports = function (bot) {
                 });
             }
             else if (context.session.decorate === "카드") {
-                var modelname = "flower_moneybrain_greeting";
+                var modelname = "flower_flowermania_greeting";
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
@@ -1121,7 +1121,7 @@ module.exports = function (bot) {
                 status: "주문 대기중",
                 botId: bot.id
             };
-            var modelname="flower_moneybrain_reservation";
+            var modelname="flower_flowermania_reservation";
             var options = {};
 
             console.log("neworder==================================="+'\n'+JSON.stringify(neworder));
@@ -1510,7 +1510,7 @@ module.exports = function (bot) {
 
     bot.setTask('showorder',{
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_reservation";
+            var modelname = "flower_flowermania_reservation";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
@@ -1745,7 +1745,7 @@ module.exports = function (bot) {
 
     bot.setTask('allname', {
         action: function (dialog, context, callback) {
-            var modelname = "flower_moneybrain_category";
+            var modelname = "flower_flowermania_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {};
@@ -1786,7 +1786,7 @@ module.exports = function (bot) {
             var str = "";
             str = dialog.userInput.text;
 
-            var modelname = "flower_moneybrain_category";
+            var modelname = "flower_flowermania_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
