@@ -377,10 +377,10 @@ module.exports = function (bot) {
 
     bot.setTask('savename',{
         action: function (dialog, context, callback) {
-            if (context.user.inCurRaw !== "다시 입력" && context.user.inCurRaw !== "다시 확인" && context.user.inCurRaw !== "다시 선택" && context.user.inCurRaw !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
                 context.user.username = "";
                 //console.log("context.user.inCurRaw=====" + context.user.inCurRaw);
-                context.user.username = context.user.inCurRaw;
+                context.user.username = dialog.userInput.text;
                 callback();
             }
             else {
@@ -1057,6 +1057,7 @@ module.exports = function (bot) {
             price = Number(price);
             number = Number(number);
             context.session.orderinfor.allprice = price * number;
+            context.session.orderinfor.allprice=String(context.session.orderinfor.allprice);
             context.session.orderinfor.otherrequire = context.session.otherrequire;
 
             //task.result={
@@ -1118,14 +1119,15 @@ module.exports = function (bot) {
                 deliverytime: context.session.orderinfor.deliverytime,
                 otherrequire: context.session.orderinfor.otherrequire,
                 status: "주문 대기중",
-                botId: bot.id,
-                __v: 0
+                botId: bot.id
             };
             var modelname="flower_moneybrain_reservation";
             var options = {};
 
+            console.log("neworder==================================="+'\n'+JSON.stringify(neworder));
             options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
             options.json = neworder;
+            console.log("options.json==================================="+'\n'+JSON.stringify(options.json));
             request.post(options, function(err, response, body)
             {
                 if(err)
@@ -1133,41 +1135,41 @@ module.exports = function (bot) {
                     console.log(err);
                 }
                 else {
-                    console.log(response.statusCode);
-
+                    console.log("body==========="+body);
+                    console.log("response.statusCode========"+response.statusCode);
 
                     //보내시는분 성함:
-                    context.user.sendname = undefined;
+                    context.session.sendname = undefined;
                     //받는분 성함:
-                    context.user.friendname = undefined;
+                    context.session.friendname = undefined;
                     //받는분 연락처:
-                    context.user.friendmobile = undefined;
+                    context.session.friendmobile = undefined;
                     //배달주소:
-                    context.user.friendaddress = undefined;
+                    context.session.friendaddress = undefined;
                     //배달일자:
-                    context.user.deliverytime = undefined;
+                    context.session.deliverytime = undefined;
                     //남기시는 메세지:
-                    context.user.selectedgreeting = undefined;
+                    context.session.selectedgreeting = undefined;
                     //상품:
-                    context.user.selecteditem = undefined;
+                    context.session.selecteditem = undefined;
                     //수량---------------------------------------
-                    context.user.itemnumber = undefined;
+                    context.session.itemnumber = undefined;
                     //신부신랑:
-                    context.user.brideornot = undefined;
+                    context.session.brideornot = undefined;
                     //신부신랑 전시 시간:
-                    context.user.showtime = undefined;
+                    context.session.showtime = undefined;
                     //배송방식:
-                    context.user.deliveryway = undefined;
+                    context.session.deliveryway = undefined;
                     //포장방식:
-                    context.user.decorate = undefined;
+                    context.session.decorate = undefined;
                     //계산서 필요할건지:
-                    context.user.bill = undefined;
+                    context.session.bill = undefined;
                     //결제 방식:
-                    context.user.payway = undefined;
+                    context.session.payway = undefined;
                     //변경:
-                    context.user.selectchange = undefined;
+                    context.session.selectchange = undefined;
                     //다른 요구사항
-                    context.user.otherrequire = undefined;
+                    context.session.otherrequire = undefined;
                     context.user.username = undefined;
                     context.user.useremail = undefined;
                     context.user.usermobile = undefined;
@@ -1195,8 +1197,8 @@ module.exports = function (bot) {
                                 'Host': 'openapi.naver.com',
                                 'Accept': '*/*',
                                 'Content-Type': 'application/json',
-                                'X-Naver-Client-Id': bot.naver.clientId,
-                                'X-Naver-Client-Secret': bot.naver.clientSecret
+                                'X-Naver-Client-Id': 'Aqi_RlMlLRlJnmJptMhD',
+                                'X-Naver-Client-Secret': '0AKq2NoNgn'
                             }
                         }, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
@@ -1233,12 +1235,12 @@ module.exports = function (bot) {
                                         pass: 'ZSdh1007--'
                                     }
                                 });
-                                if (context.user.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
-                                    context.user.orderinfor.email = "jipark@moneybrain.ai";
+                                if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
+                                    context.session.orderinfor.email = "jipark@moneybrain.ai";
                                 }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: context.user.orderinfor.email, // list of receivers
+                                    to: context.session.orderinfor.email, // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +
@@ -1513,8 +1515,8 @@ module.exports = function (bot) {
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
                 botId: bot.id,
-                order_mobile: context.user.mobile,
-                order_status: "주문 댜기중"
+                mobile: context.user.mobile,
+                status: "주문 대기중"
             };
             request.get(options, function (err, response, body) {
                 if (err) {
@@ -1547,7 +1549,7 @@ module.exports = function (bot) {
 
                 for(var i=0; i<context.session.orderlist.length; i++)
                 {
-                    var orderitem=context.session.orderlist[i].oitemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
+                    var orderitem=context.session.orderlist[i].itemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
                     if(orderitem.indexOf(text[1]) !== -1)
                     {
                         dialog.userInput.types.orderlist=context.session.orderlist[i];
@@ -1562,21 +1564,7 @@ module.exports = function (bot) {
 
     bot.setTask('showorder1',{
         action: function (dialog, context, callback) {
-            // task.result={text:"주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시:\n"
-            // +context.user.orderlist.order_time+"\n-고객성함: "
-            // +context.user.orderlist.order_name+"\n-보내시는분 성함: "
-            // +context.user.orderlist.order_sendername+"\n-고객 휴대폰 번호: "
-            // +context.user.orderlist.order_mobile+"\n-받는분 성함: "
-            // +context.user.orderlist.order_receivername+"\n-받는분 연락처: "
-            // +context.user.orderlist.order_receivermobile+"\n-배달주소: "
-            // +context.user.orderlist.order_receiveraddress+"\n-배달일자: "
-            // +context.user.orderlist.order_deliverytime+"\n-남기시는 메세지: "
-            // +context.user.orderlist.order_greeting+"\n-상품명: "
-            // +context.user.orderlist.order_itemname+"\n-상품금액: "
-            // +context.user.orderlist.order_price+"원\n-수량: "
-            // +context.user.orderlist.order_itemnumber+"\n\n총 "
-            // +context.user.orderlist.order_allprice+"원"+"\n\n[상품 이미지]",
-            dialog.output[0].image = {url: dialog.userInput.types.orderlist.image};
+            dialog.output[0].image = {url: dialog.userInput.types.orderlist.itemimage};
             dialog.output[0].buttons = [
                 {
                     text: "시작",
@@ -1592,6 +1580,41 @@ module.exports = function (bot) {
 
     bot.setTask('recordorder',{
         action: function (dialog, context, callback) {
+            context.session.selectchange = undefined;
+            context.session.sendname = undefined;
+            //받는분 성함:
+            context.session.friendname = undefined;
+            //받는분 연락처:
+            context.session.friendmobile = undefined;
+            //배달주소:
+            context.session.friendaddress = undefined;
+            //배달일자:
+            context.session.deliverytime = undefined;
+            //남기시는 메세지:
+            context.session.selectedgreeting = undefined;
+            //상품:
+            //context.session.selecteditem=undefined;
+            //수량---------------------------------------
+            context.session.itemnumber = undefined;
+            //신부신랑:
+            context.session.brideornot = undefined;
+            //신부신랑 전시 시간:
+            context.session.showtime = undefined;
+            //배송방식:
+            context.session.deliveryway = undefined;
+            //포장방식:
+            context.session.decorate = undefined;
+            //계산서 필요할건지:
+            context.session.bill = undefined;
+            //결제 방식:
+            context.session.payway = undefined;
+            //변경:
+            context.session.selectchange = undefined;
+            //다른 요구사항
+            context.session.otherrequire = undefined;
+            context.user.username = undefined;
+            context.user.useremail = undefined;
+            context.user.usermobile = undefined;
             context.session.findorder = 1;
             callback();
         }
@@ -2021,7 +2044,7 @@ module.exports = function (bot) {
                 // 判断年、月、日的取值范围是否正确
                 matched = IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
                 if (matched) {
-                    context.user.dateonly = arr[1] + "년" + arr[2] + "월" + arr[3] + "일";
+                    context.session.dateonly = arr[1] + "년" + arr[2] + "월" + arr[3] + "일";
                     //time格式判断
                     //var strr=context.user.inRaw;
                     var strr = dialog.userInput.text;
