@@ -1,4 +1,6 @@
 var chalk = require('chalk');
+var async = require('async');
+
 var Transaction = require('../utils/transaction.js');
 
 (function()
@@ -8,14 +10,75 @@ var Transaction = require('../utils/transaction.js');
 
     };
 
+    TaskManager.prototype.executeTask = function(context, dialogInstance, task, callback)
+    {
+        var transaction = new Transaction.sync();
+
+        if(typeof task.preCallback == 'function')
+        {
+            transaction.call(function(done)
+            {
+                console.log(chalk.yellow('[[[ Task - preCallback ]]]'));
+                task.preCallback.call(task, dialogInstance, context, function(retryMessage)
+                {
+                    if(retryMessage)
+                    {
+                        return callback(true, retryMessage);
+                    }
+
+                    done();
+                });
+            });
+        }
+
+        if(typeof task.action == 'function')
+        {
+            transaction.call(function(done)
+            {
+                console.log(chalk.yellow('[[[ Task - action ]]]'));
+                task.action.call(task, dialogInstance, context, function(retryMessage)
+                {
+                    if(retryMessage)
+                    {
+                        return callback(true, retryMessage);
+                    }
+
+                    done();
+                });
+            });
+        }
+
+        if(typeof task.postCallback == 'function')
+        {
+            transaction.call(function(done)
+            {
+                console.log(chalk.yellow('[[[ Task - postCallback ]]]'));
+                task.postCallback.call(task, dialogInstance, context, function(retryMessage)
+                {
+                    if(retryMessage)
+                    {
+                        return callback(true, retryMessage);
+                    }
+
+                    done();
+                });
+            });
+        }
+
+        transaction.done(function()
+        {
+            callback();
+        });
+    };
+
     TaskManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
+        var that = this;
+
         var name = dialogInstance.task.name;
         if(name && bot.tasks.hasOwnProperty(name))
         {
             var task = bot.tasks[name];
-
-            var transaction = new Transaction.sync();
 
             console.log();
             if(task.paramDefs && Array.isArray(task.paramDefs))
@@ -43,61 +106,41 @@ var Transaction = require('../utils/transaction.js');
                 delete context.session.retryInput;
             }
 
-            if(typeof task.preCallback == 'function')
+            if(Array.isArray(task.actions))
             {
-                transaction.call(function(done)
+                async.eachSeries(task.actions, function(t, next)
                 {
-                    console.log(chalk.yellow('[[[ Task - preCallback ]]]'));
-                    task.preCallback(dialogInstance, context, function(retryMessage)
+                    if(typeof t == 'function')
                     {
-                        if(retryMessage)
+                        t.call(t, dialogInstance, context, next);
+                    }
+                    else if(typeof t == 'string')
+                    {
+                        var target = bot.tasks[t];
+                        if(target)
                         {
-                            return callback(true, retryMessage);
+                            that.executeTask(context, dialogInstance, target, next);
                         }
-
-                        done();
-                    });
+                        else
+                        {
+                            console.log(t + ' is undefined');
+                            next();
+                        }
+                    }
+                    else if(typeof t == 'object')
+                    {
+                        that.executeTask(context, dialogInstance, t, next);
+                    }
+                },
+                function()
+                {
+                    callback();
                 });
             }
-
-            if(typeof task.action == 'function')
+            else
             {
-                transaction.call(function(done)
-                {
-                    console.log(chalk.yellow('[[[ Task - action ]]]'));
-                    task.action(dialogInstance, context, function(retryMessage)
-                    {
-                        if(retryMessage)
-                        {
-                            return callback(true, retryMessage);
-                        }
-
-                        done();
-                    });
-                });
+                this.executeTask(context, dialogInstance, task, callback);
             }
-
-            if(typeof task.postCallback == 'function')
-            {
-                transaction.call(function(done)
-                {
-                    console.log(chalk.yellow('[[[ Task - postCallback ]]]'));
-                    task.postCallback(dialogInstance, context, function(retryMessage)
-                    {
-                        if(retryMessage)
-                        {
-                            return callback(true, retryMessage);
-                        }
-
-                        done();
-                    });
-                });
-            }
-
-            transaction.done(function()
-            {
-                callback();
-            });
         }
         else
         {
