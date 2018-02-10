@@ -1,4 +1,5 @@
 var chalk = require('chalk');
+var async = require('async');
 
 var Transaction = require('./utils/transaction.js');
 
@@ -35,22 +36,30 @@ var Logger = require('./logger.js');
                     type = Globals.types[typeName];
                 }
 
-                type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed)
+                if(type && type.typeCheck)
                 {
-                    if(matched)
+                    type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed)
                     {
-                        if(parsed)
+                        if(matched)
                         {
-                            context.session.retryDialogInstance.userInput.types[type.name] = parsed;
+                            if(parsed)
+                            {
+                                context.session.retryDialogInstance.userInput.types[type.name] = parsed;
+                            }
                         }
-                    }
 
+                        next();
+                    });
+                }
+                else
+                {
+                    //로깅
                     next();
-                });
+                }
             },
             function()
             {
-                DialogGraphManager.exec(bot, context, context.session.retryDialogInstance, function(output)
+                DialogGraphManager.exec(bot, context, context.session.retryDialogInstance, function(output, dialogInstance)
                 {
                     output = OutputManager.make(context, dialogInstance, output);
 
@@ -112,8 +121,12 @@ var Logger = require('./logger.js');
                 if(this.dm)
                 {
                     var dialogInstance = ContextManager.createDialogInstance(this.dm.matchedDialog, userInput);
-                    DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
+                    DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)
                     {
+                        if(d)
+                        {
+                            dialogInstance = d;
+                        }
                         // cloneDialog.output = output;
                         output = OutputManager.make(context, dialogInstance, output);
 

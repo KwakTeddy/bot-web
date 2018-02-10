@@ -18,7 +18,7 @@ var Transaction = require('../utils/transaction.js');
             var transaction = new Transaction.sync();
 
             console.log();
-            if(task.paramDefs && Array.instanceOf(task.paramDefs))
+            if(task.paramDefs && Array.isArray(task.paramDefs))
             {
                 context.session.retryInput = [];
 
@@ -33,7 +33,10 @@ var Transaction = require('../utils/transaction.js');
                     }
                 }
 
-                callback(true, retryMessage);
+                if(retryMessage)
+                {
+                    return callback(true, retryMessage);
+                }
             }
             else
             {

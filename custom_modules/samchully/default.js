@@ -13,6 +13,8 @@ module.exports = function(bot)
             12: 3
     };
 
+    var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
+
     var mobileFormatChange = function (mobile) {
         return mobile.replace(/-/g, '');
     };
@@ -45,7 +47,7 @@ module.exports = function(bot)
 
     var errorHandler = function (dialog, errData)
     {
-        console.log(errData);
+        console.log(JSON.stringify(errData, null, 4));
 
         if(errData.E_RETCD)
         {
@@ -55,7 +57,15 @@ module.exports = function(bot)
         }
         else
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            if(errData.code &&  errData.code == "ESOCKETTIMEDOUT")
+            {
+                dialog.output[0].text = '[에러]\n\n에러 메세지 : "시간 지연 오류가 발생했습니다."';
+                dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+            }
+            else
+            {
+                dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            }
         }
     };
 
@@ -73,7 +83,7 @@ module.exports = function(bot)
         return newStr ? newStr : dateString;
     };
     
-    var timeout = 9500;
+    var timeout = 4000;
 
 
     //Type Area
@@ -253,7 +263,7 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
+            bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
 
 
             for(var i = 0; i < bankArr.length; i++)
@@ -494,8 +504,6 @@ module.exports = function(bot)
                             data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
                             data[i].BUDAT = dateFormatChange(data[i].BUDAT);
                         }
-                        addDefaultButton(dialog);
-
                         context.session.paymentHistory = data;
 
                     }else {
@@ -640,22 +648,23 @@ module.exports = function(bot)
 
                         var data = body.data.ET_TABLE;
                         dialog.output[0].buttons = [];
+                        context.session.nonpaymentHistory = data;
 
-                        var idx = 1;
-
-                        for(var i = 0; i < data.length; i++)
+                        for(var i = 0; i < bankArr.length; i++)
                         {
-                            if(data[i].BANKN != '')
+                            var created = false;
+                            for(var j = 0; j < data.length; j++)
                             {
-                                context.session.nonpaymentHistory.push(data[i]);
+
+                                if(data[j].BANKA.indexOf(bankArr[i]) != -1)
+                                {
+                                    created = true;
+                                    break;
+                                }
                             }
-                            else
+                            if(!created)
                             {
-
-                                dialog.output[0].buttons.push({text: data[i].BANKA + ' 입금전용계좌 생성'});
-                                // dialog.output[0].buttons.push({text: idx + '. ' + data[i].BANKA + '입금전용계좌 생성'});
-                                idx++;
-
+                                dialog.output[0].buttons.push({text: data[j].BANKA + ' 입금전용계좌 생성'});
                             }
                         }
 
@@ -1096,25 +1105,28 @@ module.exports = function(bot)
                         console.log('성공 데이터 : ', dialog.data.list);
                         var outputText = [];
 
-                        async.eachSeries(dialog.data.list, function(item, next)
+                        // async.eachSeries(dialog.data.list, function(item, next)
+                        //
+                        for(var i=0; i<dialog.data.list.length; i++)
                         {
-                            var test = '안전점검일: ' + item.CHK_YYMM + '\n';
-                            test += '확인자: ' + item.SCR_MGR_NO + '\n';
+                            var item = dialog.data.list[i];
+                            var test = '안전점검일: ' + item.CHK_DAT + '\n';
+                            test += '점검참여자: ' + item.SCR_MGR_NO + '\n';
                             if(item.SCR_MGR_CLF == '01')
                             {
-                                test += '확인자와의 관계: 본인\n';
+                                test += '계약자와관계: 본인\n';
                             }
                             else if(item.SCR_MGR_CLF == '02')
                             {
-                                test += '확인자와의 관계: 가족\n';
+                                test += '계약자와관계: 가족\n';
                             }
                             else if(item.SCR_MGR_CLF == '03')
                             {
-                                test += '확인자와의 관계: 관리인\n';
+                                test += '계약자와관계: 관리인\n';
                             }
                             else if(item.SCR_MGR_CLF == '04')
                             {
-                                test += '확인자와의 관계: 기타\n';
+                                test += '계약자와관계: 기타\n';
                             }
 
                             if(item.CHK_YN == 'Y')
@@ -1127,37 +1139,51 @@ module.exports = function(bot)
                                 {
                                     test += '점검결과: 부적합\n';
 
-                                    var options = {};
-                                    options.url = 'http://sam.moneybrain.ai:3000/api';
-                                    options.json = {};
-                                    options.json.name = 'ZPM_USERSAFE_12';
-                                    options.json.param = [
-                                        { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
-                                        { key: 'I_ADV_ORD', val: '1' },
-                                        { key: 'I_DATA_TYPE', val: 'D' }
-                                    ];
-                                    options.json.isTable = true;
-                                    options.timeout = timeout;
-
-                                    request.post(options, function(err, response, body)
+                                    if(item.IMPV_YN == 'Y')
                                     {
-                                        if(err)
-                                        {
-                                            console.log('에러 : ', err);
-                                        }
-                                        else
-                                        {
-                                            console.log('부적합 결과 : ', body);
-                                            test += '부적합 결과: ' + body.E_RETMSG + '\n';
-                                            test += '부적합 시설: ' + '\n\n';
+                                        test += '부적합개선여부: 개선완료\n';
+                                    }
+                                    else
+                                    {
+                                        test += '부적합개선여부: 미개선\n';
+                                    }
 
-                                            outputText.push(test);
+                                    test += '부적합시설: ' + item.CHK_ITM_NM + '\n';
 
-                                            next();
-                                        }
-                                    });
+                                    // test += '점검결과: 부적합\n';
 
-                                    return;
+
+                                    // var options = {};
+                                    // options.url = 'http://sam.moneybrain.ai:3000/api';
+                                    // options.json = {};
+                                    // options.json.name = 'ZPM_USERSAFE_12';
+                                    // options.json.param = [
+                                    //     { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
+                                    //     { key: 'I_ADV_ORD', val: '1' },
+                                    //     { key: 'I_DATA_TYPE', val: 'D' }
+                                    // ];
+                                    // options.json.isTable = true;
+                                    // options.timeout = timeout;
+                                    //
+                                    // request.post(options, function(err, response, body)
+                                    // {
+                                    //     if(err)
+                                    //     {
+                                    //         console.log('에러 : ', err);
+                                    //     }
+                                    //     else
+                                    //     {
+                                    //         console.log('부적합 결과 : ', body);
+                                    //         test += '부적합 결과: ' + body.E_RETMSG + '\n';
+                                    //         test += '부적합 시설: ' + '\n\n';
+                                    //
+                                    //         outputText.push(test);
+                                    //
+                                    //         next();
+                                    //     }
+                                    // });
+
+                                    // return;
                                 }
                             }
                             else
@@ -1201,14 +1227,11 @@ module.exports = function(bot)
                                 }
                             }
 
-                            outputText.push(test + '\n\n');
-                            next();
-                        },
-                        function()
-                        {
-                            dialog.output[0].text = outputText.join('\n');
-                            callback();
-                        });
+                            outputText.push(test + (i == dialog.data.list.length - 1 ? '\n' : '\n\n'));
+                        }
+
+                        dialog.output[0].text = outputText.join('\n');
+                        callback();
                     }
                     else
                     {
@@ -1262,11 +1285,11 @@ module.exports = function(bot)
 
                         if(body.E_FCNTMM != '00')
                         {
-                            msg += body.E_FCNTMM + '월, ';
+                            msg += body.E_FCNTMM + '월';
                         }
                         if(body.E_SCNTMM != '00')
                         {
-                            msg += body.E_SCNTMM + '월';
+                            msg += ', ' + body.E_SCNTMM + '월';
                         }
                         if(!msg.length)
                         {
@@ -1458,9 +1481,38 @@ module.exports = function(bot)
 
 	bot.setTask('logout', 
 	{
-		action: function (conversation, context, callback)
+		action: function (dialog, context, callback)
 		{
-		    context.session = undefined;
+		    context.session.curCustomer = undefined;
+		    context.session.customerName = undefined;
+		    context.session.customerMobile = undefined;
+		    context.session.customerBirth = undefined;
+
+		    context.session.paymentHistory = undefined;
+		    context.session.paymentDetail = undefined;
+		    context.session.noticeHistory = undefined;
+		    context.session.noticeDetail = undefined;
+		    context.session.nonpaymentHistory = undefined;
+
+		    context.session.selectedBank = undefined;
+		    context.session.selectedNonpayment = undefined;
+		    context.session.selectedMonth = undefined;
+		    context.session.totalSelectedNonpayment = undefined;
+
+		    context.session.auth = undefined;
+
+		    callback();
+		}
+	});
+
+	bot.setTask('selfMeterReading', 
+	{
+		action: function (dialog, context, callback)
+		{
+            var curCustomer = context.session.curCustomer;
+            var base64 = new Buffer("curCustomer.VKONT").toString('base64');
+
+            dialog.output[0].text = '아래의 URL을 입력해주세요.\n\nhttps://billgates-web.kakao.com/selfMeter/tms/2003?billerUserKey=' + curCustomer.VKONT + '&hashcode=' + base64+ '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
 
 		    callback();
 		}
