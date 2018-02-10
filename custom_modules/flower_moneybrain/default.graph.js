@@ -470,7 +470,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.선택 상품 확인",
+                                        "dialog": "3.선택 상품 확인",
+                                        "dialogId": "default10"
                                     }
                                 ],
                                 "id": "default88"
@@ -527,7 +530,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.상품 주문하기",
+                                "dialog": "3.상품 주문하기",
+                                "dialogId": "default6"
                             }
                         ],
                         "id": "default139"
@@ -545,7 +551,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.\"추천\"입력",
+                                "dialog": "3.\"추천\"입력",
+                                "dialogId": "default7"
                             }
                         ],
                         "id": "default140"
@@ -581,7 +590,7 @@ var dialogs = [
             {
                 "text": {
                     "raw": "내 주문 확인하기",
-                    "nlp": "내 주문 확인하기"
+                    "nlp": "내 주문 확인 하다"
                 }
             },
             {
@@ -595,12 +604,18 @@ var dialogs = [
             {
                 "kind": "Action",
                 "if": "context.user.mobile===undefined",
-                "type": "call"
+                "type": "call",
+                "dialogName": "6.주문 확인 신규회원",
+                "dialog": "6.주문 확인 신규회원",
+                "dialogId": "default75"
             },
             {
                 "kind": "Action",
                 "if": "context.user.mobile!==undefined",
-                "type": "call"
+                "type": "call",
+                "dialogName": "6.주문 확인 기존회원",
+                "dialog": "6.주문 확인 기존회원",
+                "dialogId": "default76"
             }
         ],
         "id": "default54",
@@ -686,8 +701,6 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "type": "call",
-                                "dialog": "2.질문 토픽 중",
                                 "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
                                 "buttons": [
                                     {
@@ -722,7 +735,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "2.질문 토픽 중",
+                                        "dialog": "2.질문 토픽 중",
+                                        "dialogId": "default4"
                                     }
                                 ],
                                 "id": "default95"
@@ -741,8 +757,6 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "type": "call",
-                        "dialog": "2.자주하는 질문 대",
                         "buttons": [
                             {
                                 "url": "",
@@ -777,7 +791,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "2.자주하는 질문 대",
+                                "dialog": "2.자주하는 질문 대",
+                                "dialogId": "default3"
                             }
                         ],
                         "id": "default96"
@@ -875,7 +892,10 @@ var dialogs = [
                                                 "options": {
                                                     "output": "받으신 인증번호를 입력해주세요."
                                                 },
-                                                "type": "call"
+                                                "type": "call",
+                                                "dialogName": "3.인증번호를 확인",
+                                                "dialog": "3.인증번호를 확인",
+                                                "dialogId": "default19"
                                             }
                                         ],
                                         "task": {
@@ -1022,7 +1042,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "회원 가입된 휴대폰 번호를 입력해주세요.\n(ex: 01012345678)",
+                        "text": "회원 가입된 휴대폰 번호를 입력해주세요.\n(ex: 01012345678)"
                     }
                 ],
                 "id": "default14",
@@ -1084,8 +1104,6 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "type": "call",
-                                "dialog": "3.휴대폰번호로 회원인증하기",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -1120,7 +1138,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.휴대폰번호로 회원인증하기",
+                                        "dialog": "3.휴대폰번호로 회원인증하기",
+                                        "dialogId": "default14"
                                     }
                                 ],
                                 "id": "default97"
@@ -1139,8 +1160,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "받으신 인증번호를 입력해주세요.",
-                        "buttons": []
+                        "text": "받으신 인증번호를 입력해주세요."
                     }
                 ],
                 "id": "default19",
@@ -1155,16 +1175,22 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.findorder===1",
-                                "type": "call"
+                                "if": "context.session.findorder===1",
+                                "type": "call",
+                                "dialogName": "6.기존회원 주문내역 있는 경우",
+                                "dialog": "6.기존회원 주문내역 있는 경우",
+                                "dialogId": "default77"
                             },
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.findorder!==1",
+                                "if": "context.session.findorder!==1",
                                 "options": {
                                     "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "id": "default20"
@@ -1179,8 +1205,6 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "type": "call",
-                                "dialog": "3.인증번호를 확인",
                                 "options": {
                                     "output": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력해주세요.\n\n인정번호를 안 받았으면 \"재발송\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
                                 },
@@ -1222,7 +1246,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.인증번호를 확인",
+                                        "dialog": "3.인증번호를 확인",
+                                        "dialogId": "default19"
                                     }
                                 ],
                                 "id": "default98",
@@ -1249,7 +1276,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.인증번호를 확인",
+                                        "dialog": "3.인증번호를 확인",
+                                        "dialogId": "default19"
                                     }
                                 ],
                                 "id": "default99"
@@ -1353,7 +1383,10 @@ var dialogs = [
                                         "options": {
                                             "output": "수취인 성함을 입력해주세요.\n(ex: 아리랑)"
                                         },
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.수취인 성함",
+                                        "dialog": "3.수취인 성함",
+                                        "dialogId": "default24"
                                     }
                                 ],
                                 "task": {
@@ -1405,7 +1438,9 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "type": "call"
+                                                "type": "call",
+                                                "dialogName": "3.예식시간",
+                                                "dialog": "3.예식시간"
                                             }
                                         ],
                                         "id": "default144"
@@ -1477,7 +1512,11 @@ var dialogs = [
                                         "name": "3.배송일시",
                                         "input": [
                                             {
-                                                "types": "address"
+                                                "text": {
+                                                    "raw": "",
+                                                    "nlp": ""
+                                                },
+                                                "if": "true"
                                             }
                                         ],
                                         "output": [
@@ -1577,7 +1616,9 @@ var dialogs = [
                                                                                 "name": "3.참고문구 소개",
                                                                                 "input": [
                                                                                     {
-                                                                                        "types": "categorylist2"
+                                                                                        "types": [
+                                                                                            "greetiongcategorylist"
+                                                                                        ]
                                                                                     }
                                                                                 ],
                                                                                 "output": [
@@ -1592,7 +1633,9 @@ var dialogs = [
                                                                                         "name": "3.문구선택여부",
                                                                                         "input": [
                                                                                             {
-                                                                                                "types": "categorylist3"
+                                                                                                "types": [
+                                                                                                    "greetingitemlist"
+                                                                                                ]
                                                                                             }
                                                                                         ],
                                                                                         "output": [
@@ -1814,13 +1857,13 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "주문내역",
-                                                                                                                                            "nlp": "주문내역"
+                                                                                                                                            "nlp": "주문 내 역"
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "주문 내역",
-                                                                                                                                            "nlp": "주문 내역"
+                                                                                                                                            "nlp": "주문 내 역"
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     {
@@ -1833,7 +1876,7 @@ var dialogs = [
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Content",
-                                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+orderinfor.time+\n-고객성함: +orderinfor.name+\n-보내시는분 성함: +orderinfor.sendername+\n-고객 휴대폰 번호: +orderinfor.mobile+\n-받는분 성함: +orderinfor.receivername+\n-받는분 연락처: +orderinfor.receivermobile+\n-배달주소: +orderinfor.receiveraddress+\n-배달일자: +orderinfor.deliverytime+\n-남기시는 메세지: +orderinfor.greeting+\n-상품명: +orderinfor.itemname+\n-상품금액: +orderinfor.itemprice+원\n-수량: +orderinfor.itemnumber+\n\n총 +orderinfor.allprice+ 원\n\n[상품 이미지]"
+                                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "id": "default44",
@@ -1844,7 +1887,7 @@ var dialogs = [
                                                                                                                                             {
                                                                                                                                                 "text": {
                                                                                                                                                     "raw": "변경하기",
-                                                                                                                                                    "nlp": "변경하기"
+                                                                                                                                                    "nlp": "변경 하다"
                                                                                                                                                 }
                                                                                                                                             },
                                                                                                                                             {
@@ -1857,7 +1900,7 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Content",
-                                                                                                                                                "text": "다음중 변경하고 싶으신 부분을 선택해주세요.\n\n【주문내역】\n-주문일시:\n+orderinfor.time+\n-고객성함: +orderinfor.name+\n-보내시는분 성함: +orderinfor.sendername+\n-고객 휴대폰 번호: +orderinfor.mobile+\n-받는분 성함: +orderinfor.receivername+\n-받는분 연락처: +orderinfor.receivermobile+\n-배달주소: +orderinfor.receiveraddress+\n-배달일자: +orderinfor.deliverytime+\n-남기시는 메세지: +orderinfor.greeting+\n-상품명: +orderinfor.itemname+\n-상품금액: +orderinfor.itemprice+원\n-수량: +orderinfor.itemnumber+\n\n총 +orderinfor.allprice+ 원"
+                                                                                                                                                "text": "다음중 변경하고 싶으신 부분을 선택해주세요.\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default46",
@@ -2841,7 +2884,7 @@ var dialogs = [
                                                                                         "name": "68",
                                                                                         "input": [
                                                                                             {
-                                                                                                "if": "ture"
+                                                                                                "if": "true"
                                                                                             }
                                                                                         ],
                                                                                         "output": [
@@ -3138,7 +3181,9 @@ var dialogs = [
                                                                         "output": [
                                                                             {
                                                                                 "kind": "Action",
-                                                                                "type": "call"
+                                                                                "type": "call",
+                                                                                "dialogName": "3.카드/리본 선택",
+                                                                                "dialog": "3.카드/리본 선택"
                                                                             }
                                                                         ],
                                                                         "id": "default105"
@@ -3193,7 +3238,9 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Action",
-                                                                "type": "call"
+                                                                "type": "call",
+                                                                "dialogName": "3.배송일시",
+                                                                "dialog": "3.배송일시"
                                                             }
                                                         ],
                                                         "id": "default142"
@@ -3597,7 +3644,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+orderlist.order_time+\n-고객성함: +orderlist.order_name+\n-보내시는분 성함: +.orderlist.order_sendername+\n-고객 휴대폰 번호: +.orderlist.order_mobile+\n-받는분 성함: +orderlist.order_receivername+\n-받는분 연락처: +orderlist.order_receivermobile+\n-배달주소: +orderlist.order_receiveraddress+\n-남기시는 메세지: +orderlist.order_greeting+\n-상품명: +orderlist.order_itemname+\n-상품금액: +orderlist.order_price+원\n-수량: +orderlist.order_itemnumber+\n\n총 +orderlist.order_allprice+원\n\n[상품 이미지]"
+                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+context.session.orderlist.time+\n-고객성함: +context.session.orderlist.name+\n-보내시는분 성함: +context.session.orderlist.sendername+\n-고객 휴대폰 번호: +context.session.orderlist.mobile+\n-받는분 성함: +context.session.orderlist.receivername+\n-받는분 연락처: +context.session.orderlist.receivermobile+\n-배달주소: +context.session.orderlist.receiveraddress+\n-남기시는 메세지: +context.session.orderlist.greeting+\n-상품명: +context.session.orderlist.itemname+\n-상품금액: +context.session.orderlist.price+원\n-수량: +context.session.orderlist.itemnumber+\n\n총 +context.session.orderlist.allprice+원\n\n[상품 이미지]"
                     }
                 ],
                 "task": {
