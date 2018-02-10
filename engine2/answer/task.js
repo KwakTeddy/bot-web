@@ -71,6 +71,39 @@ var Transaction = require('../utils/transaction.js');
         });
     };
 
+    TaskManager.prototype.getExtendsTask = function(bot, task)
+    {
+        var parentTask = undefined;
+        if(typeof task.extends == 'string')
+        {
+            parentTask = bot.tasks[task.extends];
+        }
+        else if(typeof task.extends == 'object')
+        {
+            parentTask = task.extends;
+        }
+        else
+        {
+            return;
+        }
+
+        var clone = {};
+        for(var key in parentTask)
+        {
+            clone[key] = parentTask[key];
+        }
+
+        for(var key in task)
+        {
+            if(key != 'extends')
+            {
+                clone[key] = task[key];
+            }
+        }
+
+        return clone;
+    };
+
     TaskManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
         var that = this;
@@ -119,7 +152,21 @@ var Transaction = require('../utils/transaction.js');
                         var target = bot.tasks[t];
                         if(target)
                         {
-                            that.executeTask(context, dialogInstance, target, next);
+                            if(target.extends)
+                            {
+                                var extendsTask = this.getExtendsTask(bot, target);
+                                if(!extendsTask)
+                                {
+                                    console.log(target.extends + ' is unsupported.');
+                                    return next();
+                                }
+
+                                that.executeTask(context, dialogInstance, extendsTask, next);
+                            }
+                            else
+                            {
+                                that.executeTask(context, dialogInstance, target, next);
+                            }
                         }
                         else
                         {
@@ -129,13 +176,38 @@ var Transaction = require('../utils/transaction.js');
                     }
                     else if(typeof t == 'object')
                     {
-                        that.executeTask(context, dialogInstance, t, next);
+                        if(t.extends)
+                        {
+                            var extendsTask = this.getExtendsTask(bot, t);
+                            if(!extendsTask)
+                            {
+                                console.log(t.extends + ' is unsupported.');
+                                return next();
+                            }
+
+                            that.executeTask(context, dialogInstance, extendsTask, next);
+                        }
+                        else
+                        {
+                            that.executeTask(context, dialogInstance, t, next);
+                        }
                     }
                 },
                 function()
                 {
                     callback();
                 });
+            }
+            else if(task.extends)
+            {
+                var extendsTask = this.getExtendsTask(bot, task);
+                if(!extendsTask)
+                {
+                    console.log(task.extends + ' is unsupported.');
+                    callback();
+                }
+
+                this.executeTask(context, dialogInstance, extendsTask, callback);
             }
             else
             {
