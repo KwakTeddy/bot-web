@@ -36,7 +36,9 @@ var dialogs = [
                 "name": "1.카테고리 중",
                 "input": [
                     {
-                        "types": "categorylist"
+                        "types": [
+                            "categorylist"
+                        ]
                     }
                 ],
                 "output": [
@@ -54,13 +56,15 @@ var dialogs = [
                         "name": "1.상품선택",
                         "input": [
                             {
-                                "types": "categorylist1"
+                                "types": [
+                                    "itemlist"
+                                ]
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#item#**+name+**\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                "text": "#context.session.item#**+name+**\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
                             }
                         ],
                         "task": {
@@ -80,14 +84,17 @@ var dialogs = [
                                     {
                                         "text": {
                                             "raw": "확인하기",
-                                            "nlp": "확인하기"
+                                            "nlp": "확인 하다"
                                         }
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.주문서 확인",
+                                        "dialog": "3.주문서 확인",
+                                        "dialogId": "default44"
                                     }
                                 ],
                                 "id": "default60"
@@ -111,7 +118,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.기준및 신규",
+                                        "dialog": "3.기준및 신규",
+                                        "dialogId": "default11"
                                     }
                                 ],
                                 "id": "default8"
@@ -141,7 +151,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialog": "1.카테고리 대",
+                                        "dialogName": "1.카테고리 대",
+                                        "dialogId": "default0"
                                     }
                                 ],
                                 "id": "default9"
@@ -156,7 +169,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialog": "시작",
+                                        "dialogName": "시작",
+                                        "dialogId": "defaultcommon0"
                                     }
                                 ],
                                 "id": "default58"
@@ -172,16 +188,11 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Action",
-                                "type": "call",
-                                "dialogName": "1.카테고리 중",
                                 "buttons": [
                                     {
-                                        "url": "",
                                         "text": "다시 입력"
                                     },
                                     {
-                                        "url": "",
                                         "text": "시작"
                                     }
                                 ],
@@ -209,7 +220,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialog": "1.카테고리 중",
+                                        "dialogName": "1.카테고리 중",
+                                        "dialogId": "default1"
                                     }
                                 ],
                                 "id": "default94"
@@ -235,11 +249,9 @@ var dialogs = [
                         },
                         "buttons": [
                             {
-                                "url": "",
                                 "text": "다시 입력"
                             },
                             {
-                                "url": "",
                                 "text": "시작"
                             }
                         ],
@@ -259,243 +271,21 @@ var dialogs = [
                             },
                             {
                                 "text": {
-                                    "raw": "선택",
-                                    "nlp": "선택"
+                                    "raw": "입력",
+                                    "nlp": "입력"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "1.카테고리 대",
+                                "dialog": "1.카테고리 대",
+                                "dialogId": "default0"
                             }
                         ],
                         "id": "default93"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "6.내 주문 확인하기",
-        "input": [
-            {
-                "text": {
-                    "raw": "4",
-                    "nlp": "4"
-                }
-            },
-            {
-                "text": {
-                    "raw": "내 주문 확인 하다",
-                    "nlp": "내 주문 확인 하다"
-                }
-            },
-            {
-                "text": {
-                    "raw": "주문 확인",
-                    "nlp": "주문 확인"
-                }
-            },
-            {
-                "text": {
-                    "raw": "내 주문 확인하기",
-                    "nlp": "내 주문 확인하기"
-                }
-            },
-            {
-                "text": {
-                    "raw": "확인",
-                    "nlp": "확인"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Action",
-                "if": "context.user.mobile===undefined",
-                "type": "call"
-            },
-            {
-                "kind": "Action",
-                "if": "context.user.mobile!==undefined",
-                "type": "call"
-            }
-        ],
-        "id": "default54",
-        "task": {
-            "name": "recordorder"
-        }
-    },
-    {
-        "name": "2.자주하는 질문 대",
-        "input": [
-            {
-                "text": {
-                    "raw": "1",
-                    "nlp": "1"
-                }
-            },
-            {
-                "text": {
-                    "raw": "질문",
-                    "nlp": "질문"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요.",
-                "buttons": []
-            }
-        ],
-        "id": "default3",
-        "task": {
-            "name": "getFAQcategory"
-        },
-        "children": [
-            {
-                "name": "2.질문 토픽 중",
-                "input": [
-                    {
-                        "types": "categorylist"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "무엇이 궁금하신가요? 선택해주세요!"
-                    }
-                ],
-                "id": "default4",
-                "task": {
-                    "name": "showfaqlist"
-                },
-                "children": [
-                    {
-                        "name": "2.질문 답",
-                        "input": [
-                            {
-                                "types": "categorylist1"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "#item#**question** \n+question+\n\n**answer** \n+answer+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
-                            }
-                        ],
-                        "task": {
-                            "name": "showfaq"
-                        },
-                        "id": "default5"
-                    },
-                    {
-                        "name": "2.질문 토픽 중 다시",
-                        "input": [
-                            {
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "type": "call",
-                                "dialog": "2.질문 토픽 중",
-                                "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "다시 입력"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "시작"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default86",
-                        "children": [
-                            {
-                                "name": "57",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "다시",
-                                            "nlp": "다시"
-                                        }
-                                    },
-                                    {
-                                        "text": {
-                                            "raw": "선택",
-                                            "nlp": "선택"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "type": "call"
-                                    }
-                                ],
-                                "id": "default95"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "2.질문 대 다시",
-                "input": [
-                    {
-                        "if": "true"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "type": "call",
-                        "dialog": "2.자주하는 질문 대",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "다시 입력"
-                            },
-                            {
-                                "url": "",
-                                "text": "시작"
-                            }
-                        ],
-                        "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요."
-                    }
-                ],
-                "id": "default85",
-                "children": [
-                    {
-                        "name": "58",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "다시",
-                                    "nlp": "다시"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "선택",
-                                    "nlp": "선택"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "type": "call"
-                            }
-                        ],
-                        "id": "default96"
                     }
                 ]
             }
@@ -512,14 +302,20 @@ var dialogs = [
             },
             {
                 "text": {
-                    "raw": "주문하기",
-                    "nlp": "주문하기"
+                    "raw": "주문",
+                    "nlp": "주문"
                 }
             },
             {
                 "text": {
                     "raw": "상품 주문하기",
-                    "nlp": "상품 주문하기"
+                    "nlp": "상품 주문 하다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "주문하기",
+                    "nlp": "주문 하다"
                 }
             }
         ],
@@ -550,7 +346,10 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "type": "call"
+                        "type": "call",
+                        "dialog": "1.카테고리 대",
+                        "dialogName": "1.카테고리 대",
+                        "dialogId": "default0"
                     }
                 ],
                 "id": "default7"
@@ -565,9 +364,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "#item#선택하신 **+name+**에 대한 정보입니다.\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n이 상품으로 주문하시겠습니까?",
-                        "if": "3.상품 이름을 입력성공",
-                        "buttons": []
+                        "text": "#context.session.item#선택하신 **+name+**에 대한 정보입니다.\n\n상품 번호: +code+\n배송 안내: +delivery+\n회원 혜택: +VIP+\n\n가격:\n       일반가: +price+원\n       회원할인가: +sale_price+원\n\n상품안내: +description+\n#\n\n이 상품으로 주문하시겠습니까?",
+                        "if": "3.상품 이름을 입력성공"
                     }
                 ],
                 "id": "default10",
@@ -601,7 +399,10 @@ var dialogs = [
                                 "options": {
                                     "output": "플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialog": "3.신규회원",
+                                "dialogName": "3.신규회원",
+                                "dialogId": "default12"
                             },
                             {
                                 "kind": "Action",
@@ -609,7 +410,10 @@ var dialogs = [
                                 "options": {
                                     "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "id": "default11",
@@ -666,7 +470,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.선택 상품 확인",
+                                        "dialog": "3.선택 상품 확인",
+                                        "dialogId": "default10"
                                     }
                                 ],
                                 "id": "default88"
@@ -723,7 +530,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.상품 주문하기",
+                                "dialog": "3.상품 주문하기",
+                                "dialogId": "default6"
                             }
                         ],
                         "id": "default139"
@@ -741,7 +551,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.\"추천\"입력",
+                                "dialog": "3.\"추천\"입력",
+                                "dialogId": "default7"
                             }
                         ],
                         "id": "default140"
@@ -752,6 +565,243 @@ var dialogs = [
         "task": {
             "name": "allname"
         }
+    },
+    {
+        "name": "6.내 주문 확인하기",
+        "input": [
+            {
+                "text": {
+                    "raw": "4",
+                    "nlp": "4"
+                }
+            },
+            {
+                "text": {
+                    "raw": "내 주문 확인 하다",
+                    "nlp": "내 주문 확인 하다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "주문 확인",
+                    "nlp": "주문 확인"
+                }
+            },
+            {
+                "text": {
+                    "raw": "내 주문 확인하기",
+                    "nlp": "내 주문 확인 하다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "확인",
+                    "nlp": "확인"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "if": "context.user.mobile===undefined",
+                "type": "call",
+                "dialogName": "6.주문 확인 신규회원",
+                "dialog": "6.주문 확인 신규회원",
+                "dialogId": "default75"
+            },
+            {
+                "kind": "Action",
+                "if": "context.user.mobile!==undefined",
+                "type": "call",
+                "dialogName": "6.주문 확인 기존회원",
+                "dialog": "6.주문 확인 기존회원",
+                "dialogId": "default76"
+            }
+        ],
+        "id": "default54",
+        "task": {
+            "name": "recordorder"
+        }
+    },
+    {
+        "name": "2.자주하는 질문 대",
+        "input": [
+            {
+                "text": {
+                    "raw": "1",
+                    "nlp": "1"
+                }
+            },
+            {
+                "text": {
+                    "raw": "질문",
+                    "nlp": "질문"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요.",
+                "buttons": []
+            }
+        ],
+        "id": "default3",
+        "task": {
+            "name": "getFAQcategory"
+        },
+        "children": [
+            {
+                "name": "2.질문 토픽 중",
+                "input": [
+                    {
+                        "types": [
+                            "faqcategorylist"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "무엇이 궁금하신가요? 선택해주세요!"
+                    }
+                ],
+                "id": "default4",
+                "task": {
+                    "name": "showfaqlist"
+                },
+                "children": [
+                    {
+                        "name": "2.질문 답",
+                        "input": [
+                            {
+                                "types": [
+                                    "faqitemlist"
+                                ]
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "#context.session.faqitem#**question** \n+question+\n\n**answer** \n+answer+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                            }
+                        ],
+                        "task": {
+                            "name": "showfaq"
+                        },
+                        "id": "default5"
+                    },
+                    {
+                        "name": "2.질문 토픽 중 다시",
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "다시 입력"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "시작"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default86",
+                        "children": [
+                            {
+                                "name": "57",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "다시",
+                                            "nlp": "다시"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "선택",
+                                            "nlp": "선택"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "type": "call",
+                                        "dialogName": "2.질문 토픽 중",
+                                        "dialog": "2.질문 토픽 중",
+                                        "dialogId": "default4"
+                                    }
+                                ],
+                                "id": "default95"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "2.질문 대 다시",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "다시 입력"
+                            },
+                            {
+                                "url": "",
+                                "text": "시작"
+                            }
+                        ],
+                        "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요."
+                    }
+                ],
+                "id": "default85",
+                "children": [
+                    {
+                        "name": "58",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "다시",
+                                    "nlp": "다시"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "선택",
+                                    "nlp": "선택"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "type": "call",
+                                "dialogName": "2.자주하는 질문 대",
+                                "dialog": "2.자주하는 질문 대",
+                                "dialogId": "default3"
+                            }
+                        ],
+                        "id": "default96"
+                    }
+                ]
+            }
+        ]
     },
     {
         "name": "3.신규회원",
@@ -842,7 +892,10 @@ var dialogs = [
                                                 "options": {
                                                     "output": "받으신 인증번호를 입력해주세요."
                                                 },
-                                                "type": "call"
+                                                "type": "call",
+                                                "dialogName": "3.인증번호를 확인",
+                                                "dialog": "3.인증번호를 확인",
+                                                "dialogId": "default19"
                                             }
                                         ],
                                         "task": {
@@ -894,7 +947,10 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "type": "call"
+                                                        "type": "call",
+                                                        "dialogName": "3.고객 이메일",
+                                                        "dialog": "3.고객 이메일",
+                                                        "dialogId": "default16"
                                                     }
                                                 ],
                                                 "id": "default92"
@@ -947,7 +1003,10 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "type": "call"
+                                                "type": "call",
+                                                "dialogName": "3.고객 성함",
+                                                "dialog": "3.고객 성함",
+                                                "dialogId": "default15"
                                             }
                                         ],
                                         "id": "default90"
@@ -989,8 +1048,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "회원 가입된 휴대폰 번호를 입력해주세요.\n(ex: 01012345678)",
-                        "buttons": []
+                        "text": "회원 가입된 휴대폰 번호를 입력해주세요.\n(ex: 01012345678)"
                     }
                 ],
                 "id": "default14",
@@ -1005,27 +1063,36 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.isvipornot==false && context.dialog.findorder===1",
+                                "if": "context.session.isvipornot==false && context.session.findorder===1",
                                 "options": {
                                     "output": "고객님께서는 비회원이시기 때문에 주문내역을 확인해드릴 수가 없습니다.\n\n플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "6.신규회원 경우 회원가입 여부 묻기",
+                                "dialog": "6.신규회원 경우 회원가입 여부 묻기",
+                                "dialogId": "default82"
                             },
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.isvipornot==false && context.dialog.findorder!==1",
+                                "if": "context.session.isvipornot==false && context.session.findorder!==1",
                                 "options": {
                                     "output": "입력해주신 전화번호가 회원번호가 아닙니다.\n다시 입력해주세요."
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.휴대폰번호를 틀린 경우 다시입력",
+                                "dialog": "3.휴대폰번호를 틀린 경우 다시입력",
+                                "dialogId": "default83"
                             },
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.isvipornot==true",
+                                "if": "context.session.isvipornot==true",
                                 "options": {
                                     "output": "받으신 인증번호를 입력해주세요."
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.인증번호를 확인",
+                                "dialog": "3.인증번호를 확인",
+                                "dialogId": "default19"
                             }
                         ],
                         "id": "default18",
@@ -1043,8 +1110,6 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "type": "call",
-                                "dialog": "3.휴대폰번호로 회원인증하기",
                                 "buttons": [
                                     {
                                         "url": "",
@@ -1079,7 +1144,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.휴대폰번호로 회원인증하기",
+                                        "dialog": "3.휴대폰번호로 회원인증하기",
+                                        "dialogId": "default14"
                                     }
                                 ],
                                 "id": "default97"
@@ -1098,8 +1166,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "받으신 인증번호를 입력해주세요.",
-                        "buttons": []
+                        "text": "받으신 인증번호를 입력해주세요."
                     }
                 ],
                 "id": "default19",
@@ -1114,16 +1181,22 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.findorder===1",
-                                "type": "call"
+                                "if": "context.session.findorder===1",
+                                "type": "call",
+                                "dialogName": "6.기존회원 주문내역 있는 경우",
+                                "dialog": "6.기존회원 주문내역 있는 경우",
+                                "dialogId": "default77"
                             },
                             {
                                 "kind": "Action",
-                                "if": "context.dialog.findorder!==1",
+                                "if": "context.session.findorder!==1",
                                 "options": {
                                     "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
                                 },
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "id": "default20"
@@ -1138,8 +1211,6 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "type": "call",
-                                "dialog": "3.인증번호를 확인",
                                 "options": {
                                     "output": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력해주세요.\n\n인정번호를 안 받았으면 \"재발송\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
                                 },
@@ -1181,7 +1252,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.인증번호를 확인",
+                                        "dialog": "3.인증번호를 확인",
+                                        "dialogId": "default19"
                                     }
                                 ],
                                 "id": "default98",
@@ -1208,7 +1282,10 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.인증번호를 확인",
+                                        "dialog": "3.인증번호를 확인",
+                                        "dialogId": "default19"
                                     }
                                 ],
                                 "id": "default99"
@@ -1312,7 +1389,10 @@ var dialogs = [
                                         "options": {
                                             "output": "수취인 성함을 입력해주세요.\n(ex: 아리랑)"
                                         },
-                                        "type": "call"
+                                        "type": "call",
+                                        "dialogName": "3.수취인 성함",
+                                        "dialog": "3.수취인 성함",
+                                        "dialogId": "default24"
                                     }
                                 ],
                                 "task": {
@@ -1364,7 +1444,10 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "type": "call"
+                                                "type": "call",
+                                                "dialogName": "3.예식시간",
+                                                "dialog": "3.예식시간",
+                                                "dialogId": "default23"
                                             }
                                         ],
                                         "id": "default144"
@@ -1436,7 +1519,11 @@ var dialogs = [
                                         "name": "3.배송일시",
                                         "input": [
                                             {
-                                                "types": "address"
+                                                "text": {
+                                                    "raw": "",
+                                                    "nlp": ""
+                                                },
+                                                "if": "true"
                                             }
                                         ],
                                         "output": [
@@ -1536,7 +1623,9 @@ var dialogs = [
                                                                                 "name": "3.참고문구 소개",
                                                                                 "input": [
                                                                                     {
-                                                                                        "types": "categorylist2"
+                                                                                        "types": [
+                                                                                            "greetiongcategorylist"
+                                                                                        ]
                                                                                     }
                                                                                 ],
                                                                                 "output": [
@@ -1551,7 +1640,9 @@ var dialogs = [
                                                                                         "name": "3.문구선택여부",
                                                                                         "input": [
                                                                                             {
-                                                                                                "types": "categorylist3"
+                                                                                                "types": [
+                                                                                                    "greetingitemlist"
+                                                                                                ]
                                                                                             }
                                                                                         ],
                                                                                         "output": [
@@ -1600,29 +1691,32 @@ var dialogs = [
                                                                                                             {
                                                                                                                 "text": {
                                                                                                                     "raw": "주문서 확인하기",
-                                                                                                                    "nlp": "주문서 확인하기"
+                                                                                                                    "nlp": "주문 서 확인 하다"
                                                                                                                 },
-                                                                                                                "if": "context.dialog.selectchange===1"
+                                                                                                                "if": "context.session.selectchange===1"
                                                                                                             },
                                                                                                             {
                                                                                                                 "text": {
                                                                                                                     "raw": "확인",
                                                                                                                     "nlp": "확인"
                                                                                                                 },
-                                                                                                                "if": "context.dialog.selectchange===1"
+                                                                                                                "if": "context.session.selectchange===1"
                                                                                                             },
                                                                                                             {
                                                                                                                 "text": {
                                                                                                                     "raw": "주문",
                                                                                                                     "nlp": "주문"
                                                                                                                 },
-                                                                                                                "if": "context.dialog.selectchange===1"
+                                                                                                                "if": "context.session.selectchange===1"
                                                                                                             }
                                                                                                         ],
                                                                                                         "output": [
                                                                                                             {
                                                                                                                 "kind": "Action",
-                                                                                                                "type": "call"
+                                                                                                                "type": "call",
+                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                "dialogId": "default44"
                                                                                                             }
                                                                                                         ],
                                                                                                         "id": "default71",
@@ -1773,13 +1867,13 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "주문내역",
-                                                                                                                                            "nlp": "주문내역"
+                                                                                                                                            "nlp": "주문 내 역"
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "주문 내역",
-                                                                                                                                            "nlp": "주문 내역"
+                                                                                                                                            "nlp": "주문 내 역"
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     {
@@ -1792,7 +1886,7 @@ var dialogs = [
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Content",
-                                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+orderinfor.time+\n-고객성함: +orderinfor.name+\n-보내시는분 성함: +orderinfor.sendername+\n-고객 휴대폰 번호: +orderinfor.mobile+\n-받는분 성함: +orderinfor.receivername+\n-받는분 연락처: +orderinfor.receivermobile+\n-배달주소: +orderinfor.receiveraddress+\n-배달일자: +orderinfor.deliverytime+\n-남기시는 메세지: +orderinfor.greeting+\n-상품명: +orderinfor.itemname+\n-상품금액: +orderinfor.itemprice+원\n-수량: +orderinfor.itemnumber+\n\n총 +orderinfor.allprice+ 원\n\n[상품 이미지]"
+                                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "id": "default44",
@@ -1803,7 +1897,7 @@ var dialogs = [
                                                                                                                                             {
                                                                                                                                                 "text": {
                                                                                                                                                     "raw": "변경하기",
-                                                                                                                                                    "nlp": "변경하기"
+                                                                                                                                                    "nlp": "변경 하다"
                                                                                                                                                 }
                                                                                                                                             },
                                                                                                                                             {
@@ -1816,7 +1910,7 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Content",
-                                                                                                                                                "text": "다음중 변경하고 싶으신 부분을 선택해주세요.\n\n【주문내역】\n-주문일시:\n+orderinfor.time+\n-고객성함: +orderinfor.name+\n-보내시는분 성함: +orderinfor.sendername+\n-고객 휴대폰 번호: +orderinfor.mobile+\n-받는분 성함: +orderinfor.receivername+\n-받는분 연락처: +orderinfor.receivermobile+\n-배달주소: +orderinfor.receiveraddress+\n-배달일자: +orderinfor.deliverytime+\n-남기시는 메세지: +orderinfor.greeting+\n-상품명: +orderinfor.itemname+\n-상품금액: +orderinfor.itemprice+원\n-수량: +orderinfor.itemnumber+\n\n총 +orderinfor.allprice+ 원"
+                                                                                                                                                "text": "다음중 변경하고 싶으신 부분을 선택해주세요.\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default46",
@@ -1852,7 +1946,10 @@ var dialogs = [
                                                                                                                                                         "output": [
                                                                                                                                                             {
                                                                                                                                                                 "kind": "Action",
-                                                                                                                                                                "type": "call"
+                                                                                                                                                                "type": "call",
+                                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                                "dialogId": "default44"
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "task": {
@@ -1904,7 +2001,10 @@ var dialogs = [
                                                                                                                                                                 "output": [
                                                                                                                                                                     {
                                                                                                                                                                         "kind": "Action",
-                                                                                                                                                                        "type": "call"
+                                                                                                                                                                        "type": "call",
+                                                                                                                                                                        "dialogName": "3.상품수량 변경",
+                                                                                                                                                                        "dialog": "3.상품수량 변경",
+                                                                                                                                                                        "dialogId": "default72"
                                                                                                                                                                     }
                                                                                                                                                                 ],
                                                                                                                                                                 "id": "default124",
@@ -1929,7 +2029,10 @@ var dialogs = [
                                                                                                                                                 "output": [
                                                                                                                                                     {
                                                                                                                                                         "kind": "Action",
-                                                                                                                                                        "type": "call"
+                                                                                                                                                        "type": "call",
+                                                                                                                                                        "dialogName": "1.카테고리 대",
+                                                                                                                                                        "dialog": "1.카테고리 대",
+                                                                                                                                                        "dialogId": "default0"
                                                                                                                                                     }
                                                                                                                                                 ],
                                                                                                                                                 "id": "default61"
@@ -1962,7 +2065,10 @@ var dialogs = [
                                                                                                                                                         "output": [
                                                                                                                                                             {
                                                                                                                                                                 "kind": "Action",
-                                                                                                                                                                "type": "call"
+                                                                                                                                                                "type": "call",
+                                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                                "dialogId": "default44"
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "task": {
@@ -2001,7 +2107,10 @@ var dialogs = [
                                                                                                                                                         "output": [
                                                                                                                                                             {
                                                                                                                                                                 "kind": "Action",
-                                                                                                                                                                "type": "call"
+                                                                                                                                                                "type": "call",
+                                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                                "dialogId": "default44"
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "task": {
@@ -2053,7 +2162,10 @@ var dialogs = [
                                                                                                                                                                 "output": [
                                                                                                                                                                     {
                                                                                                                                                                         "kind": "Action",
-                                                                                                                                                                        "type": "call"
+                                                                                                                                                                        "type": "call",
+                                                                                                                                                                        "dialogName": "3.받는 분 연락처 변경",
+                                                                                                                                                                        "dialog": "3.받는 분 연락처 변경",
+                                                                                                                                                                        "dialogId": "default64"
                                                                                                                                                                     }
                                                                                                                                                                 ],
                                                                                                                                                                 "id": "default126"
@@ -2091,7 +2203,10 @@ var dialogs = [
                                                                                                                                                         "output": [
                                                                                                                                                             {
                                                                                                                                                                 "kind": "Action",
-                                                                                                                                                                "type": "call"
+                                                                                                                                                                "type": "call",
+                                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                                "dialogId": "default44"
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "id": "default67",
@@ -2124,13 +2239,18 @@ var dialogs = [
                                                                                                                                                         "name": "3.배달일자 변경 저장",
                                                                                                                                                         "input": [
                                                                                                                                                             {
-                                                                                                                                                                "if": "true"
+                                                                                                                                                                "types": [
+                                                                                                                                                                    "dateAndtime1"
+                                                                                                                                                                ]
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "output": [
                                                                                                                                                             {
                                                                                                                                                                 "kind": "Action",
-                                                                                                                                                                "type": "call"
+                                                                                                                                                                "type": "call",
+                                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                                "dialogId": "default44"
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "id": "default69",
@@ -2153,7 +2273,10 @@ var dialogs = [
                                                                                                                                                 "output": [
                                                                                                                                                     {
                                                                                                                                                         "kind": "Action",
-                                                                                                                                                        "type": "call"
+                                                                                                                                                        "type": "call",
+                                                                                                                                                        "dialogName": "1.기타요청사항",
+                                                                                                                                                        "dialog": "1.기타요청사항",
+                                                                                                                                                        "dialogId": "default37"
                                                                                                                                                     }
                                                                                                                                                 ],
                                                                                                                                                 "id": "default70"
@@ -2202,7 +2325,10 @@ var dialogs = [
                                                                                                                                                         "output": [
                                                                                                                                                             {
                                                                                                                                                                 "kind": "Action",
-                                                                                                                                                                "type": "call"
+                                                                                                                                                                "type": "call",
+                                                                                                                                                                "dialogName": "3.변경사항 선택",
+                                                                                                                                                                "dialog": "3.변경사항 선택",
+                                                                                                                                                                "dialogId": "default46"
                                                                                                                                                             }
                                                                                                                                                         ],
                                                                                                                                                         "id": "default122"
@@ -2292,7 +2418,10 @@ var dialogs = [
                                                                                                                                                 "output": [
                                                                                                                                                     {
                                                                                                                                                         "kind": "Action",
-                                                                                                                                                        "type": "call"
+                                                                                                                                                        "type": "call",
+                                                                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                                                                        "dialogId": "default44"
                                                                                                                                                     }
                                                                                                                                                 ],
                                                                                                                                                 "id": "default120"
@@ -2348,7 +2477,10 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Action",
-                                                                                                                                                "type": "call"
+                                                                                                                                                "type": "call",
+                                                                                                                                                "dialogName": "3.카드 결제하기",
+                                                                                                                                                "dialog": "3.카드 결제하기",
+                                                                                                                                                "dialogId": "default41"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default118"
@@ -2402,7 +2534,7 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "주문내역",
-                                                                                                                                            "nlp": "주문내역"
+                                                                                                                                            "nlp": "주문 내 역"
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     {
@@ -2414,14 +2546,17 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "내역",
-                                                                                                                                            "nlp": "내역"
+                                                                                                                                            "nlp": "내 역"
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Action",
-                                                                                                                                        "type": "call"
+                                                                                                                                        "type": "call",
+                                                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                                                        "dialogId": "default44"
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "id": "default47"
@@ -2471,7 +2606,10 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Action",
-                                                                                                                                                "type": "call"
+                                                                                                                                                "type": "call",
+                                                                                                                                                "dialogName": "3.무통장 입금하기",
+                                                                                                                                                "dialog": "3.무통장 입금하기",
+                                                                                                                                                "dialogId": "default47"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default128"
@@ -2519,7 +2657,7 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "주문내역",
-                                                                                                                                            "nlp": "주문내역"
+                                                                                                                                            "nlp": "주문 내 역"
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     {
@@ -2531,14 +2669,17 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "text": {
                                                                                                                                             "raw": "내역",
-                                                                                                                                            "nlp": "내역"
+                                                                                                                                            "nlp": "내 역"
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Action",
-                                                                                                                                        "type": "call"
+                                                                                                                                        "type": "call",
+                                                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                                                        "dialogId": "default44"
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "id": "default48"
@@ -2587,7 +2728,10 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Action",
-                                                                                                                                                "type": "call"
+                                                                                                                                                "type": "call",
+                                                                                                                                                "dialogName": "3.카카오페이",
+                                                                                                                                                "dialog": "3.카카오페이",
+                                                                                                                                                "dialogId": "default43"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default130"
@@ -2643,7 +2787,10 @@ var dialogs = [
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Action",
-                                                                                                                                        "type": "call"
+                                                                                                                                        "type": "call",
+                                                                                                                                        "dialogName": "3.결제방법 선택",
+                                                                                                                                        "dialog": "3.결제방법 선택",
+                                                                                                                                        "dialogId": "default40"
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "id": "default116"
@@ -2699,7 +2846,10 @@ var dialogs = [
                                                                                                                         "output": [
                                                                                                                             {
                                                                                                                                 "kind": "Action",
-                                                                                                                                "type": "call"
+                                                                                                                                "type": "call",
+                                                                                                                                "dialogName": "3.계산서 요청여부",
+                                                                                                                                "dialog": "3.계산서 요청여부",
+                                                                                                                                "dialogId": "default39"
                                                                                                                             }
                                                                                                                         ],
                                                                                                                         "id": "default114"
@@ -2726,13 +2876,19 @@ var dialogs = [
                                                                                                 "output": [
                                                                                                     {
                                                                                                         "kind": "Action",
-                                                                                                        "if": "context.dialog.decorate==\"리본\"",
-                                                                                                        "type": "call"
+                                                                                                        "if": "context.session.decorate==\"리본\"",
+                                                                                                        "type": "call",
+                                                                                                        "dialogName": "3.리본좌측 입력요청",
+                                                                                                        "dialog": "3.리본좌측 입력요청",
+                                                                                                        "dialogId": "default32"
                                                                                                     },
                                                                                                     {
                                                                                                         "kind": "Action",
-                                                                                                        "if": "context.dialog.decorate==\"카드\"",
-                                                                                                        "type": "call"
+                                                                                                        "if": "context.session.decorate==\"카드\"",
+                                                                                                        "type": "call",
+                                                                                                        "dialogName": "3.문구입력요청",
+                                                                                                        "dialog": "3.문구입력요청",
+                                                                                                        "dialogId": "default31"
                                                                                                     }
                                                                                                 ],
                                                                                                 "id": "default38",
@@ -2784,7 +2940,10 @@ var dialogs = [
                                                                                                         "output": [
                                                                                                             {
                                                                                                                 "kind": "Action",
-                                                                                                                "type": "call"
+                                                                                                                "type": "call",
+                                                                                                                "dialogName": "3.문구선택여부",
+                                                                                                                "dialog": "3.문구선택여부",
+                                                                                                                "dialogId": "default36"
                                                                                                             }
                                                                                                         ],
                                                                                                         "id": "default112"
@@ -2800,7 +2959,7 @@ var dialogs = [
                                                                                         "name": "68",
                                                                                         "input": [
                                                                                             {
-                                                                                                "if": "ture"
+                                                                                                "if": "true"
                                                                                             }
                                                                                         ],
                                                                                         "output": [
@@ -2844,7 +3003,10 @@ var dialogs = [
                                                                                                 "output": [
                                                                                                     {
                                                                                                         "kind": "Action",
-                                                                                                        "type": "call"
+                                                                                                        "type": "call",
+                                                                                                        "dialogName": "3.참고문구 소개",
+                                                                                                        "dialog": "3.참고문구 소개",
+                                                                                                        "dialogId": "default34"
                                                                                                     }
                                                                                                 ],
                                                                                                 "id": "default107"
@@ -2861,20 +3023,34 @@ var dialogs = [
                                                                                                     {
                                                                                                         "text": {
                                                                                                             "raw": "쓰",
-                                                                                                            "nlp": "쓰"
+                                                                                                            "nlp": "쓰다"
                                                                                                         }
                                                                                                     },
                                                                                                     {
                                                                                                         "text": {
                                                                                                             "raw": "써",
-                                                                                                            "nlp": "써"
+                                                                                                            "nlp": "쓰다"
                                                                                                         }
                                                                                                     }
                                                                                                 ],
                                                                                                 "output": [
                                                                                                     {
                                                                                                         "kind": "Action",
-                                                                                                        "type": "call"
+                                                                                                        "text": "",
+                                                                                                        "if": "if(context.session.decorate===\"리본\")",
+                                                                                                        "type": "call",
+                                                                                                        "dialogName": "3.문구입력요청2",
+                                                                                                        "dialog": "3.문구입력요청2",
+                                                                                                        "dialogId": "default49"
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "kind": "Action",
+                                                                                                        "type": "call",
+                                                                                                        "dialogName": "3.문구입력요청",
+                                                                                                        "dialog": "3.문구입력요청",
+                                                                                                        "dialogId": "default31",
+                                                                                                        "text": "",
+                                                                                                        "if": "if(context.session.decorate===\"카드\")"
                                                                                                     }
                                                                                                 ],
                                                                                                 "id": "default108"
@@ -2930,7 +3106,10 @@ var dialogs = [
                                                                                         "output": [
                                                                                             {
                                                                                                 "kind": "Action",
-                                                                                                "type": "call"
+                                                                                                "type": "call",
+                                                                                                "dialogName": "3.참고문구 카테고리",
+                                                                                                "dialog": "3.참고문구 카테고리",
+                                                                                                "dialogId": "default33"
                                                                                             }
                                                                                         ],
                                                                                         "id": "default110"
@@ -3004,7 +3183,7 @@ var dialogs = [
                                                                                     {
                                                                                         "text": {
                                                                                             "raw": "참고문구 ",
-                                                                                            "nlp": "참고문구 "
+                                                                                            "nlp": "참고 문구"
                                                                                         }
                                                                                     },
                                                                                     {
@@ -3017,7 +3196,10 @@ var dialogs = [
                                                                                 "output": [
                                                                                     {
                                                                                         "kind": "Action",
-                                                                                        "type": "call"
+                                                                                        "type": "call",
+                                                                                        "dialogName": "3.참고문구 카테고리",
+                                                                                        "dialog": "3.참고문구 카테고리",
+                                                                                        "dialogId": "default33"
                                                                                     }
                                                                                 ],
                                                                                 "id": "default50"
@@ -3097,7 +3279,10 @@ var dialogs = [
                                                                         "output": [
                                                                             {
                                                                                 "kind": "Action",
-                                                                                "type": "call"
+                                                                                "type": "call",
+                                                                                "dialogName": "3.카드/리본 선택",
+                                                                                "dialog": "3.카드/리본 선택",
+                                                                                "dialogId": "default30"
                                                                             }
                                                                         ],
                                                                         "id": "default105"
@@ -3152,7 +3337,10 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Action",
-                                                                "type": "call"
+                                                                "type": "call",
+                                                                "dialogName": "3.배송일시",
+                                                                "dialog": "3.배송일시",
+                                                                "dialogId": "default28"
                                                             }
                                                         ],
                                                         "id": "default142"
@@ -3207,7 +3395,10 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "type": "call"
+                                                        "type": "call",
+                                                        "dialogName": "3.주소",
+                                                        "dialog": "3.주소",
+                                                        "dialogId": "default27"
                                                     }
                                                 ],
                                                 "id": "default103"
@@ -3262,7 +3453,10 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "type": "call"
+                                                "type": "call",
+                                                "dialogName": "3.수취인 연락처",
+                                                "dialog": "3.수취인 연락처",
+                                                "dialogId": "default26"
                                             }
                                         ],
                                         "id": "default102"
@@ -3320,7 +3514,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "id": "default101"
@@ -3440,7 +3637,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "4.게시판에 문의하기",
+                                "dialog": "4.게시판에 문의하기",
+                                "dialogId": "default52"
                             }
                         ],
                         "id": "default132"
@@ -3512,13 +3712,19 @@ var dialogs = [
         "output": [
             {
                 "kind": "Action",
-                "if": "context.dialog.orderlist.length<1",
-                "type": "call"
+                "if": "context.session.orderlist.length<1",
+                "type": "call",
+                "dialogName": "6.기존회원 주문내역 없는 경우",
+                "dialog": "6.기존회원 주문내역 없는 경우",
+                "dialogId": "default78"
             },
             {
                 "kind": "Action",
-                "if": "context.dialog.orderlist.length>=1",
-                "type": "call"
+                "if": "context.session.orderlist.length>=1",
+                "type": "call",
+                "dialogName": "6.기존회원 주문내역 있는 경우",
+                "dialog": "6.기존회원 주문내역 있는 경우",
+                "dialogId": "default77"
             }
         ],
         "id": "default76",
@@ -3556,7 +3762,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+orderlist.order_time+\n-고객성함: +orderlist.order_name+\n-보내시는분 성함: +.orderlist.order_sendername+\n-고객 휴대폰 번호: +.orderlist.order_mobile+\n-받는분 성함: +orderlist.order_receivername+\n-받는분 연락처: +orderlist.order_receivermobile+\n-배달주소: +orderlist.order_receiveraddress+\n-남기시는 메세지: +orderlist.order_greeting+\n-상품명: +orderlist.order_itemname+\n-상품금액: +orderlist.order_price+원\n-수량: +orderlist.order_itemnumber+\n\n총 +orderlist.order_allprice+원\n\n[상품 이미지]"
+                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
                     }
                 ],
                 "task": {
@@ -3608,7 +3814,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "6.기존회원 주문내역 있는 경우",
+                                "dialog": "6.기존회원 주문내역 있는 경우",
+                                "dialogId": "default77"
                             }
                         ],
                         "id": "default134"
@@ -3618,7 +3827,7 @@ var dialogs = [
         ]
     },
     {
-        "name": "6.기존회원 주문내역 없은 경우",
+        "name": "6.기존회원 주문내역 없는 경우",
         "input": [
             {
                 "if": "false"
@@ -3647,12 +3856,16 @@ var dialogs = [
                 "input": [
                     {
                         "intent": "네"
-                    }
+                    },
+                    {}
                 ],
                 "output": [
                     {
                         "kind": "Action",
-                        "type": "call"
+                        "type": "call",
+                        "dialogName": "1.카테고리 대",
+                        "dialog": "1.카테고리 대",
+                        "dialogId": "default0"
                     }
                 ],
                 "id": "default80"
@@ -3667,7 +3880,10 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "type": "call"
+                        "type": "call",
+                        "dialogName": "시작",
+                        "dialog": "시작",
+                        "dialogId": "defaultcommon0"
                     }
                 ],
                 "id": "default81"
@@ -3716,7 +3932,10 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "type": "call"
+                                "type": "call",
+                                "dialogName": "6.기존회원 주문내역 없는 경우",
+                                "dialog": "6.기존회원 주문내역 없는 경우",
+                                "dialogId": "default78"
                             }
                         ],
                         "id": "default136"
@@ -3819,6 +4038,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
-};
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
+}
