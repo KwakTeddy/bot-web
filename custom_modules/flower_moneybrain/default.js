@@ -1,27 +1,28 @@
 var path = require('path');
-var mongo = require(path.resolve('./engine2/utils/mongo-wrapper.js'));
 var config = require(path.resolve('./config/config'));
-var messages = require(path.resolve('engine2/messages.js'));
 var nodemailer = require('nodemailer');
 var request = require('request');
 
-module.exports = function (bot) {
+var SERVER_HOST = 'http://template-dev.moneybrain.ai:8443';
 
-    bot.setTask('defaultTask',{
-        name: 'defaultTask',
-
+module.exports = function (bot)
+{
+    bot.setTask('defaultTask',
+    {
         action: function (dialog, context, callback)
         {
-            var modelname="flower_test";
+            var modelname = 'flower_test';
             var options = {};
 
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+            options.url = SERVER_HOST + '/api/'+modelname;
 
-            options.json = {
-                botId : "123",
-                name: "shuang",
-                age: "25",
-                sex: "female"};
+            options.json =
+            {
+                botId : '123',
+                name: 'shuang',
+                age: '25',
+                sex: 'female'
+            };
             //read: request.get
             //create: request.post
             //update: request.put
@@ -39,15 +40,14 @@ module.exports = function (bot) {
                 }
                 callback();
             });
-
-
         }
     });
 
-    bot.setTask("getcategory", {
-        action: function (dialog, context, callback) {
-            //context.user.mobile=undefined;
-            var modelname = "flower_moneybrain_category";
+    bot.setTask("getcategory",
+    {
+        action: function (dialog, context, callback)
+        {
+            var modelname = 'flower_moneybrain_category';
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {};
