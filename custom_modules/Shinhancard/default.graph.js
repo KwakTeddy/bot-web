@@ -3606,8 +3606,14 @@ var commonDialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "시작 처음",
-                    "nlp": "시작 처음"
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
+            },
+            {
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
                 }
             }
         ],

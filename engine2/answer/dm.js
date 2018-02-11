@@ -68,14 +68,209 @@ var ActionManager = require('./action.js');
         return false;
     };
 
+    DialogGraphManager.prototype.checkInput = function(dialog, userInput, inputs, callback)
+    {
+        var that = this;
+        var rawText = userInput.text;
+        var nlpText = userInput.nlpText;
+
+        async.eachSeries(inputs, function(input, next)
+        {
+            var result = true;
+
+            var keyList = [];
+            for(var key in input)
+            {
+                keyList.push(key);
+            }
+
+            if(keyList.length <= 0)
+            {
+                result = false;
+            }
+
+            async.eachSeries(keyList, function(key, next)
+            {
+                if(key == 'text')
+                {
+                    if(input.text.raw && input.text.nlp)
+                    {
+                        if(rawText == input.text.raw)
+                        {
+                            result = result && true;
+                            dialog.matchCount = 100000;
+                        }
+                        else
+                        {
+                            var matchCount = that.checkInputText(nlpText, input.text.nlp);
+                            if(matchCount > 0)
+                            {
+                                dialog.matchCount += matchCount;
+                                result = result && true;
+                            }
+                            else
+                            {
+                                result = result && false;
+                            }
+                        }
+                    }
+                }
+                else if(key == 'entities')
+                {
+                    var check = that.checkEntities(input.entities, entities);
+                    if(check)
+                    {
+                        dialog.matchCount++;
+                    }
+
+                    result = result && check;
+                }
+                else if(key == 'intent')
+                {
+                    var check = (intents.length > 0 && input.intent == intents[0].intentName);
+                    if(check)
+                    {
+                        dialog.matchCount++;
+                    }
+
+                    result = result && check;
+                }
+                else if(key == 'types')
+                {
+                    var type = bot.types[input[key]];
+                    if(!type)
+                    {
+                        type = Globals.types[input[key]];
+                    }
+
+                    if(typeof type.typeCheck == 'string')
+                    {
+                        type.typeCheck = Globals.typeChecks[type.typeCheck];
+                    }
+
+                    type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
+                    {
+                        if(matched)
+                        {
+                            result = result && true;
+
+                            dialog.matchCount += 100;
+
+                            if(parsed)
+                            {
+                                userInput.types[type.name] = parsed;
+                            }
+                        }
+                        else
+                        {
+                            result = false;
+                        }
+
+                        next();
+                    });
+
+                    return;
+                }
+                else if(key == 'if')
+                {
+                    result = result && (function(dialog, context, input)
+                    {
+                        if(eval('result = (' + input.if + ' ? true : false);'))
+                        {
+                            dialog.matchCount++;
+                            return true;
+                        }
+
+                        return false;
+
+                    })(dialog, context, input);
+                }
+                else
+                {
+                    result = false;
+                }
+
+                next();
+            },
+            function()
+            {
+                if(result)
+                {
+                    callback(true);
+                }
+                else
+                {
+                    next();
+                }
+            });
+        },
+        function()
+        {
+            callback(false);
+        });
+    };
+
+    DialogGraphManager.prototype.findDialogGlobal = function(bot, context, userInput, intents, entities, dialogs, callback)
+    {
+        var that = this;
+
+        var selectedDialog = [];
+
+        async.eachSeries(dialogs, function(dialog, next)
+        {
+            if(!dialog.matchCount)
+            {
+                dialog.matchCount = 0;
+            }
+
+            var transaciton = new Transaction.sync();
+
+            var children = dialog.children;
+            if(children && children.length > 0)
+            {
+                transaciton.call(function(done)
+                {
+                    that.findDialogGlobal(bot, context, userInput, intents, entities, children, function(results)
+                    {
+                        selectedDialog = selectedDialog.concat(results);
+                        done();
+                    });
+                });
+            }
+
+            transaciton.done(function()
+            {
+                var inputs = dialog.input;
+                if(inputs && inputs.length > 0)
+                {
+                    that.checkInput(dialog, userInput, inputs, function(result)
+                    {
+                        if(result)
+                        {
+                            selectedDialog.push(dialog);
+                        }
+
+                        next();
+                    });
+                }
+                else
+                {
+                    next();
+                }
+            });
+        },
+        function()
+        {
+            callback(selectedDialog);
+        });
+    };
+
     DialogGraphManager.prototype.findDialog = function(bot, context, userInput, intents, entities, dialogs, callback)
     {
         var that = this;
 
         var selectedDialog = [];
 
-        var rawText = userInput.text;
-        var nlpText = userInput.nlpText;
         async.eachSeries(dialogs, function(dialog, next)
         {
             if(!dialog.matchCount)
@@ -89,140 +284,13 @@ var ActionManager = require('./action.js');
                 return next();
             }
 
-            async.eachSeries(inputs, function(input, next)
+            that.checkInput(dialog, userInput, inputs, function(result)
             {
-                var result = true;
-
-                var keyList = [];
-                for(var key in input)
+                if(result)
                 {
-                    keyList.push(key);
+                    selectedDialog.push(dialog);
                 }
 
-                if(keyList.length <= 0)
-                {
-                    result = false;
-                }
-
-                async.eachSeries(keyList, function(key, next)
-                {
-                    if(key == 'text')
-                    {
-                        if(input.text.raw && input.text.nlp)
-                        {
-                            if(rawText == input.text.raw)
-                            {
-                                result = result && true;
-                                dialog.matchCount = 100000;
-                            }
-                            else
-                            {
-                                var matchCount = that.checkInputText(nlpText, input.text.nlp);
-                                if(matchCount > 0)
-                                {
-                                    dialog.matchCount += matchCount;
-                                    result = result && true;
-                                }
-                                else
-                                {
-                                    result = result && false;
-                                }
-                            }
-                        }
-                    }
-                    else if(key == 'entities')
-                    {
-                        var check = that.checkEntities(input.entities, entities);
-                        if(check)
-                        {
-                            dialog.matchCount++;
-                        }
-
-                        result = result && check;
-                    }
-                    else if(key == 'intent')
-                    {
-                        var check = (intents.length > 0 && input.intent == intents[0].intentName);
-                        if(check)
-                        {
-                            dialog.matchCount++;
-                        }
-
-                        result = result && check;
-                    }
-                    else if(key == 'types')
-                    {
-                        var type = bot.types[input[key]];
-                        if(!type)
-                        {
-                            type = Globals.types[input[key]];
-                        }
-
-                        if(typeof type.typeCheck == 'string')
-                        {
-                            type.typeCheck = Globals.typeChecks[type.typeCheck];
-                        }
-
-                        type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
-                        {
-                            if(matched)
-                            {
-                                result = result && true;
-
-                                dialog.matchCount += 100;
-
-                                if(parsed)
-                                {
-                                    userInput.types[type.name] = parsed;
-                                }
-                            }
-                            else
-                            {
-                                result = false;
-                            }
-
-                            next();
-                        });
-
-                        return;
-                    }
-                    else if(key == 'if')
-                    {
-                        result = result && (function(dialog, context, input)
-                        {
-                            if(eval('result = (' + input.if + ' ? true : false);'))
-                            {
-                                dialog.matchCount++;
-                                return true;
-                            }
-
-                            return false;
-
-                        })(dialog, context, input);
-                    }
-                    else
-                    {
-                        result = false;
-                    }
-
-                    next();
-                },
-                function()
-                {
-                    if(result)
-                    {
-                        // return callback(dialog);
-                        if(selectedDialog.indexOf(dialog) == -1)
-                        {
-                            selectedDialog.push(dialog);
-                        }
-                    }
-
-                    next();
-                });
-            },
-            function()
-            {
                 next();
             });
         },
@@ -280,33 +348,82 @@ var ActionManager = require('./action.js');
         var foundDialog = undefined;
         transaction.call(function(done)
         {
-            if(!foundDialog)
+            that.findDialog(bot, context, userInput, intents, entities, bot.commonDialogs, function(result)
             {
-                that.findDialog(bot, context, userInput, intents, entities, bot.commonDialogs, function(result)
-                {
-                    foundDialog = result;
-                    done();
-                });
-            }
-            else
-            {
+                foundDialog = result;
                 done();
-            }
+            });
         });
 
-        transaction.call(function(done)
+        if(bot.options.globalSearch && bot.options.globalSearch.use)
         {
-            if(context.session.dialogCursor && !foundDialog)
+            // 글로벌 서치 했는데 없으면 없는거다.
+            transaction.call(function(done)
             {
-                var dialogs = that.getNextDialogs(context.session.dialogCursor, bot.commonDialogs);
-                if(!dialogs)
+                that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
                 {
-                    dialogs = that.getNextDialogs(context.session.dialogCursor, bot.dialogs);
-                }
+                    selectedDialogs.sort(function(a, b)
+                    {
+                        return b.matchCount - a.matchCount;
+                    });
 
-                if(dialogs)
+                    for(var i=0; i<selectedDialogs.length; i++)
+                    {
+                        delete selectedDialogs[i].matchCount;
+                    }
+
+                    if(selectedDialogs.length > 0)
+                    {
+                        if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
+                        {
+                            foundDialog = selectedDialogs[0];
+                        }
+                        else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
+                        {
+                            //여러개 선택해서 보여준담에 다시 고르라고 해야함.
+                        }
+                    }
+
+                    done();
+                });
+            });
+        }
+        else
+        {
+            transaction.call(function(done)
+            {
+                if(context.session.dialogCursor && !foundDialog)
                 {
-                    that.findDialog(bot, context, userInput, intents, entities, dialogs, function(result)
+                    var dialogs = that.getNextDialogs(context.session.dialogCursor, bot.commonDialogs);
+                    if(!dialogs)
+                    {
+                        dialogs = that.getNextDialogs(context.session.dialogCursor, bot.dialogs);
+                    }
+
+                    if(dialogs)
+                    {
+                        that.findDialog(bot, context, userInput, intents, entities, dialogs, function(result)
+                        {
+                            foundDialog = result;
+                            done();
+                        });
+                    }
+                    else
+                    {
+                        done();
+                    }
+                }
+                else
+                {
+                    done();
+                }
+            });
+
+            transaction.call(function(done)
+            {
+                if(!foundDialog)
+                {
+                    that.findDialog(bot, context, userInput, intents, entities, bot.dialogs, function(result)
                     {
                         foundDialog = result;
                         done();
@@ -316,28 +433,8 @@ var ActionManager = require('./action.js');
                 {
                     done();
                 }
-            }
-            else
-            {
-                done();
-            }
-        });
-
-        transaction.call(function(done)
-        {
-            if(!foundDialog)
-            {
-                that.findDialog(bot, context, userInput, intents, entities, bot.dialogs, function(result)
-                {
-                    foundDialog = result;
-                    done();
-                });
-            }
-            else
-            {
-                done();
-            }
-        });
+            });
+        }
 
         transaction.done(function()
         {
