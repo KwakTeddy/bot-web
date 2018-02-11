@@ -358,34 +358,41 @@ var ActionManager = require('./action.js');
         if(bot.options.globalSearch && bot.options.globalSearch.use)
         {
             // 글로벌 서치 했는데 없으면 없는거다.
-            transaction.call(function(done)
+            transaction.done(function()
             {
-                that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
+                if(!foundDialog)
                 {
-                    selectedDialogs.sort(function(a, b)
+                    that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
                     {
-                        return b.matchCount - a.matchCount;
+                        selectedDialogs.sort(function(a, b)
+                        {
+                            return b.matchCount - a.matchCount;
+                        });
+
+                        for(var i=0; i<selectedDialogs.length; i++)
+                        {
+                            delete selectedDialogs[i].matchCount;
+                        }
+
+                        if(selectedDialogs.length > 0)
+                        {
+                            if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
+                            {
+                                foundDialog = selectedDialogs[0];
+                            }
+                            else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
+                            {
+                                //여러개 선택해서 보여준담에 다시 고르라고 해야함.
+                            }
+                        }
+
+                        callback(null);
                     });
-
-                    for(var i=0; i<selectedDialogs.length; i++)
-                    {
-                        delete selectedDialogs[i].matchCount;
-                    }
-
-                    if(selectedDialogs.length > 0)
-                    {
-                        if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
-                        {
-                            foundDialog = selectedDialogs[0];
-                        }
-                        else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
-                        {
-                            //여러개 선택해서 보여준담에 다시 고르라고 해야함.
-                        }
-                    }
-
-                    done();
-                });
+                }
+                else
+                {
+                    callback(null, foundDialog);
+                }
             });
         }
         else
@@ -434,12 +441,12 @@ var ActionManager = require('./action.js');
                     done();
                 }
             });
-        }
 
-        transaction.done(function()
-        {
-            callback(null, foundDialog);
-        });
+            transaction.done(function()
+            {
+                callback(null, foundDialog);
+            });
+        }
     };
 
     // 실행된 dialogInstance를 히스토리에 기록.
