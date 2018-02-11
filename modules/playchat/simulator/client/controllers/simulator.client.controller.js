@@ -103,16 +103,23 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                 if(text.buttons)
                 {
-                    var t = '<div class="output-buttons">';
+                    var t = '';
 
                     for(var i=0; i<text.buttons.length; i++)
                     {
-                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
+                        if(text.buttons[i].url)
+                        {
+                            t = '<a href="' + text.buttons[i].url + '" class="default-button" style="color: #038eda;" target="_blank">#' + text.buttons[i].text + '</a>' + t;
+                        }
+                        else
+                        {
+                            t += '<a style="cursor: pointer;" href="#" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
+                        }
                     }
 
                     t += '</div>';
 
-                    template.find('.speech').append(t);
+                    template.find('.speech').append('<div class="output-buttons">' + t);
                 }
             }
 

@@ -230,11 +230,10 @@ var dialogs = [
                                                 ],
                                                 "output": [
                                                     {
+                                                        "repeat": "1",
                                                         "options": {
                                                             "output": "이런.. 숫자로 입력해주시겠어요?"
-                                                        },
-                                                        "type": "repeat",
-                                                        "kind": "Action"
+                                                        }
                                                     }
                                                 ],
                                                 "task": "quizcount"
@@ -251,11 +250,10 @@ var dialogs = [
                                         ],
                                         "output": [
                                             {
+                                                "call": "퀴즈3",
                                                 "options": {
                                                     "output": "ㅠ_ㅠ '그리고'를 입력해주시길 바랬는데, 쉬크하신 고객님 ㅋㅋ. 뭐 어쨌든 제일 중요한건 마지막 문제니까요.\n\n마지막 퀴즈입니다.\n\n고객님의 '신한카드 애정지수(1~10) X 호감도(1~10) X 소지한 신한카드 개수'를 곱하면? \n\n아라비아 숫자로 써주세요.\n애정은 자고로 숫자로 표현해야 제 맛이죠."
-                                                },
-                                                "type": "call",
-                                                "kind": "Action"
+                                                }
                                             }
                                         ]
                                     }
@@ -271,11 +269,10 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
+                                        "call": "정답2",
                                         "options": {
                                             "output": "정답은 페이스북, 카카오, 네이버랍니다. 퀴즈 틀릴수도 있어요. 제일 중요한건 맨 마지막 문제에요. 자자 마지막 문제로 넘어갈게요\n'그리고'라고 입력해주세요~"
-                                        },
-                                        "type": "call",
-                                        "kind": "Action"
+                                        }
                                     }
                                 ]
                             },
@@ -304,11 +301,10 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
+                                        "repeat": "1",
                                         "options": {
                                             "output": "힌트. 페이스O, 카카O, 네이O 랍니다. 3개를 모두 한번에 입력해 주세요."
-                                        },
-                                        "type": "repeat",
-                                        "kind": "Action"
+                                        }
                                     }
                                 ],
                                 "task": "quizcount"
@@ -323,11 +319,10 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
+                                        "repeat": "1",
                                         "options": {
                                             "output": "힌트. 페이스O, 카카O, 네이O 랍니다. 다시 한번 입력해 주세요."
-                                        },
-                                        "type": "repeat",
-                                        "kind": "Action"
+                                        }
                                     }
                                 ],
                                 "task": {
@@ -346,11 +341,10 @@ var dialogs = [
                         ],
                         "output": [
                             {
+                                "call": "퀴즈2",
                                 "options": {
                                     "output": "이런 저 혼자만의 짝사랑이었군요. 뭐 그래도 좋아요. 어쨌든 다음 문제로 넘어갈께요~\n\n두번째 퀴즈입니다.\n\n신한카드 챗봇을 만날 수 있는 곳은 어디일까요?\n힌트. 페이스O, 카카O, 네이O"
-                                },
-                                "type": "call",
-                                "kind": "Action"
+                                }
                             }
                         ]
                     }
@@ -366,11 +360,10 @@ var dialogs = [
                 ],
                 "output": [
                     {
+                        "call": "정답1",
                         "options": {
                             "output": "이런, 정답은 신한카드에요. 이번 퀴즈는 제가 대신 맞춰드렸어요. \n저는 고객님을 좋아하니까요. 고객님도 좋아하시지요?\n다음퀴즈로 넘어가고 싶으시면 '나도'라고 입력하시면 다음 퀴즈를 낼께요."
-                        },
-                        "type": "call",
-                        "kind": "Action"
+                        }
                     }
                 ]
             },
@@ -384,11 +377,10 @@ var dialogs = [
                 ],
                 "output": [
                     {
+                        "repeat": "1",
                         "options": {
                             "output": "와! (리액션하기 곤란하네) 다시 한번 입력해 주세요"
-                        },
-                        "type": "repeat",
-                        "kind": "Action"
+                        }
                     }
                 ],
                 "task": {
@@ -1599,7 +1591,7 @@ var dialogs = [
                                                     "displayname": "card16.jpg"
                                                 },
                                                 "text": "(광고) [신한카드 RPM+ Platinum#]\n카드가 딱이네요!\n\n✔ 모든 주유소 적립\n✔ 모든 가맹점 적립\n\n-연회비\nVISA 3만 5천원\nUPI 3만 2천원\n\n자세한 내용을 보시려면 카드 아래의 바로가기를 클릭해주세요.\n\n[유의사항]\n- 계약 체결 전 상품에 관한 상세한 사항은 상품설명서 및 약관을 읽어보시기 바랍니다.\n- 연체 이자율은 연체일수 및 약정금리에 따라 23.0~27.9%가 적용됩니다.\n- 신용카드 남용은 가계경제에 위협이 됩니다.\n- 수신거부 080-800-8114(무료)\n- 여신협회 심의필번호 제 2017-c1f-07715호(2017.06.27~2018.06.26)",
-                                                "kind": "Content"
+                                                "kind": "Text"
                                             }
                                         ],
                                         "task": "RPM"
@@ -2355,8 +2347,7 @@ var dialogs = [
                                         ],
                                         "output": [
                                             {
-                                                "type": "call",
-                                                "kind": "Action"
+                                                "call": "2030X"
                                             }
                                         ]
                                     },
@@ -2450,7 +2441,7 @@ var dialogs = [
         "output": [
             {
                 "text": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다.",
-                "kind": "Content"
+                "kind": "Text"
             }
         ],
         "task": {
@@ -2506,8 +2497,7 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "type": "callChild",
-                                        "kind": "Action"
+                                        "callChild": "FAN에 대해 자주하는 질문들(FAQ)"
                                     }
                                 ]
                             },
@@ -4447,11 +4437,10 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
+                                        "repeat": "1",
                                         "options": {
                                             "output": "죄송합니다. 검색결과가 없습니다.\n다시 한번 말씀해주세요~\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요"
-                                        },
-                                        "type": "repeat",
-                                        "kind": "Action"
+                                        }
                                     }
                                 ]
                             }
@@ -4469,8 +4458,7 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "type": "callChild",
-                                "kind": "Action"
+                                "callChild": "FAN에 대해 자주하는 질문들(FAQ)"
                             }
                         ]
                     },
@@ -6410,11 +6398,10 @@ var dialogs = [
                         ],
                         "output": [
                             {
+                                "repeat": "1",
                                 "options": {
                                     "output": "이런, 고객님 목록에서 원하시는 질문을 선택해주셔야 답변을 해드릴 수 있어요~\n처음으로 돌아가고 싶으시면 '처음'이라고 입력해주세요."
-                                },
-                                "type": "repeat",
-                                "kind": "Action"
+                                }
                             }
                         ]
                     }
@@ -8356,11 +8343,12 @@ var dialogs = [
                 ],
                 "output": [
                     {
+                        "repeat": "1",
                         "options": {
                             "output": "죄송합니다. 검색결과가 없습니다.\n다시 한번 말씀해주세요~\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요"
                         },
                         "kind": "Action",
-                        "type": "repeat"
+                        "type": "Repeat"
                     }
                 ]
             }
@@ -10151,8 +10139,7 @@ var commonDialogs = [
         ],
         "output": [
             {
-                "type": "call",
-                "kind": "Action"
+                "call": "신한 FAN 플랫폼 소개"
             }
         ]
     },
@@ -10193,8 +10180,7 @@ var commonDialogs = [
         ],
         "output": [
             {
-                "type": "call",
-                "kind": "Action"
+                "call": "FAN에 대해 자주하는 질문들(FAQ)"
             }
         ]
     },
@@ -10211,8 +10197,7 @@ var commonDialogs = [
         ],
         "output": [
             {
-                "type": "call",
-                "kind": "Action"
+                "call": "신한 카드 추천"
             }
         ]
     },
@@ -10229,8 +10214,7 @@ var commonDialogs = [
         ],
         "output": [
             {
-                "type": "call",
-                "kind": "Action"
+                "call": "FAN 가입_"
             }
         ]
     },

@@ -755,10 +755,8 @@
                     {
                         if(text.trim())
                         {
-                            console.log('여기는??? : ', text);
                             DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
                             {
-                                console.log('어허 : ', result);
                                 angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
                             }, function(error)
                             {
