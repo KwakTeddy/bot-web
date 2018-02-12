@@ -84,7 +84,7 @@ function respondMessage(res, output)
     {
         sendMsg.message.photo =
         {
-            url: config.host + output.image.url,
+            url: (output.image.url.startsWith('http') ? output.image.url : config.host + output.image.url),
             width: output.image.width || 640,
             height: output.image.height || 480
         };
