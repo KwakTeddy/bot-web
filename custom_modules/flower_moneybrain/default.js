@@ -692,22 +692,22 @@ module.exports = function (bot)
                     }
                     else {
                         context.session.decorate = "리본";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "네",
-                                url: ""
-                            },
-                            {
-                                text: "익명",
-                                url: ""
-                            },
-                            {
-                                text: "이전으로 가기"
-                            },
-                            {
-                                text: "처음으로 돌아가기"
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "네",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "익명",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        // ];
                         callback();
                     }
                 }
@@ -731,22 +731,22 @@ module.exports = function (bot)
                     }
                     else {
                         context.session.decorate = "리본";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "네",
-                                url: ""
-                            },
-                            {
-                                text: "익명",
-                                url: ""
-                            },
-                            {
-                                text: "이전으로 가기"
-                            },
-                            {
-                                text: "처음으로 돌아가기"
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     // {
+                        //     //     text: "네",
+                        //     //     url: ""
+                        //     // },
+                        //     // {
+                        //     //     text: "익명",
+                        //     //     url: ""
+                        //     // },
+                        //     // {
+                        //     //     text: "이전으로 가기"
+                        //     // },
+                        //     // {
+                        //     //     text: "처음으로 돌아가기"
+                        //     // }
+                        // ];
                         callback();
                     }
 
@@ -862,9 +862,6 @@ module.exports = function (bot)
             if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0 && dialog.userInput.text  !== "아니요") {
                 if (dialog.userInput.text.indexOf("익명") >= 0) {
                     context.session.sendname = "익명";
-                }
-                else if (dialog.userInput.text === "네") {
-                    context.session.sendname = context.user.name;
                 }
                 else {
                     context.session.sendname = dialog.userInput.text;
