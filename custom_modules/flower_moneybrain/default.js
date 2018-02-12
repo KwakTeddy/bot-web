@@ -2146,7 +2146,7 @@ module.exports = function (bot)
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
                         if(context.user.time===undefined){
-                            context.user.time='10:00';
+                            context.user.time=' ';
                         }
                         context.session.showtime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
@@ -2159,7 +2159,7 @@ module.exports = function (bot)
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
                             if(context.user.time===undefined){
-                                context.user.time='10:00';
+                                context.user.time=' ';
                             }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2172,7 +2172,7 @@ module.exports = function (bot)
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
                             if(context.user.time===undefined){
-                                context.user.time='10:00';
+                                ccontext.user.time=' ';
                             }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2219,7 +2219,7 @@ module.exports = function (bot)
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
                         if(context.user.time===undefined){
-                            context.user.time='10:00';
+                            context.user.time=' ';
                         }
                         context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
@@ -2232,7 +2232,7 @@ module.exports = function (bot)
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
                             if(context.user.time===undefined){
-                                context.user.time='10:00';
+                                context.user.time=' ';
                             }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2245,7 +2245,7 @@ module.exports = function (bot)
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
                             if(context.user.time===undefined){
-                                context.user.time='10:00';
+                                context.user.time=' ';
                             }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
