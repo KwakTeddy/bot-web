@@ -609,34 +609,34 @@ module.exports = function (bot)
             callback();
         }
     });
+    //
+    // bot.setTask('savedeliverytime',{
+    //     action: function (dialog, context, callback) {
+    //         dialog.output[0].buttons = [
+    //             {
+    //                 text: '생화일반배송',
+    //                 url: ""
+    //             },
+    //             {
+    //                 text: '생화택배',
+    //                 url: ""
+    //             }
+    //         ];
+    //         callback();
+    //     }
+    // });
 
-    bot.setTask('savedeliverytime',{
-        action: function (dialog, context, callback) {
-            dialog.output[0].buttons = [
-                {
-                    text: '생화일반배송',
-                    url: ""
-                },
-                {
-                    text: '생화택배',
-                    url: ""
-                }
-            ];
-            callback();
-        }
-    });
-
-    bot.setTask('savedeliveryway',{
-        action: function (dialog, context, callback) {
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text  !== "이전") {
-                context.session.deliveryway = dialog.userInput.text ;
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
+    // bot.setTask('savedeliveryway',{
+    //     action: function (dialog, context, callback) {
+    //         if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text  !== "이전") {
+    //             context.session.deliveryway = dialog.userInput.text ;
+    //             callback();
+    //         }
+    //         else {
+    //             callback();
+    //         }
+    //     }
+    // });
 
     bot.setTask('savedecorate',{
         action: function (dialog, context, callback) {
@@ -1060,7 +1060,7 @@ module.exports = function (bot)
             //상품 이미지:
             context.session.orderinfor.itemimage = context.session.selecteditem.picture;
             //상품 코드:
-            context.session.orderinfor.itemcode = context.session.selecteditem.code;
+            context.session.orderinfor.itempay = context.session.selecteditem.pay;
             //수량---------------------------------------
             if (context.session.itemnumber === undefined) {
                 context.session.orderinfor.itemnumber = 1;
@@ -1074,7 +1074,7 @@ module.exports = function (bot)
             //신부신랑 전시 시간:
             context.session.orderinfor.showtime = context.session.showtime;
             //배송방식:
-            context.session.orderinfor.deliveryway = context.session.deliveryway;
+            // context.session.orderinfor.deliveryway = context.session.deliveryway;
             //포장방식:
             context.session.orderinfor.decorateway = context.session.decorate;
             //계산서 필요할건지:
@@ -1122,11 +1122,11 @@ module.exports = function (bot)
                 itemname: context.session.orderinfor.itemname,
                 itemimage: context.session.orderinfor.itemimage,
                 itemnumber: context.session.orderinfor.itemnumber,
-                itemcode: context.session.orderinfor.itemcode,
+                itempay: context.session.orderinfor.itempay,
                 email: context.session.orderinfor.email,
                 bride: context.session.orderinfor.brideornot,
                 showtime: context.session.orderinfor.showtime,
-                deliveryway: context.session.orderinfor.deliveryway,
+                // deliveryway: context.session.orderinfor.deliveryway,
                 decorateway: context.session.orderinfor.decorateway,
                 bill: context.session.orderinfor.bill,
                 payway: context.session.orderinfor.payway,
@@ -1186,7 +1186,7 @@ module.exports = function (bot)
                     //신부신랑 전시 시간:
                     context.session.showtime = undefined;
                     //배송방식:
-                    context.session.deliveryway = undefined;
+                    // context.session.deliveryway = undefined;
                     //포장방식:
                     context.session.decorate = undefined;
                     //계산서 필요할건지:
@@ -1272,8 +1272,8 @@ module.exports = function (bot)
                                     '<br>' + '<b>주문 전화번호: </b>' + context.session.orderinfor.mobile + '<br>' + '<b>받는분 성함: </b>' + context.session.orderinfor.receivername + '<br>' + '<b>수취인 전화번호: </b>' + context.session.orderinfor.receivermobile +
                                     '<br>' + '<b>배달주소: </b>' + context.session.orderinfor.receiveraddress + '<br>' + '<b>배달일자: </b>' + context.session.orderinfor.deliverytime +
                                     '<br>' + '<b>남기시는 메세지: </b>' + context.session.orderinfor.greeting + '<br>' + '<b>상품: </b>' + context.session.orderinfor.itemname + '<br>' + '<b>수량: </b>' + context.session.orderinfor.itemnumber + '<b>개</b>' + '<br>' + '<b>총: </b>' + context.session.orderinfor.allprice + '<b>원</b>' +
-                                    '<br>' + '<b>신부신랑: </b>' + context.session.orderinfor.brideornot + '<br>' + '<b>신부신랑 전시 시간: </b>' + context.session.orderinfor.showtime + '<br>' + '<b>다른 요구사항: </b>' + context.session.orderinfor.otherrequire + '<br>' + '<b>결제 방식: </b>' + context.session.orderinfor.payway +
-                                    '<br>' + '<b>계산서 필요할건지: </b>' + context.session.orderinfor.bill + '<br>' + '<b>배송방식: </b>' + context.session.orderinfor.deliveryway + '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway// html body
+                                    '<br>' + '<b>신부신랑: </b>' + context.session.orderinfor.brideornot + '<br>' + '<b>신부신랑 전시 시간: </b>' + context.session.orderinfor.showtime + '<br>' + '<b>다른 요구사항: </b>' + context.session.orderinfor.otherrequire + '<br>' +
+                                    '<br>' + '<b>계산서 필요할건지: </b>' + context.session.orderinfor.bill + '<br>' + '<b>배송방식: </b>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway+ '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
                                 };
 
                                 transporter.sendMail(mailOptions, function (error, info) {
@@ -1588,6 +1588,10 @@ module.exports = function (bot)
             dialog.output[0].image = {url: dialog.userInput.types.orderlist.itemimage};
             dialog.output[0].buttons = [
                 {
+                    text: "결제하러 가기",
+                    url: dialog.userInput.types.orderlist.itempay
+                },
+                {
                     text: "시작",
                     url: ""
                 }
@@ -1622,7 +1626,7 @@ module.exports = function (bot)
             //신부신랑 전시 시간:
             context.session.showtime = undefined;
             //배송방식:
-            context.session.deliveryway = undefined;
+            // context.session.deliveryway = undefined;
             //포장방식:
             context.session.decorate = undefined;
             //계산서 필요할건지:
@@ -1745,7 +1749,7 @@ module.exports = function (bot)
             //신부신랑 전시 시간:
             context.session.showtime = undefined;
             //배송방식:
-            context.session.deliveryway = undefined;
+            // context.session.deliveryway = undefined;
             //포장방식:
             context.session.decorate = undefined;
             //계산서 필요할건지:
