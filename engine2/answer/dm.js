@@ -73,6 +73,8 @@ var ActionManager = require('./action.js');
         var that = this;
         var rawText = userInput.text;
         var nlpText = userInput.nlpText;
+        var intents = userInput.intents;
+        var entities = userInput.entities;
 
         async.eachSeries(inputs, function(input, next)
         {

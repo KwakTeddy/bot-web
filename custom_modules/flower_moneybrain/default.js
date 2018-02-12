@@ -778,8 +778,9 @@ module.exports = function (bot)
 
                 for(var i=0; i<context.session.greetingcategory.length; i++)
                 {
-                    if(context.session.greetingcategory[i].indexOf(text[1]) !== -1)
+                    if(context.session.greetingcategory[i].indexOf(text[1]) >=0)
                     {
+                        dialog.userInput.types.greetingcategorylist=context.session.greetingcategory[i];
                         return callback(true, context.session.greetingcategory[i]);
                     }
                 }
@@ -833,7 +834,7 @@ module.exports = function (bot)
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
-                    category: dialog.userInput.greetingcategorylist,
+                    category: dialog.userInput.types.greetingcategorylist,
                     decorate: {"$ne": "카드"}
                 };
                 request.get(options, function (err, response, body) {
@@ -875,7 +876,7 @@ module.exports = function (bot)
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
-                    category: dialog.userInput.greetingcategorylist,
+                    category: dialog.userInput.types.greetingcategorylist,
                     decorate: {"$ne": "리본"}
                 };
                 request.get(options, function (err, response, body) {
