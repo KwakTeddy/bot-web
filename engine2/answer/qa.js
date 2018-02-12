@@ -13,7 +13,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         this.exclude = ['하다', '이다']; // 다른 언어는???
     };
 
-    QA.prototype.find = function(bot, inputRaw, nlp, callback)
+    QA.prototype.find = function(bot, context, inputRaw, nlp, callback)
     {
         var that = this;
 
@@ -24,10 +24,12 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         }
 
         var transaction = new Transaction.sync();
+        transaction.checkDuplicate = {};
+        transaction.matchedList = [];
 
         transaction.call(function(done)
         {
-            DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).lean().exec(function(err, list)
+            DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('context').lean().exec(function(err, list)
             {
                 if(err)
                 {
@@ -50,10 +52,92 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             });
         });
 
+        if(context.session.currentContext)
+        {
+            var checkDuplicate = {};
+            var matchedList = [];
+
+            transaction.call(function(done)
+            {
+                async.eachSeries(nlp, function(word, next)
+                {
+                    if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
+                    {
+                        return next();
+                    }
+
+                    DialogsetDialog.find({ dialogset: { $in: dialogsets }, context: context.session.currentContext._id, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
+                    {
+                        if(err)
+                        {
+                            return callback(err);
+                        }
+
+                        for(var i=0; i<list.length; i++)
+                        {
+                            if(!checkDuplicate[list[i]._id])
+                            {
+                                checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
+                                matchedList.push(checkDuplicate[list[i]._id]);
+                            }
+                        }
+
+                        next();
+                    });
+                },
+                function()
+                {
+                    for(var i=0; i<matchedList.length; i++)
+                    {
+                        if(matchedList[i].inputRaw == inputRaw)
+                        {
+                            matchedList[i].matchRate = 1;
+                        }
+                        else
+                        {
+                            var maxCount = -1;
+                            var targetInput = undefined;
+                            for(var k=0; k<matchedList[i].input.length; k++)
+                            {
+                                var count = 0;
+                                for(var j=0; j<nlp.length; j++)
+                                {
+                                    if(matchedList[i].input[k].indexOf(nlp[j].text) != -1)
+                                    {
+                                        count += (nlp[j].pos == 'Noun' ? 2 : 1);
+                                    }
+                                }
+
+                                if(maxCount == -1)
+                                {
+                                    maxCount = count;
+                                    targetInput = matchedList[i].input[k];
+                                }
+                            }
+
+                            var inputs = targetInput.split(' ');
+                            matchedList[i].matchRate = (maxCount / inputs.length);
+                            matchedList[i].added = 1;
+                        }
+                    }
+
+                    matchedList.sort(function(a, b)
+                    {
+                        return b.matchRate - a.matchRate;
+                    });
+
+                    transaction.matchedList = transaction.matchedList.concat(matchedList);
+
+                    done();
+                });
+            });
+        }
+
         transaction.done(function()
         {
             var checkDuplicate = {};
             var matchedList = [];
+
             async.eachSeries(nlp, function(word, next)
             {
                 if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
@@ -61,7 +145,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     return next();
                 }
 
-                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).lean().exec(function(err, list)
+                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
                 {
                     if(err)
                     {
@@ -112,12 +196,16 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
                         var inputs = targetInput.split(' ');
                         matchedList[i].matchRate = (maxCount / inputs.length);
+                        matchedList[i].added = 0;
                     }
                 }
 
+                matchedList = transaction.matchedList.concat(matchedList);
+
                 matchedList.sort(function(a, b)
                 {
-                    return b.matchRate - a.matchRate;
+                    console.log(b.added, a.added);
+                    return (b.matchRate + b.added) - (a.matchRate + a.added);
                 });
 
                 callback(null, matchedList);

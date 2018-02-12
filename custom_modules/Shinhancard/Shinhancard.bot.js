@@ -7,4 +7,5 @@ module.exports = function(options)
         limitOfSimilarAnswer: 1
     };
     options.hybrid = true;
+    options.dialogsetMinMatchRate = 0.38;
 };
