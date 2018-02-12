@@ -52,6 +52,7 @@ module.exports = function(bot)
         if(!errData)
         {
             dialog.output[0].text = '[에러]\n\n에러 메세지 : "결과 값이 없습니다."';
+            dialog.output[0].buttons = [{text: '처음'}];
             return
         }
 
