@@ -633,7 +633,7 @@ module.exports = function (bot)
 
     bot.setTask('savefriendaddress',{
         action: function (dialog, context, callback) {
-            context.session.friendaddress=dialog.userInput.text;
+            context.session.friendaddress=dialog.userInput.types.address;
             // context.session.friendaddress = context.user.address.지번주소;
             callback();
         }
@@ -1379,7 +1379,7 @@ module.exports = function (bot)
                                     '<br>' + '<b>배달주소: </b>' + context.session.orderinfor.receiveraddress + '<br>' + '<b>배달일자: </b>' + context.session.orderinfor.deliverytime +
                                     '<br>' + '<b>남기시는 메세지: </b>' + context.session.orderinfor.greeting + '<br>' + '<b>상품: </b>' + context.session.orderinfor.itemname + '<br>' + '<b>수량: </b>' + context.session.orderinfor.itemnumber + '<b>개</b>' + '<br>' + '<b>총: </b>' + context.session.orderinfor.allprice + '<b>원</b>' +
                                     '<br>' + '<b>신부신랑: </b>' + context.session.orderinfor.brideornot + '<br>' + '<b>신부신랑 전시 시간: </b>' + context.session.orderinfor.showtime + '<br>' + '<b>다른 요구사항: </b>' + context.session.orderinfor.otherrequire + '<br>' +
-                                    '<br>' + '<b>계산서 필요할건지: </b>' + context.session.orderinfor.bill + '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway+ '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
+                                    '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway + '<br>' +  '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
                                 };
 
                                 transporter.sendMail(mailOptions, function (error, info) {
@@ -1837,24 +1837,16 @@ module.exports = function (bot)
         {
             action: function (dialog, context, callback) {
                 dialog.output[0].image = {url: 'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg'};
-                // dialog.output[0].buttons = [
-                //     {
-                //         text: '1.자주하는 질문',
-                //         url: ''
-                //     },
-                //     {
-                //         text: '2.상품주문하기',
-                //         url: ''
-                //     },
-                //     {
-                //         text: '3.문의하기',
-                //         url: ''
-                //     },
-                //     {
-                //         text: '4.주문 확인하기',
-                //         url: ''
-                //     }
-                // ];
+                dialog.output[0].buttons = [
+                    {
+                        text: '1.상품 주문하기',
+                        url: ''
+                    },
+                    {
+                        text: '2.내 주문내역 확인하기',
+                        url: ''
+                    }
+                ];
 
                 console.log('으 다이얼로그 : ', dialog);
 

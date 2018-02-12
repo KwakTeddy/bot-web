@@ -311,12 +311,6 @@ var dialogs = [
                     "raw": "상품",
                     "nlp": "상품"
                 }
-            },
-            {
-                "text": {
-                    "raw": "주문",
-                    "nlp": "주문"
-                }
             }
         ],
         "output": [
@@ -1186,15 +1180,9 @@ var dialogs = [
                                 ],
                                 "id": "default99"
                             }
-                        ],
-                        "task": {
-                            "name": ""
-                        }
+                        ]
                     }
-                ],
-                "task": {
-                    "name": ""
-                }
+                ]
             }
         ]
     },
@@ -1240,12 +1228,6 @@ var dialogs = [
                             "raw": "네",
                             "nlp": "네"
                         }
-                    },
-                    {
-                        "text": "이전으로 가기"
-                    },
-                    {
-                        "text": "처음으로 돌아가기"
                     }
                 ],
                 "output": [
@@ -1309,9 +1291,6 @@ var dialogs = [
                                         "dialogId": "default24"
                                     }
                                 ],
-                                "task": {
-                                    "name": ""
-                                },
                                 "id": "default25"
                             },
                             {
@@ -1433,11 +1412,9 @@ var dialogs = [
                                         "name": "3.배송일시",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                },
-                                                "if": "true"
+                                                "types": [
+                                                    "address"
+                                                ]
                                             }
                                         ],
                                         "output": [
@@ -1625,10 +1602,7 @@ var dialogs = [
                                                                                                         "dialogId": "default44"
                                                                                                     }
                                                                                                 ],
-                                                                                                "id": "default71",
-                                                                                                "task": {
-                                                                                                    "name": ""
-                                                                                                }
+                                                                                                "id": "default71"
                                                                                             },
                                                                                             {
                                                                                                 "name": "3.결제방법 선택",
@@ -1942,7 +1916,9 @@ var dialogs = [
                                                                                                                                         "name": "3.배달주소 변경 저장",
                                                                                                                                         "input": [
                                                                                                                                             {
-                                                                                                                                                "if": "true"
+                                                                                                                                                "types": [
+                                                                                                                                                    "address"
+                                                                                                                                                ]
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "output": [
@@ -2221,10 +2197,7 @@ var dialogs = [
                                                                                                                     }
                                                                                                                 ]
                                                                                                             }
-                                                                                                        ],
-                                                                                                        "task": {
-                                                                                                            "name": ""
-                                                                                                        }
+                                                                                                        ]
                                                                                                     },
                                                                                                     {
                                                                                                         "name": "3.무통장 입금하기",
@@ -2642,10 +2615,7 @@ var dialogs = [
                                                                                             }
                                                                                         ]
                                                                                     }
-                                                                                ],
-                                                                                "task": {
-                                                                                    "name": ""
-                                                                                }
+                                                                                ]
                                                                             },
                                                                             {
                                                                                 "name": "68",
@@ -3222,10 +3192,7 @@ var dialogs = [
                     }
                 ]
             }
-        ],
-        "task": {
-            "name": ""
-        }
+        ]
     },
     {
         "name": "4.게시판에 문의하기",
@@ -3403,11 +3370,7 @@ var dialogs = [
                 "dialogId": "default16"
             }
         ],
-        "id": "default75",
-        "children": [],
-        "task": {
-            "name": ""
-        }
+        "id": "default75"
     },
     {
         "name": "6.주문 확인 기존회원",
@@ -3437,8 +3400,7 @@ var dialogs = [
         "id": "default76",
         "task": {
             "name": "showorder"
-        },
-        "children": []
+        }
     },
     {
         "name": "6.기존회원 주문내역 있는 경우",
@@ -3568,8 +3530,7 @@ var dialogs = [
                 "input": [
                     {
                         "intent": "네"
-                    },
-                    {}
+                    }
                 ],
                 "output": [
                     {
@@ -3704,7 +3665,7 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "인공지능 꽃배달봇으로 마음을 전하세요.\n1. 상품 주문하기\n2. 내 주문내역 확인하기"
+                "text": "인공지능 꽃배달봇으로 마음을 전하세요."
             }
         ],
         "task": {
@@ -3758,6 +3719,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
 }
