@@ -284,7 +284,7 @@ var ActionManager = require('./action.js');
                 return next();
             }
 
-            that.checkInput(dialog, userInput, inputs, function(result)
+            that.checkInput(context, dialog, userInput, inputs, function(result)
             {
                 if(result)
                 {
