@@ -28,6 +28,7 @@ var Logger = require('./logger.js');
         var transaction = new Transaction.async();
         if(context.session.retryDialogInstance && context.session.retryInput)
         {
+            // Task에서 파라미터 재질의 한 경우
             async.eachSeries(context.session.retryInput, function(typeName, next)
             {
                 var type = bot.types[typeName];
@@ -118,7 +119,9 @@ var Logger = require('./logger.js');
 
             transaction.done(function()
             {
-                if(this.dm)
+                //qa와 dm에서 골라진거 matchRate비교해야함
+
+                if(this.dm && this.dm.matchedDialog)
                 {
                     var dialogInstance = ContextManager.createDialogInstance(this.dm.matchedDialog, userInput);
                     DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)

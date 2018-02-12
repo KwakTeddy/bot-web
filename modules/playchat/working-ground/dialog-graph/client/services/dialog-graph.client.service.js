@@ -453,7 +453,6 @@
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
-                        console.log('여기 아니여?');
                         //ESC
                         that.editor.close();
                         if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
@@ -648,6 +647,7 @@
                 }
                 else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
                 {
+                    console.log('세이브???');
                     that.$scope.save();
 
                     e.preventDefault();
@@ -879,11 +879,6 @@
 
                 template += '<div><span>' + output.text + '</span></div>';
 
-                if(output.image)
-                {
-                    template += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
-                }
-
                 template += '</div>';
 
                 return template;
@@ -930,8 +925,14 @@
 
             for(var i=0; i<buttons.length; i++)
             {
-                if(buttons[i].url) template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600"><a href="' + buttons[i].url + '" target="_blank">' + buttons[i].text + '</a></div>';
-                else               template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600">' + buttons[i].text + '</div>';
+                if(buttons[i].url)
+                {
+                    template = '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600; height: 35px;"><a href="' + buttons[i].url + '" target="_blank" style="color: #038eda;">#' + buttons[i].text + '</a></div>' + template;
+                }
+                else
+                {
+                    template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600;">' + buttons[i].text + '</div>';
+                }
             };
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
@@ -1152,6 +1153,7 @@
 
             var inputTemplate = '';
             var outputTemplate = '';
+            var imageTemplate = '';
             var buttonTemplate = '';
 
             if(typeof dialog.input == 'object' && dialog.input.length)
@@ -1186,6 +1188,11 @@
                             outputTemplate += makeOutputTemplate(output);
                         }
 
+                        if(output.image)
+                        {
+                            imageTemplate += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                        }
+
                         if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
                         {
                             buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
@@ -1197,6 +1204,11 @@
                 else
                 {
                     outputTemplate = makeOutputTemplate(dialog.output);
+                    if(dialog.output.image)
+                    {
+                        imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                    }
+
                     if(dialog.output.buttons && dialog.output.buttons.length > 0)
                     {
                         buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
@@ -1206,14 +1218,23 @@
             else
             {
                 outputTemplate = makeOutputTemplate(dialog.output);
+                if(dialog.output.image)
+                {
+                    imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                }
+            }
+
+            if(imageTemplate)
+            {
+                imageTemplate = '<div class="graph-dialog-image">' + imageTemplate + '</div>';
             }
 
 
-            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
+            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
             var that = this;
-            t.find('.graph-dialog-output img').on('load', function()
+            t.find('.graph-dialog-image img').on('load', function()
             {
                 that.refreshLine();
             });
@@ -1257,6 +1278,7 @@
 
             var inputTemplate = '';
             var outputTemplate = '';
+            var imageTemplate = '';
             var buttonTemplate = '';
 
             if(typeof dialog.input == 'object' && dialog.input.length)
@@ -1291,6 +1313,11 @@
                             outputTemplate += makeOutputTemplate(output);
                         }
 
+                        if(output.image)
+                        {
+                            imageTemplate += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                        }
+
                         if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
                         {
                             buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
@@ -1302,6 +1329,12 @@
                 else
                 {
                     outputTemplate = makeOutputTemplate(dialog.output);
+
+                    if(dialog.output.image)
+                    {
+                        imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                    }
+
                     if(dialog.output.buttons && dialog.output.buttons.length > 0)
                     {
                         buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
@@ -1311,14 +1344,24 @@
             else
             {
                 outputTemplate = makeOutputTemplate(dialog.output);
+
+                if(dialog.output.image)
+                {
+                    imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                }
+            }
+
+            if(imageTemplate)
+            {
+                imageTemplate = '<div class="graph-dialog-image">' + imageTemplate + '</div>';
             }
 
 
-            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
+            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
             var that = this;
-            t.find('.graph-dialog-output img').on('load', function()
+            t.find('.graph-dialog-image img').on('load', function()
             {
                 that.refreshLine();
             });

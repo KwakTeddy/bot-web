@@ -15,13 +15,15 @@ Bot.prototype.setCommonDialogs = function(commonDialogs)
 };
 
 var b = new Bot();
-require('./custom_modules/flowermania/quible.js')(b);
+require('./custom_modules/Shinhancard/default.graph.js')(b);
 
 
 var convert = function(dialogs)
 {
     for(var i=0; i<dialogs.length; i++)
     {
+        delete dialogs[i].filename;
+
         for(var j=0; j<dialogs[i].input.length; j++)
         {
             var input = dialogs[i].input[j];
@@ -35,102 +37,116 @@ var convert = function(dialogs)
             }
         }
 
-        for(var j=0; j<dialogs[i].output.length; j++)
+        if(typeof dialogs[i].output == 'string')
         {
-            var output = dialogs[i].output[j];
-            delete output.uploader;
-            if(output.kind == 'Action')
+            dialogs[i].output = { kind: 'Content', text: dialogs[i].output };
+        }
+        else if(!Array.isArray(dialogs[i].output) && typeof dialogs[i].output == 'object')
+        {
+            dialogs[i].output = [dialogs[i].output];
+        }
+        else
+        {
+            for(var j=0; j<dialogs[i].output.length; j++)
             {
-                var type = '';
-                if(output.call)
+                var output = dialogs[i].output[j];
+                delete output.uploader;
+                if(output.kind == 'Action')
                 {
-                    output.type = 'call';
-                    output.dialogName = output.call;
-                    delete output.call;
-                }
-                else if(output.callChild)
-                {
-                    output.type = 'callChild';
-                    output.dialogName = output.callChild;
-                    delete output.callChild;
-                }
-                else if(output.return)
-                {
-                    output.type = 'return';
-                    delete output.return;
-                }
-                else if(output.returnCall)
-                {
-                    output.type = 'returnCall';
-                    output.dialogName = output.returnCall;
-                    delete output.returnCall;
-                }
-                else if(output.repeat)
-                {
-                    output.type = 'repeat';
-                    delete output.repeat;
-                }
-                else if(output.up)
-                {
-                    output.type = 'up';
-                    delete output.up;
-                }
+                    if(output.call)
+                    {
+                        output.type = 'call';
+                        output.dialogName = output.call;
+                        delete output.call;
+                    }
+                    else if(output.callChild)
+                    {
+                        output.type = 'callChild';
+                        output.dialogName = output.callChild;
+                        delete output.callChild;
+                    }
+                    else if(output.return)
+                    {
+                        output.type = 'return';
+                        delete output.return;
+                    }
+                    else if(output.returnCall)
+                    {
+                        output.type = 'returnCall';
+                        output.dialogName = output.returnCall;
+                        delete output.returnCall;
+                    }
+                    else if(output.repeat)
+                    {
+                        output.type = 'repeat';
+                        delete output.repeat;
+                    }
+                    else if(output.up)
+                    {
+                        output.type = 'up';
+                        delete output.up;
+                    }
 
-                output.dialogName = output.dialog;
-                delete output.dialog;
-            }
-            else
-            {
-                if(output.call)
-                {
-                    output.type = 'call';
-                    output.dialogName = output.call;
-                    delete output.call;
                     output.dialogName = output.dialog;
                     delete output.dialog;
-                    output.kind = 'Action';
                 }
-                else if(output.callChild)
+                else if(output.kind == 'Text')
                 {
-                    output.type = 'callChild';
-                    output.dialogName = output.callChild;
-                    delete output.callChild;
-                    output.dialogName = output.dialog;
-                    delete output.dialog;
-                    output.kind = 'Action';
+                    output.kind = 'Content';
                 }
-                else if(output.return)
+                else
                 {
-                    output.type = 'return';
-                    delete output.return;
-                    output.dialogName = output.dialog;
-                    delete output.dialog;
-                    output.kind = 'Action';
-                }
-                else if(output.returnCall)
-                {
-                    output.type = 'returnCall';
-                    output.dialogName = output.returnCall;
-                    delete output.returnCall;
-                    output.dialogName = output.dialog;
-                    delete output.dialog;
-                    output.kind = 'Action';
-                }
-                else if(output.repeat)
-                {
-                    output.type = 'repeat';
-                    delete output.repeat;
-                    output.dialogName = output.dialog;
-                    delete output.dialog;
-                    output.kind = 'Action';
-                }
-                else if(output.up)
-                {
-                    output.type = 'up';
-                    delete output.up;
-                    output.dialogName = output.dialog;
-                    delete output.dialog;
-                    output.kind = 'Action';
+                    if(output.call)
+                    {
+                        output.type = 'call';
+                        output.dialogName = output.call;
+                        delete output.call;
+                        output.dialogName = output.dialog;
+                        delete output.dialog;
+                        output.kind = 'Action';
+                    }
+                    else if(output.callChild)
+                    {
+                        output.type = 'callChild';
+                        output.dialogName = output.callChild;
+                        delete output.callChild;
+                        output.dialogName = output.dialog;
+                        delete output.dialog;
+                        output.kind = 'Action';
+                    }
+                    else if(output.return)
+                    {
+                        output.type = 'return';
+                        delete output.return;
+                        output.dialogName = output.dialog;
+                        delete output.dialog;
+                        output.kind = 'Action';
+                    }
+                    else if(output.returnCall)
+                    {
+                        output.type = 'returnCall';
+                        output.dialogName = output.returnCall;
+                        delete output.returnCall;
+                        output.dialogName = output.dialog;
+                        delete output.dialog;
+                        output.kind = 'Action';
+                    }
+                    else if(output.repeat)
+                    {
+                        output.type = 'repeat';
+                        delete output.repeat;
+                        output.dialogName = output.dialog;
+                        delete output.dialog;
+                        output.kind = 'Action';
+                    }
+                    else if(output.up)
+                    {
+                        output.type = 'up';
+                        delete output.up;
+                        output.dialogName = output.dialog;
+                        delete output.dialog;
+                        output.kind = 'Action';
+                    }
                 }
             }
         }

@@ -4,6 +4,8 @@ var Error = require('./error.js');
 
 var Logger = require('./logger.js');
 
+var SystemMessages = require('./system-messages.js');
+
 var globals = require('./globals.js');
 var channel = require('./channel.js');
 
@@ -81,6 +83,11 @@ var Transaction = require('./utils/transaction.js');
             }
             else
             {
+                if(!bot.options.use)
+                {
+                    return outCallback(SystemMessages['You can\'t use this bot']);
+                }
+
                 var contextKey = channel + '_' + botId + '_' + userKey;
                 that.redis.get(contextKey, function(err, context)
                 {
