@@ -91,7 +91,7 @@ module.exports = function(bot)
         return newStr ? newStr : dateString;
     };
     
-    var timeout = 10000;
+    var timeout = 4000;
 
 
     //Type Area
