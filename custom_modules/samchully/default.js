@@ -83,7 +83,7 @@ module.exports = function(bot)
         return newStr ? newStr : dateString;
     };
     
-    var timeout = 4000;
+    var timeout = 10000;
 
 
     //Type Area
@@ -888,7 +888,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_EMAIL', val: curCustomer.email }
             ];
-            options.timeout = 1000 * 60;
+            options.timeout = timeout;
 
             var start = new Date().getTime();
             request.post(options, function(err, response, body)
@@ -1509,11 +1509,17 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-            var curCustomer = context.session.curCustomer;
-            var base64 = new Buffer("curCustomer.VKONT").toString('base64');
+            var VKONT = context.session.curCustomer.VKONT;
+            var base64 = new Buffer(VKONT).toString('base64');
 
-            dialog.output[0].text = '아래의 URL을 입력해주세요.\n\nhttps://billgates-web.kakao.com/selfMeter/tms/2003?billerUserKey=' + curCustomer.VKONT + '&hashcode=' + base64+ '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
-
+            var url = 'https://billgates-web.kakao.com/selfMeter/tms/2003?billerUserKey=' + VKONT + '&hashcode=' + base64+ '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
+            dialog.output[0].text = '자세히 보기를 클릭해주세요.';
+            dialog.output[0].buttons = [
+                {
+                    text: '자세히 보기',
+                    url: url
+                }
+            ];
 		    callback();
 		}
 	});

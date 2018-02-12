@@ -139,7 +139,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "인증되셨습니다.\n원하시는 메뉴를 선택해주세요.",
+                                                        "text": "인증되셨습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
                                                         "type": "call",
                                                         "dialogName": "시작",
                                                         "dialogId": "startDialog"
@@ -169,7 +169,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.",
+                                                        "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
                                                         "type": "call",
                                                         "dialogName": "시작",
                                                         "dialogId": "startDialog"
@@ -237,17 +237,13 @@ var dialogs = [
                 "name": "취득 거부",
                 "input": [
                     {
-                        "text": {
-                            "raw": "",
-                            "nlp": ""
-                        },
                         "if": "true"
                     }
                 ],
                 "output": [
                     {
                         "kind": "Action",
-                        "text": "취득 거부",
+                        "text": "[안내]\n요금, 안전점검 메뉴를 이용하기 위해서는 개인정보 이용에 동의하셔야 합니다. \n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
                         "type": "call",
                         "dialogId": "startDialog",
                         "dialogName": "시작",
@@ -1332,7 +1328,13 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "아래의 URL을 클릭해주세요."
+                                "text": "자세히 보기를 클릭해주세요.",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "자세히 보기"
+                                    }
+                                ]
                             }
                         ],
                         "id": "default10",
@@ -1850,7 +1852,17 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "고객 인증이 되어 있는 경우 \n1) 고객의 관할 고객센터명 및 코드 ex)동인천(11)를 카카오상담톡 플러스 아이디로 알림톡 전송\n\n고객 인증이 되어 있지 않은 경우 \n2) 고객 인증 화면 이동 결과 중 선택한 주소의 관할 고객센터명 및 코드 ex) 동인천(11) 를 카카오 상담톡 플러스아이디로 알림톡 전송"
+                "text": "고객 인증이 되어 있는 경우 \n1) 고객의 관할 고객센터명 및 코드 ex)동인천(11)를 카카오상담톡 플러스 아이디로 알림톡 전송\n\n고객 인증이 되어 있지 않은 경우 \n2) 고객 인증 화면 이동 결과 중 선택한 주소의 관할 고객센터명 및 코드 ex) 동인천(11) 를 카카오 상담톡 플러스아이디로 알림톡 전송",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "이전"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음"
+                    }
+                ]
             }
         ],
         "id": "default7",
