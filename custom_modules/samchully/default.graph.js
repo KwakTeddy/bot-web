@@ -1084,17 +1084,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으실 이메일 주소를 입력해주세요.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "이전"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "처음"
-                                                    }
-                                                ]
+                                                "text": "받으실 이메일 주소를 입력해주세요."
                                             }
                                         ],
                                         "task": {
