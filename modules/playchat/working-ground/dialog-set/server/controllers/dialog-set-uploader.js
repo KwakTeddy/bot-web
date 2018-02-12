@@ -94,67 +94,48 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         console.log('레인지 : ', range);
 
         var dialogsetList = [];
-        var context = {};
         for(var r=1; r<range.e.r; r++)
         {
             var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })].v.trim();
             var a = ws[XLSX.utils.encode_cell({ c: range.e.c, r: r })].v.trim();
 
-            var contextName = '';
+            var category = '';
             for(var c=0; c<range.e.c-1; c++)
             {
-                if(contextName)
+                if(category)
                 {
-                    contextName += '@@@';
+                    category += '@@@';
                 }
 
-                contextName += ws[XLSX.utils.encode_cell({ c: c, r: r })].v.trim();
+                category += ws[XLSX.utils.encode_cell({ c: c, r: r })].v.trim();
             }
 
-            if(contextName)
-            {
-                if(!context[contextName])
-                {
-                    context[contextName] = [];
-                }
-
-                context[contextName].push({ q: q, a: a });
-            }
-            else
-            {
-                dialogsetList.push({ q: q, a: a });
-            }
+            dialogsetList.push({ q: q, a: a, category: category });
         }
 
-        if(dialogsetList.length > 0)
+        async.eachSeries(dialogsetList, function(item, next)
         {
-            async.eachSeries(dialogsetList, function(item, next)
+            var dialogsetDialog = new DialogsetDialog();
+            dialogsetDialog.dialogset = dialogsetId;
+            dialogsetDialog.inputRaw = [item.q];
+            dialogsetDialog.output = item.a;
+            dialogsetDialog.category = category;
+
+            NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
             {
-                var dialogsetDialog = new DialogsetDialog();
-                dialogsetDialog.dialogset = dialogsetId;
-                dialogsetDialog.inputRaw = [item.q];
-                dialogsetDialog.output = item.a;
+                dialogsetDialog.input = [nlpText];
 
-                NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+                console.log('세이브 : ', dialogsetDialog.inputRaw);
+                dialogsetDialog.save(function()
                 {
-                    dialogsetDialog.input = [nlpText];
-
-                    console.log('세이브 : ', dialogsetDialog.inputRaw);
-                    dialogsetDialog.save(function()
-                    {
-                        next();
-                    });
+                    next();
                 });
-            },
-            function()
-            {
-                callback();
             });
-        }
-        else
+        },
+        function()
         {
-            saveWithContext(botId, language, dialogsetId, Object.keys(context), context, 0, callback);
-        }
+            callback();
+        });
     };
 
     Uploader.prototype.upload = function(botId, language, dialogsetId, filename, callback)
