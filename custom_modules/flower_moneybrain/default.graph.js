@@ -1434,7 +1434,9 @@ var dialogs = [
                                                 "name": "3.카드/리본 선택",
                                                 "input": [
                                                     {
-                                                        "if": "true"
+                                                        "types": [
+                                                            "dateAndtime1"
+                                                        ]
                                                     }
                                                 ],
                                                 "output": [
@@ -1453,9 +1455,6 @@ var dialogs = [
                                                         ]
                                                     }
                                                 ],
-                                                "task": {
-                                                    "name": "savedeliverytime"
-                                                },
                                                 "id": "default30",
                                                 "children": [
                                                     {
@@ -3795,10 +3794,7 @@ var commonDialogs = [
                 }
             },
             {
-                "text": {
-                    "raw": "이전",
-                    "nlp": "이전"
-                }
+                "regexp": "이전"
             }
         ],
         "output": {
