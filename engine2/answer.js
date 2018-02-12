@@ -130,19 +130,26 @@ var Logger = require('./logger.js');
                 //qa와 dm에서 골라진거 matchRate비교해야함
                 console.log(transaction);
 
-                if(bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
+                if(bot.options.hybrid)
                 {
-                    var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
-                    console.log();
-                    console.log(chalk.yellow('[[[ Q&A ]]]'));
-                    console.log(transaction.qa.matchedDialog);
-                    console.log(text);
+                    var qaMatchedRate = transaction.qa && transaction.qa.matchedDialog ? transaction.qa.matchedDialog.matchRate : -1;
+                    var dmMatchedRate = transaction.dm && transaction.dm.matchedDialog ? transaction.dm.matchedDialog.matchRate : -1;
 
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
+                    if(((qaMatchedRate > dmMatchedRate) || (qaMatchedRate && !dmMatchedRate)) && qaMatchedRate >= (bot.options.dialogsetMinMatchRate || 0.5))
+                    {
+                        var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
+                        console.log();
+                        console.log(chalk.yellow('[[[ Q&A ]]]'));
+                        console.log(transaction.qa.matchedDialog);
+                        console.log(text);
 
-                    callback({ type: 'qa', text: text });
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
+
+                        return callback({ type: 'qa', text: text });
+                    }
                 }
-                else if(transaction.dm && transaction.dm.matchedDialog)
+
+                if(transaction.dm && transaction.dm.matchedDialog)
                 {
                     var dialogInstance = ContextManager.createDialogInstance(transaction.dm.matchedDialog, userInput);
                     DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)
@@ -182,7 +189,7 @@ var Logger = require('./logger.js');
                         }
                     });
                 }
-                else if(!bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
+                else if(!bot.options.hybrid && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
                     var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
                     console.log();
