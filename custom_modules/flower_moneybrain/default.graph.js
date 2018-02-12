@@ -3794,7 +3794,7 @@ var commonDialogs = [
                 }
             },
             {
-                "regexp": "이전"
+                "regexp": "^이전$"
             }
         ],
         "output": {
