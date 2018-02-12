@@ -14,7 +14,9 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var Bot = mongoose.model('Bot');
 
-var uploadModule = require('./uploader/dialogset-uploader');
+// var uploadModule = require('./uploader/dialogset-uploader');
+
+var dialogsetUploader = require('./dialog-set-uploader.js');
 
 exports.findTotalPage = function(req, res)
 {
@@ -98,6 +100,7 @@ exports.create = function(req, res)
     var dialogset = new Dialogset(req.body);
     dialogset.bot = req.params.botId;
     dialogset.user = req.user;
+    dialogset.language = req.body.language || 'ko';
     if(dialogset.filename && dialogset.path)
         dialogset.importState = 'start';
 
@@ -143,7 +146,13 @@ exports.create = function(req, res)
                 // 파일업로드 하면 바로 db에 저장하는 코드임.
                 if(dialogset.filename && dialogset.path)
                 {
-                    uploadModule.importFile(req.body.language, dialogset, function()
+                    // uploadModule.importFile(req.body.language, dialogset, function()
+                    // {
+                    //     dialogset.importState = '';
+                    //     dialogset.save(function(){});
+                    // });
+
+                    dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function()
                     {
                         dialogset.importState = '';
                         dialogset.save(function(){});

@@ -19,7 +19,19 @@ var Dialogset = mongoose.model('Dialogset');
     {
         this.botId = botId;
 
-        this.options = {};
+        this.options = {
+            use: true,
+            kakao: {},
+            globalSearch: {
+                use: false,
+                limitOfSimilarAnswer: 1,
+                memory: false
+            },
+            hybrid: {
+                use: false
+            },
+            dialogsetMinMatchRate: 0.5
+        };
         this.dialogMap = {};
         this.parentDialogMap = {};
         this.dialogs = [];

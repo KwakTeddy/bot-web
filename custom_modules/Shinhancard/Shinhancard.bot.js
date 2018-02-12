@@ -6,4 +6,5 @@ module.exports = function(options)
         use: true,
         limitOfSimilarAnswer: 1
     };
+    options.hybrid = true;
 };

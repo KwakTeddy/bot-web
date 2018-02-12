@@ -25,7 +25,6 @@ var Logger = require('./logger.js');
 
     AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
     {
-        var transaction = new Transaction.async();
         if(context.session.retryDialogInstance && context.session.retryInput)
         {
             // Task에서 파라미터 재질의 한 경우
@@ -95,35 +94,57 @@ var Logger = require('./logger.js');
         }
         else
         {
+            var transaction = new Transaction.sync();
+
             var inputRaw = userInput.text;
             var nlp = userInput.nlp;
-            QNAManager.find(bot, inputRaw, nlp, transaction.callback(function(err, matchedList, done)
+
+            transaction.call(function(done)
             {
-                if(matchedList.length > 0)
+                QNAManager.find(bot, inputRaw, nlp, function(err, matchedList)
                 {
-                    transaction.qa = { type: 'qa', matchedDialog: matchedList[0] };
-                }
+                    if(matchedList.length > 0)
+                    {
+                        transaction.qa = { type: 'qa', matchedDialog: matchedList[0] };
+                    }
 
-                done();
-            }));
+                    done();
+                });
+            });
 
-            DialogGraphManager.find(bot, context, userInput, transaction.callback(function(err, matchedDialog, done)
+            transaction.call(function(done)
             {
-                if(matchedDialog)
+                DialogGraphManager.find(bot, context, userInput, function(err, matchedDialog)
                 {
-                    transaction.dm = { type: 'dm', matchedDialog: matchedDialog };
-                }
+                    if(matchedDialog)
+                    {
+                        transaction.dm = { type: 'dm', matchedDialog: matchedDialog };
+                    }
 
-                done();
-            }));
+                    done();
+                });
+            });
 
             transaction.done(function()
             {
                 //qa와 dm에서 골라진거 matchRate비교해야함
+                console.log(transaction);
 
-                if(this.dm && this.dm.matchedDialog)
+                if(bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
-                    var dialogInstance = ContextManager.createDialogInstance(this.dm.matchedDialog, userInput);
+                    var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
+                    console.log();
+                    console.log(chalk.yellow('[[[ Q&A ]]]'));
+                    console.log(transaction.qa.matchedDialog);
+                    console.log(text);
+
+                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
+
+                    callback({ type: 'qa', text: text });
+                }
+                else if(transaction.dm && transaction.dm.matchedDialog)
+                {
+                    var dialogInstance = ContextManager.createDialogInstance(transaction.dm.matchedDialog, userInput);
                     DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)
                     {
                         if(d)
@@ -150,19 +171,6 @@ var Logger = require('./logger.js');
 
                             callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
                         }
-                        else if(this.qa)
-                        {
-                            var text = this.qa.dialog.output[utils.getRandomInt(0, this.qa.dialog.output.length-1)];
-
-                            console.log();
-                            console.log(chalk.yellow('[[[ Q&A ]]]'));
-                            console.log(this.qa.dialog);
-                            console.log(text);
-
-                            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, text, '', '', '', '', false, 'qna');
-
-                            callback({ type: 'qa', text: text });
-                        }
                         else
                         {
                             console.log();
@@ -174,15 +182,15 @@ var Logger = require('./logger.js');
                         }
                     });
                 }
-                else if(this.qa)
+                else if(!bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
-                    var text = this.qa.dialog.output[utils.getRandomInt(0, this.qa.dialog.output.length-1)];
+                    var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
                     console.log();
                     console.log(chalk.yellow('[[[ Q&A ]]]'));
-                    console.log(this.qa.dialog);
+                    console.log(transaction.qa.matchedDialog);
                     console.log(text);
 
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, dialog.input.text, dialog.input.nlpText, text, '', '', '', '', false, 'qna');
+                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
 
                     callback({ type: 'qa', text: text });
                 }
@@ -193,7 +201,7 @@ var Logger = require('./logger.js');
 
                     var dialog = bot.dialogMap['noanswer'];
                     Logger.logUserDialog(bot.id, context.user.userKey, context.channel, dialog.input.text, dialog.input.nlpText, dialog.output[0].text, dialog.id, dialog.name, '', '', true, 'dialog');
-                    callback({ type: 'dialog', dialogId: dialog.id, output: dialog.output[0] });
+                    callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? dialog.output : dialog.output[0]) });
                 }
             });
         }
