@@ -68,7 +68,7 @@ var ActionManager = require('./action.js');
         return false;
     };
 
-    DialogGraphManager.prototype.checkInput = function(context, dialog, userInput, inputs, callback)
+    DialogGraphManager.prototype.checkInput = function(bot, context, dialog, userInput, inputs, callback)
     {
         var that = this;
         var rawText = userInput.text;
@@ -243,7 +243,7 @@ var ActionManager = require('./action.js');
                 var inputs = dialog.input;
                 if(inputs && inputs.length > 0)
                 {
-                    that.checkInput(context, dialog, userInput, inputs, function(result)
+                    that.checkInput(bot, context, dialog, userInput, inputs, function(result)
                     {
                         if(result)
                         {
@@ -284,7 +284,7 @@ var ActionManager = require('./action.js');
                 return next();
             }
 
-            that.checkInput(context, dialog, userInput, inputs, function(result)
+            that.checkInput(bot, context, dialog, userInput, inputs, function(result)
             {
                 if(result)
                 {
