@@ -1323,6 +1323,14 @@ var dialogs = [
                                     {
                                         "url": "",
                                         "text": "자세히 보기"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
@@ -2373,17 +2381,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "찾고자하시는 동명을 입력해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            }
-                        ]
+                        "text": "찾고자하시는 동명을 입력해주세요."
                     }
                 ],
                 "task": {
