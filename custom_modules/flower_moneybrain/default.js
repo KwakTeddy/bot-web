@@ -73,6 +73,8 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.category[i];
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"});
+
                     callback();
                 }
                 callback();
@@ -129,6 +131,7 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name;
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"});
                     callback();
                 }
             });
@@ -198,7 +201,8 @@ module.exports = function (bot)
                                 {
                                     text: '다른 상품 더보기',
                                     url: ""
-                                }
+                                },
+                               {text: "이전으로 가기"}
                             ];
                         }
                     }
@@ -209,7 +213,8 @@ module.exports = function (bot)
                                 {
                                     text: '주문서 확인하기',
                                     url: ""
-                                }
+                                },
+                                {text: "이전으로 가기"}
                             ];
                         }
                     }
@@ -247,6 +252,7 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.faqcategory[i];
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"});
                     callback();
                 }
                 callback();
@@ -300,6 +306,7 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"});
 
                     callback();
                 }
@@ -651,8 +658,11 @@ module.exports = function (bot)
                             {
                                 text: "참고문구",
                                 url: ""
+                            },
+                            {
+                                text: "이전으로 가기"
                             }
-                        ];
+                            ];
                         callback();
                     }
                     else {
@@ -665,6 +675,9 @@ module.exports = function (bot)
                             {
                                 text: "익명",
                                 url: ""
+                            },
+                            {
+                                text: "이전으로 가기"
                             }
                         ];
                         callback();
@@ -678,6 +691,9 @@ module.exports = function (bot)
                             {
                                 text: "참고문구",
                                 url: ""
+                            },
+                            {
+                                text: "이전으로 가기"
                             }
                         ];
                         callback();
@@ -692,6 +708,9 @@ module.exports = function (bot)
                             {
                                 text: "익명",
                                 url: ""
+                            },
+                            {
+                                text: "이전으로 가기"
                             }
                         ];
                         callback();
@@ -733,6 +752,10 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greetingcategory[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            });
                         callback();
                     }
                 })
@@ -762,6 +785,10 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greetingcategory[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            });
                         callback();
                     }
                 })
@@ -806,6 +833,9 @@ module.exports = function (bot)
                     {
                         text: "참고문구",
                         url: ""
+                    },
+                    {
+                        text: "이전으로 가기"
                     }
                 ];
                 callback();
@@ -815,6 +845,9 @@ module.exports = function (bot)
                     {
                         text: "참고문구",
                         url: ""
+                    },
+                    {
+                        text: "이전으로 가기"
                     }
                 ];
                 callback();
@@ -867,6 +900,10 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greeting[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            });
                     }
                     callback();
                 });
@@ -908,6 +945,10 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greeting[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            });
                     }
                     callback();
                 });
@@ -983,7 +1024,10 @@ module.exports = function (bot)
                             {
                                 text: '주문서 확인하기',
                                 url: ""
-                            }
+                            },
+                        {
+                            text: "이전으로 가기"
+                        }
                         ];
 
                     callback();
@@ -1099,6 +1143,9 @@ module.exports = function (bot)
                 {
                     text: '변경하기',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             callback();
@@ -1162,6 +1209,9 @@ module.exports = function (bot)
                         },
                         {
                             text: '시작'
+                        },
+                        {
+                            text: "이전으로 가기"
                         }
                     ];
 
@@ -1482,7 +1532,13 @@ module.exports = function (bot)
                 {
                     text: '상품 변경',
                     url: ""
-                }
+                },
+               {
+                   text: "이전으로 가기"
+               },
+               {
+                   text: "이전으로 가기"
+               }
             ];
             callback();
         }
@@ -1494,6 +1550,9 @@ module.exports = function (bot)
                 {
                     text: '참고문구',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             callback();
@@ -1555,6 +1614,7 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.orderlist[i].itemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"});
                     callback();
                 }
             });
@@ -1594,6 +1654,9 @@ module.exports = function (bot)
                 {
                     text: "시작",
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             //};
@@ -1656,6 +1719,9 @@ module.exports = function (bot)
                 {
                     text: '시작',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             callback();
@@ -1695,6 +1761,9 @@ module.exports = function (bot)
                 {
                     text: '시작',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             callback();
@@ -1844,6 +1913,9 @@ module.exports = function (bot)
                             {
                                 text: '네 주문하기',
                                 url: ""
+                            },
+                            {
+                                text: "이전으로 가기"
                             }
                         ]
                     }

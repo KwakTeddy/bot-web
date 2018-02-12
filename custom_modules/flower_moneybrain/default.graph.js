@@ -333,6 +333,9 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "추천해줘"
+                    },
+                    {
+                        "text": "이전으로 가기"
                     }
                 ]
             }
@@ -648,8 +651,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요.",
-                "buttons": []
+                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요."
             }
         ],
         "id": "default3",
@@ -1214,6 +1216,9 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "아니요"
+                    },
+                    {
+                        "text": "이전으로 가기"
                     }
                 ]
             }
@@ -1231,6 +1236,9 @@ var dialogs = [
                             "raw": "네",
                             "nlp": "네"
                         }
+                    },
+                    {
+                        "text": "이전으로 가기"
                     }
                 ],
                 "output": [
@@ -1245,6 +1253,9 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "신부"
+                            },
+                            {
+                                "text": "이전으로 가기"
                             }
                         ]
                     }
@@ -1451,6 +1462,9 @@ var dialogs = [
                                                             {
                                                                 "url": "",
                                                                 "text": "리본"
+                                                            },
+                                                            {
+                                                                "text": "이전으로 가기"
                                                             }
                                                         ]
                                                     }
@@ -1531,6 +1545,9 @@ var dialogs = [
                                                                                             {
                                                                                                 "url": "",
                                                                                                 "text": "아니요"
+                                                                                            },
+                                                                                            {
+                                                                                                "text": "이전으로 가기"
                                                                                             }
                                                                                         ]
                                                                                     }
@@ -1553,8 +1570,7 @@ var dialogs = [
                                                                                         "output": [
                                                                                             {
                                                                                                 "kind": "Content",
-                                                                                                "text": "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!",
-                                                                                                "buttons": []
+                                                                                                "text": "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!"
                                                                                             }
                                                                                         ],
                                                                                         "id": "default37",
@@ -1621,6 +1637,9 @@ var dialogs = [
                                                                                                             {
                                                                                                                 "url": "",
                                                                                                                 "text": "현금 영수증 발급"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "text": "이전으로 가기"
                                                                                                             }
                                                                                                         ]
                                                                                                     }
@@ -1681,6 +1700,9 @@ var dialogs = [
                                                                                                                     {
                                                                                                                         "url": "",
                                                                                                                         "text": "주문내역"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "이전으로 가기"
                                                                                                                     }
                                                                                                                 ],
                                                                                                                 "type": "call",
@@ -1724,6 +1746,9 @@ var dialogs = [
                                                                                                                             {
                                                                                                                                 "url": "",
                                                                                                                                 "text": "주문내역"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "text": "이전으로 가기"
                                                                                                                             }
                                                                                                                         ]
                                                                                                                     }
@@ -1862,8 +1887,7 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 받는 분 연락처를 알려주세요.\n(ex: 01012345678)",
-                                                                                                                                                "buttons": []
+                                                                                                                                                "text": "변경하시고 싶은 받는 분 연락처를 알려주세요.\n(ex: 01012345678)"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default64",
@@ -1958,8 +1982,7 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 배달주소를 알려주세요.",
-                                                                                                                                                "buttons": []
+                                                                                                                                                "text": "변경하시고 싶은 배달주소를 알려주세요."
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default66",
@@ -2000,8 +2023,7 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 배달일자를 알려주세요.\n(ex: 20180625 오후 3시)",
-                                                                                                                                                "buttons": []
+                                                                                                                                                "text": "변경하시고 싶은 배달일자를 알려주세요.\n(ex: 20180625 오후 3시)"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "id": "default68",
@@ -2283,6 +2305,9 @@ var dialogs = [
                                                                                                                             {
                                                                                                                                 "url": "",
                                                                                                                                 "text": "주문내역"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "text": "이전으로 가기"
                                                                                                                             }
                                                                                                                         ]
                                                                                                                     }
@@ -2405,6 +2430,9 @@ var dialogs = [
                                                                                                                             {
                                                                                                                                 "url": "",
                                                                                                                                 "text": "주문내역"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "text": "이전으로 가기"
                                                                                                                             }
                                                                                                                         ]
                                                                                                                     }
@@ -3329,6 +3357,9 @@ var dialogs = [
                     {
                         "url": "http://flowercenterjst.allofthat.kr/?doc=sub_07",
                         "text": "게시판으로 이동하기"
+                    },
+                    {
+                        "text": "이전으로 가기"
                     }
                 ]
             }
@@ -3440,8 +3471,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "api 연동중",
-                "buttons": []
+                "text": "api 연동중"
             }
         ],
         "id": "default53"
@@ -3513,8 +3543,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "완료된 고객님의 지난 주문내역입니다.\n\n지난 주문내역과 동일한 상품으로 주문을 원하시면 해당 주문내역의 번호를 입력하세요.",
-                "buttons": []
+                "text": "완료된 고객님의 지난 주문내역입니다.\n\n지난 주문내역과 동일한 상품으로 주문을 원하시면 해당 주문내역의 번호를 입력하세요."
             }
         ],
         "task": {
@@ -3615,6 +3644,9 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "아니요"
+                    },
+                    {
+                        "text": "이전으로 가기"
                     }
                 ]
             }
@@ -3724,8 +3756,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "고객님께서는 비회원이시기 때문에 주문내역을 확인해드릴 수가 없습니다.\n\n플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다.",
-                "buttons": []
+                "text": "고객님께서는 비회원이시기 때문에 주문내역을 확인해드릴 수가 없습니다.\n\n플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
             }
         ],
         "task": {
@@ -3794,12 +3825,18 @@ var commonDialogs = [
                 }
             },
             {
-                "regexp": "^이전$"
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
             }
         ],
-        "output": {
-            "up": 1
-        }
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
     }
 ];
 
@@ -3807,4 +3844,4 @@ module.exports = function(bot)
 {
 	bot.setDialogs(dialogs);
 	bot.setCommonDialogs(commonDialogs);
-}
+};
