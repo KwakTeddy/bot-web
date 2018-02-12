@@ -547,7 +547,7 @@ module.exports = function (bot)
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
-                    mobile: context.user.mobile
+                    mobile: context.session.mobile
                 };
                 request.get(options, function (err, response, body)
                 {
