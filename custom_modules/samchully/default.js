@@ -1634,6 +1634,12 @@ module.exports = function(bot)
                 {
                     text: '자세히 보기',
                     url: url
+                },
+                {
+                    text: '이전'
+                },
+                {
+                    text: '처음'
                 }
             ];
 		    callback();
