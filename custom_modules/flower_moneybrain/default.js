@@ -353,6 +353,9 @@ module.exports = function (bot)
                         {
                             text: '시작',
                             url: ""
+                        },
+                        {
+                            text: '이전으로 가기'
                         }
                     ];
                 }
@@ -381,7 +384,7 @@ module.exports = function (bot)
 
     bot.setTask('savename',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.user.name = "";
                 context.user.name = dialog.userInput.text;
                 callback();
@@ -563,7 +566,7 @@ module.exports = function (bot)
 
     bot.setTask('bridegroomorbride',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 var str = dialog.userInput.text;
                 if (str.indexOf("신랑") >= 0) {
                     context.session.brideornot = "신랑측"
@@ -590,7 +593,7 @@ module.exports = function (bot)
 
     bot.setTask('savefriendname',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.session.friendname = dialog.userInput.text;
                 callback();
             }
@@ -648,7 +651,7 @@ module.exports = function (bot)
     bot.setTask('savedecorate',{
         action: function (dialog, context, callback) {
 
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text  !== "이전") {
+            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 if (context.session.decorate === undefined) {
 
                     var str = dialog.userInput.text ;
@@ -819,7 +822,7 @@ module.exports = function (bot)
 
     bot.setTask('savesendname', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text  !== "이전" && dialog.userInput.text  !== "아니요") {
+            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0 && dialog.userInput.text  !== "아니요") {
                 if (dialog.userInput.text.indexOf("익명") >= 0) {
                     context.session.sendname = "익명";
                 }
@@ -979,7 +982,7 @@ module.exports = function (bot)
 
     bot.setTask('savebill',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 if (dialog.userInput.text=== "필요없음" || dialog.userInput.text === "1") {
                     context.session.bill = "필요없음";
                 }
@@ -1000,7 +1003,7 @@ module.exports = function (bot)
 
     bot.setTask('savegreeting',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 if (context.session.selectchange !== 1) {
                     if (context.session.greetingitemlist !== undefined) {
                         context.session.selectedgreeting = context.session.greetingitemlist;
@@ -1045,7 +1048,7 @@ module.exports = function (bot)
 
     bot.setTask('savepayway', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 if (dialog.userInput.text === "카드 결제하기" || dialog.userInput.text === "1") {
                     context.session.payway = "카드";
                 }
@@ -1209,9 +1212,6 @@ module.exports = function (bot)
                         },
                         {
                             text: '시작'
-                        },
-                        {
-                            text: "이전으로 가기"
                         }
                     ];
 
@@ -1546,6 +1546,7 @@ module.exports = function (bot)
 
     bot.setTask('deletegreeting', {
         action: function (dialog, context, callback) {
+            context.session.greetingitemlist=undefined;
             dialog.output[0].buttons = [
                 {
                     text: '참고문구',
@@ -1563,7 +1564,7 @@ module.exports = function (bot)
 
     bot.setTask('saveitemnumber',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.session.itemnumber = dialog.userInput.text;
                 callback();
             }
@@ -1576,7 +1577,7 @@ module.exports = function (bot)
 
     bot.setTask('saveotherrequire',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.session.otherrequire = dialog.userInput.text;
                 callback();
             }

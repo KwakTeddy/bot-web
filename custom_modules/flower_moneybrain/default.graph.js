@@ -2659,6 +2659,12 @@ var dialogs = [
                                                                                         "input": [
                                                                                             {
                                                                                                 "intent": "아니요"
+                                                                                            },
+                                                                                            {
+                                                                                                "text": {
+                                                                                                    "raw": "아니요",
+                                                                                                    "nlp": "아니다"
+                                                                                                }
                                                                                             }
                                                                                         ],
                                                                                         "output": [
@@ -2666,9 +2672,9 @@ var dialogs = [
                                                                                                 "kind": "Action",
                                                                                                 "if": "context.session.decorate==\"리본\"",
                                                                                                 "type": "call",
-                                                                                                "dialogName": "3.리본좌측 입력요청",
-                                                                                                "dialog": "3.리본좌측 입력요청",
-                                                                                                "dialogId": "default32"
+                                                                                                "dialogName": "3.문구입력요청2",
+                                                                                                "dialog": "3.문구입력요청2",
+                                                                                                "dialogId": "default49"
                                                                                             },
                                                                                             {
                                                                                                 "kind": "Action",
@@ -3844,4 +3850,4 @@ module.exports = function(bot)
 {
 	bot.setDialogs(dialogs);
 	bot.setCommonDialogs(commonDialogs);
-};
+}
