@@ -1057,7 +1057,7 @@ module.exports = function (bot)
                     else {
                         context.session.selectedgreeting = dialog.userInput.text;
                     }
-                    dialog.output[0].text= "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!";
+                    dialog.output[0].text= "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^";
                     callback();
                 }
                 else {
