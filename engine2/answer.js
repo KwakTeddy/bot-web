@@ -101,10 +101,11 @@ var Logger = require('./logger.js');
 
             transaction.call(function(done)
             {
-                QNAManager.find(bot, inputRaw, nlp, function(err, matchedList)
+                QNAManager.find(bot, context, inputRaw, nlp, function(err, matchedList)
                 {
                     if(matchedList.length > 0)
                     {
+                        //만약 matchRate가 똑같은게 여러개 있다면 물어봐야함.
                         transaction.qa = { type: 'qa', matchedDialog: matchedList[0] };
                     }
 
@@ -138,6 +139,12 @@ var Logger = require('./logger.js');
                     if(((qaMatchedRate > dmMatchedRate) || (qaMatchedRate && !dmMatchedRate)) && qaMatchedRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                     {
                         var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
+
+                        if(transaction.qa.matchedDialog.context)
+                        {
+                            context.session.currentContext = { _id: transaction.qa.matchedDialog.context._id, name: transaction.qa.matchedDialog.context.name };
+                        }
+
                         console.log();
                         console.log(chalk.yellow('[[[ Q&A ]]]'));
                         console.log(transaction.qa.matchedDialog);
@@ -192,6 +199,12 @@ var Logger = require('./logger.js');
                 else if(!bot.options.hybrid && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
                     var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
+
+                    if(transaction.qa.matchedDialog.context)
+                    {
+                        context.session.currentContext = { _id: transaction.qa.matchedDialog.context._id, name: transaction.qa.matchedDialog.context.name };
+                    }
+
                     console.log();
                     console.log(chalk.yellow('[[[ Q&A ]]]'));
                     console.log(transaction.qa.matchedDialog);
