@@ -49,6 +49,13 @@ module.exports = function(bot)
     {
         console.log(JSON.stringify(errData, null, 4));
 
+        if(!errData)
+        {
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "결과 값이 없습니다."';
+            return
+        }
+
+
         if(errData.E_RETCD)
         {
             dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
@@ -336,7 +343,13 @@ module.exports = function(bot)
                 }
 				else
     	        {
-    	            if(body.E_RETCD == 'E')
+    	            if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
+                    if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
                     }
@@ -414,6 +427,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -490,6 +509,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -556,6 +581,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -638,6 +669,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -716,6 +753,12 @@ module.exports = function(bot)
                     }
                     else
                     {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            callback();
+                        }
+
                         if(body.E_RETCD == 'E')
                         {
                             errorHandler(dialog, body);
@@ -768,6 +811,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -813,6 +862,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -855,6 +910,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -899,6 +960,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -938,6 +1005,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -981,6 +1054,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -1030,6 +1109,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -1086,6 +1171,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         if(body.E_RETMSG.indexOf('정보 없음') != -1 || body.E_RETMSG.indexOf('결과가 없습니다') != -1)
@@ -1266,6 +1357,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         if(body.E_RETMSG.indexOf('정보 없음') != -1)
@@ -1340,6 +1437,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -1398,6 +1501,12 @@ module.exports = function(bot)
                 else
                 {
 
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
+
                     if(body.E_RETCD == 'E')
                     {
                         errorHandler(dialog, body);
@@ -1448,6 +1557,12 @@ module.exports = function(bot)
                 }
                 else
                 {
+
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                       return callback();
+                    }
 
                     if(body.E_RETCD == 'E')
                     {
