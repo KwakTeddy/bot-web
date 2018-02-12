@@ -47,6 +47,7 @@ module.exports = function (bot)
     {
         action: function (dialog, context, callback)
         {
+            // context.user.mobile=undefined;
             var modelname = 'flower_moneybrain_category';
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -73,7 +74,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.category[i];
                         dialog.output[0].buttons.push({text: ss});
                     }
-                    dialog.output[0].buttons.push({text: "이전으로 가기"});
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
 
                     callback();
                 }
@@ -131,7 +135,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name;
                         dialog.output[0].buttons.push({text: ss});
                     }
-                    dialog.output[0].buttons.push({text: "이전으로 가기"});
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
                     callback();
                 }
             });
@@ -202,7 +209,10 @@ module.exports = function (bot)
                                     text: '다른 상품 더보기',
                                     url: ""
                                 },
-                               {text: "이전으로 가기"}
+                               {text: "이전으로 가기"},
+                                {
+                                    text: "처음으로 돌아가기"
+                                }
                             ];
                         }
                     }
@@ -214,7 +224,10 @@ module.exports = function (bot)
                                     text: '주문서 확인하기',
                                     url: ""
                                 },
-                                {text: "이전으로 가기"}
+                                {text: "이전으로 가기"},
+                                {
+                                    text: "처음으로 돌아가기"
+                                }
                             ];
                         }
                     }
@@ -252,7 +265,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.faqcategory[i];
                         dialog.output[0].buttons.push({text: ss});
                     }
-                    dialog.output[0].buttons.push({text: "이전으로 가기"});
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
                     callback();
                 }
                 callback();
@@ -306,7 +322,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
                         dialog.output[0].buttons.push({text: ss});
                     }
-                    dialog.output[0].buttons.push({text: "이전으로 가기"});
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
 
                     callback();
                 }
@@ -439,28 +458,27 @@ module.exports = function (bot)
 
     bot.setTask('savemobile',{
         preCallback: function (dialog, context, callback) {
-
-            context.user.mobile = dialog.userInput.types.mobile;
-            var randomNum = '';
-            randomNum += '' + Math.floor(Math.random() * 10);
-            randomNum += '' + Math.floor(Math.random() * 10);
-            randomNum += '' + Math.floor(Math.random() * 10);
-            randomNum += '' + Math.floor(Math.random() * 10);
-            context.session.smsAuth = randomNum;
-            var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
-            request.post(
-                'https://bot.moneybrain.ai/api/messages/sms/send',
-                {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
-                function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        console.log("response.statusCode:" + response.statusCode);
-                        console.log("context.session.smsAuth=" + context.session.smsAuth);
-                        return callback();
-                    } else {
-                        console.log("error:" + error);
+                context.session.mobile = dialog.userInput.types.mobile;
+                var randomNum = '';
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                context.session.smsAuth = randomNum;
+                var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
+                request.post(
+                    'https://bot.moneybrain.ai/api/messages/sms/send',
+                    {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
+                    function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            console.log("response.statusCode:" + response.statusCode);
+                            console.log("context.session.smsAuth=" + context.session.smsAuth);
+                            return callback();
+                        } else {
+                            console.log("error:" + error);
+                        }
                     }
-                }
-            );
+                );
             callback();
         }
     });
@@ -543,6 +561,7 @@ module.exports = function (bot)
                         console.log(response.statusCode);
                         if(body.length>0){
                             context.session.olduser=true;
+                            context.user.mobile=body[0].mobile;
                             context.user.name=body[0].name;
                             context.user.email=body[0].email;
                             return callback(matched);
@@ -657,15 +676,18 @@ module.exports = function (bot)
                     var str = dialog.userInput.text ;
                     if (str.indexOf("카드") >= 0) {
                         context.session.decorate = "카드";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "참고문구",
-                                url: ""
-                            },
-                            {
-                                text: "이전으로 가기"
-                            }
-                            ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "참고문구",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        //     ];
                         callback();
                     }
                     else {
@@ -681,6 +703,9 @@ module.exports = function (bot)
                             },
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             }
                         ];
                         callback();
@@ -690,15 +715,18 @@ module.exports = function (bot)
                     str = dialog.userInput.text ;
                     if (str.indexOf("리본") < 0) {
                         context.session.decorate = "카드";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "참고문구",
-                                url: ""
-                            },
-                            {
-                                text: "이전으로 가기"
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "참고문구",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        // ];
                         callback();
                     }
                     else {
@@ -714,6 +742,9 @@ module.exports = function (bot)
                             },
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             }
                         ];
                         callback();
@@ -758,6 +789,9 @@ module.exports = function (bot)
                         dialog.output[0].buttons.push(
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             });
                         callback();
                     }
@@ -791,6 +825,9 @@ module.exports = function (bot)
                         dialog.output[0].buttons.push(
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             });
                         callback();
                     }
@@ -832,27 +869,33 @@ module.exports = function (bot)
                 else {
                     context.session.sendname = dialog.userInput.text;
                 }
-                dialog.output[0].buttons = [
-                    {
-                        text: "참고문구",
-                        url: ""
-                    },
-                    {
-                        text: "이전으로 가기"
-                    }
-                ];
+                // dialog.output[0].buttons = [
+                //     {
+                //         text: "참고문구",
+                //         url: ""
+                //     },
+                //     {
+                //         text: "이전으로 가기"
+                //     },
+                //     {
+                //         text: "처음으로 돌아가기"
+                //     }
+                // ];
                 callback();
             }
             else {
-                dialog.output[0].buttons = [
-                    {
-                        text: "참고문구",
-                        url: ""
-                    },
-                    {
-                        text: "이전으로 가기"
-                    }
-                ];
+                // dialog.output[0].buttons = [
+                //     {
+                //         text: "참고문구",
+                //         url: ""
+                //     },
+                //     {
+                //         text: "이전으로 가기"
+                //     },
+                //     {
+                //         text: "처음으로 돌아가기"
+                //     }
+                // ];
                 callback();
             }
         }
@@ -906,6 +949,9 @@ module.exports = function (bot)
                         dialog.output[0].buttons.push(
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             });
                     }
                     callback();
@@ -951,6 +997,9 @@ module.exports = function (bot)
                         dialog.output[0].buttons.push(
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             });
                     }
                     callback();
@@ -980,25 +1029,25 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('savebill',{
-        action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
-                if (dialog.userInput.text=== "필요없음" || dialog.userInput.text === "1") {
-                    context.session.bill = "필요없음";
-                }
-                else if (dialog.userInput.text === "계산서 발행" || dialog.userInput.text === "2") {
-                    context.session.bill = "계산서 발행";
-                }
-                else if (dialog.userInput.text === "현금 영수증 발급" || dialog.userInput.text === "3") {
-                    context.session.bill = "현금 영수증 발급";
-                }
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
+    // bot.setTask('savebill',{
+    //     action: function (dialog, context, callback) {
+    //         if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+    //             if (dialog.userInput.text=== "필요없음" || dialog.userInput.text === "1") {
+    //                 context.session.bill = "필요없음";
+    //             }
+    //             else if (dialog.userInput.text === "계산서 발행" || dialog.userInput.text === "2") {
+    //                 context.session.bill = "계산서 발행";
+    //             }
+    //             else if (dialog.userInput.text === "현금 영수증 발급" || dialog.userInput.text === "3") {
+    //                 context.session.bill = "현금 영수증 발급";
+    //             }
+    //             callback();
+    //         }
+    //         else {
+    //             callback();
+    //         }
+    //     }
+    // });
 
 
     bot.setTask('savegreeting',{
@@ -1030,6 +1079,9 @@ module.exports = function (bot)
                             },
                         {
                             text: "이전으로 가기"
+                        },
+                        {
+                            text: "처음으로 돌아가기"
                         }
                         ];
 
@@ -1046,25 +1098,25 @@ module.exports = function (bot)
 
 
 
-    bot.setTask('savepayway', {
-        action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
-                if (dialog.userInput.text === "카드 결제하기" || dialog.userInput.text === "1") {
-                    context.session.payway = "카드";
-                }
-                else if (dialog.userInput.text=== "무통장 입금하기" || dialog.userInput.text=== "2") {
-                    context.session.payway = "무통장";
-                }
-                else if (dialog.userInput.text === "카카오페이" ||dialog.userInput.text=== "3") {
-                    context.session.payway = "카카오페이";
-                }
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
+    // bot.setTask('savepayway', {
+    //     action: function (dialog, context, callback) {
+    //         if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+    //             if (dialog.userInput.text === "카드 결제하기" || dialog.userInput.text === "1") {
+    //                 context.session.payway = "카드";
+    //             }
+    //             else if (dialog.userInput.text=== "무통장 입금하기" || dialog.userInput.text=== "2") {
+    //                 context.session.payway = "무통장";
+    //             }
+    //             else if (dialog.userInput.text === "카카오페이" ||dialog.userInput.text=== "3") {
+    //                 context.session.payway = "카카오페이";
+    //             }
+    //             callback();
+    //         }
+    //         else {
+    //             callback();
+    //         }
+    //     }
+    // });
 
 
 
@@ -1125,9 +1177,9 @@ module.exports = function (bot)
             //포장방식:
             context.session.orderinfor.decorateway = context.session.decorate;
             //계산서 필요할건지:
-            context.session.orderinfor.bill = context.session.bill;
+            // context.session.orderinfor.bill = context.session.bill;
             //결제 방식:
-            context.session.orderinfor.payway = context.session.payway;
+            // context.session.orderinfor.payway = context.session.payway;
             //총 금액
             var price = context.session.orderinfor.itemprice;
             var number = context.session.orderinfor.itemnumber;
@@ -1149,6 +1201,9 @@ module.exports = function (bot)
                 },
                 {
                     text: "이전으로 가기"
+                },
+                {
+                    text: "처음으로 돌아가기"
                 }
             ];
             callback();
@@ -1178,8 +1233,8 @@ module.exports = function (bot)
                 showtime: context.session.orderinfor.showtime,
                 // deliveryway: context.session.orderinfor.deliveryway,
                 decorateway: context.session.orderinfor.decorateway,
-                bill: context.session.orderinfor.bill,
-                payway: context.session.orderinfor.payway,
+                // bill: context.session.orderinfor.bill,
+                // payway: context.session.orderinfor.payway,
                 allprice: context.session.orderinfor.allprice,
                 deliverytime: context.session.orderinfor.deliverytime,
                 otherrequire: context.session.orderinfor.otherrequire,
@@ -1240,14 +1295,15 @@ module.exports = function (bot)
                     //포장방식:
                     context.session.decorate = undefined;
                     //계산서 필요할건지:
-                    context.session.bill = undefined;
+                    // context.session.bill = undefined;
                     //결제 방식:
-                    context.session.payway = undefined;
+                    // context.session.payway = undefined;
                     //변경:
                     context.session.selectchange = undefined;
                     //다른 요구사항
                     context.session.otherrequire = undefined;
                     context.session.olduser=undefined;
+                    context.session.findorder = undefined;
                     //매세지:
 
 
@@ -1323,7 +1379,7 @@ module.exports = function (bot)
                                     '<br>' + '<b>배달주소: </b>' + context.session.orderinfor.receiveraddress + '<br>' + '<b>배달일자: </b>' + context.session.orderinfor.deliverytime +
                                     '<br>' + '<b>남기시는 메세지: </b>' + context.session.orderinfor.greeting + '<br>' + '<b>상품: </b>' + context.session.orderinfor.itemname + '<br>' + '<b>수량: </b>' + context.session.orderinfor.itemnumber + '<b>개</b>' + '<br>' + '<b>총: </b>' + context.session.orderinfor.allprice + '<b>원</b>' +
                                     '<br>' + '<b>신부신랑: </b>' + context.session.orderinfor.brideornot + '<br>' + '<b>신부신랑 전시 시간: </b>' + context.session.orderinfor.showtime + '<br>' + '<b>다른 요구사항: </b>' + context.session.orderinfor.otherrequire + '<br>' +
-                                    '<br>' + '<b>계산서 필요할건지: </b>' + context.session.orderinfor.bill + '<br>' + '<b>배송방식: </b>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway+ '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
+                                    '<br>' + '<b>계산서 필요할건지: </b>' + context.session.orderinfor.bill + '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway+ '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
                                 };
 
                                 transporter.sendMail(mailOptions, function (error, info) {
@@ -1537,7 +1593,7 @@ module.exports = function (bot)
                    text: "이전으로 가기"
                },
                {
-                   text: "이전으로 가기"
+                   text: "처음으로 돌아가기"
                }
             ];
             callback();
@@ -1547,15 +1603,18 @@ module.exports = function (bot)
     bot.setTask('deletegreeting', {
         action: function (dialog, context, callback) {
             context.session.greetingitemlist=undefined;
-            dialog.output[0].buttons = [
-                {
-                    text: '참고문구',
-                    url: ""
-                },
-                {
-                    text: "이전으로 가기"
-                }
-            ];
+            // dialog.output[0].buttons = [
+            //     {
+            //         text: '참고문구',
+            //         url: ""
+            //     },
+            //     {
+            //         text: "이전으로 가기"
+            //     },
+            //     {
+            //         text: "처음으로 돌아가기"
+            //     }
+            // ];
             callback();
         }
     });
@@ -1615,7 +1674,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.orderlist[i].itemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
                         dialog.output[0].buttons.push({text: ss});
                     }
-                    dialog.output[0].buttons.push({text: "이전으로 가기"});
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
                     callback();
                 }
             });
@@ -1694,9 +1756,9 @@ module.exports = function (bot)
             //포장방식:
             context.session.decorate = undefined;
             //계산서 필요할건지:
-            context.session.bill = undefined;
+            // context.session.bill = undefined;
             //결제 방식:
-            context.session.payway = undefined;
+            // context.session.payway = undefined;
             //변경:
             context.session.selectchange = undefined;
             //다른 요구사항
@@ -1740,7 +1802,7 @@ module.exports = function (bot)
             var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
             request.post(
                 'https://bot.moneybrain.ai/api/messages/sms/send',
-                {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
+                {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
                 function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log("response.statusCode:" + response.statusCode);
@@ -1775,20 +1837,24 @@ module.exports = function (bot)
         {
             action: function (dialog, context, callback) {
                 dialog.output[0].image = {url: 'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg'};
-                dialog.output[0].buttons = [
-                    {
-                        text: '1.자주하는 질문',
-                        url: ''
-                    },
-                    {
-                        text: '2.상품주문하기',
-                        url: ''
-                    },
-                    {
-                        text: '3.문의하기',
-                        url: ''
-                    }
-                ];
+                // dialog.output[0].buttons = [
+                //     {
+                //         text: '1.자주하는 질문',
+                //         url: ''
+                //     },
+                //     {
+                //         text: '2.상품주문하기',
+                //         url: ''
+                //     },
+                //     {
+                //         text: '3.문의하기',
+                //         url: ''
+                //     },
+                //     {
+                //         text: '4.주문 확인하기',
+                //         url: ''
+                //     }
+                // ];
 
                 console.log('으 다이얼로그 : ', dialog);
 
@@ -1823,15 +1889,16 @@ module.exports = function (bot)
             //포장방식:
             context.session.decorate = undefined;
             //계산서 필요할건지:
-            context.session.bill = undefined;
+            // context.session.bill = undefined;
             //결제 방식:
-            context.session.payway = undefined;
+            // context.session.payway = undefined;
             //변경:
             context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
             context.session.greetingitemlist=undefined;
+            context.session.findorder = undefined;
 
             callback();
         }
@@ -1917,6 +1984,9 @@ module.exports = function (bot)
                             },
                             {
                                 text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             }
                         ]
                     }
@@ -2187,9 +2257,14 @@ module.exports = function (bot)
             callback(matched);
         }
     });
+
+	bot.setTask('deletemobile', 
+	{
+		action: function (dialog, context, callback)
+		{
+		    console.log("======================================================9999");
+		    context.user.mobile=undefined;
+			callback();
+		}
+	});
 };
-
-
-
-
-

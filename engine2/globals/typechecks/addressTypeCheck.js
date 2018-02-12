@@ -1,5 +1,6 @@
 function searchAddress(task, context, callback) {
 
+
     var model = mongo.getModel('buildingdata', 건물정보스키마);
 
     var query = {};
