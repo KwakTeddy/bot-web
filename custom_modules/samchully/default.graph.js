@@ -2373,17 +2373,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "찾고자하시는 동명을 입력해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            }
-                        ]
+                        "text": "찾고자하시는 동명을 입력해주세요."
                     }
                 ],
                 "task": {
