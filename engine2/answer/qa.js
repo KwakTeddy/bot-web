@@ -99,7 +99,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             {
                                 if(matchedList[i].input[k].indexOf(nlp[j].text) != -1)
                                 {
-                                    count++;
+                                    count += (nlp[j].pos == 'Noun' ? 2 : 1);
                                 }
                             }
 
@@ -111,7 +111,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         }
 
                         var inputs = targetInput.split(' ');
-                        matchedList[i].matchRate = (count == nlp.length ? 1 : 0) + (maxCount / inputs.length);
+                        matchedList[i].matchRate = (maxCount / inputs.length);
                     }
                 }
 
