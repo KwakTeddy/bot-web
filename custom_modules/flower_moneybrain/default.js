@@ -49,7 +49,7 @@ module.exports = function (bot)
 
             {
 
-                // context.user.mobile=undefined;
+                context.user.mobile=undefined;
                 var modelname = 'flower_moneybrain_category';
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -430,7 +430,9 @@ module.exports = function (bot)
                     name: context.user.name,
                     mobile: context.user.mobile,
                     email: context.user.email,
-                    botId: bot.id
+                    botId: bot.id,
+                    createTime:new Date().toLocaleString(),
+                    updateTime:new Date().toLocaleString()
                 };
                 var modelname="flower_moneybrain_user";
                 var options = {};
@@ -566,10 +568,31 @@ module.exports = function (bot)
                             context.user.mobile=body[0].mobile;
                             context.user.name=body[0].name;
                             context.user.email=body[0].email;
+
+                            // // var updateuser = [{
+                            // //     botId: bot.id},{
+                            // //     updateTime:new Date().toISOString()
+                            // // }];
+                            // // var modelname="flower_moneybrain_user";
+                            // // var options = {};
+                            // //
+                            // // options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+                            // // options.json = updateuser;
+                            //
+                            // request.put(options, function(err, response, body) {
+                            //     if (err) {
+                            //         console.log(err);
+                            //     }
+                            //     else {
+                            //         console.log("response.statusCode=" + response.statusCode);
+                            //         return callback(matched);
+                            //     }
+                            // });
                             return callback(matched);
                         }
                         else{
                             context.session.olduser=false;
+                            context.user.mobile=context.session.mobile;
                             return callback(matched);
                         }
                     }
