@@ -46,7 +46,9 @@ module.exports = function (bot)
     bot.setTask("getcategory",
         {
             action: function (dialog, context, callback)
+
             {
+
                 // context.user.mobile=undefined;
                 var modelname = 'flower_moneybrain_category';
                 var options = {};
@@ -1197,9 +1199,6 @@ module.exports = function (bot)
                     url: ""
                 },
                 {
-                    text: "이전으로 가기"
-                },
-                {
                     text: "처음으로 돌아가기"
                 }
             ];
@@ -1256,7 +1255,7 @@ module.exports = function (bot)
 
                     dialog.output[0].buttons=[
                         {
-                            text: '결제하러 가기',
+                            text: '결제하기',
                             url: context.session.selecteditem.pay
                         },
                         {
@@ -1757,7 +1756,6 @@ module.exports = function (bot)
             //결제 방식:
             // context.session.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
@@ -1852,7 +1850,49 @@ module.exports = function (bot)
         });
 
 
-    bot.setTask('neworder',{
+    // bot.setTask('neworder',{
+    //     action: function (dialog, context, callback) {
+    //         context.session.sendname = undefined;
+    //         //받는분 성함:
+    //         context.session.friendname = undefined;
+    //         //받는분 연락처:
+    //         context.session.friendmobile = undefined;
+    //         //배달주소:
+    //         context.session.friendaddress = undefined;
+    //         //배달일자:
+    //         context.session.deliverytime = undefined;
+    //         //남기시는 메세지:
+    //         context.session.selectedgreeting = undefined;
+    //         //상품:
+    //         //context.session.selecteditem=undefined;
+    //         //수량---------------------------------------
+    //         context.session.itemnumber = undefined;
+    //         //신부신랑:
+    //         context.session.brideornot = undefined;
+    //         //신부신랑 전시 시간:
+    //         context.session.showtime = undefined;
+    //         //배송방식:
+    //         // context.session.deliveryway = undefined;
+    //         //포장방식:
+    //         context.session.decorate = undefined;
+    //         //계산서 필요할건지:
+    //         // context.session.bill = undefined;
+    //         //결제 방식:
+    //         // context.session.payway = undefined;
+    //         //변경:
+    //         //다른 요구사항
+    //         context.session.otherrequire = undefined;
+    //         context.session.olduser=undefined;
+    //         context.session.greetingitemlist=undefined;
+    //         context.session.findorder = undefined;
+    //         context.session.selectchange=undefined;
+    //
+    //         callback();
+    //     }
+    // });
+
+
+    bot.setTask('allname', {
         action: function (dialog, context, callback) {
             context.session.sendname = undefined;
             //받는분 성함:
@@ -1882,20 +1922,13 @@ module.exports = function (bot)
             //결제 방식:
             // context.session.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
             context.session.greetingitemlist=undefined;
             context.session.findorder = undefined;
-
-            callback();
-        }
-    });
-
-
-    bot.setTask('allname', {
-        action: function (dialog, context, callback) {
+            context.session.selectchange=undefined;
+            context.user.time=undefined;
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -2098,7 +2131,7 @@ module.exports = function (bot)
             else {
                 matched = true;
             }
-            //console.log("context.user.time========"+context.user.time);
+            console.log("context.user.time======999999999=="+context.user.time);
         });
         return matched
     }

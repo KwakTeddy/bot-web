@@ -420,10 +420,7 @@ var dialogs = [
                                 "dialogId": "default21"
                             }
                         ],
-                        "id": "default11",
-                        "task": {
-                            "name": "neworder"
-                        }
+                        "id": "default11"
                     },
                     {
                         "name": "3.선택 상품 확인 다시",
@@ -1400,8 +1397,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "배송받으실 주소를 상세하게 입력해주세요.\n\n보다 정확한 배송을 위해 상세한 도로명 주소 또는 지번주소를 입력해주세요.\n\n예시)시·도 + 시·군·구 + 읍·면 + 도로명건물번호 + 동·층·호 + (법정동, 공동주택명)\n" +
-                                        "서울특별시 서초구 잠원로 123, OO동 OO호 (OO동, OO아파트)"
+                                        "text": "배송받으실 주소를 상세하게 입력해주세요.\n\n보다 정확한 배송을 위해 상세한 도로명 주소 또는 지번주소를 입력해주세요.\n\n예시)시·도 + 시·군·구 + 읍·면 + 도로명건물번호 + 동·층·호 + (법정동, 공동주택명)\n서울특별시 서초구 잠원로 123, OO동 OO호 (OO동, OO아파트)"
                                     }
                                 ],
                                 "task": {
@@ -1706,7 +1702,7 @@ var dialogs = [
                                                                                                                 "output": [
                                                                                                                     {
                                                                                                                         "kind": "Content",
-                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
+                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 결제를 진행할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
                                                                                                                     }
                                                                                                                 ],
                                                                                                                 "id": "default44",
@@ -1714,12 +1710,6 @@ var dialogs = [
                                                                                                                     {
                                                                                                                         "name": "3.변경사항 선택",
                                                                                                                         "input": [
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "변경하기",
-                                                                                                                                    "nlp": "변경 하다"
-                                                                                                                                }
-                                                                                                                            },
                                                                                                                             {
                                                                                                                                 "text": {
                                                                                                                                     "raw": "변경",
@@ -2063,12 +2053,6 @@ var dialogs = [
                                                                                                                         "input": [
                                                                                                                             {
                                                                                                                                 "text": {
-                                                                                                                                    "raw": "이대로 주문하기",
-                                                                                                                                    "nlp": "이대로 주문 하다"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
                                                                                                                                     "raw": "주문",
                                                                                                                                     "nlp": "주문"
                                                                                                                                 }
@@ -2077,7 +2061,7 @@ var dialogs = [
                                                                                                                         "output": [
                                                                                                                             {
                                                                                                                                 "kind": "Content",
-                                                                                                                                "text": "플라워매니아에 주문신청되었습니다.\n\n신청하신 주문내용의 최종승인은 담당자가 직접 연락드린 후 진행됩니다.\n\n고객님의 주문내역은 처음화면에 가서 '내 주문 확인하기'를 입력하시면 확인하실 수 있습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                                                                                                                "text": "주문확정을 위해 결제를 진행해주세요."
                                                                                                                             }
                                                                                                                         ],
                                                                                                                         "id": "default45",
