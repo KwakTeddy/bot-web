@@ -49,7 +49,7 @@ module.exports = function (bot)
 
             {
 
-                // context.user.mobile=undefined;
+                context.user.mobile=undefined;
                 var modelname = 'flower_moneybrain_category';
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -408,28 +408,12 @@ module.exports = function (bot)
             if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.user.name = "";
                 context.user.name = dialog.userInput.text;
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
 
 
-    bot.setType('email', {
-        typeCheck: function (dialog, context, callback) {
-            var matched = true;
-            var str = dialog.userInput.text;
-            var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-            if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
-            {
-                matched = true;
-                context.user.email = str;
                 var newuser = {
                     name: context.user.name,
                     mobile: context.user.mobile,
-                    email: context.user.email,
+                    // email: context.user.email,
                     botId: bot.id,
                     createTime:new Date().toLocaleString(),
                     updateTime:new Date().toLocaleString()
@@ -446,17 +430,57 @@ module.exports = function (bot)
                     }
                     else {
                         console.log("response.statusCode=" + response.statusCode);
-                        return callback(matched);
+                        callback();
                     }
                 });
             }
             else {
-                matched = false;
-                callback(matched);
+                callback();
             }
-
         }
     });
+
+
+    // bot.setType('email', {
+    //     typeCheck: function (dialog, context, callback) {
+    //         var matched = true;
+    //         var str = dialog.userInput.text;
+    //         var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    //         if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
+    //         {
+    //             matched = true;
+    //             context.user.email = str;
+    //             var newuser = {
+    //                 name: context.user.name,
+    //                 mobile: context.user.mobile,
+    //                 email: context.user.email,
+    //                 botId: bot.id,
+    //                 createTime:new Date().toLocaleString(),
+    //                 updateTime:new Date().toLocaleString()
+    //             };
+    //             var modelname="flower_moneybrain_user";
+    //             var options = {};
+    //
+    //             options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+    //             options.json = newuser;
+    //
+    //             request.post(options, function(err, response, body) {
+    //                 if (err) {
+    //                     console.log(err);
+    //                 }
+    //                 else {
+    //                     console.log("response.statusCode=" + response.statusCode);
+    //                     return callback(matched);
+    //                 }
+    //             });
+    //         }
+    //         else {
+    //             matched = false;
+    //             callback(matched);
+    //         }
+    //
+    //     }
+    // });
 
 
 
@@ -567,7 +591,7 @@ module.exports = function (bot)
                             context.session.olduser=true;
                             context.user.mobile=body[0].mobile;
                             context.user.name=body[0].name;
-                            context.user.email=body[0].email;
+                            // context.user.email=body[0].email;
 
                             // // var updateuser = [{
                             // //     botId: bot.id},{
@@ -1157,7 +1181,7 @@ module.exports = function (bot)
             //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:
             context.session.orderinfor.name = context.user.name;
             context.session.orderinfor.mobile = context.user.mobile;
-            context.session.orderinfor.email = context.user.email;
+            // context.session.orderinfor.email = context.user.email;
             context.session.orderinfor.itemprice = context.session.selecteditem.price;
             //보내시는분 성함:
             if (context.session.decorate === "리본") {
@@ -1247,7 +1271,7 @@ module.exports = function (bot)
                 itemimage: context.session.orderinfor.itemimage,
                 itemnumber: context.session.orderinfor.itemnumber,
                 itempay: context.session.orderinfor.itempay,
-                email: context.session.orderinfor.email,
+                // email: context.session.orderinfor.email,
                 bride: context.session.orderinfor.brideornot,
                 showtime: context.session.orderinfor.showtime,
                 // deliveryway: context.session.orderinfor.deliveryway,
@@ -1385,12 +1409,12 @@ module.exports = function (bot)
                                         pass: 'ZSdh1007--'
                                     }
                                 });
-                                if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
-                                    context.session.orderinfor.email = "jipark305@icloud.com";
-                                }
+                                // if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
+                                //     context.session.orderinfor.email = "jipark305@icloud.com";
+                                // }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: context.session.orderinfor.email, // list of receivers
+                                    to: 'jipark305@icloud.com', // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +

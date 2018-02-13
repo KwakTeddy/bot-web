@@ -404,9 +404,9 @@ var dialogs = [
                                     "output": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)"
                                 },
                                 "type": "call",
-                                "dialog": "3.고객 이메일",
-                                "dialogName": "3.고객 이메일",
-                                "dialogId": "default16"
+                                "dialog": "3.고객 성함",
+                                "dialogName": "3.고객 성함",
+                                "dialogId": "default15"
                             },
                             {
                                 "kind": "Action",
@@ -854,8 +854,31 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "주문하시는 고객님의 이메일을 입력해주세요.\n\n입력하시는 이메일로 주문서를 발송해드립니다.\n(예시: 123456@naver.com)"
+                                "kind": "Action",
+                                "text": "",
+                                "if": "context.user.mobile!==undefined && context.session.findorder===1",
+                                "type": "call",
+                                "dialogName": "6.주문 확인 기존회원",
+                                "dialog": "6.주문 확인 기존회원",
+                                "dialogId": "default76"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
+                                "if": "context.user.mobile==undefined",
+                                "type": "call",
+                                "dialogName": "3.고객 이메일",
+                                "dialog": "3.고객 이메일",
+                                "dialogId": "default16"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "if": "context.user.mobile!==undefined && context.session.findorder!==1",
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "task": {
@@ -877,7 +900,8 @@ var dialogs = [
                                         "if": "context.user.mobile!==undefined && context.session.findorder===1",
                                         "type": "call",
                                         "dialogName": "6.주문 확인 기존회원",
-                                        "dialog": "6.주문 확인 기존회원"
+                                        "dialog": "6.주문 확인 기존회원",
+                                        "dialogId": "default76"
                                     },
                                     {
                                         "kind": "Content",
@@ -965,9 +989,9 @@ var dialogs = [
                                                     {
                                                         "kind": "Action",
                                                         "type": "call",
-                                                        "dialogName": "3.고객 이메일",
-                                                        "dialog": "3.고객 이메일",
-                                                        "dialogId": "default16"
+                                                        "dialogName": "3.고객 성함",
+                                                        "dialog": "3.고객 성함",
+                                                        "dialogId": "default15"
                                                     }
                                                 ],
                                                 "id": "default92"
@@ -3350,9 +3374,9 @@ var dialogs = [
                 },
                 "type": "call",
                 "text": "주문하신 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
-                "dialogName": "3.고객 이메일",
-                "dialog": "3.고객 이메일",
-                "dialogId": "default16"
+                "dialogName": "3.고객 성함",
+                "dialog": "3.고객 성함",
+                "dialogId": "default15"
             }
         ],
         "id": "default75"
