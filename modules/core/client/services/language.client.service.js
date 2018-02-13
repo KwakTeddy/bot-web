@@ -1160,7 +1160,7 @@
                 "zh": "上一个对话框"
             },
             "User Input": {
-                "ko": "사용자 입력값",
+                "ko": "사용자 입력",
                 "en": "User Input",
                 "jp": "ユーザ入力値",
                 "zh": "用户输入"
@@ -2934,6 +2934,24 @@
                 "zh": "回电",
                 "jp": "リターンコール"
             },
+            "Card Name": {
+                "ko": "카드 이름",
+                "en": "Card Name",
+                "zh": "卡片名称",
+                "jp": "カード名"
+            },
+            "Function before Answer": {
+                "ko": "답변 전 실행함수",
+                "en": "Function before Answer",
+                "zh": "答案前的功能",
+                "jp": "回答前の機能"
+            },
+            "Chatbot Answer": {
+                "ko": "챗봇 답변",
+                "en": "Chatbot Answer",
+                "zh": "聊天机器人答案",
+                "jp": "チャットロボットアンサー"
+            },
 
             "SampleBot Category": {
                 "ko": "샘플봇 종류",
@@ -3051,6 +3069,8 @@
             key = key.trim();
             if(!languages[key])
             {
+                console.log(languages[key]);
+                console.log(key);
                 if(!list[key])
                     list[key] = true;
 

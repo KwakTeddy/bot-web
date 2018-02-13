@@ -69,10 +69,10 @@
             $scope.addOutput = function(e)
             {
                 var output = { kind: 'Content', text: '' };
-                $scope.dialog.output.unshift(output);
-                $scope.setOutputImageUploader(0);
+                $scope.dialog.output.push(output);
+                $scope.setOutputImageUploader($scope.dialog.output.length - 1);
 
-                angular.element('.dialog-editor-subject input:first').prop('checked', true);
+                // angular.element('.dialog-editor-subject input:first').prop('checked', true);
             };
 
             $scope.deleteOutput = function(output, index)
@@ -114,6 +114,8 @@
 
             $scope.addOutputButton = function(e, output)
             {
+                if(!output.buttons) output.buttons = [];
+
                 output.buttons.push({ url : '', text: ''});
 
                 $timeout(function()
@@ -220,8 +222,10 @@
 
             $scope.selectActionDialog = function(e, dialog, output)
             {
-                output.dialog = dialog.name;
-            }
+                output.kind = 'Action';
+                output.dialogId = dialog.id;
+                output.dialogName = dialog.name;
+            };
 
             $scope.deleteActionButton = function(output)
             {
@@ -237,7 +241,6 @@
 
             $scope.actionValueChanged = function(dialog)
             {
-                var type = dialog.type;
                 dialog.kind = 'Action';
             };
 

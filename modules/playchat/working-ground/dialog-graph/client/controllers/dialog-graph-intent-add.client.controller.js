@@ -102,13 +102,24 @@
 
         formElement.openCallback = function(name)
         {
-            $scope.$apply(function()
+
+            if($scope.$$phase == '$apply' || $scope.$$phase == '$digest')
             {
                 $scope.intent = {
                     name: name,
                     intentContents: [{ content: '' }]
                 };
-            });
+            }
+            else
+            {
+                $scope.$apply(function()
+                {
+                    $scope.intent = {
+                        name: name,
+                        intentContents: [{ content: '' }]
+                    };
+                });
+            }
         };
 
         $scope.lan=LanguageService;

@@ -191,7 +191,7 @@ var ActionManager = require('./action.js');
                 else if(key == 'regexp')
                 {
                     var regexp = new RegExp(input.regexp, 'gi');
-                    if(rawText.search(regexp))
+                    if(regexp.test(rawText))
                     {
                         result = result && true;
                     }

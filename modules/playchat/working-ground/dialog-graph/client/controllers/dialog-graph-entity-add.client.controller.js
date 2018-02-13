@@ -146,13 +146,19 @@
 
         formElement.openCallback = function(name)
         {
-            $scope.$apply(function()
-            {
+            if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' ) {
                 $scope.entity = {
                     name: name,
                     entityContents: [{ name: '', synonyms: [''] }]
                 };
-            });
+            } else {
+                $scope.$apply(function () {
+                    $scope.entity = {
+                        name: name,
+                        entityContents: [{ name: '', synonyms: [''] }]
+                    };
+                });
+            }
         };
         $scope.lan=LanguageService;
     }]);
