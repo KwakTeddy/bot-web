@@ -1410,7 +1410,7 @@ module.exports = function (bot)
                                 //'예약접수(클릭) ' + shorturl;
 
                                 if (context.session.orderinfor.mobile !== "01066389310") {
-                                    context.session.orderinfor.mobile = "01042369555";
+                                    context.session.orderinfor.mobile = "01020865439";
                                 }
                                 var transporter = nodemailer.createTransport({
                                     service: 'Gmail',
@@ -1424,7 +1424,7 @@ module.exports = function (bot)
                                 // }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: 'jipark305@icloud.com', // list of receivers
+                                    to: 'ellie@moneybrain.ai', // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +
@@ -1458,8 +1458,46 @@ module.exports = function (bot)
                                         callback();
                                     }
                                 );
-                                //================================================================================
 
+
+                                //================================================================================
+                                                               // var options = {};
+                                // options.url = "http://api.payapp.kr/oapi/apiLoad.html";
+                                // options.form = {
+                                //     cmd         : "payrequest",           // 결제요청, 필수
+                                //     userid      : "moneybrain",          // 판매자 아이디, 필수
+                                //     goodname    : "3단 축하화환(알뜰형)",
+                                //     price       : "59000",
+                                //     recvphone   : "01066389310",
+                                //     memo        : "결제요청 테스트 메모",
+                                //     reqaddr     : 0,
+                                //     feedbackurl : "http://remaster.moneybrain.ai/api/flower_moneybrain/complete_payapp",
+                                //     var1        : "xxx6666",
+                                //     var2        : "9999",
+                                //     smsuse      : "n",
+                                //     reqmode     : "krw",
+                                //     vccode      : "",
+                                //     returnurl   : "http://remaster.moneybrain.ai/결제완료페이지.php",
+                                //     openpaytype : "phone",
+                                //     checkretry  : "y"
+                                // };
+                                //
+                                // request.post(options, function (err, response, body)
+                                // {
+                                //     console.log(body);
+                                //     var split = body.split('&');
+                                //
+                                //     var data = {};
+                                //
+                                //     for(var i=0; i<split.length; i++)
+                                //     {
+                                //         var keyValueSplit = split[i].split('=');
+                                //         data[keyValueSplit[0]] = decodeURIComponent(keyValueSplit[1]);
+                                //     }
+                                //
+                                //     console.log(data);
+                                // });
+                                //
 
                                 //  //--------------------------------------------------------------------------
                                 //  var message = '[플레이챗-'+context.user.orderinfor.name+'1]' + '\n' +
