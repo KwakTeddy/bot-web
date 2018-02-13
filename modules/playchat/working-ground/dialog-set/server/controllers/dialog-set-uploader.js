@@ -1,6 +1,7 @@
 var path = require('path');
 var XLSX = require('xlsx');
 var async = require('async');
+var fs = require('fs');
 
 var mongoose = require('mongoose');
 var CustomContext = mongoose.model('CustomContext');
@@ -118,14 +119,74 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
             var dialogsetDialog = new DialogsetDialog();
             dialogsetDialog.dialogset = dialogsetId;
             dialogsetDialog.inputRaw = [item.q];
-            dialogsetDialog.output = item.a;
-            dialogsetDialog.category = category;
+            dialogsetDialog.output = [item.a];
+            dialogsetDialog.category = item.category;
+
+            console.log('세이브 : ', item.q);
 
             NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
             {
                 dialogsetDialog.input = [nlpText];
 
-                console.log('세이브 : ', dialogsetDialog.inputRaw);
+                dialogsetDialog.save(function()
+                {
+                    next();
+                });
+            });
+        },
+        function()
+        {
+            callback();
+        });
+    };
+
+    Uploader.prototype.uploadFromCsv = function(botId, language, dialogsetId, filePath, callback)
+    {
+        var data = fs.readFileSync(filePath);
+        if(data)
+        {
+            data = data.toString();
+        }
+        else
+        {
+            return callback();
+        }
+
+        var lines = data.split('\r\n');
+
+        var dialogsetList = [];
+        for(var i=1; i<lines.length; i++)
+        {
+            var split = lines[i].split(',');
+
+            var category = '';
+            for(var j=0; j<split.length-2; j++)
+            {
+                if(category)
+                {
+                    category += '@@@';
+                }
+
+                category += split[j];
+            }
+
+            dialogsetList.push({ q: split[split.length-2], a: split[split.length-1], category: category });
+        }
+
+        async.eachSeries(dialogsetList, function(item, next)
+        {
+            var dialogsetDialog = new DialogsetDialog();
+            dialogsetDialog.dialogset = dialogsetId;
+            dialogsetDialog.inputRaw = [item.q];
+            dialogsetDialog.output = [item.a];
+            dialogsetDialog.category = item.category;
+
+            console.log('세이브 : ', item.q);
+
+            NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+            {
+                dialogsetDialog.input = [nlpText];
+
                 dialogsetDialog.save(function()
                 {
                     next();
@@ -147,6 +208,10 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         if(info.ext == '.xls' || info.ext == '.xlsx')
         {
             this.uploadFromExcel(botId, language, dialogsetId, filePath, callback);
+        }
+        else if(info.ext == '.csv')
+        {
+            this.uploadFromCsv(botId, language, dialogsetId, filePath, callback);
         }
     };
 

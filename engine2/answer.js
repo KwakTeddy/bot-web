@@ -131,6 +131,8 @@ var Logger = require('./logger.js');
                 //qa와 dm에서 골라진거 matchRate비교해야함
                 console.log(transaction);
 
+                context.session.currentCategory = '';
+
                 if(bot.options.hybrid)
                 {
                     var qaMatchedRate = transaction.qa && transaction.qa.matchedDialog ? transaction.qa.matchedDialog.matchRate : -1;
@@ -140,9 +142,9 @@ var Logger = require('./logger.js');
                     {
                         var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
 
-                        if(transaction.qa.matchedDialog.context)
+                        if(transaction.qa.matchedDialog.category)
                         {
-                            context.session.currentContext = { _id: transaction.qa.matchedDialog.context._id, name: transaction.qa.matchedDialog.context.name };
+                            context.session.currentCategory = transaction.qa.matchedDialog.category;
                         }
 
                         console.log();
@@ -200,9 +202,9 @@ var Logger = require('./logger.js');
                 {
                     var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
 
-                    if(transaction.qa.matchedDialog.context)
+                    if(transaction.qa.matchedDialog.category)
                     {
-                        context.session.currentContext = { _id: transaction.qa.matchedDialog.context._id, name: transaction.qa.matchedDialog.context.name };
+                        context.session.currentCategory = transaction.qa.matchedDialog.category;
                     }
 
                     console.log();
