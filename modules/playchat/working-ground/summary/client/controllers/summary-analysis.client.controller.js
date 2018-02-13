@@ -13,7 +13,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
     var UserInputStatistics = $resource('/api/:botId/analysis/user-input-statistics', { botId: '@botId' });
     var FailDialogsService = $resource('/api/:botId/analysis/fail-dialogs', { botId: '@botId' });
     var ScenarioUsageService = $resource('/api/:botId/analysis/scenario-usage', { botId: '@botId' });
-
     var chatbot = $cookies.getObject('chatbot');
 
     var startDate = new Date();
@@ -272,7 +271,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
             pieData.datasets[0].data.push(isSuccessDialogCount);
             pieData.datasets[0].data.push(isFailDialogCount);
-
             var myChart = new Chart(context, {
                 type: 'line',
                 data: data,
@@ -304,7 +302,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             alert(err.data.error || err.data.message);
         });
 
-
         UserInputStatistics.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
             $scope.userInputStatistics = JSON.parse(JSON.stringify(result));
@@ -325,7 +322,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         ScenarioUsageService.get({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
-            console.log(result.scenarioUsage);
             $scope.scenarioUsageList = result.scenarioUsage;
         },
         function(err)

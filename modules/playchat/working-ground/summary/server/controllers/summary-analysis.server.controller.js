@@ -2,8 +2,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 
 var UserDialog = mongoose.model('UserDialog');
-
-// var botLib = require(path.resolve('./engine2/bot.js'));
+var bot_js = require(path.resolve('./engine2/bot.js'));
 
 module.exports.totalDialogCount = function(req, res)
 {
@@ -43,11 +42,11 @@ module.exports.totalUserCount = function (req, res)
             {
                 _id: 0,
                 userId: 1,
-                fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
-                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
-                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
+                fail: {$cond:[{$eq: ["$isFail", true]}, 1,0]},
+                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
             }
         },
         { $group:
@@ -60,7 +59,7 @@ module.exports.totalUserCount = function (req, res)
                 navertalk: {$sum: "$navertalk"},
                 socket: {$sum: '$socket'}
             }
-        },
+        }
     ];
 
     UserDialog.aggregate(query).exec(function(err, list)
@@ -128,11 +127,11 @@ module.exports.dailyDialogUsage = function (req, res)
             {
                 _id: 0,
                 created: {$add:["$created", 9*60*60*1000]},
-                fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
-                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
-                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
+                fail: {$cond:[{$eq: ["$isFail", true]}, 1,0]},
+                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
             }
         },
         { $group:
@@ -147,7 +146,7 @@ module.exports.dailyDialogUsage = function (req, res)
             }
         },
         { $sort: {_id:-1,  day: -1} }
-    ]
+    ];
 
     UserDialog.aggregate(query).exec(function (err, dailyDialog)
     {
@@ -165,8 +164,8 @@ module.exports.dailyDialogUsage = function (req, res)
 exports.userInputStatistics = function (req, res)
 {
     var query = [
-        { $match: { inOut: true, dialog: { $nin: [null, ':reset user', ':build'] }, botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
-        { $group: { _id: { dialog:'$dialog', dialogName: '$dialogName', dialogId:"$dialogId" }, count: { $sum: 1 } } },
+        { $match: { inOut: true, nlpDialog: { $nin: [null, ':reset user', ':build'] }, botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
+        { $group: { _id: { dialog:'$nlpDialog'}, count: { $sum: 1 } } },
         { $sort: { count: -1 } }
     ];
 
@@ -189,8 +188,8 @@ exports.userInputStatistics = function (req, res)
 exports.failDailogs = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, inOut: true, fail: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
-        { $group: { _id: { dialog: "$dialog" }, count: { $sum: 1 } } },
+        { $match: { botId: req.params.botId, inOut: true, isFail: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
+        { $group: { _id: { dialog: "$nlpDialog" }, count: { $sum: 1 } } },
         { $sort: {count: -1} }
     ];
 
@@ -221,9 +220,10 @@ exports.scenarioUsage = function (req, res)
                 _id: 0,
                 channel: 1,
                 dialogName:1,
-                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
             }
         },
         {$group:
@@ -232,7 +232,8 @@ exports.scenarioUsage = function (req, res)
                 total: {$sum: 1},
                 kakao: {$sum: "$kakao"},
                 facebook: {$sum: "$facebook"},
-                navertalk: {$sum: "$navertalk"}
+                navertalk: {$sum: "$navertalk"},
+                socket: {$sum: '$socket'}
             }
         },
         {$sort: {total: -1}}
@@ -252,21 +253,9 @@ exports.scenarioUsage = function (req, res)
         else
         {
             var result = {};
-            if(global._bot && global._bot[req.params.botId])
-            {
-                result["scenarioUsage"] = scenarioUsage;
-                result["botSenario"] = global._bot[req.params.botId];
-                res.jsonp(result);
-            }
-            else
-            {
-                botLib.loadBot(req.params.botId, function (realbot)
-                {
-                    result["scenarioUsage"] = scenarioUsage;
-                    result["botSenario"] = realbot.dialogs;
-                    res.jsonp(result);
-                })
-            }
+            result["scenarioUsage"] = scenarioUsage;
+            result["botSenario"] = bot_js[req.params.botId];
+            res.jsonp(result);
         }
     });
 };
