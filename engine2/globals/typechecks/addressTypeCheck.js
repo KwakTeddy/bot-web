@@ -1,6 +1,46 @@
-function searchAddress(task, context, callback) {
+var utils = require('../../utils/utils.js');
 
-    var model = mongo.getModel('buildingdata', 건물정보스키마);
+var mongoose = require('mongoose');
+
+var 건물정보스키마 = {
+    법정동코드: String,
+    시도명: String,
+    시군구명: String,
+    법정읍면동명: String,
+    법정리명: String,
+    산여부: String,
+    지번본번: String,
+    지번부번: String,
+    도로명코드: String,
+    도로명: String,
+    지하여부: String,
+    건물본번: String,
+    건물부번: String,
+    건축물대장건물명: String,
+    상세건물명: String,
+    건물관리번호: String,
+    읍면동일련번호: String,
+    행정동코드: String,
+    행정동명: String,
+    우편번호: String,
+    우편일련번호: String,
+    다량배달처명: String,
+    이동사유코드: String,
+    고시일자: String,
+    변경전도로명주소: String,
+    시군구용건물명: String,
+    공동주택여부: String,
+    기초구역번호: String,
+    상세주소부여여부: String,
+    비고1: String,
+    비고2: String
+};
+
+var buildingdataModel = mongoose.model('buildingdata', 건물정보스키마);
+
+function searchAddress(task, context, callback)
+{
+    var model = buildingdataModel;
 
     var query = {};
     var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소, 건물명;
@@ -50,29 +90,6 @@ function searchAddress(task, context, callback) {
         부번 = matched[8];
         상세주소 = matched[9] ? matched[9].trim() : matched[9];
 
-        // 시도명 = "서울시";
-
-        // 시군구명 = "용산구";
-        // 읍면동명 = "용산동";
-        // 행정동명 = matched[4];
-        // 도로명 = matched[5];
-        // 리명 = matched[6];
-        // 본번 = "5가";
-        // 부번 = matched[8];
-        // 상세주소 = "24번지 101동 101호";
-        //
-        // 시도명 = "서울특별시";
-
-        // 시군구명 = "관악구";
-        // 읍면동명 = "봉천동";
-        // 행정동명 = matched[4];
-        // 도로명 = matched[5];
-        // 리명 = matched[6];
-        // 본번 = "1645";
-        // 부번 = "55";
-        // 상세주소 = "201호";
-
-
         if(도로명) {
             도로명 = 도로명.replace(/\s/, '');
             query.도로명 = 도로명;
@@ -97,42 +114,6 @@ function searchAddress(task, context, callback) {
         if(시군구명) query.시군구명 = new RegExp(시군구명, 'i');
 
     }
-    // else {
-    //   var 건물명Re = /\B(?:[a-zA-Z가-힣]+\s*\d+차[a-zA-Z가-힣]*|[0-9a-zA-Z가-힣]+)(?:\s|$)/g;
-    //   var 건물명예외Re = /^(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시|[가-힣]+시|[가-힣]+군|[가-힣]+구|[가-힣]+읍|[0-9가-힣]+면|[0-9가-힣]+동|[0-9가-힣]+리|아파트|상가|건물|주택)$/i;
-    //   matched = task.inRaw.match(건물명Re);
-    //   건물명 = matched[0];
-    //   console.log('건물명1: '+건물명)
-    //   // console.log('inRaw: ' + task.inRaw);
-    //   // console.log('matched: ' + matched);
-    //   if(matched != null && matched instanceof Array) {
-    //     if(matched.length > 1) {
-    //       query = {$or: []};
-    //       for (var i = 0; i < matched.length; i++) {
-    //         var match = matched[i].trim();
-    //         // console.log(match);
-    //         // logger.debug('건물명예외Re:' +match + ',' +  건물명예외Re + ','  + match.search(건물명예외Re));
-    //         if(match.search(건물명예외Re) == -1)
-    //           query.$or.push({시군구용건물명: match});
-    //       }
-    //     } else {
-    //       if(matched[0].trim().search(건물명예외Re) == -1)
-    //         query = {시군구용건물명: matched[0].trim()};
-    //         // console.log('-------------------')
-    //         // console.log(JSON.stringify(query));
-    //     }
-    //
-    //     var last = matched[matched.length-1];
-    //     var lastRe = new RegExp(last+'\\s+(.*)', 'i');
-    //     matched = task.inRaw.match(lastRe);
-    //     console.log('matched: ' + matched);
-    //     if(matched != null) {
-    //       상세주소 = matched[1];
-    //     } else {
-    //       상세주소 = undefined;
-    //     }
-    //   }
-    // }
 
     task.doc = null;
 
@@ -770,27 +751,37 @@ function searchAddress2(task, context, callback) {
 
 module.exports = function(globals)
 {
-    globals.setTypeChecks('addressTypeCheck', function(text, type, task, context, callback)
+    globals.setTypeChecks('addressTypeCheck', function(dialog, context, callback)
     {
+        var that = this;
         var address = {};
-        address.inRaw = text;
-        searchAddress(address, context, function() {
-            if(address.doc == undefined) {
-                logger.debug('nodata: ' + address.inRaw);
-
-                callback(text, task, false);
-            } else if(Array.isArray(address.doc)) {
-                for (var i = 0; i < address.doc.length; i++) {
-                    logger.debug('multi: ' + address.inRaw + ' / ' + address.doc[i].지번주소 + ' / ' + address.doc[i].도로명주소);
-                }
-                task[type.name] = address.doc[0];
-                callback(text, task, true);
-            } else if(address.doc) {
-                logger.debug(address.inRaw + ' / ' + address.doc.지번주소 + ' / ' + address.doc.도로명주소);
-                task[type.name] = address.doc;
-                callback(text, task, true);
+        address.inRaw = dialog.userInput.text;
+        searchAddress(address, context, function()
+        {
+            if(address.doc == undefined)
+            {
+                console.log('nodata: ' + address.inRaw);
+                callback(false);
             }
+            else if(Array.isArray(address.doc))
+            {
+                for (var i = 0; i < address.doc.length; i++)
+                {
+                    console.log('multi: ' + address.inRaw + ' / ' + address.doc[i].지번주소 + ' / ' + address.doc[i].도로명주소);
+                }
 
+                dialog.userInput.types[that.name] = address.doc[0];
+
+                callback(true, dialog.userInput.text);
+            }
+            else if(address.doc)
+            {
+                console.log(address.inRaw + ' / ' + address.doc.지번주소 + ' / ' + address.doc.도로명주소);
+
+                dialog.userInput.types[that.name] = address.doc;
+
+                callback(true, dialog.userInput.text);
+            }
         });
     });
 

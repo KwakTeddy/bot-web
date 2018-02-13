@@ -1,6 +1,8 @@
 var async = require('async');
 var mongoose = require('mongoose');
 
+var Transaction = require('../utils/transaction.js');
+
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
 (function()
@@ -9,11 +11,9 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
     {
         this.limit = 5;
         this.exclude = ['하다', '이다']; // 다른 언어는???
-
-        //봇별로 과연 여기 옵션들을 건드릴까?
     };
 
-    QA.prototype.find = function(bot, inputRaw, nlp, callback)
+    QA.prototype.find = function(bot, context, inputRaw, nlp, callback)
     {
         var that = this;
 
@@ -23,76 +23,207 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             dialogsets.push(bot.dialogsets[i]._id);
         }
 
-        var checkDuplicate = {};
-        var matchedList = [];
-        async.eachSeries(nlp, function(word, next)
-        {
-            if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
-            {
-                return next();
-            }
+        var transaction = new Transaction.sync();
+        transaction.checkDuplicate = {};
+        transaction.matchedList = [];
 
-            DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).lean().exec(function(err, list)
+        transaction.call(function(done)
+        {
+            DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('context').lean().exec(function(err, list)
             {
                 if(err)
                 {
                     return callback(err);
                 }
-
-                for(var i=0; i<list.length; i++)
-                {
-                    if(!checkDuplicate[list[i]._id])
-                    {
-                        checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
-                        matchedList.push(checkDuplicate[list[i]._id]);
-                    }
-                }
-
-                next();
-            });
-        },
-        function()
-        {
-            for(var i=0; i<matchedList.length; i++)
-            {
-                if(matchedList[i].inputRaw == inputRaw)
-                {
-                    matchedList[i].matchRate = 1;
-                }
                 else
                 {
-                    var maxCount = -1;
-                    var targetInput = undefined;
-                    for(var k=0; k<matchedList[i].input.length; k++)
+                    if(list && list.length > 0)
                     {
-                        var count = 0;
-                        for(var j=0; j<nlp.length; j++)
+                        for(var i=0; i<list.length; i++)
                         {
-                            if(matchedList[i].input[k].indexOf(nlp[j].text) != -1)
+                            list[i].matchRate = 1;
+                        }
+
+                        return callback(null, list);
+                    }
+
+                    done();
+                }
+            });
+        });
+
+        // if(context.session.currentContext)
+        // {
+        //     var checkDuplicate = {};
+        //     var matchedList = [];
+        //
+        //     transaction.call(function(done)
+        //     {
+        //         async.eachSeries(nlp, function(word, next)
+        //         {
+        //             if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
+        //             {
+        //                 return next();
+        //             }
+        //
+        //             DialogsetDialog.find({ dialogset: { $in: dialogsets }, context: context.session.currentContext._id, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
+        //             {
+        //                 if(err)
+        //                 {
+        //                     return callback(err);
+        //                 }
+        //
+        //                 for(var i=0; i<list.length; i++)
+        //                 {
+        //                     if(!checkDuplicate[list[i]._id])
+        //                     {
+        //                         checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
+        //                         matchedList.push(checkDuplicate[list[i]._id]);
+        //                     }
+        //                 }
+        //
+        //                 next();
+        //             });
+        //         },
+        //         function()
+        //         {
+        //             for(var i=0; i<matchedList.length; i++)
+        //             {
+        //                 if(matchedList[i].inputRaw == inputRaw)
+        //                 {
+        //                     matchedList[i].matchRate = 1;
+        //                 }
+        //                 else
+        //                 {
+        //                     var maxCount = -1;
+        //                     var targetInput = undefined;
+        //                     for(var k=0; k<matchedList[i].input.length; k++)
+        //                     {
+        //                         var count = 0;
+        //                         for(var j=0; j<nlp.length; j++)
+        //                         {
+        //                             if(matchedList[i].input[k].indexOf(nlp[j].text) != -1)
+        //                             {
+        //                                 count += (nlp[j].pos == 'Noun' ? 2 : 1);
+        //                             }
+        //                         }
+        //
+        //                         if(maxCount == -1)
+        //                         {
+        //                             maxCount = count;
+        //                             targetInput = matchedList[i].input[k];
+        //                         }
+        //                     }
+        //
+        //                     var inputs = targetInput.split(' ');
+        //                     matchedList[i].matchRate = (maxCount / inputs.length);
+        //                     matchedList[i].added = 1;
+        //                 }
+        //             }
+        //
+        //             matchedList.sort(function(a, b)
+        //             {
+        //                 return b.matchRate - a.matchRate;
+        //             });
+        //
+        //             transaction.matchedList = transaction.matchedList.concat(matchedList);
+        //
+        //             done();
+        //         });
+        //     });
+        // }
+
+        transaction.done(function()
+        {
+            var checkDuplicate = {};
+            var matchedList = [];
+
+            async.eachSeries(nlp, function(word, next)
+            {
+                if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
+                {
+                    return next();
+                }
+
+                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
+                {
+                    if(err)
+                    {
+                        return callback(err);
+                    }
+
+                    for(var i=0; i<list.length; i++)
+                    {
+                        if(!checkDuplicate[list[i]._id])
+                        {
+                            checkDuplicate[list[i]._id] = JSON.parse(JSON.stringify(list[i]));
+                            matchedList.push(checkDuplicate[list[i]._id]);
+                        }
+                    }
+
+                    next();
+                });
+            },
+            function()
+            {
+                for(var i=0; i<matchedList.length; i++)
+                {
+                    if(matchedList[i].inputRaw == inputRaw)
+                    {
+                        matchedList[i].matchRate = 1;
+                    }
+                    else
+                    {
+                        var maxCount = -1;
+                        var targetInput = undefined;
+                        for(var k=0; k<matchedList[i].input.length; k++)
+                        {
+                            var count = 0;
+                            for(var j=0; j<nlp.length; j++)
                             {
-                                count++;
+                                if(matchedList[i].input[k].indexOf(nlp[j].text) != -1)
+                                {
+                                    count += (nlp[j].pos == 'Noun' ? 2 : 1);
+                                }
+                            }
+
+                            if(maxCount == -1)
+                            {
+                                maxCount = count;
+                                targetInput = matchedList[i].input[k];
                             }
                         }
 
-                        if(maxCount == -1)
+                        var inputs = targetInput.split(' ');
+                        matchedList[i].matchRate = (maxCount / inputs.length);
+                        matchedList[i].added = 0;
+
+                        if(context.session.currentCategory && matchedList[i].category)
                         {
-                            maxCount = count;
-                            targetInput = matchedList[i].input[k];
+                            var targetCategories = matchedList[i].category.split('@@@');
+                            var categories = context.session.currentCategory.split('@@@');
+                            for(var j=0; j<categories.length && j < targetCategories.length; j++)
+                            {
+                                if(categories[j] == targetCategories[j])
+                                {
+                                    matchedList[i].added++;
+                                }
+                            }
                         }
                     }
-
-                    var inputs = targetInput.split(' ');
-                    matchedList[i].matchRate = (maxCount / inputs.length);
                 }
-            }
 
-            matchedList.sort(function(a, b)
-            {
-                return b.matchRate - a.matchRate;
+                matchedList = transaction.matchedList.concat(matchedList);
+
+                matchedList.sort(function(a, b)
+                {
+                    console.log(b.added, a.added);
+                    return (b.matchRate + b.added) - (a.matchRate + a.added);
+                });
+
+                callback(null, matchedList);
             });
-
-            callback(null, matchedList);
-        })
+        });
     };
 
     module.exports = new QA();

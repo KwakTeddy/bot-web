@@ -63,6 +63,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             // 현재 페이지에 해당하는 데이터 가져오기.
             DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText, botId: chatbot.id }, function(list)
             {
+                console.log('결과 : ', list);
+
                 $scope.dialogs = list;
 
                 angular.element('textarea:first').focus();
@@ -641,7 +643,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
     {
         if(!dialogset.title)
         {
-            DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
+            DialogSetsService.save({ botId: chatbot._id, title: 'default', language: chatbot.language, usable: true }, function(dialogset)
             {
                 if(!openDialogsets[chatbot.id].hasOwnProperty('default'))
                 {
@@ -761,6 +763,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             params.botId = chatbot._id;
             params.title = $scope.openModal.data.title;
             params.content = $scope.openModal.data.content;
+            params.language = chatbot.language;
             DialogSetsService.save(params, function(result)
             {
                 openDialogsets[chatbot.id][result.title] = result._id;
@@ -796,6 +799,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             params.path = modal.data.path;
             params.filename = modal.data.filename;
             params.user = user._id;
+            params.language = chatbot.language;
 
             DialogSetsService.save(params, function(result)
             {

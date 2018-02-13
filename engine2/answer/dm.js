@@ -36,7 +36,7 @@ var ActionManager = require('./action.js');
             }
         }
 
-        return count;
+        return count / words.length;
     };
 
     DialogGraphManager.prototype.checkEntities = function(src, dest)
@@ -49,7 +49,7 @@ var ActionManager = require('./action.js');
                 {
                     if(src[i] == key)
                     {
-                        return true;
+                        return key;
                     }
                 }
             }
@@ -60,7 +60,7 @@ var ActionManager = require('./action.js');
             {
                 if(src == key)
                 {
-                    return true;
+                    return key;
                 }
             }
         }
@@ -100,14 +100,14 @@ var ActionManager = require('./action.js');
                         if(rawText == input.text.raw)
                         {
                             result = result && true;
-                            dialog.matchCount = 100000;
+                            dialog.matchRate = 1;
                         }
                         else
                         {
                             var matchCount = that.checkInputText(nlpText, input.text.nlp);
                             if(matchCount > 0)
                             {
-                                dialog.matchCount += matchCount;
+                                dialog.matchRate = matchCount;
                                 result = result && true;
                             }
                             else
@@ -122,20 +122,24 @@ var ActionManager = require('./action.js');
                     var check = that.checkEntities(input.entities, entities);
                     if(check)
                     {
-                        dialog.matchCount++;
+                        result = result && true;
                     }
-
-                    result = result && check;
+                    else
+                    {
+                        result = result && false;
+                    }
                 }
                 else if(key == 'intent')
                 {
                     var check = (intents.length > 0 && input.intent == intents[0].intentName);
                     if(check)
                     {
-                        dialog.matchCount++;
+                        result = result && true;
                     }
-
-                    result = result && check;
+                    else
+                    {
+                        result = result && false;
+                    }
                 }
                 else if(key == 'types')
                 {
@@ -155,8 +159,6 @@ var ActionManager = require('./action.js');
                         if(matched)
                         {
                             result = result && true;
-
-                            dialog.matchCount += 100;
 
                             if(parsed)
                             {
@@ -179,13 +181,24 @@ var ActionManager = require('./action.js');
                     {
                         if(eval('result = (' + input.if + ' ? true : false);'))
                         {
-                            dialog.matchCount++;
                             return true;
                         }
 
                         return false;
 
                     })(dialog, context, input);
+                }
+                else if(key == 'regexp')
+                {
+                    var regexp = new RegExp(input.regexp, 'gi');
+                    if(rawText.search(regexp))
+                    {
+                        result = result && true;
+                    }
+                    else
+                    {
+                        result = result && false;
+                    }
                 }
                 else
                 {
@@ -220,10 +233,7 @@ var ActionManager = require('./action.js');
 
         async.eachSeries(dialogs, function(dialog, next)
         {
-            if(!dialog.matchCount)
-            {
-                dialog.matchCount = 0;
-            }
+            delete dialog.matchRate;
 
             var transaciton = new Transaction.sync();
 
@@ -275,10 +285,7 @@ var ActionManager = require('./action.js');
 
         async.eachSeries(dialogs, function(dialog, next)
         {
-            if(!dialog.matchCount)
-            {
-                dialog.matchCount = 0;
-            }
+            delete dialog.matchRate;
 
             var inputs = dialog.input;
             if(!inputs || !inputs.length || inputs.length <= 0)
@@ -300,17 +307,26 @@ var ActionManager = require('./action.js');
         {
             selectedDialog.sort(function(a, b)
             {
-                return b.matchCount - a.matchCount;
+                return b.matchRate - a.matchRate;
             });
-
-            for(var i=0; i<dialogs.length; i++)
-            {
-                delete dialogs[i].matchCount;
-            }
 
             if(selectedDialog.length > 0)
             {
-                callback(selectedDialog[0]);
+                if(selectedDialog[0].matchRate)
+                {
+                    if(selectedDialog[0].matchRate >= 0.5)
+                    {
+                        callback(selectedDialog[0]);
+                    }
+                    else
+                    {
+                        callback();
+                    }
+                }
+                else
+                {
+                    callback(selectedDialog[0]);
+                }
             }
             else
             {
@@ -368,19 +384,24 @@ var ActionManager = require('./action.js');
                     {
                         selectedDialogs.sort(function(a, b)
                         {
-                            return b.matchCount - a.matchCount;
+                            return b.matchRate - a.matchRate;
                         });
-
-                        for(var i=0; i<selectedDialogs.length; i++)
-                        {
-                            delete selectedDialogs[i].matchCount;
-                        }
 
                         if(selectedDialogs.length > 0)
                         {
                             if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
                             {
-                                foundDialog = selectedDialogs[0];
+                                if(selectedDialogs[0].matchRate)
+                                {
+                                    if(selectedDialogs[0].matchRate >= 0.5)
+                                    {
+                                        foundDialog = selectedDialogs[0];
+                                    }
+                                }
+                                else
+                                {
+                                    foundDialog = selectedDialogs[0];
+                                }
                             }
                             else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
                             {
@@ -388,7 +409,7 @@ var ActionManager = require('./action.js');
                             }
                         }
 
-                        callback(null);
+                        callback(null, foundDialog);
                     });
                 }
                 else

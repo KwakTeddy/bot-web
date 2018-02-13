@@ -8,77 +8,85 @@ var SERVER_HOST = 'http://template-dev.moneybrain.ai:8443';
 module.exports = function (bot)
 {
     bot.setTask('defaultTask',
-    {
-        action: function (dialog, context, callback)
         {
-            var modelname = 'flower_test';
-            var options = {};
-
-            options.url = SERVER_HOST + '/api/'+modelname;
-
-            options.json =
+            action: function (dialog, context, callback)
             {
-                botId : '123',
-                name: 'shuang',
-                age: '25',
-                sex: 'female'
-            };
-            //read: request.get
-            //create: request.post
-            //update: request.put
-            //delete: request.delete
-            request.get(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    console.log(err);
-                }
-                else
-                {
-                    console.log(response.statusCode);
-                    console.log(body);
-                }
-                callback();
-            });
-        }
-    });
+                var modelname = 'flower_test';
+                var options = {};
 
-    bot.setTask("getcategory",
-    {
-        action: function (dialog, context, callback)
-        {
-            var modelname = 'flower_moneybrain_category';
-            var options = {};
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
-            options.qs = {};
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log('err:' + err);
-                }
-                else {
-                    body = JSON.parse(body);
-                    console.log(response.statusCode);
+                options.url = SERVER_HOST + '/api/'+modelname;
 
-                    context.session.categorylist = undefined;
-                    var str = [];
-                    for (var j = 0; j < body.length; j++) {
-                        if (str.indexOf(body[j].category) < 0) {
-                            str.push(body[j].category);
-                        }
+                options.json =
+                    {
+                        botId : '123',
+                        name: 'shuang',
+                        age: '25',
+                        sex: 'female'
+                    };
+                //read: request.get
+                //create: request.post
+                //update: request.put
+                //delete: request.delete
+                request.get(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        console.log(err);
                     }
-                    context.session.category = str;
-
-                    dialog.output[0].buttons = [];
-                    for (var i = 0; i < context.session.category.length; i++) {
-                        var ss = "" + (i + 1) + ". " + context.session.category[i];
-                        dialog.output[0].buttons.push({text: ss});
+                    else
+                    {
+                        console.log(response.statusCode);
+                        console.log(body);
                     }
                     callback();
-                }
-                callback();
-            });
-        }
-    });
+                });
+            }
+        });
+
+    bot.setTask("getcategory",
+        {
+            action: function (dialog, context, callback)
+
+            {
+
+                // context.user.mobile=undefined;
+                var modelname = 'flower_moneybrain_category';
+                var options = {};
+                options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+                options.qs = {};
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log('err:' + err);
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        console.log(response.statusCode);
+
+                        context.session.categorylist = undefined;
+                        var str = [];
+                        for (var j = 0; j < body.length; j++) {
+                            if (str.indexOf(body[j].category) < 0) {
+                                str.push(body[j].category);
+                            }
+                        }
+                        context.session.category = str;
+
+                        dialog.output[0].buttons = [];
+                        for (var i = 0; i < context.session.category.length; i++) {
+                            var ss = "" + (i + 1) + ". " + context.session.category[i];
+                            dialog.output[0].buttons.push({text: ss});
+                        }
+                        dialog.output[0].buttons.push({text: "이전으로 가기"},
+                            {
+                                text: "처음으로 돌아가기"
+                            });
+
+                        callback();
+                    }
+                    callback();
+                });
+            }
+        });
 
     bot.setType("categorylist", {
         typeCheck: function (dialog, context, callback)
@@ -129,6 +137,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name;
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
                     callback();
                 }
             });
@@ -174,7 +186,7 @@ module.exports = function (bot)
 
                     context.session.item = body;
                     var outputcount=1;
-                    if(context.session.item[0].category==="기획상품(택배배송)"){
+                    if(context.session.item[0].category==="탁상용,꽃다발등 기획상품"){
                         outputcount=0;
                     }
 
@@ -198,6 +210,10 @@ module.exports = function (bot)
                                 {
                                     text: '다른 상품 더보기',
                                     url: ""
+                                },
+                                {text: "이전으로 가기"},
+                                {
+                                    text: "처음으로 돌아가기"
                                 }
                             ];
                         }
@@ -209,6 +225,10 @@ module.exports = function (bot)
                                 {
                                     text: '주문서 확인하기',
                                     url: ""
+                                },
+                                {text: "이전으로 가기"},
+                                {
+                                    text: "처음으로 돌아가기"
                                 }
                             ];
                         }
@@ -247,6 +267,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.faqcategory[i];
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
                     callback();
                 }
                 callback();
@@ -300,6 +324,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
 
                     callback();
                 }
@@ -346,6 +374,9 @@ module.exports = function (bot)
                         {
                             text: '시작',
                             url: ""
+                        },
+                        {
+                            text: '이전으로 가기'
                         }
                     ];
                 }
@@ -374,32 +405,18 @@ module.exports = function (bot)
 
     bot.setTask('savename',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.user.name = "";
                 context.user.name = dialog.userInput.text;
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
 
 
-    bot.setType('email', {
-        typeCheck: function (dialog, context, callback) {
-            var matched = true;
-            var str = dialog.userInput.text;
-            var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-            if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
-            {
-                matched = true;
-                context.user.email = str;
                 var newuser = {
                     name: context.user.name,
                     mobile: context.user.mobile,
-                    email: context.user.email,
-                    botId: bot.id
+                    // email: context.user.email,
+                    botId: bot.id,
+                    createTime:new Date().toLocaleString(),
+                    updateTime:new Date().toLocaleString()
                 };
                 var modelname="flower_moneybrain_user";
                 var options = {};
@@ -413,24 +430,63 @@ module.exports = function (bot)
                     }
                     else {
                         console.log("response.statusCode=" + response.statusCode);
-                        return callback(matched);
+                        callback();
                     }
                 });
             }
             else {
-                matched = false;
-                callback(matched);
+                callback();
             }
-
         }
     });
+
+
+    // bot.setType('email', {
+    //     typeCheck: function (dialog, context, callback) {
+    //         var matched = true;
+    //         var str = dialog.userInput.text;
+    //         var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    //         if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
+    //         {
+    //             matched = true;
+    //             context.user.email = str;
+    //             var newuser = {
+    //                 name: context.user.name,
+    //                 mobile: context.user.mobile,
+    //                 email: context.user.email,
+    //                 botId: bot.id,
+    //                 createTime:new Date().toLocaleString(),
+    //                 updateTime:new Date().toLocaleString()
+    //             };
+    //             var modelname="flower_moneybrain_user";
+    //             var options = {};
+    //
+    //             options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+    //             options.json = newuser;
+    //
+    //             request.post(options, function(err, response, body) {
+    //                 if (err) {
+    //                     console.log(err);
+    //                 }
+    //                 else {
+    //                     console.log("response.statusCode=" + response.statusCode);
+    //                     return callback(matched);
+    //                 }
+    //             });
+    //         }
+    //         else {
+    //             matched = false;
+    //             callback(matched);
+    //         }
+    //
+    //     }
+    // });
 
 
 
     bot.setTask('savemobile',{
         preCallback: function (dialog, context, callback) {
-
-            context.user.mobile = dialog.userInput.types.mobile;
+            context.session.mobile = dialog.userInput.types.mobile;
             var randomNum = '';
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
@@ -519,7 +575,7 @@ module.exports = function (bot)
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
-                    mobile: context.user.mobile
+                    mobile: context.session.mobile
                 };
                 request.get(options, function (err, response, body)
                 {
@@ -533,30 +589,52 @@ module.exports = function (bot)
                         console.log(response.statusCode);
                         if(body.length>0){
                             context.session.olduser=true;
+                            context.user.mobile=body[0].mobile;
                             context.user.name=body[0].name;
-                            context.user.email=body[0].email;
+                            // context.user.email=body[0].email;
+
+                            // // var updateuser = [{
+                            // //     botId: bot.id},{
+                            // //     updateTime:new Date().toISOString()
+                            // // }];
+                            // // var modelname="flower_moneybrain_user";
+                            // // var options = {};
+                            // //
+                            // // options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+                            // // options.json = updateuser;
+                            //
+                            // request.put(options, function(err, response, body) {
+                            //     if (err) {
+                            //         console.log(err);
+                            //     }
+                            //     else {
+                            //         console.log("response.statusCode=" + response.statusCode);
+                            //         return callback(matched);
+                            //     }
+                            // });
                             return callback(matched);
                         }
                         else{
                             context.session.olduser=false;
+                            context.user.mobile=context.session.mobile;
                             return callback(matched);
                         }
                     }
                 });
 
-             //==========================================================
+                //==========================================================
 
             }
             else {
                 callback(matched);
             }
-    }
+        }
     });
 
 
     bot.setTask('bridegroomorbride',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 var str = dialog.userInput.text;
                 if (str.indexOf("신랑") >= 0) {
                     context.session.brideornot = "신랑측"
@@ -583,7 +661,7 @@ module.exports = function (bot)
 
     bot.setTask('savefriendname',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.session.friendname = dialog.userInput.text;
                 callback();
             }
@@ -604,7 +682,7 @@ module.exports = function (bot)
 
     bot.setTask('savefriendaddress',{
         action: function (dialog, context, callback) {
-            context.session.friendaddress=dialog.userInput.text;
+            context.session.friendaddress=dialog.userInput.types.address;
             // context.session.friendaddress = context.user.address.지번주소;
             callback();
         }
@@ -641,32 +719,44 @@ module.exports = function (bot)
     bot.setTask('savedecorate',{
         action: function (dialog, context, callback) {
 
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text  !== "이전") {
+            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 if (context.session.decorate === undefined) {
 
                     var str = dialog.userInput.text ;
                     if (str.indexOf("카드") >= 0) {
                         context.session.decorate = "카드";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "참고문구",
-                                url: ""
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "참고문구",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        //     ];
                         callback();
                     }
                     else {
                         context.session.decorate = "리본";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "네",
-                                url: ""
-                            },
-                            {
-                                text: "익명",
-                                url: ""
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "네",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "익명",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        // ];
                         callback();
                     }
                 }
@@ -674,26 +764,38 @@ module.exports = function (bot)
                     str = dialog.userInput.text ;
                     if (str.indexOf("리본") < 0) {
                         context.session.decorate = "카드";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "참고문구",
-                                url: ""
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "참고문구",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        // ];
                         callback();
                     }
                     else {
                         context.session.decorate = "리본";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "네",
-                                url: ""
-                            },
-                            {
-                                text: "익명",
-                                url: ""
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     // {
+                        //     //     text: "네",
+                        //     //     url: ""
+                        //     // },
+                        //     // {
+                        //     //     text: "익명",
+                        //     //     url: ""
+                        //     // },
+                        //     // {
+                        //     //     text: "이전으로 가기"
+                        //     // },
+                        //     // {
+                        //     //     text: "처음으로 돌아가기"
+                        //     // }
+                        // ];
                         callback();
                     }
 
@@ -733,6 +835,13 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greetingcategory[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            });
                         callback();
                     }
                 })
@@ -762,6 +871,13 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greetingcategory[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            });
                         callback();
                     }
                 })
@@ -776,14 +892,14 @@ module.exports = function (bot)
             var text = dialog.userInput.text.split(".");
             text[1]=text[1].trim();
 
-                for(var i=0; i<context.session.greetingcategory.length; i++)
+            for(var i=0; i<context.session.greetingcategory.length; i++)
+            {
+                if(context.session.greetingcategory[i].indexOf(text[1]) >=0)
                 {
-                    if(context.session.greetingcategory[i].indexOf(text[1]) >=0)
-                    {
-                        dialog.userInput.types.greetingcategorylist=context.session.greetingcategory[i];
-                        return callback(true, context.session.greetingcategory[i]);
-                    }
+                    dialog.userInput.types.greetingcategorylist=context.session.greetingcategory[i];
+                    return callback(true, context.session.greetingcategory[i]);
                 }
+            }
             callback(false);
         }
     });
@@ -792,31 +908,40 @@ module.exports = function (bot)
 
     bot.setTask('savesendname', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text  !== "이전" && dialog.userInput.text  !== "아니요") {
+            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0 && dialog.userInput.text  !== "아니요") {
                 if (dialog.userInput.text.indexOf("익명") >= 0) {
                     context.session.sendname = "익명";
-                }
-                else if (dialog.userInput.text === "네") {
-                        context.session.sendname = context.user.name;
                 }
                 else {
                     context.session.sendname = dialog.userInput.text;
                 }
-                dialog.output[0].buttons = [
-                    {
-                        text: "참고문구",
-                        url: ""
-                    }
-                ];
+                // dialog.output[0].buttons = [
+                //     {
+                //         text: "참고문구",
+                //         url: ""
+                //     },
+                //     {
+                //         text: "이전으로 가기"
+                //     },
+                //     {
+                //         text: "처음으로 돌아가기"
+                //     }
+                // ];
                 callback();
             }
             else {
-                dialog.output[0].buttons = [
-                    {
-                        text: "참고문구",
-                        url: ""
-                    }
-                ];
+                // dialog.output[0].buttons = [
+                //     {
+                //         text: "참고문구",
+                //         url: ""
+                //     },
+                //     {
+                //         text: "이전으로 가기"
+                //     },
+                //     {
+                //         text: "처음으로 돌아가기"
+                //     }
+                // ];
                 callback();
             }
         }
@@ -867,6 +992,13 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greeting[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            });
                     }
                     callback();
                 });
@@ -908,6 +1040,13 @@ module.exports = function (bot)
                             var ss = "" + (i + 1) + ". " + context.session.greeting[i];
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push(
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            });
                     }
                     callback();
                 });
@@ -936,30 +1075,30 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('savebill',{
-        action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
-                if (dialog.userInput.text=== "필요없음" || dialog.userInput.text === "1") {
-                    context.session.bill = "필요없음";
-                }
-                else if (dialog.userInput.text === "계산서 발행" || dialog.userInput.text === "2") {
-                    context.session.bill = "계산서 발행";
-                }
-                else if (dialog.userInput.text === "현금 영수증 발급" || dialog.userInput.text === "3") {
-                    context.session.bill = "현금 영수증 발급";
-                }
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
+    // bot.setTask('savebill',{
+    //     action: function (dialog, context, callback) {
+    //         if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+    //             if (dialog.userInput.text=== "필요없음" || dialog.userInput.text === "1") {
+    //                 context.session.bill = "필요없음";
+    //             }
+    //             else if (dialog.userInput.text === "계산서 발행" || dialog.userInput.text === "2") {
+    //                 context.session.bill = "계산서 발행";
+    //             }
+    //             else if (dialog.userInput.text === "현금 영수증 발급" || dialog.userInput.text === "3") {
+    //                 context.session.bill = "현금 영수증 발급";
+    //             }
+    //             callback();
+    //         }
+    //         else {
+    //             callback();
+    //         }
+    //     }
+    // });
 
 
     bot.setTask('savegreeting',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 if (context.session.selectchange !== 1) {
                     if (context.session.greetingitemlist !== undefined) {
                         context.session.selectedgreeting = context.session.greetingitemlist;
@@ -967,7 +1106,7 @@ module.exports = function (bot)
                     else {
                         context.session.selectedgreeting = dialog.userInput.text;
                     }
-                    dialog.output[0].text= "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!";
+                    dialog.output[0].text= "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^";
                     callback();
                 }
                 else {
@@ -980,11 +1119,17 @@ module.exports = function (bot)
 
                     dialog.output[0].text= "변경 되었습니다.";
                     dialog.output[0].buttons=[
-                            {
-                                text: '주문서 확인하기',
-                                url: ""
-                            }
-                        ];
+                        {
+                            text: '주문서 확인하기',
+                            url: ""
+                        },
+                        {
+                            text: "이전으로 가기"
+                        },
+                        {
+                            text: "처음으로 돌아가기"
+                        }
+                    ];
 
                     callback();
                 }
@@ -999,25 +1144,25 @@ module.exports = function (bot)
 
 
 
-    bot.setTask('savepayway', {
-        action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
-                if (dialog.userInput.text === "카드 결제하기" || dialog.userInput.text === "1") {
-                    context.session.payway = "카드";
-                }
-                else if (dialog.userInput.text=== "무통장 입금하기" || dialog.userInput.text=== "2") {
-                    context.session.payway = "무통장";
-                }
-                else if (dialog.userInput.text === "카카오페이" ||dialog.userInput.text=== "3") {
-                    context.session.payway = "카카오페이";
-                }
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
+    // bot.setTask('savepayway', {
+    //     action: function (dialog, context, callback) {
+    //         if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+    //             if (dialog.userInput.text === "카드 결제하기" || dialog.userInput.text === "1") {
+    //                 context.session.payway = "카드";
+    //             }
+    //             else if (dialog.userInput.text=== "무통장 입금하기" || dialog.userInput.text=== "2") {
+    //                 context.session.payway = "무통장";
+    //             }
+    //             else if (dialog.userInput.text === "카카오페이" ||dialog.userInput.text=== "3") {
+    //                 context.session.payway = "카카오페이";
+    //             }
+    //             callback();
+    //         }
+    //         else {
+    //             callback();
+    //         }
+    //     }
+    // });
 
 
 
@@ -1034,10 +1179,10 @@ module.exports = function (bot)
             var time = myDate.toLocaleTimeString();
             context.session.orderinfor.time = year + "년" + month + "월" + day + "일" + " " + time;
             //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:
-                context.session.orderinfor.name = context.user.name;
-                context.session.orderinfor.mobile = context.user.mobile;
-                context.session.orderinfor.email = context.user.email;
-                context.session.orderinfor.itemprice = context.session.selecteditem.price;
+            context.session.orderinfor.name = context.user.name;
+            context.session.orderinfor.mobile = context.user.mobile;
+            // context.session.orderinfor.email = context.user.email;
+            context.session.orderinfor.itemprice = context.session.selecteditem.price;
             //보내시는분 성함:
             if (context.session.decorate === "리본") {
                 context.session.orderinfor.sendername = context.session.sendname;
@@ -1078,9 +1223,9 @@ module.exports = function (bot)
             //포장방식:
             context.session.orderinfor.decorateway = context.session.decorate;
             //계산서 필요할건지:
-            context.session.orderinfor.bill = context.session.bill;
+            // context.session.orderinfor.bill = context.session.bill;
             //결제 방식:
-            context.session.orderinfor.payway = context.session.payway;
+            // context.session.orderinfor.payway = context.session.payway;
             //총 금액
             var price = context.session.orderinfor.itemprice;
             var number = context.session.orderinfor.itemnumber;
@@ -1099,6 +1244,9 @@ module.exports = function (bot)
                 {
                     text: '변경하기',
                     url: ""
+                },
+                {
+                    text: "처음으로 돌아가기"
                 }
             ];
             callback();
@@ -1123,13 +1271,13 @@ module.exports = function (bot)
                 itemimage: context.session.orderinfor.itemimage,
                 itemnumber: context.session.orderinfor.itemnumber,
                 itempay: context.session.orderinfor.itempay,
-                email: context.session.orderinfor.email,
+                // email: context.session.orderinfor.email,
                 bride: context.session.orderinfor.brideornot,
                 showtime: context.session.orderinfor.showtime,
                 // deliveryway: context.session.orderinfor.deliveryway,
                 decorateway: context.session.orderinfor.decorateway,
-                bill: context.session.orderinfor.bill,
-                payway: context.session.orderinfor.payway,
+                // bill: context.session.orderinfor.bill,
+                // payway: context.session.orderinfor.payway,
                 allprice: context.session.orderinfor.allprice,
                 deliverytime: context.session.orderinfor.deliverytime,
                 otherrequire: context.session.orderinfor.otherrequire,
@@ -1154,7 +1302,7 @@ module.exports = function (bot)
 
                     dialog.output[0].buttons=[
                         {
-                            text: '결제하러 가기',
+                            text: '결제하기',
                             url: context.session.selecteditem.pay
                         },
                         {
@@ -1190,14 +1338,15 @@ module.exports = function (bot)
                     //포장방식:
                     context.session.decorate = undefined;
                     //계산서 필요할건지:
-                    context.session.bill = undefined;
+                    // context.session.bill = undefined;
                     //결제 방식:
-                    context.session.payway = undefined;
+                    // context.session.payway = undefined;
                     //변경:
                     context.session.selectchange = undefined;
                     //다른 요구사항
                     context.session.otherrequire = undefined;
                     context.session.olduser=undefined;
+                    context.session.findorder = undefined;
                     //매세지:
 
 
@@ -1260,12 +1409,12 @@ module.exports = function (bot)
                                         pass: 'ZSdh1007--'
                                     }
                                 });
-                                if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
-                                    context.session.orderinfor.email = "jipark@moneybrain.ai";
-                                }
+                                // if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
+                                //     context.session.orderinfor.email = "jipark305@icloud.com";
+                                // }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: context.session.orderinfor.email, // list of receivers
+                                    to: 'jipark305@icloud.com', // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +
@@ -1273,7 +1422,7 @@ module.exports = function (bot)
                                     '<br>' + '<b>배달주소: </b>' + context.session.orderinfor.receiveraddress + '<br>' + '<b>배달일자: </b>' + context.session.orderinfor.deliverytime +
                                     '<br>' + '<b>남기시는 메세지: </b>' + context.session.orderinfor.greeting + '<br>' + '<b>상품: </b>' + context.session.orderinfor.itemname + '<br>' + '<b>수량: </b>' + context.session.orderinfor.itemnumber + '<b>개</b>' + '<br>' + '<b>총: </b>' + context.session.orderinfor.allprice + '<b>원</b>' +
                                     '<br>' + '<b>신부신랑: </b>' + context.session.orderinfor.brideornot + '<br>' + '<b>신부신랑 전시 시간: </b>' + context.session.orderinfor.showtime + '<br>' + '<b>다른 요구사항: </b>' + context.session.orderinfor.otherrequire + '<br>' +
-                                    '<br>' + '<b>계산서 필요할건지: </b>' + context.session.orderinfor.bill + '<br>' + '<b>배송방식: </b>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway+ '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
+                                    '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway + '<br>' +  '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
                                 };
 
                                 transporter.sendMail(mailOptions, function (error, info) {
@@ -1458,7 +1607,7 @@ module.exports = function (bot)
     bot.setTask('selectchange', {
         action: function (dialog, context, callback) {
             context.session.selectchange = 1;
-           dialog.output[0].buttons = [
+            dialog.output[0].buttons = [
                 {
                     text: '받는 분 성함',
                     url: ""
@@ -1482,6 +1631,12 @@ module.exports = function (bot)
                 {
                     text: '상품 변경',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
+                },
+                {
+                    text: "처음으로 돌아가기"
                 }
             ];
             callback();
@@ -1490,12 +1645,19 @@ module.exports = function (bot)
 
     bot.setTask('deletegreeting', {
         action: function (dialog, context, callback) {
-            dialog.output[0].buttons = [
-                {
-                    text: '참고문구',
-                    url: ""
-                }
-            ];
+            context.session.greetingitemlist=undefined;
+            // dialog.output[0].buttons = [
+            //     {
+            //         text: '참고문구',
+            //         url: ""
+            //     },
+            //     {
+            //         text: "이전으로 가기"
+            //     },
+            //     {
+            //         text: "처음으로 돌아가기"
+            //     }
+            // ];
             callback();
         }
     });
@@ -1504,7 +1666,7 @@ module.exports = function (bot)
 
     bot.setTask('saveitemnumber',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.session.itemnumber = dialog.userInput.text;
                 callback();
             }
@@ -1517,7 +1679,7 @@ module.exports = function (bot)
 
     bot.setTask('saveotherrequire',{
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text !== "이전") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.session.otherrequire = dialog.userInput.text;
                 callback();
             }
@@ -1555,6 +1717,10 @@ module.exports = function (bot)
                         var ss = "" + (i + 1) + ". " + context.session.orderlist[i].itemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
                         dialog.output[0].buttons.push({text: ss});
                     }
+                    dialog.output[0].buttons.push({text: "이전으로 가기"},
+                        {
+                            text: "처음으로 돌아가기"
+                        });
                     callback();
                 }
             });
@@ -1594,6 +1760,9 @@ module.exports = function (bot)
                 {
                     text: "시작",
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             //};
@@ -1630,11 +1799,10 @@ module.exports = function (bot)
             //포장방식:
             context.session.decorate = undefined;
             //계산서 필요할건지:
-            context.session.bill = undefined;
+            // context.session.bill = undefined;
             //결제 방식:
-            context.session.payway = undefined;
+            // context.session.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
@@ -1656,6 +1824,9 @@ module.exports = function (bot)
                 {
                     text: '시작',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             callback();
@@ -1673,7 +1844,7 @@ module.exports = function (bot)
             var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
             request.post(
                 'https://bot.moneybrain.ai/api/messages/sms/send',
-                {json: {callbackPhone: config.callcenter, phone: dialog.userInput.types.mobile, message: message}},
+                {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
                 function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log("response.statusCode:" + response.statusCode);
@@ -1695,6 +1866,9 @@ module.exports = function (bot)
                 {
                     text: '시작',
                     url: ""
+                },
+                {
+                    text: "이전으로 가기"
                 }
             ];
             callback();
@@ -1707,15 +1881,11 @@ module.exports = function (bot)
                 dialog.output[0].image = {url: 'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg'};
                 dialog.output[0].buttons = [
                     {
-                        text: '1.자주하는 질문',
+                        text: '1.상품 주문하기',
                         url: ''
                     },
                     {
-                        text: '2.상품주문하기',
-                        url: ''
-                    },
-                    {
-                        text: '3.문의하기',
+                        text: '2.내 주문내역 확인하기',
                         url: ''
                     }
                 ];
@@ -1727,7 +1897,49 @@ module.exports = function (bot)
         });
 
 
-    bot.setTask('neworder',{
+    // bot.setTask('neworder',{
+    //     action: function (dialog, context, callback) {
+    //         context.session.sendname = undefined;
+    //         //받는분 성함:
+    //         context.session.friendname = undefined;
+    //         //받는분 연락처:
+    //         context.session.friendmobile = undefined;
+    //         //배달주소:
+    //         context.session.friendaddress = undefined;
+    //         //배달일자:
+    //         context.session.deliverytime = undefined;
+    //         //남기시는 메세지:
+    //         context.session.selectedgreeting = undefined;
+    //         //상품:
+    //         //context.session.selecteditem=undefined;
+    //         //수량---------------------------------------
+    //         context.session.itemnumber = undefined;
+    //         //신부신랑:
+    //         context.session.brideornot = undefined;
+    //         //신부신랑 전시 시간:
+    //         context.session.showtime = undefined;
+    //         //배송방식:
+    //         // context.session.deliveryway = undefined;
+    //         //포장방식:
+    //         context.session.decorate = undefined;
+    //         //계산서 필요할건지:
+    //         // context.session.bill = undefined;
+    //         //결제 방식:
+    //         // context.session.payway = undefined;
+    //         //변경:
+    //         //다른 요구사항
+    //         context.session.otherrequire = undefined;
+    //         context.session.olduser=undefined;
+    //         context.session.greetingitemlist=undefined;
+    //         context.session.findorder = undefined;
+    //         context.session.selectchange=undefined;
+    //
+    //         callback();
+    //     }
+    // });
+
+
+    bot.setTask('allname', {
         action: function (dialog, context, callback) {
             context.session.sendname = undefined;
             //받는분 성함:
@@ -1753,23 +1965,17 @@ module.exports = function (bot)
             //포장방식:
             context.session.decorate = undefined;
             //계산서 필요할건지:
-            context.session.bill = undefined;
+            // context.session.bill = undefined;
             //결제 방식:
-            context.session.payway = undefined;
+            // context.session.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
             context.session.greetingitemlist=undefined;
-
-            callback();
-        }
-    });
-
-
-    bot.setTask('allname', {
-        action: function (dialog, context, callback) {
+            context.session.findorder = undefined;
+            context.session.selectchange=undefined;
+            context.user.time=undefined;
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -1844,6 +2050,12 @@ module.exports = function (bot)
                             {
                                 text: '네 주문하기',
                                 url: ""
+                            },
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             }
                         ]
                     }
@@ -1966,7 +2178,7 @@ module.exports = function (bot)
             else {
                 matched = true;
             }
-            //console.log("context.user.time========"+context.user.time);
+            console.log("context.user.time======999999999=="+context.user.time);
         });
         return matched
     }
@@ -2013,6 +2225,9 @@ module.exports = function (bot)
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
+                        if(context.user.time===undefined){
+                            context.user.time=' ';
+                        }
                         context.session.showtime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
                             matched = false;
@@ -2023,6 +2238,9 @@ module.exports = function (bot)
                     else {
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                context.user.time=' ';
+                            }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
@@ -2033,6 +2251,9 @@ module.exports = function (bot)
                         else {
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                ccontext.user.time=' ';
+                            }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
@@ -2077,6 +2298,9 @@ module.exports = function (bot)
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
+                        if(context.user.time===undefined){
+                            context.user.time=' ';
+                        }
                         context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
                             matched = false;
@@ -2087,16 +2311,22 @@ module.exports = function (bot)
                     else {
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                context.user.time=' ';
+                            }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
-                               return callback(matched);
+                                return callback(matched);
                             }
                             return callback(matched);
                         }
                         else {
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                context.user.time=' ';
+                            }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
@@ -2114,9 +2344,13 @@ module.exports = function (bot)
             callback(matched);
         }
     });
+
+    // bot.setTask('deletemobile',
+    //     {
+    //         action: function (dialog, context, callback)
+    //         {
+    //             context.user.mobile=undefined;
+    //             callback();
+    //         }
+    //     });
 };
-
-
-
-
-

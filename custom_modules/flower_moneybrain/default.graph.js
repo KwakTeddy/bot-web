@@ -64,13 +64,13 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n\n*가격: +price+원\n\n*주문시 유의사항: \n+notic+\n\n*배송이 가능한 시간: \n+time+\n\n*주문취소안내: \n+cancel+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
-                                "if": "context.session.item[0].category===\"기획상품(택배배송)\""
+                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n*주문시 유의사항: \n- 실제상품과 사진은 계절 및 지역에 따라 다소 차이가 있을 수 있습니다.\n- 계절에 따라 상품 구성 소재가 달라지거나 상품의 가격에 차이가 있을 수 있습니다\n- 상품에 따라 실제 배송되는 상품과 상품이미지에 차이가 있을수 있습니다.\n\n*배송이 가능한 시간: \n택배배송만으로 진행되며, 고객님이 원하시는 시간을 정확히 맞추기가 어려운 점 양해부탁드립니다.\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 02-858-5683으로 전화주시면 바로 처리됩니다. \n단, 희망배송시간 5시간전까지 주문 취소할수 있습니다.(빠른배송은 주문취소가 힘드십니다.)\n교환 및 환불 요청은 당일 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며, 환불은 요청한 일로부터 익주 수요일이 진행됩니다.)",
+                                "if": "context.session.item[0].category===\"탁상용,꽃다발등 기획상품\""
                             },
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n\n*가격: +price+원\n\n*주문시 유의사항: \n+notic+\n\n*배송이 가능한 시간: \n+time+\n\n*배송지역: \n+region+\n\n*특정 기념일 배송 유의사항: \n+special+\n\n*주문취소안내: \n+cancel+\n#\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.",
-                                "if": "context.session.item[0].category!==\"기획상품(택배배송)\""
+                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n*주문시 유의사항: \n실제 상품과 사진은 계절 또는 배송지역에 따라 다소 차이가 있을 수 있습니다.\n\n*배송이 가능한 시간: \n평   일 : 오전 8:30~오후 7:00 \n토요일 : 오전 8:30~오후 6:00 \n일요일 : 예약주문만 가능합니다.\n\n*배송지역: \n- 국내는 전 지역 3시간 안에 배송 가능합니다. \n- 외딴섬 지역은 상담후 배송  \n- 해외는 3~7일전 접수\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 전화 ☎02-858-5683으로 전화주시면 바로 처리됩니다.\n단, 희망배송시간 3시간전까지 주문 취소할수 있습니다.\n교환 및 환불은 24시간 이내에 100% 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며,환불은 요청한 일로부터 48시간 안에 주문자 계좌로 입금처리 해드립니다.)",
+                                "if": "context.session.item[0].category!==\"탁상용,꽃다발등 기획상품\""
                             }
                         ],
                         "task": {
@@ -302,39 +302,37 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "2",
-                    "nlp": "2"
+                    "raw": "1",
+                    "nlp": "1"
                 }
             },
             {
                 "text": {
-                    "raw": "주문",
-                    "nlp": "주문"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상품 주문하기",
-                    "nlp": "상품 주문 하다"
-                }
-            },
-            {
-                "text": {
-                    "raw": "주문하기",
-                    "nlp": "주문 하다"
+                    "raw": "상품",
+                    "nlp": "상품"
                 }
             }
         ],
         "output": [
             {
-                "kind": "Content",
-                "text": "상품 주문을 도와드릴께요.\n\n원하시는 상품이름을 아신다면, 입력해주세요\n\n추천상품을 안내를 원하신다면 '추천해줘'라고 입력하시면 됩니다",
+                "kind": "Action",
+                "text": "",
                 "buttons": [
                     {
                         "url": "",
                         "text": "추천해줘"
+                    },
+                    {
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "text": "처음으로 돌아가기"
                     }
-                ]
+                ],
+                "type": "call",
+                "dialogName": "1.카테고리 대",
+                "dialog": "1.카테고리 대",
+                "dialogId": "default0"
             }
         ],
         "id": "default6",
@@ -403,18 +401,18 @@ var dialogs = [
                                 "kind": "Action",
                                 "if": "context.user.mobile==undefined",
                                 "options": {
-                                    "output": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(ex: 01012345678)"
+                                    "output": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)"
                                 },
                                 "type": "call",
-                                "dialog": "3.고객 이메일",
-                                "dialogName": "3.고객 이메일",
-                                "dialogId": "default16"
+                                "dialog": "3.고객 성함",
+                                "dialogName": "3.고객 성함",
+                                "dialogId": "default15"
                             },
                             {
                                 "kind": "Action",
                                 "if": "context.user.mobile!==undefined",
                                 "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                    "output": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?"
                                 },
                                 "type": "call",
                                 "dialogName": "3.기존회원",
@@ -422,10 +420,7 @@ var dialogs = [
                                 "dialogId": "default21"
                             }
                         ],
-                        "id": "default11",
-                        "task": {
-                            "name": "neworder"
-                        }
+                        "id": "default11"
                     },
                     {
                         "name": "3.선택 상품 확인 다시",
@@ -452,7 +447,7 @@ var dialogs = [
                                         "text": "시작"
                                     }
                                 ],
-                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 확인 하고 싶은면 \"다시 확인\"버튼을 누르세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요."
                             }
                         ],
                         "id": "default87",
@@ -577,13 +572,13 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "4",
-                    "nlp": "4"
+                    "raw": "2",
+                    "nlp": "2"
                 }
             },
             {
                 "text": {
-                    "raw": "내 주문 확인 하다",
+                    "raw": "내 주문 확인하기",
                     "nlp": "내 주문 확인 하다"
                 }
             },
@@ -648,8 +643,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요.",
-                "buttons": []
+                "text": "무엇이든 물어보세요! 궁금하신 점을 문자로 입력해도 알아듣는 인공지능 배달봇입니다.\n\n예를 들면, 배달시간은 몇시부터 몇시까지 가능한가요? 라고 입력해도 되요.\n\n또는, 다음 중 궁금하신 점과 관련된 주제를 선택해주세요."
             }
         ],
         "id": "default3",
@@ -846,7 +840,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "주문하시는 고객님의 성함을 입력해주세요.\n(ex: 아리랑)"
+                        "text": "주문하시는 고객님의 성함을 입력해주세요.\n(예시: 아리랑)"
                     }
                 ],
                 "id": "default13",
@@ -860,8 +854,31 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "주문하시는 고객님의 이메일을 입력해주세요.\n\n입력하시는 이메일로 주문서를 발송해드립니다.\n(ex: 123456@naver.com)"
+                                "kind": "Action",
+                                "text": "",
+                                "if": "context.user.mobile!==undefined && context.session.findorder===1",
+                                "type": "call",
+                                "dialogName": "6.주문 확인 기존회원",
+                                "dialog": "6.주문 확인 기존회원",
+                                "dialogId": "default76"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
+                                "if": "context.user.mobile==undefined",
+                                "type": "call",
+                                "dialogName": "3.고객 이메일",
+                                "dialog": "3.고객 이메일",
+                                "dialogId": "default16"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "if": "context.user.mobile!==undefined && context.session.findorder!==1",
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "task": {
@@ -883,11 +900,12 @@ var dialogs = [
                                         "if": "context.user.mobile!==undefined && context.session.findorder===1",
                                         "type": "call",
                                         "dialogName": "6.주문 확인 기존회원",
-                                        "dialog": "6.주문 확인 기존회원"
+                                        "dialog": "6.주문 확인 기존회원",
+                                        "dialogId": "default76"
                                     },
                                     {
                                         "kind": "Content",
-                                        "text": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(ex: 01012345678)",
+                                        "text": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
                                         "if": "context.user.mobile==undefined"
                                     },
                                     {
@@ -913,7 +931,7 @@ var dialogs = [
                                             {
                                                 "kind": "Action",
                                                 "options": {
-                                                    "output": "받으신 인증번호를 입력해주세요."
+                                                    "output": "메세지로 인증번호가 발송되었습니다.\n받으신 인증번호 네자리를 입력해주세요."
                                                 },
                                                 "type": "call",
                                                 "dialogName": "3.인증번호를 확인",
@@ -936,7 +954,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
@@ -971,9 +989,9 @@ var dialogs = [
                                                     {
                                                         "kind": "Action",
                                                         "type": "call",
-                                                        "dialogName": "3.고객 이메일",
-                                                        "dialog": "3.고객 이메일",
-                                                        "dialogId": "default16"
+                                                        "dialogName": "3.고객 성함",
+                                                        "dialog": "3.고객 성함",
+                                                        "dialogId": "default15"
                                                     }
                                                 ],
                                                 "id": "default92"
@@ -1050,7 +1068,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "받으신 인증번호를 입력해주세요."
+                        "text": "메세지로 인증번호가 발송되었습니다.\n받으신 인증번호 네자리를 입력해주세요."
                     }
                 ],
                 "id": "default19",
@@ -1084,7 +1102,7 @@ var dialogs = [
                                 "kind": "Action",
                                 "if": "context.session.findorder!==1 && context.session.olduser==true",
                                 "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                    "output": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?"
                                 },
                                 "type": "call",
                                 "dialogName": "3.기존회원",
@@ -1105,7 +1123,7 @@ var dialogs = [
                             {
                                 "kind": "Content",
                                 "options": {
-                                    "output": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력해주세요.\n\n인정번호를 안 받았으면 \"재발송\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                                    "output": "죄송합니다. 다시한번 입력해주시겠어요? 다시 입력해주세요.\n\n인정번호를 안 받았으면 \"재발송\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
                                 },
                                 "buttons": [
                                     {
@@ -1121,7 +1139,7 @@ var dialogs = [
                                         "text": "시작"
                                     }
                                 ],
-                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하고 싶으면 \"다시 입력\"을 입력해주세요.\n\n인정번호를 안 받았으면 \"재발송\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.\n\n인정번호를 안 받았으면 \"재발송\"을 입력해주세요."
                             }
                         ],
                         "id": "default84",
@@ -1183,15 +1201,9 @@ var dialogs = [
                                 ],
                                 "id": "default99"
                             }
-                        ],
-                        "task": {
-                            "name": ""
-                        }
+                        ]
                     }
-                ],
-                "task": {
-                    "name": ""
-                }
+                ]
             }
         ]
     },
@@ -1205,7 +1217,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?",
+                "text": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?",
                 "buttons": [
                     {
                         "url": "",
@@ -1214,6 +1226,12 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "아니요"
+                    },
+                    {
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "text": "처음으로 돌아가기"
                     }
                 ]
             }
@@ -1245,6 +1263,12 @@ var dialogs = [
                             {
                                 "url": "",
                                 "text": "신부"
+                            },
+                            {
+                                "text": "이전으로 가기"
+                            },
+                            {
+                                "text": "처음으로 돌아가기"
                             }
                         ]
                     }
@@ -1261,7 +1285,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "예식시간을 입력해주세요.\n(ex: 20180625 오후 4시)"
+                                "text": "예식시간을 입력해주세요.\n(예시: 20180625 오후 4시)"
                             }
                         ],
                         "task": {
@@ -1280,7 +1304,7 @@ var dialogs = [
                                     {
                                         "kind": "Action",
                                         "options": {
-                                            "output": "수취인 성함을 입력해주세요.\n(ex: 아리랑)"
+                                            "output": "수취인 성함을 입력해주세요.\n(예시: 아리랑)"
                                         },
                                         "type": "call",
                                         "dialogName": "3.수취인 성함",
@@ -1288,9 +1312,6 @@ var dialogs = [
                                         "dialogId": "default24"
                                     }
                                 ],
-                                "task": {
-                                    "name": ""
-                                },
                                 "id": "default25"
                             },
                             {
@@ -1303,7 +1324,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                         "buttons": [
                                             {
                                                 "url": "",
@@ -1367,7 +1388,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "수취인 성함을 입력해주세요.\n(ex: 아리랑)"
+                        "text": "수취인 성함을 입력해주세요.\n(예시: 아리랑)"
                     }
                 ],
                 "id": "default24",
@@ -1382,7 +1403,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "수취인 연락처를 입력해주세요.\n(ex: 01012345678)"
+                                "text": "수취인 연락처를 입력해주세요.\n(예시: 01012345678)"
                             }
                         ],
                         "task": {
@@ -1400,7 +1421,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "배송받을 주소를 입력해주세요.\n\n시/도와 상세주소를 입력해주세요."
+                                        "text": "배송받으실 주소를 상세하게 입력해주세요.\n\n보다 정확한 배송을 위해 상세한 도로명 주소 또는 지번주소를 입력해주세요.\n\n예시)시·도 + 시·군·구 + 읍·면 + 도로명건물번호 + 동·층·호 + (법정동, 공동주택명)\n서울특별시 서초구 잠원로 123, OO동 OO호 (OO동, OO아파트)"
                                     }
                                 ],
                                 "task": {
@@ -1412,17 +1433,15 @@ var dialogs = [
                                         "name": "3.배송일시",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                },
-                                                "if": "true"
+                                                "types": [
+                                                    "address"
+                                                ]
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "배송을 원하시는 날짜와 시간을 입력해주세요.\n(ex: 20180316 오후 3시)"
+                                                "text": "배송을 원하시는 날짜와 시간을 입력해주세요.\n(예시: 20180316 오후 3시)"
                                             }
                                         ],
                                         "task": {
@@ -1442,7 +1461,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "카드를 원하시나요 리본을 원하시나요?",
+                                                        "text": "카드 또는 리본에 메세지를 전달하실 수 있습니다.\n\n카드를 원하시나요, 리본을 원하시나요?",
                                                         "buttons": [
                                                             {
                                                                 "url": "",
@@ -1451,6 +1470,12 @@ var dialogs = [
                                                             {
                                                                 "url": "",
                                                                 "text": "리본"
+                                                            },
+                                                            {
+                                                                "text": "이전으로 가기"
+                                                            },
+                                                            {
+                                                                "text": "처음으로 돌아가기"
                                                             }
                                                         ]
                                                     }
@@ -1470,7 +1495,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "원하시는 카드문구를 입력하세요.\n\n경조사어 참고문구를 보고싶으시다면 '참고문구' 라고 입력하세요."
+                                                                "text": "카드로 전달하고싶은 메세지를 입력해주세요.\n\n'참고문구'라고 입력하시면, 입력하시고 싶은 메세지에 대해 안내해드릴께요.\n\n'이전' 이라고 입력하시면 언제든지 전단계로 돌아갈 수 있어요~"
                                                             }
                                                         ],
                                                         "id": "default31",
@@ -1531,6 +1556,12 @@ var dialogs = [
                                                                                             {
                                                                                                 "url": "",
                                                                                                 "text": "아니요"
+                                                                                            },
+                                                                                            {
+                                                                                                "text": "이전으로 가기"
+                                                                                            },
+                                                                                            {
+                                                                                                "text": "처음으로 돌아가기"
                                                                                             }
                                                                                         ]
                                                                                     }
@@ -1553,8 +1584,7 @@ var dialogs = [
                                                                                         "output": [
                                                                                             {
                                                                                                 "kind": "Content",
-                                                                                                "text": "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!",
-                                                                                                "buttons": []
+                                                                                                "text": "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^"
                                                                                             }
                                                                                         ],
                                                                                         "id": "default37",
@@ -1593,13 +1623,10 @@ var dialogs = [
                                                                                                         "dialogId": "default44"
                                                                                                     }
                                                                                                 ],
-                                                                                                "id": "default71",
-                                                                                                "task": {
-                                                                                                    "name": ""
-                                                                                                }
+                                                                                                "id": "default71"
                                                                                             },
                                                                                             {
-                                                                                                "name": "3.계산서 요청여부",
+                                                                                                "name": "3.결제방법 선택",
                                                                                                 "input": [
                                                                                                     {
                                                                                                         "if": "true"
@@ -1607,51 +1634,35 @@ var dialogs = [
                                                                                                 ],
                                                                                                 "output": [
                                                                                                     {
-                                                                                                        "kind": "Content",
-                                                                                                        "text": "계산서 요청여부를 선택해주세요.\n\n*게산서발행을 원하시는 고객님께서는 주문완료후사업자등록증을 팩스로 보내주셔야합니다. FAX : 02)6974-1544\n\n*계산서는 배송완료 후 익월 10일 전까지 전자계산서로 발송해드립니다.",
+                                                                                                        "kind": "Action",
+                                                                                                        "text": "",
                                                                                                         "buttons": [
                                                                                                             {
                                                                                                                 "url": "",
-                                                                                                                "text": "필요없음"
+                                                                                                                "text": "주문내역"
                                                                                                             },
                                                                                                             {
-                                                                                                                "url": "",
-                                                                                                                "text": "계산서 발행"
+                                                                                                                "text": "이전으로 가기"
                                                                                                             },
                                                                                                             {
-                                                                                                                "url": "",
-                                                                                                                "text": "현금 영수증 발급"
+                                                                                                                "text": "처음으로 돌아가기"
                                                                                                             }
-                                                                                                        ]
+                                                                                                        ],
+                                                                                                        "type": "call",
+                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                        "dialogId": "default44"
                                                                                                     }
                                                                                                 ],
-                                                                                                "id": "default39",
+                                                                                                "id": "default40",
                                                                                                 "children": [
                                                                                                     {
-                                                                                                        "name": "3.결제방법 선택",
+                                                                                                        "name": "3.카드 결제하기",
                                                                                                         "input": [
                                                                                                             {
                                                                                                                 "text": {
-                                                                                                                    "raw": "필요없다",
-                                                                                                                    "nlp": "필요없다"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "text": {
-                                                                                                                    "raw": "필요없음",
-                                                                                                                    "nlp": "필요없다"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "text": {
-                                                                                                                    "raw": "계산서 발행",
-                                                                                                                    "nlp": "계산서 발행"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "text": {
-                                                                                                                    "raw": "현금 영수증 발급",
-                                                                                                                    "nlp": "현금 영수증 발급"
+                                                                                                                    "raw": "카드 결제 하다",
+                                                                                                                    "nlp": "카드 결제 하다"
                                                                                                                 }
                                                                                                             },
                                                                                                             {
@@ -1662,398 +1673,188 @@ var dialogs = [
                                                                                                             },
                                                                                                             {
                                                                                                                 "text": {
-                                                                                                                    "raw": "2",
-                                                                                                                    "nlp": "2"
+                                                                                                                    "raw": "카드 결제하기",
+                                                                                                                    "nlp": "카드 결제 하다"
                                                                                                                 }
                                                                                                             },
                                                                                                             {
-                                                                                                                "text": {
-                                                                                                                    "raw": "3",
-                                                                                                                    "nlp": "3"
-                                                                                                                }
+                                                                                                                "intent": "네"
                                                                                                             }
                                                                                                         ],
                                                                                                         "output": [
                                                                                                             {
-                                                                                                                "kind": "Action",
+                                                                                                                "kind": "Content",
                                                                                                                 "text": "고객님의 주문내역을 보시려면 \"주문내역\"을 입력해주세요.",
                                                                                                                 "buttons": [
                                                                                                                     {
                                                                                                                         "url": "",
                                                                                                                         "text": "주문내역"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "이전으로 가기"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "처음으로 돌아가기"
                                                                                                                     }
-                                                                                                                ],
-                                                                                                                "type": "call",
-                                                                                                                "dialogName": "3.카드 결제하기",
-                                                                                                                "dialog": "3.카드 결제하기",
-                                                                                                                "dialogId": "default41"
+                                                                                                                ]
                                                                                                             }
                                                                                                         ],
-                                                                                                        "id": "default40",
+                                                                                                        "id": "default41",
                                                                                                         "children": [
                                                                                                             {
-                                                                                                                "name": "3.카드 결제하기",
+                                                                                                                "name": "3.주문서 확인",
                                                                                                                 "input": [
                                                                                                                     {
                                                                                                                         "text": {
-                                                                                                                            "raw": "카드 결제 하다",
-                                                                                                                            "nlp": "카드 결제 하다"
+                                                                                                                            "raw": "주문내역",
+                                                                                                                            "nlp": "주문 내 역"
                                                                                                                         }
                                                                                                                     },
                                                                                                                     {
                                                                                                                         "text": {
-                                                                                                                            "raw": "1",
-                                                                                                                            "nlp": "1"
+                                                                                                                            "raw": "주문 내역",
+                                                                                                                            "nlp": "주문 내 역"
                                                                                                                         }
                                                                                                                     },
                                                                                                                     {
                                                                                                                         "text": {
-                                                                                                                            "raw": "카드 결제하기",
-                                                                                                                            "nlp": "카드 결제 하다"
+                                                                                                                            "raw": "주문",
+                                                                                                                            "nlp": "주문"
                                                                                                                         }
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                        "intent": "네"
                                                                                                                     }
                                                                                                                 ],
                                                                                                                 "output": [
                                                                                                                     {
                                                                                                                         "kind": "Content",
-                                                                                                                        "text": "고객님의 주문내역을 보시려면 \"주문내역\"을 입력해주세요.",
-                                                                                                                        "buttons": [
-                                                                                                                            {
-                                                                                                                                "url": "",
-                                                                                                                                "text": "주문내역"
-                                                                                                                            }
-                                                                                                                        ]
+                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 결제를 진행할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
                                                                                                                     }
                                                                                                                 ],
-                                                                                                                "id": "default41",
+                                                                                                                "id": "default44",
                                                                                                                 "children": [
                                                                                                                     {
-                                                                                                                        "name": "3.주문서 확인",
+                                                                                                                        "name": "3.변경사항 선택",
                                                                                                                         "input": [
                                                                                                                             {
                                                                                                                                 "text": {
-                                                                                                                                    "raw": "주문내역",
-                                                                                                                                    "nlp": "주문 내 역"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "주문 내역",
-                                                                                                                                    "nlp": "주문 내 역"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "주문",
-                                                                                                                                    "nlp": "주문"
+                                                                                                                                    "raw": "변경",
+                                                                                                                                    "nlp": "변경"
                                                                                                                                 }
                                                                                                                             }
                                                                                                                         ],
                                                                                                                         "output": [
                                                                                                                             {
                                                                                                                                 "kind": "Content",
-                                                                                                                                "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
+                                                                                                                                "text": "다음중 변경하고 싶으신 부분을 선택해주세요.\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원"
                                                                                                                             }
                                                                                                                         ],
-                                                                                                                        "id": "default44",
+                                                                                                                        "id": "default46",
+                                                                                                                        "task": {
+                                                                                                                            "name": "selectchange"
+                                                                                                                        },
                                                                                                                         "children": [
                                                                                                                             {
-                                                                                                                                "name": "3.변경사항 선택",
+                                                                                                                                "name": "3.상품 변경",
                                                                                                                                 "input": [
                                                                                                                                     {
                                                                                                                                         "text": {
-                                                                                                                                            "raw": "변경하기",
-                                                                                                                                            "nlp": "변경 하다"
+                                                                                                                                            "raw": "상품",
+                                                                                                                                            "nlp": "상품"
                                                                                                                                         }
-                                                                                                                                    },
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "output": [
+                                                                                                                                    {
+                                                                                                                                        "kind": "Action",
+                                                                                                                                        "type": "call",
+                                                                                                                                        "dialogName": "1.카테고리 대",
+                                                                                                                                        "dialog": "1.카테고리 대",
+                                                                                                                                        "dialogId": "default0"
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "id": "default61"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "name": "3.받는 분 성함 변경",
+                                                                                                                                "input": [
                                                                                                                                     {
                                                                                                                                         "text": {
-                                                                                                                                            "raw": "변경",
-                                                                                                                                            "nlp": "변경"
+                                                                                                                                            "raw": "성함",
+                                                                                                                                            "nlp": "성함"
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Content",
-                                                                                                                                        "text": "다음중 변경하고 싶으신 부분을 선택해주세요.\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원"
+                                                                                                                                        "text": "변경하시고 싶은 받는 분 성함을 알려주세요.\n(예시: 아리랑)"
                                                                                                                                     }
                                                                                                                                 ],
-                                                                                                                                "id": "default46",
-                                                                                                                                "task": {
-                                                                                                                                    "name": "selectchange"
-                                                                                                                                },
+                                                                                                                                "id": "default62",
                                                                                                                                 "children": [
                                                                                                                                     {
-                                                                                                                                        "name": "3.상품 변경",
+                                                                                                                                        "name": "3.받는 분 성함 변경 저장",
                                                                                                                                         "input": [
                                                                                                                                             {
-                                                                                                                                                "text": {
-                                                                                                                                                    "raw": "상품",
-                                                                                                                                                    "nlp": "상품"
-                                                                                                                                                }
+                                                                                                                                                "if": "true"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Action",
                                                                                                                                                 "type": "call",
-                                                                                                                                                "dialogName": "1.카테고리 대",
-                                                                                                                                                "dialog": "1.카테고리 대",
-                                                                                                                                                "dialogId": "default0"
+                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                "dialogId": "default44"
                                                                                                                                             }
                                                                                                                                         ],
-                                                                                                                                        "id": "default61"
-                                                                                                                                    },
+                                                                                                                                        "task": {
+                                                                                                                                            "name": "savefriendname"
+                                                                                                                                        },
+                                                                                                                                        "id": "default63"
+                                                                                                                                    }
+                                                                                                                                ]
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "name": "3.받는 분 연락처 변경",
+                                                                                                                                "input": [
                                                                                                                                     {
-                                                                                                                                        "name": "3.받는 분 성함 변경",
+                                                                                                                                        "text": {
+                                                                                                                                            "raw": "연락처",
+                                                                                                                                            "nlp": "연락처"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "output": [
+                                                                                                                                    {
+                                                                                                                                        "kind": "Content",
+                                                                                                                                        "text": "변경하시고 싶은 받는 분 연락처를 알려주세요.\n(예시: 01012345678)"
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "id": "default64",
+                                                                                                                                "children": [
+                                                                                                                                    {
+                                                                                                                                        "name": "3.받는 분 연락처 변경 저장",
                                                                                                                                         "input": [
                                                                                                                                             {
-                                                                                                                                                "text": {
-                                                                                                                                                    "raw": "성함",
-                                                                                                                                                    "nlp": "성함"
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "output": [
-                                                                                                                                            {
-                                                                                                                                                "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 받는 분 성함을 알려주세요.\n(ex: 아리랑)"
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "id": "default62",
-                                                                                                                                        "children": [
-                                                                                                                                            {
-                                                                                                                                                "name": "3.받는 분 성함 변경 저장",
-                                                                                                                                                "input": [
-                                                                                                                                                    {
-                                                                                                                                                        "if": "true"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "output": [
-                                                                                                                                                    {
-                                                                                                                                                        "kind": "Action",
-                                                                                                                                                        "type": "call",
-                                                                                                                                                        "dialogName": "3.주문서 확인",
-                                                                                                                                                        "dialog": "3.주문서 확인",
-                                                                                                                                                        "dialogId": "default44"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "task": {
-                                                                                                                                                    "name": "savefriendname"
-                                                                                                                                                },
-                                                                                                                                                "id": "default63"
-                                                                                                                                            }
-                                                                                                                                        ]
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "name": "3.받는 분 연락처 변경",
-                                                                                                                                        "input": [
-                                                                                                                                            {
-                                                                                                                                                "text": {
-                                                                                                                                                    "raw": "연락처",
-                                                                                                                                                    "nlp": "연락처"
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "output": [
-                                                                                                                                            {
-                                                                                                                                                "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 받는 분 연락처를 알려주세요.\n(ex: 01012345678)",
-                                                                                                                                                "buttons": []
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "id": "default64",
-                                                                                                                                        "children": [
-                                                                                                                                            {
-                                                                                                                                                "name": "3.받는 분 연락처 변경 저장",
-                                                                                                                                                "input": [
-                                                                                                                                                    {
-                                                                                                                                                        "types": "mobile"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "output": [
-                                                                                                                                                    {
-                                                                                                                                                        "kind": "Action",
-                                                                                                                                                        "type": "call",
-                                                                                                                                                        "dialogName": "3.주문서 확인",
-                                                                                                                                                        "dialog": "3.주문서 확인",
-                                                                                                                                                        "dialogId": "default44"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "task": {
-                                                                                                                                                    "name": "savefriendmobile"
-                                                                                                                                                },
-                                                                                                                                                "id": "default65"
-                                                                                                                                            },
-                                                                                                                                            {
-                                                                                                                                                "name": "87",
-                                                                                                                                                "input": [
-                                                                                                                                                    {
-                                                                                                                                                        "if": "true"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "output": [
-                                                                                                                                                    {
-                                                                                                                                                        "kind": "Content",
-                                                                                                                                                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
-                                                                                                                                                        "buttons": [
-                                                                                                                                                            {
-                                                                                                                                                                "url": "",
-                                                                                                                                                                "text": "다시 입력"
-                                                                                                                                                            },
-                                                                                                                                                            {
-                                                                                                                                                                "url": "",
-                                                                                                                                                                "text": "시작"
-                                                                                                                                                            }
-                                                                                                                                                        ]
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "id": "default125",
-                                                                                                                                                "children": [
-                                                                                                                                                    {
-                                                                                                                                                        "name": "88",
-                                                                                                                                                        "input": [
-                                                                                                                                                            {
-                                                                                                                                                                "text": {
-                                                                                                                                                                    "raw": "다시",
-                                                                                                                                                                    "nlp": "다시"
-                                                                                                                                                                }
-                                                                                                                                                            },
-                                                                                                                                                            {
-                                                                                                                                                                "text": {
-                                                                                                                                                                    "raw": "입력",
-                                                                                                                                                                    "nlp": "입력"
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        ],
-                                                                                                                                                        "output": [
-                                                                                                                                                            {
-                                                                                                                                                                "kind": "Action",
-                                                                                                                                                                "type": "call",
-                                                                                                                                                                "dialogName": "3.받는 분 연락처 변경",
-                                                                                                                                                                "dialog": "3.받는 분 연락처 변경",
-                                                                                                                                                                "dialogId": "default64"
-                                                                                                                                                            }
-                                                                                                                                                        ],
-                                                                                                                                                        "id": "default126"
-                                                                                                                                                    }
-                                                                                                                                                ]
-                                                                                                                                            }
-                                                                                                                                        ]
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "name": "3.배달주소 변경",
-                                                                                                                                        "input": [
-                                                                                                                                            {
-                                                                                                                                                "text": {
-                                                                                                                                                    "raw": "주소",
-                                                                                                                                                    "nlp": "주소"
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "output": [
-                                                                                                                                            {
-                                                                                                                                                "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 배달주소를 알려주세요.",
-                                                                                                                                                "buttons": []
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "id": "default66",
-                                                                                                                                        "children": [
-                                                                                                                                            {
-                                                                                                                                                "name": "3.배달주소 변경 저장",
-                                                                                                                                                "input": [
-                                                                                                                                                    {
-                                                                                                                                                        "if": "true"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "output": [
-                                                                                                                                                    {
-                                                                                                                                                        "kind": "Action",
-                                                                                                                                                        "type": "call",
-                                                                                                                                                        "dialogName": "3.주문서 확인",
-                                                                                                                                                        "dialog": "3.주문서 확인",
-                                                                                                                                                        "dialogId": "default44"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "id": "default67",
-                                                                                                                                                "task": {
-                                                                                                                                                    "name": "savefriendaddress"
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        ]
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "name": "3.배달일자 변경",
-                                                                                                                                        "input": [
-                                                                                                                                            {
-                                                                                                                                                "text": {
-                                                                                                                                                    "raw": "일자",
-                                                                                                                                                    "nlp": "일자"
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "output": [
-                                                                                                                                            {
-                                                                                                                                                "kind": "Content",
-                                                                                                                                                "text": "변경하시고 싶은 배달일자를 알려주세요.\n(ex: 20180625 오후 3시)",
-                                                                                                                                                "buttons": []
-                                                                                                                                            }
-                                                                                                                                        ],
-                                                                                                                                        "id": "default68",
-                                                                                                                                        "children": [
-                                                                                                                                            {
-                                                                                                                                                "name": "3.배달일자 변경 저장",
-                                                                                                                                                "input": [
-                                                                                                                                                    {
-                                                                                                                                                        "types": [
-                                                                                                                                                            "dateAndtime1"
-                                                                                                                                                        ]
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "output": [
-                                                                                                                                                    {
-                                                                                                                                                        "kind": "Action",
-                                                                                                                                                        "type": "call",
-                                                                                                                                                        "dialogName": "3.주문서 확인",
-                                                                                                                                                        "dialog": "3.주문서 확인",
-                                                                                                                                                        "dialogId": "default44"
-                                                                                                                                                    }
-                                                                                                                                                ],
-                                                                                                                                                "id": "default69",
-                                                                                                                                                "task": {
-                                                                                                                                                    "name": "savedeliverytime"
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        ]
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "name": "3.남기시는 메세지 변경",
-                                                                                                                                        "input": [
-                                                                                                                                            {
-                                                                                                                                                "text": {
-                                                                                                                                                    "raw": "메세지",
-                                                                                                                                                    "nlp": "메세지"
-                                                                                                                                                }
+                                                                                                                                                "types": "mobile"
                                                                                                                                             }
                                                                                                                                         ],
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Action",
                                                                                                                                                 "type": "call",
-                                                                                                                                                "dialogName": "1.기타요청사항",
-                                                                                                                                                "dialog": "1.기타요청사항",
-                                                                                                                                                "dialogId": "default37"
+                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                "dialogId": "default44"
                                                                                                                                             }
                                                                                                                                         ],
-                                                                                                                                        "id": "default70"
+                                                                                                                                        "task": {
+                                                                                                                                            "name": "savefriendmobile"
+                                                                                                                                        },
+                                                                                                                                        "id": "default65"
                                                                                                                                     },
                                                                                                                                     {
-                                                                                                                                        "name": "83",
+                                                                                                                                        "name": "87",
                                                                                                                                         "input": [
                                                                                                                                             {
                                                                                                                                                 "if": "true"
@@ -2062,7 +1863,7 @@ var dialogs = [
                                                                                                                                         "output": [
                                                                                                                                             {
                                                                                                                                                 "kind": "Content",
-                                                                                                                                                "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
+                                                                                                                                                "text": " 죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                                                                                                                 "buttons": [
                                                                                                                                                     {
                                                                                                                                                         "url": "",
@@ -2075,10 +1876,10 @@ var dialogs = [
                                                                                                                                                 ]
                                                                                                                                             }
                                                                                                                                         ],
-                                                                                                                                        "id": "default121",
+                                                                                                                                        "id": "default125",
                                                                                                                                         "children": [
                                                                                                                                             {
-                                                                                                                                                "name": "84",
+                                                                                                                                                "name": "88",
                                                                                                                                                 "input": [
                                                                                                                                                     {
                                                                                                                                                         "text": {
@@ -2088,8 +1889,8 @@ var dialogs = [
                                                                                                                                                     },
                                                                                                                                                     {
                                                                                                                                                         "text": {
-                                                                                                                                                            "raw": "선택",
-                                                                                                                                                            "nlp": "선택"
+                                                                                                                                                            "raw": "입력",
+                                                                                                                                                            "nlp": "입력"
                                                                                                                                                         }
                                                                                                                                                     }
                                                                                                                                                 ],
@@ -2097,46 +1898,126 @@ var dialogs = [
                                                                                                                                                     {
                                                                                                                                                         "kind": "Action",
                                                                                                                                                         "type": "call",
-                                                                                                                                                        "dialogName": "3.변경사항 선택",
-                                                                                                                                                        "dialog": "3.변경사항 선택",
-                                                                                                                                                        "dialogId": "default46"
+                                                                                                                                                        "dialogName": "3.받는 분 연락처 변경",
+                                                                                                                                                        "dialog": "3.받는 분 연락처 변경",
+                                                                                                                                                        "dialogId": "default64"
                                                                                                                                                     }
                                                                                                                                                 ],
-                                                                                                                                                "id": "default122"
+                                                                                                                                                "id": "default126"
                                                                                                                                             }
                                                                                                                                         ]
                                                                                                                                     }
                                                                                                                                 ]
                                                                                                                             },
                                                                                                                             {
-                                                                                                                                "name": "3.주문신청완료",
+                                                                                                                                "name": "3.배달주소 변경",
                                                                                                                                 "input": [
                                                                                                                                     {
                                                                                                                                         "text": {
-                                                                                                                                            "raw": "이대로 주문하기",
-                                                                                                                                            "nlp": "이대로 주문 하다"
-                                                                                                                                        }
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "text": {
-                                                                                                                                            "raw": "주문",
-                                                                                                                                            "nlp": "주문"
+                                                                                                                                            "raw": "주소",
+                                                                                                                                            "nlp": "주소"
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 ],
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Content",
-                                                                                                                                        "text": "플라워매니아에 주문신청되었습니다.\n\n신청하신 주문내용의 최종승인은 담당자가 직접 연락드린 후 진행됩니다.\n\n고객님의 주문내역은 처음화면에 가서 '내 주문 확인하기'를 입력하시면 확인하실 수 있습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                                                                                                                        "text": "변경하시고 싶은 배달주소를 알려주세요."
                                                                                                                                     }
                                                                                                                                 ],
-                                                                                                                                "id": "default45",
-                                                                                                                                "task": {
-                                                                                                                                    "name": "addorder"
-                                                                                                                                }
+                                                                                                                                "id": "default66",
+                                                                                                                                "children": [
+                                                                                                                                    {
+                                                                                                                                        "name": "3.배달주소 변경 저장",
+                                                                                                                                        "input": [
+                                                                                                                                            {
+                                                                                                                                                "types": [
+                                                                                                                                                    "address"
+                                                                                                                                                ]
+                                                                                                                                            }
+                                                                                                                                        ],
+                                                                                                                                        "output": [
+                                                                                                                                            {
+                                                                                                                                                "kind": "Action",
+                                                                                                                                                "type": "call",
+                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                "dialogId": "default44"
+                                                                                                                                            }
+                                                                                                                                        ],
+                                                                                                                                        "id": "default67",
+                                                                                                                                        "task": {
+                                                                                                                                            "name": "savefriendaddress"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                ]
                                                                                                                             },
                                                                                                                             {
-                                                                                                                                "name": "81",
+                                                                                                                                "name": "3.배달일자 변경",
+                                                                                                                                "input": [
+                                                                                                                                    {
+                                                                                                                                        "text": {
+                                                                                                                                            "raw": "일자",
+                                                                                                                                            "nlp": "일자"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "output": [
+                                                                                                                                    {
+                                                                                                                                        "kind": "Content",
+                                                                                                                                        "text": "변경하시고 싶은 배달일자를 알려주세요.\n(예시: 20180625 오후 3시)"
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "id": "default68",
+                                                                                                                                "children": [
+                                                                                                                                    {
+                                                                                                                                        "name": "3.배달일자 변경 저장",
+                                                                                                                                        "input": [
+                                                                                                                                            {
+                                                                                                                                                "types": [
+                                                                                                                                                    "dateAndtime1"
+                                                                                                                                                ]
+                                                                                                                                            }
+                                                                                                                                        ],
+                                                                                                                                        "output": [
+                                                                                                                                            {
+                                                                                                                                                "kind": "Action",
+                                                                                                                                                "type": "call",
+                                                                                                                                                "dialogName": "3.주문서 확인",
+                                                                                                                                                "dialog": "3.주문서 확인",
+                                                                                                                                                "dialogId": "default44"
+                                                                                                                                            }
+                                                                                                                                        ],
+                                                                                                                                        "id": "default69",
+                                                                                                                                        "task": {
+                                                                                                                                            "name": "savedeliverytime"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                ]
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "name": "3.남기시는 메세지 변경",
+                                                                                                                                "input": [
+                                                                                                                                    {
+                                                                                                                                        "text": {
+                                                                                                                                            "raw": "메세지",
+                                                                                                                                            "nlp": "메세지"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "output": [
+                                                                                                                                    {
+                                                                                                                                        "kind": "Action",
+                                                                                                                                        "type": "call",
+                                                                                                                                        "dialogName": "1.기타요청사항",
+                                                                                                                                        "dialog": "1.기타요청사항",
+                                                                                                                                        "dialogId": "default37"
+                                                                                                                                    }
+                                                                                                                                ],
+                                                                                                                                "id": "default70"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "name": "83",
                                                                                                                                 "input": [
                                                                                                                                     {
                                                                                                                                         "if": "true"
@@ -2145,7 +2026,7 @@ var dialogs = [
                                                                                                                                 "output": [
                                                                                                                                     {
                                                                                                                                         "kind": "Content",
-                                                                                                                                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                                                                                                        "text": "죄송합니다. 더 정확하게 입력해주세요. 다시 입력하고 싶으시면, 아래의 '다시 입력' 버튼을 선택해주세요~\n\n처음으로 가려면“시작“이라고 입력해주세요.",
                                                                                                                                         "buttons": [
                                                                                                                                             {
                                                                                                                                                 "url": "",
@@ -2158,10 +2039,10 @@ var dialogs = [
                                                                                                                                         ]
                                                                                                                                     }
                                                                                                                                 ],
-                                                                                                                                "id": "default119",
+                                                                                                                                "id": "default121",
                                                                                                                                 "children": [
                                                                                                                                     {
-                                                                                                                                        "name": "82",
+                                                                                                                                        "name": "84",
                                                                                                                                         "input": [
                                                                                                                                             {
                                                                                                                                                 "text": {
@@ -2171,8 +2052,8 @@ var dialogs = [
                                                                                                                                             },
                                                                                                                                             {
                                                                                                                                                 "text": {
-                                                                                                                                                    "raw": "입력",
-                                                                                                                                                    "nlp": "입력"
+                                                                                                                                                    "raw": "선택",
+                                                                                                                                                    "nlp": "선택"
                                                                                                                                                 }
                                                                                                                                             }
                                                                                                                                         ],
@@ -2180,22 +2061,40 @@ var dialogs = [
                                                                                                                                             {
                                                                                                                                                 "kind": "Action",
                                                                                                                                                 "type": "call",
-                                                                                                                                                "dialogName": "3.주문서 확인",
-                                                                                                                                                "dialog": "3.주문서 확인",
-                                                                                                                                                "dialogId": "default44"
+                                                                                                                                                "dialogName": "3.변경사항 선택",
+                                                                                                                                                "dialog": "3.변경사항 선택",
+                                                                                                                                                "dialogId": "default46"
                                                                                                                                             }
                                                                                                                                         ],
-                                                                                                                                        "id": "default120"
+                                                                                                                                        "id": "default122"
                                                                                                                                     }
                                                                                                                                 ]
                                                                                                                             }
+                                                                                                                        ]
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": "3.주문신청완료",
+                                                                                                                        "input": [
+                                                                                                                            {
+                                                                                                                                "text": {
+                                                                                                                                    "raw": "주문",
+                                                                                                                                    "nlp": "주문"
+                                                                                                                                }
+                                                                                                                            }
                                                                                                                         ],
+                                                                                                                        "output": [
+                                                                                                                            {
+                                                                                                                                "kind": "Content",
+                                                                                                                                "text": "주문확정을 위해 결제를 진행해주세요."
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                                        "id": "default45",
                                                                                                                         "task": {
-                                                                                                                            "name": "collectorderinfor"
+                                                                                                                            "name": "addorder"
                                                                                                                         }
                                                                                                                     },
                                                                                                                     {
-                                                                                                                        "name": "79",
+                                                                                                                        "name": "81",
                                                                                                                         "input": [
                                                                                                                             {
                                                                                                                                 "if": "true"
@@ -2204,7 +2103,7 @@ var dialogs = [
                                                                                                                         "output": [
                                                                                                                             {
                                                                                                                                 "kind": "Content",
-                                                                                                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                                                                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                                                                                                 "buttons": [
                                                                                                                                     {
                                                                                                                                         "url": "",
@@ -2217,10 +2116,10 @@ var dialogs = [
                                                                                                                                 ]
                                                                                                                             }
                                                                                                                         ],
-                                                                                                                        "id": "default117",
+                                                                                                                        "id": "default119",
                                                                                                                         "children": [
                                                                                                                             {
-                                                                                                                                "name": "80",
+                                                                                                                                "name": "82",
                                                                                                                                 "input": [
                                                                                                                                     {
                                                                                                                                         "text": {
@@ -2239,272 +2138,22 @@ var dialogs = [
                                                                                                                                     {
                                                                                                                                         "kind": "Action",
                                                                                                                                         "type": "call",
-                                                                                                                                        "dialogName": "3.카드 결제하기",
-                                                                                                                                        "dialog": "3.카드 결제하기",
-                                                                                                                                        "dialogId": "default41"
+                                                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                                                        "dialogId": "default44"
                                                                                                                                     }
                                                                                                                                 ],
-                                                                                                                                "id": "default118"
+                                                                                                                                "id": "default120"
                                                                                                                             }
                                                                                                                         ]
                                                                                                                     }
                                                                                                                 ],
                                                                                                                 "task": {
-                                                                                                                    "name": "savepayway"
+                                                                                                                    "name": "collectorderinfor"
                                                                                                                 }
                                                                                                             },
                                                                                                             {
-                                                                                                                "name": "3.무통장 입금하기",
-                                                                                                                "input": [
-                                                                                                                    {
-                                                                                                                        "text": {
-                                                                                                                            "raw": "무 통장 입금 하다",
-                                                                                                                            "nlp": "무 통장 입금 하다"
-                                                                                                                        }
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                        "text": {
-                                                                                                                            "raw": "2",
-                                                                                                                            "nlp": "2"
-                                                                                                                        }
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                        "text": {
-                                                                                                                            "raw": "무통장 입금하기",
-                                                                                                                            "nlp": "무통장 입금하기"
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                ],
-                                                                                                                "output": [
-                                                                                                                    {
-                                                                                                                        "kind": "Content",
-                                                                                                                        "text": "국민은행 284-801-04-095386 (예금주 최유나)\n\n※ 무통장입금시 고객님 명의로 입금하시면 확인전화 없어도 입금확인됩니다\n\n고객님의 주문내역을 보시려면 \"주문내역\"을 입력해주세요.",
-                                                                                                                        "buttons": [
-                                                                                                                            {
-                                                                                                                                "url": "",
-                                                                                                                                "text": "주문내역"
-                                                                                                                            }
-                                                                                                                        ]
-                                                                                                                    }
-                                                                                                                ],
-                                                                                                                "id": "default42",
-                                                                                                                "children": [
-                                                                                                                    {
-                                                                                                                        "name": "3.무통장 입금하기2",
-                                                                                                                        "input": [
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "주문내역",
-                                                                                                                                    "nlp": "주문 내 역"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "주문",
-                                                                                                                                    "nlp": "주문"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "내역",
-                                                                                                                                    "nlp": "내 역"
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "output": [
-                                                                                                                            {
-                                                                                                                                "kind": "Action",
-                                                                                                                                "type": "call",
-                                                                                                                                "dialogName": "3.주문서 확인",
-                                                                                                                                "dialog": "3.주문서 확인",
-                                                                                                                                "dialogId": "default44"
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "id": "default47"
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                        "name": "89",
-                                                                                                                        "input": [
-                                                                                                                            {
-                                                                                                                                "if": "true"
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "output": [
-                                                                                                                            {
-                                                                                                                                "kind": "Content",
-                                                                                                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
-                                                                                                                                "buttons": [
-                                                                                                                                    {
-                                                                                                                                        "url": "",
-                                                                                                                                        "text": "다시 입력"
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "url": "",
-                                                                                                                                        "text": "시작"
-                                                                                                                                    }
-                                                                                                                                ]
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "id": "default127",
-                                                                                                                        "children": [
-                                                                                                                            {
-                                                                                                                                "name": "90",
-                                                                                                                                "input": [
-                                                                                                                                    {
-                                                                                                                                        "text": {
-                                                                                                                                            "raw": "다시",
-                                                                                                                                            "nlp": "다시"
-                                                                                                                                        }
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "text": {
-                                                                                                                                            "raw": "입력",
-                                                                                                                                            "nlp": "입력"
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                ],
-                                                                                                                                "output": [
-                                                                                                                                    {
-                                                                                                                                        "kind": "Action",
-                                                                                                                                        "type": "call",
-                                                                                                                                        "dialogName": "3.무통장 입금하기",
-                                                                                                                                        "dialog": "3.무통장 입금하기",
-                                                                                                                                        "dialogId": "default47"
-                                                                                                                                    }
-                                                                                                                                ],
-                                                                                                                                "id": "default128"
-                                                                                                                            }
-                                                                                                                        ]
-                                                                                                                    }
-                                                                                                                ],
-                                                                                                                "task": {
-                                                                                                                    "name": "savepayway"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "name": "3.카카오페이",
-                                                                                                                "input": [
-                                                                                                                    {
-                                                                                                                        "text": {
-                                                                                                                            "raw": "카카오 페이",
-                                                                                                                            "nlp": "카카오 페이"
-                                                                                                                        }
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                        "text": {
-                                                                                                                            "raw": "3",
-                                                                                                                            "nlp": "3"
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                ],
-                                                                                                                "output": [
-                                                                                                                    {
-                                                                                                                        "kind": "Content",
-                                                                                                                        "text": "카카오페이 ID: vip4hoon 으로 송금해주시면 됩니다.\n\n고객님의 주문내역을 보시려면 \"주문내역\"을 입력해주세요.",
-                                                                                                                        "buttons": [
-                                                                                                                            {
-                                                                                                                                "url": "",
-                                                                                                                                "text": "주문내역"
-                                                                                                                            }
-                                                                                                                        ]
-                                                                                                                    }
-                                                                                                                ],
-                                                                                                                "id": "default43",
-                                                                                                                "children": [
-                                                                                                                    {
-                                                                                                                        "name": "3.카카오 페이2",
-                                                                                                                        "input": [
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "주문내역",
-                                                                                                                                    "nlp": "주문 내 역"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "주문",
-                                                                                                                                    "nlp": "주문"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "내역",
-                                                                                                                                    "nlp": "내 역"
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "output": [
-                                                                                                                            {
-                                                                                                                                "kind": "Action",
-                                                                                                                                "type": "call",
-                                                                                                                                "dialogName": "3.주문서 확인",
-                                                                                                                                "dialog": "3.주문서 확인",
-                                                                                                                                "dialogId": "default44"
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "id": "default48"
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                        "name": "91",
-                                                                                                                        "input": [
-                                                                                                                            {
-                                                                                                                                "if": "true"
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "output": [
-                                                                                                                            {
-                                                                                                                                "kind": "Content",
-                                                                                                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
-                                                                                                                                "buttons": [
-                                                                                                                                    {
-                                                                                                                                        "url": "",
-                                                                                                                                        "text": "다시 입력"
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "url": "",
-                                                                                                                                        "text": "시작"
-                                                                                                                                    }
-                                                                                                                                ]
-                                                                                                                            }
-                                                                                                                        ],
-                                                                                                                        "id": "default129",
-                                                                                                                        "children": [
-                                                                                                                            {
-                                                                                                                                "name": "92",
-                                                                                                                                "input": [
-                                                                                                                                    {
-                                                                                                                                        "text": {
-                                                                                                                                            "raw": "다시",
-                                                                                                                                            "nlp": "다시"
-                                                                                                                                        }
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                        "text": {
-                                                                                                                                            "raw": "입력",
-                                                                                                                                            "nlp": "입력"
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                ],
-                                                                                                                                "output": [
-                                                                                                                                    {
-                                                                                                                                        "kind": "Action",
-                                                                                                                                        "type": "call",
-                                                                                                                                        "dialogName": "3.카카오페이",
-                                                                                                                                        "dialog": "3.카카오페이",
-                                                                                                                                        "dialogId": "default43"
-                                                                                                                                    }
-                                                                                                                                ],
-                                                                                                                                "id": "default130"
-                                                                                                                            }
-                                                                                                                        ]
-                                                                                                                    }
-                                                                                                                ],
-                                                                                                                "task": {
-                                                                                                                    "name": "savepayway"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "name": "77",
+                                                                                                                "name": "79",
                                                                                                                 "input": [
                                                                                                                     {
                                                                                                                         "if": "true"
@@ -2513,7 +2162,7 @@ var dialogs = [
                                                                                                                 "output": [
                                                                                                                     {
                                                                                                                         "kind": "Content",
-                                                                                                                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                                                                                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                                                                                         "buttons": [
                                                                                                                             {
                                                                                                                                 "url": "",
@@ -2526,10 +2175,10 @@ var dialogs = [
                                                                                                                         ]
                                                                                                                     }
                                                                                                                 ],
-                                                                                                                "id": "default115",
+                                                                                                                "id": "default117",
                                                                                                                 "children": [
                                                                                                                     {
-                                                                                                                        "name": "78",
+                                                                                                                        "name": "80",
                                                                                                                         "input": [
                                                                                                                             {
                                                                                                                                 "text": {
@@ -2548,22 +2197,281 @@ var dialogs = [
                                                                                                                             {
                                                                                                                                 "kind": "Action",
                                                                                                                                 "type": "call",
-                                                                                                                                "dialogName": "3.결제방법 선택",
-                                                                                                                                "dialog": "3.결제방법 선택",
-                                                                                                                                "dialogId": "default40"
+                                                                                                                                "dialogName": "3.카드 결제하기",
+                                                                                                                                "dialog": "3.카드 결제하기",
+                                                                                                                                "dialogId": "default41"
                                                                                                                             }
                                                                                                                         ],
-                                                                                                                        "id": "default116"
+                                                                                                                        "id": "default118"
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "name": "3.무통장 입금하기",
+                                                                                                        "input": [
+                                                                                                            {
+                                                                                                                "text": {
+                                                                                                                    "raw": "무 통장 입금 하다",
+                                                                                                                    "nlp": "무 통장 입금 하다"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "text": {
+                                                                                                                    "raw": "2",
+                                                                                                                    "nlp": "2"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "text": {
+                                                                                                                    "raw": "무통장 입금하기",
+                                                                                                                    "nlp": "무통장 입금하기"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "output": [
+                                                                                                            {
+                                                                                                                "kind": "Content",
+                                                                                                                "text": "국민은행 284-801-04-095386 (예금주 최유나)\n\n※ 무통장입금시 고객님 명의로 입금하시면 확인전화 없어도 입금확인됩니다\n\n고객님의 주문내역을 보시려면 \"주문내역\"을 입력해주세요.",
+                                                                                                                "buttons": [
+                                                                                                                    {
+                                                                                                                        "url": "",
+                                                                                                                        "text": "주문내역"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "이전으로 가기"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "처음으로 돌아가기"
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "id": "default42",
+                                                                                                        "children": [
+                                                                                                            {
+                                                                                                                "name": "3.무통장 입금하기2",
+                                                                                                                "input": [
+                                                                                                                    {
+                                                                                                                        "text": {
+                                                                                                                            "raw": "주문내역",
+                                                                                                                            "nlp": "주문 내 역"
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": {
+                                                                                                                            "raw": "주문",
+                                                                                                                            "nlp": "주문"
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": {
+                                                                                                                            "raw": "내역",
+                                                                                                                            "nlp": "내 역"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "output": [
+                                                                                                                    {
+                                                                                                                        "kind": "Action",
+                                                                                                                        "type": "call",
+                                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                                        "dialogId": "default44"
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "id": "default47"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "name": "89",
+                                                                                                                "input": [
+                                                                                                                    {
+                                                                                                                        "if": "true"
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "output": [
+                                                                                                                    {
+                                                                                                                        "kind": "Content",
+                                                                                                                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
+                                                                                                                        "buttons": [
+                                                                                                                            {
+                                                                                                                                "url": "",
+                                                                                                                                "text": "다시 입력"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "url": "",
+                                                                                                                                "text": "시작"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "id": "default127",
+                                                                                                                "children": [
+                                                                                                                    {
+                                                                                                                        "name": "90",
+                                                                                                                        "input": [
+                                                                                                                            {
+                                                                                                                                "text": {
+                                                                                                                                    "raw": "다시",
+                                                                                                                                    "nlp": "다시"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "text": {
+                                                                                                                                    "raw": "입력",
+                                                                                                                                    "nlp": "입력"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                                        "output": [
+                                                                                                                            {
+                                                                                                                                "kind": "Action",
+                                                                                                                                "type": "call",
+                                                                                                                                "dialogName": "3.무통장 입금하기",
+                                                                                                                                "dialog": "3.무통장 입금하기",
+                                                                                                                                "dialogId": "default47"
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                                        "id": "default128"
                                                                                                                     }
                                                                                                                 ]
                                                                                                             }
                                                                                                         ],
                                                                                                         "task": {
-                                                                                                            "name": "savebill"
+                                                                                                            "name": "savepayway"
                                                                                                         }
                                                                                                     },
                                                                                                     {
-                                                                                                        "name": "75",
+                                                                                                        "name": "3.카카오페이",
+                                                                                                        "input": [
+                                                                                                            {
+                                                                                                                "text": {
+                                                                                                                    "raw": "카카오 페이",
+                                                                                                                    "nlp": "카카오 페이"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "text": {
+                                                                                                                    "raw": "3",
+                                                                                                                    "nlp": "3"
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "output": [
+                                                                                                            {
+                                                                                                                "kind": "Content",
+                                                                                                                "text": "카카오페이 ID: vip4hoon 으로 송금해주시면 됩니다.\n\n고객님의 주문내역을 보시려면 \"주문내역\"을 입력해주세요.",
+                                                                                                                "buttons": [
+                                                                                                                    {
+                                                                                                                        "url": "",
+                                                                                                                        "text": "주문내역"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "이전으로 가기"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": "처음으로 돌아가기"
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "id": "default43",
+                                                                                                        "children": [
+                                                                                                            {
+                                                                                                                "name": "3.카카오 페이2",
+                                                                                                                "input": [
+                                                                                                                    {
+                                                                                                                        "text": {
+                                                                                                                            "raw": "주문내역",
+                                                                                                                            "nlp": "주문 내 역"
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": {
+                                                                                                                            "raw": "주문",
+                                                                                                                            "nlp": "주문"
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "text": {
+                                                                                                                            "raw": "내역",
+                                                                                                                            "nlp": "내 역"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "output": [
+                                                                                                                    {
+                                                                                                                        "kind": "Action",
+                                                                                                                        "type": "call",
+                                                                                                                        "dialogName": "3.주문서 확인",
+                                                                                                                        "dialog": "3.주문서 확인",
+                                                                                                                        "dialogId": "default44"
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "id": "default48"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "name": "91",
+                                                                                                                "input": [
+                                                                                                                    {
+                                                                                                                        "if": "true"
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "output": [
+                                                                                                                    {
+                                                                                                                        "kind": "Content",
+                                                                                                                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
+                                                                                                                        "buttons": [
+                                                                                                                            {
+                                                                                                                                "url": "",
+                                                                                                                                "text": "다시 입력"
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "url": "",
+                                                                                                                                "text": "시작"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "id": "default129",
+                                                                                                                "children": [
+                                                                                                                    {
+                                                                                                                        "name": "92",
+                                                                                                                        "input": [
+                                                                                                                            {
+                                                                                                                                "text": {
+                                                                                                                                    "raw": "다시",
+                                                                                                                                    "nlp": "다시"
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                                "text": {
+                                                                                                                                    "raw": "입력",
+                                                                                                                                    "nlp": "입력"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                                        "output": [
+                                                                                                                            {
+                                                                                                                                "kind": "Action",
+                                                                                                                                "type": "call",
+                                                                                                                                "dialogName": "3.카카오페이",
+                                                                                                                                "dialog": "3.카카오페이",
+                                                                                                                                "dialogId": "default43"
+                                                                                                                            }
+                                                                                                                        ],
+                                                                                                                        "id": "default130"
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        ],
+                                                                                                        "task": {
+                                                                                                            "name": "savepayway"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "name": "77",
                                                                                                         "input": [
                                                                                                             {
                                                                                                                 "if": "true"
@@ -2572,7 +2480,7 @@ var dialogs = [
                                                                                                         "output": [
                                                                                                             {
                                                                                                                 "kind": "Content",
-                                                                                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                                                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                                                                                 "buttons": [
                                                                                                                     {
                                                                                                                         "url": "",
@@ -2585,10 +2493,10 @@ var dialogs = [
                                                                                                                 ]
                                                                                                             }
                                                                                                         ],
-                                                                                                        "id": "default113",
+                                                                                                        "id": "default115",
                                                                                                         "children": [
                                                                                                             {
-                                                                                                                "name": "76",
+                                                                                                                "name": "78",
                                                                                                                 "input": [
                                                                                                                     {
                                                                                                                         "text": {
@@ -2607,12 +2515,12 @@ var dialogs = [
                                                                                                                     {
                                                                                                                         "kind": "Action",
                                                                                                                         "type": "call",
-                                                                                                                        "dialogName": "3.계산서 요청여부",
-                                                                                                                        "dialog": "3.계산서 요청여부",
-                                                                                                                        "dialogId": "default39"
+                                                                                                                        "dialogName": "3.결제방법 선택",
+                                                                                                                        "dialog": "3.결제방법 선택",
+                                                                                                                        "dialogId": "default40"
                                                                                                                     }
                                                                                                                 ],
-                                                                                                                "id": "default114"
+                                                                                                                "id": "default116"
                                                                                                             }
                                                                                                         ]
                                                                                                     }
@@ -2631,6 +2539,12 @@ var dialogs = [
                                                                                         "input": [
                                                                                             {
                                                                                                 "intent": "아니요"
+                                                                                            },
+                                                                                            {
+                                                                                                "text": {
+                                                                                                    "raw": "아니요",
+                                                                                                    "nlp": "아니다"
+                                                                                                }
                                                                                             }
                                                                                         ],
                                                                                         "output": [
@@ -2638,9 +2552,9 @@ var dialogs = [
                                                                                                 "kind": "Action",
                                                                                                 "if": "context.session.decorate==\"리본\"",
                                                                                                 "type": "call",
-                                                                                                "dialogName": "3.리본좌측 입력요청",
-                                                                                                "dialog": "3.리본좌측 입력요청",
-                                                                                                "dialogId": "default32"
+                                                                                                "dialogName": "3.문구입력요청2",
+                                                                                                "dialog": "3.문구입력요청2",
+                                                                                                "dialogId": "default49"
                                                                                             },
                                                                                             {
                                                                                                 "kind": "Action",
@@ -2666,7 +2580,7 @@ var dialogs = [
                                                                                         "output": [
                                                                                             {
                                                                                                 "kind": "Content",
-                                                                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                                                                 "buttons": [
                                                                                                     {
                                                                                                         "url": "",
@@ -2710,10 +2624,7 @@ var dialogs = [
                                                                                             }
                                                                                         ]
                                                                                     }
-                                                                                ],
-                                                                                "task": {
-                                                                                    "name": ""
-                                                                                }
+                                                                                ]
                                                                             },
                                                                             {
                                                                                 "name": "68",
@@ -2892,7 +2803,7 @@ var dialogs = [
                                                                     {
                                                                         "kind": "Action",
                                                                         "options": {
-                                                                            "output": "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!"
+                                                                            "output": "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^"
                                                                         },
                                                                         "type": "call",
                                                                         "dialogName": "1.기타요청사항",
@@ -2923,7 +2834,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "리본 좌측에 들어갈 보내는 분 성함을 입력해주세요.\n(ex: 아리랑)\n\n-보내는 이름을 안쓰시면 구매자 성함으로 보내드립니다.\n(ex: 네)\n\n-익명을 원하시면 익명이라고 써주세요.\n(ex: 익명)\n\n-리본메세지는 리본 한쪽당 15자 이내가 적당합니다."
+                                                                "text": "리본 좌측에 들어갈 보내는 분 성함을 입력해주세요.\n(예시: 홍길동)\n\n익명으로 원하신다면 '익명' 이라고 입력하시면 됩니다^^"
                                                             }
                                                         ],
                                                         "id": "default32",
@@ -2938,7 +2849,7 @@ var dialogs = [
                                                                 "output": [
                                                                     {
                                                                         "kind": "Content",
-                                                                        "text": "리본 우측에 들어갈 경조문구를 입력하세요.\n\n-리본메세지는 리본 한쪽당 15자 이내가 적당합니다.\n\n 경조사어 참고문구를 보고싶으시다면 '참고문구' 라고 입력하세요."
+                                                                        "text": "리본 우측에 들어갈 경조문구를 입력하세요.\n\n-리본메세지는 리본 한쪽당 15자 이내가 적당합니다.\n\n 경조사어 참고문구를 보고싶으시다면 '참고문구' 라고 입력하세요.\n\n'이전' 이라고 입력하시면 언제든지 전단계로 돌아갈 수 있어요~"
                                                                     }
                                                                 ],
                                                                 "id": "default49",
@@ -2981,7 +2892,7 @@ var dialogs = [
                                                                             {
                                                                                 "kind": "Action",
                                                                                 "options": {
-                                                                                    "output": "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!"
+                                                                                    "output": "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^"
                                                                                 },
                                                                                 "type": "call",
                                                                                 "dialogName": "1.기타요청사항",
@@ -3014,7 +2925,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                                 "buttons": [
                                                                     {
                                                                         "url": "",
@@ -3070,7 +2981,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                                                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                                                         "buttons": [
                                                             {
                                                                 "url": "",
@@ -3137,7 +3048,7 @@ var dialogs = [
                                                         "text": "시작"
                                                     }
                                                 ],
-                                                "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                                                "text": "죄송합니다. 제가 찾을 수 없는 주소에요. 다시 한번 입력해주시겠어요?"
                                             }
                                         ],
                                         "id": "default55",
@@ -3195,7 +3106,7 @@ var dialogs = [
                                                 "text": "시작"
                                             }
                                         ],
-                                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요."
+                                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요."
                                     }
                                 ],
                                 "id": "default59",
@@ -3246,7 +3157,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -3290,10 +3201,7 @@ var dialogs = [
                     }
                 ]
             }
-        ],
-        "task": {
-            "name": ""
-        }
+        ]
     },
     {
         "name": "4.게시판에 문의하기",
@@ -3329,6 +3237,12 @@ var dialogs = [
                     {
                         "url": "http://flowercenterjst.allofthat.kr/?doc=sub_07",
                         "text": "게시판으로 이동하기"
+                    },
+                    {
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "text": "처음으로 돌아가기"
                     }
                 ]
             }
@@ -3369,7 +3283,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -3440,8 +3354,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "api 연동중",
-                "buttons": []
+                "text": "api 연동중"
             }
         ],
         "id": "default53"
@@ -3460,17 +3373,13 @@ var dialogs = [
                     "output": "주문내역 확인을 위해 회원인증이 필요합니다.\n휴대폰 번호를 입력해주세요."
                 },
                 "type": "call",
-                "text": "주문하신 고객님의 휴대폰 연락처를 입력해주세요.\n(ex: 01012345678)",
-                "dialogName": "3.고객 이메일",
-                "dialog": "3.고객 이메일",
-                "dialogId": "default16"
+                "text": "주문하신 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
+                "dialogName": "3.고객 성함",
+                "dialog": "3.고객 성함",
+                "dialogId": "default15"
             }
         ],
-        "id": "default75",
-        "children": [],
-        "task": {
-            "name": ""
-        }
+        "id": "default75"
     },
     {
         "name": "6.주문 확인 기존회원",
@@ -3500,8 +3409,7 @@ var dialogs = [
         "id": "default76",
         "task": {
             "name": "showorder"
-        },
-        "children": []
+        }
     },
     {
         "name": "6.기존회원 주문내역 있는 경우",
@@ -3513,8 +3421,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "완료된 고객님의 지난 주문내역입니다.\n\n지난 주문내역과 동일한 상품으로 주문을 원하시면 해당 주문내역의 번호를 입력하세요.",
-                "buttons": []
+                "text": "완료된 고객님의 지난 주문내역입니다.\n\n지난 주문내역과 동일한 상품으로 주문을 원하시면 해당 주문내역의 번호를 입력하세요."
             }
         ],
         "task": {
@@ -3532,7 +3439,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
+                        "text": "주문접수중인 상품의 주문내역입니다.\n\n혹시 결제를 진행하셨다면, 주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n결제를 완료하신 고객님께서 취소를 원하시면, 02-858-5683으로 연락주세요:) \n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
                     }
                 ],
                 "task": {
@@ -3615,6 +3522,12 @@ var dialogs = [
                     {
                         "url": "",
                         "text": "아니요"
+                    },
+                    {
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "text": "처음으로 돌아가기"
                     }
                 ]
             }
@@ -3626,8 +3539,7 @@ var dialogs = [
                 "input": [
                     {
                         "intent": "네"
-                    },
-                    {}
+                    }
                 ],
                 "output": [
                     {
@@ -3668,7 +3580,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "죄송합니다. 고객님이 잘 못 입력했습니다. 다시 입력하시고 싶으면 \"다시 입력\"을 입력해주세요.\n\n처음으로 가려면\"시작\"이라고 입력해주세요.",
+                        "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요.",
                         "buttons": [
                             {
                                 "url": "",
@@ -3724,8 +3636,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "고객님께서는 비회원이시기 때문에 주문내역을 확인해드릴 수가 없습니다.\n\n플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다.",
-                "buttons": []
+                "text": "고객님께서는 비회원이시기 때문에 주문내역을 확인해드릴 수가 없습니다.\n\n플라워마니아 홈페이지에서 회원가입을 하시면, 할인된 회원가로 상품을 구매하실 수 있습니다."
             }
         ],
         "task": {
@@ -3763,7 +3674,7 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요 < +bot.name+ >입니다!\n꽃은 청렴한 사람이 받을수있는 선물입니다."
+                "text": "인공지능 꽃배달봇으로 마음을 전하세요."
             }
         ],
         "task": {
@@ -3794,12 +3705,24 @@ var commonDialogs = [
                 }
             },
             {
-                "regexp": "이전"
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
+            },
+            {
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
             }
         ],
-        "output": {
-            "up": 1
-        }
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
     }
 ];
 

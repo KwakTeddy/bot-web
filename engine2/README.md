@@ -19,10 +19,14 @@ User Input (사용자 입력): 챗봇 사용자가 대화를 위해 챗봇에 �
 		{ keyboard: { type : "buttons", buttons: ["반갑습니다. 신한카드입니다."]} };
 	},
 	globalSearch: { // 시나리오 검색시 모든 다이얼로그를 검색해서 결과를 찾을 수 있는 기능 
-		use: true, // (default: false)
-		limitOfSimilarAnswer: 1 // (default 1) 유사한 답변이 여러개 검색됐을때 표시할 갯수 (1보다 큰 값으로 설정하면 그 갯수만큼 답변을 요약해서 보여준 후 사용자에게 선택할 수 있게 함 TODO)
-		memory: true, // (default: false) limitOfSimilarAnswer가 1보다 큰 값 일때 true로 설정되어있으면 사용자가 선택한 답변을 기억한다. (TODO) 
-	};
+		use: Boolean, // (default: false)
+		limitOfSimilarAnswer: Integer // (default 1) 유사한 답변이 여러개 검색됐을때 표시할 갯수 (1보다 큰 값으로 설정하면 그 갯수만큼 답변을 요약해서 보여준 후 사용자에게 선택할 수 있게 함 TODO)
+		memory: Boolean, // (default: false) limitOfSimilarAnswer가 1보다 큰 값 일때 true로 설정되어있으면 사용자가 선택한 답변을 기억한다. (TODO) 
+	},
+	hybrid: {
+		use: Boolean // (default: false)
+	},
+	dialogsetMinMatchRate: Float, // (default 0.5)
 }
 ```
 

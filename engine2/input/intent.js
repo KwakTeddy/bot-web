@@ -37,7 +37,7 @@ var IntentContent = mongoose.model('IntentContent');
                             result[list[j].intentId._id] = { intentId: list[j].intentId._id, intentName: list[j].intentId.name, matchCount: 0 };
                         }
 
-                        result[list[j].intentId._id].matchCount++;
+                        result[list[j].intentId._id].matchCount += (nlp[i].pos == 'Noun' ? 2 : 1);
                     }
                 }
             }
@@ -45,6 +45,7 @@ var IntentContent = mongoose.model('IntentContent');
             var matched = [];
             for(var key in result)
             {
+                result[key].matchRate = (nlp.length == result[key].matchCount);
                 matched.push(result[key]);
             }
 
