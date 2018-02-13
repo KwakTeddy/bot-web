@@ -1630,7 +1630,7 @@ module.exports = function(bot)
             var crypto    = require('crypto');
             var text      = VKONT;
             var secret    = '2003'; //make this your secret!!
-            var algorithm = 'sha1';   //consider using sha256
+            var algorithm = 'sha256';   //consider using sha256
             var hash, hmac;
 
             // Method 1 - Writing to a stream
