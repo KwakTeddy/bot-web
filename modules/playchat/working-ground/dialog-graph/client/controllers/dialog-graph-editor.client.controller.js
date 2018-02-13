@@ -176,16 +176,17 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.save = function(e)
     {
+        if($scope.oldDialog && !DialogGraph.checkDuplicatedName($scope.dialog))
+        {
+            alert($scope.dialog.name + $scope.lan(' is duplicated'));
+            return;
+        }
+
         $scope.dialog.input = $scope.tempInputList;
 
         $scope.inputNLU(0, function()
         {
             delete $scope.tempInputList;
-            if($scope.oldDialog && !DialogGraph.checkDuplicatedName($scope.dialog))
-            {
-                alert($scope.dialog.name + $scope.lan(' is duplicated'));
-                return;
-            }
 
             var result = $scope.parseResult();
 

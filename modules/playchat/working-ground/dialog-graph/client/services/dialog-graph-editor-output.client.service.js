@@ -222,7 +222,9 @@
 
             $scope.selectActionDialog = function(e, dialog, output)
             {
-                output.dialog = dialog.name;
+                output.kind = 'Action';
+                output.dialogId = dialog.id;
+                output.dialogName = dialog.name;
             };
 
             $scope.deleteActionButton = function(output)
@@ -239,7 +241,6 @@
 
             $scope.actionValueChanged = function(dialog)
             {
-                var type = dialog.type;
                 dialog.kind = 'Action';
             };
 

@@ -80,28 +80,7 @@
         <div class="dialog-learning-development-content-row">
             <p class="new-dialog-title">{{lan('New Dialog') }}</p>
             <form ng-submit="addDialog($event);">
-                <div class="topic-area">
-                    <div>
-                        <div>
-                            <p>Topic 1</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Topic 2</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Topic 3</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1"></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="topic-area"></div>
                 <div class="question-area">
                     <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
                     <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
@@ -124,29 +103,9 @@
             <form ng-submit="addDialog($event);" data-id="{{ dialog._id }}">
                 <div class="topic-area">
                     <div>
-                        <div>
-                            <p>Topic 1</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1">
-                                    <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Topic 2</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1">
-                                    <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Topic 3</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1">
-                                    <option ng-if="dialog.context">{{ dialog.context.name }}</option>
-                                </select>
-                            </div>
+                        <div ng-repeat="category in dialog.category" style="text-align: center;">
+                            <p>Topic {{ $index + 1 }}</p>
+                            <span class="category">{{ category }}</span>
                         </div>
                     </div>
                 </div>
@@ -251,15 +210,6 @@
                         <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
                     </label>
                 </div>
-                <!--<div class="form-row" style="display: none;">-->
-                <!--<label class="required" style="width: 100%;">-->
-                <!--<span>Type</span>-->
-                <!--<div class="form-box">-->
-                <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
-                <!--<span>(csv or xlsx)</span>-->
-                <!--</div>-->
-                <!--</label>-->
-                <!--</div>-->
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span>File</span>
