@@ -186,7 +186,7 @@ module.exports = function (bot)
 
                     context.session.item = body;
                     var outputcount=1;
-                    if(context.session.item[0].category==="기획상품(택배배송)"){
+                    if(context.session.item[0].category==="탁상용,꽃다발등 기획상품"){
                         outputcount=0;
                     }
 
