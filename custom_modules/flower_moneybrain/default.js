@@ -674,17 +674,27 @@ module.exports = function (bot)
 
     bot.setTask('savefriendmobile',{
         action: function (dialog, context, callback) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
             context.session.friendmobile = dialog.userInput.types.mobile;
             callback();
+            }
+            else {
+                callback();
+            }
         }
     });
 
 
     bot.setTask('savefriendaddress',{
         action: function (dialog, context, callback) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
             context.session.friendaddress=dialog.userInput.types.address;
             // context.session.friendaddress = context.user.address.지번주소;
             callback();
+        }
+        else {
+            callback();
+}
         }
     });
     //
