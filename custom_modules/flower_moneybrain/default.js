@@ -1386,7 +1386,7 @@ module.exports = function (bot)
                                     }
                                 });
                                 if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
-                                    context.session.orderinfor.email = "jipark@moneybrain.ai";
+                                    context.session.orderinfor.email = "jipark305@icloud.com";
                                 }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
