@@ -49,7 +49,7 @@ module.exports = function (bot)
 
             {
 
-                // context.user.mobile=undefined;
+                context.user.mobile=undefined;
                 var modelname = 'flower_moneybrain_category';
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
