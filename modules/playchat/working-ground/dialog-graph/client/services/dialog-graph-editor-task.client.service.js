@@ -26,7 +26,7 @@
 
             $scope.taskKeydown = function(e)
             {
-                if(e.keyCode == 38)
+                if(e.keyCode == 38) //윗 방향키
                 {
                     if(selectedTask && selectedTask.previousElementSibling)
                     {
@@ -45,7 +45,7 @@
                         }
                     }
                 }
-                else if(e.keyCode == 40)
+                else if(e.keyCode == 40) //아래 방향키
                 {
                     if(selectedTask)
                     {
@@ -75,21 +75,34 @@
                         selectedTask = ul.children[0];
                     }
                 }
-                else if(e.keyCode == 13)
+                else if(e.keyCode == 13) //Enter
                 {
                     if(selectedTask)
                     {
-                        if(!$scope.dialog.task)
-                            $scope.dialog.task = {};
+                        if(selectedTask.children[0])
+                        {
+                            if(!$scope.dialog.task)
+                                $scope.dialog.task = {};
 
-                        $scope.dialog.task.name = selectedTask.children[0].innerText;
+                            $scope.dialog.task.name = selectedTask.children[0].innerText;
 
-                        selectedTask = undefined;
+                            selectedTask.className = '';
+                            selectedTask = undefined;
 
-                        e.currentTarget.blur();
+                            e.currentTarget.blur();
+                            angular.element('.dialog-editor-output-text > textarea').focus();
 
-                        e.stopPropagation();
-                        e.preventDefault();
+
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }
+                        else
+                        {
+                            selectedTask.className = '';
+                            selectedTask = undefined;
+                            var taskName = e.currentTarget.value;
+                            $scope.createTask(taskName);
+                        }
                     }
                 }
             };
@@ -105,6 +118,10 @@
                         if(angular.element(this).text().indexOf(value) == -1)
                         {
                             angular.element(this).parent().hide();
+                        }
+                        else
+                        {
+                            angular.element(this).parent().show();
                         }
                     });
                 }
@@ -135,7 +152,11 @@
             {
                 if(!taskName)
                 {
-                    return alert(LanguageService('Please enter Task name'));
+                    alert(LanguageService('Please enter Task name'));
+                    setTimeout(function () {
+                        angular.element('div.dialog-editor-row.ng-scope > div > input').focus();
+                    },1);
+                    return;
                 }
 
                 $rootScope.$broadcast('makeNewTask', taskName, angular.element('.graph-background .select_tab').attr('id'));

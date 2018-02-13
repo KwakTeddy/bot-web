@@ -193,60 +193,7 @@
                 {
                     if(angular.element(this).attr('data-type') == 'addNew')
                     {
-                        if(text.startsWith('#'))
-                        {
-                            var target = angular.element('.dialog-editor-creation-panel[data-type="intent"]').show();
-                            target.css('right', '0');
-
-                            setTimeout(function()
-                            {
-                                if(target.find('form').get(0).open)
-                                    target.find('form').get(0).open();
-                            }, 501);
-
-                            if(target.find('form').get(0).openCallback)
-                                target.find('form').get(0).openCallback(text.replace('#', ''));
-
-                            target.find('form').get(0).saveCallback = function(name)
-                            {
-                                callback('#' + name);
-                                target.css('right', '-368px');
-                            };
-
-                            target.find('form').get(0).closeCallback = function()
-                            {
-                                target.css('right', '-368px');
-                            };
-                        }
-                        else if(text.startsWith('@'))
-                        {
-                            var target = angular.element('.dialog-editor-creation-panel[data-type="entity"]').show();
-                            target.css('right', '0');
-
-                            setTimeout(function()
-                            {
-                                if(target.find('form').get(0).open)
-                                    target.find('form').get(0).open();
-                            }, 501);
-
-                            if(target.find('form').get(0).openCallback)
-                                target.find('form').get(0).openCallback(text.replace('@', ''));
-
-                            target.find('form').get(0).saveCallback = function(name)
-                            {
-                                callback('@' + name);
-                                target.css('right', '-368px');
-                            };
-
-                            target.find('form').get(0).closeCallback = function()
-                            {
-                                target.css('right', '-368px');
-                            };
-                        }
-                        else if(text.startsWith('$'))
-                        {
-                            $rootScope.$broadcast('makeNewType', text.replace('$', ''), angular.element('.graph-background .select_tab').attr('id'));
-                        }
+                        createGuidedInput();
                     }
                     else
                     {
@@ -374,6 +321,91 @@
                     makeMoveInputListSelectionByMouseOver();
                     selectInput(target, callback);
                 });
+            };
+
+            var createGuidedInput = function () {
+                var selection = window.getSelection();
+
+                var focusedElement = selection.focusNode.parentElement;
+
+                if(selection.focusNode.className == 'editable')
+                {
+                    focusedElement = selection.focusNode;
+                }
+
+                var focusedText = focusedElement.innerText;
+
+                var callback = function(name)
+                {
+                    focusedElement.innerText = name;
+
+                    var lastSpanElement = document.createElement('span');
+                    lastSpanElement.innerText = String.fromCharCode(160);
+                    focusedElement.after(lastSpanElement);
+
+                    CaretService.placeCaretAtEnd(lastSpanElement);
+
+                    initInputList(true);
+                };
+
+
+                if(focusedText.startsWith('#'))
+                {
+                    var target = angular.element('.dialog-editor-creation-panel[data-type="intent"]').show();
+                    target.css('right', '0');
+
+                    setTimeout(function()
+                    {
+                        if(target.find('form').get(0).open)
+                            target.find('form').get(0).open();
+                    }, 501);
+
+                    if(target.find('form').get(0).openCallback)
+                        target.find('form').get(0).openCallback(focusedText.replace('#', ''));
+
+                    target.find('form').get(0).saveCallback = function(name)
+                    {
+                        callback('#' + name);
+                        target.css('right', '-368px');
+                    };
+
+                    target.find('form').get(0).closeCallback = function()
+                    {
+                        CaretService.placeCaretAtEnd(focusedElement);
+                        target.css('right', '-368px');
+                    };
+                }
+                else if(focusedText.startsWith('@'))
+                {
+                    var target = angular.element('.dialog-editor-creation-panel[data-type="entity"]').show();
+                    target.css('right', '0');
+
+                    setTimeout(function()
+                    {
+                        if(target.find('form').get(0).open)
+                            target.find('form').get(0).open();
+                    }, 501);
+
+                    if(target.find('form').get(0).openCallback)
+                        target.find('form').get(0).openCallback(focusedText.replace('@', ''));
+
+                    target.find('form').get(0).saveCallback = function(name)
+                    {
+                        callback('@' + name + ' ');
+                        target.css('right', '-368px');
+                    };
+
+                    target.find('form').get(0).closeCallback = function()
+                    {
+                        CaretService.placeCaretAtEnd(focusedElement);
+                        target.css('right', '-368px');
+
+                    };
+                }
+                else if(focusedText.startsWith('$'))
+                {
+                    $rootScope.$broadcast('makeNewType', focusedText.replace('$', ''), angular.element('.graph-background .select_tab').attr('id'));
+                }
             };
 
             $scope.focusToSpan = function(e)
@@ -545,24 +577,44 @@
                     else if(e.keyCode == 13) // enter
                     {
                         var selectedText = angular.element('.dialog-editor-input-list-box > ul > li.selected').text();
+                        if(selectedText == LanguageService('Add New')) //새로 만들기 선택시 예외처리
+                        {
+                            createGuidedInput();
+                        }
+                        else
+                        {
+                            var selection = window.getSelection();
+                            selection.focusNode.textContent = selectedText;
 
-                        var selection = window.getSelection();
-                        selection.focusNode.textContent = selectedText;
+                            var span = document.createElement('span');
+                            span.innerText = String.fromCharCode(160);
+                            e.currentTarget.appendChild(span);
 
-                        var span = document.createElement('span');
-                        span.innerText = String.fromCharCode(160);
-                        e.currentTarget.appendChild(span);
+                            CaretService.placeCaretAtEnd(span);
 
-                        CaretService.placeCaretAtEnd(span);
-
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+                        }
                     }
                 }
                 else
                 {
-                    if(e.keyCode == 13)
+                    if(e.keyCode == 13) //enter
                     {
+                        var selection = window.getSelection();
+                        var focusedElement = selection.focusNode.parentElement;
+                        var type = focusedElement.getAttribute('data-type');
+
+                        if(type == null || type == 'if' || type == 'regexp')
+                        {
+                            var lastSpanElement = document.createElement('span');
+                            lastSpanElement.innerText = String.fromCharCode(160);
+                            focusedElement.after(lastSpanElement);
+
+                            CaretService.placeCaretAtEnd(lastSpanElement);
+                            initInputList(true);
+                        }
+
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }
@@ -650,7 +702,7 @@
                 text = selection.focusNode.textContent;
 
                 var target = undefined;
-                if(e.keyCode != 38 && e.keyCode != 40)
+                if(e.keyCode != 38 && e.keyCode != 40) //38 == 윗 방향키 , 40 == 아래 방향키
                 {
                     //up, down은 목록에서 고르는것이기 때문에 reload 하지 않는다.
                     if((target = selection.focusNode).nodeName == 'SPAN' || (selection.focusNode.nodeName == '#text' && (target = selection.focusNode.parentElement).nodeName == 'SPAN'))
@@ -720,11 +772,14 @@
                 if(target && target.nodeName == 'SPAN')
                 {
                     var type = target.getAttribute('data-type');
-                    if((type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
+                    if
+                    (
+                        (type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
                        || (type == 'if' && (!target.innerText.startsWith('if(') || !target.innerText.endsWith(')')))
                        || (type == 'intent' && !target.innerText.startsWith('#'))
                        || (type == 'entities' && (!target.innerText.startsWith('@')))
-                       || (type == 'types' && (!target.innerText.startsWith('$'))))
+                       || (type == 'types' && (!target.innerText.startsWith('$')))
+                    )
                     {
                         text = target.innerText;
 
@@ -785,9 +840,11 @@
                 }, 100);
             };
 
-            $scope.deleteInput = function(e)
+            $scope.deleteInput = function(e, index)
             {
                 angular.element(e.currentTarget).parent().remove();
+                $scope.dialog.input.splice(index, 1);
+                $scope.tempInputList.splice(index, 1);
             };
 
             $scope.addNewType = function()

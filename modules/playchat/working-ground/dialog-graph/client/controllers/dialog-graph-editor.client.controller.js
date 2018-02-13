@@ -12,6 +12,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.isNew = true;
 
+    $scope.isAdvancedMode = false;
+
     $scope.actionList =
     [
         { key: 'call', name: LanguageService('Move Dialog') },
@@ -21,8 +23,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         { key: 'repeat', name: LanguageService('Ask the question again') },
         { key: 'return', name: LanguageService('Return') }
     ];
-
-    $scope.isAdvancedMode = false;
 
     $scope.changeMode = function(e)
     {
