@@ -1409,9 +1409,9 @@ module.exports = function (bot)
                                 //message += '\n-' + context.user.orderinfor.name + ' '+'주문';
                                 //'예약접수(클릭) ' + shorturl;
 
-                                if (context.session.orderinfor.mobile !== "01066389310") {
-                                    context.session.orderinfor.mobile = "01020865439";
-                                }
+                                // if (context.session.orderinfor.mobile !== "01066389310") {
+                                //     context.session.orderinfor.mobile = "01020865439";
+                                // }
                                 var transporter = nodemailer.createTransport({
                                     service: 'Gmail',
                                     auth: {
@@ -1449,7 +1449,7 @@ module.exports = function (bot)
                                         json: {
                                             // callbackPhone: context.bot.phone,
                                             callbackPhone: "028585683",
-                                            phone: context.session.orderinfor.mobile.replace(/,/g, ''),
+                                            phone: "01020865439",
                                             message: message
                                         }
                                     },
