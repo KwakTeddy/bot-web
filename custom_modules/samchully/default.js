@@ -334,7 +334,7 @@ module.exports = function(bot)
                 { key: 'I_PHONE', val: context.session.customerMobile }
             ];
             options.json.isTable = true;
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
           	request.post(options, function(err, response, body)
             {
@@ -405,7 +405,6 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-
             var monthIdx = monthIndex[context.session.selectedMonth];
             var curCustomer = context.session.curCustomer;
 
@@ -418,7 +417,7 @@ module.exports = function(bot)
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -500,7 +499,7 @@ module.exports = function(bot)
                 { key: 'I_GUBUN', val: monthIdx }
             ];
             options.json.isTable = true;
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -572,7 +571,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.json.isTable = true;
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -659,7 +658,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             options.json.isTable = true;
             request.post(options, function(err, response, body)
@@ -743,7 +742,7 @@ module.exports = function(bot)
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                     { key: 'I_BANKK', val: selectedBank }
                 ];
-                options.timeout = timeout;
+                ////options.timeout = timeout;
 
 
             request.post(options, function(err, response, body)
@@ -801,7 +800,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
 
             request.post(options, function(err, response, body)
@@ -852,7 +851,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
 
             request.post(options, function(err, response, body)
@@ -901,7 +900,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_HPNUM', val: curCustomer.mobile }
             ];
-            options.timeout = timeout;
+            //options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -950,7 +949,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                 { key: 'I_EMAIL', val: curCustomer.email }
             ];
-            options.timeout = timeout;
+            //options.timeout = timeout;
 
             var start = new Date().getTime();
             request.post(options, function(err, response, body)
@@ -996,7 +995,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
-            options.timeout = timeout;
+            //options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1045,7 +1044,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
-            options.timeout = timeout;
+            //options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1100,7 +1099,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
             ];
-            options.timeout = timeout;
+            //options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1161,7 +1160,7 @@ module.exports = function(bot)
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
             options.json.isTable = true;
-            options.timeout = timeout;
+            //options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1199,9 +1198,40 @@ module.exports = function(bot)
 
                         // async.eachSeries(dialog.data.list, function(item, next)
                         //
+
+                        var resultList = {};
                         for(var i=0; i<dialog.data.list.length; i++)
                         {
-                            var item = dialog.data.list[i];
+                            var date = dialog.data.list[i].CHK_DAT
+                            if(!resultList[date])
+                            {
+                                resultList[date] = [];
+                            }
+
+                            resultList[date].push(dialog.data.list[i]);
+                        }
+
+                        for(var key in resultList)
+                        {
+                            var item = resultList[key];
+                            if(item.length == 1)
+                            {
+                                item = item[0];
+                            }
+                            else
+                            {
+                                var chkItmNm = '';
+                                for(var i=0; i<item.length; i++)
+                                {
+                                    chkItmNm += ' - ' + item[i].CHK_ITM_NM + '\n';
+                                }
+
+                                item[0].CHK_ITM_NM = '\n' + chkItmNm;
+
+                                item = item[0];
+                            }
+
+
                             var test = '안전점검일: ' + item.CHK_DAT + '\n';
                             test += '점검참여자: ' + item.SCR_MGR_NO + '\n';
                             if(item.SCR_MGR_CLF == '01')
@@ -1223,7 +1253,7 @@ module.exports = function(bot)
 
                             if(item.CHK_YN == 'Y')
                             {
-                                if(item.FITN_YN == 'N')
+                                if(item.FITN_YN == 'Y')
                                 {
                                     test += '점검결과: 적합\n';
                                 }
@@ -1255,7 +1285,7 @@ module.exports = function(bot)
                                     //     { key: 'I_DATA_TYPE', val: 'D' }
                                     // ];
                                     // options.json.isTable = true;
-                                    // options.timeout = timeout;
+                                    // //options.timeout = timeout;
                                     //
                                     // request.post(options, function(err, response, body)
                                     // {
@@ -1319,7 +1349,7 @@ module.exports = function(bot)
                                 }
                             }
 
-                            outputText.push(test + (i == dialog.data.list.length - 1 ? '\n' : '\n\n'));
+                            outputText.push(test + (i == dialog.data.list.length - 1 ? '' : '\n'));
                         }
 
                         dialog.output[0].text = outputText.join('\n');
@@ -1348,7 +1378,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1428,7 +1458,7 @@ module.exports = function(bot)
                 { key: 'I_DONG', val: context.session.centerAddress}
             ];
             options.json.isTable = true;
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1491,7 +1521,7 @@ module.exports = function(bot)
                 { key: 'I_HPNUM', val: curCustomer.mobile },
                 { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
             ];
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1548,7 +1578,7 @@ module.exports = function(bot)
             options.json.param = [
                 { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
             ];
-            options.timeout = timeout;
+            ////options.timeout = timeout;
 
             request.post(options, function(err, response, body)
             {
@@ -1630,7 +1660,7 @@ module.exports = function(bot)
             var crypto    = require('crypto');
             var text      = VKONT;
             var secret    = '2003'; //make this your secret!!
-            var algorithm = 'sha1';   //consider using sha256
+            var algorithm = 'sha256';   //consider using sha256
             var hash, hmac;
 
             // Method 1 - Writing to a stream

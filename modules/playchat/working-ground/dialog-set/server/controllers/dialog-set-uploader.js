@@ -1,6 +1,7 @@
 var path = require('path');
 var XLSX = require('xlsx');
 var async = require('async');
+var fs = require('fs');
 
 var mongoose = require('mongoose');
 var CustomContext = mongoose.model('CustomContext');
@@ -94,67 +95,108 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         console.log('레인지 : ', range);
 
         var dialogsetList = [];
-        var context = {};
         for(var r=1; r<range.e.r; r++)
         {
             var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })].v.trim();
             var a = ws[XLSX.utils.encode_cell({ c: range.e.c, r: r })].v.trim();
 
-            var contextName = '';
+            var category = '';
             for(var c=0; c<range.e.c-1; c++)
             {
-                if(contextName)
+                if(category)
                 {
-                    contextName += '@@@';
+                    category += '@@@';
                 }
 
-                contextName += ws[XLSX.utils.encode_cell({ c: c, r: r })].v.trim();
+                category += ws[XLSX.utils.encode_cell({ c: c, r: r })].v.trim();
             }
 
-            if(contextName)
-            {
-                if(!context[contextName])
-                {
-                    context[contextName] = [];
-                }
-
-                context[contextName].push({ q: q, a: a });
-            }
-            else
-            {
-                dialogsetList.push({ q: q, a: a });
-            }
+            dialogsetList.push({ q: q, a: a, category: category });
         }
 
-        if(dialogsetList.length > 0)
+        async.eachSeries(dialogsetList, function(item, next)
         {
-            async.eachSeries(dialogsetList, function(item, next)
-            {
-                var dialogsetDialog = new DialogsetDialog();
-                dialogsetDialog.dialogset = dialogsetId;
-                dialogsetDialog.inputRaw = [item.q];
-                dialogsetDialog.output = item.a;
+            var dialogsetDialog = new DialogsetDialog();
+            dialogsetDialog.dialogset = dialogsetId;
+            dialogsetDialog.inputRaw = [item.q];
+            dialogsetDialog.output = [item.a];
+            dialogsetDialog.category = item.category;
 
-                NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+            console.log('세이브 : ', item.q);
+
+            NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+            {
+                dialogsetDialog.input = [nlpText];
+
+                dialogsetDialog.save(function()
                 {
-                    dialogsetDialog.input = [nlpText];
-
-                    console.log('세이브 : ', dialogsetDialog.inputRaw);
-                    dialogsetDialog.save(function()
-                    {
-                        next();
-                    });
+                    next();
                 });
-            },
-            function()
-            {
-                callback();
             });
+        },
+        function()
+        {
+            callback();
+        });
+    };
+
+    Uploader.prototype.uploadFromCsv = function(botId, language, dialogsetId, filePath, callback)
+    {
+        var data = fs.readFileSync(filePath);
+        if(data)
+        {
+            data = data.toString();
         }
         else
         {
-            saveWithContext(botId, language, dialogsetId, Object.keys(context), context, 0, callback);
+            return callback();
         }
+
+        var lines = data.split('\r\n');
+
+        var dialogsetList = [];
+        for(var i=1; i<lines.length; i++)
+        {
+            var split = lines[i].split(',');
+
+            var category = '';
+            for(var j=0; j<split.length-2; j++)
+            {
+                if(category)
+                {
+                    category += '@@@';
+                }
+
+                category += split[j];
+            }
+
+            dialogsetList.push({ q: split[split.length-2], a: split[split.length-1], category: category });
+        }
+
+        async.eachSeries(dialogsetList, function(item, next)
+        {
+            var dialogsetDialog = new DialogsetDialog();
+            dialogsetDialog.dialogset = dialogsetId;
+            dialogsetDialog.inputRaw = [item.q];
+            dialogsetDialog.output = [item.a];
+            dialogsetDialog.category = item.category;
+
+            console.log('세이브 : ', item.q);
+
+            NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+            {
+                dialogsetDialog.input = [nlpText];
+
+                dialogsetDialog.save(function()
+                {
+                    next();
+                });
+            });
+        },
+        function()
+        {
+            callback();
+        });
     };
 
     Uploader.prototype.upload = function(botId, language, dialogsetId, filename, callback)
@@ -166,6 +208,10 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         if(info.ext == '.xls' || info.ext == '.xlsx')
         {
             this.uploadFromExcel(botId, language, dialogsetId, filePath, callback);
+        }
+        else if(info.ext == '.csv')
+        {
+            this.uploadFromCsv(botId, language, dialogsetId, filePath, callback);
         }
     };
 

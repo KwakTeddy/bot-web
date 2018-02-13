@@ -1623,8 +1623,8 @@ var dialogs = [
                 "kind": "Action",
                 "if": "!context.session.auth",
                 "type": "call",
-                "dialogId": "default3",
-                "dialogName": "인증_고객명"
+                "dialogId": "default76",
+                "dialogName": "고객정보 취득동의"
             }
         ],
         "id": "default6",
