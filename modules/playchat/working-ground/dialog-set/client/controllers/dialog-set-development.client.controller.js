@@ -63,7 +63,14 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             // 현재 페이지에 해당하는 데이터 가져오기.
             DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText, botId: chatbot.id }, function(list)
             {
-                console.log('결과 : ', list);
+                for(var i=0; i<list.length; i++)
+                {
+                    if(list[i].category)
+                    {
+                        list[i].category = list[i].category.split('@@@');
+                        $scope.topicOpened = true;
+                    }
+                }
 
                 $scope.dialogs = list;
 
@@ -86,6 +93,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     currentPage++;
                     for(var i=0, l=list.length; i<l; i++)
                     {
+                        if(list[i].category)
+                        {
+                            list[i].category = list[i].category.split('@@@');
+                        }
+
                         $scope.dialogs.push(list[i]);
                     }
                 }
