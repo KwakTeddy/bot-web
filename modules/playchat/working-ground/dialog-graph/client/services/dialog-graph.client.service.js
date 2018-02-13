@@ -304,6 +304,11 @@
                 e.preventDefault();
             });
 
+            window.addEventListener('mousedown', function(e)
+            {
+                menuInstance.closeMenu();
+            });
+
             window.addEventListener('mouseup', function(e)
             {
                 isDragStart = false;
@@ -1694,6 +1699,8 @@
 
         DialogGraph.prototype.focus = function(target)
         {
+            menuInstance.closeMenu();
+
             this.canvas.find('.selected').removeClass('selected');
             angular.element(target).addClass('selected');
 
