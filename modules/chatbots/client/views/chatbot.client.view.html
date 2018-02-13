@@ -1,4 +1,5 @@
 <div class="chatbot-body" ng-controlelr="ChatbotListController" ng-click="closeMenu();">
+
     <div class="tab">
         <ul class="tab-body">
             <li class="select_tab" ng-click="moveTab($event, 'botContent');">
@@ -9,11 +10,13 @@
             </li>
         </ul>
     </div>
+
     <div id="botContent">
         <div class="chatbot-new" ng-click="moveToCreate();">
             <img src="/modules/chatbots/client/imgs/plus_white.png">
             <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
         </div>
+
         <div class="chatbots">
             <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectChatbot(chatbot);">
                 <ul class="hei50">
@@ -25,12 +28,14 @@
                         </div>
                     </li>
                 </ul>
+
                 <ul>
                     <li class="sub2">{{ chatbot.description }}</li>
                 </ul>
             </div>
         </div>
     </div>
+
     <div id="sharedBotContent" style="display: none;">
         <div class="chatbot-new" ng-click="moveToCreate();">
             <img src="/modules/chatbots/client/imgs/plus_white.png">
@@ -105,4 +110,5 @@
             </form>
         </div>
     </div>
+
 </div>

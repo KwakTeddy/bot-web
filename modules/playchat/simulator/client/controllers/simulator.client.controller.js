@@ -79,16 +79,23 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
 
             var template = undefined;
+            var chabotName = undefined;
+
+            if(chatbot.name.length > 5)
+                chabotName = chatbot.name.slice(0, 5) + '...';
+            else
+                chabotName = chatbot.name;
+
 
             if(typeof text != 'object')
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                template = template.replace('{botName}', chabotName).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
             }
             else
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                template = template.replace('{botName}', chabotName).replace('{time}', getCurrentTime()).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
                 template = angular.element(template);
 
