@@ -64,13 +64,13 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n\n*주문시 유의사항: \n- 실제상품과 사진은 계절 및 지역에 따라 다소 차이가 있을 수 있습니다.\n- 계절에 따라 상품 구성 소재가 달라지거나 상품의 가격에 차이가 있을 수 있습니다\n- 상품에 따라 실제 배송되는 상품과 상품이미지에 차이가 있을수 있습니다.\n\n*배송이 가능한 시간: \n택배배송만으로 진행되며, 고객님이 원하시는 시간을 정확히 맞추기가 어려운 점 양해부탁드립니다.\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 02-858-5683으로 전화주시면 바로 처리됩니다. \n단, 희망배송시간 5시간전까지 주문 취소할수 있습니다.(빠른배송은 주문취소가 힘드십니다.)\n교환 및 환불 요청은 당일 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며, 환불은 요청한 일로부터 익주 수요일이 진행됩니다.)",
-                                "if": "context.session.item[0].category===\"기획상품(택배배송)\""
+                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n*주문시 유의사항: \n- 실제상품과 사진은 계절 및 지역에 따라 다소 차이가 있을 수 있습니다.\n- 계절에 따라 상품 구성 소재가 달라지거나 상품의 가격에 차이가 있을 수 있습니다\n- 상품에 따라 실제 배송되는 상품과 상품이미지에 차이가 있을수 있습니다.\n\n*배송이 가능한 시간: \n택배배송만으로 진행되며, 고객님이 원하시는 시간을 정확히 맞추기가 어려운 점 양해부탁드립니다.\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 02-858-5683으로 전화주시면 바로 처리됩니다. \n단, 희망배송시간 5시간전까지 주문 취소할수 있습니다.(빠른배송은 주문취소가 힘드십니다.)\n교환 및 환불 요청은 당일 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며, 환불은 요청한 일로부터 익주 수요일이 진행됩니다.)",
+                                "if": "context.session.item[0].category===\"탁상용,꽃다발등 기획상품\""
                             },
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n\n*주문시 유의사항: \n실제 상품과 사진은 계절 또는 배송지역에 따라 다소 차이가 있을 수 있습니다.\n\n*배송이 가능한 시간: \n평   일 : 오전 8:30~오후 7:00 \n토요일 : 오전 8:30~오후 6:00 \n일요일 : 예약주문만 가능합니다.\n\n*배송지역: \n- 국내는 전 지역 3시간 안에 배송 가능합니다. \n- 외딴섬 지역은 상담후 배송  \n- 해외는 3~7일전 접수\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 전화 ☎02-858-5683으로 전화주시면 바로 처리됩니다.\n단, 희망배송시간 3시간전까지 주문 취소할수 있습니다.\n교환 및 환불은 24시간 이내에 100% 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며,환불은 요청한 일로부터 48시간 안에 주문자 계좌로 입금처리 해드립니다.)",
-                                "if": "context.session.item[0].category!==\"기획상품(택배배송)\""
+                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n*주문시 유의사항: \n실제 상품과 사진은 계절 또는 배송지역에 따라 다소 차이가 있을 수 있습니다.\n\n*배송이 가능한 시간: \n평   일 : 오전 8:30~오후 7:00 \n토요일 : 오전 8:30~오후 6:00 \n일요일 : 예약주문만 가능합니다.\n\n*배송지역: \n- 국내는 전 지역 3시간 안에 배송 가능합니다. \n- 외딴섬 지역은 상담후 배송  \n- 해외는 3~7일전 접수\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 전화 ☎02-858-5683으로 전화주시면 바로 처리됩니다.\n단, 희망배송시간 3시간전까지 주문 취소할수 있습니다.\n교환 및 환불은 24시간 이내에 100% 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며,환불은 요청한 일로부터 48시간 안에 주문자 계좌로 입금처리 해드립니다.)",
+                                "if": "context.session.item[0].category!==\"탁상용,꽃다발등 기획상품\""
                             }
                         ],
                         "task": {
@@ -404,15 +404,15 @@ var dialogs = [
                                     "output": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)"
                                 },
                                 "type": "call",
-                                "dialog": "3.고객 이메일",
-                                "dialogName": "3.고객 이메일",
-                                "dialogId": "default16"
+                                "dialog": "3.고객 성함",
+                                "dialogName": "3.고객 성함",
+                                "dialogId": "default15"
                             },
                             {
                                 "kind": "Action",
                                 "if": "context.user.mobile!==undefined",
                                 "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                    "output": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?"
                                 },
                                 "type": "call",
                                 "dialogName": "3.기존회원",
@@ -420,10 +420,7 @@ var dialogs = [
                                 "dialogId": "default21"
                             }
                         ],
-                        "id": "default11",
-                        "task": {
-                            "name": "neworder"
-                        }
+                        "id": "default11"
                     },
                     {
                         "name": "3.선택 상품 확인 다시",
@@ -857,8 +854,31 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "주문하시는 고객님의 이메일을 입력해주세요.\n\n입력하시는 이메일로 주문서를 발송해드립니다.\n(예시: 123456@naver.com)"
+                                "kind": "Action",
+                                "text": "",
+                                "if": "context.user.mobile!==undefined && context.session.findorder===1",
+                                "type": "call",
+                                "dialogName": "6.주문 확인 기존회원",
+                                "dialog": "6.주문 확인 기존회원",
+                                "dialogId": "default76"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "주문하시는 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
+                                "if": "context.user.mobile==undefined",
+                                "type": "call",
+                                "dialogName": "3.고객 이메일",
+                                "dialog": "3.고객 이메일",
+                                "dialogId": "default16"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "if": "context.user.mobile!==undefined && context.session.findorder!==1",
+                                "type": "call",
+                                "dialogName": "3.기존회원",
+                                "dialog": "3.기존회원",
+                                "dialogId": "default21"
                             }
                         ],
                         "task": {
@@ -880,7 +900,8 @@ var dialogs = [
                                         "if": "context.user.mobile!==undefined && context.session.findorder===1",
                                         "type": "call",
                                         "dialogName": "6.주문 확인 기존회원",
-                                        "dialog": "6.주문 확인 기존회원"
+                                        "dialog": "6.주문 확인 기존회원",
+                                        "dialogId": "default76"
                                     },
                                     {
                                         "kind": "Content",
@@ -910,7 +931,7 @@ var dialogs = [
                                             {
                                                 "kind": "Action",
                                                 "options": {
-                                                    "output": "받으신 인증번호를 입력해주세요."
+                                                    "output": "메세지로 인증번호가 발송되었습니다.\n받으신 인증번호 네자리를 입력해주세요."
                                                 },
                                                 "type": "call",
                                                 "dialogName": "3.인증번호를 확인",
@@ -968,9 +989,9 @@ var dialogs = [
                                                     {
                                                         "kind": "Action",
                                                         "type": "call",
-                                                        "dialogName": "3.고객 이메일",
-                                                        "dialog": "3.고객 이메일",
-                                                        "dialogId": "default16"
+                                                        "dialogName": "3.고객 성함",
+                                                        "dialog": "3.고객 성함",
+                                                        "dialogId": "default15"
                                                     }
                                                 ],
                                                 "id": "default92"
@@ -1047,7 +1068,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "받으신 인증번호를 입력해주세요."
+                        "text": "메세지로 인증번호가 발송되었습니다.\n받으신 인증번호 네자리를 입력해주세요."
                     }
                 ],
                 "id": "default19",
@@ -1081,7 +1102,7 @@ var dialogs = [
                                 "kind": "Action",
                                 "if": "context.session.findorder!==1 && context.session.olduser==true",
                                 "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                    "output": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?"
                                 },
                                 "type": "call",
                                 "dialogName": "3.기존회원",
@@ -1196,7 +1217,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?",
+                "text": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?",
                 "buttons": [
                     {
                         "url": "",
@@ -1400,8 +1421,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "배송받으실 주소를 상세하게 입력해주세요.\n\n보다 정확한 배송을 위해 상세한 도로명 주소 또는 지번주소를 입력해주세요.\n\n예시)시·도 + 시·군·구 + 읍·면 + 도로명건물번호 + 동·층·호 + (법정동, 공동주택명)\n" +
-                                        "서울특별시 서초구 잠원로 123, OO동 OO호 (OO동, OO아파트)"
+                                        "text": "배송받으실 주소를 상세하게 입력해주세요.\n\n보다 정확한 배송을 위해 상세한 도로명 주소 또는 지번주소를 입력해주세요.\n\n예시)시·도 + 시·군·구 + 읍·면 + 도로명건물번호 + 동·층·호 + (법정동, 공동주택명)\n서울특별시 서초구 잠원로 123, OO동 OO호 (OO동, OO아파트)"
                                     }
                                 ],
                                 "task": {
@@ -1475,7 +1495,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "카드로 전달하고싶은 메세지를 입력해주세요.\n\n'참고문구'라고 입력하시면, 입력하시고 싶은 메세지에 대해 안내해드릴께요."
+                                                                "text": "카드로 전달하고싶은 메세지를 입력해주세요.\n\n'참고문구'라고 입력하시면, 입력하시고 싶은 메세지에 대해 안내해드릴께요.\n\n'이전' 이라고 입력하시면 언제든지 전단계로 돌아갈 수 있어요~"
                                                             }
                                                         ],
                                                         "id": "default31",
@@ -1706,7 +1726,7 @@ var dialogs = [
                                                                                                                 "output": [
                                                                                                                     {
                                                                                                                         "kind": "Content",
-                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 주문신청을 할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
+                                                                                                                        "text": "고객님의 주문내역입니다.\n이대로 결제를 진행할까요?\n\n【주문내역】\n-주문일시:\n+context.session.orderinfor.time+\n-고객성함: +context.session.orderinfor.name+\n-보내시는분 성함: +context.session.orderinfor.sendername+\n-고객 휴대폰 번호: +context.session.orderinfor.mobile+\n-받는분 성함: +context.session.orderinfor.receivername+\n-받는분 연락처: +context.session.orderinfor.receivermobile+\n-배달주소: +context.session.orderinfor.receiveraddress+\n-배달일자: +context.session.orderinfor.deliverytime+\n-남기시는 메세지: +context.session.orderinfor.greeting+\n-상품명: +context.session.orderinfor.itemname+\n-상품금액: +context.session.orderinfor.itemprice+원\n-수량: +context.session.orderinfor.itemnumber+\n\n총 +context.session.orderinfor.allprice+ 원\n\n[상품 이미지]"
                                                                                                                     }
                                                                                                                 ],
                                                                                                                 "id": "default44",
@@ -1714,12 +1734,6 @@ var dialogs = [
                                                                                                                     {
                                                                                                                         "name": "3.변경사항 선택",
                                                                                                                         "input": [
-                                                                                                                            {
-                                                                                                                                "text": {
-                                                                                                                                    "raw": "변경하기",
-                                                                                                                                    "nlp": "변경 하다"
-                                                                                                                                }
-                                                                                                                            },
                                                                                                                             {
                                                                                                                                 "text": {
                                                                                                                                     "raw": "변경",
@@ -2063,12 +2077,6 @@ var dialogs = [
                                                                                                                         "input": [
                                                                                                                             {
                                                                                                                                 "text": {
-                                                                                                                                    "raw": "이대로 주문하기",
-                                                                                                                                    "nlp": "이대로 주문 하다"
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                                "text": {
                                                                                                                                     "raw": "주문",
                                                                                                                                     "nlp": "주문"
                                                                                                                                 }
@@ -2077,7 +2085,7 @@ var dialogs = [
                                                                                                                         "output": [
                                                                                                                             {
                                                                                                                                 "kind": "Content",
-                                                                                                                                "text": "플라워매니아에 주문신청되었습니다.\n\n신청하신 주문내용의 최종승인은 담당자가 직접 연락드린 후 진행됩니다.\n\n고객님의 주문내역은 처음화면에 가서 '내 주문 확인하기'를 입력하시면 확인하실 수 있습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요."
+                                                                                                                                "text": "주문확정을 위해 결제를 진행해주세요."
                                                                                                                             }
                                                                                                                         ],
                                                                                                                         "id": "default45",
@@ -2826,7 +2834,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "리본 좌측에 들어갈 보내는 분 성함을 입력해주세요.\n(예시: 아리랑)\n\n-보내는 이름을 안쓰시면 구매자 성함으로 보내드립니다.\n(예시: 네)\n\n-익명을 원하시면 익명이라고 써주세요.\n(예시: 익명)\n\n-리본메세지는 리본 한쪽당 15자 이내가 적당합니다."
+                                                                "text": "리본 좌측에 들어갈 보내는 분 성함을 입력해주세요.\n(예시: 홍길동)\n\n익명으로 원하신다면 '익명' 이라고 입력하시면 됩니다^^"
                                                             }
                                                         ],
                                                         "id": "default32",
@@ -2841,7 +2849,7 @@ var dialogs = [
                                                                 "output": [
                                                                     {
                                                                         "kind": "Content",
-                                                                        "text": "리본 우측에 들어갈 경조문구를 입력하세요.\n\n-리본메세지는 리본 한쪽당 15자 이내가 적당합니다.\n\n 경조사어 참고문구를 보고싶으시다면 '참고문구' 라고 입력하세요."
+                                                                        "text": "리본 우측에 들어갈 경조문구를 입력하세요.\n\n-리본메세지는 리본 한쪽당 15자 이내가 적당합니다.\n\n 경조사어 참고문구를 보고싶으시다면 '참고문구' 라고 입력하세요.\n\n'이전' 이라고 입력하시면 언제든지 전단계로 돌아갈 수 있어요~"
                                                                     }
                                                                 ],
                                                                 "id": "default49",
@@ -3040,7 +3048,7 @@ var dialogs = [
                                                         "text": "시작"
                                                     }
                                                 ],
-                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요."
+                                                "text": "죄송합니다. 제가 찾을 수 없는 주소에요. 다시 한번 입력해주시겠어요?"
                                             }
                                         ],
                                         "id": "default55",
@@ -3366,9 +3374,9 @@ var dialogs = [
                 },
                 "type": "call",
                 "text": "주문하신 고객님의 휴대폰 연락처를 입력해주세요.\n(예시: 01012345678)",
-                "dialogName": "3.고객 이메일",
-                "dialog": "3.고객 이메일",
-                "dialogId": "default16"
+                "dialogName": "3.고객 성함",
+                "dialog": "3.고객 성함",
+                "dialogId": "default15"
             }
         ],
         "id": "default75"
@@ -3431,7 +3439,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
+                        "text": "주문접수중인 상품의 주문내역입니다.\n\n혹시 결제를 진행하셨다면, 주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n결제를 완료하신 고객님께서 취소를 원하시면, 02-858-5683으로 연락주세요:) \n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
                     }
                 ],
                 "task": {

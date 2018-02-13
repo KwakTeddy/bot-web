@@ -46,7 +46,9 @@ module.exports = function (bot)
     bot.setTask("getcategory",
         {
             action: function (dialog, context, callback)
+
             {
+
                 // context.user.mobile=undefined;
                 var modelname = 'flower_moneybrain_category';
                 var options = {};
@@ -184,7 +186,7 @@ module.exports = function (bot)
 
                     context.session.item = body;
                     var outputcount=1;
-                    if(context.session.item[0].category==="기획상품(택배배송)"){
+                    if(context.session.item[0].category==="탁상용,꽃다발등 기획상품"){
                         outputcount=0;
                     }
 
@@ -406,29 +408,15 @@ module.exports = function (bot)
             if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
                 context.user.name = "";
                 context.user.name = dialog.userInput.text;
-                callback();
-            }
-            else {
-                callback();
-            }
-        }
-    });
 
 
-    bot.setType('email', {
-        typeCheck: function (dialog, context, callback) {
-            var matched = true;
-            var str = dialog.userInput.text;
-            var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-            if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
-            {
-                matched = true;
-                context.user.email = str;
                 var newuser = {
                     name: context.user.name,
                     mobile: context.user.mobile,
-                    email: context.user.email,
-                    botId: bot.id
+                    // email: context.user.email,
+                    botId: bot.id,
+                    createTime:new Date().toLocaleString(),
+                    updateTime:new Date().toLocaleString()
                 };
                 var modelname="flower_moneybrain_user";
                 var options = {};
@@ -442,17 +430,57 @@ module.exports = function (bot)
                     }
                     else {
                         console.log("response.statusCode=" + response.statusCode);
-                        return callback(matched);
+                        callback();
                     }
                 });
             }
             else {
-                matched = false;
-                callback(matched);
+                callback();
             }
-
         }
     });
+
+
+    // bot.setType('email', {
+    //     typeCheck: function (dialog, context, callback) {
+    //         var matched = true;
+    //         var str = dialog.userInput.text;
+    //         var RegEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    //         if (RegEmail.test(str))//如果返回true,表示userEmail符合邮箱格式
+    //         {
+    //             matched = true;
+    //             context.user.email = str;
+    //             var newuser = {
+    //                 name: context.user.name,
+    //                 mobile: context.user.mobile,
+    //                 email: context.user.email,
+    //                 botId: bot.id,
+    //                 createTime:new Date().toLocaleString(),
+    //                 updateTime:new Date().toLocaleString()
+    //             };
+    //             var modelname="flower_moneybrain_user";
+    //             var options = {};
+    //
+    //             options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+    //             options.json = newuser;
+    //
+    //             request.post(options, function(err, response, body) {
+    //                 if (err) {
+    //                     console.log(err);
+    //                 }
+    //                 else {
+    //                     console.log("response.statusCode=" + response.statusCode);
+    //                     return callback(matched);
+    //                 }
+    //             });
+    //         }
+    //         else {
+    //             matched = false;
+    //             callback(matched);
+    //         }
+    //
+    //     }
+    // });
 
 
 
@@ -547,7 +575,7 @@ module.exports = function (bot)
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
-                    mobile: context.user.mobile
+                    mobile: context.session.mobile
                 };
                 request.get(options, function (err, response, body)
                 {
@@ -563,11 +591,32 @@ module.exports = function (bot)
                             context.session.olduser=true;
                             context.user.mobile=body[0].mobile;
                             context.user.name=body[0].name;
-                            context.user.email=body[0].email;
+                            // context.user.email=body[0].email;
+
+                            // // var updateuser = [{
+                            // //     botId: bot.id},{
+                            // //     updateTime:new Date().toISOString()
+                            // // }];
+                            // // var modelname="flower_moneybrain_user";
+                            // // var options = {};
+                            // //
+                            // // options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+                            // // options.json = updateuser;
+                            //
+                            // request.put(options, function(err, response, body) {
+                            //     if (err) {
+                            //         console.log(err);
+                            //     }
+                            //     else {
+                            //         console.log("response.statusCode=" + response.statusCode);
+                            //         return callback(matched);
+                            //     }
+                            // });
                             return callback(matched);
                         }
                         else{
                             context.session.olduser=false;
+                            context.user.mobile=context.session.mobile;
                             return callback(matched);
                         }
                     }
@@ -692,22 +741,22 @@ module.exports = function (bot)
                     }
                     else {
                         context.session.decorate = "리본";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "네",
-                                url: ""
-                            },
-                            {
-                                text: "익명",
-                                url: ""
-                            },
-                            {
-                                text: "이전으로 가기"
-                            },
-                            {
-                                text: "처음으로 돌아가기"
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     {
+                        //         text: "네",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "익명",
+                        //         url: ""
+                        //     },
+                        //     {
+                        //         text: "이전으로 가기"
+                        //     },
+                        //     {
+                        //         text: "처음으로 돌아가기"
+                        //     }
+                        // ];
                         callback();
                     }
                 }
@@ -731,22 +780,22 @@ module.exports = function (bot)
                     }
                     else {
                         context.session.decorate = "리본";
-                        dialog.output[0].buttons = [
-                            {
-                                text: "네",
-                                url: ""
-                            },
-                            {
-                                text: "익명",
-                                url: ""
-                            },
-                            {
-                                text: "이전으로 가기"
-                            },
-                            {
-                                text: "처음으로 돌아가기"
-                            }
-                        ];
+                        // dialog.output[0].buttons = [
+                        //     // {
+                        //     //     text: "네",
+                        //     //     url: ""
+                        //     // },
+                        //     // {
+                        //     //     text: "익명",
+                        //     //     url: ""
+                        //     // },
+                        //     // {
+                        //     //     text: "이전으로 가기"
+                        //     // },
+                        //     // {
+                        //     //     text: "처음으로 돌아가기"
+                        //     // }
+                        // ];
                         callback();
                     }
 
@@ -862,9 +911,6 @@ module.exports = function (bot)
             if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0 && dialog.userInput.text  !== "아니요") {
                 if (dialog.userInput.text.indexOf("익명") >= 0) {
                     context.session.sendname = "익명";
-                }
-                else if (dialog.userInput.text === "네") {
-                    context.session.sendname = context.user.name;
                 }
                 else {
                     context.session.sendname = dialog.userInput.text;
@@ -1060,7 +1106,7 @@ module.exports = function (bot)
                     else {
                         context.session.selectedgreeting = dialog.userInput.text;
                     }
-                    dialog.output[0].text= "기타 요청사항을 입력해주세요.\n\n※ 케익이 포함된경우 요청사항에 양초갯수를 적어주세요!";
+                    dialog.output[0].text= "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^";
                     callback();
                 }
                 else {
@@ -1135,7 +1181,7 @@ module.exports = function (bot)
             //고객성함,고객 휴대폰 번호,구매자 메일,상품금액:
             context.session.orderinfor.name = context.user.name;
             context.session.orderinfor.mobile = context.user.mobile;
-            context.session.orderinfor.email = context.user.email;
+            // context.session.orderinfor.email = context.user.email;
             context.session.orderinfor.itemprice = context.session.selecteditem.price;
             //보내시는분 성함:
             if (context.session.decorate === "리본") {
@@ -1200,9 +1246,6 @@ module.exports = function (bot)
                     url: ""
                 },
                 {
-                    text: "이전으로 가기"
-                },
-                {
                     text: "처음으로 돌아가기"
                 }
             ];
@@ -1228,7 +1271,7 @@ module.exports = function (bot)
                 itemimage: context.session.orderinfor.itemimage,
                 itemnumber: context.session.orderinfor.itemnumber,
                 itempay: context.session.orderinfor.itempay,
-                email: context.session.orderinfor.email,
+                // email: context.session.orderinfor.email,
                 bride: context.session.orderinfor.brideornot,
                 showtime: context.session.orderinfor.showtime,
                 // deliveryway: context.session.orderinfor.deliveryway,
@@ -1259,7 +1302,7 @@ module.exports = function (bot)
 
                     dialog.output[0].buttons=[
                         {
-                            text: '결제하러 가기',
+                            text: '결제하기',
                             url: context.session.selecteditem.pay
                         },
                         {
@@ -1366,12 +1409,12 @@ module.exports = function (bot)
                                         pass: 'ZSdh1007--'
                                     }
                                 });
-                                if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
-                                    context.session.orderinfor.email = "jipark@moneybrain.ai";
-                                }
+                                // if (context.session.orderinfor.email !== "zsslovelyg@moneybrain.ai") {
+                                //     context.session.orderinfor.email = "jipark305@icloud.com";
+                                // }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: context.session.orderinfor.email, // list of receivers
+                                    to: 'jipark305@icloud.com', // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +
@@ -1760,7 +1803,6 @@ module.exports = function (bot)
             //결제 방식:
             // context.session.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
@@ -1855,7 +1897,49 @@ module.exports = function (bot)
         });
 
 
-    bot.setTask('neworder',{
+    // bot.setTask('neworder',{
+    //     action: function (dialog, context, callback) {
+    //         context.session.sendname = undefined;
+    //         //받는분 성함:
+    //         context.session.friendname = undefined;
+    //         //받는분 연락처:
+    //         context.session.friendmobile = undefined;
+    //         //배달주소:
+    //         context.session.friendaddress = undefined;
+    //         //배달일자:
+    //         context.session.deliverytime = undefined;
+    //         //남기시는 메세지:
+    //         context.session.selectedgreeting = undefined;
+    //         //상품:
+    //         //context.session.selecteditem=undefined;
+    //         //수량---------------------------------------
+    //         context.session.itemnumber = undefined;
+    //         //신부신랑:
+    //         context.session.brideornot = undefined;
+    //         //신부신랑 전시 시간:
+    //         context.session.showtime = undefined;
+    //         //배송방식:
+    //         // context.session.deliveryway = undefined;
+    //         //포장방식:
+    //         context.session.decorate = undefined;
+    //         //계산서 필요할건지:
+    //         // context.session.bill = undefined;
+    //         //결제 방식:
+    //         // context.session.payway = undefined;
+    //         //변경:
+    //         //다른 요구사항
+    //         context.session.otherrequire = undefined;
+    //         context.session.olduser=undefined;
+    //         context.session.greetingitemlist=undefined;
+    //         context.session.findorder = undefined;
+    //         context.session.selectchange=undefined;
+    //
+    //         callback();
+    //     }
+    // });
+
+
+    bot.setTask('allname', {
         action: function (dialog, context, callback) {
             context.session.sendname = undefined;
             //받는분 성함:
@@ -1885,20 +1969,13 @@ module.exports = function (bot)
             //결제 방식:
             // context.session.payway = undefined;
             //변경:
-            context.session.selectchange = undefined;
             //다른 요구사항
             context.session.otherrequire = undefined;
             context.session.olduser=undefined;
             context.session.greetingitemlist=undefined;
             context.session.findorder = undefined;
-
-            callback();
-        }
-    });
-
-
-    bot.setTask('allname', {
-        action: function (dialog, context, callback) {
+            context.session.selectchange=undefined;
+            context.user.time=undefined;
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -2101,7 +2178,7 @@ module.exports = function (bot)
             else {
                 matched = true;
             }
-            //console.log("context.user.time========"+context.user.time);
+            console.log("context.user.time======999999999=="+context.user.time);
         });
         return matched
     }
@@ -2148,6 +2225,9 @@ module.exports = function (bot)
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
+                        if(context.user.time===undefined){
+                            context.user.time=' ';
+                        }
                         context.session.showtime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
                             matched = false;
@@ -2158,6 +2238,9 @@ module.exports = function (bot)
                     else {
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                context.user.time=' ';
+                            }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
@@ -2168,6 +2251,9 @@ module.exports = function (bot)
                         else {
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                ccontext.user.time=' ';
+                            }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
@@ -2212,6 +2298,9 @@ module.exports = function (bot)
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
+                        if(context.user.time===undefined){
+                            context.user.time=' ';
+                        }
                         context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
                             matched = false;
@@ -2222,6 +2311,9 @@ module.exports = function (bot)
                     else {
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                context.user.time=' ';
+                            }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
@@ -2232,6 +2324,9 @@ module.exports = function (bot)
                         else {
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
+                            if(context.user.time===undefined){
+                                context.user.time=' ';
+                            }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
                                 matched = false;
