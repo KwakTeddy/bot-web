@@ -300,7 +300,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         $scope.inputKeydown = function(e, dialog, type, current)
         {
             var event = e.originalEvent;
-            if(e.keyCode == 13)
+            if(e.keyCode == 13) //Enter
             {
                 var check = false;
                 angular.element(e.currentTarget.parentElement).find('textarea').each(function()
@@ -347,7 +347,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
-            else if(e.keyCode == 38)
+            else if(e.keyCode == 38)//윗 방향키
             {
                 var target = angular.element(e.currentTarget).parent().parent().parent().parent().prev().get(0);
                 if(target)
@@ -362,7 +362,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
-            else if(e.keyCode == 40)
+            else if(e.keyCode == 40) //아래 방향키
             {
                 var target = angular.element(e.currentTarget).parent().parent().parent().parent().next().get(0);
                 if(target)
@@ -377,7 +377,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
-            else if(e.keyCode == 46)
+            else if(e.keyCode == 46) //Delete
             {
                 if(e.shiftKey)
                 {
@@ -392,17 +392,20 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                             $scope.saveModified(type, e, form);
                         }, 100);
                     }
-                }
-                else if(confirm($scope.lan('Are you sure you want to delete this item?')))
-                {
-                    DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
+                    else if(dialog.inputRaw.length == 1)
                     {
-                        var index = $scope.dialogs.indexOf(dialog);
-                        $scope.dialogs.splice(index, 1);
-                    });
+                        if(confirm($scope.lan('Are you sure you want to delete this item?')))
+                        {
+                            DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
+                            {
+                                var index = $scope.dialogs.indexOf(dialog);
+                                $scope.dialogs.splice(index, 1);
+                            });
+                        }
+                    }
                 }
             }
-            else if(e.keyCode == 45)
+            else if(e.keyCode == 45) //Insert
             {
                 var check = false;
                 angular.element(e.currentTarget.parentElement).find('textarea').each(function()
