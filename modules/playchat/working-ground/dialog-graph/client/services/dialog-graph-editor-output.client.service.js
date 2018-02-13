@@ -114,6 +114,8 @@
 
             $scope.addOutputButton = function(e, output)
             {
+                if(!output.buttons) output.buttons = [];
+
                 output.buttons.push({ url : '', text: ''});
 
                 $timeout(function()

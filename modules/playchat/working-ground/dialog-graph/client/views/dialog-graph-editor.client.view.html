@@ -91,21 +91,26 @@
 
                 <div class="dialog-editor-row">
                     <p class="dialog-editor-subject">{{lan('Chatbot Answer')}}</p>
+
                     <a href="#" tabindex="-1" class="dialog-editor-output-add" ng-click="addOutput($event);" tabindex="-1"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
+
                     <div class="dialog-editor-output-box" ng-repeat="output in dialog.output">
                         <div class="dialog-editor-output-functions">
                             <a href="#" tabindex="-1">
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteOutput(dialog.output, $index);">
                             </a>
                         </div>
+
                         <div ng-if="output.kind == 'Text' || output.kind == 'Content' || output.kind == 'Action'">
                             <div class="dialog-editor-output-if" ng-if="dialog.output.length > 1 && isAdvancedMode === true">
                                 <span>IF</span>
                                 <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
+
                             <div class="dialog-editor-output-text" style="font-size: 0px;">
                                 <textarea placeholder="{{ lan('Edit here.') }}" ng-keydown="onKeyDownTextArea($event);" ng-required="output.kind != 'Action'" ng-model="output.text"></textarea>
                             </div>
+
                             <div class="dialog-editor-output-box-row button" ng-click="clickToImageFile($event);">
                                 <div ng-show="output.uploader.item == 'none'">
                                     <span class="blue-label">{{lan('Add image') }}</span>
@@ -120,15 +125,23 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">
+                                <span class="blue-label">{{lan('Add button') }}</span>
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                            </div>
+
                             <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
                                 <input tabindex="-1" type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true">
                                 <input tabindex="-1" type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url">
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
-                            <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">
-                                <span class="blue-label">{{lan('Add button') }}</span>
+
+                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton(output);" ng-if="output.kind != 'Action'">
+                                <span class="blue-label">{{lan('Add action') }}</span>
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
+
                             <div class="dialog-editor-output-box-row" ng-if="output.kind == 'Action'">
                                 <div style="font-size: 0; text-align: left;">
                                     <div class="select-wrapper">
@@ -146,10 +159,6 @@
                                     </div>
                                     <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 9px; right: 12px;" ng-click="deleteActionButton(output);">
                                 </div>
-                            </div>
-                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton(output);" ng-if="output.kind != 'Action'">
-                                <span class="blue-label">{{lan('Add action') }}</span>
-                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
                         </div>
                     </div>
