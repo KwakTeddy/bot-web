@@ -64,12 +64,12 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n\n*주문시 유의사항: \n- 실제상품과 사진은 계절 및 지역에 따라 다소 차이가 있을 수 있습니다.\n- 계절에 따라 상품 구성 소재가 달라지거나 상품의 가격에 차이가 있을 수 있습니다\n- 상품에 따라 실제 배송되는 상품과 상품이미지에 차이가 있을수 있습니다.\n\n*배송이 가능한 시간: \n택배배송만으로 진행되며, 고객님이 원하시는 시간을 정확히 맞추기가 어려운 점 양해부탁드립니다.\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 02-858-5683으로 전화주시면 바로 처리됩니다. \n단, 희망배송시간 5시간전까지 주문 취소할수 있습니다.(빠른배송은 주문취소가 힘드십니다.)\n교환 및 환불 요청은 당일 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며, 환불은 요청한 일로부터 익주 수요일이 진행됩니다.)",
+                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n*주문시 유의사항: \n- 실제상품과 사진은 계절 및 지역에 따라 다소 차이가 있을 수 있습니다.\n- 계절에 따라 상품 구성 소재가 달라지거나 상품의 가격에 차이가 있을 수 있습니다\n- 상품에 따라 실제 배송되는 상품과 상품이미지에 차이가 있을수 있습니다.\n\n*배송이 가능한 시간: \n택배배송만으로 진행되며, 고객님이 원하시는 시간을 정확히 맞추기가 어려운 점 양해부탁드립니다.\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 02-858-5683으로 전화주시면 바로 처리됩니다. \n단, 희망배송시간 5시간전까지 주문 취소할수 있습니다.(빠른배송은 주문취소가 힘드십니다.)\n교환 및 환불 요청은 당일 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며, 환불은 요청한 일로부터 익주 수요일이 진행됩니다.)",
                                 "if": "context.session.item[0].category===\"탁상용,꽃다발등 기획상품\""
                             },
                             {
                                 "kind": "Content",
-                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n\n*주문시 유의사항: \n실제 상품과 사진은 계절 또는 배송지역에 따라 다소 차이가 있을 수 있습니다.\n\n*배송이 가능한 시간: \n평   일 : 오전 8:30~오후 7:00 \n토요일 : 오전 8:30~오후 6:00 \n일요일 : 예약주문만 가능합니다.\n\n*배송지역: \n- 국내는 전 지역 3시간 안에 배송 가능합니다. \n- 외딴섬 지역은 상담후 배송  \n- 해외는 3~7일전 접수\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 전화 ☎02-858-5683으로 전화주시면 바로 처리됩니다.\n단, 희망배송시간 3시간전까지 주문 취소할수 있습니다.\n교환 및 환불은 24시간 이내에 100% 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며,환불은 요청한 일로부터 48시간 안에 주문자 계좌로 입금처리 해드립니다.)",
+                                "text": "#context.session.item#**+name+**\n*가격: +price+원\n#\n*주문시 유의사항: \n실제 상품과 사진은 계절 또는 배송지역에 따라 다소 차이가 있을 수 있습니다.\n\n*배송이 가능한 시간: \n평   일 : 오전 8:30~오후 7:00 \n토요일 : 오전 8:30~오후 6:00 \n일요일 : 예약주문만 가능합니다.\n\n*배송지역: \n- 국내는 전 지역 3시간 안에 배송 가능합니다. \n- 외딴섬 지역은 상담후 배송  \n- 해외는 3~7일전 접수\n\n*주문취소안내: \n주문 취소를 원하실 경우에는 전화 ☎02-858-5683으로 전화주시면 바로 처리됩니다.\n단, 희망배송시간 3시간전까지 주문 취소할수 있습니다.\n교환 및 환불은 24시간 이내에 100% 가능합니다.(단, 분명한 제품에 대한 하자발생시에 가능하며,환불은 요청한 일로부터 48시간 안에 주문자 계좌로 입금처리 해드립니다.)",
                                 "if": "context.session.item[0].category!==\"탁상용,꽃다발등 기획상품\""
                             }
                         ],
@@ -412,7 +412,7 @@ var dialogs = [
                                 "kind": "Action",
                                 "if": "context.user.mobile!==undefined",
                                 "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                    "output": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?"
                                 },
                                 "type": "call",
                                 "dialogName": "3.기존회원",
@@ -1102,7 +1102,7 @@ var dialogs = [
                                 "kind": "Action",
                                 "if": "context.session.findorder!==1 && context.session.olduser==true",
                                 "options": {
-                                    "output": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?"
+                                    "output": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?"
                                 },
                                 "type": "call",
                                 "dialogName": "3.기존회원",
@@ -1217,7 +1217,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "수취인/배송정보 접수를 진행하겠습니다.\n\n결혼식을 위한 배송인가요?",
+                "text": "주문서 작성을 시작합니다!\n\n중간에 잘못 입력하시더라도, 당황하지 마세요~^^\n\n주문내역 확인단계에서 수정이 가능합니다! 나중에 수정하시면되요^^\n\n자, 그럼 시작합니다!\n\n결혼식을 위한 배송인가요?",
                 "buttons": [
                     {
                         "url": "",
@@ -3048,7 +3048,7 @@ var dialogs = [
                                                         "text": "시작"
                                                     }
                                                 ],
-                                                "text": "죄송합니다. 다시한번 입력해주시겠어요? \"다시 입력\"버튼을 누르시고 한번 더 입력해주세요.\n\n처음으로 돌아가시려면 \"시작\"버튼을 누르세요."
+                                                "text": "죄송합니다. 제가 찾을 수 없는 주소에요. 다시 한번 입력해주시겠어요?"
                                             }
                                         ],
                                         "id": "default55",
@@ -3439,7 +3439,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "주문접수중인 상품의 주문내역입니다.\n\n주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n처음으로 가려면 \"시작\"이라고 입력해주세요.\n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
+                        "text": "주문접수중인 상품의 주문내역입니다.\n\n혹시 결제를 진행하셨다면, 주문확정은 고객님의 휴대폰으로 SMS를 통해 안내해드리겠습니다.\n\n결제를 완료하신 고객님께서 취소를 원하시면, 02-858-5683으로 연락주세요:) \n\n-주문일시: \n+dialog.userInput.types.orderlist.time+\n-고객성함: +dialog.userInput.types.orderlist.name+\n-보내시는분 성함: +dialog.userInput.types.orderlist.sendername+\n-고객 휴대폰 번호: +dialog.userInput.types.orderlist.mobile+\n-받는분 성함: +dialog.userInput.types.orderlist.receivername+\n-받는분 연락처: +dialog.userInput.types.orderlist.receivermobile+\n-배달주소: +dialog.userInput.types.orderlist.receiveraddress+\n-남기시는 메세지: +dialog.userInput.types.orderlist.greeting+\n-상품명: +dialog.userInput.types.orderlist.itemname+\n-상품금액: +dialog.userInput.types.orderlist.price+원\n-수량: +dialog.userInput.types.orderlist.itemnumber+\n\n총 +dialog.userInput.types.orderlist.allprice+원\n\n[상품 이미지]"
                     }
                 ],
                 "task": {
