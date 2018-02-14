@@ -2368,7 +2368,7 @@ module.exports = function (bot) {
                 var options = {};
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.qs = {
-                    category:{"$in":["꽃바구니,꽃박스,꽃목걸이"]}
+                    valentine:"true"
                 };
                 request.get(options, function (err, response, body) {
                     if (err) {
