@@ -1099,6 +1099,12 @@
                 "jp": "内容",
                 "zh": "内容"
             },
+            "Delete only this card": {
+                "ko": "이 카드만 삭제하기",
+                "en": "Delete only this card",
+                "jp": "このカードのみを削除する。",
+                "zh": "只删除这张卡片。"
+            },
             "delete": {
                 "ko": "삭제",
                 "en": "delete",
