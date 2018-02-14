@@ -5,20 +5,18 @@ var request = require('request');
 
 var SERVER_HOST = 'http://template-dev.moneybrain.ai:8443';
 
-module.exports = function (bot)
-{
+module.exports = function (bot) {
     bot.setTask('defaultTask',
         {
-            action: function (dialog, context, callback)
-            {
+            action: function (dialog, context, callback) {
                 var modelname = 'flower_test';
                 var options = {};
 
-                options.url = SERVER_HOST + '/api/'+modelname;
+                options.url = SERVER_HOST + '/api/' + modelname;
 
                 options.json =
                     {
-                        botId : '123',
+                        botId: '123',
                         name: 'shuang',
                         age: '25',
                         sex: 'female'
@@ -27,14 +25,11 @@ module.exports = function (bot)
                 //create: request.post
                 //update: request.put
                 //delete: request.delete
-                request.get(options, function(err, response, body)
-                {
-                    if(err)
-                    {
+                request.get(options, function (err, response, body) {
+                    if (err) {
                         console.log(err);
                     }
-                    else
-                    {
+                    else {
                         console.log(response.statusCode);
                         console.log(body);
                     }
@@ -45,9 +40,7 @@ module.exports = function (bot)
 
     bot.setTask("getcategory",
         {
-            action: function (dialog, context, callback)
-
-            {
+            action: function (dialog, context, callback) {
 
                 // context.user.mobile=undefined;
                 var modelname = 'flower_moneybrain_category';
@@ -89,16 +82,13 @@ module.exports = function (bot)
         });
 
     bot.setType("categorylist", {
-        typeCheck: function (dialog, context, callback)
-        {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined){
-                text[1]=text[1].trim();
+            if (text[1] !== undefined) {
+                text[1] = text[1].trim();
 
-                for(var i=0; i<context.session.category.length; i++)
-                {
-                    if(context.session.category[i].indexOf(text[1]) !== -1)
-                    {
+                for (var i = 0; i < context.session.category.length; i++) {
+                    if (context.session.category[i].indexOf(text[1]) !== -1) {
                         return callback(true, context.session.category[i]);
                     }
                 }
@@ -108,32 +98,27 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('showcategory',{
-        action: function (dialog, context, callback)
-        {
+    bot.setTask('showcategory', {
+        action: function (dialog, context, callback) {
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
                 category: dialog.userInput.types.categorylist
             };
-            request.get(options, function (err, response, body)
-            {
-                if (err)
-                {
+            request.get(options, function (err, response, body) {
+                if (err) {
                     console.log('err:' + err);
                 }
-                else
-                {
+                else {
                     body = JSON.parse(body);
                     console.log(response.statusCode);
 
                     context.session.itemcategory = [];
                     context.session.itemcategory = body;
 
-                    dialog.output[0].buttons= [];
-                    for (var i = 0; i < context.session.itemcategory.length; i++)
-                    {
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.itemcategory.length; i++) {
                         var ss = "" + (i + 1) + ". " + context.session.itemcategory[i].name;
                         dialog.output[0].buttons.push({text: ss});
                     }
@@ -148,17 +133,16 @@ module.exports = function (bot)
     });
 
 
-    bot.setType('itemlist',{
-        typeCheck: function (dialog, context, callback)
-        {
+    bot.setType('itemlist', {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined) {
+            if (text[1] !== undefined) {
                 text[1] = text[1].trim();
                 for (var i = 0; i < context.session.itemcategory.length; i++) {
                     var namecode = context.session.itemcategory[i].name;
 
                     if (namecode.indexOf(text[1]) !== -1) {
-                        dialog.userInput.types.itemlist=context.session.itemcategory[i];
+                        dialog.userInput.types.itemlist = context.session.itemcategory[i];
                         return callback(true);
                     }
                 }
@@ -168,28 +152,24 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('showitem',{
+    bot.setTask('showitem', {
         action: function (dialog, context, callback) {
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
-                _id:dialog.userInput.types.itemlist._id
+                _id: dialog.userInput.types.itemlist._id
             };
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log('err:' + err);
                 }
                 else {
-                    body=JSON.parse(body);
+                    body = JSON.parse(body);
                     console.log(response.statusCode);
 
                     context.session.item = body;
-                    var outputcount=1;
-                    if(context.session.item[0].category==="탁상용,꽃다발등 기획상품"){
-                        outputcount=0;
-                    }
-
+                    var outputcount = 0;
 
                     context.session.selecteditem = {};
                     context.session.selecteditem = context.session.item[0];
@@ -200,22 +180,36 @@ module.exports = function (bot)
                             dialog.output[outputcount].image = {url: context.session.item[0].picture};
                             dialog.output[outputcount].buttons = [
                                 {
-                                    text: '자세히보기',
-                                    url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                                    text: '주문하기',
+                                    url: context.session.item[0].inforpay
                                 },
-                                {
-                                    text: '이 상품으로 주문하기',
-                                    url: ""
-                                },
-                                {
-                                    text: '다른 상품 더보기',
-                                    url: ""
-                                },
-                                {text: "이전으로 가기"},
-                                {
-                                    text: "처음으로 돌아가기"
-                                }
+                                    {
+                                        text: '이전으로 가기',
+                                        url: ""
+                                    },
+                                    {
+                                        text: '처음으로 돌아가기',
+                                        url: ""
+                                    }
                             ];
+                            // dialog.output[outputcount].buttons = [
+                            //     {
+                            //         text: '자세히보기',
+                            //         url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                            //     },
+                            //     {
+                            //         text: '이 상품으로 주문하기',
+                            //         url: ""
+                            //     },
+                            //     {
+                            //         text: '다른 상품 더보기',
+                            //         url: ""
+                            //     },
+                            //     {text: "이전으로 가기"},
+                            //     {
+                            //         text: "처음으로 돌아가기"
+                            //     }
+                            // ];
                         }
                     }
                     else {
@@ -240,7 +234,7 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('getFAQcategory',{
+    bot.setTask('getFAQcategory', {
         action: function (dialog, context, callback) {
             var modelname = "flower_moneybrain_faq";
             var options = {};
@@ -251,7 +245,7 @@ module.exports = function (bot)
                     console.log('err:' + err);
                 }
                 else {
-                    body=JSON.parse(body);
+                    body = JSON.parse(body);
                     console.log(response.statusCode);
 
                     var str = [];
@@ -279,10 +273,9 @@ module.exports = function (bot)
     });
 
     bot.setType("faqcategorylist", {
-        typeCheck: function (dialog, context, callback)
-        {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined) {
+            if (text[1] !== undefined) {
                 text[1] = text[1].trim();
 
                 for (var i = 0; i < context.session.faqcategory.length; i++) {
@@ -296,7 +289,7 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('showfaqlist',{
+    bot.setTask('showfaqlist', {
         action: function (dialog, context, callback) {
             var modelname = "flower_moneybrain_faq";
             var options = {};
@@ -304,23 +297,19 @@ module.exports = function (bot)
             options.qs = {
                 category: dialog.userInput.types.faqcategorylist
             };
-            request.get(options, function (err, response, body)
-            {
-                if (err)
-                {
+            request.get(options, function (err, response, body) {
+                if (err) {
                     console.log('err:' + err);
                 }
-                else
-                {
+                else {
                     body = JSON.parse(body);
                     console.log(response.statusCode);
 
                     context.session.faqitemcategory = [];
                     context.session.faqitemcategory = body;
 
-                    dialog.output[0].buttons= [];
-                    for (var i = 0; i < context.session.faqitemcategory.length; i++)
-                    {
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.faqitemcategory.length; i++) {
                         var ss = "" + (i + 1) + ". " + context.session.faqitemcategory[i].question;
                         dialog.output[0].buttons.push({text: ss});
                     }
@@ -335,11 +324,10 @@ module.exports = function (bot)
         }
     });
 
-    bot.setType('faqitemlist',{
-        typeCheck: function (dialog, context, callback)
-        {
+    bot.setType('faqitemlist', {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined) {
+            if (text[1] !== undefined) {
                 text[1] = text[1].trim();
 
                 for (var i = 0; i < context.session.faqitemcategory.length; i++) {
@@ -353,13 +341,13 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('showfaq',{
+    bot.setTask('showfaq', {
         action: function (dialog, context, callback) {
             var modelname = "flower_moneybrain_faq";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.qs = {
-                _id:dialog.userInput.types.faqitemlist._id
+                _id: dialog.userInput.types.faqitemlist._id
             };
             request.get(options, function (err, response, body) {
                 if (err) {
@@ -386,8 +374,6 @@ module.exports = function (bot)
     });
 
 
-
-
     //
     // bot.setTask('newuser',{
     //     action: function (dialog, context, callback) {
@@ -402,10 +388,9 @@ module.exports = function (bot)
     // });
 
 
-
-    bot.setTask('savename',{
+    bot.setTask('savename', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 context.user.name = "";
                 context.user.name = dialog.userInput.text;
 
@@ -415,16 +400,16 @@ module.exports = function (bot)
                     mobile: context.user.mobile,
                     // email: context.user.email,
                     botId: bot.id,
-                    createTime:new Date().toLocaleString(),
-                    updateTime:new Date().toLocaleString()
+                    createTime: new Date().toLocaleString(),
+                    updateTime: new Date().toLocaleString()
                 };
-                var modelname="flower_moneybrain_user";
+                var modelname = "flower_moneybrain_user";
                 var options = {};
 
-                options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+                options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
                 options.json = newuser;
 
-                request.post(options, function(err, response, body) {
+                request.post(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
                     }
@@ -483,8 +468,7 @@ module.exports = function (bot)
     // });
 
 
-
-    bot.setTask('savemobile',{
+    bot.setTask('savemobile', {
         preCallback: function (dialog, context, callback) {
             context.session.mobile = dialog.userInput.types.mobile;
             var randomNum = '';
@@ -566,7 +550,7 @@ module.exports = function (bot)
     // });
 
 
-    bot.setType('identification',{
+    bot.setType('identification', {
         typeCheck: function (dialog, context, callback) {
             var matched = false;
             if (dialog.userInput.text == context.session.smsAuth) {
@@ -577,20 +561,17 @@ module.exports = function (bot)
                 options.qs = {
                     mobile: context.session.mobile
                 };
-                request.get(options, function (err, response, body)
-                {
-                    if (err)
-                    {
+                request.get(options, function (err, response, body) {
+                    if (err) {
                         console.log('err:' + err);
                     }
-                    else
-                    {
+                    else {
                         body = JSON.parse(body);
                         console.log(response.statusCode);
-                        if(body.length>0){
-                            context.session.olduser=true;
-                            context.user.mobile=body[0].mobile;
-                            context.user.name=body[0].name;
+                        if (body.length > 0) {
+                            context.session.olduser = true;
+                            context.user.mobile = body[0].mobile;
+                            context.user.name = body[0].name;
                             // context.user.email=body[0].email;
 
                             // // var updateuser = [{
@@ -614,9 +595,9 @@ module.exports = function (bot)
                             // });
                             return callback(matched);
                         }
-                        else{
-                            context.session.olduser=false;
-                            context.user.mobile=context.session.mobile;
+                        else {
+                            context.session.olduser = false;
+                            context.user.mobile = context.session.mobile;
                             return callback(matched);
                         }
                     }
@@ -632,9 +613,9 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('bridegroomorbride',{
+    bot.setTask('bridegroomorbride', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 var str = dialog.userInput.text;
                 if (str.indexOf("신랑") >= 0) {
                     context.session.brideornot = "신랑측"
@@ -659,9 +640,9 @@ module.exports = function (bot)
     // });
 
 
-    bot.setTask('savefriendname',{
+    bot.setTask('savefriendname', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 context.session.friendname = dialog.userInput.text;
                 callback();
             }
@@ -672,11 +653,11 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('savefriendmobile',{
+    bot.setTask('savefriendmobile', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
-            context.session.friendmobile = dialog.userInput.types.mobile;
-            callback();
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
+                context.session.friendmobile = dialog.userInput.types.mobile;
+                callback();
             }
             else {
                 callback();
@@ -685,16 +666,16 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('savefriendaddress',{
+    bot.setTask('savefriendaddress', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
-            context.session.friendaddress=dialog.userInput.types.address;
-            // context.session.friendaddress = context.user.address.지번주소;
-            callback();
-        }
-        else {
-            callback();
-}
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
+                context.session.friendaddress = dialog.userInput.types.address;
+                // context.session.friendaddress = context.user.address.지번주소;
+                callback();
+            }
+            else {
+                callback();
+            }
         }
     });
     //
@@ -726,13 +707,13 @@ module.exports = function (bot)
     //     }
     // });
 
-    bot.setTask('savedecorate',{
+    bot.setTask('savedecorate', {
         action: function (dialog, context, callback) {
 
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 if (context.session.decorate === undefined) {
 
-                    var str = dialog.userInput.text ;
+                    var str = dialog.userInput.text;
                     if (str.indexOf("카드") >= 0) {
                         context.session.decorate = "카드";
                         // dialog.output[0].buttons = [
@@ -771,7 +752,7 @@ module.exports = function (bot)
                     }
                 }
                 else {
-                    str = dialog.userInput.text ;
+                    str = dialog.userInput.text;
                     if (str.indexOf("리본") < 0) {
                         context.session.decorate = "카드";
                         // dialog.output[0].buttons = [
@@ -818,7 +799,7 @@ module.exports = function (bot)
         }
     });
 
-    bot.setTask('getgreeting',{
+    bot.setTask('getgreeting', {
         action: function (dialog, context, callback) {
             if (context.session.decorate === "카드") {
                 var modelname = "flower_moneybrain_greeting";
@@ -897,16 +878,13 @@ module.exports = function (bot)
 
 
     bot.setType("greetiongcategorylist", {
-        typeCheck: function (dialog, context, callback)
-        {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split(".");
-            text[1]=text[1].trim();
+            text[1] = text[1].trim();
 
-            for(var i=0; i<context.session.greetingcategory.length; i++)
-            {
-                if(context.session.greetingcategory[i].indexOf(text[1]) >=0)
-                {
-                    dialog.userInput.types.greetingcategorylist=context.session.greetingcategory[i];
+            for (var i = 0; i < context.session.greetingcategory.length; i++) {
+                if (context.session.greetingcategory[i].indexOf(text[1]) >= 0) {
+                    dialog.userInput.types.greetingcategorylist = context.session.greetingcategory[i];
                     return callback(true, context.session.greetingcategory[i]);
                 }
             }
@@ -915,10 +893,9 @@ module.exports = function (bot)
     });
 
 
-
     bot.setTask('savesendname', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text  !== "다시 입력" && dialog.userInput.text  !== "다시 확인" && dialog.userInput.text  !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0 && dialog.userInput.text  !== "아니요") {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0 && dialog.userInput.text !== "아니요") {
                 if (dialog.userInput.text.indexOf("익명") >= 0) {
                     context.session.sendname = "익명";
                 }
@@ -958,7 +935,7 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('showgreeting',{
+    bot.setTask('showgreeting', {
         action: function (dialog, context, callback) {
             context.session.greeting = [];
             // if (dialog.userInput.greetingcategorylist !== undefined) {
@@ -1064,12 +1041,11 @@ module.exports = function (bot)
         }
     });
 
-    bot.setType('greetingitemlist',{
-        typeCheck: function (dialog, context, callback)
-        {
+    bot.setType('greetingitemlist', {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split('.');
-            if(text[1]!==undefined) {
-                text[1]=text[1].trim();
+            if (text[1] !== undefined) {
+                text[1] = text[1].trim();
                 for (var i = 0; i < context.session.greeting.length; i++) {
                     var namecode = context.session.greeting[i];
                     if (namecode.indexOf(text[1]) !== -1) {
@@ -1078,7 +1054,7 @@ module.exports = function (bot)
                     }
                 }
             }
-            else{
+            else {
                 callback(false);
             }
         }
@@ -1106,9 +1082,9 @@ module.exports = function (bot)
     // });
 
 
-    bot.setTask('savegreeting',{
+    bot.setTask('savegreeting', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 if (context.session.selectchange !== 1) {
                     if (context.session.greetingitemlist !== undefined) {
                         context.session.selectedgreeting = context.session.greetingitemlist;
@@ -1116,7 +1092,7 @@ module.exports = function (bot)
                     else {
                         context.session.selectedgreeting = dialog.userInput.text;
                     }
-                    dialog.output[0].text= "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^";
+                    dialog.output[0].text = "기타 요청사항이 있으시면 입력해주세요.\n\n요청사항이 없으시면, 없다고 해주시면 됩니다^^";
                     callback();
                 }
                 else {
@@ -1127,8 +1103,8 @@ module.exports = function (bot)
                         context.session.selectedgreeting = dialog.userInput.text;
                     }
 
-                    dialog.output[0].text= "변경 되었습니다.";
-                    dialog.output[0].buttons=[
+                    dialog.output[0].text = "변경 되었습니다.";
+                    dialog.output[0].buttons = [
                         {
                             text: '주문서 확인하기',
                             url: ""
@@ -1153,7 +1129,6 @@ module.exports = function (bot)
     });
 
 
-
     // bot.setTask('savepayway', {
     //     action: function (dialog, context, callback) {
     //         if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
@@ -1173,7 +1148,6 @@ module.exports = function (bot)
     //         }
     //     }
     // });
-
 
 
     bot.setTask('collectorderinfor', {
@@ -1242,7 +1216,7 @@ module.exports = function (bot)
             price = Number(price);
             number = Number(number);
             context.session.orderinfor.allprice = price * number;
-            context.session.orderinfor.allprice=String(context.session.orderinfor.allprice);
+            context.session.orderinfor.allprice = String(context.session.orderinfor.allprice);
             context.session.orderinfor.otherrequire = context.session.otherrequire;
 
             dialog.output[0].image = {url: context.session.orderinfor.itemimage};
@@ -1264,8 +1238,7 @@ module.exports = function (bot)
     });
 
 
-
-    bot.setTask('addorder',{
+    bot.setTask('addorder', {
         action: function (dialog, context, callback) {
             var neworder = {
                 time: context.session.orderinfor.time,
@@ -1294,23 +1267,21 @@ module.exports = function (bot)
                 status: "주문 대기중",
                 botId: bot.id
             };
-            var modelname="flower_moneybrain_reservation";
+            var modelname = "flower_moneybrain_reservation";
             var options = {};
 
 
-            options.url = 'http://template-dev.moneybrain.ai:8443/api/'+modelname;
+            options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
             options.json = neworder;
 
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
+            request.post(options, function (err, response, body) {
+                if (err) {
                     console.log(err);
                 }
                 else {
-                    console.log("response.statusCode="+response.statusCode);
+                    console.log("response.statusCode=" + response.statusCode);
 
-                    dialog.output[0].buttons=[
+                    dialog.output[0].buttons = [
                         {
                             text: '결제하기',
                             url: context.session.selecteditem.pay
@@ -1355,7 +1326,7 @@ module.exports = function (bot)
                     context.session.selectchange = undefined;
                     //다른 요구사항
                     context.session.otherrequire = undefined;
-                    context.session.olduser=undefined;
+                    context.session.olduser = undefined;
                     context.session.findorder = undefined;
                     //매세지:
 
@@ -1424,7 +1395,7 @@ module.exports = function (bot)
                                 // }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: ['ellie@moneybrain.ai','zsslovelyg@moneybrain.ai','jipark@moneybrain.ai'], // list of receivers
+                                    to: ['ellie@moneybrain.ai', 'zsslovelyg@moneybrain.ai', 'jipark@moneybrain.ai'], // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +
@@ -1432,7 +1403,7 @@ module.exports = function (bot)
                                     '<br>' + '<b>배달주소: </b>' + context.session.orderinfor.receiveraddress + '<br>' + '<b>배달일자: </b>' + context.session.orderinfor.deliverytime +
                                     '<br>' + '<b>남기시는 메세지: </b>' + context.session.orderinfor.greeting + '<br>' + '<b>상품: </b>' + context.session.orderinfor.itemname + '<br>' + '<b>수량: </b>' + context.session.orderinfor.itemnumber + '<b>개</b>' + '<br>' + '<b>총: </b>' + context.session.orderinfor.allprice + '<b>원</b>' +
                                     '<br>' + '<b>신부신랑: </b>' + context.session.orderinfor.brideornot + '<br>' + '<b>신부신랑 전시 시간: </b>' + context.session.orderinfor.showtime + '<br>' + '<b>다른 요구사항: </b>' + context.session.orderinfor.otherrequire + '<br>' +
-                                    '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway + '<br>' +  '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
+                                    '<br>' + '<b>카드/리본: </b>' + context.session.orderinfor.decorateway + '<br>' + '<b>결제하러 가기: </b>' + context.session.orderinfor.itempay// html body
                                 };
 
                                 transporter.sendMail(mailOptions, function (error, info) {
@@ -1461,7 +1432,7 @@ module.exports = function (bot)
 
 
                                 //================================================================================
-                                                               // var options = {};
+                                // var options = {};
                                 // options.url = "http://api.payapp.kr/oapi/apiLoad.html";
                                 // options.form = {
                                 //     cmd         : "payrequest",           // 결제요청, 필수
@@ -1637,8 +1608,7 @@ module.exports = function (bot)
     });
 
 
-
-    bot.setTask('nobride',{
+    bot.setTask('nobride', {
         action: function (dialog, context, callback) {
             if (context.session.showtime === undefined) {
                 context.session.brideornot = "없음";
@@ -1693,7 +1663,7 @@ module.exports = function (bot)
 
     bot.setTask('deletegreeting', {
         action: function (dialog, context, callback) {
-            context.session.greetingitemlist=undefined;
+            context.session.greetingitemlist = undefined;
             // dialog.output[0].buttons = [
             //     {
             //         text: '참고문구',
@@ -1711,10 +1681,9 @@ module.exports = function (bot)
     });
 
 
-
-    bot.setTask('saveitemnumber',{
+    bot.setTask('saveitemnumber', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 context.session.itemnumber = dialog.userInput.text;
                 callback();
             }
@@ -1725,9 +1694,9 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('saveotherrequire',{
+    bot.setTask('saveotherrequire', {
         action: function (dialog, context, callback) {
-            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전")<0) {
+            if (dialog.userInput.text !== "다시 입력" && dialog.userInput.text !== "다시 확인" && dialog.userInput.text !== "다시 선택" && dialog.userInput.text.indexOf("이전") < 0) {
                 context.session.otherrequire = dialog.userInput.text;
                 callback();
             }
@@ -1738,8 +1707,7 @@ module.exports = function (bot)
     });
 
 
-
-    bot.setTask('showorder',{
+    bot.setTask('showorder', {
         action: function (dialog, context, callback) {
             var modelname = "flower_moneybrain_reservation";
             var options = {};
@@ -1776,18 +1744,15 @@ module.exports = function (bot)
     });
 
     bot.setType("orderlist", {
-        typeCheck: function (dialog, context, callback)
-        {
+        typeCheck: function (dialog, context, callback) {
             var text = dialog.userInput.text.split(".");
-            if(text[1]!==undefined){
-                text[1]=text[1].trim();
+            if (text[1] !== undefined) {
+                text[1] = text[1].trim();
 
-                for(var i=0; i<context.session.orderlist.length; i++)
-                {
-                    var orderitem=context.session.orderlist[i].itemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
-                    if(orderitem.indexOf(text[1]) !== -1)
-                    {
-                        dialog.userInput.types.orderlist=context.session.orderlist[i];
+                for (var i = 0; i < context.session.orderlist.length; i++) {
+                    var orderitem = context.session.orderlist[i].itemname + " " + context.session.orderlist[i].deliverytime + " " + context.session.orderlist[i].receivername;
+                    if (orderitem.indexOf(text[1]) !== -1) {
+                        dialog.userInput.types.orderlist = context.session.orderlist[i];
                         return callback(true);
                     }
                 }
@@ -1797,7 +1762,7 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('showorder1',{
+    bot.setTask('showorder1', {
         action: function (dialog, context, callback) {
             dialog.output[0].image = {url: dialog.userInput.types.orderlist.itemimage};
             dialog.output[0].buttons = [
@@ -1820,7 +1785,7 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('recordorder',{
+    bot.setTask('recordorder', {
         action: function (dialog, context, callback) {
             context.session.selectchange = undefined;
             context.session.sendname = undefined;
@@ -1853,8 +1818,8 @@ module.exports = function (bot)
             //변경:
             //다른 요구사항
             context.session.otherrequire = undefined;
-            context.session.olduser=undefined;
-            context.session.greetingitemlist=undefined;
+            context.session.olduser = undefined;
+            context.session.greetingitemlist = undefined;
 
             context.session.findorder = 1;
             callback();
@@ -1908,7 +1873,7 @@ module.exports = function (bot)
     });
 
 
-    bot.setTask('addbuttons',{
+    bot.setTask('addbuttons', {
         action: function (dialog, context, callback) {
             dialog.output[0].buttons = [
                 {
@@ -1929,13 +1894,17 @@ module.exports = function (bot)
                 dialog.output[0].image = {url: 'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg'};
                 dialog.output[0].buttons = [
                     {
-                        text: '1.상품 주문하기',
+                        text: 'ღ발렌타인데이 꽃 배달ღ',
                         url: ''
                     },
                     {
-                        text: '2.내 주문내역 확인하기',
+                        text: '꽃 카테고리 보기',
                         url: ''
                     }
+                    // {
+                    //     text: '2.내 주문내역 확인하기',
+                    //     url: ''
+                    // }
                 ];
 
                 console.log('으 다이얼로그 : ', dialog);
@@ -2019,11 +1988,11 @@ module.exports = function (bot)
             //변경:
             //다른 요구사항
             context.session.otherrequire = undefined;
-            context.session.olduser=undefined;
-            context.session.greetingitemlist=undefined;
+            context.session.olduser = undefined;
+            context.session.greetingitemlist = undefined;
             context.session.findorder = undefined;
-            context.session.selectchange=undefined;
-            context.user.time=undefined;
+            context.session.selectchange = undefined;
+            context.user.time = undefined;
             var modelname = "flower_moneybrain_category";
             var options = {};
             options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
@@ -2052,7 +2021,7 @@ module.exports = function (bot)
             var text = dialog.userInput.text;
 
             for (var i = 0; i < context.session.allname.length; i++) {
-                if (text.indexOf(context.session.allname[i]) >=0) {
+                if (text.indexOf(context.session.allname[i]) >= 0) {
                     return callback(true, context.session.allname[i]);
                 }
             }
@@ -2231,7 +2200,7 @@ module.exports = function (bot)
         return matched
     }
 
-    bot.setTask('addbuttons1',{
+    bot.setTask('addbuttons1', {
         action: function (dialog, context, callback) {
             dialog.output[0].buttons = [
                 {
@@ -2247,13 +2216,13 @@ module.exports = function (bot)
         }
     });
 
-    bot.setType('dateAndtime',{
+    bot.setType('dateAndtime', {
         typeCheck: function (dialog, context, callback) {
             var matched = false;
             // 判断年、月、日的取值范围是否正确
             // 先判断格式上是否正确
-            var text=dialog.userInput.text;
-            var type=dialog.userInput.type;
+            var text = dialog.userInput.text;
+            var type = dialog.userInput.type;
             var regDate = /^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})/;
             if (!regDate.test(text)) {
                 matched = false;
@@ -2273,8 +2242,8 @@ module.exports = function (bot)
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
-                        if(context.user.time===undefined){
-                            context.user.time=' ';
+                        if (context.user.time === undefined) {
+                            context.user.time = ' ';
                         }
                         context.session.showtime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
@@ -2286,8 +2255,8 @@ module.exports = function (bot)
                     else {
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
-                            if(context.user.time===undefined){
-                                context.user.time=' ';
+                            if (context.user.time === undefined) {
+                                context.user.time = ' ';
                             }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2299,8 +2268,8 @@ module.exports = function (bot)
                         else {
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
-                            if(context.user.time===undefined){
-                                ccontext.user.time=' ';
+                            if (context.user.time === undefined) {
+                                ccontext.user.time = ' ';
                             }
                             context.session.showtime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2320,11 +2289,11 @@ module.exports = function (bot)
     });
 
 
-    bot.setType('dateAndtime1',{
+    bot.setType('dateAndtime1', {
         typeCheck: function (dialog, context, callback) {
             var matched = false;
-            var text=dialog.userInput.text;
-            var type=dialog.userInput.type;
+            var text = dialog.userInput.text;
+            var type = dialog.userInput.type;
             // 判断年、月、日的取值范围是否正确
             // 先判断格式上是否正确
             var regDate = /^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})/;
@@ -2346,8 +2315,8 @@ module.exports = function (bot)
                     if (textt[1] === undefined) {
                         var textt3 = strr.substring(8);
                         timeTypeCheck1(textt3, type, dialog, context, callback);
-                        if(context.user.time===undefined){
-                            context.user.time=' ';
+                        if (context.user.time === undefined) {
+                            context.user.time = ' ';
                         }
                         context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                         if (context.user.time == 're') {
@@ -2359,8 +2328,8 @@ module.exports = function (bot)
                     else {
                         if (textt[2] === undefined) {
                             timeTypeCheck1(textt[1], type, dialog, context, callback);
-                            if(context.user.time===undefined){
-                                context.user.time=' ';
+                            if (context.user.time === undefined) {
+                                context.user.time = ' ';
                             }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2372,8 +2341,8 @@ module.exports = function (bot)
                         else {
                             var textt2 = textt[1] + textt[2];
                             timeTypeCheck1(textt2, type, dialog, context, callback);
-                            if(context.user.time===undefined){
-                                context.user.time=' ';
+                            if (context.user.time === undefined) {
+                                context.user.time = ' ';
                             }
                             context.session.deliverytime = context.session.dateonly + " " + context.user.time;
                             if (context.user.time == 're') {
@@ -2401,4 +2370,103 @@ module.exports = function (bot)
     //             callback();
     //         }
     //     });
+
+    bot.setTask('valentine',
+        {
+            action: function (dialog, context, callback) {
+                var modelname = 'flower_moneybrain_category';
+                var options = {};
+                options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+                options.qs = {
+                    valentine:"true"
+                };
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log('err:' + err);
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        context.session.valentine=body;
+                        console.log(response.statusCode);
+                        dialog.output[0].buttons = [];
+                        for (var i = 0; i < body.length; i++) {
+                            var ss = "" + (i + 1) + ". " + body[i].name;
+                            dialog.output[0].buttons.push({text: ss});
+                        }
+                        dialog.output[0].buttons.push({text: "이전으로 가기"},
+                            {
+                                text: "처음으로 돌아가기"
+                            });
+                        callback();
+                    }
+                });
+            }
+        });
+
+bot.setType('valentineitemlist', {
+    typeCheck: function (dialog, context, callback) {
+        var text = dialog.userInput.text.split(".");
+        if (text[1] !== undefined) {
+            text[1] = text[1].trim();
+            for (var i = 0; i < context.session.valentine.length; i++) {
+                var namecode = context.session.valentine[i].name;
+
+                if (namecode.indexOf(text[1]) !== -1) {
+                    dialog.userInput.types.valentineitemlist = context.session.valentine[i];
+                    return callback(true);
+                }
+            }
+        }
+        callback(false);
+    }
+});
+
+bot.setTask('showvalentineitem', {
+    action: function (dialog, context, callback) {
+        var modelname = "flower_moneybrain_category";
+        var options = {};
+        options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+        options.qs = {
+            _id: dialog.userInput.types.valentineitemlist._id
+        };
+        request.get(options, function (err, response, body) {
+            if (err) {
+                console.log('err:' + err);
+            }
+            else {
+                body = JSON.parse(body);
+                console.log(response.statusCode);
+
+                context.session.item = body;
+                var outputcount = 0;
+
+                context.session.selecteditem = {};
+                context.session.selecteditem = context.session.item[0];
+
+                context.session.selecteditem.sale_price = context.session.item[0].sale_price;
+
+                if (context.session.item[0].picture !== undefined) {
+                    dialog.output[outputcount].image = {url: context.session.item[0].picture};
+                    dialog.output[outputcount].buttons = [
+                        {
+                            text: '주문하기',
+                            url: context.session.item[0].inforpay
+                        },
+                        {
+                            text: '이전으로 가기',
+                            url: ""
+                        },
+                        {
+                            text: '처음으로 돌아가기',
+                            url: ""
+                        }
+                    ];
+                }
+                callback();
+            }
+        });
+    }
+});
 };
+
+
