@@ -120,6 +120,27 @@
             this.closeMenu();
         };
 
+        Menu.prototype.duplicatecard = function()
+        {
+            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+
+            var clone = JSON.parse(JSON.stringify(dialog));
+
+            changeCloneInfo(clone);
+
+            delete clone.children;
+
+            var index = parentDialog.children.indexOf(dialog);
+            instance.addChildDialog(parentDialog, clone, index + 1);
+
+            instance.refresh();
+            instance.setDirty(true);
+            instance.focusById(clone.id);
+
+            this.closeMenu();
+        };
+
         Menu.prototype.delete = function()
         {
             instance.deleteDialog(this.currentDialog, false);
