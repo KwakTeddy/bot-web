@@ -25,10 +25,6 @@ var dialogs = [
             {
                 "kind": "Content",
                 "text": "#context.session.introduction#+description+\n\n+phone+\n#",
-                "image": {
-                    "url": "/files/dermatology_moneybrain-1518594382801-소개.png",
-                    "displayname": "소개.png"
-                },
                 "buttons": [
                     {
                         "url": "",

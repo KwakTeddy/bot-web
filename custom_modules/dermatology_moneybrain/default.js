@@ -35,6 +35,9 @@ module.exports = function(bot)
                         console.log(response.statusCode);
 
                         context.session.introduction=body;
+                        if(body[0].image!=="" || body[0].image!==undefined) {
+                            dialog.output[0].image = {url:body[0].image}
+                        }
                         callback();
                     }
                 });
