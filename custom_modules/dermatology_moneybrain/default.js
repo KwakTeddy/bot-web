@@ -36,6 +36,14 @@ module.exports = function(bot) {
                         if (body[0].image !== "" || body[0].image !== undefined) {
                             dialog.output[0].image = {url: body[0].image}
                         }
+                        dialog.output[0].buttons = [
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            }
+                        ];
                         callback();
                     }
                 });
@@ -78,6 +86,12 @@ module.exports = function(bot) {
                             {
                                 text: "지도보기",
                                 url: body[0].map
+                            },
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
                             }
                         ];
                         callback();
@@ -106,6 +120,12 @@ module.exports = function(bot) {
                     {
                         text: "지도보기",
                         url: context.session.transportation[0].map
+                    },
+                    {
+                        text: "이전으로 가기"
+                    },
+                    {
+                        text: "처음으로 돌아가기"
                     }
                 ];
                 callback();
@@ -170,20 +190,27 @@ module.exports = function(bot) {
         }
     });
 
-	bot.setTask('showdean', 
-	{
-		action: function (dialog, context, callback)
-		{
-           context.session.selecteddean=[];
-            for (var i = 0; i < context.session.member.length; i++) {
-                if (context.session.member[i].name.indexOf(dialog.userInput.types.deanlist.name) !== -1) {
-                    context.session.selecteddean.push(context.session.member[i]);
+	bot.setTask('showdean',
+        {
+            action: function (dialog, context, callback) {
+                context.session.selecteddean = [];
+                for (var i = 0; i < context.session.member.length; i++) {
+                    if (context.session.member[i].name.indexOf(dialog.userInput.types.deanlist.name) !== -1) {
+                        context.session.selecteddean.push(context.session.member[i]);
+                    }
                 }
+                if (context.session.selecteddean[0].image !== undefined || context.session.selecteddean[0].image !== "") {
+                    dialog.output[0].image = {url: context.session.selecteddean[0].image}
+                }
+                dialog.output[0].buttons = [
+                    {
+                        text: "이전으로 가기"
+                    },
+                    {
+                        text: "처음으로 돌아가기"
+                    }
+                ];
+                callback();
             }
-            if( context.session.selecteddean[0].image!==undefined ||  context.session.selecteddean[0].image!==""){
-                dialog.output[0].image = {url: context.session.selecteddean[0].image}
-            }
-			callback();
-		}
-	});
+        });
 };

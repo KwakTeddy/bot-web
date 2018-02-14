@@ -24,13 +24,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "#context.session.introduction#+description+\n\n+phone+\n#",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "처음으로 돌아가기"
-                    }
-                ]
+                "text": "#context.session.introduction#+description+\n\n+phone+\n#"
             }
         ],
         "id": "default0",
