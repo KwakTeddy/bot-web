@@ -1,5 +1,6 @@
 var request = require('request');
 var async = require('async');
+var path = require('path');
 
 module.exports = function(bot)
 {
@@ -1656,35 +1657,30 @@ module.exports = function(bot)
 		action: function (dialog, context, callback)
 		{
             var VKONT = context.session.curCustomer.VKONT;
-
-            var crypto    = require('crypto');
-            var text      = VKONT;
             var secret    = '2003'; //make this your secret!!
-            var algorithm = 'sha256';   //consider using sha256
-            var hash, hmac;
 
-            // Method 1 - Writing to a stream
-            hmac = crypto.createHmac(algorithm, secret);
-            hmac.update(text);
-            hash = hmac.digest('hex');
-            var base64 = new Buffer(hash).toString('base64');
-            console.log("Method 2: ", hash);
+            var exec = require('child_process').exec;
+            var compileit = 'java -jar ' + path.resolve('./external_modules/sam_encode.jar') + ' ' + VKONT + ' ' + secret;
 
-            var url = 'https://billgates-web.kakao.com/selfMeter/tms/2003?billerUserKey=' + VKONT + '&hashcode=' + base64+ '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
-            dialog.output[0].text = '자세히 보기를 클릭해주세요.';
-            dialog.output[0].buttons = [
-                {
-                    text: '자세히 보기',
-                    url: url
-                },
-                {
-                    text: '이전'
-                },
-                {
-                    text: '처음'
-                }
-            ];
-		    callback();
+            exec(compileit, function(error, stdout, stderr)
+            {
+                var hash = stdout.trim();
+                var url = 'https://billgates-web.kakao.com/r/selfMeter/tms/2003?billerUserKey=' + VKONT + '&hashCode=' + hash + '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
+                dialog.output[0].text = '자세히 보기를 클릭해주세요.';
+                dialog.output[0].buttons = [
+                    {
+                        text: '자세히 보기',
+                        url: url
+                    },
+                    {
+                        text: '이전'
+                    },
+                    {
+                        text: '처음'
+                    }
+                ];
+                callback();
+            });
 		}
 	});
 };
