@@ -184,22 +184,28 @@ module.exports = function (bot) {
                             dialog.output[outputcount].image = {url: context.session.item[0].picture};
                             dialog.output[outputcount].buttons = [
                                 {
-                                    text: '자세히보기',
-                                    url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
-                                },
-                                {
-                                    text: '이 상품으로 주문하기',
-                                    url: ""
-                                },
-                                {
-                                    text: '다른 상품 더보기',
-                                    url: ""
-                                },
-                                {text: "이전으로 가기"},
-                                {
-                                    text: "처음으로 돌아가기"
+                                    text: '주문하기',
+                                    url: context.session.item[0].inforpay
                                 }
                             ];
+                            // dialog.output[outputcount].buttons = [
+                            //     {
+                            //         text: '자세히보기',
+                            //         url: context.session.item[0].picture.startsWith('http') ? context.session.item[0].picture : config.host + context.session.item[0].picture
+                            //     },
+                            //     {
+                            //         text: '이 상품으로 주문하기',
+                            //         url: ""
+                            //     },
+                            //     {
+                            //         text: '다른 상품 더보기',
+                            //         url: ""
+                            //     },
+                            //     {text: "이전으로 가기"},
+                            //     {
+                            //         text: "처음으로 돌아가기"
+                            //     }
+                            // ];
                         }
                     }
                     else {
@@ -1888,13 +1894,13 @@ module.exports = function (bot) {
                         url: ''
                     },
                     {
-                        text: '1.상품 주문하기',
-                        url: ''
-                    },
-                    {
-                        text: '2.내 주문내역 확인하기',
+                        text: '꽃 카테고리 보기',
                         url: ''
                     }
+                    // {
+                    //     text: '2.내 주문내역 확인하기',
+                    //     url: ''
+                    // }
                 ];
 
                 console.log('으 다이얼로그 : ', dialog);
