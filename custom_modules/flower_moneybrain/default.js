@@ -1424,7 +1424,7 @@ module.exports = function (bot)
                                 // }
                                 var mailOptions = {
                                     from: 'moneybrain', // sender address
-                                    to: 'ellie@moneybrain.ai', // list of receivers
+                                    to: ['ellie@moneybrain.ai','zsslovelyg@moneybrain.ai','jipark@moneybrain.ai'], // list of receivers
                                     subject: "***주문소식***", // Subject line
                                     html: '<b>[플레이챗-</b>' + context.session.orderinfor.name + '<b>고객님]</b>' + '<br>' +
                                     '<br>' + '<b>주문일시: </b>' + context.session.orderinfor.time + '<br>' + '<b>주문 고객명: </b>' + context.session.orderinfor.name + '<br>' + '<b>보내시는분 성함:</b>' + context.session.orderinfor.sendername +
@@ -1449,7 +1449,7 @@ module.exports = function (bot)
                                         json: {
                                             // callbackPhone: context.bot.phone,
                                             callbackPhone: "028585683",
-                                            phone: "01020865439",
+                                            phone: ["01020865439"],
                                             message: message
                                         }
                                     },
@@ -2226,7 +2226,7 @@ module.exports = function (bot)
             else {
                 matched = true;
             }
-            console.log("context.user.time======999999999=="+context.user.time);
+            // console.log("context.user.time======999999999=="+context.user.time);
         });
         return matched
     }
