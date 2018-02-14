@@ -169,11 +169,7 @@ module.exports = function (bot) {
                     console.log(response.statusCode);
 
                     context.session.item = body;
-                    var outputcount = 1;
-                    if (context.session.item[0].category === "탁상용,꽃다발등 기획상품") {
-                        outputcount = 0;
-                    }
-
+                    var outputcount = 0;
 
                     context.session.selecteditem = {};
                     context.session.selecteditem = context.session.item[0];
