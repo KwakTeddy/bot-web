@@ -2397,6 +2397,10 @@ module.exports = function (bot) {
                             var ss = "" + (i + 1) + ". " + body[i].name;
                             dialog.output[0].buttons.push({text: ss});
                         }
+                        dialog.output[0].buttons.push({text: "이전으로 가기"},
+                            {
+                                text: "처음으로 돌아가기"
+                            });
                         callback();
                     }
                 });
