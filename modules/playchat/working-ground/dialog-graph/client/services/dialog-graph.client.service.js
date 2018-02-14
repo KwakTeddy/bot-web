@@ -122,8 +122,13 @@
 
         Menu.prototype.delete = function()
         {
-            instance.deleteDialog(this.currentDialog);
+            instance.deleteDialog(this.currentDialog, false);
+            this.closeMenu();
+        };
 
+        Menu.prototype.deletecard = function()
+        {
+            instance.deleteDialog(this.currentDialog, true);
             this.closeMenu();
         };
 
@@ -408,7 +413,7 @@
             this.deleteDialog(angular.element('#' + this.focusedDialog));
         };
 
-        DialogGraph.prototype.deleteDialog = function(target)
+        DialogGraph.prototype.deleteDialog = function(target, withChildren)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
             var dialog = target.get(0).children[0].dialog;
@@ -431,8 +436,17 @@
             }
 
             var index = parentDialog.children.indexOf(dialog);
-
             parentDialog.children.splice(index, 1);
+
+            if(withChildren && dialog.children.length > 0)
+            {
+                for(var i=0; i<dialog.children.length; i++)
+                {
+                    parentDialog.children.splice(index, 0, dialog.children[i]);
+                }
+
+                afterFocusId = dialog.children[0].id;
+            }
 
             instance.focusedDialog = null;
             instance.refresh();
