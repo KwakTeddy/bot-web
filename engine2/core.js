@@ -110,6 +110,7 @@ var Transaction = require('./utils/transaction.js');
                         context.globals = globals;
                         context.user.userKey = userKey;
                         context.bot = bot;
+                        context.channel.name = channel;
 
                         if(inputRaw.startsWith(':'))
                         {
