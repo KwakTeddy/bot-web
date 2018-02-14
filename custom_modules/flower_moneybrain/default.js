@@ -186,7 +186,15 @@ module.exports = function (bot) {
                                 {
                                     text: '주문하기',
                                     url: context.session.item[0].inforpay
-                                }
+                                },
+                                    {
+                                        text: '이전으로 가기',
+                                        url: ""
+                                    },
+                                    {
+                                        text: '처음으로 돌아가기',
+                                        url: ""
+                                    }
                             ];
                             // dialog.output[outputcount].buttons = [
                             //     {
@@ -2443,6 +2451,14 @@ bot.setTask('showvalentineitem', {
                         {
                             text: '주문하기',
                             url: context.session.item[0].inforpay
+                        },
+                        {
+                            text: '이전으로 가기',
+                            url: ""
+                        },
+                        {
+                            text: '처음으로 돌아가기',
+                            url: ""
                         }
                     ];
                 }
