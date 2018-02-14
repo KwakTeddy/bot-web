@@ -7,7 +7,7 @@ module.exports = function(options)
     };
     options.kakao={
         keyboard: {
-            type:"buttons",buttons:["대화 시작","발렌타인데이"]
+            type:"buttons",buttons:["대화 시작"]
         }
     };
 };

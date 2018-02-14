@@ -1,5 +1,48 @@
 var dialogs = [
     {
+        "name": "발렌타인데이 꽃 배달 추천상품",
+        "input": [
+            {
+                "text": {
+                    "raw": "발렌타인데이",
+                    "nlp": "발렌타인데이"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "발렌타인데이 추천상품입니다.\n\n선택하시면 사진과 함께 세부사항을 보여드릴께요.^^"
+            }
+        ],
+        "id": "default14",
+        "task": {
+            "name": "valentine"
+        },
+        "children": [
+            {
+                "name": "발렌타인데이 꽃 배달 추천상품 상세",
+                "input": [
+                    {
+                        "types": [
+                            "valentineitemlist"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "#context.session.item#[+name+]\n\n가격: +price+원\n#"
+                    }
+                ],
+                "task": {
+                    "name": "showvalentineitem"
+                },
+                "id": "default18"
+            }
+        ]
+    },
+    {
         "name": "1.카테고리 대",
         "input": [
             {
