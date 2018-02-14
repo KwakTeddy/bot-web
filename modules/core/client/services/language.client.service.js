@@ -697,6 +697,12 @@
                 "jp": "コピー",
                 "zh": "复制"
             },
+            "Duplicate only this card": {
+                "ko": "이 카드만 복제하기",
+                "en": "Duplicate only this card",
+                "jp": "このカードのみを複製する",
+                "zh": "仅复制此卡"
+            },
             "Delete": {
                 "ko": "삭제하기",
                 "en": "Delete",
