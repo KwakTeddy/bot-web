@@ -174,19 +174,56 @@ module.exports = function(bot) {
 
     bot.setType("deanlist", {
         typeCheck: function (dialog, context, callback) {
-            var text = dialog.userInput.text.split(".");
-            if (text[1] !== undefined) {
-                text[1] = text[1].trim();
-                var text1 = text[1].split(" ");
+            var modelname = 'dermatology_moneybrain_member';
+            var options = {};
+            options.url = SERVER_HOST + '/api/' + modelname;
+            options.qs = {
+                company: "포에버성형외과"
+            };
 
-                for (var i = 0; i < context.session.member.length; i++) {
-                    if (context.session.member[i].name.indexOf(text1[0]) !== -1) {
-                        dialog.userInput.types.deanlist = context.session.member[i];
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                    callback();
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+                    context.session.member = body;
+
+                    context.session.membername = [];
+                    for (var ll = 0; ll < context.session.member.length; ll++) {
+                        context.session.membername.push(context.session.member[ll].name);
+                    }
+                    var text = dialog.userInput.text.split(".");
+                    if (text[1] !== undefined) {
+                        text[1] = text[1].trim();
+                        var text1 = text[1].split(" ");
+
+                        for (var i = 0; i < context.session.member.length; i++) {
+                            if (context.session.member[i].name.indexOf(text1[0]) !== -1) {
+                                dialog.userInput.types.deanlist = context.session.member[i];
+                                return callback(true);
+                            }
+                        }
+                    }
+                    else if (!isNaN(dialog.userInput.text)) {
+                        for (var j = 0; j < context.session.member.length; j++) {
+                            var ss = j + 1;
+                            if (ss == dialog.userInput.text) {
+                                dialog.userInput.types.deanlist = context.session.member[j];
+                                return callback(true);
+                            }
+                        }
+                    }
+                    else if (context.session.membername.indexOf(dialog.userInput.text) !== -1) {
+                        var mm = context.session.membername.indexOf(dialog.userInput.text);
+                        dialog.userInput.types.deanlist = context.session.member[mm];
                         return callback(true);
                     }
+                    callback(false);
                 }
-            }
-            callback(false);
+            });
         }
     });
 

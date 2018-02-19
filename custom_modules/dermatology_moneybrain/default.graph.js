@@ -139,7 +139,7 @@ var dialogs = [
         ]
     },
     {
-        "name": "4.자연어 처리",
+        "name": "4.교통편 자연어 처리",
         "input": [
             {
                 "text": {
@@ -171,6 +171,26 @@ var dialogs = [
             "name": "nlp_transportation"
         },
         "id": "default5"
+    },
+    {
+        "name": "5.의료진 자연어 처리",
+        "input": [
+            {
+                "types": [
+                    "deanlist"
+                ]
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "#context.session.selecteddean#+name+ 원장\n\n파트: +department+\n\n소개:\n +description+\n#"
+            }
+        ],
+        "id": "default6",
+        "task": {
+            "name": "showdean"
+        }
     }
 ];
 
