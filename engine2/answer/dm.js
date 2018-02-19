@@ -193,6 +193,10 @@ var ActionManager = require('./action.js');
                     var regexp = new RegExp(input.regexp, 'gi');
                     if(regexp.test(rawText))
                     {
+                        var match = rawText.match(regexp);
+
+                        userInput.regexp = match;
+
                         result = result && true;
                     }
                     else
