@@ -228,7 +228,7 @@ var Logger = require('./logger.js');
                     }
 
                     var dialog = bot.dialogMap['noanswer'];
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, dialog.output[0].text, dialog.id, dialog.name, currentDialog.id, currentDialog.name, true, 'dialog');
+                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, (typeof dialog.output == 'string' ? dialog.output : dialog.output[0].text), dialog.id, dialog.name, currentDialog.id, currentDialog.name, true, 'dialog');
                     callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
                 }
             });
