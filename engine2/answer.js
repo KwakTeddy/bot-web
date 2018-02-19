@@ -154,7 +154,7 @@ var Logger = require('./logger.js');
 
                         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
 
-                        return callback({ type: 'qa', text: text });
+                        return callback({ type: 'qa', output: { text: text }});
                     }
                 }
 
@@ -214,7 +214,7 @@ var Logger = require('./logger.js');
 
                     Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
 
-                    callback({ type: 'qa', text: text });
+                    callback({ type: 'qa', output: { text: text }});
                 }
                 else
                 {

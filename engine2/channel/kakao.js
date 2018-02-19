@@ -49,7 +49,7 @@ exports.message = function (req, res)
 exports.friend = function (req, res)
 {
     console.log("kakao friend");
-    res.end();
+    res.end();O
 };
 
 exports.deleteFriend = function (req, res)
