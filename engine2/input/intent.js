@@ -11,7 +11,13 @@ var IntentContent = mongoose.model('IntentContent');
 
     IntentManager.prototype.analysis = function(bot, nlp, callback)
     {
-        IntentContent.find({ intentId: { $in: bot.intents } }).populate('intentId').limit(this.limit).lean().exec(function(err, list)
+        var idList = [];
+        for(var i=0; i<bot.intents.length; i++)
+        {
+            idList.push(bot.intents[i]._id);
+        }
+
+        IntentContent.find({ intentId: { $in: idList } }).populate('intentId').limit(this.limit).lean().exec(function(err, list)
         {
             if(err)
             {

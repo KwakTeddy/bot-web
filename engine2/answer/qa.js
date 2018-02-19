@@ -93,7 +93,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     else
                     {
                         var maxPoint = -1;
-                        var targetInput = undefined;
 
                         for(var k=0; k<matchedList[i].input.length; k++) // 멀티 input인경우
                         {
@@ -125,8 +124,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         }
 
                         matchedList[i].matchRate = point;
-
-                        console.log('인풋 : ', matchedList[i].input, point);
 
                         matchedList[i].added = 0;
                         if(context.session.currentCategory && matchedList[i].category)
