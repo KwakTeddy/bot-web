@@ -188,6 +188,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
+                console.log(data);
                 if(data.type == 'dialog')
                 {
                     if(data.dialogId)
@@ -195,6 +196,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                         $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
                     }
 
+                    addBotBubble(data.output);
+                    $rootScope.$broadcast('onmsg', { message: data.output });
+                }
+                else if(data.type == 'qa')
+                {
                     addBotBubble(data.output);
                     $rootScope.$broadcast('onmsg', { message: data.output });
                 }

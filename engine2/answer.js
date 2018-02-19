@@ -133,7 +133,7 @@ var Logger = require('./logger.js');
 
                 context.session.currentCategory = '';
 
-                if(bot.options.hybrid)
+                if(bot.options.hybrid.use)
                 {
                     var qaMatchedRate = transaction.qa && transaction.qa.matchedDialog ? transaction.qa.matchedDialog.matchRate : -1;
                     var dmMatchedRate = transaction.dm && transaction.dm.matchedDialog ? transaction.dm.matchedDialog.matchRate : -1;
@@ -198,7 +198,7 @@ var Logger = require('./logger.js');
                         }
                     });
                 }
-                else if(!bot.options.hybrid && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
+                else if(!bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
                     var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
 
