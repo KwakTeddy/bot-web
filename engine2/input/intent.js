@@ -6,7 +6,6 @@ var IntentContent = mongoose.model('IntentContent');
 {
     var IntentManager = function()
     {
-        this.limit = 10;
     };
 
     IntentManager.prototype.analysis = function(bot, nlp, callback)
@@ -17,7 +16,7 @@ var IntentContent = mongoose.model('IntentContent');
             idList.push(bot.intents[i]._id);
         }
 
-        IntentContent.find({ intentId: { $in: idList } }).populate('intentId').limit(this.limit).lean().exec(function(err, list)
+        IntentContent.find({ intentId: { $in: idList } }).populate('intentId').lean().exec(function(err, list)
         {
             if(err)
             {
