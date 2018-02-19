@@ -213,4 +213,56 @@ module.exports = function(bot) {
                 callback();
             }
         });
+
+	bot.setTask('nlp_transportation',
+        {
+            action: function (dialog, context, callback) {
+                var modelname = 'dermatology_moneybrain_transportation';
+                var options = {};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                options.qs = {
+                    company: "포에버성형외과"
+                };
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log('err:' + err);
+                        callback();
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        console.log(response.statusCode);
+
+                        context.session.transportation = body;
+
+                        if (dialog.userInput.text.indexOf("버스") >= 0) {
+                            dialog.output[0].text = context.session.transportation[0].bus + "\n\n" + context.session.transportation[0].notice;
+                        }
+                        else if (dialog.userInput.text.indexOf("지하철") >= 0) {
+                            dialog.output[0].text = context.session.transportation[0].subway + "\n\n" + context.session.transportation[0].notice;
+                        }
+                        else if (dialog.userInput.text.indexOf("자가용") >= 0) {
+                            dialog.output[0].text = context.session.transportation[0].notice;
+                        }
+
+                        if (context.session.transportation[0].image !== "" || context.session.transportation[0].image !== undefined) {
+                            dialog.output[0].image = {url: context.session.transportation[0].image}
+                        }
+                        dialog.output[0].buttons = [
+                            {
+                                text: "지도보기",
+                                url: context.session.transportation[0].map
+                            },
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            }
+                        ];
+                        callback();
+                    }
+                });
+            }
+        });
 };

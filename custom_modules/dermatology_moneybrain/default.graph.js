@@ -137,6 +137,40 @@ var dialogs = [
                 "id": "default4"
             }
         ]
+    },
+    {
+        "name": "4.자연어 처리",
+        "input": [
+            {
+                "text": {
+                    "raw": "버스",
+                    "nlp": "버스"
+                }
+            },
+            {
+                "text": {
+                    "raw": "지하철",
+                    "nlp": "지하철"
+                }
+            },
+            {
+                "text": {
+                    "raw": "자가용",
+                    "nlp": "자가용"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "#context.session.transportation#+bus+\n#",
+                "type": "call"
+            }
+        ],
+        "task": {
+            "name": "nlp_transportation"
+        },
+        "id": "default5"
     }
 ];
 
