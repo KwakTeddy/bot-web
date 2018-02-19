@@ -1269,7 +1269,8 @@ module.exports = function(bot)
                                         test += '부적합개선여부: 미개선\n';
                                     }
 
-                                    test += '부적합시설: ' + item.CHK_ITM_NM + (item.CHK_ITM_BNM ? '->' + item.CHK_ITM_BNM : '') + '\n';
+                                    item.CHK_ITM_BNM = 'asdf';
+                                    test += '부적합 시설: \n- ' + item.CHK_ITM_NM + (item.CHK_ITM_BNM ? '\n→ ' + item.CHK_ITM_BNM : '') + '\n';
                                 }
                             }
                             else
