@@ -152,7 +152,7 @@ var Logger = require('./logger.js');
                         console.log(transaction.qa.matchedDialog);
                         console.log(text);
 
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
 
                         return callback({ type: 'qa', output: { text: text }});
                     }
@@ -212,7 +212,7 @@ var Logger = require('./logger.js');
                     console.log(transaction.qa.matchedDialog);
                     console.log(text);
 
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, '', '', '', '', false, 'qna');
+                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
 
                     callback({ type: 'qa', output: { text: text }});
                 }

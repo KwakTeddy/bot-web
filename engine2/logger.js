@@ -170,6 +170,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
         inQuery.preDialogId = preDialogId;
         inQuery.preDialogName = preDialogName;
         inQuery.nlpDialog = nlpText;
+        inQuery.dialog = inputRaw;
         inQuery.clear = '';
         inQuery.created = new Date();
 
@@ -190,13 +191,10 @@ var UserDialogLog = mongoose.model('UserDialogLog');
 
         if(dialogType == 'qna')
         {
-            inQuery.dialogId = undefined;
-            inQuery.dialogName = undefined;
             inQuery.preDialogId = undefined;
             inQuery.preDialogName = undefined;
-            outQuery.dialogId = undefined;
-            outQuery.dialogName = undefined;
-            outQuery.preDialogName = inputRaw; // 대화학습입력 통계를 위한 데이터
+            outQuery.preDialogId = undefined;
+            outQuery.preDialogName = undefined; // 대화학습입력 통계를 위한 데이터
         }
 
         var logQuery = {
