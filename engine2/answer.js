@@ -194,7 +194,7 @@ var Logger = require('./logger.js');
 
                             var dialog = bot.dialogMap['noanswer'];
                             Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
-                            callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: dialog.output[0] });
+                            callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
                         }
                     });
                 }
@@ -229,7 +229,7 @@ var Logger = require('./logger.js');
 
                     var dialog = bot.dialogMap['noanswer'];
                     Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, dialog.output[0].text, dialog.id, dialog.name, currentDialog.id, currentDialog.name, true, 'dialog');
-                    callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? dialog.output : dialog.output[0]) });
+                    callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
                 }
             });
         }
