@@ -70,6 +70,12 @@ var dialogs = [
                     "raw": "지도",
                     "nlp": "지도"
                 }
+            },
+            {
+                "text": {
+                    "raw": "어디",
+                    "nlp": "어디"
+                }
             }
         ],
         "output": [
