@@ -73,6 +73,7 @@ module.exports = function (bot) {
                             {
                                 text: "처음으로 돌아가기"
                             });
+                        dialog.output[0].image={url: body[0].category대};
 
                         callback();
                     }
@@ -90,6 +91,14 @@ module.exports = function (bot) {
                 for (var i = 0; i < context.session.category.length; i++) {
                     if (context.session.category[i].indexOf(text[1]) !== -1) {
                         return callback(true, context.session.category[i]);
+                    }
+                }
+            }
+            else if(dialog.userInput.text){
+                for (var j = 0; j < context.session.category.length; j++) {
+                    var ss=j+1;
+                    if (ss==dialog.userInput.text) {
+                        return callback(true, context.session.category[j]);
                     }
                 }
             }
@@ -140,9 +149,17 @@ module.exports = function (bot) {
                 text[1] = text[1].trim();
                 for (var i = 0; i < context.session.itemcategory.length; i++) {
                     var namecode = context.session.itemcategory[i].name;
-
                     if (namecode.indexOf(text[1]) !== -1) {
                         dialog.userInput.types.itemlist = context.session.itemcategory[i];
+                        return callback(true);
+                    }
+                }
+            }
+            else if(dialog.userInput.text){
+                for (var j = 0; j <context.session.itemcategory.length; j++) {
+                    var ss=j+1;
+                    if (ss==dialog.userInput.text) {
+                        dialog.userInput.types.itemlist = context.session.itemcategory[j];
                         return callback(true);
                     }
                 }
@@ -2397,6 +2414,7 @@ module.exports = function (bot) {
                             {
                                 text: "처음으로 돌아가기"
                             });
+                        dialog.output[0].image={url:body[0].valentine대};
                         callback();
                     }
                 });
@@ -2413,6 +2431,15 @@ bot.setType('valentineitemlist', {
 
                 if (namecode.indexOf(text[1]) !== -1) {
                     dialog.userInput.types.valentineitemlist = context.session.valentine[i];
+                    return callback(true);
+                }
+            }
+        }
+        else if(dialog.userInput.text){
+            for (var j = 0; j < context.session.valentine.length; j++) {
+                var ss=j+1;
+                if (ss==dialog.userInput.text) {
+                    dialog.userInput.types.valentineitemlist = context.session.valentine[j];
                     return callback(true);
                 }
             }

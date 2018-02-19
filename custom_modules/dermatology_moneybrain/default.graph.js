@@ -24,13 +24,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "#context.session.introduction#+description+\n\n+phone+\n#",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "처음으로 돌아가기"
-                    }
-                ]
+                "text": "#context.session.introduction#+description+\n\n+phone+\n#"
             }
         ],
         "id": "default0",
@@ -57,24 +51,37 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "<병원이름>주소: <주소>\n \n어떤 교통으로 방문하시나요?",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "버스"
-                    },
-                    {
-                        "url": "",
-                        "text": "지하철"
-                    },
-                    {
-                        "url": "",
-                        "text": "자가용"
-                    }
-                ]
+                "text": "#context.session.transportation#+company+\n\n주소: +address+\n#\n \n어떤 교통으로 방문하시나요?"
             }
         ],
-        "id": "default1"
+        "id": "default1",
+        "task": {
+            "name": "transportation"
+        },
+        "children": [
+            {
+                "name": "2.1 버스",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "",
+                            "nlp": ""
+                        },
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "#context.session.transportation#+bus+\n#"
+                    }
+                ],
+                "task": {
+                    "name": "transportationway"
+                },
+                "id": "default3"
+            }
+        ]
     },
     {
         "name": "3.의료진 소개",
@@ -101,10 +108,69 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "의료진을 소개합니다.\n \n(버튼)\n1. 박00 원장\n2."
+                "text": "의료진을 소개합니다."
             }
         ],
-        "id": "default2"
+        "id": "default2",
+        "task": {
+            "name": "dean"
+        },
+        "children": [
+            {
+                "name": "3.의료진 소개 내용",
+                "input": [
+                    {
+                        "types": [
+                            "deanlist"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "#context.session.selecteddean#+name+ 원장\n\n파트: +department+\n\n소개:\n +description+\n#"
+                    }
+                ],
+                "task": {
+                    "name": "showdean"
+                },
+                "id": "default4"
+            }
+        ]
+    },
+    {
+        "name": "4.자연어 처리",
+        "input": [
+            {
+                "text": {
+                    "raw": "버스",
+                    "nlp": "버스"
+                }
+            },
+            {
+                "text": {
+                    "raw": "지하철",
+                    "nlp": "지하철"
+                }
+            },
+            {
+                "text": {
+                    "raw": "자가용",
+                    "nlp": "자가용"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "#context.session.transportation#+bus+\n#",
+                "type": "call"
+            }
+        ],
+        "task": {
+            "name": "nlp_transportation"
+        },
+        "id": "default5"
     }
 ];
 
