@@ -88,7 +88,7 @@ module.exports = function (bot) {
                 text[1] = text[1].trim();
 
                 for (var i = 0; i < context.session.category.length; i++) {
-                    if (context.session.category[i].indexOf(text[1]) !== -1) {
+                    if (context.session.category[i].indexOf(text[1]) !== -1 || (i+1)) {
                         return callback(true, context.session.category[i]);
                     }
                 }

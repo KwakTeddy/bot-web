@@ -67,7 +67,11 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "카테고리별로 추천상품을 안내해드릴께요."
+                "text": "카테고리별로 추천상품을 안내해드릴께요.",
+                "image": {
+                    "url": "/files/flower_moneybrain-1519004238589-category대.jpg",
+                    "displayname": "category대.jpg"
+                }
             }
         ],
         "task": {
