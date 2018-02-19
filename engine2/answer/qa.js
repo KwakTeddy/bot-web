@@ -86,22 +86,32 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             {
                 for(var i=0; i<matchedList.length; i++)
                 {
+                    matchedList[i].added = 0;
+
                     if(matchedList[i].inputRaw == inputRaw)
                     {
                         matchedList[i].matchRate = 1;
                     }
                     else
                     {
-                        var maxPoint = -1;
+                        var maxCount = -1;
+                        var targetInput = undefined;
 
+                        var maxPoint = -1;
                         for(var k=0; k<matchedList[i].input.length; k++) // 멀티 input인경우
                         {
+                            var count = 0;
                             var point = 0;
                             var lastIndex = -1;
 
                             for(var j=0; j<nlp.length; j++)
                             {
                                 var index = matchedList[i].input[k].indexOf(nlp[j].text);
+                                if(index != -1)
+                                {
+                                    count++;
+                                }
+
                                 if(index != -1 && (lastIndex == -1 || lastIndex <= index))
                                 {
                                     point += 100 - (index - lastIndex);
@@ -121,11 +131,17 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             {
                                 maxPoint = point;
                             }
+
+                            if(maxCount == -1 || maxCount < count)
+                            {
+                                maxCount = count;
+                                targetInput = matchedList[i].input[k];
+                            }
                         }
 
-                        matchedList[i].matchRate = point;
+                        matchedList[i].matchRate = maxCount / targetInput.split(' ').length;
 
-                        matchedList[i].added = 0;
+                        matchedList[i].added = point;
                         if(context.session.currentCategory && matchedList[i].category)
                         {
                             var targetCategories = matchedList[i].category.split('@@@');
@@ -140,23 +156,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         }
                     }
                 }
-
-                // var resultList = [];
-                // for(var i=0; i<matchedList.length; i++)
-                // {
-                //     if(matchedList[i].matchRate && matchedList[i].matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
-                //     {
-                //         for(var j=0; j<nlp.length; j++)
-                //         {
-                //             if(nlp[j].pos == 'Noun' && matchedList[i].category.indexOf(nlp[j].text) != -1)
-                //             {
-                //                 matchedList[i].added++;
-                //             }
-                //         }
-                //
-                //         resultList.push(matchedList[i]);
-                //     }
-                // }
 
                 matchedList = matchedList.sort(function(a, b)
                 {
