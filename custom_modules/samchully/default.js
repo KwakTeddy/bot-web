@@ -14,7 +14,7 @@ module.exports = function(bot)
             12: 3
     };
 
-    var bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
+    var bankArr = ['기업은행', '국민은행', '농협', '우리은행', '신한은행', '하나은행'];
 
     var mobileFormatChange = function (mobile) {
         return mobile.replace(/-/g, '');
@@ -682,27 +682,25 @@ module.exports = function(bot)
                     }
                     else if(body.E_RETCD == 'S')
                     {
-                        context.session.nonpaymentHistory = [];
-
                         var data = body.data.ET_TABLE;
                         dialog.output[0].buttons = [];
-                        context.session.nonpaymentHistory = data;
+                        context.session.nonpaymentHistory = [];
 
-                        for(var i = 0; i < bankArr.length; i++)
+                        var bankText = bankArr.join(' ');
+                        for(var i=0; i<data.length; i++)
                         {
-                            var created = false;
-                            for(var j = 0; j < data.length; j++)
+                            if(bankText.indexOf(data[i].BANKA) == -1)
                             {
-
-                                if(data[j].BANKA.indexOf(bankArr[i]) != -1)
-                                {
-                                    created = true;
-                                    break;
-                                }
+                                continue;
                             }
-                            if(!created)
+
+                            if(!data[i].BANKN)
                             {
-                                dialog.output[0].buttons.push({text: data[j].BANKA + ' 입금전용계좌 생성'});
+                                dialog.output[0].buttons.push({text: data[i].BANKA + ' 입금전용계좌 생성'});
+                            }
+                            else
+                            {
+                                context.session.nonpaymentHistory.push(data[i]);
                             }
                         }
 
@@ -1271,42 +1269,7 @@ module.exports = function(bot)
                                         test += '부적합개선여부: 미개선\n';
                                     }
 
-                                    test += '부적합시설: ' + item.CHK_ITM_NM + '\n';
-
-                                    // test += '점검결과: 부적합\n';
-
-
-                                    // var options = {};
-                                    // options.url = 'http://sam.moneybrain.ai:3000/api';
-                                    // options.json = {};
-                                    // options.json.name = 'ZPM_USERSAFE_12';
-                                    // options.json.param = [
-                                    //     { key: 'I_CHK_YYMM', val: item.CHK_YYMM },
-                                    //     { key: 'I_ADV_ORD', val: '1' },
-                                    //     { key: 'I_DATA_TYPE', val: 'D' }
-                                    // ];
-                                    // options.json.isTable = true;
-                                    // //options.timeout = timeout;
-                                    //
-                                    // request.post(options, function(err, response, body)
-                                    // {
-                                    //     if(err)
-                                    //     {
-                                    //         console.log('에러 : ', err);
-                                    //     }
-                                    //     else
-                                    //     {
-                                    //         console.log('부적합 결과 : ', body);
-                                    //         test += '부적합 결과: ' + body.E_RETMSG + '\n';
-                                    //         test += '부적합 시설: ' + '\n\n';
-                                    //
-                                    //         outputText.push(test);
-                                    //
-                                    //         next();
-                                    //     }
-                                    // });
-
-                                    // return;
+                                    test += '부적합시설: ' + item.CHK_ITM_NM + (item.CHK_ITM_BNM ? '->' + item.CHK_ITM_BNM : '') + '\n';
                                 }
                             }
                             else
