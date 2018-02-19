@@ -108,7 +108,21 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                     category += '@@@';
                 }
 
-                category += ws[XLSX.utils.encode_cell({ c: c, r: r })].v.trim();
+                var target = ws[XLSX.utils.encode_cell({ c: c, r: r })];
+                if(target)
+                {
+                    category += target.v.trim();
+                }
+                else
+                {
+                    var i = 1;
+                    while(!(target = ws[XLSX.utils.encode_cell({ c: c, r: r-i })]))
+                    {
+                        i++;
+                    }
+
+                    category += target.v.trim();
+                }
             }
 
             dialogsetList.push({ q: q, a: a, category: category });
