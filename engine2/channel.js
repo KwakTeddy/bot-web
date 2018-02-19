@@ -1,9 +1,9 @@
-// var rest = require('./channel/rest.server.controller');
 // var line = require('./channel/line.server.controller');
 // var facebook = require('./channel/facebook.server.controller');
 // var navertalk = require('./channel/navertalk.server.controller');
 // var wechat = require('./channel/wechat.server.controller');
 
+var rest = require('./channel/rest.js');
 var kakao = require('./channel/kakao.js');
 var socketChannel = require('./channel/socket.js');
 
@@ -21,7 +21,7 @@ var socketChannel = require('./channel/socket.js');
             socketChannel.init(socket);
         });
 
-        // app.route('/chat/:bot/message').post(rest.message);
+        app.route('/chat/:bot/message').post(rest.message);
         //
         // // 카카오톡
         app.route('/kakao/:bot/keyboard').get(kakao.keyboard);
