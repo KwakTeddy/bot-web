@@ -132,8 +132,8 @@
                             </div>
 
                             <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
-                                <input tabindex="-1" type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true">
-                                <input tabindex="-1" type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url">
+                                <input type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true">
+                                <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url">
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
 

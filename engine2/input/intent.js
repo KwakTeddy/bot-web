@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var async = require('async');
+
+var Transaction = require('../utils/transaction.js');
 
 var IntentContent = mongoose.model('IntentContent');
 
@@ -9,7 +10,7 @@ var IntentContent = mongoose.model('IntentContent');
     {
     };
 
-    IntentManager.prototype.analysis = function(bot, nlp, nlpText, callback)
+    IntentManager.prototype.analysis = function(bot, context, inputRaw, nlp, nlpText, callback)
     {
         var idList = [];
         for(var i=0; i<bot.intents.length; i++)
@@ -17,116 +18,130 @@ var IntentContent = mongoose.model('IntentContent');
             idList.push(bot.intents[i]._id);
         }
 
-        var nlpList = [];
-        for(var i=0; i<nlp.length; i++)
+        var transaction = new Transaction.sync();
+        transaction.call(function(done)
         {
-            nlpList.push(new RegExp(nlp[i].text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi'));
-        }
-
-        IntentContent.find({ intentId: { $in: idList }, input: { $in: nlpList } }).populate('intentId').lean().exec(function(err, list)
-        {
-            if(err)
+            IntentContent.find({ intentId: { $in: idList }, name: inputRaw }).populate('intentId').lean().exec(function(err, list)
             {
-                return callback(err);
+                if(err)
+                {
+                    return callback(err);
+                }
+
+                if(list && list.length > 0)
+                {
+                    callback(null, list);
+                }
+                else
+                {
+                    done();
+                }
+            });
+        });
+
+        transaction.done(function()
+        {
+            var nlpCount = 0;
+            var nlpList = [];
+            for(var i=0; i<nlp.length; i++)
+            {
+                if(nlp[i].pos == 'Josa' || nlp[i].pos == 'Suffix')
+                {
+                    continue;
+                }
+
+                if(nlp[i].pos == 'Noun')
+                {
+                    nlpCount += 3;
+                }
+                else if(nlp[i].pos == 'Verb')
+                {
+                    nlpCount += 2;
+                }
+                else
+                {
+                    nlpCount += 1;
+                }
+
+                nlpList.push(new RegExp(nlp[i].text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi'));
             }
 
-            var matchedList = [];
-            for(var i=0; i<list.length; i++)
+            IntentContent.find({ intentId: { $in: idList }, input: { $in: nlpList } }).populate('intentId').lean().exec(function(err, list)
             {
-                var point = 0;
-                var count = 0;
-                var lastIndex = -1;
-                for(var j=0; j<nlp.length; j++)
+                if(err)
                 {
-                    var index = list[i].input.indexOf(nlp[j].text);
-                    if(index != -1)
-                    {
-                        count += (nlp[j].pos == 'Noun' ? 2 : 1);
-                        if(lastIndex == -1 || lastIndex <= index)
-                        {
-                            point += 100 - (index - lastIndex) - (index - nlpText.indexOf(nlp[j].text));
+                    return callback(err);
+                }
 
+                var matchedList = [];
+                for(var i=0; i<list.length; i++)
+                {
+                    var point = 0;
+                    var count = 0;
+                    var lastIndex = -1;
+                    for(var j=0; j<nlp.length; j++)
+                    {
+                        if(nlp[j].pos == 'Josa' || nlp[j].pos == 'Suffix')
+                        {
+                            continue;
+                        }
+
+                        var index = list[i].input.indexOf(nlp[j].text);
+                        if(index != -1)
+                        {
                             if(nlp[j].pos == 'Noun')
                             {
-                                point += 50;
+                                count += 3;
                             }
+                            else if(nlp[j].pos == 'Verb')
+                            {
+                                count += 2;
+                            }
+                            else
+                            {
+                                count += 1;
+                            }
+
+                            if(lastIndex == -1 || lastIndex <= index)
+                            {
+                                var offset = 100;
+                                if(nlp[j].pos == 'Noun')
+                                {
+                                    offset = 150;
+                                }
+                                else if(nlp[j].pos == 'Verb')
+                                {
+                                    offset = 100;
+                                }
+                                else
+                                {
+                                    offset = 50;
+                                }
+
+                                point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                            }
+
+                            lastIndex = index;
                         }
+                    }
+
+                    var matchRate = count / nlpCount;
+                    list[i].matchRate = matchRate;
+                    list[i].added += point;
+                    if(matchRate >= (bot.options.intentMinMatchRate || 0.5))
+                    {
+                        matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: matchRate, added: point })
                     }
                 }
 
-                var matchRate = count / list[i].input.split(' ').length;
-                if(matchRate >= (bot.options.intentMinMatchRate || 0.5))
+                matchedList.sort(function(a, b)
                 {
-                    matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: matchRate, added: point })
-                }
-            }
+                    return (b.matchRate + b.added) - (a.matchRate + a.added);
+                });
 
-            matchedList.sort(function(a, b)
-            {
-                return (b.matchRate + b.added) - (a.matchRate + a.added);
+                callback(null, matchedList);
             });
-
-            callback(null, matchedList);
         });
-
-        // IntentContent.find({ intentId: { $in: idList } }).populate('intentId').lean().exec(function(err, list)
-        // {
-        //     if(err)
-        //     {
-        //         return callback(err);
-        //     }
-        //
-        //     var targetInput = undefined;
-        //     var maxCount = -1;
-        //     var maxPoint = -1;
-        //
-        //     for(var i=0; i<list.length; i++)
-        //     {
-        //         var count = 0;
-        //         var point = 0;
-        //         var lastIndex = -1;
-        //
-        //         for(var j=0; j<nlp.length; j++)
-        //         {
-        //             var index = list[i].input.indexOf(nlp[j].text);
-        //             if(index != -1)
-        //             {
-        //                 count++;
-        //             }
-        //
-        //             if(index != -1 && (lastIndex == -1 || lastIndex <= index))
-        //             {
-        //                 point += 100 - (index - lastIndex);
-        //
-        //                 if(nlp[j].pos == 'Noun')
-        //                 {
-        //                     point += 50;
-        //                 }
-        //             }
-        //         }
-        //
-        //         if(maxPoint == -1)
-        //         {
-        //             maxPoint = point;
-        //         }
-        //
-        //         if(maxCount == -1 || maxCount < count)
-        //         {
-        //             maxCount = count;
-        //             targetInput = list[i].input;
-        //         }
-        //
-        //         list[i].matchRate = maxCount / targetInput.split(' ').length;
-        //         list[i].added = point;
-        //     }
-        //
-        //     list.sort(function(a, b)
-        //     {
-        //         return b.matchRate + b.added - a.matchRate + a.added;
-        //     });
-        //
-        //     callback(null, list);
-        // });
     };
 
     module.exports = new IntentManager();

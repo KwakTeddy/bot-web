@@ -124,7 +124,7 @@ var Transaction = require('./utils/transaction.js');
                         }
 
                         var userInput = { text: inputRaw };
-                        InputManager.analysis(bot, userInput, error, function()
+                        InputManager.analysis(bot, context, userInput, error, function()
                         {
                             var transaction = new Transaction.sync();
 

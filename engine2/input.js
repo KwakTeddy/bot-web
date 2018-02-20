@@ -12,7 +12,7 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
 
     };
 
-    InputManager.prototype.analysis = function(bot, userInput, error, callback)
+    InputManager.prototype.analysis = function(bot, context, userInput, error, callback)
     {
         var inputRaw = userInput.text;
 
@@ -54,7 +54,7 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
                 console.log('엔티티 : ', entities);
                 userInput.entities = entities;
 
-                IntentManager.analysis(bot, nlp, nlpText, function(err, intents)
+                IntentManager.analysis(bot, context, inputRaw, nlp, nlpText, function(err, intents)
                 {
                     if(err)
                     {

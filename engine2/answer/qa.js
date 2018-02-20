@@ -17,6 +17,15 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
     {
         var that = this;
 
+        var totalPoint = 0;
+        for(var i=0; i<nlp.length; i++)
+        {
+            if(nlp[i].pos == 'Josa' || nlp[i].pos == 'Suffix')
+            {
+                continue;
+            }
+        }
+
         var dialogsets = [];
         for(var i=0; i<bot.dialogsets.length; i++)
         {
@@ -41,6 +50,28 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         for(var i=0; i<list.length; i++)
                         {
                             list[i].matchRate = 1;
+                            list[i].added = 0;
+
+                            var categories = list[i].category.split('@@@');
+                            for(var j=0; j<categories.length; j++)
+                            {
+                                //사용자 입력중 대화학습의 카테고리와 일치하는 말이 있으면 가중치
+                                if(inputRaw.indexOf(categories[j]) != -1)
+                                {
+                                    list[i].added += 0.1;
+                                }
+
+                                //대화학습의 카테고리가 현재 문맥의 카테고리와 일치하는 부분이 있으면 가중치
+                                if(context.session.currentCategory && context.session.currentCategory.indexOf(categories[j]) != -1 || (bot.options.topicKeywords && bot.options.topicKeywords.indexOf(categories[j]) != -1))
+                                {
+                                    list[i].added += 0.2;
+                                }
+                            }
+
+                            list = list.sort(function(a, b)
+                            {
+                                return (b.matchRate + b.added) - (a.matchRate + a.added);
+                            });
                         }
 
                         return callback(null, list);
@@ -84,6 +115,28 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             },
             function()
             {
+                var nlpCount = 0;
+                for(var j=0; j<nlp.length; j++)
+                {
+                    if(nlp[j].pos == 'Josa' || nlp[j].pos == 'Suffix')
+                    {
+                        continue;
+                    }
+
+                    if(nlp[j].pos == 'Noun')
+                    {
+                        nlpCount += 3;
+                    }
+                    else if(nlp[j].pos == 'Verb')
+                    {
+                        nlpCount += 2;
+                    }
+                    else
+                    {
+                        nlpCount += 1;
+                    }
+                }
+
                 for(var i=0; i<matchedList.length; i++)
                 {
                     matchedList[i].added = 0;
@@ -104,26 +157,51 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             var point = 0;
                             var lastIndex = -1;
 
+                            var input = matchedList[i].input[k];
+
                             for(var j=0; j<nlp.length; j++)
                             {
-                                var index = matchedList[i].input[k].indexOf(nlp[j].text);
+                                if(nlp[j].pos == 'Josa' || nlp[j].pos == 'Suffix')
+                                {
+                                    continue;
+                                }
+
+                                var index = input.indexOf(nlp[j].text);
                                 if(index != -1)
                                 {
-                                    count++;
-                                }
-
-                                if(index != -1 && (lastIndex == -1 || lastIndex <= index))
-                                {
-                                    point += 100 - (index - lastIndex) - (index - nlpText.indexOf(nlp[j].text));;
-
                                     if(nlp[j].pos == 'Noun')
                                     {
-                                        point += 50;
+                                        count += 3;
                                     }
-                                }
-                                else if(matchedList[i].category.indexOf(nlp[j].text) != -1)
-                                {
-                                    point += 100;
+                                    else if(nlp[j].pos == 'Verb')
+                                    {
+                                        count += 2;
+                                    }
+                                    else
+                                    {
+                                        count += 1;
+                                    }
+
+                                    if(lastIndex == -1 || lastIndex <= index)
+                                    {
+                                        var offset = 100;
+                                        if(nlp[j].pos == 'Noun')
+                                        {
+                                            offset = 150;
+                                        }
+                                        else if(nlp[j].pos == 'Verb')
+                                        {
+                                            offset = 100;
+                                        }
+                                        else
+                                        {
+                                            offset = 50;
+                                        }
+
+                                        point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                                    }
+
+                                    lastIndex = index;
                                 }
                             }
 
@@ -135,24 +213,45 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             if(maxCount == -1 || maxCount < count)
                             {
                                 maxCount = count;
-                                targetInput = matchedList[i].input[k];
+                                targetInput = input;
                             }
                         }
 
-                        matchedList[i].matchRate = maxCount / targetInput.split(' ').length;
+                        matchedList[i].matchRate = maxCount / nlpCount;
 
-                        matchedList[i].added = point;
-                        if(context.session.currentCategory && matchedList[i].category)
+                        matchedList[i].added += point;
+                        // if(context.session.currentCategory && matchedList[i].category)
+                        // {
+                        //     var targetCategories = matchedList[i].category.split('@@@');
+                        //     var categories = context.session.currentCategory.split('@@@');
+                        //     for(var j=0; j<categories.length && j < targetCategories.length; j++)
+                        //     {
+                        //         if(categories[j] == targetCategories[j])
+                        //         {
+                        //             matchedList[i].added += 0.1;
+                        //         }
+                        //     }
+                        // }
+
+                        console.log(targetInput, matchedList[i].matchRate, matchedList[i].added);
+                    }
+
+                    var categories = matchedList[i].category.split('@@@');
+                    for(var j=0; j<categories.length; j++)
+                    {
+                        if(inputRaw.indexOf(categories[j]) != -1)
                         {
-                            var targetCategories = matchedList[i].category.split('@@@');
-                            var categories = context.session.currentCategory.split('@@@');
-                            for(var j=0; j<categories.length && j < targetCategories.length; j++)
-                            {
-                                if(categories[j] == targetCategories[j])
-                                {
-                                    matchedList[i].added += 100;
-                                }
-                            }
+                            matchedList[i].added += 0.15;
+                        }
+
+                        if(context.session.currentCategory && context.session.currentCategory.indexOf(categories[j]) != -1)
+                        {
+                            matchedList[i].added += 0.05;
+                        }
+
+                        if(bot.options.topicKeywords && bot.options.topicKeywords.indexOf(categories[j]) != -1)
+                        {
+                            matchedList[i].added += 0.1;
                         }
                     }
                 }
