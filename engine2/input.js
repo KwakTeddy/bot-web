@@ -54,7 +54,7 @@ var autoCorrection = require('./input/nlp/autoCorrection.js');
                 console.log('엔티티 : ', entities);
                 userInput.entities = entities;
 
-                IntentManager.analysis(bot, nlp, function(err, intents)
+                IntentManager.analysis(bot, nlp, nlpText, function(err, intents)
                 {
                     if(err)
                     {

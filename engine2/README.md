@@ -27,6 +27,7 @@ User Input (사용자 입력): 챗봇 사용자가 대화를 위해 챗봇에 �
 		use: Boolean // (default: false)
 	},
 	dialogsetMinMatchRate: Float, // (default 0.5)
+	intentMinMatchRate: Float, // (default 0.5)
 }
 ```
 

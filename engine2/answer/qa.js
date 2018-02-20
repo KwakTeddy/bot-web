@@ -13,7 +13,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         this.exclude = ['하다', '이다']; // 다른 언어는???
     };
 
-    QA.prototype.find = function(bot, context, inputRaw, nlp, callback)
+    QA.prototype.find = function(bot, context, inputRaw, nlp, nlpText, callback)
     {
         var that = this;
 
@@ -114,7 +114,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
                                 if(index != -1 && (lastIndex == -1 || lastIndex <= index))
                                 {
-                                    point += 100 - (index - lastIndex);
+                                    point += 100 - (index - lastIndex) - (index - nlpText.indexOf(nlp[j].text));;
 
                                     if(nlp[j].pos == 'Noun')
                                     {
@@ -150,7 +150,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             {
                                 if(categories[j] == targetCategories[j])
                                 {
-                                    matchedList[i].added += 500;
+                                    matchedList[i].added += 100;
                                 }
                             }
                         }

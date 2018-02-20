@@ -98,10 +98,11 @@ var Logger = require('./logger.js');
 
             var inputRaw = userInput.text;
             var nlp = userInput.nlp;
+            var nlpText = userInput.nlpText;
 
             transaction.call(function(done)
             {
-                QNAManager.find(bot, context, inputRaw, nlp, function(err, matchedList)
+                QNAManager.find(bot, context, inputRaw, nlp, nlpText, function(err, matchedList)
                 {
                     if(matchedList.length > 0)
                     {

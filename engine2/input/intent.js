@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var async = require('async');
 
 var IntentContent = mongoose.model('IntentContent');
 
@@ -8,7 +9,7 @@ var IntentContent = mongoose.model('IntentContent');
     {
     };
 
-    IntentManager.prototype.analysis = function(bot, nlp, callback)
+    IntentManager.prototype.analysis = function(bot, nlp, nlpText, callback)
     {
         var idList = [];
         for(var i=0; i<bot.intents.length; i++)
@@ -16,51 +17,116 @@ var IntentContent = mongoose.model('IntentContent');
             idList.push(bot.intents[i]._id);
         }
 
-        IntentContent.find({ intentId: { $in: idList } }).populate('intentId').lean().exec(function(err, list)
+        var nlpList = [];
+        for(var i=0; i<nlp.length; i++)
+        {
+            nlpList.push(new RegExp(nlp[i].text, 'gi'));
+        }
+
+        IntentContent.find({ intentId: { $in: idList }, input: { $in: nlpList } }).populate('intentId').lean().exec(function(err, list)
         {
             if(err)
             {
                 return callback(err);
             }
 
-            var result = {};
-            for(var i=0; i<nlp.length; i++)
+            var matchedList = [];
+            for(var i=0; i<list.length; i++)
             {
-                if(nlp[i].pos == 'Josa' || nlp[i].pos == 'Suffix')
+                var point = 0;
+                var count = 0;
+                var lastIndex = -1;
+                for(var j=0; j<nlp.length; j++)
                 {
-                    continue;
-                }
-
-                var word = RegExp.escape(nlp[i].text);
-
-                for(var j=0; j<list.length; j++)
-                {
-                    if(list[j].input.indexOf(word) != -1)
+                    var index = list[i].input.indexOf(nlp[j].text);
+                    if(index != -1)
                     {
-                        if(!result[list[j].intentId._id])
+                        count += (nlp[j].pos == 'Noun' ? 2 : 1);
+                        if(lastIndex == -1 || lastIndex <= index)
                         {
-                            result[list[j].intentId._id] = { intentId: list[j].intentId._id, intentName: list[j].intentId.name, matchCount: 0 };
-                        }
+                            point += 100 - (index - lastIndex) - (index - nlpText.indexOf(nlp[j].text));
 
-                        result[list[j].intentId._id].matchCount += (nlp[i].pos == 'Noun' ? 2 : 1);
+                            if(nlp[j].pos == 'Noun')
+                            {
+                                point += 50;
+                            }
+                        }
                     }
                 }
+
+                var matchRate = count / list[i].input.split(' ').length;
+                if(matchRate >= (bot.options.intentMinMatchRate || 0.5))
+                {
+                    matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: matchRate, added: point })
+                }
             }
 
-            var matched = [];
-            for(var key in result)
+            matchedList.sort(function(a, b)
             {
-                result[key].matchRate = (nlp.length == result[key].matchCount);
-                matched.push(result[key]);
-            }
-
-            matched.sort(function(a, b)
-            {
-                return b.matchCount - a.matchCount;
+                return (b.matchRate + b.added) - (a.matchRate + a.added);
             });
 
-            callback(null, matched);
+            callback(null, matchedList);
         });
+
+        // IntentContent.find({ intentId: { $in: idList } }).populate('intentId').lean().exec(function(err, list)
+        // {
+        //     if(err)
+        //     {
+        //         return callback(err);
+        //     }
+        //
+        //     var targetInput = undefined;
+        //     var maxCount = -1;
+        //     var maxPoint = -1;
+        //
+        //     for(var i=0; i<list.length; i++)
+        //     {
+        //         var count = 0;
+        //         var point = 0;
+        //         var lastIndex = -1;
+        //
+        //         for(var j=0; j<nlp.length; j++)
+        //         {
+        //             var index = list[i].input.indexOf(nlp[j].text);
+        //             if(index != -1)
+        //             {
+        //                 count++;
+        //             }
+        //
+        //             if(index != -1 && (lastIndex == -1 || lastIndex <= index))
+        //             {
+        //                 point += 100 - (index - lastIndex);
+        //
+        //                 if(nlp[j].pos == 'Noun')
+        //                 {
+        //                     point += 50;
+        //                 }
+        //             }
+        //         }
+        //
+        //         if(maxPoint == -1)
+        //         {
+        //             maxPoint = point;
+        //         }
+        //
+        //         if(maxCount == -1 || maxCount < count)
+        //         {
+        //             maxCount = count;
+        //             targetInput = list[i].input;
+        //         }
+        //
+        //         list[i].matchRate = maxCount / targetInput.split(' ').length;
+        //         list[i].added = point;
+        //     }
+        //
+        //     list.sort(function(a, b)
+        //     {
+        //         return b.matchRate + b.added - a.matchRate + a.added;
+        //     });
+        //
+        //     callback(null, list);
+        // });
     };
 
     module.exports = new IntentManager();
