@@ -25,21 +25,25 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                 {
                     return index + (index ? '-' : '') + (i+1);
                 }
-                else if(source[i].children)
+                if(source[i].children)
                 {
-                    return indexing(index + (index ? '-' : '') + (i+1), source[i].children, target);
+                    var idx = indexing(index + (index ? '-' : '') + (i+1), source[i].children, target);
+
+                    if(idx) return idx;
                 }
             }
 
             return '';
-        }
+        };
 
         $scope.getList = function()
         {
             DialogGraphInputService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
+                console.log(result)
                 var indexList = {};
                 var list = {};
+
                 for(var i=0; i<result.list.length; i++)
                 {
                     if(!list[result.list[i]._id.dialogName])
@@ -56,7 +60,34 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                 excelData = [];
 
                 var html = '';
-                for(var key in list)
+
+                Object.keys(list).sort(function (a, b)
+                {
+                    if(!indexList[a]) return 1;
+                    if(!indexList[b]) return -1;
+
+                    var diff = function (a, b, idx) {
+                        a = a.replace('-', '');
+                        b = b.replace('-', '');
+
+                        if(!a[idx]) return -1;
+                        if(!b[idx]) return 1;
+
+                        if(parseInt(a[idx]) - parseInt(b[idx]))
+                        {
+                            return parseInt(a[idx]) - parseInt(b[idx]);
+                        }
+                        else
+                        {
+                            return diff(a, b, idx + 1);
+                        }
+
+                    };
+
+                    return diff(indexList[a], indexList[b], 0);
+
+
+                }).forEach(function (key)
                 {
                     var data = { graphName: key, graphId: indexList[key] };
 
@@ -103,7 +134,8 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                     html += '</tr>';
 
                     excelData.push(data);
-                }
+                });
+
 
                 angular.element('tbody').html(html);
 
@@ -123,7 +155,7 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Input'), $scope.date, template);
+            ExcelDownloadService.download(chatbot.name, LanguageService('Dialog Graph Input'), $scope.date, template);
         };
     })();
 

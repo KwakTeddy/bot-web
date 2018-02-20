@@ -20,8 +20,8 @@ module.exports = function(app) {
   app.route('/api/userCount/:bId')//all(analyticsPolicy.isAllowed)
     .post(analytics.userCount);
 
-  app.route('/api/senarioUsage/:bId')//all(analyticsPolicy.isAllowed)
-    .post(analytics.senarioUsage);
+  app.route('/api/scenarioUsage/:bId')//all(analyticsPolicy.isAllowed)
+    .post(analytics.scenarioUsage);
 
   app.route('/api/failDailogs/:bId')//all(analyticsPolicy.isAllowed)
     .post(analytics.failDailogs);
@@ -85,8 +85,8 @@ module.exports = function(app) {
   app.route('/api/analytics/statistics/exel-download/:bId')
     .post(analytics.exelDownload);
 
-  app.route('/api/analytics/statistics/senario/exel-download/:bId')
-    .post(analytics.senarioExelDownload)
+  app.route('/api/analytics/statistics/scenario/exel-download/:bId')
+    .post(analytics.scenarioExelDownload)
 
   app.route('/api/user-input-statistics-faq/:bId')//all(analyticsPolicy.isAllowed)
     .post(analytics.userInputStatisticsFaq);

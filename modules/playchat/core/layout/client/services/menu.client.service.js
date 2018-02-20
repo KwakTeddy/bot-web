@@ -38,7 +38,7 @@
             this.operation = { name: LanguageService('Operation'), icon: 'operat_1.png', url: '/operation', childMenus: [
                 { name: LanguageService('User'), url: '/operation/user', icon: 'user_mini.png' },
                 { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
-                { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
+                // { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
                 { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
@@ -48,8 +48,8 @@
                 { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
                 { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
                 { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
-                { name: LanguageService('Dialog Training Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
-                { name: LanguageService('Dialog Graph Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+                { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+                { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
                 { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
                 { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
                 { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },

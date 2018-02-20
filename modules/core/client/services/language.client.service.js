@@ -1549,17 +1549,23 @@
                 "zh": "对话培训",
                 "jp": "ダイアログトレーニング"
             },
-            "Dialog Training Usage": {
-                "ko": "대화 학습 이용",
-                "en": "Dialog Training Usage",
-                "jp": "会話学習の利用",
-                "zh": "对话学习的使用"
+            "Dialog Set Usage": {
+                "ko": "대화셋 이용",
+                "en": "Dialog Set Usage",
+                "jp": "ダイアログセットの使用法",
+                "zh": "对话框设置用法"
             },
-            "Dialog Graph Usage": {
-                "ko": "대화 그래프 이용",
-                "en": "Dialog Graph Usage",
-                "jp": "対話グラフを利用",
-                "zh": "对话框图的使用"
+            "Dialog Scenario Usage": {
+                "ko": "대화 시나리오 이용",
+                "en": "Dialog Scenario Usage",
+                "jp": "ダイアログシナリオの使用法",
+                "zh": "对话方案使用情况"
+            },
+            "User Detail": {
+                "ko": "사용자 세부 정보",
+                "en": "User Detail",
+                "jp": "ユーザーの詳細",
+                "zh": "用户详情"
             },
             "Dialog Training Input": {
                 "ko": "대화 학습 입력값",
@@ -1937,6 +1943,18 @@
                 "en": "Average amount of traffic per session",
                 "zh": "每个会话的平均通信量",
                 "jp": "セッションあたりの平均会話量"
+            },
+            "Amount of Session": {
+                "ko": "세션수량",
+                "en": "Amount of Session",
+                "zh": "会话数量",
+                "jp": "セッション量"
+            },
+            "Usage of Dialog Set": {
+                "ko": "대화 사용량",
+                "en": "Usage of Dialog Set",
+                "zh": "对话框的使用",
+                "jp": "ダイアログセットの使用法"
             },
             "Ratio": {
                 "ko": "비율",
