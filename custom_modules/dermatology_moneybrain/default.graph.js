@@ -33,7 +33,7 @@ var dialogs = [
         "name": "2.교통편",
         "input": [
             {
-                "regexp": "^2$"
+                "regexp": "^2"
             },
             {
                 "text": {
@@ -63,12 +63,6 @@ var dialogs = [
                 "text": {
                     "raw": "지도",
                     "nlp": "지도"
-                }
-            },
-            {
-                "text": {
-                    "raw": "어디",
-                    "nlp": "어디"
                 }
             }
         ],
