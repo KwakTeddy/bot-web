@@ -451,6 +451,10 @@
                                 input[type] = children[i].innerText.replace('#', '').replace('@', '').replace(/\//gi, '').replace('if(', '').replace(')', '');
                             }
                         }
+                        else
+                        {
+                            input.text = { raw: children[i].innerText, nlp: '' };
+                        }
                     }
                 }
 

@@ -20,7 +20,7 @@ var IntentContent = mongoose.model('IntentContent');
         var nlpList = [];
         for(var i=0; i<nlp.length; i++)
         {
-            nlpList.push(new RegExp(nlp[i].text, 'gi'));
+            nlpList.push(new RegExp(nlp[i].text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi'));
         }
 
         IntentContent.find({ intentId: { $in: idList }, input: { $in: nlpList } }).populate('intentId').lean().exec(function(err, list)
