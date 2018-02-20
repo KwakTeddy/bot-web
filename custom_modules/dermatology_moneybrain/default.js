@@ -351,6 +351,14 @@ module.exports = function(bot) {
             else if (dialog.userInput.text.indexOf("3") >= 0) {
                 dialog.output[0].text = "감량제는 4주프로그램 3kg 입니다 개인차마다 틀리지만 식단과 생활적인 습관 등 잘지켜주신다면 만족하는 효과를 기대할수 있습니다";
             }
+            dialog.output[0].buttons = [
+                {
+                    text: "이전으로 가기"
+                },
+                {
+                    text: "처음으로 돌아가기"
+                }
+            ];
 			callback();
 		}
 	});
@@ -370,6 +378,14 @@ module.exports = function(bot) {
                 else if (dialog.userInput.text.indexOf("4") >= 0) {
                     dialog.output[0].text = "당연히 효과가 있습니다 지방흡인후 생길수 있는 피부의 유착 울퉁불퉁 탄력 저하등 전후 관리를 통해 확실하게 케어해드립니다";
                 }
+                dialog.output[0].buttons = [
+                    {
+                        text: "이전으로 가기"
+                    },
+                    {
+                        text: "처음으로 돌아가기"
+                    }
+                ];
                 callback();
             }
         });
