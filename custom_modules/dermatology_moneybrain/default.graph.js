@@ -165,7 +165,13 @@ var dialogs = [
         "name": "4.2월 이벤트",
         "input": [
             {
-                "regexp": "^4$"
+                "regexp": "^4"
+            },
+            {
+                "text": {
+                    "raw": "2월 이벤트",
+                    "nlp": "2 월 이벤트"
+                }
             }
         ],
         "output": [
