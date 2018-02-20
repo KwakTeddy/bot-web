@@ -3,7 +3,7 @@ var dialogs = [
         "name": "1.병원 소개",
         "input": [
             {
-                "regexp": "^1$"
+                "regexp": "^1"
             },
             {
                 "text": {
@@ -160,6 +160,12 @@ var dialogs = [
         "input": [
             {
                 "regexp": "^4"
+            },
+            {
+                "text": {
+                    "raw": "이벤트",
+                    "nlp": "이벤트"
+                }
             },
             {
                 "text": {
