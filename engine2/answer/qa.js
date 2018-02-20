@@ -157,7 +157,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             var point = 0;
                             var lastIndex = -1;
 
-                            var input = matchedList[i].input[k];
+                            var input = matchedList[i].category.split('@@@').join(' ') + matchedList[i].input[k];
 
                             for(var j=0; j<nlp.length; j++)
                             {
@@ -220,6 +220,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         matchedList[i].matchRate = maxCount / nlpCount;
 
                         matchedList[i].added += point;
+
                         // if(context.session.currentCategory && matchedList[i].category)
                         // {
                         //     var targetCategories = matchedList[i].category.split('@@@');
@@ -232,8 +233,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         //         }
                         //     }
                         // }
-
-                        console.log(targetInput, matchedList[i].matchRate, matchedList[i].added);
                     }
 
                     var categories = matchedList[i].category.split('@@@');
@@ -254,6 +253,8 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             matchedList[i].added += 0.1;
                         }
                     }
+
+                    console.log(matchedList[i].category, matchedList[i].inputRaw, matchedList[i].matchRate, matchedList[i].added);
                 }
 
                 matchedList = matchedList.sort(function(a, b)

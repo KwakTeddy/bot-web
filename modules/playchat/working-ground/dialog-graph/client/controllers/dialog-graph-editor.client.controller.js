@@ -10,7 +10,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     $scope.oldDialog = undefined;
     $scope.dialog = {};
 
-    $scope.isNew = true;
+    $scope.isNew = undefined;
 
     $scope.isAdvancedMode = false;
 
@@ -202,7 +202,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 DialogGraphEditor.saveCallback = undefined;
             }
 
-            $scope.isNew = false;
+            $scope.isNew = undefined;
             $scope.close();
 
             e.preventDefault();
@@ -213,7 +213,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         if($scope.isNew)
         {
-            DialogGraph.deleteFocusedDialog();
+            DialogGraph.deleteDialogById($scope.isNew);
         }
     });
 
@@ -304,8 +304,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         if(parent && !dialog)
         {
-            $scope.isNew = true;
-
             //새로 추가하는 경우 바로 추가해줌.
             var result = {};
             result.name = DialogGraph.getRandomName();
@@ -323,6 +321,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             DialogGraph.setDirty(true);
             // DialogGraph.focusById(result.id);
 
+            $scope.isNew = dialog.id;
+
+            DialogGraph.focusById(dialog.id);
+
             if(DialogGraphEditor.saveCallback)
             {
                 DialogGraphEditor.saveCallback(result);
@@ -331,7 +333,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
         else if(dialog)
         {
-            $scope.isNew = false;
+            $scope.isNew = undefined;
         }
 
         $scope.initialize(parent, dialog);

@@ -434,6 +434,14 @@
             this.deleteDialog(angular.element('#' + this.focusedDialog));
         };
 
+        DialogGraph.prototype.deleteDialogById = function(id)
+        {
+            if(id)
+            {
+                this.deleteDialog(angular.element('#' + id));
+            }
+        };
+
         DialogGraph.prototype.deleteDialog = function(target, withChildren)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
