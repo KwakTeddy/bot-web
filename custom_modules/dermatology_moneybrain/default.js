@@ -227,6 +227,41 @@ module.exports = function(bot) {
         }
     });
 
+
+    bot.setType("deanlist2", {
+        typeCheck: function (dialog, context, callback) {
+            var modelname = 'dermatology_moneybrain_member';
+            var options = {};
+            options.url = SERVER_HOST + '/api/' + modelname;
+            options.qs = {
+                company: "포에버성형외과"
+            };
+
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                    callback();
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+                    context.session.member = body;
+
+                    context.session.membername = [];
+                    for (var ll = 0; ll < context.session.member.length; ll++) {
+                        context.session.membername.push(context.session.member[ll].name);
+                    }
+                   if (context.session.membername.indexOf(dialog.userInput.text) !== -1) {
+                        var mm = context.session.membername.indexOf(dialog.userInput.text);
+                        dialog.userInput.types.deanlist = context.session.member[mm];
+                        return callback(true);
+                    }
+                    callback(false);
+                }
+            });
+        }
+    });
+
 	bot.setTask('showdean',
         {
             action: function (dialog, context, callback) {
@@ -300,6 +335,42 @@ module.exports = function(bot) {
                         callback();
                     }
                 });
+            }
+        });
+
+	bot.setTask('event2month1',
+	{
+		action: function (dialog, context, callback)
+		{
+            if (dialog.userInput.text.indexOf("1") >= 0) {
+                dialog.output[0].text = "다이어트 부위별 집중 + 3kg,  감량제 프로그램과 비만패키지 다이어트 관리 가 있습니다";
+            }
+            else if (dialog.userInput.text.indexOf("2") >= 0) {
+                dialog.output[0].text = "감량제는 부가세 별도 19만원과 39만원이 있으며 비만pck은 30만원대부터 100만원대까지 다양하게 있습니다";
+            }
+            else if (dialog.userInput.text.indexOf("3") >= 0) {
+                dialog.output[0].text = "감량제는 4주프로그램 3kg 입니다 개인차마다 틀리지만 식단과 생활적인 습관 등 잘지켜주신다면 만족하는 효과를 기대할수 있습니다";
+            }
+			callback();
+		}
+	});
+    bot.setTask('event2month2',
+        {
+            action: function (dialog, context, callback)
+            {
+                if (dialog.userInput.text.indexOf("1") >= 0) {
+                    dialog.output[0].text = "상태를 봐야하지만 보통 1-2주부터 가능하십니다 ";
+                }
+                else if (dialog.userInput.text.indexOf("2") >= 0) {
+                    dialog.output[0].text = "3max고주파와 엔더몰로지 관리를  추천합니다 ";
+                }
+                else if (dialog.userInput.text.indexOf("3") >= 0) {
+                    dialog.output[0].text = "부가세 별도 1회 20만원 입니다 본원에 이벤트 중인 관리도 있으니 자세한 내용은 전화상담으로 안내해드리겠습니다";
+                }
+                else if (dialog.userInput.text.indexOf("4") >= 0) {
+                    dialog.output[0].text = "당연히 효과가 있습니다 지방흡인후 생길수 있는 피부의 유착 울퉁불퉁 탄력 저하등 전후 관리를 통해 확실하게 케어해드립니다";
+                }
+                callback();
             }
         });
 };

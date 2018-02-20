@@ -3,10 +3,7 @@ var dialogs = [
         "name": "1.병원 소개",
         "input": [
             {
-                "text": {
-                    "raw": "1",
-                    "nlp": "1"
-                }
+                "regexp": "^1$"
             },
             {
                 "text": {
@@ -36,10 +33,7 @@ var dialogs = [
         "name": "2.교통편",
         "input": [
             {
-                "text": {
-                    "raw": "2",
-                    "nlp": "2"
-                }
+                "regexp": "^2$"
             },
             {
                 "text": {
@@ -93,10 +87,6 @@ var dialogs = [
                 "name": "2.1 버스",
                 "input": [
                     {
-                        "text": {
-                            "raw": "",
-                            "nlp": ""
-                        },
                         "if": "true"
                     }
                 ],
@@ -123,10 +113,7 @@ var dialogs = [
                 }
             },
             {
-                "text": {
-                    "raw": "3",
-                    "nlp": "3"
-                }
+                "regexp": "^3$"
             },
             {
                 "text": {
@@ -175,6 +162,203 @@ var dialogs = [
         ]
     },
     {
+        "name": "4.2월 이벤트",
+        "input": [
+            {
+                "regexp": "^4$"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "2월 이벤트들은 아래와 같습니다.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "1.감량제"
+                    },
+                    {
+                        "url": "",
+                        "text": "2.지방흡입후케어"
+                    },
+                    {
+                        "url": "",
+                        "text": "3.그 외 진행하는 이벤트 추가"
+                    }
+                ]
+            }
+        ],
+        "id": "default7",
+        "children": [
+            {
+                "name": "4.1감량제",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "감량체",
+                            "nlp": "감량 체"
+                        }
+                    },
+                    {
+                        "regexp": "^1"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "감량체와 관련한 질문들은 아래와 같습니다.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "1.감량제 이벤트가 정확히 무엇인가요?"
+                            },
+                            {
+                                "url": "",
+                                "text": "2.비용은 얼마인가요?"
+                            },
+                            {
+                                "url": "",
+                                "text": "3.몇일 동안 몇키로를 뺄수 있는건가요?"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default8",
+                "children": [
+                    {
+                        "name": "4.1.1대답",
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "dd"
+                            }
+                        ],
+                        "task": {
+                            "name": "event2month1"
+                        },
+                        "id": "default11"
+                    }
+                ]
+            },
+            {
+                "name": "4.2지방흡입후케어",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "지방흡입후케어",
+                            "nlp": "지방 흡입 후 케어"
+                        }
+                    },
+                    {
+                        "regexp": "^2"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "지방흡입후케어에 관련한 질문들은 아래와 갑습니다.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "1.지방흡입 후 몇일 뒤에 하면 좋나요?"
+                            },
+                            {
+                                "url": "",
+                                "text": "2.지방흡입 후케어 패키지 내용은 무엇인가요?"
+                            },
+                            {
+                                "url": "",
+                                "text": "3.비용은 얼마인가요?"
+                            },
+                            {
+                                "url": "",
+                                "text": "4.지방흡입 후 케어를 하고 나면 확실히 효과가 있나요?"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default9",
+                "children": [
+                    {
+                        "name": "4.1.2대답",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "dd"
+                            }
+                        ],
+                        "task": {
+                            "name": "event2month2"
+                        },
+                        "id": "default12"
+                    }
+                ]
+            },
+            {
+                "name": "4.3그 외 진행하는 이벤트 추가",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "그 외 진행하는 이벤트 추가",
+                            "nlp": "그 외 진행 하다 이벤트 추가"
+                        }
+                    },
+                    {
+                        "regexp": "^3"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "그 외 진행하는 이벤트 추가에 관련한 질문들은 아래와 같습니다.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "진행하는 이벤트가 또 무엇이 있나요?"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default10",
+                "children": [
+                    {
+                        "name": "4.3대답",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "전화상담으로 자세히 안내해드리겠습니다\n\n02-561-5773~4"
+                            }
+                        ],
+                        "id": "default13"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "name": "4.교통편 자연어 처리",
         "input": [
             {
@@ -213,7 +397,7 @@ var dialogs = [
         "input": [
             {
                 "types": [
-                    "deanlist"
+                    "deanlist2"
                 ]
             }
         ],
@@ -257,7 +441,7 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요! \n무엇을 도와드릴까요?\n\n1.병원 소개\n2.교통편\n3.의료진 소개"
+                "text": "안녕하세요! \n무엇을 도와드릴까요?\n\n1.병원 소개\n2.교통편\n3.의료진 소개\n4.2월 이벤트"
             }
         ]
     },
