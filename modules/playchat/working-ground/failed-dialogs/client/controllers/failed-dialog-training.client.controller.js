@@ -57,7 +57,7 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
             angular.element(target).parent().parent().parent().parent().find('.selected').removeClass('selected');
             angular.element(target).parent().parent().parent().addClass('selected');
 
-            var text = angular.element(target).prev().text();
+            var text = angular.element(target).prev()[0].value;
             $scope.getSimiliars(text, item, 'inputRaw');
             e.stopPropagation();
         };
@@ -68,7 +68,8 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
             angular.element(target).parent().find('.selected').removeClass('selected');
             angular.element(target).addClass('selected').find('input').focus();
 
-            var text = angular.element(target).addClass('selected').find('input').prev().text();
+            var text = angular.element(target).addClass('selected').find('input').prev()[0].value;
+            var text = angular.element(target).addClass('selected').find('input').prev()[0].style.backgroundColor = '#f2f2f2!important';
             $scope.getSimiliars(text, item, 'inputRaw');
         };
 
@@ -80,7 +81,7 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
 
         $scope.selectSuggestion = function(e, item)
         {
-            angular.element(e.currentTarget).parent().parent().parent().find('input').val(item.output);
+            angular.element(e.currentTarget).parent().parent().parent().find('input')[1].value = item.output;
         };
 
         $scope.save = function(e, item, list)
@@ -91,9 +92,9 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
 
             TrainingService.save({ botId: chatbot._id, inputRaw: [ inputRaw ], output: [ output ], language: chatbot.language}, function()
             {
-                FailedDialogService.update({ botId: chatbot._id, _id: id }, function()
+                FailedDialogService.update({ botId: chatbot.id, _id: id, clear: (item.clear ? item.clear + '|qna' : 'qna'), dialog: item._id.dialog}, function()
                 {
-                    list.splice(item, 1);
+                    list.splice(list.indexOf(item), 1);
                 },
                 function(err)
                 {
@@ -108,7 +109,7 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
 
         $scope.ignore = function(item)
         {
-            FailedDialogService.update({ botId: chatbot._id, _id: item.id, clear: (item.clear ? item.clear + '|qna' : 'qna') }, function()
+            FailedDialogService.update({ botId: chatbot.id, _id: item.id, clear: (item.clear ? item.clear + '|qna' : 'qna'), dialog: item._id.dialog }, function()
             {
                 var index = $scope.list.indexOf(item);
                 $scope.list.splice(index, 1);

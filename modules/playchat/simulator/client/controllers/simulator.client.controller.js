@@ -54,9 +54,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
-        var getCurrentTime = function()
+        var getCurrentTime = function(time)
         {
-            var date = new Date();
+            var date = undefined;
+            if(time)
+                date = new Date(time);
+            else
+                date = new Date();
 
             var hour = date.getHours();
             var min = date.getMinutes();
@@ -68,7 +72,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             return month + "월 " + day + "일 " + hour + ':' + min;
         };
 
-        var addBotBubble = function(text)
+        var addBotBubble = function(text, time)
         {
             try {
                 text = JSON.parse(text);
@@ -86,48 +90,39 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else
                 chabotName = chatbot.name;
 
+            template = angular.element('#botAnswerTemplate').html();
+            template = template.replace('{botName}', chabotName).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
-            if(typeof text != 'object')
+            template = angular.element(template);
+
+            if(text.image && text.image.url)
             {
-                template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chabotName).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                var t = '<div class="output-image">';
+                t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
+                t += '</div>';
+
+                template.find('.speech').append(t);
             }
-            else
+
+            if(text.buttons)
             {
-                template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chabotName).replace('{time}', getCurrentTime()).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                var t = '';
 
-                template = angular.element(template);
-
-                if(text.image && text.image.url)
+                for(var i=0; i<text.buttons.length; i++)
                 {
-                    var t = '<div class="output-image">';
-                    t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
-                    t += '</div>';
-
-                    template.find('.speech').append(t);
-                }
-
-                if(text.buttons)
-                {
-                    var t = '';
-
-                    for(var i=0; i<text.buttons.length; i++)
+                    if(text.buttons[i].url)
                     {
-                        if(text.buttons[i].url)
-                        {
-                            t = '<a href="' + text.buttons[i].url + '" class="default-button" style="color: #038eda;" target="_blank">#' + text.buttons[i].text + '</a>' + t;
-                        }
-                        else
-                        {
-                            t += '<a style="cursor: pointer;" href="#" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
-                        }
+                        t = '<a href="' + text.buttons[i].url + '" class="default-button" style="color: #038eda;" target="_blank">#' + text.buttons[i].text + '</a>' + t;
                     }
-
-                    t += '</div>';
-
-                    template.find('.speech').append('<div class="output-buttons">' + t);
+                    else
+                    {
+                        t += '<a style="cursor: pointer;" href="#" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
+                    }
                 }
+
+                t += '</div>';
+
+                template.find('.speech').append('<div class="output-buttons">' + t);
             }
 
             simulatorBody.append(template);
@@ -150,10 +145,10 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             body.scrollTop = body.scrollHeight;
         };
 
-        var addUserBubble = function(text)
+        var addUserBubble = function(text, time)
         {
             var template = angular.element('#userAnswerTemplate').html();
-            template = template.replace('{time}', getCurrentTime()).replace('{text}', text);
+            template = template.replace('{time}', getCurrentTime(time)).replace('{text}', text);
             simulatorBody.append(template);
 
             var body = angular.element('#simulatorBody').get(0);
@@ -188,7 +183,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
-                console.log(data);
                 if(data.type == 'dialog')
                 {
                     if(data.dialogId)
@@ -285,8 +279,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 }
 
                 $scope.chatbotName = data.name;
-                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
-                emitMsg(':reset user', false);
+
+                if(simulatorBody.html())
+                {
+                    $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
+                    emitMsg(':reset user', false);
+                }
+
             }, Beagle.error);
         };
 
@@ -309,13 +308,9 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             for(var i=data.dialog.length-1; i>=0; i--)
             {
                 if(data.dialog[i].inOut)
-                {
-                    addUserBubble(data.dialog[i].dialog);
-                }
+                    addUserBubble(data.dialog[i].dialog, data.dialog[i].created);
                 else
-                {
-                    addBotBubble(data.dialog[i].dialog);
-                }
+                    addBotBubble({text : data.dialog[i].dialog}, data.dialog[i].created);
             }
 
             if(data.readonly)

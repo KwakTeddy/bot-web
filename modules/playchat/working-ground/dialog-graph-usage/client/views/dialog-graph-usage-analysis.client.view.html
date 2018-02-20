@@ -38,7 +38,7 @@ table tbody td
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="item in list">
+        <tr ng-repeat="item in list |  orderBy : 'order'">
             <td>{{ item.index }}</td>
             <td>{{ item._id.dialogName }}</td>
             <td>

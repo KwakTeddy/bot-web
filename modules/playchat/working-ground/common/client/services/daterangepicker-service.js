@@ -25,10 +25,10 @@
 
             var ranges = {};
             ranges[LanguageService('Today')] = [moment(), moment()];
-            ranges[LanguageService('Last 7 days')]= [(moment().set({date: moment().get('date') - 7})), moment()];
-            ranges[LanguageService('Last 30 days')]= [moment().set({date: moment().get('date') - 30}), moment()];
-            ranges[LanguageService('This Month')]= [moment().set({month: moment().get('month')}), moment().set({date: moment().endOf('month').get('date')})];
-            ranges[LanguageService('Last Month')]= [moment().set({month: mm.get('month')-1}), moment().set({month: mm.get('month')-1, date: moment().set({month: mm.get('month')-1}).endOf('month').get('date')})];
+            ranges[LanguageService('Last 7 days')]= [moment().subtract(6, 'days'), moment()];
+            ranges[LanguageService('Last 30 days')]= [moment().subtract(29, 'days'), moment()];
+            ranges[LanguageService('This Month')]= [moment().startOf('month'), moment().endOf('month')];
+            ranges[LanguageService('Last Month')]= [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')];
 
             $(selector).daterangepicker({
                 parentEl: "#date-container",
