@@ -483,7 +483,10 @@ module.exports = function(bot)
                     dialog.noticeDetail = context.session.noticeHistory[i];
 
                     dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
-                    dialog.noticeDetail.USED_CALORY = numberWithCommas(dialog.noticeDetail.USED_CALORY);
+
+                    var split = dialog.noticeDetail.USED_CALORY.split('.');
+
+                    dialog.noticeDetail.USED_CALORY = numberWithCommas(split[0]) + (split[1] ? '.' + split[1] : '');
 
                     break;
                 }
