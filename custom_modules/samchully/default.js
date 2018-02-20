@@ -467,6 +467,10 @@ module.exports = function(bot)
         }
     });
 
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     bot.setTask('getNoticeDetail',
     {
         action: function (dialog, context, callback)
@@ -477,6 +481,10 @@ module.exports = function(bot)
                 if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
                 {
                     dialog.noticeDetail = context.session.noticeHistory[i];
+
+                    dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
+                    dialog.noticeDetail.USED_CALORY = numberWithCommas(dialog.noticeDetail.USED_CALORY);
+
                     break;
                 }
             }
@@ -703,6 +711,15 @@ module.exports = function(bot)
                                 context.session.nonpaymentHistory.push(data[i]);
                             }
                         }
+
+                        if(dialog.output[0].buttons.length > 0)
+                        {
+                            dialog.output[0].text += '다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요.';
+                        }
+                        // else
+                        // {
+                        //     dialog.output[0].text.replace('다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요.', '');
+                        // }
 
                         addDefaultButton(dialog);
 

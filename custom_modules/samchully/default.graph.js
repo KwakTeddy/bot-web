@@ -868,7 +868,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.session.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#\n\n다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요."
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.session.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#"
                                     }
                                 ],
                                 "id": "default24",
@@ -1018,7 +1018,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "정상적으로 처리되셨습니다.",
+                                                "text": "카카오페이 고지 신청 알림톡을 송부해드렸습니다.",
                                                 "buttons": [
                                                     {
                                                         "url": "",
