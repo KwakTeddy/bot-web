@@ -102,27 +102,27 @@ var IntentContent = mongoose.model('IntentContent');
                                 count += 1;
                             }
 
-                            if(lastIndex == -1 || lastIndex <= index)
-                            {
-                                var offset = 100;
-                                if(nlp[j].pos == 'Noun')
-                                {
-                                    offset = 150;
-                                }
-                                else if(nlp[j].pos == 'Verb')
-                                {
-                                    offset = 100;
-                                }
-                                else
-                                {
-                                    offset = 50;
-                                }
-
-                                if(lastIndex != -1)
-                                {
-                                    point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
-                                }
-                            }
+                            // if(lastIndex == -1 || lastIndex <= index)
+                            // {
+                            //     var offset = 100;
+                            //     if(nlp[j].pos == 'Noun')
+                            //     {
+                            //         offset = 150;
+                            //     }
+                            //     else if(nlp[j].pos == 'Verb')
+                            //     {
+                            //         offset = 100;
+                            //     }
+                            //     else
+                            //     {
+                            //         offset = 50;
+                            //     }
+                            //
+                            //     if(lastIndex != -1)
+                            //     {
+                            //         point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                            //     }
+                            // }
 
                             lastIndex = index;
                         }

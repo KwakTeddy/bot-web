@@ -182,27 +182,27 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                         count += 1;
                                     }
 
-                                    if(lastIndex == -1 || lastIndex <= index)
-                                    {
-                                        var offset = 100;
-                                        if(nlp[j].pos == 'Noun')
-                                        {
-                                            offset = 250;
-                                        }
-                                        else if(nlp[j].pos == 'Verb')
-                                        {
-                                            offset = 200;
-                                        }
-                                        else
-                                        {
-                                            offset = 100;
-                                        }
-
-                                        if(lastIndex != -1)
-                                        {
-                                            point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
-                                        }
-                                    }
+                                    // if(lastIndex == -1 || lastIndex <= index)
+                                    // {
+                                    //     var offset = 100;
+                                    //     if(nlp[j].pos == 'Noun')
+                                    //     {
+                                    //         offset = 250;
+                                    //     }
+                                    //     else if(nlp[j].pos == 'Verb')
+                                    //     {
+                                    //         offset = 200;
+                                    //     }
+                                    //     else
+                                    //     {
+                                    //         offset = 100;
+                                    //     }
+                                    //
+                                    //     if(lastIndex != -1)
+                                    //     {
+                                    //         point += ((index - lastIndex)) + ((index - nlpText.indexOf(nlp[j].text)));
+                                    //     }
+                                    // }
 
                                     lastIndex = index;
                                 }
