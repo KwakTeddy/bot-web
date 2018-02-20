@@ -187,18 +187,21 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                         var offset = 100;
                                         if(nlp[j].pos == 'Noun')
                                         {
-                                            offset = 150;
+                                            offset = 250;
                                         }
                                         else if(nlp[j].pos == 'Verb')
                                         {
-                                            offset = 100;
+                                            offset = 200;
                                         }
                                         else
                                         {
-                                            offset = 50;
+                                            offset = 100;
                                         }
 
-                                        point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                                        if(lastIndex != -1)
+                                        {
+                                            point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                                        }
                                     }
 
                                     lastIndex = index;
@@ -254,7 +257,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         }
                     }
 
-                    console.log(matchedList[i].category, matchedList[i].inputRaw, matchedList[i].matchRate, matchedList[i].added);
+                    console.log(matchedList[i].category, matchedList[i].inputRaw, matchedList[i].matchRate, matchedList[i].added, matchedList[i].matchRate + matchedList[i].added);
                 }
 
                 matchedList = matchedList.sort(function(a, b)

@@ -118,7 +118,10 @@ var IntentContent = mongoose.model('IntentContent');
                                     offset = 50;
                                 }
 
-                                point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                                if(lastIndex != -1)
+                                {
+                                    point += - ((index - lastIndex) / offset) - ((index - nlpText.indexOf(nlp[j].text)) / offset);
+                                }
                             }
 
                             lastIndex = index;

@@ -1233,22 +1233,18 @@ module.exports = function(bot)
                         for(var key in resultList)
                         {
                             var item = resultList[key];
-                            if(item.length == 1)
+                            var chkItmNm = '';
+                            for(var i=0; i<item.length; i++)
                             {
-                                item = item[0];
-                            }
-                            else
-                            {
-                                var chkItmNm = '';
-                                for(var i=0; i<item.length; i++)
+                                if(item[i].CHK_ITM_NM)
                                 {
                                     chkItmNm += ' - ' + item[i].CHK_ITM_NM + '\n';
                                 }
-
-                                item[0].CHK_ITM_NM = '\n' + chkItmNm;
-
-                                item = item[0];
                             }
+
+                            item[0].CHK_ITM_NM = '\n' + chkItmNm;
+
+                            item = item[0];
 
 
                             var test = '안전점검일: ' + item.CHK_DAT + '\n';
@@ -1289,8 +1285,7 @@ module.exports = function(bot)
                                         test += '부적합개선여부: 미개선\n';
                                     }
 
-                                    item.CHK_ITM_BNM = 'asdf';
-                                    test += '부적합 시설: \n- ' + item.CHK_ITM_NM + (item.CHK_ITM_BNM ? '\n→ ' + item.CHK_ITM_BNM : '') + '\n';
+                                    test += '부적합 시설: ' + item.CHK_ITM_NM + (item.CHK_ITM_BNM ? ' → ' + item.CHK_ITM_BNM : '') + '\n';
                                 }
                             }
                             else
