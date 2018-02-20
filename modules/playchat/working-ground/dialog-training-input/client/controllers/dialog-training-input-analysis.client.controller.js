@@ -30,22 +30,26 @@ angular.module("playchat").controller("DialogTrainingInputController", ['$scope'
                 var summary = {};
                 for(var i=0; i<result.length; i++)
                 {
-                    data[result[i].dialogId._id] = result[i];
+                    data[result[i]._id.dialog] = result[i];
 
-                    if(!summary[result[i].dialogId._id])
-                        summary[result[i].dialogId._id] = {};
+                    if(!summary[result[i]._id.dialog])
+                        summary[result[i]._id.dialog] = {};
 
-                    if(!summary[result[i].dialogId._id][result[i]._id.preDialogName])
-                        summary[result[i].dialogId._id][result[i]._id.preDialogName] = 0;
+                    if(!summary[result[i]._id.dialog][result[i]._id.preDialogName])
+                        summary[result[i]._id.dialog][result[i]._id.preDialogName] = 0;
 
-                    summary[result[i].dialogId._id][result[i]._id.preDialogName] += result[i].count;
+                    summary[result[i]._id.dialog][result[i]._id.preDialogName] += result[i].count;
                 }
+
+                console.log(summary)
 
                 var list = [];
                 for(var key in summary)
                 {
                     var userInput = [];
-                    var object = { input: data[key].dialogId.inputRaw.join('\n'), userInput: userInput };
+                    console.log(data[key]._id.dialog)
+                    console.log(typeof data[key]._id.dialog)
+                    var object = { input: data[key]._id.dialog + '\n', userInput: userInput };
 
                     var sum = 0;
                     for(var subkey in summary[key])
@@ -71,6 +75,51 @@ angular.module("playchat").controller("DialogTrainingInputController", ['$scope'
 
                     excelData.push({ q: object.input, input: input, sum: sum});
                 }
+                console.log(list)
+
+                // for(var i=0; i<result.length; i++)
+                // {
+                //     data[result[i].dialogId._id] = result[i];
+                //
+                //     if(!summary[result[i].dialogId._id])
+                //         summary[result[i].dialogId._id] = {};
+                //
+                //     if(!summary[result[i].dialogId._id][result[i]._id.preDialogName])
+                //         summary[result[i].dialogId._id][result[i]._id.preDialogName] = 0;
+                //
+                //     summary[result[i].dialogId._id][result[i]._id.preDialogName] += result[i].count;
+                // }
+
+                // var list = [];
+                // for(var key in summary)
+                // {
+                //     var userInput = [];
+                //     var object = { input: data[key].dialogId.inputRaw.join('\n'), userInput: userInput };
+                //
+                //     var sum = 0;
+                //     for(var subkey in summary[key])
+                //     {
+                //         sum += summary[key][subkey];
+                //         userInput.push({ name : subkey, count: summary[key][subkey] });
+                //     }
+                //
+                //     userInput.sort(function(a, b)
+                //     {
+                //         return b.count - a.count;
+                //     });
+                //
+                //     object.sum = sum;
+                //
+                //     list.push(object);
+                //
+                //     var input = '';
+                //     for(var i=0; i<object.userInput.length; i++)
+                //     {
+                //         input += object.userInput[i].name + ':' + object.userInput[i].count + '\n';
+                //     }
+                //
+                //     excelData.push({ q: object.input, input: input, sum: sum});
+                // }
 
                 $scope.list = list;
 

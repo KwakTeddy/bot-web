@@ -78,44 +78,52 @@ module.exports.findSimiliars = function(req, res)
         }
 
         console.log('쿼리 : ', query);
-
-        DialogsetDialog.find(query).exec(function (err, result)
+        if(req.query.text)
         {
-            if (err)
+            DialogsetDialog.find(query).exec(function (err, result)
             {
-                return res.status(400).send({ message: err.stack || err });
-            }
-            else
-            {
-                var checkDuplicated = {};
-
-                var pureResult = [];
-                result = stripArray(result);
-                for (var i=0; i<result.length; i++)
+                if (err)
                 {
-                    var distance = getJarccardScore(req.query.text, result[i].inputRaw.toLowerCase());
-                    result[i]["distance"] = distance;
+                    return res.status(400).send({ message: err.stack || err });
                 }
-
-                result.sort(function(a, b)
+                else
                 {
-                    return b.distance - a.distance;
-                });
+                    console.log(result);
 
-                result.splice(10, result.length - 10);
+                    var checkDuplicated = {};
 
-                for(var i=0; i<result.length; i++)
-                {
-                    if(!checkDuplicated[result[i]._id])
+                    var pureResult = [];
+                    result = stripArray(result);
+                    for (var i=0; i<result.length; i++)
                     {
-                        checkDuplicated[result[i]._id] = true;
-                        pureResult.push(result[i]);
+                        var distance = getJarccardScore(req.query.text, result[i].inputRaw.toLowerCase());
+                        result[i]["distance"] = distance;
                     }
-                }
 
-                res.jsonp(JSON.parse(JSON.stringify(pureResult)));
-            }
-        });
+                    result.sort(function(a, b)
+                    {
+                        return b.distance - a.distance;
+                    });
+
+                    result.splice(10, result.length - 10);
+
+                    for(var i=0; i<result.length; i++)
+                    {
+                        if(!checkDuplicated[result[i]._id])
+                        {
+                            checkDuplicated[result[i]._id] = true;
+                            pureResult.push(result[i]);
+                        }
+                    }
+
+                    res.jsonp(JSON.parse(JSON.stringify(pureResult)));
+                }
+            });
+        }
+        else
+        {
+            res.jsonp();
+        }
     });
 };
 

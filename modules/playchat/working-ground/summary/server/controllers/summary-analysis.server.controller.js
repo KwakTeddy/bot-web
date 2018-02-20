@@ -253,9 +253,11 @@ exports.scenarioUsage = function (req, res)
         else
         {
             var result = {};
-            result["scenarioUsage"] = scenarioUsage;
-            result["botSenario"] = bot_js[req.params.botId];
-            res.jsonp(result);
+            bot_js.load(req.params.botId, function () {
+                result["scenarioUsage"] = scenarioUsage;
+                result["botScenario"] = bot_js.bots[req.params.botId].dialogs;
+                res.jsonp(result);
+            });
         }
     });
 };

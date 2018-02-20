@@ -10,7 +10,7 @@ module.exports.analysis = function(req, res)
     match.botId = req.params.botId;
     match.inOut = true;
     match.dialog = { $ne: null, $nin: [":reset user", ":build " + req.params.botId + " reset", ':build'] };
-    match.fail = true;
+    match.isFail = true;
     // match.channel = { $ne: 'socket' };
     match.clear = { $not: new RegExp(req.query.ignoreType) };
 
@@ -37,7 +37,7 @@ module.exports.analysis = function(req, res)
 
 module.exports.clear = function(req, res)
 {
-    UserDialog.update({ _id: req.params._id }, { $set: { clear: req.body.clear || 'qna|graph|intent'} }).exec(function(err, result)
+    UserDialog.update({ botId: req.params.botId, isFail: true, dialog: req.body.dialog}, { $set: { clear: req.body.clear || 'qna|graph|intent'} }, {multi: true}).exec(function(err, result)
     {
         if(err)
         {
