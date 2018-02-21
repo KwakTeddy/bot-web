@@ -1,54 +1,32 @@
-var Globals = require('./globals.js');
-
-(function()
-{
-    var Quibble = function()
-    {
-
-    };
-
-})();
-
 var randomQuibble = function(qs)
 {
     return qs[Math.floor(Math.random() * qs.length)];
 };
 
-function quibble(nlp, sentenceInfo)
+function quibbleProcess(quibbles, userInput)
 {
-    var quibbleSentence = quibbleProcess(globalQuibbles, nlp, sentenceInfo);
-
-    if(quibbleSentence)
-    {
-        return quibbleSentence;
-    }
-    else
-    {
-        return;
-    }
-}
-
-function quibbleProcess(quibbleScope, nlp, sentenceInfo)
-{
+    var nlp = userInput.nlp;
+    var inputRaw = userInput.text;
+    
     if(nlp == undefined)
     {
-        return randomQuibble(Globals.quibbles);
+        return randomQuibble(quibbles.quibbles);
     }
 
     var text = undefined;
-    if(quibbleScope.slangQuibbles)
+    if(quibbles.slangQuibbles)
     {
-        for(var j = 0; j < quibbleScope.slangQuibbles.condition.words.length; j++)
+        for(var j = 0; j < quibbles.slangQuibbles.condition.words.length; j++)
         {
             if(text)
             {
                 break;
             }
 
-            if(context.dialog.inRaw.indexOf(quibbleScope.slangQuibbles.condition.words[j]) != -1)
+            if(inputRaw.indexOf(quibbles.slangQuibbles.condition.words[j]) != -1)
             {
-                text = randomQuibble(quibbleScope.slangQuibbles.sentences);
-                console.log('quibble [욕설]: ' + JSON.stringify(quibbleScope.slangQuibbles));
+                text = randomQuibble(quibbles.slangQuibbles.sentences);
+                console.log('quibble [욕설]: ' + JSON.stringify(quibbles.slangQuibbles));
                 break;
             }
         }
@@ -59,7 +37,7 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
         return text;
     }
 
-    if(quibbleScope.nounQuibbles)
+    if(quibbles.nounQuibbles)
     {
         for(var i = 0; i < nlp.length; i++)
         {
@@ -71,9 +49,9 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
             var token = nlp[i];
             if(token.pos == 'Noun')
             {
-                for(var j = 0; j < quibbleScope.nounQuibbles.length; j++)
+                for(var j = 0; j < quibbles.nounQuibbles.length; j++)
                 {
-                    var q = quibbleScope.nounQuibbles[j];
+                    var q = quibbles.nounQuibbles[j];
                     if(token.text == q.condition.word)
                     {
                         text = randomQuibble(q.sentences);
@@ -90,7 +68,7 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
         return text;
     }
 
-    if(quibbleScope.verbQuibbles)
+    if(quibbles.verbQuibbles)
     {
         for(var i = 0; i < nlp.length; i++)
         {
@@ -102,9 +80,9 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
             var token = nlp[i];
             if(token.pos == 'Verb' || token.pos == 'Adjective')
             {
-                for(var j = 0; j < quibbleScope.verbQuibbles.length; j++)
+                for(var j = 0; j < quibbles.verbQuibbles.length; j++)
                 {
-                    var q = quibbleScope.verbQuibbles[j];
+                    var q = quibbles.verbQuibbles[j];
                     if(q.condition.word == token.text)
                     {
                         if(q.condition.questionWord && q.condition.questionWord != 'yesno')
@@ -146,7 +124,7 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
         return text;
     }
 
-    if(quibbleScope.sentenceQuibbles)
+    if(quibbles.sentenceQuibbles)
     {
         for(var i = 0; i < nlp.length; i++)
         {
@@ -156,9 +134,9 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
             }
 
             var token = nlp[i];
-            for(var j = 0; j < quibbleScope.sentenceQuibbles.length; j++)
+            for(var j = 0; j < quibbles.sentenceQuibbles.length; j++)
             {
-                var q = quibbleScope.sentenceQuibbles[j];
+                var q = quibbles.sentenceQuibbles[j];
                 if((q.condition.questionWord == undefined || q.condition.questionWord == token.text) &&
                    (q.condition.tenseType == undefined || sentenceInfo.tenseType == undefined || q.condition.tenseType == sentenceInfo.tenseType) &&
                    (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType) &&
@@ -176,11 +154,11 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
         return text;
     }
 
-    console.log('quibble [최종]: ' + JSON.stringify(quibbleScope.quibbles, null, 2));
+    console.log('quibble [최종]: ' + JSON.stringify(quibbles.quibbles, null, 2));
 
-    if(quibbleScope.quibbles)
+    if(quibbles.quibbles)
     {
-        return randomQuibble(quibbleScope.quibbles);
+        return randomQuibble(quibbles.quibbles);
     }
     else
     {
@@ -188,4 +166,4 @@ function quibbleProcess(quibbleScope, nlp, sentenceInfo)
     }
 }
 
-exports.quibble = quibble;
+exports.quibble = quibbleProcess;

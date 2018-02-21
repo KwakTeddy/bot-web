@@ -192,7 +192,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             // DialogGraph.refresh();
             DialogGraph.reloadDialog(result);
-            DialogGraph.setDirty(true);
+            DialogGraph.setDirty(true, $scope.currentFileName);
             DialogGraph.refreshLine();
             // DialogGraph.focusById(result.id);
 
@@ -297,6 +297,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     DialogGraphEditor.setOpenCallback(function(parent, dialog)
     {
+        $scope.currentFileName = $location.search().fileName || 'default.graph.js';
         $scope.controlDialogFlow = false;
 
         $scope.commonDialogs = DialogGraph.getCommonDialogs();

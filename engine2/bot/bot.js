@@ -30,7 +30,11 @@ var Dialogset = mongoose.model('Dialogset');
             hybrid: {
                 use: false
             },
-            dialogsetMinMatchRate: 0.5
+            dialogsetMinMatchRate: 0.5,
+            intentMinMatchRate: 0.5,
+            quibbles: {
+                use: false
+            }
         };
         this.dialogMap = {};
         this.parentDialogMap = {};

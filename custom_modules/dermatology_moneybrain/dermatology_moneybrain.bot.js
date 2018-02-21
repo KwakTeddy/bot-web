@@ -6,4 +6,9 @@ module.exports = function(options)
             type:"buttons",buttons:["대화 시작"]
         }
     };
+
+    options.quibbles = {
+        use: true,
+        data: require('./quibbles.js')
+    }
 };
