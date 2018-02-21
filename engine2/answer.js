@@ -11,6 +11,7 @@ var ContextManager = require('./context.js');
 var OutputManager = require('./output.js');
 var QNAManager = require('./answer/qa.js');
 var DialogGraphManager = require('./answer/dm.js');
+var QuibbleManager = require('./answer/quibble.js');
 
 var Logger = require('./logger.js');
 
@@ -190,12 +191,29 @@ var Logger = require('./logger.js');
                         }
                         else
                         {
-                            console.log();
-                            console.log(chalk.yellow('[[[ No Answer ]]]'));
+                            var quibble = undefined;
+                            if(bot.options.quibbles.use)
+                            {
+                                quibble = QuibbleManager.quibble(bot.options.quibbles.data, userInput);
+                            }
 
-                            var dialog = bot.dialogMap['noanswer'];
-                            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
-                            callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
+                            if(quibble)
+                            {
+                                console.log();
+                                console.log(chalk.yellow('[[[ Quibble ]]]'));
+
+                                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, '', '', previousDialog.id, previousDialog.name, true, 'dialog');
+                                callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
+                            }
+                            else
+                            {
+                                console.log();
+                                console.log(chalk.yellow('[[[ No Answer ]]]'));
+
+                                var dialog = bot.dialogMap['noanswer'];
+                                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
+                                callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
+                            }
                         }
                     });
                 }
@@ -219,18 +237,41 @@ var Logger = require('./logger.js');
                 }
                 else
                 {
-                    console.log();
-                    console.log(chalk.yellow('[[[ No Answer ]]]'));
-
-                    var currentDialog = context.session.history[0];
-                    if(!currentDialog)
+                    var quibble = undefined;
+                    if(bot.options.quibbles.use)
                     {
-                        currentDialog = {};
+                        quibble = QuibbleManager.quibble(bot.options.quibbles.data, userInput);
                     }
 
-                    var dialog = bot.dialogMap['noanswer'];
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, (typeof dialog.output == 'string' ? dialog.output : dialog.output[0].text), dialog.id, dialog.name, currentDialog.id, currentDialog.name, true, 'dialog');
-                    callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
+                    if(quibble)
+                    {
+                        console.log();
+                        console.log(chalk.yellow('[[[ Quibble ]]]'));
+
+                        var currentDialog = context.session.history[0];
+                        if(!currentDialog)
+                        {
+                            currentDialog = {};
+                        }
+
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, '', '', currentDialog.id, currentDialog.name, true, 'dialog');
+                        callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
+                    }
+                    else
+                    {
+                        console.log();
+                        console.log(chalk.yellow('[[[ No Answer ]]]'));
+
+                        var currentDialog = context.session.history[0];
+                        if(!currentDialog)
+                        {
+                            currentDialog = {};
+                        }
+
+                        var dialog = bot.dialogMap['noanswer'];
+                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, (typeof dialog.output == 'string' ? dialog.output : dialog.output[0].text), dialog.id, dialog.name, currentDialog.id, currentDialog.name, true, 'dialog');
+                        callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
+                    }
                 }
             });
         }
