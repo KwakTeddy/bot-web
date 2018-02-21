@@ -4594,6 +4594,59 @@ var dialogs = [
                 "id": "default271"
             },
             {
+                "name": "병동",
+                "input": [
+                    {
+                        "text": {
+                            "raw": " ",
+                            "nlp": ""
+                        },
+                        "intent": "병동"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "아산병원에 있는 병동 리스트입니다.\n\n72~76병동\n81~86병동\n91~96병동\n101~106병동\n111~116병동\n121,123~126병동\n133~136병동\n143~146병동\n153~156병동\n163,164병동\n173,174병동\n183,184병동\n\n다음 중 어떤 병동을 찾으시나요?"
+                    }
+                ],
+                "id": "default273",
+                "task": {
+                    "name": ""
+                },
+                "children": [
+                    {
+                        "name": "병동찾기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": " 병동",
+                                    "nlp": "병동"
+                                },
+                                "regexp": "[0-9]*"
+                            },
+                            {
+                                "text": {
+                                    "raw": " 병동이 어디에요?",
+                                    "nlp": "병동 이 어디 에요"
+                                },
+                                "regexp": "[0-9]*"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "찾았다"
+                            }
+                        ],
+                        "task": {
+                            "name": "DongTask"
+                        },
+                        "id": "default285"
+                    }
+                ]
+            },
+            {
                 "name": "단기병동",
                 "input": [
                     {
@@ -4620,24 +4673,6 @@ var dialogs = [
                     }
                 ],
                 "id": "default272"
-            },
-            {
-                "name": "병동",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "병동",
-                            "nlp": "병동"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "태스크로 해야함"
-                    }
-                ],
-                "id": "default273"
             },
             {
                 "name": "방사선종양학과",
@@ -4924,18 +4959,22 @@ var dialogs = [
                 "input": [
                     {
                         "text": {
-                            "raw": "세미나실",
+                            "raw": " 세미나실",
                             "nlp": "세미나 실"
-                        }
+                        },
+                        "regexp": "[0-9]+"
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "태스크 처리"
+                        "text": "처리완료"
                     }
                 ],
-                "id": "default284"
+                "id": "default284",
+                "task": {
+                    "name": "SeminarTask"
+                }
             },
             {
                 "name": "당뇨합병증검사실",
@@ -8694,6 +8733,30 @@ var dialogs = [
                     "raw": "입원안내",
                     "nlp": "입원 안내"
                 }
+            },
+            {
+                "text": {
+                    "raw": "서류발급",
+                    "nlp": "서류 발급"
+                }
+            },
+            {
+                "text": {
+                    "raw": "입원 안내",
+                    "nlp": "입원 안내"
+                }
+            },
+            {
+                "text": {
+                    "raw": "서류 발급",
+                    "nlp": "서류 발급"
+                }
+            },
+            {
+                "text": {
+                    "raw": "입원",
+                    "nlp": "입원"
+                }
             }
         ],
         "output": [
@@ -10978,7 +11041,10 @@ var dialogs = [
                     }
                 ]
             }
-        ]
+        ],
+        "task": {
+            "name": "OrTask"
+        }
     }
 ];
 
