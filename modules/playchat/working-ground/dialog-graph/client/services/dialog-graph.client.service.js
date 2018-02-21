@@ -1302,7 +1302,6 @@
         var tempIdCount = new Date().getTime();
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
-            parent = angular.element(parent);
             if(!dialog.id)
             {
                 dialog.id = 'default' + tempIdCount;
@@ -1862,15 +1861,8 @@
             {
                 this.idList = {};
                 this.canvas.html('');
-
-                var fragment = document.createDocumentFragment();
-
-                this.drawDialog(fragment, this.graphData);
-
-                this.drawLines(angular.element(fragment).find('.graph-dialog'));
-
-                this.canvas.get(0).appendChild(fragment);
-
+                this.drawDialog(this.canvas, this.graphData);
+                this.drawLines(this.canvas.find('.graph-dialog'));
                 if(this.focusedDialog)
                 {
                     this.focusById(this.focusedDialog);
