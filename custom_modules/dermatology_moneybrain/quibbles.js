@@ -178,7 +178,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                words: [ "ㅎㅎ","ㅋㅋ","ㅋㅋㅋ","ㅎㅎㅎ"]
+                words: [ "ㅎㅎ","ㅋㅋ","ㅋㅋㅋ","ㅎㅎ"]
             },
         sentences:
             [
