@@ -208,7 +208,16 @@ var ContextManager = require('../context.js');
                         {
                             var match = rawText.match(regexp);
 
-                            userInput.regexp = match;
+                            var list = [];
+                            for(var i=0; i<match.length; i++)
+                            {
+                                if(match[i])
+                                {
+                                    list.push(match[i]);
+                                }
+                            }
+
+                            userInput.regexp = list;
 
                             result = result && true;
                         }
