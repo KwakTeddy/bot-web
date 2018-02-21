@@ -18,7 +18,8 @@ var utils = require('./utils/utils.js');
             history: [],
             currentDialog: undefined,
             returnDialog: undefined,
-            dialogCursor: undefined
+            dialogCursor: undefined,
+            previousDialogCursor: undefined
         };
 
         return context;

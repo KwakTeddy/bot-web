@@ -175,11 +175,10 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-		    console.log(dialog)
-            // if(dialog.data.test)
-            //     dialog.data.test = false;
-            // else
-            //     dialog.data.test = true;
+            if(context.session.test)
+                context.session.test = false;
+            else
+                context.session.test = true;
 			callback();
 		}
 	});

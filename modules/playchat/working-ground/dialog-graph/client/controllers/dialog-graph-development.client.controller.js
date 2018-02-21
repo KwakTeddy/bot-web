@@ -303,11 +303,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('.graph-body .dialog-graph-error').remove();
                 angular.element('#graphDialogCanvas').html('');
 
-                console.log('하핫 : ', result);
                 if(result && result.dialogs && result.commonDialogs)
                 {
                     //최초 로딩한거 history에 넣어둠.
-                    $scope.graphHistory.push(result);
+                    $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
                     $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
                     var result = DialogGraph.loadFromFile(result, fileName);
@@ -496,21 +495,27 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 //저장할때마다 history 업데이트
                 $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);
 
-                $scope.graphHistory.push(data);
-                $scope.graphHistoryIndex = $scope.graphHistory.length-1;
-
-                DialogGraph.setDirty(false);
-
-                if($scope.fromFailedDialog && $scope.failedDialogSaved)
+                GraphFileService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
                 {
-                    FailedDialogService.update({ botId: chatbot._id, _id: $location.search().userDialogId }, function()
+                    if(result && result.dialogs && result.commonDialogs)
                     {
-                    },
-                    function(err)
-                    {
-                        alert(err.data.error || err.data.message);
-                    });
-                }
+                        $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
+                        $scope.graphHistoryIndex = $scope.graphHistory.length-1;
+
+                        DialogGraph.setDirty(false);
+
+                        if($scope.fromFailedDialog && $scope.failedDialogSaved)
+                        {
+                            FailedDialogService.update({ botId: chatbot._id, _id: $location.search().userDialogId }, function()
+                            {
+                            },
+                            function(err)
+                            {
+                                alert(err.data.error || err.data.message);
+                            });
+                        }
+                    }
+                });
 
                 // $rootScope.$broadcast('simulator-build-without-reset-focus');
 
