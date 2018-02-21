@@ -56,9 +56,7 @@ var ContextManager = require('../context.js');
     {
         context.session.history.splice(0, 1);
 
-        var last = context.session.history[0];
-
-        var parent = bot.parentDialogMap[last.id];
+        var parent = bot.parentDialogMap[context.session.previousDialogCursor];
         if(parent)
         {
             context.session.dialogCursor = parent.id;
@@ -141,8 +139,9 @@ var ContextManager = require('../context.js');
 
     ActionManager.prototype.callChild = function(bot, context, dialogInstance, resultOutput, callback)
     {
+        var that = this;
         var dialog = bot.dialogMap[resultOutput.dialogId];
-        this.dm.findDialog(bot, context, dialogInstance.userInput, dialogInstance.userInput.intents, dialogInstance.userInput.entities, dialog.children, function(err, matchedDialog)
+        this.dm.findDialog(bot, context, dialogInstance.userInput, dialogInstance.userInput.intents, dialogInstance.userInput.entities, dialog.children, function(matchedDialog)
         {
             context.session.dialogCursor = dialog.id;
 
@@ -153,12 +152,14 @@ var ContextManager = require('../context.js');
                 console.log(matchedDialog.id);
 
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
-                tempDialogInstance.options = this.makeOption(resultOutput);
+                tempDialogInstance.options = that.makeOption(resultOutput);
 
                 // dialogInstance.nextCall = tempDialogInstance;
                 // tempDialogInstance.prevCall = dialogInstance;
 
-                this.dm.exec(bot, context, tempDialogInstance, callback);
+                context.session.dialogCursor = tempDialogInstance.id;
+
+                that.dm.exec(bot, context, tempDialogInstance, callback);
             }
             else
             {

@@ -503,6 +503,7 @@ var ContextManager = require('../context.js');
         }
 
         context.session.history.splice(0, 0, dialogInstance);
+        context.session.previousDialogCursor = context.session.dialogCursor;
         context.session.dialogCursor = dialogInstance.id;
 
         this.exec(bot, context, dialogInstance, callback);
