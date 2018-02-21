@@ -449,7 +449,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "1. if(변수) 테스트\n->dialog.data.test에 값 입력\n\n2. if(true) 테스트\n-> 아무거나 입력"
+                        "text": "1. if(변수) 테스트\n->context.session.test에 값 입력\n\n2. if(true) 테스트\n-> 아무거나 입력"
                     }
                 ],
                 "id": "default4",
@@ -476,7 +476,7 @@ var dialogs = [
                         "name": "입력 조건 _ 사용자 인증",
                         "input": [
                             {
-                                "if": "dialog.data.test"
+                                "if": "context.session.test"
                             }
                         ],
                         "output": [
@@ -504,7 +504,10 @@ var dialogs = [
                         ],
                         "id": "default7"
                     }
-                ]
+                ],
+                "task": {
+                    "name": "setTestVar"
+                }
             },
             {
                 "name": "input_variable",
@@ -765,7 +768,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "1. if("
+                        "text": "1. if(context.channel.name == 'socket')\n\n2. if(context.channel.name == 'kakao')"
                     }
                 ],
                 "id": "default423",
@@ -793,9 +796,10 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "소켓 구현",
-                                    "nlp": "소켓 구현"
-                                }
+                                    "raw": " ",
+                                    "nlp": ""
+                                },
+                                "if": "context.channel.name == 'socket'"
                             }
                         ],
                         "output": [
@@ -816,9 +820,10 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "카카오 구현",
-                                    "nlp": "카카오 구현"
-                                }
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "context.channel.name == 'kakao'"
                             }
                         ],
                         "output": [
@@ -1438,505 +1443,77 @@ var dialogs = [
         "id": "default97",
         "children": [
             {
-                "name": "task_api",
+                "name": "함수 구현 _ API",
                 "input": [
                     {
                         "text": {
-                            "raw": "15",
-                            "nlp": "15"
+                            "raw": "1",
+                            "nlp": "1"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "task_api"
+                        "text": "API를 실행했습니다.\n\nAPI의 결과는 아래와 같습니다.\n\n#context.session.movieData.items#\n+index+.\n+title+\n\n#"
                     }
                 ],
-                "id": "default673",
-                "children": [
-                    {
-                        "name": "함수 기능",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "함수 기능",
-                                    "nlp": "함수 기능"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수는 챗봇 답변이 실행 되기 전 자바스크립트(Java Script)를 이용해 다양한 테스크(TASK)를 처리하는 기능입니다. \n \n예를 들어, 답변 전 실행함수에서 api함수를 만들어 외부 서버의 API를 이용할 수 있습니다.\n\n답변 전 실행 함수 입력 창에 포커스 되면 함수 가이드가 실행됩니다.\n\ndefault.js 파일에 함수를 만듭니다.\n\nAPI 이용에 대한 자세한 설명을 원하시면 아래 버튼을 눌러주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "함수 구조 설명"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "API 이용 설명"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default68",
-                        "children": [
-                            {
-                                "name": "함수 구조 설명",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "함수 구조 설명",
-                                            "nlp": "함수 구조 설명"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "함수의 구조는 다음과 같습니다.\n\nvar testTask = \n{\n\n       action: function (task, context, callback) \n{\n\n\t\t\t//함수 기능  코드 삽입\n\n\t\t    callback(task, context)\n}\n\n}\n\ntestTask라는 변수(var)에 객체(예시 : {key: value})를 넣습니다. \n\ntestTask 객체의 경우 key가 action이고 value가 함수입니다. \n\n함수는 task, context, callback을 매개변수로 받습니다.\n\n1. task\n\ntask에는 함수에 대한 정보가 들어 있으며, 챗봇 답변의 텍스트, 버튼, 이미지를 조작할 수 있습니다.\n\n2. context\n\ncontext에는 사용자에 대한 정보(context.user), 챗봇에 대한 정보(context.bot), 사용자의 입력값에 대한 정보(context.dialog) 등이 들어있습니다.\n\n3. callback\n\ncallback은 해당 함수를 끝내는 기능을 가지기 때문에, 함수의 기능이 끝난 지점에 위치시킵니다.\n\n//함수 기능 코드 삽입 부분에서 task, context, callback 매개변수를 이용하여 원하는 기능을 구현합니다.",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "함수 파라미터 task 구체적 설명"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "함수 파라미터 context 구체적 설명"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "함수 파라미터 callback 구체적 설명"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default69",
-                                "children": [
-                                    {
-                                        "name": "함수 파라미터 task",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "함수 파라미터 task 구체 설명",
-                                                    "nlp": "함수 파라미터 task 구체 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "함수 파라미터 task에는 해당 함수에 대한 정보가 들어옵니다.\n\n또한 task 파라미터를 통해서 '챗봇 답변'의 텍스트, 이미지, 버튼을 동적으로 조작할 수 있습니다.\n\n1, 텍스트 동적 조작\n\ntask.output = '제 이름은' + context.bot.botName + '입니다.'\n\n챗봇 답변의 텍스트가 동적으로 조작됩니다.\n\n2, 이미지 조작\n\ntask.image = {url: 'http://moneybrain.ai/img/dark-logo.jpg'}\n\n챗봇 답변의 이미지가 해당 url의 이미지로 변경됩니다.\n\n3, 버튼  조작\n\ntask.buttons = [{text : '버튼1'}, {text: '버튼2', url: 'http://map.naver.com'}]\n\n챗봇 답변의 버튼이 해당 버튼들로 변경됩니다."
-                                            }
-                                        ],
-                                        "id": "default70"
-                                    },
-                                    {
-                                        "name": "함수 파라미터 context",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "함수 파라미터 context 구체 설명",
-                                                    "nlp": "함수 파라미터 context 구체 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "함수 파라미터 context에는 챗봇 정보, 사용자 정보, 대화 정보 등이 담겨 있습니다.\n\n1, 챗봇 정보\n\ncontext.bot = \n{\n\t    botName: \"playchat\",\n\t    description: \"playchat 봇입니다.\"\n\t    using: true,\n            ....\n}\ncontext.bot.botName과 같은 형태로 해당 값에 접근할 수 있습니다.\n\n2, 사용자 정보\n\ncontext.user = \n{\nuserKey:\"5a4d91842b7a1e41079c0d9a\",\n            ....\n}\ncontext.user.userKey와 같은 형태로 해당 값에 접근할 수 있습니다.\n\n3, 채널 정보\n\ncontext.channel = \n{\n\t\tname: \"kakao\",\n\t\t...\n}\n\ncontext.channel.name와 같은 형태로 해당 값에 접근할 수 있습니다.\n\n4, 대화 정보\n\ncontext.dialog = \n{\n\t\tinNLP = \"반갑다\",\n\t\tinRaw = \"반갑스무니다\",\n\t\tinCurRaw = \"반갑스무니다\",\n\t\t...\n}\ncontext.dialog.inRaw와 같은 형태로 해당 값에 접근할 수 있습니다.\n\ninRaw는 자연어 처리되기 전 사용자의 입력 값이고, inNLP는 자연어 처리된 사용자의 입력 값입니다."
-                                            }
-                                        ],
-                                        "id": "default71"
-                                    },
-                                    {
-                                        "name": "함수 파라미터 callback",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "함수 파라미터 callback 구체 설명",
-                                                    "nlp": "함수 파라미터 callback 구체 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "함수 파라미터 callback은 실행될 경우 해당 기능 함수가 종료됩니다.\n\n따라서 해당 기능 함수의 로직이 끝난 다음에 실행되어야 합니다.\n\ncallback에 대한 더 자세한 이해를 원하시는 분은 자바스크립트(Java Script) callback 개념을 살펴보시기 바랍니다.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "https://opentutorials.org/course/743/6508",
-                                                        "text": "자바스크립트 Callback 이해하기"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default72"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "API 구현 설명",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "API 이용 설명",
-                                            "nlp": "API 이용 설명"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "API 이용을 위해서는 한 가지 자바스크립트(Node.js) 모듈을 이용합니다.\n\n모듈을 이용하기 위해서는 default.js 파일의 최상단에 다음을 추가합니다.\n\nvar request = require('request')\n\nrequest라는 모듈을 require하여 request 라는 변수(var)에 넣는 것입니다.\n\nrequest 모듈을 이용해 사용하고자 하는 API에 http 요청을 보내 결과 값을 가져옵니다.\n\nvar client_id = 'tXRaAWut2_2R5OkcLpLQ'\n\nvar client_secret = 'TaU4yqU4fI'\n\nvar api_url = 'https://openapi.naver.com/v1/search/movie.json'\n\nvar options = \n{\n            method : \"GET\",\n            url : api_url,\n            headers : {'X-Naver-Client-Id' : client_id, 'X-Naver-Client-Secret' : client_secret},\n            qs: { query: '사건'}\n}\n\nrequest(options, \nfunction(err, response, body)\n{\n//body에 들어온 정보를 이용해 코드 구성\n}\n)\n\n결과 값을 context.dialog.apiResult에 담습니다.\n\ncontext.dialog.apiResult = body\n\n위의 예시는 네이버 API 중 영화 검색 API를 이용해 '사건'을 검색한 것입니다.",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "request 모듈 설명"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "API 이용 설명"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default73",
-                                "children": [
-                                    {
-                                        "name": "request 모듈 설명",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "request 모듈 설명",
-                                                    "nlp": "request 모듈 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "request 모듈은 http 요청을 외부 서버에 간단하게 보내게 해주는 모듈입니다.\n\n사용법은 request(option, callback함수)입니다.\n\n1. option\nrequest함수의 option 매개 변수는 http 요청의 구체적 내용을 설정하는 것입니다.\n\n예시.\nvar option = \n{\nmethod: 'GET',\nurl: 'https://playchat.ai',\n}\n\noption 란에 url을 단순히 입력할시 method는 GET으로 설정됩니다.\n\n2. callback 함수\n\nrequest함수의 callback함수 매개 변수는 http 요청 이후의 결과를 받는 함수입니다.\n\nfuction(err, response, body)\n{\n\n}\n\ncallback함수의 err 매개변수는 만약 http 요청이 오류가 났을 시에 값이 담겨 옵니다.\n\ncallback함수의 response 매개변수는 http 요청의 서버 반응 값들이 담겨 옵니다.\n\nbody의 결과 값을 이용해 원하는 조작을 하면 됩니다.\n\ncallback함수의 body 매개변수는 http 요청의 결과 값이 담겨 옵니다."
-                                            }
-                                        ],
-                                        "id": "default74"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "함수 구현 _ API",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "api",
-                                    "nlp": "api"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "API를 실행했습니다.\n\nAPI의 결과는 아래와 같습니다.\n\n#context.session.movieData.items#\n+index+.\n+title+\n\n#"
-                            }
-                        ],
-                        "task": {
-                            "name": "api"
-                        },
-                        "id": "default75"
-                    }
-                ]
+                "task": {
+                    "name": "api"
+                },
+                "id": "default75"
             },
             {
-                "name": "task_crawling",
+                "name": "함수 구현 _ 크롤링",
                 "input": [
                     {
                         "text": {
-                            "raw": "16",
-                            "nlp": "16"
+                            "raw": "2",
+                            "nlp": "2"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "task_crawling"
+                        "text": "크롤링이 실행됐습니다.\n\n크롤링의 결과는 아래와 같습니다.\n\n+context.session.crawlingResult+"
                     }
                 ],
-                "id": "default765",
-                "children": [
-                    {
-                        "name": "함수 기능",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "함수 기능",
-                                    "nlp": "함수 기능"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수는 챗봇 답변이 실행 되기 전 자바스크립트(Java Script)를 이용해 다양한 테스크(TASK)를 처리하는 기능입니다. \n \n예를 들어, 답변 전 실행함수에 crawling함수를 만들어 특정한 인터넷 상의 페이지를 크롤링할 수 있습니다.\n\n답변 전 실행 함수 입력 창에 포커스 되면 함수 가이드가 실행됩니다.\n\ndefault.js 파일에 함수를 만듭니다.\n\n크롤링 구현에 대한 자세한 설명을 원하시면 아래 버튼을 눌러주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "함수 구조 설명"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "크롤링 구현 설명"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default77",
-                        "children": [
-                            {
-                                "name": "함수 구조 설명",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "함수 구조 설명",
-                                            "nlp": "함수 구조 설명"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "함수의 구조는 다음과 같습니다.\n\nvar testTask = \n{\n\n       action: function (task, context, callback) \n{\n\n\t\t\t//함수 기능  코드 삽입\n\n\t\t    callback(task, context)\n}\n\n}\n\ntestTask라는 변수(var)에 객체(예시 : {key: value})를 넣습니다. \n\ntestTask 객체의 경우 key가 action이고 value가 함수입니다. \n\n함수는 task, context, callback을 매개변수로 받습니다.\n\n1. task\n\ntask에는 함수에 대한 정보가 들어 있으며, 챗봇 답변의 텍스트, 버튼, 이미지를 조작할 수 있습니다.\n\n2. context\n\ncontext에는 사용자에 대한 정보(context.user), 챗봇에 대한 정보(context.bot), 사용자의 입력값에 대한 정보(context.dialog) 등이 들어있습니다.\n\n3. callback\n\ncallback은 해당 함수를 끝내는 기능을 가지기 때문에, 함수의 기능이 끝난 지점에 위치시킵니다.\n\n//함수 기능 코드 삽입 부분에서 task, context, callback 매개변수를 이용하여 원하는 기능을 구현합니다.",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "함수 파라미터 task 구체적 설명"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "함수 파라미터 context 구체적 설명"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "함수 파라미터 callback 구체적 설명"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default78",
-                                "children": [
-                                    {
-                                        "name": "함수 파라미터 task",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "함수 파라미터 task 구체 설명",
-                                                    "nlp": "함수 파라미터 task 구체 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "함수 파라미터 task에는 해당 함수에 대한 정보가 들어옵니다.\n\n또한 task 파라미터를 통해서 '챗봇 답변'의 텍스트, 이미지, 버튼을 동적으로 조작할 수 있습니다.\n\n1, 텍스트 동적 조작\n\ntask.output = '제 이름은' + context.bot.botName + '입니다.'\n\n챗봇 답변의 텍스트가 동적으로 조작됩니다.\n\n2, 이미지 조작\n\ntask.image = {url: 'http://moneybrain.ai/img/dark-logo.jpg'}\n\n챗봇 답변의 이미지가 해당 url의 이미지로 변경됩니다.\n\n3, 버튼  조작\n\ntask.buttons = [{text : '버튼1'}, {text: '버튼2', url: 'http://map.naver.com'}]\n\n챗봇 답변의 버튼이 해당 버튼들로 변경됩니다."
-                                            }
-                                        ],
-                                        "id": "default79"
-                                    },
-                                    {
-                                        "name": "함수 파라미터 context",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "함수 파라미터 context 구체 설명",
-                                                    "nlp": "함수 파라미터 context 구체 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "함수 파라미터 context에는 챗봇 정보, 사용자 정보, 대화 정보 등이 담겨 있습니다.\n\n1, 챗봇 정보\n\ncontext.bot = \n{\n\t    botName: \"playchat\",\n\t    description: \"playchat 봇입니다.\"\n\t    using: true,\n            ....\n}\ncontext.bot.botName과 같은 형태로 해당 값에 접근할 수 있습니다.\n\n2, 사용자 정보\n\ncontext.user = \n{\nuserKey:\"5a4d91842b7a1e41079c0d9a\",\n            ....\n}\ncontext.user.userKey와 같은 형태로 해당 값에 접근할 수 있습니다.\n\n3, 채널 정보\n\ncontext.channel = \n{\n\t\tname: \"kakao\",\n\t\t...\n}\n\ncontext.channel.name와 같은 형태로 해당 값에 접근할 수 있습니다.\n\n4, 대화 정보\n\ncontext.dialog = \n{\n\t\tinNLP = \"반갑다\",\n\t\tinRaw = \"반갑스무니다\",\n\t\tinCurRaw = \"반갑스무니다\",\n\t\t...\n}\ncontext.dialog.inRaw와 같은 형태로 해당 값에 접근할 수 있습니다.\n\ninRaw는 자연어 처리되기 전 사용자의 입력 값이고, inNLP는 자연어 처리된 사용자의 입력 값입니다."
-                                            }
-                                        ],
-                                        "id": "default80"
-                                    },
-                                    {
-                                        "name": "함수 파라미터 callback",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "함수 파라미터 callback 구체 설명",
-                                                    "nlp": "함수 파라미터 callback 구체 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "함수 파라미터 callback은 실행될 경우 해당 기능 함수가 종료됩니다.\n\n따라서 해당 기능 함수의 로직이 끝난 다음에 실행되어야 합니다.\n\ncallback에 대한 더 자세한 이해를 원하시는 분은 자바스크립트(Java Script) callback 개념을 살펴보시기 바랍니다.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "https://opentutorials.org/course/743/6508",
-                                                        "text": "자바스크립트 Callback 이해하기"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default81"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "크롤링 구현 설명",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "크롤 링 구현 설명",
-                                            "nlp": "크롤 링 구현 설명"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "크롤링을 위해서는 두 가지 자바스크립트(Node.js) 모듈을 이용합니다.\n\n모듈을 이용하기 위해서는 default.js 파일의 최상단에 다음을 추가합니다.\n\nvar request = require('request')\nvar cheerio = require('cheerio')\n\nrequest라는 모듈을 require하여 request 라는 변수(var)에 넣는 것입니다.\n\nrequest 모듈을 이용해 크롤링 원하는 URL의 html 파일을 가져오면, 그 값이 body에 담깁니다.\n\nrequest(url, \nfunction(err, response, body)\n{\n//body에 들어온 정보를 이용해 코드 구성\n}\n)\n\ncheerio 모듈을 이용해 body에 담긴 html 파일을 로드하고, 크롤링하기 원하는 부분을 선택하며, 이를 문자열로 바꿔 결과값을 얻습니다.\nvar $ = cheerio.load(body)\nvar selector = '#content > div.section.invest_trend > div:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(2) > em'\nvar result = $(selector).text()\n\n결과 값을 context.dialog.crawlingResult에 담습니다.\n\ncontext.dialog.crawlingResult = result",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "request 모듈 설명"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "cheerio 모듈 설명"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default82",
-                                "children": [
-                                    {
-                                        "name": "request 모듈 설명",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "request 모듈 설명",
-                                                    "nlp": "request 모듈 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "request 모듈은 http 요청을 외부 서버에 간단하게 보내게 해주는 모듈입니다.\n\n사용법은 request(option, callback함수)입니다.\n\n1. option\nrequest함수의 option 매개 변수는 http 요청의 구체적 내용을 설정하는 것입니다.\n\n예시.\nvar option = \n{\nmethod: 'GET',\nurl: 'https://playchat.ai',\n}\n\noption 란에 url을 단순히 입력할시 method는 GET으로 설정됩니다.\n\n2. callback 함수\n\nrequest함수의 callback함수 매개 변수는 http 요청 이후의 결과를 받는 함수입니다.\n\nfuction(err, response, body)\n{\n\n}\n\ncallback함수의 err 매개변수는 만약 http 요청이 오류가 났을 시에 값이 담겨 옵니다.\n\ncallback함수의 response 매개변수는 http 요청의 서버 반응 값들이 담겨 옵니다.\n\nbody의 결과 값을 이용해 원하는 조작을 하면 됩니다.\n\ncallback함수의 body 매개변수는 http 요청의 결과 값이 담겨 옵니다."
-                                            }
-                                        ],
-                                        "id": "default83"
-                                    },
-                                    {
-                                        "name": "cheerio 모듈 설명",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "cheerio 모듈 설명",
-                                                    "nlp": "cheerio 모듈 설명"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "cheerio 모듈을 이용해 html 파일을 로드하고, 크롤링하기 원하는 부분을 선택하며, 이를 문자열로 바꿔 결과값을 얻습니다.\n\n1. html 파일 로드\n\nvar $ = cheerio.load(body)\n\nrequest 모듈을 통해 얻은 body(html 파일)을 cheerio 모듈을 이용해 로드한 후 $라는 변수에 넣습니다.\n\n2. 특정 부분 선택\n\nvar selector = '#content > div.section.invest_trend > div:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(2) > em'\n\n웹 페이지에서 마우스 오른쪽 버튼 클릭 -> 검사 -> 개발자 도구 Elements창에서 원하는 부분 오른쪽 클릭 -> Copy -> Copy selector 하시면 해당 부분의 selector가 복사 됩니다.\n\n3. 문자열로 변환 후 결과 값\n\nvar result = $(selector).text()\n\nhtml 파일을 로드한 $변수에 selector 매개변수를 넣어 실행하고, 이를 텍스트로 바꾸는 함수를 연달아 시행해 그 결과값을 result 변수에 넣습니다.\n\n더 자세한 설명을 원하시면 아래의 버튼을 눌러주세요.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "https://cheerio.js.org/",
-                                                        "text": "cheerio 모듈 설명"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default84"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "함수 구현 _ 크롤링",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "크롤 링",
-                                    "nlp": "크롤 링"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "크롤링이 실행됐습니다.\n\n크롤링의 결과는 아래와 같습니다.\n\n+context.session.crawlingResult+"
-                            }
-                        ],
-                        "task": {
-                            "name": "crawling"
-                        },
-                        "id": "default85",
-                        "children": []
-                    }
-                ]
+                "task": {
+                    "name": "crawling"
+                },
+                "id": "default85",
+                "children": []
             },
             {
                 "name": "태스크 파라미터",
                 "input": [
                     {
                         "text": {
-                            "raw": "18",
-                            "nlp": "18"
+                            "raw": "3",
+                            "nlp": "3"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "태스크 파라미터"
+                        "text": "함수 실행 결과입니다.\n\ntaskParams : +dialog.data.taskParams+"
                     }
                 ],
                 "id": "default42",
-                "children": [
-                    {
-                        "name": "테스크 파라미터",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수 실행 결과입니다.\n\ntaskParams : +dialog.data.taskParams+"
-                            }
-                        ],
-                        "task": {
-                            "name": "taskParams"
-                        },
-                        "id": "default91"
-                    }
-                ]
+                "children": [],
+                "task": {
+                    "name": "taskParams"
+                }
             },
             {
                 "name": "테스크 필수 파라미터",
                 "input": [
                     {
                         "text": {
-                            "raw": "19",
-                            "nlp": "19"
+                            "raw": "4",
+                            "nlp": "4"
                         }
                     }
                 ],
@@ -1947,200 +1524,98 @@ var dialogs = [
                     }
                 ],
                 "task": {
-                    "name": ""
+                    "name": "requiredParams"
                 },
                 "id": "default67",
-                "children": [
-                    {
-                        "name": "테스크 필수 파라미터 실행",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "",
-                                    "nlp": ""
-                                },
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "테스크 필수 파라미터 실행"
-                            }
-                        ],
-                        "task": {
-                            "name": "requiredParams"
-                        },
-                        "id": "default92"
-                    }
-                ]
+                "children": []
             },
             {
                 "name": "preCallback",
                 "input": [
                     {
                         "text": {
-                            "raw": "20",
-                            "nlp": "20"
+                            "raw": "5",
+                            "nlp": "5"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "preCallback"
+                        "text": "함수 실행 결과 입니다.\n\npreCallback 결과 : +dialog.data.preCallback+\naction 결과 : +dialog.data.action+"
                     }
                 ],
                 "id": "default76",
-                "children": [
-                    {
-                        "name": "preCallback 구현",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수 실행 결과 입니다.\n\npreCallback 결과 : +dialog.data.preCallback+\naction 결과 : +dialog.data.action+"
-                            }
-                        ],
-                        "task": {
-                            "name": "preCallback"
-                        },
-                        "id": "default88"
-                    }
-                ]
+                "children": [],
+                "task": {
+                    "name": "preCallback"
+                }
             },
             {
                 "name": "postCallback",
                 "input": [
                     {
                         "text": {
-                            "raw": "21",
-                            "nlp": "21"
+                            "raw": "6",
+                            "nlp": "6"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "postCallback"
+                        "text": "함수 실행 결과 입니다.\n\naction 결과 : +dialog.data.action+\npostCallback 결과 : +dialog.data.postCallback+"
                     }
                 ],
                 "id": "default86",
                 "task": {
-                    "name": ""
+                    "name": "postCallback"
                 },
-                "children": [
-                    {
-                        "name": "postCallback 구현",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수 실행 결과 입니다.\n\naction 결과 : +dialog.data.action+\npostCallback 결과 : +dialog.data.postCallback+"
-                            }
-                        ],
-                        "task": {
-                            "name": "postCallback"
-                        },
-                        "id": "default89"
-                    }
-                ]
+                "children": []
             },
             {
                 "name": "시퀀스테스크",
                 "input": [
                     {
                         "text": {
-                            "raw": "22",
-                            "nlp": "22"
+                            "raw": "7",
+                            "nlp": "7"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "시퀀스테스크"
+                        "text": "함수 실행 결과입니다.\n\ncrawling 결과 : +context.session.crawlingResult+\nsequenceTest 결과 : +dialog.data.sequenceTest+\ntestFunc 결과 : +dialog.data.testFunc+"
                     }
                 ],
                 "id": "default87",
-                "children": [
-                    {
-                        "name": "시퀀스테스크 구현",
-                        "input": [
-                            {
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수 실행 결과입니다.\n\ncrawling 결과 : +context.session.crawlingResult+\nsequenceTest 결과 : +dialog.data.sequenceTest+\ntestFunc 결과 : +dialog.data.testFunc+"
-                            }
-                        ],
-                        "task": {
-                            "name": "sequenceTask"
-                        },
-                        "id": "default90"
-                    }
-                ]
+                "children": [],
+                "task": {
+                    "name": "sequenceTask"
+                }
             },
             {
                 "name": "테스트 extends",
                 "input": [
                     {
                         "text": {
-                            "raw": "23",
-                            "nlp": "23"
+                            "raw": "8",
+                            "nlp": "8"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "테스트 extends"
+                        "text": "함수 실행 결과입니다.\n\n+dialog.data.taskParams+"
                     }
                 ],
                 "id": "default93",
-                "children": [
-                    {
-                        "name": "테스트 extends 구현",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "함수 실행 결과입니다.\n\n+dialog.data.taskParams+"
-                            }
-                        ],
-                        "task": {
-                            "name": "taskExtends"
-                        },
-                        "id": "default94"
-                    }
-                ]
+                "children": [],
+                "task": {
+                    "name": "taskExtends"
+                }
             }
         ]
     },
