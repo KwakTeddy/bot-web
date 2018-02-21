@@ -513,19 +513,19 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                 // $rootScope.$broadcast('simulator-build-without-reset-focus');
 
-                angular.element('.graph-controller .alert-success').show();
-                $timeout(function()
-                {
-                    angular.element('.graph-controller .alert-success').css('opacity', 1);
-                    $timeout(function()
-                    {
-                        angular.element('.graph-controller .alert-success').css('opacity', 0);
-                        $timeout(function()
-                        {
-                            angular.element('.graph-controller .alert-success').hide();
-                        }, 600);
-                    }, 1500);
-                }, 5);
+                // angular.element('.graph-controller .alert-success').show();
+                // $timeout(function()
+                // {
+                //     angular.element('.graph-controller .alert-success').css('opacity', 1);
+                //     $timeout(function()
+                //     {
+                //         angular.element('.graph-controller .alert-success').css('opacity', 0);
+                //         $timeout(function()
+                //         {
+                //             angular.element('.graph-controller .alert-success').hide();
+                //         }, 600);
+                //     }, 1500);
+                // }, 5);
             }, function(error)
             {
                 alert($scope.lan('저장 실패 : ') + error.message);

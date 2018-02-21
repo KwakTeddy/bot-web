@@ -1302,6 +1302,7 @@
         var tempIdCount = new Date().getTime();
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
+            parent = angular.element(parent);
             if(!dialog.id)
             {
                 dialog.id = 'default' + tempIdCount;
@@ -1447,7 +1448,7 @@
                 var half = Math.ceil(target.offsetHeight / 2) + 1.4;
                 if(this.$scope.myBotAuth.edit)
                 {
-                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > PLUS_BUTTON_MARGIN_TOP ? PLUS_BUTTON_MARGIN_TOP : half) + 'px"');
+                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: 21.4px"');
                 }
             }
             else
@@ -1861,8 +1862,15 @@
             {
                 this.idList = {};
                 this.canvas.html('');
-                this.drawDialog(this.canvas, this.graphData);
-                this.drawLines(this.canvas.find('.graph-dialog'));
+
+                var fragment = document.createDocumentFragment();
+
+                this.drawDialog(fragment, this.graphData);
+
+                this.drawLines(angular.element(fragment).find('.graph-dialog'));
+
+                this.canvas.get(0).appendChild(fragment);
+
                 if(this.focusedDialog)
                 {
                     this.focusById(this.focusedDialog);
@@ -1932,6 +1940,11 @@
             this.dirty = (dirty === undefined ? true : dirty);
             if(this.dirtyCallback)
                 this.dirtyCallback(this.dirty);
+
+            if(this.dirty == true)
+            {
+                this.$rootScope.$broadcast('saveDialogGraph');
+            }
         };
 
         DialogGraph.prototype.isDirty = function()

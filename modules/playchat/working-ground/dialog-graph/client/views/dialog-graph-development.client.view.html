@@ -90,7 +90,7 @@ caption
             <!--</a>-->
             <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex <= 0">{{lan('Undo') }}</button>
             <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">{{lan('Redo') }}</button>
-            <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">{{lan('Save') }}</button>
+            <!--<button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">{{lan('Save') }}</button>-->
             <button type="button" class="graph-button save" ng-if="fromFailedDialog" ng-click="backToFailedDialog();" style="width: 170px;">{{lan('Back to Failed Dialog') }}</button>
             <div class="alert-success" role="alert"> <strong>{{lan('Saved.') }}</strong> </div>
                 <!--font-size: 12px;-->
