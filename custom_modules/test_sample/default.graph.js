@@ -184,8 +184,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "@동물 엔터티에는 말, 호랑이, 고양이가 포함되어 있습니다. 사용자가 말, 호랑이, 고양이를 입력했을 시에 본 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "@동물 엔터티에는 말, 호랑이, 고양이가 포함되어 있습니다. 사용자가 말, 호랑이, 고양이를 입력했을 시에 본 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default2",
@@ -195,17 +196,14 @@ var dialogs = [
                         "name": "엔터티 구현2",
                         "input": [
                             {
-                                "entities": "상의 ",
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                }
+                                "entities": "상의"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "@상의 엔터티에는 긴팔, 반팔 등이 포함되어 있습니다. 사용자가 김팔, 반팔 등을 입력했을 시에 본 대화카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "@상의 엔터티에는 긴팔, 반팔 등이 포함되어 있습니다. 사용자가 김팔, 반팔 등을 입력했을 시에 본 대화카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default3"
@@ -252,17 +250,14 @@ var dialogs = [
                         "name": "인텐트 구현 _ 검색",
                         "input": [
                             {
-                                "intent": "검색",
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                }
+                                "intent": "검색"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "#검색 인텐트가 실행됐습니다.\n\n검색 인텐트에는 '찾아줘', '검색해줘' 등이 포함되어 있습니다.\n\n사용자가 '찾아줘', '검색해줘' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "#검색 인텐트가 실행됐습니다.\n\n검색 인텐트에는 '찾아줘', '검색해줘' 등이 포함되어 있습니다.\n\n사용자가 '찾아줘', '검색해줘' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default10"
@@ -280,8 +275,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "#정지 인텐트가 실행됐습니다.\n\n정지 인텐트에는 '멈춰줘', '그만해' 등이 포함되어 있습니다.\n\n사용자가 '멈춰줘', '그만해' 등을 입력했을 시에 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "#정지 인텐트가 실행됐습니다.\n\n정지 인텐트에는 '멈춰줘', '그만해' 등이 포함되어 있습니다.\n\n사용자가 '멈춰줘', '그만해' 등을 입력했을 시에 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default11"
@@ -334,13 +330,14 @@ var dialogs = [
                         "name": "정규식 구현_핸드폰번호",
                         "input": [
                             {
-                                "regexp": "\\d{2,3}-\\d{3,4}-\\d{4}"
+                                "regexp": "d{2,3}-d{3,4}-d{4}"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default18",
@@ -355,8 +352,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default19"
@@ -376,7 +374,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "타입"
+                        "text": "1. mobile 타입 테스트\n-> 010-3030-2811 또는 01030302811  형식 입력\n\n2. email 타입 테스트\n-> 5709psy@moneybrain.ai 형식 입력"
                     }
                 ],
                 "id": "default20",
@@ -410,8 +408,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default22"
@@ -427,8 +426,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default23"
@@ -448,7 +448,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "input_if"
+                        "text": "1. if(변수) 테스트\n->dialog.data.test에 값 입력\n\n2. if(true) 테스트\n-> 아무거나 입력"
                     }
                 ],
                 "id": "default4",
@@ -480,8 +480,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 사용자 인증 여부를 판단합니다.\n\n사용자가 인증을 거쳐 context.user.auth에 값이 존재할 시에 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 사용자 인증 여부를 판단합니다.\n\n사용자가 인증을 거쳐 context.user.auth에 값이 존재할 시에 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default6"
@@ -495,8 +496,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 true입니다.\n\n입력 조건이 true이기 때문에 해당 대화 카드는 모든 사용자 입력에 대해 실행됩니다."
+                                "kind": "Action",
+                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 true입니다.\n\n입력 조건이 true이기 때문에 해당 대화 카드는 모든 사용자 입력에 대해 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default7"
@@ -569,8 +571,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "키 또는 워드 또는 OR 또는 조건 중 어느 키워드를 입력해도 대화 카드가 실행됩니다.\nOR 조건은 '사용자 입력'을 여러 개 설정하면 됩니다."
+                                "kind": "Action",
+                                "text": "키 또는 워드 또는 OR 또는 조건 중 어느 키워드를 입력해도 대화 카드가 실행됩니다.\nOR 조건은 '사용자 입력'을 여러 개 설정하면 됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default26"
@@ -587,8 +590,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "'AND' '조건'을 모두 입력했을 시에 실행됩니다.\nAND 조건은 '사용자 입력'에 띄어쓰기 형태로 여러 키워드를 설정하면 됩니다."
+                                "kind": "Action",
+                                "text": "'AND' '조건'을 모두 입력했을 시에 실행됩니다.\nAND 조건은 '사용자 입력'에 띄어쓰기 형태로 여러 키워드를 설정하면 됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default27"

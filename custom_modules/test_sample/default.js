@@ -153,4 +153,21 @@ module.exports = function(bot)
         extends: 'taskParams'
 
     });
+
+
+var email = {
+  typeCheck: function (dialog, context, callback) {
+    var matched = false;
+    var regExp = new RegExp('^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$', 'ig');
+    var arr = regExp.exec(dialog.userInput.text);
+    if(arr)
+    {
+        matched = true;
+    }
+
+    callback(matched);
+	}
+};
+
+bot.setType('email', email);
 };
