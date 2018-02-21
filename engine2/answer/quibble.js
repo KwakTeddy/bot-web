@@ -71,16 +71,22 @@ var randomQuibble = function(qs)
     {
         for(var i=0; i<quibbles.length; i++)
         {
+            var q = quibbles[i];
+
             for(var j=0; j<nlp.length; j++)
             {
-                var token = nlp[j];
-                var q = quibbles[i];
-                if((q.condition.questionWord == undefined || q.condition.words.indexOf(token.text) != -1) &&
-                   (q.condition.tenseType == undefined || sentenceInfo.tenseType == undefined || q.condition.tenseType == sentenceInfo.tenseType) &&
-                   (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType) &&
-                   (q.condition.nlpLength == undefined || q.condition.nlpLength < nlp.length)) {
+                if(q.condition.words.indexOf(nlp[j].text) != -1)
+                {
                     return randomQuibble(q.sentences);
                 }
+                //
+                // var token = nlp[j];
+                // if((q.condition.questionWord == undefined || q.condition.words.indexOf(token.text) != -1) &&
+                //    (q.condition.tenseType == undefined || sentenceInfo.tenseType == undefined || q.condition.tenseType == sentenceInfo.tenseType) &&
+                //    (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType) &&
+                //    (q.condition.nlpLength == undefined || q.condition.nlpLength < nlp.length)) {
+                //     return randomQuibble(q.sentences);
+                // }
             }
         }
     };
