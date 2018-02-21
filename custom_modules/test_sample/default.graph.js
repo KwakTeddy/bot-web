@@ -81,7 +81,28 @@ var dialogs = [
                                 "text": "키워드 방식이란 '사용자 입력'에 입력된 키워드를 사용자가 입력했을 경우에 해당 대화 카드가 실행되는 방식을 뜻합니다."
                             }
                         ],
-                        "id": "default13"
+                        "id": "default13",
+                        "children": [
+                            {
+                                "name": "New Dialog",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "",
+                                            "nlp": ""
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "",
+                                        "buttons": []
+                                    }
+                                ],
+                                "id": "default30"
+                            }
+                        ]
                     },
                     {
                         "name": "OR 조건 테스트",
@@ -325,7 +346,8 @@ var dialogs = [
                                 ]
                             }
                         ],
-                        "id": "default17"
+                        "id": "default17",
+                        "children": []
                     },
                     {
                         "name": "정규식 구현_핸드폰번호",
@@ -795,22 +817,20 @@ var dialogs = [
                         "name": "답변IF 구현 _ 소켓",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "if": "context.channel.name == 'socket'"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
+                                "kind": "Action",
                                 "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓(socket) 채널로 대화중입니다.",
-                                "if": "context.channel.name == 'socket'"
+                                "if": "context.channel.name == 'socket'",
+                                "type": "repeat"
                             },
                             {
-                                "kind": "Content",
-                                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓이 아닌 다른 채널에서 대화중입니다."
+                                "kind": "Action",
+                                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓이 아닌 다른 채널에서 대화중입니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default44"
@@ -828,13 +848,15 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
+                                "kind": "Action",
                                 "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n\n카카오 채널로 대화중입니다.",
-                                "if": "context.channel.name == 'kakao'"
+                                "if": "context.channel.name == 'kakao'",
+                                "type": "repeat"
                             },
                             {
-                                "kind": "Content",
-                                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n소켓 채널로 대화중입니다."
+                                "kind": "Action",
+                                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n소켓 채널로 대화중입니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default45"
@@ -1057,14 +1079,15 @@ var dialogs = [
                                         "text": "다시질문하기 기능이 실행됐습니다.\n\n핸드폰 번호가 아닙니다. \n\n다시 핸드폰 번호를 입력해주세요."
                                     }
                                 ],
-                                "id": "default50"
+                                "id": "default50",
+                                "children": []
                             }
                         ]
                     }
                 ]
             },
             {
-                "name": "UP",
+                "name": "Back",
                 "input": [
                     {
                         "text": {
@@ -1076,10 +1099,9 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "이전 대화이동 기능을 테스트합니다."
+                        "text": "Back 기능을 테스트합니다."
                     }
                 ],
-                "id": "default57",
                 "children": [
                     {
                         "name": "이전대화이동 기능",
@@ -1114,11 +1136,70 @@ var dialogs = [
                             {
                                 "kind": "Action",
                                 "text": "이전대화이동이 실행됐습니다.",
-                                "type": "up"
+                                "type": "back"
                             }
                         ],
                         "id": "default59",
                         "children": []
+                    }
+                ],
+                "id": "default60"
+            },
+            {
+                "name": "UP",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "6",
+                            "nlp": "6"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "이전 대화이동 기능을 테스트합니다."
+                    }
+                ],
+                "id": "default57",
+                "children": [
+                    {
+                        "name": "상위대화이동 기능",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "기능",
+                                    "nlp": "기능"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n이전 대화이동 기능은 대화상에서 '이전'이라고 입력했을 때 이전 대화 카드로 이동하는 기능을 말합니다."
+                            }
+                        ],
+                        "id": "default61"
+                    },
+                    {
+                        "name": "상위대화이동 실행",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "up"
+                            }
+                        ],
+                        "id": "default64"
                     }
                 ]
             },
@@ -1127,8 +1208,8 @@ var dialogs = [
                 "input": [
                     {
                         "text": {
-                            "raw": "6",
-                            "nlp": "6"
+                            "raw": "7",
+                            "nlp": "7"
                         }
                     }
                 ],
@@ -1263,8 +1344,8 @@ var dialogs = [
                 "input": [
                     {
                         "text": {
-                            "raw": "7",
-                            "nlp": "7"
+                            "raw": "8",
+                            "nlp": "8"
                         }
                     }
                 ],
@@ -1455,7 +1536,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "API를 실행했습니다.\n\nAPI의 결과는 아래와 같습니다.\n\n#context.session.movieData.items#\n+index+.\n+title+\n\n#"
+                        "text": "API를 실행했습니다.\n\nAPI의 결과는 아래와 같습니다.\n\n#context.session.movieData.items#\n+index+.\n+title+\n\n#",
+                        "type": "repeat"
                     }
                 ],
                 "task": {
@@ -1476,7 +1558,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "크롤링이 실행됐습니다.\n\n크롤링의 결과는 아래와 같습니다.\n\n+context.session.crawlingResult+"
+                        "text": "크롤링이 실행됐습니다.\n\n크롤링의 결과는 아래와 같습니다.\n\n+context.session.crawlingResult+",
+                        "type": "repeat"
                     }
                 ],
                 "task": {
@@ -1498,7 +1581,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "함수 실행 결과입니다.\n\ntaskParams : +dialog.data.taskParams+"
+                        "text": "함수 실행 결과입니다.\n\ntaskParams : +dialog.data.taskParams+",
+                        "type": "repeat"
                     }
                 ],
                 "id": "default42",
@@ -1520,7 +1604,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "필수 파라미터인 모바일 타입이 입력되었습니다."
+                        "text": "필수 파라미터인 모바일 타입이 입력되었습니다.",
+                        "type": "repeat"
                     }
                 ],
                 "task": {
@@ -1542,7 +1627,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "함수 실행 결과 입니다.\n\npreCallback 결과 : +dialog.data.preCallback+\naction 결과 : +dialog.data.action+"
+                        "text": "함수 실행 결과 입니다.\n\npreCallback 결과 : +dialog.data.preCallback+\naction 결과 : +dialog.data.action+",
+                        "type": "repeat"
                     }
                 ],
                 "id": "default76",
@@ -1564,7 +1650,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "함수 실행 결과 입니다.\n\naction 결과 : +dialog.data.action+\npostCallback 결과 : +dialog.data.postCallback+"
+                        "text": "함수 실행 결과 입니다.\n\naction 결과 : +dialog.data.action+\npostCallback 결과 : +dialog.data.postCallback+",
+                        "type": "repeat"
                     }
                 ],
                 "id": "default86",
@@ -1586,7 +1673,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "함수 실행 결과입니다.\n\ncrawling 결과 : +context.session.crawlingResult+\nsequenceTest 결과 : +dialog.data.sequenceTest+\ntestFunc 결과 : +dialog.data.testFunc+"
+                        "text": "함수 실행 결과입니다.\n\ncrawling 결과 : +context.session.crawlingResult+\nsequenceTest 결과 : +dialog.data.sequenceTest+\ntestFunc 결과 : +dialog.data.testFunc+",
+                        "type": "repeat"
                     }
                 ],
                 "id": "default87",
@@ -1608,7 +1696,8 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "함수 실행 결과입니다.\n\n+dialog.data.taskParams+"
+                        "text": "함수 실행 결과입니다.\n\n+dialog.data.taskParams+",
+                        "type": "repeat"
                     }
                 ],
                 "id": "default93",

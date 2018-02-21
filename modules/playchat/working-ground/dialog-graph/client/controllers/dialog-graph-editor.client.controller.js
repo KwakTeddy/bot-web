@@ -19,7 +19,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         { key: 'call', name: LanguageService('Move Dialog') },
         { key: 'callChild', name: LanguageService('Search after dialog moved') },
         { key: 'returnCall', name: LanguageService('Return call') },
-        { key: 'up', name: LanguageService('Move to previous dialog') },
+        { key: 'up', name: LanguageService('Move to parent dialog') },
+        { key: 'back', name: LanguageService('Move to previous dialog') },
         { key: 'repeat', name: LanguageService('Ask the question again') },
         { key: 'return', name: LanguageService('Return') }
     ];
