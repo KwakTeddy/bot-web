@@ -4,15 +4,15 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "발렌타인데이",
-                    "nlp": "발렌타인데이"
+                    "raw": "  졸업식",
+                    "nlp": "졸업식"
                 }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "발렌타인데이 추천상품입니다.\n\n선택하시면 사진과 함께 세부사항을 보여드릴께요.^^"
+                "text": "졸업식 추천상품입니다.\n\n선택하시면 사진과 함께 세부사항을 보여드릴께요.^^"
             }
         ],
         "id": "default14",
@@ -32,7 +32,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "#context.session.item#ღ+name+ღ\n\n가격: +price+원\n#"
+                        "text": "#context.session.item#✡+name+✡\n\n가격: +price+원\n#"
                     }
                 ],
                 "task": {
