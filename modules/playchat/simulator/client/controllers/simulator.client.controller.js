@@ -280,7 +280,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                 $scope.chatbotName = data.name;
 
-                if(simulatorBody.html())
+                if(!simulatorBody.html())
                 {
                     $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                     emitMsg(':reset user', false);
