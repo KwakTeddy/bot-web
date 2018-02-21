@@ -1911,7 +1911,7 @@ module.exports = function (bot) {
                 dialog.output[0].image = {url: 'http://pic1.wed114.cn/allimg/120910/15454935M-0.jpg'};
                 dialog.output[0].buttons = [
                     {
-                        text: 'ღ발렌타인데이 꽃 배달ღ',
+                        text: '✶졸업식 꽃 배달✶',
                         url: ''
                     },
                     {
