@@ -47,7 +47,7 @@ var ActionManager = require('./action.js');
             {
                 for(var key in dest)
                 {
-                    if(src[i] == key)
+                    if(src[i].trim() == key)
                     {
                         return key;
                     }
@@ -56,6 +56,7 @@ var ActionManager = require('./action.js');
         }
         else
         {
+            src = src.trim();
             for(var key in dest)
             {
                 if(src == key)
@@ -190,16 +191,24 @@ var ActionManager = require('./action.js');
                 }
                 else if(key == 'regexp')
                 {
-                    var regexp = new RegExp(input.regexp, 'gi');
-                    if(regexp.test(rawText))
+                    var regexp = undefined;
+                    try
                     {
-                        var match = rawText.match(regexp);
+                        regexp = new RegExp(input.regexp, 'gi');
+                        if(regexp.test(rawText))
+                        {
+                            var match = rawText.match(regexp);
 
-                        userInput.regexp = match;
+                            userInput.regexp = match;
 
-                        result = result && true;
+                            result = result && true;
+                        }
+                        else
+                        {
+                            result = result && false;
+                        }
                     }
-                    else
+                    catch(err)
                     {
                         result = result && false;
                     }
