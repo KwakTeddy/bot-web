@@ -566,7 +566,7 @@ var commonDialogs = [
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
-        "output": "알아듣지 못했습니다."
+        "output": "죄송해요 고객님. 제가 이해하지 못하는 부분이에요~\n\n다른 궁금하신 걸 물어봐주시겠어요?^^"
     }
 ];
 
