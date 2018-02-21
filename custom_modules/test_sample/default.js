@@ -171,7 +171,7 @@ module.exports = function(bot)
 
     bot.setType('email', email);
 
-	bot.setTask('setTestVar', 
+	bot.setTask('setTestVar',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -180,6 +180,33 @@ module.exports = function(bot)
             //     dialog.data.test = false;
             // else
             //     dialog.data.test = true;
+			callback();
+		}
+	});
+
+	bot.setTask('setTestVarOutput',
+	{
+		action: function (dialog, context, callback)
+		{
+            context.session.movieDataObject =
+                {
+                    date: '2018년',
+                    title: '살인사건'
+                };
+            context.session.movieDataArray =
+                [
+
+                    {
+                        date: '2018년',
+                        title: '살인사건'
+                    },
+                    {
+                        date: '2017년',
+                        title: '추격자'
+                    }
+
+                ];
+            console.log(context.session);
 			callback();
 		}
 	});

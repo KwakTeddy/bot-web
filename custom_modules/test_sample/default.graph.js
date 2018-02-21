@@ -663,19 +663,15 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "1. 문자열 변수 접근 테스트\n\n2. 객체 변수 접근 테스트\n\n3. 배열 변수 접근 테스트",
+                        "text": "1. 객체\n\n2. 배열",
                         "buttons": [
                             {
                                 "url": "",
-                                "text": "1. 문자열 변수 접근 테스트"
+                                "text": "1. 객체 변수 접근 테스트"
                             },
                             {
                                 "url": "",
-                                "text": "2. 객체 변수 접근 테스트"
-                            },
-                            {
-                                "url": "",
-                                "text": "3. 배열 변수 접근 테스트"
+                                "text": "2. 배열 변수 접근 테스트"
                             }
                         ]
                     }
@@ -701,12 +697,12 @@ var dialogs = [
                         "id": "default63"
                     },
                     {
-                        "name": "변수 접근 구현 _ 문자열",
+                        "name": "변수 접근 구현 _객체",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "문자열",
-                                    "nlp": "문자열"
+                                    "raw": "객체",
+                                    "nlp": "객체"
                                 }
                             },
                             {
@@ -718,35 +714,13 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "값이 문자열인 변수는 \\+변수명+ 형태로 접근할 수 있습니다.\n\ncontext.bot.botName에 접근하고 싶을 때는 다음과 같이 입력합니다.\n\n\\+botName+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+bot.name+"
+                                "kind": "Action",
+                                "text": "값이 객체인 변수는 \\+변수명.key+ 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.session.movieDataObject = \n{\n date: '2018년',\ntitle: '살인사건'\n}\n일 경우, 다음과 같이 접근합니다.\n\n\\+context.session.movieDataObject.date+\n\\+context.session.movieDataObject.title+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+context.session.movieDataObject.date+\n+context.session.movieDataObject.title+",
+                                "type": "repeat"
                             }
                         ],
-                        "id": "default64"
-                    },
-                    {
-                        "name": "변수 접근 구현 _객체",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "객체",
-                                    "nlp": "객체"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "2",
-                                    "nlp": "2"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "값이 객체인 변수는 \\+변수명.key+ 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataObject = \n{\n date: '2018년',\ntitle: '살인사건'\n}\n일 경우, 다음과 같이 접근합니다.\n\n\\+movieDataObject.date+\n\\+movieDataObject.title+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+movieDataObject.date+\n+movieDataObject.title+"
-                            }
-                        ],
-                        "id": "default65"
+                        "id": "default65",
+                        "children": []
                     },
                     {
                         "name": "변수 접근 구현 _배열",
@@ -759,20 +733,24 @@ var dialogs = [
                             },
                             {
                                 "text": {
-                                    "raw": "3",
-                                    "nlp": "3"
+                                    "raw": "2",
+                                    "nlp": "2"
                                 }
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "값이 배열인 변수는 \\#변수명\\# 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataArray = \n[\n\n{\n date: '2018년',\ntitle: '살인사건'\n},\n{\n date: '2017년',\ntitle: '추격자'\n},\n\n]\n일 경우, 다음과 같이 접근합니다.\n\n\\#movieDataArray\\#\n\n\\#변수\\#을 할 경우, 자체적으로 배열에 담긴 요소 하나씩에 접근합니다. \n\n배열에 담긴 요소 하나씩을 접근해 나타내기 위해서는 다음과 같이 접근합니다.\n\n\\#변수\\#각 요소에 대한 접근\\#\n\n마지막 \\#은 각 요소에 대한 접근을 마무리한다는 의미이며, 그에 따라 \\#각 요소에 대한 접근\\# 부분이 반복됩니다.\n\n\\#각 요소에 대한 접근\\#에서는 \\+key+의 형태로 각 요소의 value에 접근할 수 있습니다.\n\n\\#movieDataArray\\# \\+date+ +title+\\#\n\n\\#각 요소에 대한 접근\\#에서는 \\+index+가 자동으로 추가되어 해당 요소의 순번을 알 수가 있습니다.\n\n최종적으로 다음과 같이 활용 가능합니다.\n\n\\#movieDataArray\\#\n\\+index+.\n타이틀은 \\+title+입니다.\n날짜는 \\+date+입니다.\n\n\\#\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n#movieDataArray#\n+index+.\n타이틀은 +title+입니다.\n날짜는 +date+입니다.\n\n#"
+                                "kind": "Action",
+                                "text": "값이 배열인 변수는 \\#변수명\\# 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.session.movieDataArray = \n[\n\n{\n date: '2018년',\ntitle: '살인사건'\n},\n{\n date: '2017년',\ntitle: '추격자'\n},\n\n]\n일 경우, 다음과 같이 접근합니다.\n\n\\#context.session.movieDataArray\\#\n\n\\#변수\\#을 할 경우, 자체적으로 배열에 담긴 요소 하나씩에 접근합니다. \n\n배열에 담긴 요소 하나씩을 접근해 나타내기 위해서는 다음과 같이 접근합니다.\n\n\\#변수\\#각 요소에 대한 접근\\#\n\n마지막 \\#은 각 요소에 대한 접근을 마무리한다는 의미이며, 그에 따라 \\#각 요소에 대한 접근\\# 부분이 반복됩니다.\n\n\\#각 요소에 대한 접근\\#에서는 \\+key+의 형태로 각 요소의 value에 접근할 수 있습니다.\n\n\\#context.session.movieDataArray\\# \\+date+ +title+\\#\n\n\\#각 요소에 대한 접근\\#에서는 \\+index+가 자동으로 추가되어 해당 요소의 순번을 알 수가 있습니다.\n\n최종적으로 다음과 같이 활용 가능합니다.\n\n\\#context.session.movieDataArray\\#\n\\+index+.\n타이틀은 \\+title+입니다.\n날짜는 \\+date+입니다.\n\n\\#\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n#context.session.movieDataArray#\n+index+.\n타이틀은 +title+입니다.\n날짜는 +date+입니다.\n\n#",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default66"
                     }
-                ]
+                ],
+                "task": {
+                    "name": "setTestVarOutput"
+                }
             },
             {
                 "name": "IF(챗봇 답변)",
@@ -787,7 +765,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "output_if"
+                        "text": "1. if("
                     }
                 ],
                 "id": "default423",
@@ -824,7 +802,7 @@ var dialogs = [
                             {
                                 "kind": "Content",
                                 "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓(socket) 채널로 대화중입니다.",
-                                "if": "context.user.channel == 'socket'"
+                                "if": "context.channel.name == 'socket'"
                             },
                             {
                                 "kind": "Content",
@@ -847,7 +825,7 @@ var dialogs = [
                             {
                                 "kind": "Content",
                                 "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n\n카카오 채널로 대화중입니다.",
-                                "if": "context.user.channel == 'kakao'"
+                                "if": "context.channel.name == 'kakao'"
                             },
                             {
                                 "kind": "Content",
@@ -871,7 +849,13 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "output_call"
+                        "text": "대화이동 기능을 테스트합니다.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "대화 이동 실행"
+                            }
+                        ]
                     }
                 ],
                 "id": "default28",
@@ -895,51 +879,26 @@ var dialogs = [
                         "id": "default29"
                     },
                     {
-                        "name": "대화이동 구현",
+                        "name": "대화이동 실행 카드",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "구현",
-                                    "nlp": "구현"
-                                }
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "대화이동 실행을 위해서 아래의 버튼을 눌러주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "대화이동 실행"
-                                    }
-                                ]
+                                "kind": "Action",
+                                "type": "call",
+                                "dialogName": "대화이동된 카드",
+                                "dialogId": "default32",
+                                "text": "'대화이동 실행 카드'에서\n'대화이동된 카드'로\n 이동했습니다.\n\n현재 커서는 '대화이동된 카드'에 있습니다.\n\n테스트를 위해 '대화이동된 카드'의 자식 카드에 질문을 입력해보세요."
                             }
                         ],
-                        "id": "default30",
-                        "children": [
-                            {
-                                "name": "대화이동 실행 카드",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "대화 이동 실행",
-                                            "nlp": "대화 이동 실행"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "type": "call",
-                                        "dialogName": "대화이동된 카드",
-                                        "dialogId": "default32",
-                                        "text": "'대화이동 실행 카드'에서\n'대화이동된 카드'로\n 이동했습니다.\n\n현재 커서는 '대화이동된 카드'에 있습니다.\n\n테스트를 위해 '대화이동된 카드'의 자식 카드에 질문을 입력해보세요."
-                                    }
-                                ],
-                                "id": "default31"
-                            }
-                        ]
+                        "id": "default31"
                     },
                     {
                         "name": "대화이동된 카드",
@@ -1020,7 +979,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "output_repeat"
+                        "text": "재질의 기능을 테스트합니다."
                     }
                 ],
                 "id": "default46",
@@ -1048,9 +1007,10 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "실행",
-                                    "nlp": "실행"
-                                }
+                                    "raw": " ",
+                                    "nlp": ""
+                                },
+                                "if": "true"
                             }
                         ],
                         "output": [
@@ -1111,7 +1071,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "output_up"
+                        "text": "이전 대화이동 기능을 테스트합니다."
                     }
                 ],
                 "id": "default57",
@@ -1139,74 +1099,21 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "준비",
-                                    "nlp": "준비"
-                                }
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "이전대화이동을 잘 살펴보기 위해 의도적으로 뎁스를 만들 었습니다. \n\n준비라고 입력해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "준비"
-                                    }
-                                ]
+                                "kind": "Action",
+                                "text": "이전대화이동이 실행됐습니다.",
+                                "type": "up"
                             }
                         ],
                         "id": "default59",
-                        "children": [
-                            {
-                                "name": "이전대화이동 실행",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "준비",
-                                            "nlp": "준비"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "이전대화이동 실행을 위해서 아래의 버튼을 눌러주세요.",
-                                        "type": "",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "이전대화이동 실행"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default60",
-                                "children": [
-                                    {
-                                        "name": "이전대화이동 실행 카드",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "이전 대화 이동 실행 카드",
-                                                    "nlp": "이전 대화 이동 실행 카드"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Action",
-                                                "type": "up",
-                                                "dialogName": "돌아가기 대화 준비",
-                                                "dialogId": "default55",
-                                                "text": "이전 대화로 이동했습니다."
-                                            }
-                                        ],
-                                        "id": "default61"
-                                    }
-                                ]
-                            }
-                        ]
+                        "children": []
                     }
                 ]
             },
@@ -1223,7 +1130,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "output_callchild"
+                        "text": "Callchild 기능을 테스트합니다."
                     }
                 ],
                 "id": "default351",
@@ -1251,9 +1158,10 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "실행",
-                                    "nlp": "실행"
-                                }
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
                             }
                         ],
                         "output": [
@@ -1358,7 +1266,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "output_returncall"
+                        "text": "Returncall 기능을 테스트합니다."
                     }
                 ],
                 "id": "default51",
@@ -1386,9 +1294,10 @@ var dialogs = [
                         "input": [
                             {
                                 "text": {
-                                    "raw": "실행",
-                                    "nlp": "실행"
-                                }
+                                    "raw": "",
+                                    "nlp": ""
+                                },
+                                "if": "true"
                             }
                         ],
                         "output": [
@@ -1410,9 +1319,10 @@ var dialogs = [
                                 "input": [
                                     {
                                         "text": {
-                                            "raw": "돌아가다 대화 이동 실행",
-                                            "nlp": "돌아가다 대화 이동 실행"
-                                        }
+                                            "raw": "",
+                                            "nlp": ""
+                                        },
+                                        "if": "true"
                                     }
                                 ],
                                 "output": [
@@ -1454,9 +1364,10 @@ var dialogs = [
                                 "input": [
                                     {
                                         "text": {
-                                            "raw": "돌아가다 실행",
-                                            "nlp": "돌아가다 실행"
-                                        }
+                                            "raw": "",
+                                            "nlp": ""
+                                        },
+                                        "if": "true"
                                     }
                                 ],
                                 "output": [
@@ -1487,7 +1398,41 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "답변 전 실행함수 테스트"
+                "text": "답변 전 실행함수 관련 기능들 중 테스트 원하는 기능을 선택하세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "1. Naver api"
+                    },
+                    {
+                        "url": "",
+                        "text": "2. crawling"
+                    },
+                    {
+                        "url": "",
+                        "text": "3. 파라미터"
+                    },
+                    {
+                        "url": "",
+                        "text": "4. 필수 파라미터"
+                    },
+                    {
+                        "url": "",
+                        "text": "5. preCallback"
+                    },
+                    {
+                        "url": "",
+                        "text": "6. postCallback"
+                    },
+                    {
+                        "url": "",
+                        "text": "7. Sequence Task"
+                    },
+                    {
+                        "url": "",
+                        "text": "8. Task Extends"
+                    }
+                ]
             }
         ],
         "id": "default97",
