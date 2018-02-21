@@ -3,7 +3,7 @@ var dialogs = [
         "name": "1.병원 소개",
         "input": [
             {
-                "regexp": "^1"
+                "regexp": "^1$"
             },
             {
                 "text": {
@@ -33,7 +33,7 @@ var dialogs = [
         "name": "2.교통편",
         "input": [
             {
-                "regexp": "^2"
+                "regexp": "^2$"
             },
             {
                 "text": {
@@ -159,7 +159,7 @@ var dialogs = [
         "name": "4.2월 이벤트",
         "input": [
             {
-                "regexp": "^4"
+                "regexp": "^4$"
             },
             {
                 "text": {
@@ -214,7 +214,7 @@ var dialogs = [
                         }
                     },
                     {
-                        "regexp": "^1"
+                        "regexp": "^1$"
                     }
                 ],
                 "output": [
@@ -277,7 +277,7 @@ var dialogs = [
                         }
                     },
                     {
-                        "regexp": "^2"
+                        "regexp": "^2$"
                     }
                 ],
                 "output": [
@@ -344,7 +344,7 @@ var dialogs = [
                         }
                     },
                     {
-                        "regexp": "^3"
+                        "regexp": "^3$"
                     }
                 ],
                 "output": [
