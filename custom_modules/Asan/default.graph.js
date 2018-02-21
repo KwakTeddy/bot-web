@@ -899,7 +899,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021567"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/BG103.jpg"
                                 }
                             }
                         ],
@@ -1279,7 +1279,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021566"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/BG102.jpg"
                                 }
                             }
                         ],

@@ -157,7 +157,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             var point = 0;
                             var lastIndex = -1;
 
-                            var input = matchedList[i].category.split('@@@').join(' ') + matchedList[i].input[k];
+                            var input = (matchedList[i].category ? matchedList[i].category.split('@@@').join(' ') : '') + matchedList[i].input[k];
 
                             for(var j=0; j<nlp.length; j++)
                             {
