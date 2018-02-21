@@ -36,7 +36,7 @@ var ActionManager = require('./action.js');
             }
         }
 
-        return count / words.length;
+        return count == words.length;
     };
 
     DialogGraphManager.prototype.checkEntities = function(src, dest)
@@ -105,9 +105,9 @@ var ActionManager = require('./action.js');
                         else
                         {
                             var matchCount = that.checkInputText(nlpText, input.text.nlp);
-                            if(matchCount > 0)
+                            if(matchCount)
                             {
-                                dialog.matchRate = matchCount;
+                                dialog.matchRate = 1;
                                 result = result && true;
                             }
                             else
