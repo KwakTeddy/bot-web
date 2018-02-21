@@ -47,7 +47,7 @@ var ActionManager = require('./action.js');
             {
                 for(var key in dest)
                 {
-                    if(src[i] == key)
+                    if(src[i].trim() == key)
                     {
                         return key;
                     }
@@ -56,6 +56,7 @@ var ActionManager = require('./action.js');
         }
         else
         {
+            src = src.trim();
             for(var key in dest)
             {
                 if(src == key)
