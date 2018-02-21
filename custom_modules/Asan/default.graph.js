@@ -63,8 +63,14 @@ var dialogs = [
                 "input": [
                     {
                         "text": {
-                            "raw": "건강검진 예약 및 결과 문의",
-                            "nlp": "건강검진 예약 및 결과 문의"
+                            "raw": "건강검진 예약",
+                            "nlp": "건강검진 예약"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "건강검진 결과 문의",
+                            "nlp": "건강검진 결과 문의"
                         }
                     }
                 ],
@@ -74,7 +80,8 @@ var dialogs = [
                         "text": "건강강검진 예약 및 결과 문의 전화번호입니다.\n\n병원대표번호 1688-7575로 전화 하셔서, 안내멘트에따라 2번→1번을 순차적으로 누르시면 됩니다.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
                     }
                 ],
-                "id": "default227"
+                "id": "default227",
+                "children": []
             },
             {
                 "name": "예약일 확인",
@@ -426,7 +433,10 @@ var dialogs = [
                                                 "url": "http://www.amc.seoul.kr/asan/images/infor/img_parking01.jpg",
                                                 "text": "약도 자세히 보기"
                                             }
-                                        ]
+                                        ],
+                                        "image": {
+                                            "url": "http://www.amc.seoul.kr/asan/images/infor/img_parking01.jpg"
+                                        }
                                     }
                                 ],
                                 "id": "default10"
@@ -745,7 +755,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021649",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021649"
+                                }
                             }
                         ],
                         "id": "default19"
@@ -770,7 +783,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020899",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020899"
+                                }
                             }
                         ],
                         "id": "default20"
@@ -795,7 +811,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020900",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020900"
+                                }
                             }
                         ],
                         "id": "default21"
@@ -878,7 +897,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021567",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021567"
+                                }
                             }
                         ],
                         "id": "default26"
@@ -903,7 +925,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021582",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021582"
+                                }
                             }
                         ],
                         "id": "default27"
@@ -928,7 +953,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=202",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=202"
+                                }
                             }
                         ],
                         "id": "default28"
@@ -953,7 +981,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=179",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=179"
+                                }
                             }
                         ],
                         "id": "default30"
@@ -978,7 +1009,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021142",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021142"
+                                }
                             }
                         ],
                         "id": "default29"
@@ -1050,7 +1084,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021230",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021230"
+                                }
                             }
                         ],
                         "id": "default32"
@@ -1075,7 +1112,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021145",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021145"
+                                }
                             }
                         ],
                         "id": "default33"
@@ -1125,7 +1165,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021126",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021126"
+                                }
                             }
                         ],
                         "id": "default35"
@@ -1234,7 +1277,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021566",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021566"
+                                }
                             }
                         ],
                         "id": "default37"
@@ -1259,7 +1305,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021666",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021666"
+                                }
                             }
                         ],
                         "id": "default38"
@@ -1329,7 +1378,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=172",
                                         "text": "남경(중식) 약도안내"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=172"
+                                }
                             }
                         ],
                         "id": "default42"
@@ -1354,7 +1406,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=190",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=190"
+                                }
                             }
                         ],
                         "id": "default43"
@@ -1473,7 +1528,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021232",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021232"
+                        }
                     }
                 ],
                 "id": "default46"
@@ -1580,7 +1638,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021050",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021050"
+                                }
                             }
                         ],
                         "id": "default48"
@@ -1605,7 +1666,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=185",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=185"
+                                }
                             }
                         ],
                         "id": "default49"
@@ -1673,7 +1737,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021173",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021173"
+                                }
                             }
                         ],
                         "id": "default51"
@@ -1698,7 +1765,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=230",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=230"
+                                }
                             }
                         ],
                         "id": "default52"
@@ -1723,7 +1793,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021193",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021193"
+                                }
                             }
                         ],
                         "id": "default53"
@@ -1779,7 +1852,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021612",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021612"
+                                }
                             }
                         ],
                         "id": "default54"
@@ -1804,7 +1880,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021053",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021053"
+                                }
                             }
                         ],
                         "id": "default55"
@@ -1829,7 +1908,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=251",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=251"
+                                }
                             }
                         ],
                         "id": "default56"
@@ -1893,7 +1975,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021131",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021131"
+                                }
                             }
                         ],
                         "id": "default58"
@@ -1918,7 +2003,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021671",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021671"
+                                }
                             }
                         ],
                         "id": "default59"
@@ -1986,7 +2074,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021207",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021207"
+                                }
                             }
                         ],
                         "id": "default61"
@@ -2011,7 +2102,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=252",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=252"
+                                }
                             }
                         ],
                         "id": "default63"
@@ -2036,7 +2130,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=227",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=227"
+                                }
                             }
                         ],
                         "id": "default64"
@@ -2108,7 +2205,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021174",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021174"
+                                }
                             }
                         ],
                         "id": "default66"
@@ -2133,7 +2233,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000031648",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000031648"
+                                }
                             }
                         ],
                         "id": "default67"
@@ -2158,7 +2261,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=253",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=253"
+                                }
                             }
                         ],
                         "id": "default68"
@@ -2220,7 +2326,10 @@ var dialogs = [
                                                 "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=260",
                                                 "text": "약도 자세히 보기"
                                             }
-                                        ]
+                                        ],
+                                        "image": {
+                                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=260"
+                                        }
                                     }
                                 ],
                                 "id": "default70",
@@ -2246,7 +2355,10 @@ var dialogs = [
                                                 "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=259",
                                                 "text": "약도 자세히 보기"
                                             }
-                                        ]
+                                        ],
+                                        "image": {
+                                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=259"
+                                        }
                                     }
                                 ],
                                 "id": "default71"
@@ -2312,7 +2424,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021205",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021205"
+                                }
                             }
                         ],
                         "id": "default73"
@@ -2337,7 +2452,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=197",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=197"
+                                }
                             }
                         ],
                         "id": "default74"
@@ -2397,7 +2515,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021451",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021451"
+                                }
                             }
                         ],
                         "id": "default76"
@@ -2422,7 +2543,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=353",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=353"
+                                }
                             }
                         ],
                         "id": "default77"
@@ -2486,7 +2610,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021214",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021214"
+                                }
                             }
                         ],
                         "id": "default82"
@@ -2511,7 +2638,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=233",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=233"
+                                }
                             }
                         ],
                         "id": "default83"
@@ -2575,7 +2705,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021188",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021188"
+                                }
                             }
                         ],
                         "id": "default84"
@@ -2600,7 +2733,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=232",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=232"
+                                }
                             }
                         ],
                         "id": "default85"
@@ -2668,7 +2804,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021083",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021083"
+                                }
                             }
                         ],
                         "id": "default86"
@@ -2693,7 +2832,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021088",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021088"
+                                }
                             }
                         ],
                         "id": "default87"
@@ -2718,7 +2860,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=235",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=235"
+                                }
                             }
                         ],
                         "id": "default88"
@@ -2782,7 +2927,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000030957",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000030957"
+                                }
                             }
                         ],
                         "id": "default89"
@@ -2807,7 +2955,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000023317",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000023317"
+                                }
                             }
                         ],
                         "id": "default90"
@@ -2875,7 +3026,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020183",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020183"
+                                }
                             }
                         ],
                         "id": "default211"
@@ -2899,7 +3053,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=182",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=182"
+                                }
                             }
                         ],
                         "id": "default212"
@@ -2923,7 +3080,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=355",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=355"
+                                }
                             }
                         ],
                         "id": "default213"
@@ -2995,7 +3155,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021217",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021217"
+                                }
                             }
                         ],
                         "id": "default216"
@@ -3019,7 +3182,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021159",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021159"
+                                }
                             }
                         ],
                         "id": "default217"
@@ -3043,7 +3209,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021162",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021162"
+                                }
                             }
                         ],
                         "id": "default218"
@@ -3067,7 +3236,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021160",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021160"
+                                }
                             }
                         ],
                         "id": "default219"
@@ -3142,7 +3314,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021169",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021169"
+                                }
                             }
                         ],
                         "id": "default221"
@@ -3174,7 +3349,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021171",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021171"
+                                }
                             }
                         ],
                         "id": "default222"
@@ -3206,7 +3384,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021170",
                                         "text": "약도 자세히 보기"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021170"
+                                }
                             }
                         ],
                         "id": "default223"
@@ -3258,7 +3439,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021138",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021138"
+                        }
                     }
                 ],
                 "id": "default225"
@@ -3283,7 +3467,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021151",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021151"
+                        }
                     }
                 ],
                 "id": "default231"
@@ -3308,7 +3495,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021182",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021182"
+                        }
                     }
                 ],
                 "id": "default232"
@@ -3333,7 +3523,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021199",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021199"
+                        }
                     }
                 ],
                 "id": "default233"
@@ -3358,7 +3551,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021183",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021183"
+                        }
                     }
                 ],
                 "id": "default234"
@@ -3383,7 +3579,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021216",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021216"
+                        }
                     }
                 ],
                 "id": "default235"
@@ -3408,7 +3607,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021185",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021185"
+                        }
                     }
                 ],
                 "id": "default236"
@@ -3433,7 +3635,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021187",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021187"
+                        }
                     }
                 ],
                 "id": "default237"
@@ -3458,7 +3663,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021196",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021196"
+                        }
                     }
                 ],
                 "id": "default238"
@@ -3483,7 +3691,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021200",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021200"
+                        }
                     }
                 ],
                 "id": "default239"
@@ -3508,7 +3719,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021201",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021201"
+                        }
                     }
                 ],
                 "id": "default240"
@@ -3533,7 +3747,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021198",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021198"
+                        }
                     }
                 ],
                 "id": "default241"
@@ -3558,7 +3775,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021222",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021222"
+                        }
                     }
                 ],
                 "id": "default242"
@@ -3583,7 +3803,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021184",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021184"
+                        }
                     }
                 ],
                 "id": "default243"
@@ -3608,7 +3831,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021189",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021189"
+                        }
                     }
                 ],
                 "id": "default244"
@@ -3633,7 +3859,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021052",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021052"
+                        }
                     }
                 ],
                 "id": "default245"
@@ -3658,7 +3887,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021191",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021191"
+                        }
                     }
                 ],
                 "id": "default246"
@@ -3683,7 +3915,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021457",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021457"
+                        }
                     }
                 ],
                 "id": "default247"
@@ -3708,7 +3943,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021181",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021181"
+                        }
                     }
                 ],
                 "id": "default248"
@@ -3733,7 +3971,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021161",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021161"
+                        }
                     }
                 ],
                 "task": {
@@ -3761,7 +4002,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021179",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021179"
+                        }
                     }
                 ],
                 "id": "default250"
@@ -3786,7 +4030,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021203",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021203"
+                        }
                     }
                 ],
                 "id": "default251"
@@ -3811,7 +4058,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021180",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021180"
+                        }
                     }
                 ],
                 "id": "default252"
@@ -3836,7 +4086,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021217",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021217"
+                        }
                     }
                 ],
                 "id": "default253"
@@ -3861,7 +4114,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021208",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021208"
+                        }
                     }
                 ],
                 "id": "default254"
@@ -3886,7 +4142,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021206",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021206"
+                        }
                     }
                 ],
                 "id": "default255"
@@ -3911,7 +4170,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021192",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021192"
+                        }
                     }
                 ],
                 "id": "default256"
@@ -3936,7 +4198,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021178",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021178"
+                        }
                     }
                 ],
                 "id": "default257"
@@ -3961,7 +4226,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021211",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021211"
+                        }
                     }
                 ],
                 "id": "default258"
@@ -3986,7 +4254,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021220",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021220"
+                        }
                     }
                 ],
                 "id": "default259"
@@ -4011,7 +4282,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021209",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021209"
+                        }
                     }
                 ],
                 "id": "default260"
@@ -4036,7 +4310,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021219",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021219"
+                        }
                     }
                 ],
                 "id": "default261"
@@ -4061,7 +4338,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021210",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021210"
+                        }
                     }
                 ],
                 "id": "default262"
@@ -4086,7 +4366,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021168",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021168"
+                        }
                     }
                 ],
                 "id": "default263"
@@ -4136,7 +4419,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021165",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021165"
+                        }
                     }
                 ],
                 "id": "default265"
@@ -4161,7 +4447,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021159",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021159"
+                        }
                     }
                 ],
                 "id": "default266"
@@ -4186,7 +4475,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021163",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021163"
+                        }
                     }
                 ],
                 "id": "default267"
@@ -4211,7 +4503,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021160",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021160"
+                        }
                     }
                 ],
                 "id": "default268"
@@ -4236,7 +4531,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021543",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021543"
+                        }
                     }
                 ],
                 "id": "default269"
@@ -4261,7 +4559,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021546",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021546"
+                        }
                     }
                 ],
                 "id": "default270"
@@ -4286,7 +4587,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021458",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021458"
+                        }
                     }
                 ],
                 "id": "default271"
@@ -4311,7 +4615,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000026876",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000026876"
+                        }
                     }
                 ],
                 "id": "default272"
@@ -4354,7 +4661,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021141",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021141"
+                        }
                     }
                 ],
                 "id": "default274"
@@ -4379,7 +4689,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021049",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021049"
+                        }
                     }
                 ],
                 "id": "default275"
@@ -4429,7 +4742,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020906",
                                 "text": "화원(꽃집) 약도안내"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020906"
+                        }
                     }
                 ],
                 "id": "default277"
@@ -4454,7 +4770,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021051",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021051"
+                        }
                     }
                 ],
                 "id": "default278"
@@ -4479,7 +4798,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021139",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021139"
+                        }
                     }
                 ],
                 "id": "default279"
@@ -4504,7 +4826,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021092",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021092"
+                        }
                     }
                 ],
                 "id": "default280"
@@ -4529,7 +4854,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021134",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021134"
+                        }
                     }
                 ],
                 "id": "default281"
@@ -4554,7 +4882,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021140",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021140"
+                        }
                     }
                 ],
                 "id": "default282"
@@ -4579,7 +4910,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021135",
                                 "text": "약도 자세히 보기"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021135"
+                        }
                     }
                 ],
                 "id": "default283"
@@ -4623,7 +4957,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809551"
             },
             {
                 "name": "대동맥질환센터",
@@ -4646,7 +4981,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809552"
             },
             {
                 "name": "마르판클리닉",
@@ -4669,7 +5005,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809553"
             },
             {
                 "name": "말초혈관질환센터",
@@ -4692,7 +5029,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809554"
             },
             {
                 "name": "신경과",
@@ -4715,7 +5053,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809555"
             },
             {
                 "name": "신경외과",
@@ -4738,7 +5077,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809556"
             },
             {
                 "name": "신장내과",
@@ -4761,7 +5101,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809557"
             },
             {
                 "name": "심방세동센터",
@@ -4784,7 +5125,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809558"
             },
             {
                 "name": "심부전/심장이식센터",
@@ -4807,7 +5149,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809559"
             },
             {
                 "name": "심장내과",
@@ -4830,7 +5173,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809560"
             },
             {
                 "name": "심장병예방재활센터",
@@ -4853,7 +5197,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809561"
             },
             {
                 "name": "심장병원",
@@ -4876,7 +5221,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809562"
             },
             {
                 "name": "심장영상센터",
@@ -4899,7 +5245,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809563"
             },
             {
                 "name": "심장외과",
@@ -4922,7 +5269,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809564"
             },
             {
                 "name": "유헬스센터",
@@ -4945,7 +5293,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809565"
             },
             {
                 "name": "정형외과",
@@ -4968,7 +5317,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809566"
             },
             {
                 "name": "진료안내 창구",
@@ -4991,7 +5341,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809567"
             },
             {
                 "name": "파킨슨병센터",
@@ -5014,7 +5365,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809568"
             },
             {
                 "name": "판막질환센터",
@@ -5037,7 +5389,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809569"
             },
             {
                 "name": "평생건강클리닉",
@@ -5060,7 +5413,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809570"
             },
             {
                 "name": "폐고혈압/정맥혈전센터",
@@ -5083,7 +5437,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809571"
             },
             {
                 "name": "혈관외과",
@@ -5106,7 +5461,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809572"
             },
             {
                 "name": "협십증/심근경색센터",
@@ -5129,7 +5485,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809573"
             },
             {
                 "name": "감마나이프센터",
@@ -5152,7 +5509,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809574"
             },
             {
                 "name": "뇌신경검사실",
@@ -5175,7 +5533,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809575"
             },
             {
                 "name": "동관 일반촬영실",
@@ -5198,7 +5557,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809576"
             },
             {
                 "name": "수면다원검사실",
@@ -5221,7 +5581,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809577"
             },
             {
                 "name": "신경중재클리닉",
@@ -5244,7 +5605,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809578"
             },
             {
                 "name": "심장검사실(심전도, 홀터, 운동부하)",
@@ -5267,7 +5629,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809579"
             },
             {
                 "name": "심장재활검사실",
@@ -5290,7 +5653,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809580"
             },
             {
                 "name": "심전도실",
@@ -5313,7 +5677,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809581"
             },
             {
                 "name": "영상의학과 외래",
@@ -5336,7 +5701,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809582"
             },
             {
                 "name": "혈관검사실",
@@ -5359,7 +5725,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809583"
             },
             {
                 "name": "혈관조영실",
@@ -5382,7 +5749,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809584"
             },
             {
                 "name": "심장병원 당일입원실",
@@ -5405,7 +5773,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809585"
             },
             {
                 "name": "심혈관조영실",
@@ -5428,7 +5797,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809586"
             },
             {
                 "name": "전기생리학 검사실",
@@ -5451,7 +5821,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809587"
             },
             {
                 "name": "병리과",
@@ -5474,7 +5845,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809588"
             },
             {
                 "name": "비뇨기검사실",
@@ -5497,7 +5869,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809589"
             },
             {
                 "name": "비뇨기과",
@@ -5520,7 +5893,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809590"
             },
             {
                 "name": "세침흡인실",
@@ -5543,7 +5917,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809591"
             },
             {
                 "name": "스포츠건강의학센터",
@@ -5566,7 +5941,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809592"
             },
             {
                 "name": "심장초음파 검사실",
@@ -5589,7 +5965,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809593"
             },
             {
                 "name": "인공신장실",
@@ -5612,7 +5989,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809594"
             },
             {
                 "name": "재활치료실",
@@ -5635,7 +6013,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809595"
             },
             {
                 "name": "전립선센터",
@@ -5658,7 +6037,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809596"
             },
             {
                 "name": "정신건강의학과",
@@ -5681,7 +6061,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809597"
             },
             {
                 "name": "조직세포자원센터",
@@ -5704,7 +6085,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809598"
             },
             {
                 "name": "헌혈실",
@@ -5727,7 +6109,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809599"
             },
             {
                 "name": "혈액은행",
@@ -5750,7 +6133,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809600"
             },
             {
                 "name": "전시실",
@@ -5773,7 +6157,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809601"
             },
             {
                 "name": "조혈모세포 검사실",
@@ -5796,7 +6181,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809602"
             },
             {
                 "name": "비디오뇌파검사실",
@@ -5819,7 +6205,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809603"
             },
             {
                 "name": "뇌졸중센터 집중치료실",
@@ -5842,7 +6229,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809604"
             },
             {
                 "name": "멀티플라자",
@@ -5865,7 +6253,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809605"
             },
             {
                 "name": "문구점",
@@ -5888,7 +6277,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809606"
             },
             {
                 "name": "서점",
@@ -5911,7 +6301,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809607"
             },
             {
                 "name": "미용실",
@@ -5934,7 +6325,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809608"
             },
             {
                 "name": "보호자세탁실",
@@ -5957,7 +6349,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809609"
             },
             {
                 "name": "안경점",
@@ -5980,7 +6373,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809610"
             },
             {
                 "name": "우체국",
@@ -6003,7 +6397,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809611"
             },
             {
                 "name": "의학유전학센터",
@@ -6026,7 +6421,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809612"
             },
             {
                 "name": "이발소",
@@ -6049,7 +6445,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809613"
             },
             {
                 "name": "진료의뢰협력센터",
@@ -6072,7 +6469,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809614"
             },
             {
                 "name": "산부인과",
@@ -6095,7 +6493,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809615"
             },
             {
                 "name": "소아 재활치료실",
@@ -6118,7 +6517,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809616"
             },
             {
                 "name": "소아 주사실",
@@ -6141,7 +6541,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809617"
             },
             {
                 "name": "소아 당뇨클리닉",
@@ -6164,7 +6565,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809618"
             },
             {
                 "name": "소아 심장검사실",
@@ -6187,7 +6589,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809619"
             },
             {
                 "name": "소아 심전도검사실",
@@ -6210,7 +6613,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809620"
             },
             {
                 "name": "소아외과",
@@ -6233,7 +6637,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809621"
             },
             {
                 "name": "소아응급센터",
@@ -6256,7 +6661,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809622"
             },
             {
                 "name": "소아천식아토피센터",
@@ -6279,7 +6685,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809623"
             },
             {
                 "name": "소아청소년 감염과",
@@ -6302,7 +6709,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809624"
             },
             {
                 "name": "소아청소년 내분비대사과",
@@ -6325,7 +6733,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809625"
             },
             {
                 "name": "소아청소년 비뇨기과",
@@ -6348,7 +6757,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809626"
             },
             {
                 "name": "소아청소년 소화기 영양과",
@@ -6371,7 +6781,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809627"
             },
             {
                 "name": "소아청소년 신경과",
@@ -6394,7 +6805,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809628"
             },
             {
                 "name": "소아청소년 신경외과",
@@ -6417,7 +6829,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809629"
             },
             {
                 "name": "소아청소년 신장과",
@@ -6440,7 +6853,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809630"
             },
             {
                 "name": "소아청소년 심장과",
@@ -6463,7 +6877,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809631"
             },
             {
                 "name": "소아청소년 심장외과",
@@ -6486,7 +6901,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809632"
             },
             {
                 "name": "소아청소년 안과",
@@ -6509,7 +6925,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809633"
             },
             {
                 "name": "소아청소년 암센터",
@@ -6532,7 +6949,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809634"
             },
             {
                 "name": "소아청소년 영상의학과",
@@ -6555,7 +6973,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809635"
             },
             {
                 "name": "소아청소년 일반과",
@@ -6578,7 +6997,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809636"
             },
             {
                 "name": "소아청소년 재활의학과",
@@ -6601,7 +7021,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809637"
             },
             {
                 "name": "소아청소년 정신건강의학과",
@@ -6624,7 +7045,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809638"
             },
             {
                 "name": "소아청소년 정형외과",
@@ -6647,7 +7069,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809639"
             },
             {
                 "name": "소아청소년 종양혈액과",
@@ -6670,7 +7093,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809640"
             },
             {
                 "name": "소아청소년 중환자과",
@@ -6693,7 +7117,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809641"
             },
             {
                 "name": "소아청소년 호흡기알레르기과",
@@ -6716,7 +7141,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809642"
             },
             {
                 "name": "스트레스심리상담센터",
@@ -6739,7 +7165,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809643"
             },
             {
                 "name": "신관 채혈실",
@@ -6762,7 +7189,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809644"
             },
             {
                 "name": "아산기념전시실",
@@ -6785,7 +7213,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809645"
             },
             {
                 "name": "어린이병원",
@@ -6808,7 +7237,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809646"
             },
             {
                 "name": "이비인후과",
@@ -6831,7 +7261,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809647"
             },
             {
                 "name": "이비인후과 검사실",
@@ -6854,7 +7285,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809648"
             },
             {
                 "name": "척추측만증센터",
@@ -6877,7 +7309,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809649"
             },
             {
                 "name": "태아치료센터",
@@ -6900,7 +7333,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809650"
             },
             {
                 "name": "골밀도검사실",
@@ -6923,7 +7357,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809651"
             },
             {
                 "name": "교정과",
@@ -6946,7 +7381,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809652"
             },
             {
                 "name": "구강악안면외과",
@@ -6969,7 +7405,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809653"
             },
             {
                 "name": "보존과",
@@ -6992,7 +7429,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809654"
             },
             {
                 "name": "보철과",
@@ -7015,7 +7453,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809655"
             },
             {
                 "name": "성형외과",
@@ -7038,7 +7477,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809656"
             },
             {
                 "name": "소아진정치료실",
@@ -7061,7 +7501,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809657"
             },
             {
                 "name": "소아치과",
@@ -7084,7 +7525,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809658"
             },
             {
                 "name": "안과",
@@ -7107,7 +7549,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809659"
             },
             {
                 "name": "안과검사실",
@@ -7130,7 +7573,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809660"
             },
             {
                 "name": "엑시머라식클리닉",
@@ -7153,7 +7597,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809661"
             },
             {
                 "name": "임플란트센터",
@@ -7176,7 +7621,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809662"
             },
             {
                 "name": "치과",
@@ -7199,7 +7645,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809663"
             },
             {
                 "name": "치주과",
@@ -7222,7 +7669,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809664"
             },
             {
                 "name": "피부과",
@@ -7245,7 +7693,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809665"
             },
             {
                 "name": "당일수술센터",
@@ -7268,7 +7717,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809666"
             },
             {
                 "name": "선천성심장병센터",
@@ -7291,7 +7741,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809667"
             },
             {
                 "name": "소아중환자실",
@@ -7314,7 +7765,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809668"
             },
             {
                 "name": "통증클리닉",
@@ -7337,7 +7789,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809669"
             },
             {
                 "name": "건강증진센터",
@@ -7360,7 +7813,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809670"
             },
             {
                 "name": "국제진료센터",
@@ -7383,7 +7837,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809671"
             },
             {
                 "name": "분만장",
@@ -7406,7 +7861,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809672"
             },
             {
                 "name": "생식의학 및 불임클리닉",
@@ -7429,7 +7885,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809673"
             },
             {
                 "name": "신생아실",
@@ -7452,7 +7909,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809674"
             },
             {
                 "name": "체외수정실",
@@ -7475,7 +7933,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809675"
             },
             {
                 "name": "중동환자 기도실",
@@ -7498,7 +7957,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809676"
             },
             {
                 "name": "중증외상팀",
@@ -7518,7 +7978,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809677"
             },
             {
                 "name": "소화관기능검사실",
@@ -7541,7 +8002,8 @@ var dialogs = [
                             }
                         ]
                     }
-                ]
+                ],
+                "id": "default1519173809678"
             }
         ]
     },
@@ -10292,7 +10754,10 @@ var dialogs = [
                                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000030957",
                                                         "text": "약도 자세히 보기"
                                                     }
-                                                ]
+                                                ],
+                                                "image": {
+                                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000030957"
+                                                }
                                             }
                                         ],
                                         "id": "default160"
@@ -10317,7 +10782,10 @@ var dialogs = [
                                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000023317",
                                                         "text": "약도 자세히 보기"
                                                     }
-                                                ]
+                                                ],
+                                                "image": {
+                                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000023317"
+                                                }
                                             }
                                         ],
                                         "id": "default161"

@@ -334,10 +334,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             $scope.shortCutHelp = false;
         };
 
-        $scope.focusToInput = function()
+        $('#simulatorBody').on('click', function(e)
         {
+            if(e.target.className.indexOf('speech-text') != -1)
+                return;
+
             angular.element('#simulatorInput').focus();
-        };
+        });
 
         $scope.init();
     })();
