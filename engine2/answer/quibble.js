@@ -16,7 +16,7 @@ var randomQuibble = function(qs)
         {
             for(var j=0; j<quibbles[i].condition.words.length; j++)
             {
-                if(inputRaw.indexOf(quibbles[i].condition.words[j]) != -1)
+                if(inputRaw.indexOf(quibbles[i].condition.words[j]) != -1 && quibbles[i].condition.words[j].length / inputRaw.length >= 0.7)
                 {
                     return randomQuibble(quibbles[i].sentences);
                 }
