@@ -111,9 +111,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
         });
 
-        $scope.$on('saveDialogGraph', function()
+        $scope.$on('saveDialogGraph', function(context, data)
         {
-            $scope.save();
+            console.log(data.saveFileName);
+            $scope.save(data.saveFileName);
         });
 
         $scope.checkFailedDialog = function()
@@ -482,14 +483,14 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
         };
 
-        $scope.save = function()
+        $scope.save = function(saveFileName)
         {
             if(!$scope.isDirty)
                 return;
 
             var data = DialogGraph.getCompleteData();
 
-            var fileName = $location.search().fileName || 'default.graph.js';
+            var fileName = saveFileName || $location.search().fileName || 'default.graph.js';
             DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
                 //저장할때마다 history 업데이트

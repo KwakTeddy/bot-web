@@ -476,7 +476,7 @@ var dialogs = [
                         "name": "입력 조건 _ 사용자 인증",
                         "input": [
                             {
-                                "if": "dialog.data.test"
+                                "if": "context.session.test"
                             }
                         ],
                         "output": [

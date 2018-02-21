@@ -1927,7 +1927,7 @@
             return data;
         };
 
-        DialogGraph.prototype.setDirty = function(dirty)
+        DialogGraph.prototype.setDirty = function(dirty, saveFileName)
         {
             this.dirty = (dirty === undefined ? true : dirty);
             if(this.dirtyCallback)
@@ -1935,7 +1935,7 @@
 
             if(this.dirty == true)
             {
-                this.$rootScope.$broadcast('saveDialogGraph');
+                this.$rootScope.$broadcast('saveDialogGraph', { saveFileName: saveFileName });
             }
         };
 

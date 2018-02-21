@@ -7,6 +7,7 @@ var utils = require('../utils/utils.js');
 var Globals = require('../globals.js');
 var TaskManager = require('./task.js');
 var ActionManager = require('./action.js');
+var ContextManager = require('../context.js');
 
 (function()
 {
@@ -178,16 +179,24 @@ var ActionManager = require('./action.js');
                 }
                 else if(key == 'if')
                 {
+                    var dialogInstance = ContextManager.createDialogInstance(dialog, userInput);
                     result = result && (function(dialog, context, input)
                     {
-                        if(eval('result = (' + input.if + ' ? true : false);'))
+                        try
                         {
-                            return true;
+                            if(eval('result = (' + input.if + ' ? true : false);'))
+                            {
+                                return true;
+                            }
+                        }
+                        catch(err)
+                        {
+                            console.error(err);
                         }
 
                         return false;
 
-                    })(dialog, context, input);
+                    })(dialogInstance, context, input);
                 }
                 else if(key == 'regexp')
                 {

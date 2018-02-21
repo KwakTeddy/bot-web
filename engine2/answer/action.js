@@ -67,7 +67,10 @@ var ContextManager = require('../context.js');
             console.log(chalk.yellow('[[[ Action - up ]]]'));
             console.log(parent.id, parent.name);
 
-            this.dm.execWithRecord(bot, context, parent, callback);
+            var tempDialogInstance = ContextManager.createDialogInstance(parent, dialogInstance.userInput);
+            tempDialogInstance.options = this.makeOption(resultOutput);
+
+            this.dm.execWithRecord(bot, context, tempDialogInstance, callback);
         }
         else
         {
@@ -138,9 +141,11 @@ var ContextManager = require('../context.js');
 
     ActionManager.prototype.callChild = function(bot, context, dialogInstance, resultOutput, callback)
     {
-        var dialog = utils.clone(bot.dialogMap[resultOutput.dialogId]);
-        this.dm.find(bot, context, dialog, function(err, matchedDialog)
+        var dialog = bot.dialogMap[resultOutput.dialogId];
+        this.dm.findDialog(bot, context, dialogInstance.userInput, dialogInstance.userInput.intents, dialogInstance.userInput.entities, dialog.children, function(err, matchedDialog)
         {
+            context.session.dialogCursor = dialog.id;
+
             if(matchedDialog)
             {
                 console.log();
@@ -150,8 +155,6 @@ var ContextManager = require('../context.js');
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
                 tempDialogInstance.options = this.makeOption(resultOutput);
 
-                context.session.dialogCursor = tempDialogInstance.id;
-
                 // dialogInstance.nextCall = tempDialogInstance;
                 // tempDialogInstance.prevCall = dialogInstance;
 
@@ -159,7 +162,7 @@ var ContextManager = require('../context.js');
             }
             else
             {
-                callback({ text: 'CallChild 타겟을 찾을 수 없습니다.' });
+                callback({ text: '검색된 결과가 없습니다'});
             }
         });
     };
