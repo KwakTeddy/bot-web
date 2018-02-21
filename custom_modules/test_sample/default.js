@@ -80,7 +80,7 @@ module.exports = function(bot)
 
 
 
-	bot.setTask('preCallback', 
+	bot.setTask('preCallback',
 	{
 	    preCallback : function (dialog, context, callback) {
             dialog.data.preCallback = 'This is preCallback Variable!';
@@ -92,7 +92,7 @@ module.exports = function(bot)
         }
 	});
 
-	bot.setTask('postCallback', 
+	bot.setTask('postCallback',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -118,7 +118,7 @@ module.exports = function(bot)
         callback();
     };
 
-	bot.setTask('sequenceTask', 
+	bot.setTask('sequenceTask',
 	{
 		action: [
             'crawling',
@@ -127,7 +127,7 @@ module.exports = function(bot)
         ]
 	});
 
-	bot.setTask('taskParams', 
+	bot.setTask('taskParams',
 	{
 	    params : '테스크에 파라미터가 정산적으로 들어갔습니다.',
 		action: function (dialog, context, callback)
@@ -137,7 +137,7 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('requiredParams', 
+	bot.setTask('requiredParams',
 	{
         paramDefs: [{ type: 'mobile', description: 'mobile 타입이 필수 파라미터입니다. 핸드폰 번호를 입력해야합니다.' }],
 		action: function (dialog, context, callback)
@@ -147,10 +147,40 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('taskExtends', 
+	bot.setTask('taskExtends',
 	{
 	    params : 'taskParams함수를 extends하여, 테스크 파라미터 변경에 성공했습니다.',
         extends: 'taskParams'
 
     });
+
+
+    var email = {
+      typeCheck: function (dialog, context, callback) {
+        var matched = false;
+        var regExp = new RegExp('(?:[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*|"(?:[-\b\f-!#-[]-]|\\\\[-\t\f-])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[-\b\f-!-ZS-]|\\\\[-\t\f-])+)\\])', 'ig');
+        var validation = regExp.test(dialog.userInput.text);
+        if(validation)
+        {
+            matched = true;
+        }
+
+        callback(matched);
+        }
+    };
+
+    bot.setType('email', email);
+
+	bot.setTask('setTestVar', 
+	{
+		action: function (dialog, context, callback)
+		{
+		    console.log(dialog)
+            // if(dialog.data.test)
+            //     dialog.data.test = false;
+            // else
+            //     dialog.data.test = true;
+			callback();
+		}
+	});
 };

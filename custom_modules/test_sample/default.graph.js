@@ -112,7 +112,8 @@ var dialogs = [
                                 "type": "repeat"
                             }
                         ],
-                        "id": "default14"
+                        "id": "default14",
+                        "children": []
                     },
                     {
                         "name": "AND 조건 테스트",
@@ -184,8 +185,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "@동물 엔터티에는 말, 호랑이, 고양이가 포함되어 있습니다. 사용자가 말, 호랑이, 고양이를 입력했을 시에 본 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "@동물 엔터티에는 말, 호랑이, 고양이가 포함되어 있습니다. 사용자가 말, 호랑이, 고양이를 입력했을 시에 본 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default2",
@@ -195,17 +197,14 @@ var dialogs = [
                         "name": "엔터티 구현2",
                         "input": [
                             {
-                                "entities": "상의 ",
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                }
+                                "entities": "상의"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "@상의 엔터티에는 긴팔, 반팔 등이 포함되어 있습니다. 사용자가 김팔, 반팔 등을 입력했을 시에 본 대화카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "@상의 엔터티에는 긴팔, 반팔 등이 포함되어 있습니다. 사용자가 김팔, 반팔 등을 입력했을 시에 본 대화카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default3"
@@ -252,17 +251,14 @@ var dialogs = [
                         "name": "인텐트 구현 _ 검색",
                         "input": [
                             {
-                                "intent": "검색",
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                }
+                                "intent": "검색"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "#검색 인텐트가 실행됐습니다.\n\n검색 인텐트에는 '찾아줘', '검색해줘' 등이 포함되어 있습니다.\n\n사용자가 '찾아줘', '검색해줘' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "#검색 인텐트가 실행됐습니다.\n\n검색 인텐트에는 '찾아줘', '검색해줘' 등이 포함되어 있습니다.\n\n사용자가 '찾아줘', '검색해줘' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default10"
@@ -280,8 +276,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "#정지 인텐트가 실행됐습니다.\n\n정지 인텐트에는 '멈춰줘', '그만해' 등이 포함되어 있습니다.\n\n사용자가 '멈춰줘', '그만해' 등을 입력했을 시에 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "#정지 인텐트가 실행됐습니다.\n\n정지 인텐트에는 '멈춰줘', '그만해' 등이 포함되어 있습니다.\n\n사용자가 '멈춰줘', '그만해' 등을 입력했을 시에 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default11"
@@ -334,13 +331,14 @@ var dialogs = [
                         "name": "정규식 구현_핸드폰번호",
                         "input": [
                             {
-                                "regexp": "\\d{2,3}-\\d{3,4}-\\d{4}"
+                                "regexp": "d{2,3}-d{3,4}-d{4}"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default18",
@@ -350,13 +348,14 @@ var dialogs = [
                         "name": "정규식 구현 _ 이메일",
                         "input": [
                             {
-                                "regexp": "[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z]*[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z]*\\.[a-zA-Z]{2,3}"
+                                "regexp": "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\u0001-\b\u000b\f\u000e-\u001f!#-[]-]|\\\\[\u0001-\t\u000b\f\u000e-])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\u0001-\b\u000b\f\u000e-\u001f!-ZS-]|\\\\[\u0001-\t\u000b\f\u000e-])+)\\])"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default19"
@@ -376,7 +375,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "타입"
+                        "text": "1. mobile 타입 테스트\n-> 010-3030-2811 또는 01030302811  형식 입력\n\n2. email 타입 테스트\n-> 5709psy@moneybrain.ai 형식 입력"
                     }
                 ],
                 "id": "default20",
@@ -410,8 +409,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default22"
@@ -427,8 +427,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "$타입이 실행됐습니다.\n\n위의 타입은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default23"
@@ -436,7 +437,7 @@ var dialogs = [
                 ]
             },
             {
-                "name": "input_if",
+                "name": "IF",
                 "input": [
                     {
                         "text": {
@@ -448,7 +449,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "input_if"
+                        "text": "1. if(변수) 테스트\n->dialog.data.test에 값 입력\n\n2. if(true) 테스트\n-> 아무거나 입력"
                     }
                 ],
                 "id": "default4",
@@ -475,13 +476,14 @@ var dialogs = [
                         "name": "입력 조건 _ 사용자 인증",
                         "input": [
                             {
-                                "if": "context.user.auth"
+                                "if": "dialog.data.test"
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 사용자 인증 여부를 판단합니다.\n\n사용자가 인증을 거쳐 context.user.auth에 값이 존재할 시에 해당 대화 카드가 실행됩니다."
+                                "kind": "Action",
+                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 사용자 인증 여부를 판단합니다.\n\n사용자가 인증을 거쳐 context.user.auth에 값이 존재할 시에 해당 대화 카드가 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default6"
@@ -495,8 +497,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 true입니다.\n\n입력 조건이 true이기 때문에 해당 대화 카드는 모든 사용자 입력에 대해 실행됩니다."
+                                "kind": "Action",
+                                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 true입니다.\n\n입력 조건이 true이기 때문에 해당 대화 카드는 모든 사용자 입력에 대해 실행됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default7"
@@ -569,8 +572,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "키 또는 워드 또는 OR 또는 조건 중 어느 키워드를 입력해도 대화 카드가 실행됩니다.\nOR 조건은 '사용자 입력'을 여러 개 설정하면 됩니다."
+                                "kind": "Action",
+                                "text": "키 또는 워드 또는 OR 또는 조건 중 어느 키워드를 입력해도 대화 카드가 실행됩니다.\nOR 조건은 '사용자 입력'을 여러 개 설정하면 됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default26"
@@ -587,8 +591,9 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "'AND' '조건'을 모두 입력했을 시에 실행됩니다.\nAND 조건은 '사용자 입력'에 띄어쓰기 형태로 여러 키워드를 설정하면 됩니다."
+                                "kind": "Action",
+                                "text": "'AND' '조건'을 모두 입력했을 시에 실행됩니다.\nAND 조건은 '사용자 입력'에 띄어쓰기 형태로 여러 키워드를 설정하면 됩니다.",
+                                "type": "repeat"
                             }
                         ],
                         "id": "default27"
@@ -610,18 +615,256 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "챗봇 답변 테스트"
+                "text": "챗봇 답변 관련 기능들 중 테스트 원하는 기능을 선택하세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "1. 변수 접근"
+                    },
+                    {
+                        "url": "",
+                        "text": "2. IF"
+                    },
+                    {
+                        "url": "",
+                        "text": "3. Call"
+                    },
+                    {
+                        "url": "",
+                        "text": "4. Repeat"
+                    },
+                    {
+                        "url": "",
+                        "text": "5. Up"
+                    },
+                    {
+                        "url": "",
+                        "text": "6. Callchild"
+                    },
+                    {
+                        "url": "",
+                        "text": "7. Returncall"
+                    }
+                ]
             }
         ],
         "id": "default96",
         "children": [
             {
-                "name": "output_call",
+                "name": "변수(챗봇 답변)",
                 "input": [
                     {
                         "text": {
-                            "raw": "8",
-                            "nlp": "8"
+                            "raw": "1",
+                            "nlp": "1"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "1. 문자열 변수 접근 테스트\n\n2. 객체 변수 접근 테스트\n\n3. 배열 변수 접근 테스트",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "1. 문자열 변수 접근 테스트"
+                            },
+                            {
+                                "url": "",
+                                "text": "2. 객체 변수 접근 테스트"
+                            },
+                            {
+                                "url": "",
+                                "text": "3. 배열 변수 접근 테스트"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default62",
+                "children": [
+                    {
+                        "name": "변수 접근 기능",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "변수 접근 기능",
+                                    "nlp": "변수 접근 기능"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "'챗봇 답변'은 고정된 답변을 해줄 수도 있지만, 동적인 답변을 해줘야 하는 경우도 있습니다.\n\n예를 들어, 챗봇 답변에서 챗봇 이름을 직접 입력할 수도 있지만(상수), 변수를 이용해 입력 할 수도 있습니다.\n\n예시 : \\+botName+\n\n변수는 context.user 혹은 context.dialog 혹은 context.bot 객체의 key 값입니다. \n\n예시 : context.bot.botName -> 변수명 : botName\n\n변수들은 default.js 파일에서 조작할 수 있습니다.\n\n변수의 값은 문자열, 객체, 배열 중 하나입니다."
+                            }
+                        ],
+                        "id": "default63"
+                    },
+                    {
+                        "name": "변수 접근 구현 _ 문자열",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "문자열",
+                                    "nlp": "문자열"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "1",
+                                    "nlp": "1"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "값이 문자열인 변수는 \\+변수명+ 형태로 접근할 수 있습니다.\n\ncontext.bot.botName에 접근하고 싶을 때는 다음과 같이 입력합니다.\n\n\\+botName+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+bot.name+"
+                            }
+                        ],
+                        "id": "default64"
+                    },
+                    {
+                        "name": "변수 접근 구현 _객체",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "객체",
+                                    "nlp": "객체"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2",
+                                    "nlp": "2"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "값이 객체인 변수는 \\+변수명.key+ 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataObject = \n{\n date: '2018년',\ntitle: '살인사건'\n}\n일 경우, 다음과 같이 접근합니다.\n\n\\+movieDataObject.date+\n\\+movieDataObject.title+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+movieDataObject.date+\n+movieDataObject.title+"
+                            }
+                        ],
+                        "id": "default65"
+                    },
+                    {
+                        "name": "변수 접근 구현 _배열",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "배열",
+                                    "nlp": "배열"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "3",
+                                    "nlp": "3"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "값이 배열인 변수는 \\#변수명\\# 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataArray = \n[\n\n{\n date: '2018년',\ntitle: '살인사건'\n},\n{\n date: '2017년',\ntitle: '추격자'\n},\n\n]\n일 경우, 다음과 같이 접근합니다.\n\n\\#movieDataArray\\#\n\n\\#변수\\#을 할 경우, 자체적으로 배열에 담긴 요소 하나씩에 접근합니다. \n\n배열에 담긴 요소 하나씩을 접근해 나타내기 위해서는 다음과 같이 접근합니다.\n\n\\#변수\\#각 요소에 대한 접근\\#\n\n마지막 \\#은 각 요소에 대한 접근을 마무리한다는 의미이며, 그에 따라 \\#각 요소에 대한 접근\\# 부분이 반복됩니다.\n\n\\#각 요소에 대한 접근\\#에서는 \\+key+의 형태로 각 요소의 value에 접근할 수 있습니다.\n\n\\#movieDataArray\\# \\+date+ +title+\\#\n\n\\#각 요소에 대한 접근\\#에서는 \\+index+가 자동으로 추가되어 해당 요소의 순번을 알 수가 있습니다.\n\n최종적으로 다음과 같이 활용 가능합니다.\n\n\\#movieDataArray\\#\n\\+index+.\n타이틀은 \\+title+입니다.\n날짜는 \\+date+입니다.\n\n\\#\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n#movieDataArray#\n+index+.\n타이틀은 +title+입니다.\n날짜는 +date+입니다.\n\n#"
+                            }
+                        ],
+                        "id": "default66"
+                    }
+                ]
+            },
+            {
+                "name": "IF(챗봇 답변)",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "output_if"
+                    }
+                ],
+                "id": "default423",
+                "children": [
+                    {
+                        "name": "답변IF 기능",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "기능",
+                                    "nlp": "기능"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "답변IF 기능은 하나의 대화카드에서 조건에 따라 다른 답변을 내놓는 기능입니다.\n\n예를 들어, 사용자의 대화 채널(카카오, 페이스북 등)에 따라 다른 답변을 내놓아야 할 때 활용할 수 있습니다.\n\n챗봇 답변을 여러개 만들었을 시  사용 가능합니다.\n\nIF 안에서 변수에 대한 접근이 가능합니다."
+                            }
+                        ],
+                        "id": "default43"
+                    },
+                    {
+                        "name": "답변IF 구현 _ 소켓",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "소켓 구현",
+                                    "nlp": "소켓 구현"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓(socket) 채널로 대화중입니다.",
+                                "if": "context.user.channel == 'socket'"
+                            },
+                            {
+                                "kind": "Content",
+                                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓이 아닌 다른 채널에서 대화중입니다."
+                            }
+                        ],
+                        "id": "default44"
+                    },
+                    {
+                        "name": "답변IF 구현 _ 카카오",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "카카오 구현",
+                                    "nlp": "카카오 구현"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n\n카카오 채널로 대화중입니다.",
+                                "if": "context.user.channel == 'kakao'"
+                            },
+                            {
+                                "kind": "Content",
+                                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n소켓 채널로 대화중입니다."
+                            }
+                        ],
+                        "id": "default45"
+                    }
+                ]
+            },
+            {
+                "name": "Call",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "3",
+                            "nlp": "3"
                         }
                     }
                 ],
@@ -765,12 +1008,215 @@ var dialogs = [
                 ]
             },
             {
-                "name": "output_callchild",
+                "name": "Repeat",
                 "input": [
                     {
                         "text": {
-                            "raw": "9",
-                            "nlp": "9"
+                            "raw": "4",
+                            "nlp": "4"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "output_repeat"
+                    }
+                ],
+                "id": "default46",
+                "children": [
+                    {
+                        "name": "다시질문하기 기능",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "기능",
+                                    "nlp": "기능"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n다시질문하기 기능은 사용자의 입력값에 부합하는 자식 대화 카드가 없을 때 커서가 이동하지 않고 챗봇 답변을 다시 실행하는 즉, 다시 질문하는 기능입니다.\n\n다시질문하기는 막내 대화카드에서 사용자 입력을 if(true)로 설정하고 부모 대화카드로 대화이동을 구현한 것과 동일합니다. \n\n사용자에게 특정 대답을 요구할 때 사용 가능합니다.\n\n예를 들어, 핸드폰 번호를 물어볼 경우 그에 해당하지 않는 사용자의 입력값이 들어오면 다시 물어보는 기능입니다."
+                            }
+                        ],
+                        "id": "default47"
+                    },
+                    {
+                        "name": "다시질문하기 실행 _ 핸드폰",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "실행",
+                                    "nlp": "실행"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "다시질문하기 기능을 실행하겠습니다.\n\n핸드폰 번호를 입력해주세요."
+                            }
+                        ],
+                        "id": "default48",
+                        "children": [
+                            {
+                                "name": "핸드폰 번호 입력받기",
+                                "input": [
+                                    {
+                                        "types": [
+                                            "mobile"
+                                        ]
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "핸드폰 번호를 입력해주셨습니다."
+                                    }
+                                ],
+                                "id": "default49"
+                            },
+                            {
+                                "name": "다시질문하기 실행 카드",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "type": "repeat",
+                                        "text": "다시질문하기 기능이 실행됐습니다.\n\n핸드폰 번호가 아닙니다. \n\n다시 핸드폰 번호를 입력해주세요."
+                                    }
+                                ],
+                                "id": "default50"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "UP",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "5",
+                            "nlp": "5"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "output_up"
+                    }
+                ],
+                "id": "default57",
+                "children": [
+                    {
+                        "name": "이전대화이동 기능",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "기능",
+                                    "nlp": "기능"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n이전 대화이동 기능은 대화상에서 '이전'이라고 입력했을 때 이전 대화 카드로 이동하는 기능을 말합니다."
+                            }
+                        ],
+                        "id": "default58"
+                    },
+                    {
+                        "name": "이전대화이동 준비",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "준비",
+                                    "nlp": "준비"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "이전대화이동을 잘 살펴보기 위해 의도적으로 뎁스를 만들 었습니다. \n\n준비라고 입력해주세요.",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "준비"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default59",
+                        "children": [
+                            {
+                                "name": "이전대화이동 실행",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "준비",
+                                            "nlp": "준비"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "이전대화이동 실행을 위해서 아래의 버튼을 눌러주세요.",
+                                        "type": "",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전대화이동 실행"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "default60",
+                                "children": [
+                                    {
+                                        "name": "이전대화이동 실행 카드",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "이전 대화 이동 실행 카드",
+                                                    "nlp": "이전 대화 이동 실행 카드"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "type": "up",
+                                                "dialogName": "돌아가기 대화 준비",
+                                                "dialogId": "default55",
+                                                "text": "이전 대화로 이동했습니다."
+                                            }
+                                        ],
+                                        "id": "default61"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Callchild",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "6",
+                            "nlp": "6"
                         }
                     }
                 ],
@@ -900,187 +1346,12 @@ var dialogs = [
                 ]
             },
             {
-                "name": "output_if",
+                "name": "Returncall",
                 "input": [
                     {
                         "text": {
-                            "raw": "10",
-                            "nlp": "10"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "output_if"
-                    }
-                ],
-                "id": "default423",
-                "children": [
-                    {
-                        "name": "답변IF 기능",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "기능",
-                                    "nlp": "기능"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "답변IF 기능은 하나의 대화카드에서 조건에 따라 다른 답변을 내놓는 기능입니다.\n\n예를 들어, 사용자의 대화 채널(카카오, 페이스북 등)에 따라 다른 답변을 내놓아야 할 때 활용할 수 있습니다.\n\n챗봇 답변을 여러개 만들었을 시  사용 가능합니다.\n\nIF 안에서 변수에 대한 접근이 가능합니다."
-                            }
-                        ],
-                        "id": "default43"
-                    },
-                    {
-                        "name": "답변IF 구현 _ 소켓",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "소켓 구현",
-                                    "nlp": "소켓 구현"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓(socket) 채널로 대화중입니다.",
-                                "if": "context.user.channel == 'socket'"
-                            },
-                            {
-                                "kind": "Content",
-                                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓이 아닌 다른 채널에서 대화중입니다."
-                            }
-                        ],
-                        "id": "default44"
-                    },
-                    {
-                        "name": "답변IF 구현 _ 카카오",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "카카오 구현",
-                                    "nlp": "카카오 구현"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n\n카카오 채널로 대화중입니다.",
-                                "if": "context.user.channel == 'kakao'"
-                            },
-                            {
-                                "kind": "Content",
-                                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n소켓 채널로 대화중입니다."
-                            }
-                        ],
-                        "id": "default45"
-                    }
-                ]
-            },
-            {
-                "name": "output_repeat",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "11",
-                            "nlp": "11"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "output_repeat"
-                    }
-                ],
-                "id": "default46",
-                "children": [
-                    {
-                        "name": "다시질문하기 기능",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "기능",
-                                    "nlp": "기능"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n다시질문하기 기능은 사용자의 입력값에 부합하는 자식 대화 카드가 없을 때 커서가 이동하지 않고 챗봇 답변을 다시 실행하는 즉, 다시 질문하는 기능입니다.\n\n다시질문하기는 막내 대화카드에서 사용자 입력을 if(true)로 설정하고 부모 대화카드로 대화이동을 구현한 것과 동일합니다. \n\n사용자에게 특정 대답을 요구할 때 사용 가능합니다.\n\n예를 들어, 핸드폰 번호를 물어볼 경우 그에 해당하지 않는 사용자의 입력값이 들어오면 다시 물어보는 기능입니다."
-                            }
-                        ],
-                        "id": "default47"
-                    },
-                    {
-                        "name": "다시질문하기 실행 _ 핸드폰",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "실행",
-                                    "nlp": "실행"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "다시질문하기 기능을 실행하겠습니다.\n\n핸드폰 번호를 입력해주세요."
-                            }
-                        ],
-                        "id": "default48",
-                        "children": [
-                            {
-                                "name": "핸드폰 번호 입력받기",
-                                "input": [
-                                    {
-                                        "types": [
-                                            "mobile"
-                                        ]
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "핸드폰 번호를 입력해주셨습니다."
-                                    }
-                                ],
-                                "id": "default49"
-                            },
-                            {
-                                "name": "다시질문하기 실행 카드",
-                                "input": [
-                                    {
-                                        "if": "true"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "type": "repeat",
-                                        "text": "다시질문하기 기능이 실행됐습니다.\n\n핸드폰 번호가 아닙니다. \n\n다시 핸드폰 번호를 입력해주세요."
-                                    }
-                                ],
-                                "id": "default50"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "output_returncall",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "12",
-                            "nlp": "12"
+                            "raw": "7",
+                            "nlp": "7"
                         }
                     }
                 ],
@@ -1198,210 +1469,6 @@ var dialogs = [
                                 "id": "default56"
                             }
                         ]
-                    }
-                ]
-            },
-            {
-                "name": "output_up",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "13",
-                            "nlp": "13"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "output_up"
-                    }
-                ],
-                "id": "default57",
-                "children": [
-                    {
-                        "name": "이전대화이동 기능",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "기능",
-                                    "nlp": "기능"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n이전 대화이동 기능은 대화상에서 '이전'이라고 입력했을 때 이전 대화 카드로 이동하는 기능을 말합니다."
-                            }
-                        ],
-                        "id": "default58"
-                    },
-                    {
-                        "name": "이전대화이동 준비",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "준비",
-                                    "nlp": "준비"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "이전대화이동을 잘 살펴보기 위해 의도적으로 뎁스를 만들 었습니다. \n\n준비라고 입력해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "준비"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default59",
-                        "children": [
-                            {
-                                "name": "이전대화이동 실행",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "준비",
-                                            "nlp": "준비"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "이전대화이동 실행을 위해서 아래의 버튼을 눌러주세요.",
-                                        "type": "",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "이전대화이동 실행"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default60",
-                                "children": [
-                                    {
-                                        "name": "이전대화이동 실행 카드",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "이전 대화 이동 실행 카드",
-                                                    "nlp": "이전 대화 이동 실행 카드"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Action",
-                                                "type": "up",
-                                                "dialogName": "돌아가기 대화 준비",
-                                                "dialogId": "default55",
-                                                "text": "이전 대화로 이동했습니다."
-                                            }
-                                        ],
-                                        "id": "default61"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "output_variable",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "14",
-                            "nlp": "14"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "output_variable"
-                    }
-                ],
-                "id": "default62",
-                "children": [
-                    {
-                        "name": "변수 접근 기능",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "변수 접근 기능",
-                                    "nlp": "변수 접근 기능"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "'챗봇 답변'은 고정된 답변을 해줄 수도 있지만, 동적인 답변을 해줘야 하는 경우도 있습니다.\n\n예를 들어, 챗봇 답변에서 챗봇 이름을 직접 입력할 수도 있지만(상수), 변수를 이용해 입력 할 수도 있습니다.\n\n예시 : \\+botName+\n\n변수는 context.user 혹은 context.dialog 혹은 context.bot 객체의 key 값입니다. \n\n예시 : context.bot.botName -> 변수명 : botName\n\n변수들은 default.js 파일에서 조작할 수 있습니다.\n\n변수의 값은 문자열, 객체, 배열 중 하나입니다."
-                            }
-                        ],
-                        "id": "default63"
-                    },
-                    {
-                        "name": "변수 접근 구현 _ 문자열",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "문자열",
-                                    "nlp": "문자열"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "값이 문자열인 변수는 \\+변수명+ 형태로 접근할 수 있습니다.\n\ncontext.bot.botName에 접근하고 싶을 때는 다음과 같이 입력합니다.\n\n\\+botName+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+botName+"
-                            }
-                        ],
-                        "id": "default64"
-                    },
-                    {
-                        "name": "변수 접근 구현 _객체",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "객체",
-                                    "nlp": "객체"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "값이 객체인 변수는 \\+변수명.key+ 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataObject = \n{\n date: '2018년',\ntitle: '살인사건'\n}\n일 경우, 다음과 같이 접근합니다.\n\n\\+movieDataObject.date+\n\\+movieDataObject.title+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+movieDataObject.date+\n+movieDataObject.title+"
-                            }
-                        ],
-                        "id": "default65"
-                    },
-                    {
-                        "name": "변수 접근 구현 _배열",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "배열",
-                                    "nlp": "배열"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "값이 배열인 변수는 \\#변수명\\# 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataArray = \n[\n\n{\n date: '2018년',\ntitle: '살인사건'\n},\n{\n date: '2017년',\ntitle: '추격자'\n},\n\n]\n일 경우, 다음과 같이 접근합니다.\n\n\\#movieDataArray\\#\n\n\\#변수\\#을 할 경우, 자체적으로 배열에 담긴 요소 하나씩에 접근합니다. \n\n배열에 담긴 요소 하나씩을 접근해 나타내기 위해서는 다음과 같이 접근합니다.\n\n\\#변수\\#각 요소에 대한 접근\\#\n\n마지막 \\#은 각 요소에 대한 접근을 마무리한다는 의미이며, 그에 따라 \\#각 요소에 대한 접근\\# 부분이 반복됩니다.\n\n\\#각 요소에 대한 접근\\#에서는 \\+key+의 형태로 각 요소의 value에 접근할 수 있습니다.\n\n\\#movieDataArray\\# \\+date+ +title+\\#\n\n\\#각 요소에 대한 접근\\#에서는 \\+index+가 자동으로 추가되어 해당 요소의 순번을 알 수가 있습니다.\n\n최종적으로 다음과 같이 활용 가능합니다.\n\n\\#movieDataArray\\#\n\\+index+.\n타이틀은 \\+title+입니다.\n날짜는 \\+date+입니다.\n\n\\#\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n#movieDataArray#\n+index+.\n타이틀은 +title+입니다.\n날짜는 +date+입니다.\n\n#"
-                            }
-                        ],
-                        "id": "default66"
                     }
                 ]
             }
