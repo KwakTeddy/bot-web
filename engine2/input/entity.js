@@ -56,7 +56,7 @@ var EntityContentSynonym = mongoose.model('EntityContentSynonym');
     {
         async.eachSeries(nouns, function(word, next)
         {
-            var query = { name: word };
+            var query = { name: new RegExp(word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi') };
             if(check)
             {
                 if(bot.templateId)
@@ -89,7 +89,10 @@ var EntityContentSynonym = mongoose.model('EntityContentSynonym');
                             entities[docs[i].entityId.name] = [];
                         }
 
-                        entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+                        if(docs[i].contentId)
+                        {
+                            entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+                        }
                     }
                 }
 
