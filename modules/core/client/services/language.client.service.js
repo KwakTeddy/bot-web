@@ -2952,6 +2952,12 @@
                 "zh": "移到上一个对话框",
                 "jp": "前のダイアログに移動"
             },
+            "Move to parent dialog": {
+                "ko": "상위 대화로 이동",
+                "en": "Move to parent dialog",
+                "zh": "去父母的谈话",
+                "jp": "上位スレッドに移動"
+            },
             "Return": {
                 "ko": "돌아가기",
                 "en": "Return",
