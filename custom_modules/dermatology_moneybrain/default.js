@@ -389,4 +389,34 @@ module.exports = function(bot) {
                 callback();
             }
         });
+
+	bot.setTask('start', 
+	{
+		action: function (dialog, context, callback)
+		{
+                var modelname = 'dermatology_moneybrain_company';
+                var options = {};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                options.qs = {
+                    name: "포에버성형외과"
+                };
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log('err:' + err);
+                        callback();
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        console.log(response.statusCode);
+
+                        context.session.introduction = body;
+                        if (body[0].image2 !== "" || body[0].image2 !== undefined) {
+                            dialog.output[0].image = {url: body[0].image2}
+                        }
+                        callback();
+                    }
+                });
+            }
+        });
 };
