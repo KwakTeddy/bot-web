@@ -78,7 +78,6 @@ dialog는 다이얼로그 그래프에서 작성하는 카드 데이터이다. �
 ```
 bot.setTask("defaultTask",
 {
-	name: 'defaultTask',
 	action: function(dialog, context, callback)
 	{
 		callback();
@@ -126,7 +125,6 @@ bot.setTask('myTask',
 ```
 bot.setTask('sampleTask1',
 {
-	name: 'sample1',
 	action: function (dialog, context, callback)
 	{
 		dialog.output[0].text += '\n하하하';
@@ -136,7 +134,6 @@ bot.setTask('sampleTask1',
    
 var sampleTask2 =
 {
-	name: 'sample2',
 	action: function (dialog, context, callback)
 	{
 		dialog.output[0].text += '\n하하하2';
@@ -153,11 +150,10 @@ var sampleTask3 = function(dialog, context, callback)
 
 bot.setTask('sequenceTask',
 {
-	action: 'sequence',
-	tasks: [
-		'sampleTask1',
-		sampleTask2,
-		sampleTask3
-	]
+	action: [
+            		'sampleTask1',
+            		sampleTask2,
+            		sampleTask3
+            	]
 });
 ```

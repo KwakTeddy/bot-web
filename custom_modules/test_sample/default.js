@@ -70,7 +70,6 @@ module.exports = function(bot)
                         console.log(err);
                     }
                     body = JSON.parse(body);
-                    console.log(body)
                     context.session.movieData = body;
                     callback();
                 }
@@ -80,4 +79,78 @@ module.exports = function(bot)
 
 
 
+
+	bot.setTask('preCallback', 
+	{
+	    preCallback : function (dialog, context, callback) {
+            dialog.data.preCallback = 'This is preCallback Variable!';
+            callback();
+        },
+        action : function (dialog, context, callback) {
+            dialog.data.action = 'This is action Variable!' + dialog.data.preCallback;
+            callback();
+        }
+	});
+
+	bot.setTask('postCallback', 
+	{
+		action: function (dialog, context, callback)
+		{
+            dialog.data.action = 'This is action Variable!';
+            callback();
+		},
+        postCallback : function (dialog, context, callback) {
+            dialog.data.postCallback = 'This is postCallback Variable!' + dialog.data.action;
+            callback();
+        }
+	});
+
+
+	var sequenceTest = {
+	    action: function (dialog, context, callback) {
+	        dialog.data.sequenceTest = 'This is sequenceTest Variable';
+            callback();
+        }
+    };
+
+	var testFunc = function (dialog, context, callback) {
+        dialog.data.testFunc = 'This is testFunc Variable';
+        callback();
+    };
+
+	bot.setTask('sequenceTask', 
+	{
+		action: [
+            'crawling',
+            sequenceTest,
+            testFunc
+        ]
+	});
+
+	bot.setTask('taskParams', 
+	{
+	    params : '테스크에 파라미터가 정산적으로 들어갔습니다.',
+		action: function (dialog, context, callback)
+		{
+		    dialog.data.taskParams = this.params;
+			callback();
+		}
+	});
+
+	bot.setTask('requiredParams', 
+	{
+        paramDefs: [{ type: 'mobile', description: 'mobile 타입이 필수 파라미터입니다. 핸드폰 번호를 입력해야합니다.' }],
+		action: function (dialog, context, callback)
+		{
+
+			callback();
+		}
+	});
+
+	bot.setTask('taskExtends', 
+	{
+	    params : 'taskParams함수를 extends하여, 테스크 파라미터 변경에 성공했습니다.',
+        extends: 'taskParams'
+
+    });
 };
