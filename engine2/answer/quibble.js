@@ -16,7 +16,7 @@ var randomQuibble = function(qs)
         {
             for(var j=0; j<quibbles[i].condition.words.length; j++)
             {
-                if(inputRaw.indexOf(quibbles[i].condition.words[j]) != -1)
+                if(inputRaw.indexOf(quibbles[i].condition.words[j]) != -1 && quibbles[i].condition.words[j].length / inputRaw.length >= 0.7)
                 {
                     return randomQuibble(quibbles[i].sentences);
                 }
@@ -46,22 +46,23 @@ var randomQuibble = function(qs)
             {
                 if((nlp[j].pos == 'Verb' || nlp[j].post == 'Adjective') && quibbles[i].condition.words.indexOf(nlp[j].text) != -1)
                 {
-                    if(quibbles[i].condition.questionWord && quibbles[i].condition.questionWord != 'yesno')
-                    {
-                        var token1 = nlp[j];
-                        if((quibbles[i].condition.questionWord == undefined || quibbles[i].condition.questionWord == token1.text) &&
-                           (quibbles[i].condition.tenseType  == undefined || sentenceInfo.tenseType == undefined || quibbles[i].condition.tenseType == sentenceInfo.tenseType) &&
-                           (quibbles[i].condition.sentenceType  == undefined || sentenceInfo.sentenceType == undefined || quibbles[i].condition.sentenceType == sentenceInfo.sentenceType)) {
-                            return randomQuibble(quibbles[i].sentences);
-                        }
-                    }
-                    else
-                    {
-                        if((quibbles[i].condition.tenseType == undefined || sentenceInfo.tenseType == undefined ||  quibbles[i].condition.tenseType == sentenceInfo.tenseType) &&
-                           (quibbles[i].condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || quibbles[i].condition.sentenceType == sentenceInfo.sentenceType)) {
-                            return randomQuibble(quibbles[i].sentences);
-                        }
-                    }
+                    return randomQuibble(quibbles[i].sentences);
+                    // if(quibbles[i].condition.questionWord && quibbles[i].condition.questionWord != 'yesno')
+                    // {
+                    //     var token1 = nlp[j];
+                    //     if((quibbles[i].condition.questionWord == undefined || quibbles[i].condition.questionWord == token1.text) &&
+                    //        (quibbles[i].condition.tenseType  == undefined || sentenceInfo.tenseType == undefined || quibbles[i].condition.tenseType == sentenceInfo.tenseType) &&
+                    //        (quibbles[i].condition.sentenceType  == undefined || sentenceInfo.sentenceType == undefined || quibbles[i].condition.sentenceType == sentenceInfo.sentenceType)) {
+                    //         return randomQuibble(quibbles[i].sentences);
+                    //     }
+                    // }
+                    // else
+                    // {
+                    //     if((quibbles[i].condition.tenseType == undefined || sentenceInfo.tenseType == undefined ||  quibbles[i].condition.tenseType == sentenceInfo.tenseType) &&
+                    //        (quibbles[i].condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || quibbles[i].condition.sentenceType == sentenceInfo.sentenceType)) {
+                    //         return randomQuibble(quibbles[i].sentences);
+                    //     }
+                    // }
                 }
             }
         }
