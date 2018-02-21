@@ -425,7 +425,7 @@ var dialogs = [
                                         "text": "주차장은 야외 중앙주차장, 신관 지하 주차장, 후문 주차장, 풍납유수지 공영주차장이 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                                         "buttons": [
                                             {
-                                                "url": "http://www.amc.seoul.kr/asan/images/infor/img_parking01.jpg",
+                                                "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%EC%A3%BC%EC%B0%A8%EC%9E%A5+%EC%9C%84%EC%B9%98.jpg",
                                                 "text": "약도 자세히 보기"
                                             }
                                         ],
@@ -446,7 +446,7 @@ var dialogs = [
                                         },
                                         "intent": "주차장 이용 방식"
                                     }
-                                ]
+                                ],
                                 "output": [
                                     {
                                         "kind": "Content",
@@ -752,7 +752,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021649"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8B%E1%85%B4%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                                 }
                             }
                         ],
@@ -780,7 +780,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020899"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8B%E1%85%B4%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                                 }
                             }
                         ],
@@ -808,7 +808,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020900"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/H%E1%84%86%E1%85%A1%E1%84%90%E1%85%B3.jpg"
                                 }
                             }
                         ],
@@ -894,7 +894,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/BG103.jpg"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8F%E1%85%A5%E1%84%91%E1%85%B5%E1%84%89%E1%85%AD%E1%86%B8.jpg"
                                 }
                             }
                         ],
@@ -922,7 +922,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021582"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8F%E1%85%A5%E1%84%91%E1%85%B5%E1%84%89%E1%85%AD%E1%86%B8.jpg"
                                 }
                             }
                         ],
@@ -950,7 +950,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=202"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8F%E1%85%A5%E1%84%91%E1%85%B5%E1%84%89%E1%85%AD%E1%86%B8.jpg"
                                 }
                             }
                         ],
@@ -978,7 +978,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=179"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%B5%E1%86%AF%E1%84%90%E1%85%A1%E1%86%B8.jpg"
                                 }
                             }
                         ],
@@ -1006,7 +1006,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021142"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8F%E1%85%A5%E1%84%85%E1%85%B5%E1%84%8F%E1%85%A1%E1%84%91%E1%85%A6.jpg"
                                 }
                             }
                         ],
@@ -1081,7 +1081,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021230"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A1%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%B7%E1%84%80%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A1%E1%86%AB.jpg"
                                 }
                             }
                         ],
@@ -1109,7 +1109,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021145"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A1%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A1%E1%86%BC%E1%84%92%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A1%E1%86%BC.jpg"
                                 }
                             }
                         ],
@@ -1135,7 +1135,10 @@ var dialogs = [
                                         "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020913",
                                         "text": "직원식당/보호자식당"
                                     }
-                                ]
+                                ],
+                                "image": {
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A1%E1%86%BC.jpg"
+                                }
                             }
                         ],
                         "id": "default34"
@@ -1162,7 +1165,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021126"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%85%E1%85%A1%E1%84%8B%E1%85%AE%E1%86%AB%E1%84%8C%E1%85%B5.jpg"
                                 }
                             }
                         ],
@@ -1274,7 +1277,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/BG102.jpg"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%84%85%E1%85%A1%E1%86%B7.jpg"
                                 }
                             }
                         ],
@@ -1302,7 +1305,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021666"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%AE%E1%86%A8%E1%84%89%E1%85%AE%E1%84%82%E1%85%A1%E1%84%86%E1%85%AE.jpg"
                                 }
                             }
                         ],
@@ -1375,7 +1378,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=172"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A1%E1%86%BC.jpg"
                                 }
                             }
                         ],
@@ -1403,7 +1406,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=190"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%AE%E1%84%83%E1%85%B3%E1%84%8F%E1%85%A9%E1%84%90%E1%85%B3.jpg"
                                 }
                             }
                         ],
@@ -1525,7 +1528,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021232"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A1%E1%86%BC%E1%84%82%E1%85%A1%E1%84%86%E1%85%B5.jpg"
                         }
                     }
                 ],
@@ -1635,7 +1638,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021050"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%ABKEB%E1%84%92%E1%85%A1%E1%84%82%E1%85%A1%E1%84%8B%E1%85%B3%E1%86%AB%E1%84%92%E1%85%A2%E1%86%BC.jpg"
                                 }
                             }
                         ],
@@ -1663,7 +1666,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=185"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%ABKEB%E1%84%92%E1%85%A1%E1%84%82%E1%85%A1%E1%84%8B%E1%85%B3%E1%86%AB%E1%84%92%E1%85%A2%E1%86%BC.jpg"
                                 }
                             }
                         ],
@@ -1734,7 +1737,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021173"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB+CT%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -1762,7 +1765,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=230"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+CT%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -1790,7 +1793,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021193"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%AC%E1%84%85%E1%85%A2%E1%84%8B%E1%85%B3%E1%86%BC%E1%84%80%E1%85%B3%E1%86%B8+CT+MR%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -1849,7 +1852,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021612"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB%E1%84%89%E1%85%AE%E1%84%89%E1%85%AE%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -1877,7 +1880,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021053"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%89%E1%85%AE%E1%84%89%E1%85%AE%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -1905,7 +1908,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=251"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB%E1%84%89%E1%85%AE%E1%84%89%E1%85%AE%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -1972,7 +1975,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021131"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8B%E1%85%AC%E1%84%85%E1%85%A2%E1%84%8E%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2000,7 +2003,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021671"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%87%E1%85%A1%E1%86%AB+%E1%84%8E%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2071,7 +2074,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021207"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2099,7 +2102,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=252"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2127,7 +2130,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=227"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2202,7 +2205,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021174"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2230,7 +2233,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000031648"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2258,7 +2261,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=253"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2323,7 +2326,7 @@ var dialogs = [
                                             }
                                         ],
                                         "image": {
-                                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=260"
+                                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A2%E1%86%BC%E1%84%8B%E1%85%A1+%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                         }
                                     }
                                 ],
@@ -2352,7 +2355,7 @@ var dialogs = [
                                             }
                                         ],
                                         "image": {
-                                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=259"
+                                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A2%E1%86%BC%E1%84%8B%E1%85%A1+%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF2.jpg"
                                         }
                                     }
                                 ],
@@ -2421,7 +2424,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021205"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8E%E1%85%A2%E1%84%92%E1%85%A7%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2449,7 +2452,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=197"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8E%E1%85%A2%E1%84%92%E1%85%A7%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2512,7 +2515,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021451"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8E%E1%85%A5%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%A9%E1%84%89%E1%85%B5%E1%86%AB%E1%84%87%E1%85%AE%E1%86%AB%E1%84%8E%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AE.jpg"
                                 }
                             }
                         ],
@@ -2540,7 +2543,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=353"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8E%E1%85%A5%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%A9%E1%84%89%E1%85%B5%E1%86%AB%E1%84%87%E1%85%AE%E1%86%AB%E1%84%8E%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AE.jpg"
                                 }
                             }
                         ],
@@ -2607,7 +2610,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021214"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8E%E1%85%A9%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%91%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2635,7 +2638,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=233"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8E%E1%85%A9%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%91%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2702,7 +2705,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021188"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%90%E1%85%AE%E1%84%89%E1%85%B5%E1%84%8C%E1%85%A9%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2730,7 +2733,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=232"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%90%E1%85%AE%E1%84%89%E1%85%B5%E1%84%8C%E1%85%A9%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2801,7 +2804,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021083"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%92%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA+%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2829,7 +2832,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021088"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%92%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA+%E1%84%92%E1%85%A7%E1%86%AF%E1%84%8B%E1%85%A2%E1%86%A8+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2857,7 +2860,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=235"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%92%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8+%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -2924,7 +2927,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000030957"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8B%E1%85%B4%E1%84%86%E1%85%AE%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A1%E1%84%87%E1%85%A9%E1%86%AB%E1%84%87%E1%85%A1%E1%86%AF%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8E%E1%85%A5.jpg"
                                 }
                             }
                         ],
@@ -2952,7 +2955,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000023317"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8B%E1%85%B4%E1%84%86%E1%85%AE%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A1%E1%84%87%E1%85%A9%E1%86%AB%E1%84%87%E1%85%A1%E1%86%AF%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8E%E1%85%A5.jpg"
                                 }
                             }
                         ],
@@ -3023,7 +3026,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020183"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+MR%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -3050,7 +3053,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=182"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+MR%E1%84%89%E1%85%B5%E1%86%AF(%E1%84%8C%E1%85%B5%E1%84%92%E1%85%A1).jpg"
                                 }
                             }
                         ],
@@ -3077,7 +3080,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=355"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB+MR%E1%84%89%E1%85%B5%E1%86%AF(2%E1%84%8E%E1%85%B3%E1%86%BC).jpg"
                                 }
                             }
                         ],
@@ -3152,7 +3155,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021217"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%B5%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%B5%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -3179,7 +3182,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021159"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A1%E1%86%BC%E1%84%87%E1%85%AE+%E1%84%8B%E1%85%B1%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -3206,7 +3209,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021162"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%92%E1%85%AA%E1%84%80%E1%85%B5+%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC+%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                                 }
                             }
                         ],
@@ -3233,7 +3236,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021160"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A1%E1%84%87%E1%85%AE+%E1%84%8B%E1%85%B1%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -3311,7 +3314,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021169"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%B5%E1%84%83%E1%85%A9%E1%86%A8%E1%84%80%E1%85%AD%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%86%E1%85%A9%E1%86%A8%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -3346,7 +3349,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021171"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%AE%E1%86%AF%E1%84%80%E1%85%AD%E1%84%87%E1%85%A5%E1%86%B8%E1%84%83%E1%85%A1%E1%86%BC.jpg"
                                 }
                             }
                         ],
@@ -3381,7 +3384,7 @@ var dialogs = [
                                     }
                                 ],
                                 "image": {
-                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021170"
+                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%A5%E1%86%AB%E1%84%8C%E1%85%AE%E1%84%80%E1%85%AD%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%86%E1%85%A9%E1%86%A8%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                                 }
                             }
                         ],
@@ -3409,7 +3412,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021164",
                                 "text": "대장항문클리닉"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%92%E1%85%A1%E1%86%BC%E1%84%86%E1%85%AE%E1%86%AB+%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
+                        }
                     }
                 ],
                 "id": "default224"
@@ -3436,7 +3442,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021138"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%86%B7%E1%84%8B%E1%85%A7%E1%86%B7%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3464,7 +3470,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021151"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%87%E1%85%A5%E1%84%82%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%91%E1%85%B3%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3492,7 +3498,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021182"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%86%AB%E1%84%83%E1%85%A1%E1%86%B7%E1%84%83%E1%85%A9%E1%84%8E%E1%85%B0%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3520,7 +3526,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021199"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3548,7 +3554,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021183"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%86%AB%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%86%A8+%E1%84%86%E1%85%B5%E1%86%BE+%E1%84%80%E1%85%A1%E1%86%AB%E1%84%83%E1%85%A1%E1%86%B7%E1%84%83%E1%85%A9%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3576,7 +3582,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021216"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A1%E1%86%B7%E1%84%83%E1%85%A9%E1%84%8E%E1%85%B0%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3604,7 +3610,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021185"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%92%E1%85%A1%E1%86%BC%E1%84%86%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3632,7 +3638,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021187"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A1%E1%86%BC%E1%84%87%E1%85%AE%E1%84%8B%E1%85%B1%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3660,7 +3666,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021196"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%92%E1%85%AA%E1%84%80%E1%85%B5%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3688,7 +3694,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021200"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%B7%E1%84%80%E1%85%AD%E1%84%8B%E1%85%B2%E1%86%A8%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%87%E1%85%A9%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3716,7 +3722,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021201"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%B7%E1%84%90%E1%85%A9%E1%86%BC%E1%84%92%E1%85%A1%E1%86%B8%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%85%E1%85%AD%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3744,7 +3750,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021198"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A7%E1%86%B7%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%92%E1%85%AA%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3772,7 +3778,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021222"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%AC%E1%84%85%E1%85%A2%E1%84%8B%E1%85%A3%E1%86%A8%E1%84%80%E1%85%AE%E1%86%A8.jpg"
                         }
                     }
                 ],
@@ -3800,7 +3806,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021184"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B2%E1%84%87%E1%85%A1%E1%86%BC+%E1%84%82%E1%85%A2%E1%84%87%E1%85%AE%E1%86%AB%E1%84%87%E1%85%B5+%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3828,7 +3834,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021189"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B2%E1%84%87%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%A1%E1%86%B7+%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         }
                     }
                 ],
@@ -3856,7 +3862,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021052"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B3%E1%86%BC%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8B%E1%85%B4%E1%84%85%E1%85%AD%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -3884,7 +3890,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021191"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B3%E1%86%BC%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -3912,7 +3918,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021457"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B3%E1%86%BC%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8E%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -3940,7 +3946,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021181"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%87%E1%85%A1%E1%86%AB%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3968,7 +3974,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021161"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A2%E1%84%92%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -3999,7 +4005,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021179"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4027,7 +4033,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021203"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%A8%E1%84%89%E1%85%B5%E1%86%A8%E1%84%83%E1%85%A9%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4055,7 +4061,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021180"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%AF%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4083,7 +4089,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021217"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%B5%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%B5+%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4111,7 +4117,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021208"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%85%E1%85%B2%E1%84%86%E1%85%A1%E1%84%90%E1%85%B5%E1%84%89%E1%85%B3%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4139,7 +4145,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021206"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A6%E1%84%85%E1%85%B3%E1%84%80%E1%85%B5%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4167,7 +4173,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021192"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A6%E1%84%85%E1%85%B3%E1%84%80%E1%85%B5%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4195,7 +4201,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021178"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B2%E1%84%87%E1%85%A1%E1%86%BC%E1%84%83%E1%85%AE%E1%84%80%E1%85%A7%E1%86%BC%E1%84%87%E1%85%AE%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4223,7 +4229,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021211"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%86%B8%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4251,7 +4257,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021220"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B5%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%86%A8%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -4279,7 +4285,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021209"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%A5%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A8+COPD%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -4307,7 +4313,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021219"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A9%E1%84%92%E1%85%B3%E1%86%B8%E1%84%80%E1%85%B5%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4335,7 +4341,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021210"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A9%E1%84%92%E1%85%B3%E1%86%B8%E1%84%80%E1%85%B5%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4363,7 +4369,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021168"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%A1%E1%84%8E%E1%85%B1%E1%84%90%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4389,7 +4395,11 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021172",
                                 "text": "서관 중환자면회대기실"
                             }
-                        ]
+                        ],
+                        "image":
+                            {
+                                "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%86%E1%85%A7%E1%86%AB%E1%84%92%E1%85%AC%E1%84%83%E1%85%A2%E1%84%80%E1%85%B5%E1%84%89%E1%85%B5%E1%86%AF.jpg"
+                            }
                     }
                 ],
                 "id": "default264"
@@ -4416,7 +4426,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021165"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A2%E1%84%87%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%A2+%E1%84%8E%E1%85%B5%E1%84%85%E1%85%AD%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4444,7 +4454,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021159"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A1%E1%86%BC%E1%84%87%E1%85%AE%E1%84%8B%E1%85%B1%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4472,7 +4482,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021163"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%B0%E1%84%83%E1%85%A1%E1%86%B7%E1%84%83%E1%85%A9%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4500,7 +4510,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021160"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A1%E1%84%87%E1%85%AE%E1%84%8B%E1%85%B1%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB%E1%84%82%E1%85%A2%E1%84%89%E1%85%B5%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4528,7 +4538,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021543"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%B2%E1%84%90%E1%85%B5%E1%84%8F%E1%85%A6%E1%84%8B%E1%85%A5+%E1%84%89%E1%85%A3%E1%86%B8.jpg"
                         }
                     }
                 ],
@@ -4556,7 +4566,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021546"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%B7%E1%84%87%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AF%E1%86%AB+%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4584,7 +4594,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021458"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%B5%E1%86%AB%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%85%E1%85%AD%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         }
                     }
                 ],
@@ -4612,7 +4622,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000026876"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%B5%E1%84%87%E1%85%A7%E1%86%BC%E1%84%83%E1%85%A9%E1%86%BC.jpg"
                         }
                     }
                 ],
@@ -4658,7 +4668,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021141"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A1%E1%84%89%E1%85%A5%E1%86%AB%E1%84%8C%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4686,7 +4696,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021049"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B4%E1%84%85%E1%85%AD%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%91%E1%85%AE%E1%86%B7%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                         }
                     }
                 ],
@@ -4712,7 +4722,10 @@ var dialogs = [
                                 "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021143",
                                 "text": "현대드림투어(여행사)"
                             }
-                        ]
+                        ],
+                        "image": {
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%AB%E1%84%83%E1%85%A2%E1%84%83%E1%85%B3%E1%84%85%E1%85%B5%E1%86%B7%E1%84%90%E1%85%AE%E1%84%8B%E1%85%A5.jpg"
+                        }
                     }
                 ],
                 "id": "default276"
@@ -4739,7 +4752,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000020906"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%AA%E1%84%8B%E1%85%AF%E1%86%AB.jpg"
                         }
                     }
                 ],
@@ -4767,7 +4780,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021051"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%B2%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%92%E1%85%AA%E1%84%83%E1%85%A2%E1%84%85%E1%85%B5%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                         }
                     }
                 ],
@@ -4795,7 +4808,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021139"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4823,7 +4836,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021092"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A2%E1%86%AF%E1%84%85%E1%85%A5%E1%84%85%E1%85%B5.jpg"
                         }
                     }
                 ],
@@ -4851,7 +4864,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021134"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%82%E1%85%A2%E1%84%87%E1%85%AE%E1%86%AB%E1%84%87%E1%85%B5%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4879,7 +4892,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021140"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%82%E1%85%A9%E1%84%82%E1%85%A7%E1%86%AB%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         }
                     }
                 ],
@@ -4907,7 +4920,7 @@ var dialogs = [
                             }
                         ],
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021135"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%82%E1%85%AD%E1%84%87%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         }
                     }
                 ],
@@ -4942,7 +4955,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021093"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%82%E1%85%AD%E1%84%92%E1%85%A1%E1%86%B8%E1%84%87%E1%85%A7%E1%86%BC%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "당뇨합병증검사실은 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -4966,7 +4979,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021102"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A2%E1%84%83%E1%85%A9%E1%86%BC%E1%84%86%E1%85%A2%E1%86%A8%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%92%E1%85%AA%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "대동맥질환센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -4990,7 +5003,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000045818_AxZtnQ"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%A1%E1%84%85%E1%85%B3%E1%84%91%E1%85%A1%E1%86%AB%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "마르판클리닉은 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5014,7 +5027,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021100"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%A1%E1%86%AF%E1%84%8E%E1%85%A9%E1%84%92%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%92%E1%85%AA%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "말초혈관질환센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5038,7 +5051,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021129"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "신경과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5062,7 +5075,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021120"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "신경외과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5086,7 +5099,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021132"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "신장내과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5110,7 +5123,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021099"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%87%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A6%E1%84%83%E1%85%A9%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "심방세동센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5134,7 +5147,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021109"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%87%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%86%A8%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "심부전/심장이식센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5158,7 +5171,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021114"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%82%E1%85%A2%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "심장내과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5182,7 +5195,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021108"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%A8%E1%84%87%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A2%E1%84%92%E1%85%AA%E1%86%AF%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "심장병예방재활센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5206,7 +5219,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021115"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AF%E1%86%AB.jpg"
                         },
                         "text": "심장병원은 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5230,7 +5243,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021106"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "심장영상센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5254,7 +5267,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021113"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "심장외과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5278,7 +5291,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021133"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B2%E1%84%92%E1%85%A6%E1%86%AF%E1%84%89%E1%85%B3%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "유헬스센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5302,7 +5315,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021137"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "정형외과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5326,7 +5339,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021450"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%85%E1%85%AD%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%82%E1%85%A2.jpg"
                         },
                         "text": "진료안내는 동관 1층 로비 안내 데스크에 있는 진료안내 창구로 가시면 됩니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5350,7 +5363,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021128"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%A1%E1%84%8F%E1%85%B5%E1%86%AB%E1%84%89%E1%85%B3%E1%86%AB%E1%84%87%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "파킨슨병센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5374,7 +5387,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021104"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%A1%E1%86%AB%E1%84%86%E1%85%A1%E1%86%A8%E1%84%8C%E1%85%B5%E1%86%AF%E1%84%92%E1%85%AA%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "판막질환센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5398,7 +5411,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021453"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A2%E1%86%BC%E1%84%80%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "평생건강클리닉 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5422,7 +5435,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021096"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%A8%E1%84%80%E1%85%A9%E1%84%92%E1%85%A7%E1%86%AF%E1%84%8B%E1%85%A1%E1%86%B8%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%86%E1%85%A2%E1%86%A8%E1%84%92%E1%85%A7%E1%86%AF%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "폐고혈압/정맥혈전센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5446,7 +5459,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021111"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "혈관외과는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5470,7 +5483,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021097"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%B8%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%89%E1%85%B5%E1%86%B7%E1%84%80%E1%85%B3%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A2%E1%86%A8%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "협십증/심근경색센터는 동관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5494,7 +5507,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021125"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A1%E1%86%B7%E1%84%86%E1%85%A1%E1%84%82%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%91%E1%85%B3%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "감마나이프센터는 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5518,7 +5531,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021076"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%82%E1%85%AC%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "뇌신경검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5542,7 +5555,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021671"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%87%E1%85%A1%E1%86%AB%E1%84%8E%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "동관 일반촬영실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5566,7 +5579,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021074"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%AE%E1%84%86%E1%85%A7%E1%86%AB%E1%84%83%E1%85%A1%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "수면다원검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5590,7 +5603,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021127"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%8C%E1%85%A2%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "신경중재클리닉는 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5614,7 +5627,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021061"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "심장검사실(심전도, 홀터, 운동부하)은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5638,7 +5651,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021055"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A2%E1%84%92%E1%85%AA%E1%86%AF%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "심장재활검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5662,7 +5675,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021058"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%83%E1%85%A9%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "심전도실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5686,7 +5699,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021107"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA+%E1%84%8B%E1%85%AC%E1%84%85%E1%85%A2.jpg"
                         },
                         "text": "영상의학과(외래)는 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5710,7 +5723,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021064"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "혈관검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5734,7 +5747,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021091"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A9%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "혈관조영실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5758,7 +5771,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021054"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AF%E1%86%AB+%E1%84%83%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%8B%E1%85%B5%E1%86%B8%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "심장병원 당일입원실은 동관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5782,7 +5795,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021089"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%92%E1%85%A7%E1%86%AF%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A9%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "심혈관조영실은 동관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5806,7 +5819,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021452"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%80%E1%85%B5%E1%84%89%E1%85%A2%E1%86%BC%E1%84%85%E1%85%B5%E1%84%92%E1%85%A1%E1%86%A8+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "전기생리학 검사실은 동관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5830,7 +5843,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021063"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A7%E1%86%BC%E1%84%85%E1%85%B5%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "병리과는 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5854,7 +5867,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021072"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%B5%E1%84%82%E1%85%AD%E1%84%80%E1%85%B5%E1%84%80%E1%85%AA%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "비뇨기검사실은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5878,7 +5891,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021454"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%B5%E1%84%82%E1%85%AD%E1%84%80%E1%85%B5%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "비뇨기과는 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5902,7 +5915,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021065"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A6%E1%84%8E%E1%85%B5%E1%86%B7%E1%84%92%E1%85%B3%E1%86%B8%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "세침흡인실은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5926,7 +5939,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021057"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B3%E1%84%91%E1%85%A9%E1%84%8E%E1%85%B3%E1%84%80%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "스포츠건강의학센터는 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5950,7 +5963,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021068"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8E%E1%85%A9%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%91%E1%85%A1%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "심장초음파 검사실은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5974,7 +5987,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021073"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A9%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AB%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "인공신장실은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -5998,7 +6011,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021144"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A2%E1%84%92%E1%85%AA%E1%86%AF%E1%84%8E%E1%85%B5%E1%84%85%E1%85%AD%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "재활치료실은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6022,7 +6035,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021070"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%85%E1%85%B5%E1%86%B8%E1%84%89%E1%85%A5%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "전립선센터는 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6046,7 +6059,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021060"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "정신건강의학과는 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6070,7 +6083,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021062"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A9%E1%84%8C%E1%85%B5%E1%86%A8%E1%84%89%E1%85%A6%E1%84%91%E1%85%A9%E1%84%8C%E1%85%A1%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "조직세포자원센터는 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6094,7 +6107,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021067"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A5%E1%86%AB%E1%84%92%E1%85%A7%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "헌혈실은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6118,7 +6131,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021066"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%92%E1%85%A7%E1%86%AF%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%8B%E1%85%B3%E1%86%AB%E1%84%92%E1%85%A2%E1%86%BC.jpg"
                         },
                         "text": "혈액은행은 동관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6142,7 +6155,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021077"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%89%E1%85%B5%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "전시실은 동관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6166,7 +6179,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/east6F.JPG"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%A9%E1%84%92%E1%85%A7%E1%86%AF%E1%84%86%E1%85%A9%E1%84%89%E1%85%A6%E1%84%91%E1%85%A9+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.JPG"
                         },
                         "text": "조혈모세포 검사실은 동관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6190,7 +6203,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021122"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%B5%E1%84%83%E1%85%B5%E1%84%8B%E1%85%A9%E1%84%82%E1%85%AC%E1%84%91%E1%85%A1%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "비디오뇌파검사실은 동관 14층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6214,7 +6227,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021124"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%82%E1%85%AC%E1%84%8C%E1%85%A9%E1%86%AF%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5+%E1%84%8C%E1%85%B5%E1%86%B8%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%8E%E1%85%B5%E1%84%85%E1%85%AD%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "뇌졸중센터 집중치료실은 동관 15층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6238,7 +6251,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=174"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%A5%E1%86%AF%E1%84%90%E1%85%B5%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8C%E1%85%A1.jpg"
                         },
                         "text": "멀티플라자는 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6262,7 +6275,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=176"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A5%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                         },
                         "text": "문구점은 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 문구점 안내\n - 위치: 신관 지하1층\n - 영업 / 운영시간: 08:00 ~ 19:30(토요일 17:00)\n - 문의처: 02-3010-7882\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6286,7 +6299,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=176"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A5%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                         },
                         "text": "서점은 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 서점 안내\n - 위치: 신관 지하1층\n - 영업 / 운영시간: 08:00 ~ 19:30(토요일 17:00)\n - 문의처: 02-3010-7882\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6310,7 +6323,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=178"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%86%E1%85%B5%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "미용실은 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 미용실 안내\n위치: 신관 지하1층\n영업 / 운영시간: 10:00 ~ 20:00(토요일 10:00 ~ 18:00 / 공휴일 휴무)\n문의처: 02-3010-7869\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6334,7 +6347,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=181"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A6%E1%84%90%E1%85%A1%E1%86%A8%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "보호자세탁실은 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 세탁실 안내\n - 위치: 신관 지하1층\n - 영업시간: 24시간(연중무휴)\n - 이용방법 및 요금: 셀프 / 3천원 \n - 문의처: 02-3010-7845 \n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6358,7 +6371,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=177"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8C%E1%85%A5%E1%86%B7.jpg"
                         },
                         "text": "안경점은 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 안경점 안내\n - 위치: 신관 지하1층\n - 영업 / 운영시간: 09:00 ~ 19:00(공휴일 휴무)\n - 문의처: 02-3010-7873\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6382,7 +6395,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=186"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%AE%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8E%E1%85%B1%E1%84%80%E1%85%B3%E1%86%B8%E1%84%80%E1%85%AE%E1%86%A8.jpg"
                         },
                         "text": "우체국은 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 우체국 안내\n - 영업 / 운영시간 : 09:00 ~ 18:00(토요일, 공휴일 휴무)\n - 위치 : 신관 지하1층\n - 문의 : 02-3010-7888\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6406,7 +6419,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=187"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%8B%E1%85%B2%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%92%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "의학유전학센터는 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6430,7 +6443,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=188"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%84%87%E1%85%A1%E1%86%AF%E1%84%89%E1%85%A9.jpg"
                         },
                         "text": "이발소는 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n■ 이발소 안내\n위치: 신관 지하1층\n영업 / 운영시간: 08:00 ~ 20:00(토요일 18:00)\n문의처: 02-3010-7866\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6454,7 +6467,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=192"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%85%E1%85%AD%E1%84%8B%E1%85%B4%E1%84%85%E1%85%AC%E1%84%92%E1%85%A7%E1%86%B8%E1%84%85%E1%85%A7%E1%86%A8%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "진료의뢰협력센터는 신관 지하1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6478,7 +6491,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=193"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A1%E1%86%AB%E1%84%87%E1%85%AE%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "산부인과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6502,7 +6515,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=196"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A2%E1%84%92%E1%85%AA%E1%86%AF%E1%84%8E%E1%85%B5%E1%84%85%E1%85%AD%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소아 재활치료실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6526,7 +6539,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=227"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소아 주사실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6550,7 +6563,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=221"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%83%E1%85%A1%E1%86%BC%E1%84%82%E1%85%AD%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "소아 당뇨클리닉은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6574,7 +6587,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=225"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소아 심장검사실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6598,7 +6611,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=226"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%83%E1%85%A9%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소아 심전도검사실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6622,7 +6635,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=205"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아외과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6646,7 +6659,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=194"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%86%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%B3%E1%86%BC%E1%84%80%E1%85%B3%E1%86%B8%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "소아응급센터는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6670,7 +6683,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=224"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8E%E1%85%A5%E1%86%AB%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%A1%E1%84%90%E1%85%A9%E1%84%91%E1%85%B5%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "소아천식아토피센터는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6694,7 +6707,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=212"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%80%E1%85%A1%E1%86%B7%E1%84%8B%E1%85%A7%E1%86%B7%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 감염과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6718,7 +6731,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=206"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%82%E1%85%A2%E1%84%87%E1%85%AE%E1%86%AB%E1%84%87%E1%85%B5%E1%84%83%E1%85%A2%E1%84%89%E1%85%A1%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 내분비대사과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6742,7 +6755,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=216"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%87%E1%85%B5%E1%84%82%E1%85%AD%E1%84%80%E1%85%B5%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 비뇨기과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6766,7 +6779,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=209"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%A9%E1%84%92%E1%85%AA%E1%84%80%E1%85%B5%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 소화기 영양과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6790,7 +6803,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=208"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 신경과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6814,7 +6827,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=215"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 신경외과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6838,7 +6851,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=207"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AB%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 신장과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6862,7 +6875,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=220"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 심장과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6886,7 +6899,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=222"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 심장외과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6910,7 +6923,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=364"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 안과는 신관 1층에 있습니다.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6934,7 +6947,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=223"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8E%E1%85%A5%E1%86%BC%E1%84%89%E1%85%A9%E1%84%82%E1%85%A7%E1%86%AB%E1%84%8B%E1%85%A1%E1%86%B7%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "소아청소년 암센터는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6958,7 +6971,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=218"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 영상의학과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -6982,7 +6995,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=211"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8E%E1%85%A5%E1%86%BC%E1%84%89%E1%85%A9%E1%84%82%E1%85%A7%E1%86%AB+%EC%9D%BC%EB%B0%98%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 일반과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7006,7 +7019,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=217"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A2%E1%84%92%E1%85%AA%E1%86%AF%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 재활의학과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7030,7 +7043,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=213"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 정신건강의학과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7054,7 +7067,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=214"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 정형외과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7078,7 +7091,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=367"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%92%E1%85%A7%E1%86%AF%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 종양혈액과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7102,7 +7115,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=210"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 중환자과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7126,7 +7139,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=219"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%92%E1%85%A9%E1%84%92%E1%85%B3%E1%86%B8%E1%84%80%E1%85%B5%E1%84%8B%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A6%E1%84%85%E1%85%B3%E1%84%80%E1%85%B5%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아청소년 호흡기알레르기과는\n 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7150,7 +7163,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=195"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B3%E1%84%90%E1%85%B3%E1%84%85%E1%85%A6%E1%84%89%E1%85%B3%E1%84%89%E1%85%B5%E1%86%B7%E1%84%85%E1%85%B5%E1%84%89%E1%85%A1%E1%86%BC%E1%84%83%E1%85%A1%E1%86%B7%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "스트레스심리상담센터는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7174,7 +7187,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=197"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%80%E1%85%AA%E1%86%AB%E1%84%8E%E1%85%A2%E1%84%92%E1%85%A7%E1%86%AF%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "신관 채혈실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7198,7 +7211,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=198"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%E1%84%80%E1%85%B5%E1%84%82%E1%85%A7%E1%86%B7%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%89%E1%85%B5%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "아산기념전시실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7222,7 +7235,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=326"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A5%E1%84%85%E1%85%B5%E1%86%AB%E1%84%8B%E1%85%B5%E1%84%87%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AF%E1%86%AB.jpg"
                         },
                         "text": "어린이병원은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7246,7 +7259,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=199"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%84%87%E1%85%B5%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%92%E1%85%AE%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "이비인후과는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7270,7 +7283,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=200"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%84%87%E1%85%B5%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%92%E1%85%AE%E1%84%80%E1%85%AA%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "이비인후과 검사실은 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7294,7 +7307,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=201"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%A5%E1%86%A8%E1%84%8E%E1%85%AE%E1%84%8E%E1%85%B3%E1%86%A8%E1%84%86%E1%85%A1%E1%86%AB%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "척추측만증센터는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7318,7 +7331,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=203"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%90%E1%85%A2%E1%84%8B%E1%85%A1%E1%84%8E%E1%85%B5%E1%84%85%E1%85%AD%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "태아치료센터는 신관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7342,7 +7355,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=236"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A9%E1%86%AF%E1%84%86%E1%85%B5%E1%86%AF%E1%84%83%E1%85%A9+%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "골밀도검사실은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7366,7 +7379,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=242"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%AD%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "교정과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7390,7 +7403,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=243"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%AE%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%A1%E1%86%A8%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%86%E1%85%A7%E1%86%AB%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "구강악안면외과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7414,7 +7427,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=244"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A9%E1%84%8C%E1%85%A9%E1%86%AB%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "보존과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7438,7 +7451,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=245"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%A9%E1%84%8E%E1%85%A5%E1%86%AF%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "보철과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7462,7 +7475,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=228"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%86%BC%E1%84%92%E1%85%A7%E1%86%BC%E1%84%8B%E1%85%AC%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "성형외과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7486,7 +7499,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=371"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%8E%E1%85%B5%E1%84%85%E1%85%AD%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소아진정치료실은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7510,7 +7523,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=241"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8E%E1%85%B5%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "소아치과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7534,7 +7547,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=237"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "안과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7558,7 +7571,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=238"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%80%E1%85%AA%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "안과검사실은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7582,7 +7595,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=239"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%A6%E1%86%A8%E1%84%89%E1%85%B5%E1%84%86%E1%85%A5%E1%84%85%E1%85%A1%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "엑시머라식클리닉은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7606,7 +7619,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=247"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8B%E1%85%B5%E1%86%B7%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%86%AB%E1%84%90%E1%85%B3%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "임플란트센터는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7630,7 +7643,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=240"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%B5%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "치과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7654,7 +7667,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=246"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%B5%E1%84%8C%E1%85%AE%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "치주과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7678,7 +7691,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=248"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%91%E1%85%B5%E1%84%87%E1%85%AE%E1%84%80%E1%85%AA.jpg"
                         },
                         "text": "피부과는 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7702,7 +7715,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=249"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%89%E1%85%AE%E1%84%89%E1%85%AE%E1%86%AF%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "당일수술센터는 신관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7726,7 +7739,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=250"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A5%E1%86%AB%E1%84%8E%E1%85%A5%E1%86%AB%E1%84%89%E1%85%A5%E1%86%BC%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%87%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "선천성심장병센터는 신관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7750,7 +7763,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=253"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%8B%E1%85%A1%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소아중환자실는 신관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7774,7 +7787,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=254"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%90%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "통증클리닉은 신관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7798,7 +7811,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=255"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%A5%E1%86%AB%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "건강증진센터는 신관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7822,7 +7835,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=23"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%80%E1%85%AE%E1%86%A8%E1%84%8C%E1%85%A6%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%85%E1%85%AD%E1%84%89%E1%85%A6%E1%86%AB%E1%84%90%E1%85%A5.jpg"
                         },
                         "text": "국제진료센터는 신관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7846,7 +7859,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=256"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%87%E1%85%AE%E1%86%AB%E1%84%86%E1%85%A1%E1%86%AB%E1%84%8C%E1%85%A1%E1%86%BC.jpg"
                         },
                         "text": "분만장은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7870,7 +7883,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=257"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8+%E1%84%87%E1%85%AE%E1%86%AF%E1%84%8B%E1%85%B5%E1%86%B7%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%84%82%E1%85%B5%E1%86%A8.jpg"
                         },
                         "text": "생식의학 및 불임클리닉은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7894,7 +7907,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=258"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A2%E1%86%BC%E1%84%8B%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "신생아실은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7918,7 +7931,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=261"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8E%E1%85%A6%E1%84%8B%E1%85%AC%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "체외수정실은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7942,7 +7955,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=372"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%83%E1%85%A9%E1%86%BC%E1%84%92%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A1+%E1%84%80%E1%85%B5%E1%84%83%E1%85%A9%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "중동환자 기도실은 신관 15층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -7987,7 +8000,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021459"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%89%E1%85%A9%E1%84%92%E1%85%AA%E1%84%80%E1%85%AA%E1%86%AB%E1%84%80%E1%85%B5%E1%84%82%E1%85%B3%E1%86%BC%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A1%E1%84%89%E1%85%B5%E1%86%AF.jpg"
                         },
                         "text": "소화관기능검사실은 서관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
@@ -10779,7 +10792,7 @@ var dialogs = [
                                                     }
                                                 ],
                                                 "image": {
-                                                    "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000023317"
+                                                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%AA%E1%86%AB+%E1%84%8B%E1%85%B4%E1%84%86%E1%85%AE%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8%E1%84%8B%E1%85%A7%E1%86%BC%E1%84%89%E1%85%A1%E1%86%BC%E1%84%89%E1%85%A1%E1%84%87%E1%85%A9%E1%86%AB%E1%84%87%E1%85%A1%E1%86%AF%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8E%E1%85%A5.jpg"
                                                 }
                                             }
                                         ],
