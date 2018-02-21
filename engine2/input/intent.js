@@ -30,7 +30,13 @@ var IntentContent = mongoose.model('IntentContent');
 
                 if(list && list.length > 0)
                 {
-                    callback(null, list);
+                    var matchedList = [];
+                    for(var i=0; i<list.length; i++)
+                    {
+                        matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: 1, added: 0 });
+                    }
+
+                    callback(null, matchedList);
                 }
                 else
                 {
