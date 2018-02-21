@@ -5,7 +5,7 @@ module.exports.nounQuibbles =
     {
         condition:
         {
-            word: ['정치', '박근혜', '문재인',"홍준표","민주당","자유 한국 당","바르다 정당","새누리","자 다","한국 당","국민의당","안철수","대통령","국회","국회의원","청와대","강경화","김상조"]
+            words: ['정치', '박근혜', '문재인',"홍준표","민주당","자유 한국 당","바르다 정당","새누리","자 다","한국 당","국민의당","안철수","대통령","국회","국회의원","청와대","강경화","김상조"]
         },
         sentences:
         [
@@ -16,7 +16,7 @@ module.exports.nounQuibbles =
     {
         condition:
             {
-                word: ["날씨"]
+                words: ["날씨"]
             },
         sentences:
             [
@@ -27,7 +27,7 @@ module.exports.nounQuibbles =
     {
         condition:
             {
-                word: ["고객 센터","상담 원","상담","전화","민원"]
+                words: ["고객 센터","상담 원","상담","전화","민원"]
             },
         sentences:
             [
@@ -38,7 +38,7 @@ module.exports.nounQuibbles =
     {
         condition:
             {
-                word: ["이벤트"]
+                words: ["이벤트"]
             },
         sentences:
             [
@@ -49,7 +49,7 @@ module.exports.nounQuibbles =
     {
         condition:
             {
-                word: [ "이름","알파","누구","너 뭐","너 애기","뉘귀","너 대해","알파 거","누가","인공 지능"]
+                words: [ "이름","알파","누구","너 뭐","너 애기","뉘귀","너 대해","알파 거","누가","인공 지능"]
             },
         sentences:
             [
@@ -62,7 +62,7 @@ module.exports.nounQuibbles =
     {
         condition:
             {
-                word: [ "나다"]
+                words: [ "나다"]
             },
         sentences:
             [
@@ -79,7 +79,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["수고 하다", "수고", '고생 많다',"고생 하다","감사 하다","고맙다","ㄱㅅ","땡큐"]
+                words: ["수고 하다", "수고", '고생 많다',"고생 하다","감사 하다","고맙다","ㄱㅅ","땡큐"]
             },
         sentences:
             [
@@ -90,7 +90,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["안녕", "안녕하다", '헬로 우',"hello","굿모닝","하이","hi","반갑다","안뇽"]
+                words: ["안녕", "안녕하다", '헬로 우',"hello","굿모닝","하이","hi","반갑다","안뇽"]
             },
         sentences:
             [
@@ -103,7 +103,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["졸리다","배고프다","퇴근 시키다","야근 하다 싫다","힘들다"]
+                words: ["졸리다","배고프다","퇴근 시키다","야근 하다 싫다","힘들다"]
             },
         sentences:
             [
@@ -114,7 +114,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["답정너","답답","답답하다","뭐임"]
+                words: ["답정너","답답","답답하다","뭐임"]
             },
         sentences:
             [
@@ -125,7 +125,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["좋아하다","사랑","하트","보다","사랑 햐","좋아햐"]
+                words: ["좋아하다","사랑","하트","보다","사랑 햐","좋아햐"]
             },
         sentences:
             [
@@ -140,7 +140,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["짜증","ㅡㅡ","아 짜증","아 놓다","짜증 나다","짜증 요","짱","쯧쯧","흥","미치다","싸우다","화나다","웃다","웃다 말다"]
+                words: ["짜증","ㅡㅡ","아 짜증","아 놓다","짜증 나다","짜증 요","짱","쯧쯧","흥","미치다","싸우다","화나다","웃다","웃다 말다"]
             },
         sentences:
             [
@@ -154,7 +154,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: ["짜증 나다","미치다","화나다","빡치다","짜증"]
+                words: ["짜증 나다","미치다","화나다","빡치다","짜증"]
             },
         sentences:
             [
@@ -165,7 +165,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: [ "감사","고마 웡","오케이","편하다","thank","감동","고맙다","괜찮다","금사"]
+                words: [ "감사","고마 웡","오케이","편하다","thank","감동","고맙다","괜찮다","금사"]
             },
         sentences:
             [
@@ -178,7 +178,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: [ "재미있다","재다","재밌다"]
+                words: [ "재미있다","재다","재밌다"]
             },
         sentences:
             [
@@ -190,7 +190,7 @@ module.exports.verbQuibbles =
     {
         condition:
             {
-                word: [ "라이벌"]
+                words: [ "라이벌"]
             },
         sentences:
             [
@@ -207,7 +207,7 @@ module.exports.sentenceQuibbles =
     {
         condition:
             {
-                word: ["돈", "내 돈 어디 가다", "돈 좀 주다", "돈 필요하다","돈 좀 내주다"]
+                words: ["돈", "내 돈 어디 가다", "돈 좀 주다", "돈 필요하다","돈 좀 내주다"]
             },
         sentences:
             [
@@ -218,7 +218,7 @@ module.exports.sentenceQuibbles =
     {
         condition:
             {
-                word: ["오늘 뭐", "오늘 모해", "모해", "뭐","모하","모햐"]
+                words: ["오늘 뭐", "오늘 모해", "모해", "뭐","모하","모햐"]
             },
         sentences:
             [
@@ -229,7 +229,7 @@ module.exports.sentenceQuibbles =
     {
         condition:
             {
-                word: ["바쁘다","오늘 바쁘다","바쁘다 가요"]
+                words: ["바쁘다","오늘 바쁘다","바쁘다 가요"]
             },
         sentences:
             [
@@ -240,7 +240,7 @@ module.exports.sentenceQuibbles =
     {
         condition:
             {
-                word: [ "알다 게 없다","하나","가능하다 게","공부 많이","그냥 기사","그 쪽 궁금하다 게 없다","똑똑하다 다시","답변 안 되다","말 되다","모르다","대답 맞다 않다","뭐 하다 수 있다","무슨 소리","뭔 소리","알다 게 뭐","뭘 대답 하다 수 있다","대화 안 되다","아직 멀다","이 다야","카톡 보내다 마", "도움 안 돼다","관련 없다 답변","해당 되다 내용 없다","헛소리","실망","뭔가","다야"]
+                words: [ "알다 게 없다","하나","가능하다 게","공부 많이","그냥 기사","그 쪽 궁금하다 게 없다","똑똑하다 다시","답변 안 되다","말 되다","모르다","대답 맞다 않다","뭐 하다 수 있다","무슨 소리","뭔 소리","알다 게 뭐","뭘 대답 하다 수 있다","대화 안 되다","아직 멀다","이 다야","카톡 보내다 마", "도움 안 돼다","관련 없다 답변","해당 되다 내용 없다","헛소리","실망","뭔가","다야"]
             },
         sentences:
             [
@@ -258,7 +258,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: ["시발", '씨발', 'ㅅㅂ',"ㄱㅅㄲ","개새끼","썅","나쁘다 놈","죽다 버리다","꺼지다","병신","ㅂㅅ","ㅅㅂㄴ","미치다","눈 까다","별로","못 생기다","섹스","죽다"]
+                words: ["시발", '씨발', 'ㅅㅂ',"ㄱㅅㄲ","개새끼","썅","나쁘다 놈","죽다 버리다","꺼지다","병신","ㅂㅅ","ㅅㅂㄴ","미치다","눈 까다","별로","못 생기다","섹스","죽다"]
             },
         sentences:
             [
@@ -272,7 +272,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: ["ㅇㅇ","ㅇ","응","네","그렇다","알다","아","ㅇㅋ"]
+                words: ["ㅇㅇ","ㅇ","응","네","그렇다","알다","아","ㅇㅋ"]
             },
         sentences:
             [
@@ -285,7 +285,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: ["아니다","아뇨"]
+                words: ["아니다","아뇨"]
             },
         sentences:
             [
@@ -299,7 +299,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: [ "ㅎㅎ","ㅋㅋ"]
+                words: [ "ㅎㅎ","ㅋㅋ"]
             },
         sentences:
             [
@@ -312,7 +312,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: [ "바보","바부","멍청","멍충","멍청이","멍처하","멍청이야","멍충이"]
+                words: [ "바보","바부","멍청","멍충","멍청이","멍처하","멍청이야","멍충이"]
             },
         sentences:
             [
@@ -326,7 +326,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: [ "없다","몰르다","이해 잘 안 되다","이해 자다 안 돼다","모르다"]
+                words: [ "없다","몰르다","이해 잘 안 되다","이해 자다 안 돼다","모르다"]
             },
         sentences:
             [
@@ -338,7 +338,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: [ "허다","아오","엥","이렇다","칫","뭐임","아이","에고","음","이렇다 뇨","헉","흠","첨","하","아이구","어허"]
+                words: [ "허다","아오","엥","이렇다","칫","뭐임","아이","에고","음","이렇다 뇨","헉","흠","첨","하","아이구","어허"]
             },
         sentences:
             [
@@ -349,7 +349,7 @@ module.exports.slangQuibbles =
     {
         condition:
             {
-                word: [ "?","??"]
+                words: [ "?","??"]
             },
         sentences:
             [

@@ -430,7 +430,7 @@ var dialogs = [
                                             }
                                         ],
                                         "image": {
-                                            "url": "http://www.amc.seoul.kr/asan/images/infor/img_parking01.jpg"
+                                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/%EC%A3%BC%EC%B0%A8%EC%9E%A5+%EC%9C%84%EC%B9%98.jpg"
                                         }
                                     }
                                 ],
@@ -446,7 +446,7 @@ var dialogs = [
                                         },
                                         "intent": "주차장 이용 방식"
                                     }
-                                ],
+                                ]
                                 "output": [
                                     {
                                         "kind": "Content",
@@ -6166,7 +6166,7 @@ var dialogs = [
                     {
                         "kind": "Content",
                         "image": {
-                            "url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021118"
+                            "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-asan/east6F.JPG"
                         },
                         "text": "조혈모세포 검사실은 동관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
                         "buttons": [
