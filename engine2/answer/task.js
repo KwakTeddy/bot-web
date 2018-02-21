@@ -149,9 +149,9 @@ var Transaction = require('../utils/transaction.js');
                 delete context.session.retryInput;
             }
 
-            if(Array.isArray(task.actions))
+            if(Array.isArray(task.action))
             {
-                async.eachSeries(task.actions, function(t, next)
+                async.eachSeries(task.action, function(t, next)
                 {
                     if(typeof t == 'function')
                     {
