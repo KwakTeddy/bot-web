@@ -5,6 +5,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 {
     $scope.$parent.loaded('simulator');
 
+    var tempUserKey = 'socket-user-' + new Date().getTime();
 
     (function()
     {
@@ -177,6 +178,14 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 addUserBubble(msg);
             }
         };
+
+        Socket.on('send_error_msg', function(data)
+        {
+            if(data == 'old-version')
+            {
+                addBotBubble({ text: '구 버전입니다. 구 버전 플레이챗으로 이동해서 테스트 해주세요.' });
+            }
+        });
 
         //event handling
         Socket.on('send_msg', function(data)

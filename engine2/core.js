@@ -22,6 +22,7 @@ var Transaction = require('./utils/transaction.js');
 {
     var Core = function()
     {
+        this.version = '';
         this.redis = undefined;
 
         console.log();
@@ -86,6 +87,11 @@ var Transaction = require('./utils/transaction.js');
                 if(!bot.options.use)
                 {
                     return outCallback(SystemMessages['You can\'t use this bot']);
+                }
+
+                if(!bot.options.version)
+                {
+                    return errCallback('old-version');
                 }
 
                 var contextKey = channel + '_' + botId + '_' + userKey;

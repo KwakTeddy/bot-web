@@ -22,8 +22,6 @@ module.exports =
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
                 "REDIS": "13.125.126.30",
-                "LB_MASTER": true,
-                "LB_USE": true,
                 "NODE_ENV": "development"
             },
             env_remaster:
@@ -36,8 +34,6 @@ module.exports =
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
                 "REDIS": "52.79.198.109",
-                "LB_MASTER": true,
-                "LB_USE": true,
                 "NODE_ENV": "remaster"
             },
             env_development:
@@ -50,8 +46,6 @@ module.exports =
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
                 "REDIS": "172.31.5.26",
-                "LB_MASTER": true,
-                "LB_USE": true,
                 "NODE_ENV": "development"
             },
             env_production:
@@ -64,8 +58,6 @@ module.exports =
                 "HOST": "https://playchat.ai",
                 "MONGOLAB_URI": "mongodb://172.31.14.78:27017/bot",
                 "MONGO_RSNAME": "rs1",
-                "LB_MASTER": true,
-                "LB_USE": true,
                 "NODE_ENV": "production"
             }
         }

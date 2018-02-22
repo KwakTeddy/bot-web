@@ -5,10 +5,11 @@ exports.message = function (req, res)
 
     try
     {
-        var from = req.body.user_key;
-        var text = req.body.content;
+        var userKey = req.body.userKey;
+        var text = req.body.text;
+        var channel = req.body.channel;
 
-        Engine.process(req.params.bot, 'rest', from, text, {}, function (context, out)
+        Engine.process(req.params.bot, channel || 'rest', userKey, text, {}, function (context, out)
         {
             res.send(out.output);
         },

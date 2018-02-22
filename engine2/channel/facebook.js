@@ -106,7 +106,17 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
                         },
                         function(err)
                         {
-                            console.log(err);
+                            if(err == 'old-version')
+                            {
+                                request.post({ url : 'https://old.playchat.ai/facebook/' + req.params.bot + '/webhook', json: data }, function(err, response, body)
+                                {
+                                    console.log(body);
+                                });
+                            }
+                            else
+                            {
+                                console.log(err);
+                            }
                         });
                     }
 

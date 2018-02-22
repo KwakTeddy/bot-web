@@ -1,5 +1,6 @@
 var path = require('path');
 var config = require(path.resolve('config/config'));
+var request = require('request');
 
 exports.keyboard = function (req, res)
 {
@@ -40,7 +41,24 @@ exports.message = function (req, res)
         },
         function(err)
         {
-            respondMessage(res,{ text: JSON.stringify(err) });
+            if(err == 'old-version')
+            {
+                request.post({ url: 'https://old.playchat.ai/kakao/' + req.params.bot + '/message', json: { user_key: from, type: type, content: text } }, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        res.end(JSON.stringify(err));
+                    }
+                    else
+                    {
+                        res.end(body);
+                    }
+                });
+            }
+            else
+            {
+                respondMessage(res,{ text: JSON.stringify(err) });
+            }
         });
     }
 };
