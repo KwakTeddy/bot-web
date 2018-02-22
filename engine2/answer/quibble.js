@@ -104,9 +104,19 @@ var randomQuibble = function(qs)
         {
             for(var j=0; j<quibbles[i].words.length; j++)
             {
-                if(inputRaw.indexOf(quibbles[i].words[j]) != -1 && quibbles[i].words[j].length / inputRaw.length >= 0.7)
+                if(typeof quibbles[i].words[j] == 'string')
                 {
-                    return randomQuibble(quibbles[i].sentences);
+                    if(inputRaw.indexOf(quibbles[i].words[j]) != -1 && quibbles[i].words[j].length / inputRaw.length >= 0.5)
+                    {
+                        return randomQuibble(quibbles[i].sentences);
+                    }
+                }
+                else
+                {
+                    if(inputRaw.indexOf(quibbles[i].words[j].word) != -1 && quibbles[i].words[j].word.length / inputRaw.length >= 0.5)
+                    {
+                        return randomQuibble(quibbles[i].sentences);
+                    }
                 }
             }
         }
