@@ -353,7 +353,11 @@ var dialogs = [
                         "name": "정규식 구현_핸드폰번호",
                         "input": [
                             {
-                                "regexp": "d{2,3}-d{3,4}-d{4}"
+                                "regexp": "\\d{2,3}-\\d{3,4}-\\d{4}",
+                                "text": {
+                                    "raw": " ",
+                                    "nlp": ""
+                                }
                             }
                         ],
                         "output": [
@@ -625,7 +629,10 @@ var dialogs = [
                     }
                 ]
             }
-        ]
+        ],
+        "task": {
+            "name": "defaultTask"
+        }
     },
     {
         "name": "챗봇 답변 테스트",
@@ -660,15 +667,19 @@ var dialogs = [
                     },
                     {
                         "url": "",
-                        "text": "5. Up"
+                        "text": "5. Back"
                     },
                     {
                         "url": "",
-                        "text": "6. Callchild"
+                        "text": "6. Up"
                     },
                     {
                         "url": "",
-                        "text": "7. Returncall"
+                        "text": "7. Callchild"
+                    },
+                    {
+                        "url": "",
+                        "text": "8. Returncall"
                     }
                 ]
             }
@@ -859,7 +870,28 @@ var dialogs = [
                                 "type": "repeat"
                             }
                         ],
-                        "id": "default45"
+                        "id": "default45",
+                        "children": [
+                            {
+                                "name": "New Dialog1",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "",
+                                            "nlp": ""
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "",
+                                        "buttons": []
+                                    }
+                                ],
+                                "id": "default68"
+                            }
+                        ]
                     }
                 ]
             },
@@ -1775,7 +1807,10 @@ var commonDialogs = [
                     }
                 ]
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     },
     {
         "id": "backDialog",
