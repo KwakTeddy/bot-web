@@ -101,7 +101,22 @@ var utils = require('./utils/utils.js');
                         if(list)
                         {
                             var resultText = '';
-                            for(var i=0; i<list.length; i++)
+                            var page = context.session.page || 1;
+                            var countPerPage = bot.options.paging.perPage; //일단 디폴트 10;
+
+                            var maxLength = page * countPerPage;
+                            if(maxLength > list.length)
+                            {
+                                maxLength = list.length;
+                            }
+
+                            if(!bot.options.paging.use)
+                            {
+                                maxLength = list.length;
+                                page = 1;
+                            }
+
+                            for(var i=(page-1) * 10; i<maxLength; i++)
                             {
                                 var t = template;
                                 var matchs = template.match(new RegExp(REPLACED_TAG + "([\\w가-힣\\d-_\\.]+)" + REPLACED_TAG, 'gi'));
@@ -118,6 +133,30 @@ var utils = require('./utils/utils.js');
                                 }
 
                                 resultText += t;
+                            }
+
+                            if(bot.options.paging.use && list.length > countPerPage)
+                            {
+                                context.session.page = page;
+
+                                var totalPage = Math.ceil(list.length / countPerPage);
+                                context.session.totalPage = totalPage;
+
+                                var description = '';
+
+                                if(page > 1)
+                                {
+                                    description += '\n이전 페이지를 보시려면 <';
+                                }
+
+                                if(page < totalPage)
+                                {
+                                    description += '\n다음페이지를 보시려면 >';
+                                }
+
+                                resultText += '\n페이지 (' + page + '/' + totalPage + ') ' + description + '를 입력해주세요.';
+
+                                context.session.isPaging = true;
                             }
 
                             return resultText;

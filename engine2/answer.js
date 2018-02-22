@@ -24,74 +24,229 @@ var Logger = require('./logger.js');
 
     };
 
-    AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
+    AnswerManager.prototype.noAnswer = function(bot, context, userInput, currentDialog, previousDialog, callback)
     {
-        if(context.session.retryDialogInstance && context.session.retryInput)
+        var quibble = undefined;
+        if(bot.options.useQuibble)
         {
-            // Task에서 파라미터 재질의 한 경우
-            async.eachSeries(context.session.retryInput, function(typeName, next)
+            quibble = QuibbleManager.process(bot.quibbles, userInput);
+        }
+
+        if(quibble)
+        {
+            console.log();
+            console.log(chalk.yellow('[[[ Quibble ]]]'));
+
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, '', '', previousDialog.id, previousDialog.name, true, 'dialog');
+            callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
+        }
+        else
+        {
+            console.log();
+            console.log(chalk.yellow('[[[ No Answer ]]]'));
+
+            var dialog = bot.dialogMap['noanswer'];
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
+            callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: dialog.output[Math.floor(Math.random() * dialog.output.length)] });
+        }
+    };
+
+    AnswerManager.prototype.paging = function(bot, context, userInput, callback)
+    {
+        var that = this;
+        var dialogId = context.session.dialogCursor;
+        var target = bot.dialogMap[dialogId];
+
+        if(userInput.text == '<')
+        {
+            if(context.session.page-1 < 1)
             {
-                var type = bot.types[typeName];
-                if(!type)
-                {
-                    type = Globals.types[typeName];
-                }
+                return callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: { text: '첫 페이지 입니다.\n다음페이지를 보시려면 > 를 입력해주세요.' } });
+            }
+            else
+            {
+                context.session.page--;
+            }
+        }
+        else if(userInput.text == '>')
+        {
+            if(context.session.page+1 > context.session.totalPage)
+            {
+                return callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: { text: '마지막 페이지 입니다.\n이전페이지를 보시려면 < 를 입력해주세요.' } });
+            }
+            else
+            {
+                context.session.page++;
+            }
+        }
 
-                if(type && type.typeCheck)
+        var tempDialogInstance = ContextManager.createDialogInstance(target, userInput);
+        DialogGraphManager.exec(bot, context, tempDialogInstance, function(output, dialogInstance)
+        {
+            output = OutputManager.make(context, dialogInstance, output);
+
+            var currentDialog = context.session.history[0];
+            var previousDialog = undefined;
+            if(context.session.history.length > 1)
+            {
+                previousDialog = context.session.history[1];
+            }
+            else
+            {
+                previousDialog = {};
+            }
+
+            if(output)
+            {
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
+
+                callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
+            }
+            else
+            {
+                that.noAnswer(bot, userInput, currentDialog, previousDialog, callback);
+            }
+        });
+    };
+
+    AnswerManager.prototype.retryQuestion = function(bot, context, userInput, callback)
+    {
+        var that = this;
+        // Task에서 파라미터 재질의 한 경우
+        async.eachSeries(context.session.retryInput, function(typeName, next)
+        {
+            var type = bot.types[typeName];
+            if(!type)
+            {
+                type = Globals.types[typeName];
+            }
+
+            if(type && type.typeCheck)
+            {
+                type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed)
                 {
-                    type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed)
+                    if(matched)
                     {
-                        if(matched)
+                        if(parsed)
                         {
-                            if(parsed)
-                            {
-                                context.session.retryDialogInstance.userInput.types[type.name] = parsed;
-                            }
+                            context.session.retryDialogInstance.userInput.types[type.name] = parsed;
                         }
+                    }
 
-                        next();
-                    });
+                    next();
+                });
+            }
+            else
+            {
+                //로깅
+                next();
+            }
+        },
+        function()
+        {
+            DialogGraphManager.exec(bot, context, context.session.retryDialogInstance, function(output, dialogInstance)
+            {
+                output = OutputManager.make(context, dialogInstance, output);
+
+                var currentDialog = context.session.history[0];
+                var previousDialog = undefined;
+                if(context.session.history.length > 1)
+                {
+                    previousDialog = context.session.history[1];
                 }
                 else
                 {
-                    //로깅
-                    next();
+                    previousDialog = {};
                 }
-            },
-            function()
-            {
-                DialogGraphManager.exec(bot, context, context.session.retryDialogInstance, function(output, dialogInstance)
+
+                if(output)
                 {
-                    output = OutputManager.make(context, dialogInstance, output);
+                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
 
-                    var currentDialog = context.session.history[0];
-                    var previousDialog = undefined;
-                    if(context.session.history.length > 1)
-                    {
-                        previousDialog = context.session.history[1];
-                    }
-                    else
-                    {
-                        previousDialog = {};
-                    }
-
-                    if(output)
-                    {
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
-
-                        callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
-                    }
-                    else
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ No Answer ]]]'));
-
-                        var dialog = bot.dialogMap['noanswer'];
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
-                        callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: dialog.output[0] });
-                    }
-                });
+                    callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
+                }
+                else
+                {
+                    that.noAnswer(bot, userInput, currentDialog, previousDialog, callback);
+                }
             });
+        });
+    };
+
+    AnswerManager.prototype.qna = function(bot, context, userInput, transaction, callback)
+    {
+        var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
+
+        if(transaction.qa.matchedDialog.category)
+        {
+            context.session.currentCategory = transaction.qa.matchedDialog.category;
+        }
+
+        console.log();
+        console.log(chalk.yellow('[[[ Q&A ]]]'));
+        console.log(transaction.qa.matchedDialog);
+        console.log(text);
+
+        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
+
+        callback({ type: 'qa', output: { text: text }});
+    };
+
+    AnswerManager.prototype.dm = function(bot, context, userInput, transaction, callback)
+    {
+        var that = this;
+        var dialogInstance = ContextManager.createDialogInstance(transaction.dm.matchedDialog, userInput);
+        DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)
+        {
+            if(d)
+            {
+                dialogInstance = d;
+            }
+            // cloneDialog.output = output;
+            output = OutputManager.make(context, dialogInstance, output);
+
+            var currentDialog = context.session.history[0];
+            var previousDialog = undefined;
+            if(context.session.history.length > 1)
+            {
+                previousDialog = context.session.history[1];
+            }
+            else
+            {
+                previousDialog = {};
+            }
+
+            if(output)
+            {
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
+
+                callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
+            }
+            else
+            {
+                that.noAnswer(bot, userInput, currentDialog, previousDialog, callback);
+            }
+        });
+    };
+
+    AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
+    {
+        var that = this;
+        var text = userInput.text;
+        if((text == '>' || text == '<') && context.session.isPaging)
+        {
+            return this.paging(bot, context, userInput, callback);
+        }
+        else
+        {
+            context.session.page = undefined;
+            context.session.totalPage = undefined;
+            context.session.isPaging = undefined;
+        }
+
+        if(context.session.retryDialogInstance && context.session.retryInput)
+        {
+            this.retryQuestion(bot, context, userInput, callback);
         }
         else
         {
@@ -142,136 +297,32 @@ var Logger = require('./logger.js');
 
                     if(((qaMatchedRate > dmMatchedRate) || (qaMatchedRate && !dmMatchedRate)) && qaMatchedRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                     {
-                        var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
-
-                        if(transaction.qa.matchedDialog.category)
-                        {
-                            context.session.currentCategory = transaction.qa.matchedDialog.category;
-                        }
-
-                        console.log();
-                        console.log(chalk.yellow('[[[ Q&A ]]]'));
-                        console.log(transaction.qa.matchedDialog);
-                        console.log(text);
-
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
-
-                        return callback({ type: 'qa', output: { text: text }});
+                        return that.qna(bot, context, userInput, transaction, callback);
                     }
                 }
 
                 if(transaction.dm && transaction.dm.matchedDialog)
                 {
-                    var dialogInstance = ContextManager.createDialogInstance(transaction.dm.matchedDialog, userInput);
-                    DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output, d)
-                    {
-                        if(d)
-                        {
-                            dialogInstance = d;
-                        }
-                        // cloneDialog.output = output;
-                        output = OutputManager.make(context, dialogInstance, output);
-
-                        var currentDialog = context.session.history[0];
-                        var previousDialog = undefined;
-                        if(context.session.history.length > 1)
-                        {
-                            previousDialog = context.session.history[1];
-                        }
-                        else
-                        {
-                            previousDialog = {};
-                        }
-
-                        if(output)
-                        {
-                            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, false, 'dialog');
-
-                            callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
-                        }
-                        else
-                        {
-                            var quibble = undefined;
-                            if(bot.options.useQuibble)
-                            {
-                                quibble = QuibbleManager.process(bot.quibbles, userInput);
-                            }
-
-                            if(quibble)
-                            {
-                                console.log();
-                                console.log(chalk.yellow('[[[ Quibble ]]]'));
-
-                                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, '', '', previousDialog.id, previousDialog.name, true, 'dialog');
-                                callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
-                            }
-                            else
-                            {
-                                console.log();
-                                console.log(chalk.yellow('[[[ No Answer ]]]'));
-
-                                var dialog = bot.dialogMap['noanswer'];
-                                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.id, currentDialog.name, previousDialog.id, previousDialog.name, true, 'dialog');
-                                callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
-                            }
-                        }
-                    });
+                    that.dm(bot, context, userInput, transaction, callback);
                 }
                 else if(!bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
-                    var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
-
-                    if(transaction.qa.matchedDialog.category)
-                    {
-                        context.session.currentCategory = transaction.qa.matchedDialog.category;
-                    }
-
-                    console.log();
-                    console.log(chalk.yellow('[[[ Q&A ]]]'));
-                    console.log(transaction.qa.matchedDialog);
-                    console.log(text);
-
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
-
-                    callback({ type: 'qa', output: { text: text }});
+                    that.qna(bot, context, userInput, transaction, callback);
                 }
                 else
                 {
-                    var quibble = undefined;
-                    if(bot.options.useQuibble)
+                    var currentDialog = context.session.history[0];
+                    var previousDialog = undefined;
+                    if(context.session.history.length > 1)
                     {
-                        quibble = QuibbleManager.process(bot.quibbles, userInput);
-                    }
-
-                    if(quibble)
-                    {
-                        console.log();
-                        console.log(chalk.yellow('[[[ Quibble ]]]'));
-
-                        var currentDialog = context.session.history[0];
-                        if(!currentDialog)
-                        {
-                            currentDialog = {};
-                        }
-
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, '', '', currentDialog.id, currentDialog.name, true, 'dialog');
-                        callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
+                        previousDialog = context.session.history[1];
                     }
                     else
                     {
-                        console.log();
-                        console.log(chalk.yellow('[[[ No Answer ]]]'));
-
-                        var currentDialog = context.session.history[0];
-                        if(!currentDialog)
-                        {
-                            currentDialog = {};
-                        }
-
-                        var dialog = bot.dialogMap['noanswer'];
-                        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, (typeof dialog.output == 'string' ? dialog.output : dialog.output[0].text), dialog.id, dialog.name, currentDialog.id, currentDialog.name, true, 'dialog');
-                        callback({ type: 'dialog', dialogId: dialog.id, output: (typeof dialog.output == 'string' ? { text: dialog.output } : dialog.output[0]) });
+                        previousDialog = {};
                     }
+
+                    that.noAnswer(bot, context, userInput, currentDialog, previousDialog, callback);
                 }
             });
         }
