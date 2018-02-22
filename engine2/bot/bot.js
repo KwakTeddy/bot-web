@@ -32,9 +32,7 @@ var Dialogset = mongoose.model('Dialogset');
             },
             dialogsetMinMatchRate: 0.5,
             intentMinMatchRate: 0.5,
-            quibbles: {
-                use: false
-            }
+            useQuibble: false
         };
         this.dialogMap = {};
         this.parentDialogMap = {};
@@ -48,6 +46,7 @@ var Dialogset = mongoose.model('Dialogset');
         this.messages = {};
         this.patterns = {};
         this.dialogsets = [];
+        this.quibbles = [];
     };
 
     Bot.prototype.loadBotData = function(callback)
@@ -659,6 +658,11 @@ var Dialogset = mongoose.model('Dialogset');
     Bot.prototype.setDialogPattern = function(patternName, pattern)
     {
         this.patterns[patternName] = pattern;
+    };
+
+    Bot.prototype.setQuibbles = function(quibbles)
+    {
+        this.quibbles = this.quibbles.concat(quibbles);
     };
 
     module.exports = Bot;
