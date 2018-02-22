@@ -1,3 +1,5 @@
+var async = require('async');
+
 var randomQuibble = function(qs)
 {
     return qs[Math.floor(Math.random() * qs.length)];
@@ -98,7 +100,26 @@ var randomQuibble = function(qs)
         var inputRaw = userInput.text;
         var sentenceInfo = userInput.sentence;
 
-        return this.getSlangQuibble(quibbles.slangQuibbles, inputRaw) || this.getNounQuibble(quibbles.nounQuibbles, nlp) || this.getVerbQuibble(quibbles.verbQuibbles, nlp, sentenceInfo) || this.getSentenceQuibble(quibbles.sentenceQuibbles, nlp, sentenceInfo) || (quibbles.quibble ? randomQuibble(quibbles.quibble) : undefined);
+        for(var i=0; i<quibbles.length; i++)
+        {
+            for(var j=0; j<quibbles[i].words.length; j++)
+            {
+                if(typeof quibbles[i].words[j] == 'string')
+                {
+                    if(inputRaw.indexOf(quibbles[i].words[j]) != -1 && quibbles[i].words[j].length / inputRaw.length >= 0.5)
+                    {
+                        return randomQuibble(quibbles[i].sentences);
+                    }
+                }
+                else
+                {
+                    if(inputRaw.indexOf(quibbles[i].words[j].word) != -1 && quibbles[i].words[j].word.length / inputRaw.length >= 0.5)
+                    {
+                        return randomQuibble(quibbles[i].sentences);
+                    }
+                }
+            }
+        }
     };
 
     module.exports = new QuibbleManager();

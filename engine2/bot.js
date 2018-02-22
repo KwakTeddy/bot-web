@@ -66,7 +66,7 @@ var BotObject = require('./bot/bot.js');
         for(var i=0; i<files.length; i++)
         {
             console.log('Loading : ', files[i]);
-            if(files[i].endsWith('.js') && files[i].indexOf('quibbles') == -1)
+            if(files[i].endsWith('.js'))
             {
                 utils.requireNoCache(botDir + '/' + files[i], true)((files[i].endsWith('bot.js') ? bot.options : bot));
             }

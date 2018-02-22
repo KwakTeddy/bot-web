@@ -192,9 +192,9 @@ var Logger = require('./logger.js');
                         else
                         {
                             var quibble = undefined;
-                            if(bot.options.quibbles.use)
+                            if(bot.options.useQuibble)
                             {
-                                quibble = QuibbleManager.process(bot.options.quibbles.data, userInput);
+                                quibble = QuibbleManager.process(bot.quibbles, userInput);
                             }
 
                             if(quibble)
@@ -238,9 +238,9 @@ var Logger = require('./logger.js');
                 else
                 {
                     var quibble = undefined;
-                    if(bot.options.quibbles.use)
+                    if(bot.options.useQuibble)
                     {
-                        quibble = QuibbleManager.process(bot.options.quibbles.data, userInput);
+                        quibble = QuibbleManager.process(bot.quibbles, userInput);
                     }
 
                     if(quibble)

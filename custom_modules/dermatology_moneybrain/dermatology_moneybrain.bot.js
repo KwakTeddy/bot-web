@@ -7,8 +7,5 @@ module.exports = function(options)
         }
     };
 
-    options.quibbles = {
-        use: true,
-        data: require('./quibbles.js')
-    }
+    options.useQuibble = true;
 };
