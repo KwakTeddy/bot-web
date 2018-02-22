@@ -460,7 +460,7 @@ var dialogs = [
         "name": "5.상담 신청",
         "input": [
             {
-                "regexp": "^5$"
+                "regexp": "^5"
             }
         ],
         "output": [
@@ -469,21 +469,48 @@ var dialogs = [
                 "text": "상담 받고 싶은 시술은 어떤 것인가요? 복수일 경우 하나만 선택해주셔도 됩니다.",
                 "buttons": [
                     {
-                        "url": "http://hippomarketing.co.kr/foreverLanding.html",
+                        "url": "",
                         "text": "성형"
                     },
                     {
-                        "url": "http://hippomarketing.co.kr/foreverLanding.html",
+                        "url": "",
                         "text": "피부&쁘띠"
                     },
                     {
-                        "url": "http://hippomarketing.co.kr/foreverLanding.html",
+                        "url": "",
                         "text": "다이어트"
                     }
                 ]
             }
         ],
-        "id": "default14"
+        "id": "default14",
+        "children": [
+            {
+                "name": "5.1상담 신청",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "",
+                            "nlp": ""
+                        },
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "아래의 신청하기 버튼을 눌러서 신청을 완료해주세요",
+                        "buttons": [
+                            {
+                                "url": "http://hippomarketing.co.kr/foreverLanding.html",
+                                "text": "상담신청"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default15"
+            }
+        ]
     }
 ];
 
