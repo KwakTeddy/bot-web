@@ -47,7 +47,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)"
+                        "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)\n\nex)홍길동"
                     }
                 ],
                 "id": "default3",
@@ -67,7 +67,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요."
+                                "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요.\n\nex)01012345678"
                             }
                         ],
                         "id": "default49",
@@ -1665,12 +1665,12 @@ var dialogs = [
                 "id": "default60",
                 "children": [
                     {
-                        "name": "안전전검",
+                        "name": "안전점검-detail",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "안전 전검",
-                                    "nlp": "안전 전검"
+                                    "raw": "안전점검",
+                                    "nlp": "안전 점검"
                                 }
                             },
                             {
@@ -2373,7 +2373,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "찾고자하시는 동명을 입력해주세요."
+                        "text": "찾고자하시는 동명을 입력해주세요.\n\nex) 오산"
                     }
                 ],
                 "task": {

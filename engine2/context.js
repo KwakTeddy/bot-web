@@ -30,10 +30,13 @@ var utils = require('./utils/utils.js');
         var children = srcDialog.children;
         delete srcDialog.children;
 
-        var dialogInstance = utils.clone(srcDialog);
-        dialogInstance.originalInput = dialogInstance.input;
-        dialogInstance.originalOutput = utils.clone(dialogInstance.output);
+        var dialogInstance = {};
+        // dialogInstance.originalInput = dialogInstance.input;
+        dialogInstance.id = srcDialog.id;
+        dialogInstance.task = srcDialog.task;
+        dialogInstance.card = srcDialog;
         dialogInstance.userInput = userInput;
+        dialogInstance.output = utils.clone(srcDialog.output);
         dialogInstance.options = {};
         dialogInstance.data = {};
 

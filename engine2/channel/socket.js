@@ -21,7 +21,14 @@ module.exports.init = function(socket)
         },
         function(err)
         {
-            socket.emit('send_error_msg', JSON.stringify(err));
+            if(err == 'old-version')
+            {
+                socket.emit('send_error_msg', err);
+            }
+            else
+            {
+                socket.emit('send_error_msg', JSON.stringify(err));
+            }
         });
     });
 };
