@@ -667,15 +667,19 @@ var dialogs = [
                     },
                     {
                         "url": "",
-                        "text": "5. Up"
+                        "text": "5. Back"
                     },
                     {
                         "url": "",
-                        "text": "6. Callchild"
+                        "text": "6. Up"
                     },
                     {
                         "url": "",
-                        "text": "7. Returncall"
+                        "text": "7. Callchild"
+                    },
+                    {
+                        "url": "",
+                        "text": "8. Returncall"
                     }
                 ]
             }
