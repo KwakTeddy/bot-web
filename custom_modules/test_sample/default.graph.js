@@ -625,7 +625,10 @@ var dialogs = [
                     }
                 ]
             }
-        ]
+        ],
+        "task": {
+            "name": "defaultTask"
+        }
     },
     {
         "name": "챗봇 답변 테스트",
@@ -859,7 +862,28 @@ var dialogs = [
                                 "type": "repeat"
                             }
                         ],
-                        "id": "default45"
+                        "id": "default45",
+                        "children": [
+                            {
+                                "name": "New Dialog1",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "",
+                                            "nlp": ""
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "",
+                                        "buttons": []
+                                    }
+                                ],
+                                "id": "default68"
+                            }
+                        ]
                     }
                 ]
             },
@@ -1775,7 +1799,10 @@ var commonDialogs = [
                     }
                 ]
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     },
     {
         "id": "backDialog",

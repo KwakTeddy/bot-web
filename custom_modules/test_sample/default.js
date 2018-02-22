@@ -8,6 +8,7 @@ module.exports = function(bot)
         name: 'defaultTask',
         action: function(dialog, context, callback)
         {
+            console.log(JSON.stringify(dialog, null, 4))
             callback();
         }
     });
