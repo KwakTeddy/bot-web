@@ -91,6 +91,7 @@ var utils = require('./utils/utils.js');
 
             if(output && output.text)
             {
+                output.text = output.text.replace(/\\\+/gi, '@#@').replace(/\\#/gi, '#@#');
                 var result = output.text.replace(new RegExp(ARRAY_TAG + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG + "([^" + ARRAY_TAG + "]*)" + ARRAY_TAG, "g"), function replacer(match, key)
                 {
                     if(key)
@@ -144,7 +145,7 @@ var utils = require('./utils/utils.js');
                     return '';
                 });
 
-                output.text = result;
+                output.text = result.replace(/@#@/gi, '+').replace(/#@#/gi, '#');
             }
         }
 
