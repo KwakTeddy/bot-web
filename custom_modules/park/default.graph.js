@@ -62,6 +62,38 @@ var dialogs = [
             }
         ],
         "id": "default2"
+    },
+    {
+        "name": "텍스트와 버튼",
+        "input": [
+            {
+                "text": {
+                    "raw": "4",
+                    "nlp": "4"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "텍스트와 버튼",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "ㅇㅇ"
+                    },
+                    {
+                        "url": "",
+                        "text": "ㅁㅁ"
+                    },
+                    {
+                        "url": "www.google.com",
+                        "text": "링크"
+                    }
+                ]
+            }
+        ],
+        "id": "default3"
     }
 ];
 

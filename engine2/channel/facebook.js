@@ -26,12 +26,17 @@ var request = require('request');
 var path = require('path');
 var config = require(path.resolve('config/config'));
 
+var mongoose = require('mongoose');
+var UserBotFbPage = mongoose.model('UserBotFbPage');
+
 (function()
 {
     var Facebook = function()
     {
         //테스트용
         this.PAGE_ACCESS_TOKEN = 'EAAEQcB2wZC5MBAM74uGkfE97nqjZBh7JXa2B6RYJ6zx6SUTuJXp2Kanyfz87Bpt2dLWq3GcG2M1nGCyaj94XfLfDZCNQG26hJudPne2kjKUKLx0t6yj3XdH1KKGUheffAw507Qkjt4J58H5x0ZCnYEodQzkoZAXXrqEjwRXhK7AZDZD';
+
+        this.accessTokens = {};
     };
 
     Facebook.prototype.get = function(req, res)
@@ -77,12 +82,27 @@ var config = require(path.resolve('config/config'));
                             var output = out.output;
                             var message = that.makeOutputMessage(output);
 
-                            console.log(message);
-
-                            request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + that.PAGE_ACCESS_TOKEN, json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
+                            if(that.accessTokens[recipient.id])
                             {
-                                console.log(body);
-                            });
+                                request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + that.accessTokens[recipient.id], json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
+                                {
+                                    console.log(body);
+                                });
+                            }
+                            else
+                            {
+                                that.getAccessToken(recipient.id, function(err, accessToken)
+                                {
+                                    if(!err)
+                                    {
+                                        that.accessTokens[recipient.id] = accessToken;
+                                        request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + that.accessTokens[recipient.id], json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
+                                        {
+                                            console.log(body);
+                                        });
+                                    }
+                                });
+                            }
                         },
                         function(err)
                         {
@@ -106,6 +126,21 @@ var config = require(path.resolve('config/config'));
         {
             res.status(200).end();
         }
+    };
+
+    Facebook.prototype.getAccessToken = function(senderId, callback)
+    {
+        UserBotFbPage.findOne({ pageId: senderId }).exec(function(err, data)
+        {
+            if(err)
+            {
+                callback(err);
+            }
+            else
+            {
+                callback(null, data.accessToken);
+            }
+        });
     };
 
     Facebook.prototype.makeOutputMessage = function(output)
@@ -185,11 +220,11 @@ var config = require(path.resolve('config/config'));
             {
                 message.buttons = urlButtons;
             }
+        }
 
-            if(quick_replies.length > 0)
-            {
-                message.quick_replies = quick_replies;
-            }
+        if(quick_replies.length > 0)
+        {
+            message.quick_replies = quick_replies;
         }
 
         return message;
