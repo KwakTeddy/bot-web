@@ -262,6 +262,7 @@ module.exports = function(bot) {
         }
     });
 
+
 	bot.setTask('showdean',
         {
             action: function (dialog, context, callback) {
@@ -419,4 +420,58 @@ module.exports = function(bot) {
                 });
             }
         });
+
+	bot.setTask('nlp_원장',
+	{
+		action: function (dialog, context, callback)
+		{
+            var modelname = 'dermatology_moneybrain_member';
+            var options = {};
+            options.url = SERVER_HOST + '/api/' + modelname;
+            if (dialog.userInput.text.indexOf("성형") >= 0) {
+                options.qs = {
+                    department: "성형"
+                };
+                dialog.output[0].text = "성형 파트 의료진을 소개합니다.";
+            }
+            else if (dialog.userInput.text.indexOf("다이어트") >= 0) {
+                options.qs = {
+                    department: "다이어트"
+                };
+                dialog.output[0].text = "다이어트 파트 의료진을 소개합니다.";
+            }
+            else if (dialog.userInput.text.indexOf("피부") >= 0) {
+                options.qs = {
+                    department:{ $in:["피부","피부(+성형실리프팅)"]}
+                };
+                dialog.output[0].text = "피부 파트 의료진을 소개합니다.";
+            }
+
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                    callback();
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < body.length; i++) {
+                        var ss = "" + (i + 1) + ". " + body[i].name + " 원장";
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+                    dialog.output[0].buttons.push(
+                        {
+                            text: "이전으로 가기"
+                        },
+                        {
+                            text: "처음으로 돌아가기"
+                        }
+                    );
+                    callback();
+                }
+            });
+		}
+	});
 };

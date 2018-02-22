@@ -107,7 +107,7 @@ var dialogs = [
                 }
             },
             {
-                "regexp": "^3$"
+                "regexp": "^3"
             },
             {
                 "text": {
@@ -119,6 +119,12 @@ var dialogs = [
                 "text": {
                     "raw": "직원",
                     "nlp": "직원"
+                }
+            },
+            {
+                "text": {
+                    "raw": "원장 누구",
+                    "nlp": "원장 누구"
                 }
             }
         ],
@@ -460,7 +466,7 @@ var dialogs = [
         "name": "5.상담 신청",
         "input": [
             {
-                "regexp": "^5"
+                "regexp": "^5$"
             }
         ],
         "output": [
@@ -509,6 +515,83 @@ var dialogs = [
                     }
                 ],
                 "id": "default15"
+            }
+        ]
+    },
+    {
+        "name": "6.성형 원장",
+        "input": [
+            {
+                "text": {
+                    "raw": "성형 원장",
+                    "nlp": "성형 원장"
+                }
+            },
+            {
+                "text": {
+                    "raw": "성형 파트",
+                    "nlp": "성형 파트"
+                }
+            },
+            {
+                "text": {
+                    "raw": "다이어트 파트",
+                    "nlp": "다이어트 파트"
+                }
+            },
+            {
+                "text": {
+                    "raw": "다이어트 원장",
+                    "nlp": "다이어트 원장"
+                }
+            },
+            {
+                "text": {
+                    "raw": "피부 파트",
+                    "nlp": "피부 파트"
+                }
+            },
+            {
+                "text": {
+                    "raw": "피부 원장",
+                    "nlp": "피부 원장"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "의료진을 소개합니다."
+            }
+        ],
+        "task": {
+            "name": "nlp_원장"
+        },
+        "id": "default16",
+        "children": [
+            {
+                "name": "6.1 성형 원장 소개",
+                "input": [
+                    {
+                        "types": [
+                            "deanlist"
+                        ],
+                        "text": {
+                            "raw": " ",
+                            "nlp": ""
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "#context.session.selecteddean#+name+ 원장\n\n파트: +department+\n\n소개:\n +description+\n#"
+                    }
+                ],
+                "id": "default17",
+                "task": {
+                    "name": "showdean"
+                }
             }
         ]
     }
