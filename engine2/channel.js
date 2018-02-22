@@ -5,6 +5,7 @@
 
 var rest = require('./channel/rest.js');
 var kakao = require('./channel/kakao.js');
+var facebook = require('./channel/facebook.js');
 var socketChannel = require('./channel/socket.js');
 
 (function()
@@ -35,7 +36,8 @@ var socketChannel = require('./channel/socket.js');
         // app.route('/line/:bot/receive').post(line.receiveNew);
         //
         // // 페이스북
-        // app.route('/facebook/:bot/webhook').get(facebook.messageGet);
+        app.get('/facebook/:bot/webhook', facebook.get);
+        app.post('/facebook/:bot/webhook', function(req, res){ facebook.post.call(facebook, req, res); });
         // app.route('/facebook/:bot/webhook').post(facebook.message);
         // app.route('/facebook/webhook/refresh').get(facebook.refresh);
         //
