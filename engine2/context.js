@@ -32,6 +32,8 @@ var utils = require('./utils/utils.js');
 
         var dialogInstance = {};
         // dialogInstance.originalInput = dialogInstance.input;
+        dialogInstance.id = srcDialog.id;
+        dialogInstance.task = srcDialog.task;
         dialogInstance.card = srcDialog;
         dialogInstance.userInput = userInput;
         dialogInstance.output = utils.clone(srcDialog.output);
