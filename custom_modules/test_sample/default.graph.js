@@ -353,7 +353,11 @@ var dialogs = [
                         "name": "정규식 구현_핸드폰번호",
                         "input": [
                             {
-                                "regexp": "d{2,3}-d{3,4}-d{4}"
+                                "regexp": "\\d{2,3}-\\d{3,4}-\\d{4}",
+                                "text": {
+                                    "raw": " ",
+                                    "nlp": ""
+                                }
                             }
                         ],
                         "output": [
