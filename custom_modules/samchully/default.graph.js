@@ -2373,7 +2373,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "찾고자하시는 동명을 입력해주세요."
+                        "text": "찾고자하시는 동명을 입력해주세요.\n\nex) 오산"
                     }
                 ],
                 "task": {
