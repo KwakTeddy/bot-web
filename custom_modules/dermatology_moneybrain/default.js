@@ -443,6 +443,10 @@ module.exports = function(bot) {
                 }
                 dialog.output[0].buttons = [
                     {
+                        text: "자시히 보기",
+                        url:context.session.event.image
+                    },
+                    {
                         text: "이전으로 가기"
                     },
                     {
