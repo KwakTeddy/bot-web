@@ -5,9 +5,11 @@ var CustomModal = undefined;
     {
         this.style = '.custom-modal-background { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; }';
         this.template = '<div class="custom-modal-background">' +
-                         '  <div class="custom-modal-title">{title}</div>' +
-                         '  <div class="custom-modal-content">{content}</div>' +
-                         '  <div class="custom-modal-footer">{footer}</div>' +
+                         '  <div>' +
+                             '  <div class="custom-modal-title">{title}</div>' +
+                             '  <div class="custom-modal-content">{content}</div>' +
+                             '  <div class="custom-modal-footer">{footer}</div>' +
+                         '  </div>' +
                          '</div>';
 
         this.defaultFooter = '<button type="button" class="custom-modal-confirm-button">Confirm</button>' +
