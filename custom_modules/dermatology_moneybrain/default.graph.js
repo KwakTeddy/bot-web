@@ -165,7 +165,7 @@ var dialogs = [
         "name": "4.2월 이벤트",
         "input": [
             {
-                "regexp": "^4$"
+                "regexp": "^4"
             },
             {
                 "text": {
@@ -187,23 +187,15 @@ var dialogs = [
                 "buttons": [
                     {
                         "url": "",
-                        "text": "1.감량제"
+                        "text": "1. 성형 이벤트"
                     },
                     {
                         "url": "",
-                        "text": "2.지방흡입후케어"
+                        "text": "2. 피부 이벤트"
                     },
                     {
                         "url": "",
-                        "text": "3.그 외 진행하는 이벤트 추가"
-                    },
-                    {
-                        "url": "",
-                        "text": "이전으로 가기"
-                    },
-                    {
-                        "url": "",
-                        "text": "처음으로 돌아가기"
+                        "text": "3. 강량제 다이어트 이벤트"
                     }
                 ]
             }
@@ -215,40 +207,42 @@ var dialogs = [
                 "input": [
                     {
                         "text": {
-                            "raw": "감량체",
-                            "nlp": "감량 체"
+                            "raw": "/^1/",
+                            "nlp": "/^ 1 $/"
                         }
                     },
                     {
-                        "regexp": "^1$"
+                        "regexp": "^2$"
+                    },
+                    {
+                        "text": {
+                            "raw": "/^3$/",
+                            "nlp": "/^ 3 $/"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "성형",
+                            "nlp": "성형"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "피부",
+                            "nlp": "피부"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "량제 다이어트",
+                            "nlp": "량제 다이어트"
+                        }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "감량체와 관련한 질문들은 아래와 같습니다.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "1.감량제 이벤트가 정확히 무엇인가요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "2.비용은 얼마인가요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "3.몇일 동안 몇키로를 뺄수 있는건가요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "이전으로 가기"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음으로 돌아가기"
-                            }
-                        ]
+                        "text": "관련한 이벤트들은 아래와 같습니다."
                     }
                 ],
                 "id": "default8",
@@ -257,154 +251,26 @@ var dialogs = [
                         "name": "4.1.1대답",
                         "input": [
                             {
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "dd"
-                            }
-                        ],
-                        "task": {
-                            "name": "event2month1"
-                        },
-                        "id": "default11"
-                    }
-                ]
-            },
-            {
-                "name": "4.2지방흡입후케어",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "지방흡입후케어",
-                            "nlp": "지방 흡입 후 케어"
-                        }
-                    },
-                    {
-                        "regexp": "^2$"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "지방흡입후케어에 관련한 질문들은 아래와 갑습니다.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "1.지방흡입 후 몇일 뒤에 하면 좋나요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "2.지방흡입 후케어 패키지 내용은 무엇인가요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "3.비용은 얼마인가요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "4.지방흡입 후 케어를 하고 나면 확실히 효과가 있나요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "이전으로 가기"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음으로 돌아가기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default9",
-                "children": [
-                    {
-                        "name": "4.1.2대답",
-                        "input": [
-                            {
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "dd"
-                            }
-                        ],
-                        "task": {
-                            "name": "event2month2"
-                        },
-                        "id": "default12"
-                    }
-                ]
-            },
-            {
-                "name": "4.3그 외 진행하는 이벤트 추가",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "그 외 진행하는 이벤트 추가",
-                            "nlp": "그 외 진행 하다 이벤트 추가"
-                        }
-                    },
-                    {
-                        "regexp": "^3$"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "그 외 진행하는 이벤트 추가에 관련한 질문들은 아래와 같습니다.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "1.진행하는 이벤트가 또 무엇이 있나요?"
-                            },
-                            {
-                                "url": "",
-                                "text": "이전으로 가기"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음으로 돌아가기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default10",
-                "children": [
-                    {
-                        "name": "4.3대답",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "",
-                                    "nlp": ""
-                                },
-                                "if": "true"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "전화상담으로 자세히 안내해드리겠습니다\n\n02-561-5773~4",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "이전으르 가기"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "처음으로 돌아가기"
-                                    }
+                                "types": [
+                                    "eventlist"
                                 ]
                             }
                         ],
-                        "id": "default13"
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "+context.session.event.description+\n\n+context.session.event.name+\n+context.session.event.price+원"
+                            }
+                        ],
+                        "task": {
+                            "name": "showevent"
+                        },
+                        "id": "default11"
                     }
-                ]
+                ],
+                "task": {
+                    "name": "event2month1"
+                }
             }
         ]
     },
