@@ -78,16 +78,11 @@ var ContextManager = require('../context.js');
         var intents = userInput.intents;
         var entities = userInput.entities;
 
-        async.eachSeries(inputs, function(input, next)
+        async.eachSeries(inputs, function(input, nextInput)
         {
             var result = true;
 
-            var keyList = [];
-            for(var key in input)
-            {
-                keyList.push(key);
-            }
-
+            var keyList = Object.keys(input);
             if(keyList.length <= 0)
             {
                 result = false;
@@ -95,13 +90,31 @@ var ContextManager = require('../context.js');
 
             async.eachSeries(keyList, function(key, next)
             {
+                if(key == 'intent')
+                {
+                    if(intents.length > 0)
+                    {
+                        var check = input.intent == intents[0].intentName;
+                        if(check)
+                        {
+                            dialog.matchRate = intents[0].matchRate;
+                        }
+                        else
+                        {
+                            return nextInput();
+                        }
+                    }
+                    else
+                    {
+                        return nextInput();
+                    }
+                }
                 if(key == 'text')
                 {
                     if(input.text.raw && input.text.nlp)
                     {
                         if(rawText == input.text.raw)
                         {
-                            result = result && true;
                             dialog.matchRate = 1;
                         }
                         else
@@ -110,38 +123,24 @@ var ContextManager = require('../context.js');
                             if(matchCount)
                             {
                                 dialog.matchRate = 1;
-                                result = result && true;
                             }
                             else
                             {
-                                result = result && false;
+                                return nextInput();
                             }
                         }
+                    }
+                    else
+                    {
+                        return nextInput();
                     }
                 }
                 else if(key == 'entities')
                 {
                     var check = that.checkEntities(input.entities, entities);
-                    if(check)
+                    if(!check)
                     {
-                        result = result && true;
-                    }
-                    else
-                    {
-                        result = result && false;
-                    }
-                }
-                else if(key == 'intent')
-                {
-                    if(intents.length > 0)
-                    {
-                        var check = input.intent == intents[0].intentName;
-                        dialog.matchRate = intents[0].matchRate;
-                        result = result && check;
-                    }
-                    else
-                    {
-                        result = result && false;
+                        return nextInput();
                     }
                 }
                 else if(key == 'types')
@@ -161,22 +160,18 @@ var ContextManager = require('../context.js');
                     {
                         if(matched)
                         {
-                            result = result && true;
-
                             if(parsed)
                             {
                                 userInput.types[type.name] = parsed;
                             }
+
+                            next();
                         }
                         else
                         {
-                            result = false;
+                            return nextInput();
                         }
-
-                        next();
                     });
-
-                    return;
                 }
                 else if(key == 'if')
                 {
@@ -219,22 +214,20 @@ var ContextManager = require('../context.js');
                             }
 
                             userInput.regexp = list;
-
-                            result = result && true;
                         }
                         else
                         {
-                            result = result && false;
+                            return nextInput();
                         }
                     }
                     catch(err)
                     {
-                        result = result && false;
+                        return nextInput();
                     }
                 }
                 else
                 {
-                    result = false;
+                    return nextInput();
                 }
 
                 next();
@@ -247,7 +240,7 @@ var ContextManager = require('../context.js');
                 }
                 else
                 {
-                    next();
+                    nextInput();
                 }
             });
         },
@@ -287,15 +280,32 @@ var ContextManager = require('../context.js');
                 var inputs = dialog.input;
                 if(inputs && inputs.length > 0)
                 {
-                    that.checkInput(bot, context, dialog, userInput, inputs, function(result)
+                    var targetInputs = [];
+                    for(var i=0; i<inputs.length; i++)
                     {
-                        if(result)
+                        var keyList = Object.keys(inputs[i]);
+                        if(keyList.indexOf('intent') != -1)
                         {
-                            selectedDialog.push(dialog);
+                            targetInputs.push(inputs[i]);
                         }
+                    }
 
+                    if(targetInputs.length > 0)
+                    {
+                        that.checkInput(bot, context, dialog, userInput, targetInputs, function(result)
+                        {
+                            if(result)
+                            {
+                                selectedDialog.push(dialog);
+                            }
+
+                            next();
+                        });
+                    }
+                    else
+                    {
                         next();
-                    });
+                    }
                 }
                 else
                 {
@@ -483,7 +493,7 @@ var ContextManager = require('../context.js');
             if(bot.options.globalSearch && bot.options.globalSearch.use)
             {
                 var selectedDialogs = transaction.selectedDialogs;
-                if(selectedDialogs.length > 0)
+                if(selectedDialogs && selectedDialogs.length > 0)
                 {
                     if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
                     {
