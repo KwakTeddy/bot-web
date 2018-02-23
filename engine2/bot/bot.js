@@ -33,7 +33,7 @@ var Dialogset = mongoose.model('Dialogset');
             dialogsetMinMatchRate: 0.5,
             intentMinMatchRate: 0.5,
             useQuibble: false,
-            page: {
+            paging: {
                 use: false,
                 perPage: 10
             }
