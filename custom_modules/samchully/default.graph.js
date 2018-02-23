@@ -47,7 +47,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)\n\nex)홍길동"
+                        "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)\n\nex)홍길동\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
                     }
                 ],
                 "id": "default3",
@@ -67,7 +67,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요.\n\nex)01012345678"
+                                "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
                             }
                         ],
                         "id": "default49",
@@ -84,7 +84,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
+                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
                                         "if": ""
                                     }
                                 ],
@@ -189,7 +189,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n주민등록번호 앞 6자리 형식에 맞게 입력해주세요.\n예시) 900930",
+                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n주민등록번호 앞 6자리 형식에 맞게 입력해주세요.\n예시) 900930\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -207,7 +207,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.",
+                                        "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -225,7 +225,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)",
+                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
                                 "type": "repeat"
                             }
                         ],
@@ -626,7 +626,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
+                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
                                     }
                                 ],
                                 "id": "default12",
@@ -750,7 +750,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n미납금액 목록입니다.\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4"
+                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n미납금액 목록입니다.\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
                                     }
                                 ],
                                 "id": "default23",
@@ -1084,7 +1084,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으실 이메일 주소를 입력해주세요."
+                                                "text": "받으실 이메일 주소를 입력해주세요.\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
                                             }
                                         ],
                                         "task": {
@@ -1436,6 +1436,12 @@ var dialogs = [
                             "raw": "이사 들어오실 때",
                             "nlp": "이사 들어오다 때"
                         }
+                    },
+                    {
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
+                        }
                     }
                 ],
                 "output": [
@@ -1467,6 +1473,12 @@ var dialogs = [
                         "text": {
                             "raw": "이사 나가실 때",
                             "nlp": "이사 나가다 때"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
                         }
                     }
                 ],
@@ -1500,6 +1512,12 @@ var dialogs = [
                             "raw": "AS (렌지연결 등)",
                             "nlp": "AS ( 렌 지 연결 등 )"
                         }
+                    },
+                    {
+                        "text": {
+                            "raw": "3",
+                            "nlp": "3"
+                        }
                     }
                 ],
                 "output": [
@@ -1532,6 +1550,12 @@ var dialogs = [
                             "raw": "예약 확인/변경",
                             "nlp": "예약 확인 / 변경"
                         }
+                    },
+                    {
+                        "text": {
+                            "raw": "4",
+                            "nlp": "4"
+                        }
                     }
                 ],
                 "output": [
@@ -1563,6 +1587,12 @@ var dialogs = [
                         "text": {
                             "raw": "연결비 안내",
                             "nlp": "연결 비 안내"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "5",
+                            "nlp": "5"
                         }
                     }
                 ],
@@ -1913,6 +1943,12 @@ var dialogs = [
                         "text": {
                             "raw": "도시가스 이용가이드",
                             "nlp": "도시가스 이용 가이드"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
                         }
                     }
                 ],
@@ -2373,7 +2409,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "찾고자하시는 동명을 입력해주세요.\n\nex) 오산"
+                        "text": "찾고자하시는 동명을 입력해주세요.\n\nex) 오산\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
                     }
                 ],
                 "task": {
