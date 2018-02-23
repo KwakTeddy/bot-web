@@ -94,6 +94,10 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                                         clearInterval(intervalKey);
                                         target.importState = '';
                                     }
+                                    else if(r.result == 'nothing')
+                                    {
+                                        clearInterval(intervalKey);
+                                    }
                                 },
                                 function(err)
                                 {
@@ -172,6 +176,10 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                             {
                                 clearInterval(intervalKey);
                                 result.importState = '';
+                            }
+                            else if(r.result == 'nothing')
+                            {
+                                clearInterval(intervalKey);
                             }
                         },
                         function(err)

@@ -181,7 +181,9 @@ var commonDialogs = [
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
-        "output": "알아듣지 못했습니다."
+        "output": [
+            { kind: 'Content', text: "알아듣지 못했습니다." }
+        ]
     }
 ];
 

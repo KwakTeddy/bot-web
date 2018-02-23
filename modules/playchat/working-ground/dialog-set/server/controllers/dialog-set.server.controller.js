@@ -106,13 +106,20 @@ exports.checkUploadEnd = function(req, res)
         }
         else
         {
-            if(!dialogset.importState)
+            if(dialogset)
             {
-                res.send({ result: 'ok' });
+                if(!dialogset.importState)
+                {
+                    res.send({ result: 'ok' });
+                }
+                else
+                {
+                    res.send({ result: 'no' });
+                }
             }
             else
             {
-                res.send({ result: 'no' });
+                res.send({ result: 'nothing' });
             }
         }
     });

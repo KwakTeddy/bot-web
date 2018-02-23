@@ -3,6 +3,8 @@ var XLSX = require('xlsx');
 var async = require('async');
 var fs = require('fs');
 
+var csv = require('csvtojson');
+
 var mongoose = require('mongoose');
 var CustomContext = mongoose.model('CustomContext');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
@@ -95,6 +97,7 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         console.log('레인지 : ', range);
 
         var dialogsetList = [];
+        var lastData = undefined;
         for(var r=1; r<range.e.r; r++)
         {
             var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })].v.trim();
@@ -125,23 +128,46 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                 }
             }
 
-            dialogsetList.push({ q: q, a: a, category: category });
+            if(q && a)
+            {
+                lastData = { q: [], a: [] };
+                dialogsetList.push(lastData);
+            }
+
+            lastData.category = category;
+
+            if(q)
+            {
+                lastData.q.push(q);
+            }
+
+            if(a)
+            {
+                lastData.a.push(a);
+            }
         }
 
         async.eachSeries(dialogsetList, function(item, next)
         {
             var dialogsetDialog = new DialogsetDialog();
             dialogsetDialog.dialogset = dialogsetId;
-            dialogsetDialog.inputRaw = [item.q];
-            dialogsetDialog.output = [item.a];
+            dialogsetDialog.inputRaw = item.q;
+            dialogsetDialog.input = [];
+            dialogsetDialog.output = item.a;
             dialogsetDialog.category = item.category;
 
             console.log('세이브 : ', item.q);
 
-            NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+            async.eachSeries(item.q, function(q, next)
             {
-                dialogsetDialog.input = [nlpText];
-
+                NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
+                {
+                    dialogsetDialog.input.push(nlpText);
+                    next();
+                });
+            },
+            function()
+            {
                 dialogsetDialog.save(function()
                 {
                     next();
@@ -156,61 +182,120 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
     Uploader.prototype.uploadFromCsv = function(botId, language, dialogsetId, filePath, callback)
     {
-        var data = fs.readFileSync(filePath);
-        if(data)
+        var list = [];
+        csv().fromFile(filePath).on('json', function(obj)
         {
-            data = data.toString();
-        }
-        else
-        {
-            return callback();
-        }
+            var line = [];
 
-        var lines = data.split('\r\n');
-
-        var dialogsetList = [];
-        for(var i=1; i<lines.length; i++)
-        {
-            var split = lines[i].split(',');
-
-            var category = '';
-            for(var j=0; j<split.length-2; j++)
+            for(var key in obj)
             {
-                if(category)
-                {
-                    category += '@@@';
-                }
-
-                category += split[j];
+                line.push(obj[key]);
             }
 
-            dialogsetList.push({ q: split[split.length-2], a: split[split.length-1], category: category });
-        }
-
-        async.eachSeries(dialogsetList, function(item, next)
+            list.push(line);
+        }).on('done', function()
         {
-            var dialogsetDialog = new DialogsetDialog();
-            dialogsetDialog.dialogset = dialogsetId;
-            dialogsetDialog.inputRaw = [item.q];
-            dialogsetDialog.output = [item.a];
-            dialogsetDialog.category = item.category;
-
-            console.log('세이브 : ', item.q);
-
-            NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
+            var dialogsetList = [];
+            var lastData = undefined;
+            for(var i=0; i<list.length; i++)
             {
-                dialogsetDialog.input = [nlpText];
+                var item = list[i];
 
-                dialogsetDialog.save(function()
+                var category = '';
+                for(var j=0; j<item.length-2; j++)
                 {
-                    next();
+                    if(category)
+                    {
+                        category += '@@@';
+                    }
+
+                    category += item[j];
+                }
+
+                var q = item[item.length-2];
+                var a = item[item.length-1];
+
+                if(q && a)
+                {
+                    lastData = { q: [], a: [] };
+                    dialogsetList.push(lastData);
+                }
+
+                lastData.category = category;
+
+                if(q)
+                {
+                    lastData.q.push(q);
+                }
+
+                if(a)
+                {
+                    lastData.a.push(a);
+                }
+            }
+
+            async.eachSeries(dialogsetList, function(item, next)
+            {
+                var dialogsetDialog = new DialogsetDialog();
+                dialogsetDialog.dialogset = dialogsetId;
+                dialogsetDialog.inputRaw = item.q;
+                dialogsetDialog.input = [];
+                dialogsetDialog.output = item.a;
+                dialogsetDialog.category = item.category;
+
+                async.eachSeries(item.q, function(q, next)
+                {
+                    NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
+                    {
+                        dialogsetDialog.input.push(nlpText);
+                        next();
+                    });
+                },
+                function()
+                {
+                    dialogsetDialog.save(function()
+                    {
+                        next();
+                    });
                 });
+            },
+            function()
+            {
+                callback();
             });
-        },
-        function()
-        {
-            callback();
         });
+
+        // var data = fs.readFileSync(filePath);
+        // if(data)
+        // {
+        //     data = data.toString();
+        // }
+        // else
+        // {
+        //     return callback();
+        // }
+        //
+        // var lines = data.split('\r\n');
+        //
+        // var dialogsetList = [];
+        // for(var i=1; i<lines.length; i++)
+        // {
+        //     var split = lines[i].split(',');
+        //
+        //     var category = '';
+        //     for(var j=0; j<split.length-2; j++)
+        //     {
+        //         if(category)
+        //         {
+        //             category += '@@@';
+        //         }
+        //
+        //         category += split[j];
+        //     }
+        //
+        //     dialogsetList.push({ q: split[split.length-2], a: split[split.length-1], category: category });
+        // }
+        //
     };
 
     Uploader.prototype.upload = function(botId, language, dialogsetId, filename, callback)
