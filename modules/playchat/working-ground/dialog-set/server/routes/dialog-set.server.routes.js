@@ -6,6 +6,7 @@ module.exports = function(app)
     app.put('/api/:botId/dialogsets/usable', dialogsets.updateUsable);
     app.get('/api/:botId/dialogsets/totalpage', dialogsets.findTotalPage);
     app.get('/api/:botId/dialogsets/findbytitle', dialogsets.findDialogsetByTitle);
+    app.get('/api/:botId/dialogsets/checkUploadEnd/:dialogsetId', dialogsets.checkUploadEnd);
 
     app.get('/api/:botId/dialogsets', dialogsets.find);
     app.get('/api/:botId/dialogsets/:dialogsetId', dialogsets.findOne);

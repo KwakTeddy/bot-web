@@ -95,6 +95,29 @@ exports.findDialogsetByTitle = function(req, res)
     });
 };
 
+exports.checkUploadEnd = function(req, res)
+{
+    Dialogset.findOne({ _id: req.params.dialogsetId }).exec(function(err, dialogset)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            if(!dialogset.importState)
+            {
+                res.send({ result: 'ok' });
+            }
+            else
+            {
+                res.send({ result: 'no' });
+            }
+        }
+    });
+};
+
 exports.create = function(req, res)
 {
     var dialogset = new Dialogset(req.body);
@@ -155,7 +178,10 @@ exports.create = function(req, res)
                     dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function()
                     {
                         dialogset.importState = '';
-                        dialogset.save(function(){});
+                        dialogset.save(function()
+                        {
+
+                        });
                     });
 
                     res.jsonp(dialogset);
