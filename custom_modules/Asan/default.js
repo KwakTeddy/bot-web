@@ -279,23 +279,23 @@ module.exports = function(bot)
         action: function (dialog, context, callback)
         {
             var text3 = '';
-            if(dialog.userInput.text == '입원안내') text3 ='입원안내'
+            if(dialog.userInput.text == '입원안내' || dialog.userInput.text == '4') text3 ='입원안내'
             if(dialog.userInput.text == '서류발급') text3 = '서류발급'
-            if(dialog.userInput.text == '입원 안내') text3 = '입원안내'
+            if(dialog.userInput.text == '입원 안내' || dialog.userInput.text == '4') text3 = '입원안내'
             if(dialog.userInput.text == '서류 발급') text3 = '서류발급'
             if(dialog.userInput.text == '입원') text3 ='입원안내'
 
             var text4 = '';
-            if(dialog.userInput.text == '입원안내') text4 ='입원예약변경, 입원비 무통장 입금'
+            if(dialog.userInput.text == '입원안내' || dialog.userInput.text == '4') text4 ='입원예약변경, 입원비 무통장 입금'
             if(dialog.userInput.text == '서류발급') text4 = '서류발급 준비물은 무엇인가요?'
-            if(dialog.userInput.text == '입원 안내') text4 ='입원예약변경, 입원비 무통장 입금'
+            if(dialog.userInput.text == '입원 안내' || dialog.userInput.text == '4') text4 ='입원예약변경, 입원비 무통장 입금'
             if(dialog.userInput.text == '서류 발급') text4 =  '서류발급 준비물은 무엇인가요?'
             if(dialog.userInput.text == '입원') text4 ='입원예약변경, 입원비 무통장 입금'
 
 
 
             dialog.output[0].text = text3 + ' 관련하여 궁금하신 점이 무엇이든 알려드릴께요.\n 무엇을 도와드릴까요? \n예)'+ text4 +'\n\n* 처음으로 가시려면 처음 또는 0번, 이전단계로 가시러면 이전 또는 9번을 입력해주세요.'
-            callback(task,context);
+            callback();
         }
     });
 };

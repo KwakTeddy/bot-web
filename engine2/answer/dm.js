@@ -408,7 +408,7 @@ var ContextManager = require('../context.js');
         if(bot.options.globalSearch && bot.options.globalSearch.use)
         {
             // 글로벌 서치 했는데 없으면 없는거다.
-            transaction.done(function()
+            transaction.call(function(done)
             {
                 if(!foundDialog)
                 {
@@ -419,73 +419,33 @@ var ContextManager = require('../context.js');
                             return b.matchRate - a.matchRate;
                         });
 
-                        if(selectedDialogs.length > 0)
-                        {
-                            if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
-                            {
-                                if(selectedDialogs[0].matchRate)
-                                {
-                                    if(selectedDialogs[0].matchRate >= 0.5)
-                                    {
-                                        foundDialog = selectedDialogs[0];
-                                    }
-                                }
-                                else
-                                {
-                                    foundDialog = selectedDialogs[0];
-                                }
-                            }
-                            else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
-                            {
-                                //여러개 선택해서 보여준담에 다시 고르라고 해야함.
-                            }
-                        }
+                        transaction.selectedDialogs = selectedDialogs;
 
-                        callback(null, foundDialog);
+                        done();
+                        // callback(null, foundDialog);
                     });
                 }
                 else
                 {
-                    callback(null, foundDialog);
+                    done();
+                    // callback(null, foundDialog);
                 }
             });
         }
-        else
+
+        transaction.call(function(done)
         {
-            transaction.call(function(done)
+            if(context.session.dialogCursor && !foundDialog)
             {
-                if(context.session.dialogCursor && !foundDialog)
+                var dialogs = that.getNextDialogs(context.session.dialogCursor, bot.commonDialogs);
+                if(!dialogs)
                 {
-                    var dialogs = that.getNextDialogs(context.session.dialogCursor, bot.commonDialogs);
-                    if(!dialogs)
-                    {
-                        dialogs = that.getNextDialogs(context.session.dialogCursor, bot.dialogs);
-                    }
-
-                    if(dialogs)
-                    {
-                        that.findDialog(bot, context, userInput, intents, entities, dialogs, function(result)
-                        {
-                            foundDialog = result;
-                            done();
-                        });
-                    }
-                    else
-                    {
-                        done();
-                    }
+                    dialogs = that.getNextDialogs(context.session.dialogCursor, bot.dialogs);
                 }
-                else
-                {
-                    done();
-                }
-            });
 
-            transaction.call(function(done)
-            {
-                if(!foundDialog)
+                if(dialogs)
                 {
-                    that.findDialog(bot, context, userInput, intents, entities, bot.dialogs, function(result)
+                    that.findDialog(bot, context, userInput, intents, entities, dialogs, function(result)
                     {
                         foundDialog = result;
                         done();
@@ -495,13 +455,55 @@ var ContextManager = require('../context.js');
                 {
                     done();
                 }
-            });
-
-            transaction.done(function()
+            }
+            else
             {
-                callback(null, foundDialog);
-            });
-        }
+                done();
+            }
+        });
+
+        transaction.call(function(done)
+        {
+            if(!foundDialog)
+            {
+                that.findDialog(bot, context, userInput, intents, entities, bot.dialogs, function(result)
+                {
+                    foundDialog = result;
+                    done();
+                });
+            }
+            else
+            {
+                done();
+            }
+        });
+
+        transaction.done(function()
+        {
+            if(bot.options.globalSearch && bot.options.globalSearch.use)
+            {
+                var selectedDialogs = transaction.selectedDialogs;
+                if(selectedDialogs.length > 0)
+                {
+                    if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
+                    {
+                        if(selectedDialogs[0].matchRate)
+                        {
+                            if(selectedDialogs[0].matchRate >= (bot.options.globalSearch.minMatchRate || 0.5) && (!foundDialog.matchRate || selectedDialogs[0].matchRate > foundDialog.matchRate))
+                            {
+                                foundDialog = selectedDialogs[0];
+                            }
+                        }
+                    }
+                    else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
+                    {
+                        //여러개 선택해서 보여준담에 다시 고르라고 해야함.
+                    }
+                }
+            }
+
+            callback(null, foundDialog);
+        });
     };
 
     // 실행된 dialogInstance를 히스토리에 기록.

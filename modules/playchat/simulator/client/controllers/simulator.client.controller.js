@@ -65,7 +65,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
             var hour = date.getHours();
             var min = date.getMinutes();
-            var day = date.getDay();
+            var day = date.getDate();
             var month = date.getMonth() + 1;
 
             hour = hour < 10 ? '0' + hour : hour;

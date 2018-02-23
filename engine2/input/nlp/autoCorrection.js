@@ -2,6 +2,18 @@ var mongoose = require('mongoose');
 var async = require('async');
 var UserDialog = mongoose.model('UserDialog');
 
+var async = require('async');
+
+var Schema = mongoose.Schema;
+var WordModelSchema = new Schema(
+{
+    word: String,
+    count: Number,
+});
+
+var WordModel = mongoose.model('wordcorrection', WordModelSchema);
+
+
 var speller_en = require('./auto-correction/speller_en');
 var speller_ko = require('./auto-correction/speller_ko');
 
@@ -9,11 +21,11 @@ var speller_ko = require('./auto-correction/speller_ko');
 {
     var AutoCorrection = function()
     {
-
     };
 
     AutoCorrection.prototype.batchCorrectionDB = function(callback)
     {
+        var that = this;
         var speller = speller_ko;
         var query = { fail: false };
 
@@ -29,7 +41,7 @@ var speller_ko = require('./auto-correction/speller_ko');
                 },
                 function (err)
                 {
-                    saveWordCorrections(speller.getNWords(), function()
+                    that.saveWordCorrections(speller.getNWords(), function()
                     {
                         console.log('batchCorrectionDB: DONE');
                         if(callback) callback();
@@ -56,12 +68,26 @@ var speller_ko = require('./auto-correction/speller_ko');
             words.push({ word: i, count: nWords[i] });
         }
 
-        mongoModule.remove({mongo: {model: 'wordcorrection', query: {}}}, null, function()
+        async.eachSeries(words, function(item, next)
         {
-            mongoModule.save({mongo: {model: 'wordcorrection'}, doc: words}, null, function ()
+            WordModel.findOne({ word: item.word }).exec(function(err, doc)
             {
-                callback();
+                if(!err && !doc)
+                {
+                    var word = new WordModel();
+                    word.word = item.word;
+                    word.count = item.count;
+
+                    word.save(function(err)
+                    {
+                        next();
+                    });
+                }
             });
+        },
+        function()
+        {
+            callback();
         });
     };
 
@@ -69,19 +95,27 @@ var speller_ko = require('./auto-correction/speller_ko');
     {
         var speller = speller_ko;
 
-        mongoModule.find({mongo: {model: 'wordcorrection', query: {}}}, null, function(_task, _context)
+        WordModel.find({}).lean().exec(function(err, doc)
         {
-            var words = _task.doc, nWords = {};
-            for(var i in words)
+            if(err)
             {
-                nWords[words[i].word] = words[i].count;
+                console.error(err);
             }
-
-            speller.setNWords(nWords);
-
-            if(callback)
+            else
             {
-                callback();
+                var words = doc;
+                var nWords = {};
+                for(var i in words)
+                {
+                    nWords[words[i].word] = words[i].count;
+                }
+
+                speller.setNWords(nWords);
+
+                if(callback)
+                {
+                    callback();
+                }
             }
         });
     };
