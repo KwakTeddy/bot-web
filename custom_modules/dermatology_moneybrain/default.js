@@ -434,7 +434,7 @@ module.exports = function(bot) {
                 };
                 dialog.output[0].text = "성형 파트 의료진을 소개합니다.";
             }
-            else if (dialog.userInput.text.indexOf("다이어트") >= 0) {
+            else if (dialog.userInput.text.indexOf("다이어트") >= 0 || dialog.userInput.text.indexOf("몸무게") >= 0) {
                 options.qs = {
                     department: "다이어트"
                 };
