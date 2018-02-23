@@ -133,11 +133,11 @@ var ContextManager = require('../context.js');
                 }
                 else if(key == 'intent')
                 {
-                    var check = (intents.length > 0 && input.intent == intents[0].intentName);
-                    dialog.matchRate = intents[0].matchRate;
-                    if(check)
+                    if(intents.length > 0)
                     {
-                        result = result && true;
+                        var check = input.intent == intents[0].intentName;
+                        dialog.matchRate = intents[0].matchRate;
+                        result = result && check;
                     }
                     else
                     {
