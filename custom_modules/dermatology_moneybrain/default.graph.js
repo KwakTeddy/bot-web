@@ -107,7 +107,7 @@ var dialogs = [
                 }
             },
             {
-                "regexp": "^3"
+                "regexp": "^3$"
             },
             {
                 "text": {
@@ -165,7 +165,7 @@ var dialogs = [
         "name": "4.2월 이벤트",
         "input": [
             {
-                "regexp": "^4"
+                "regexp": "^4$"
             },
             {
                 "text": {
@@ -206,19 +206,13 @@ var dialogs = [
                 "name": "4.1감량제",
                 "input": [
                     {
-                        "text": {
-                            "raw": "/^1/",
-                            "nlp": "/^ 1 $/"
-                        }
+                        "regexp": "1"
                     },
                     {
-                        "regexp": "^2$"
+                        "regexp": "2"
                     },
                     {
-                        "text": {
-                            "raw": "/^3$/",
-                            "nlp": "/^ 3 $/"
-                        }
+                        "regexp": "3"
                     },
                     {
                         "text": {
