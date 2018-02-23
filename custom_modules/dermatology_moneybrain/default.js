@@ -343,43 +343,109 @@ module.exports = function(bot) {
 	{
 		action: function (dialog, context, callback)
 		{
-            if (dialog.userInput.text.indexOf("1") >= 0) {
-                dialog.output[0].text = "다이어트 부위별 집중 + 3kg,  감량제 프로그램과 비만패키지 다이어트 관리 가 있습니다";
+            var modelname = 'dermatology_moneybrain_event';
+            var options = {};
+            options.url = SERVER_HOST + '/api/' + modelname;
+            if (dialog.userInput.text.indexOf("성형") >= 0) {
+                options.qs = {
+                    company: "포에버성형외과",
+                    month:"2",
+                    year:"2018",
+                    category:"성형"
+                };
+                dialog.output[0].text = "성형 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("2") >= 0) {
-                dialog.output[0].text = "감량제는 부가세 별도 19만원과 39만원이 있으며 비만pck은 30만원대부터 100만원대까지 다양하게 있습니다";
+            else if (dialog.userInput.text.indexOf("다이어트") >= 0 || dialog.userInput.text.indexOf("몸무게") >= 0) {
+                options.qs = {
+                    company: "포에버성형외과",
+                    month:"2",
+                    year:"2018",
+                    category:"감량제 다이어트"
+                };
+                dialog.output[0].text = "감량제 다이어트 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("3") >= 0) {
-                dialog.output[0].text = "감량제는 4주프로그램 3kg 입니다 개인차마다 틀리지만 식단과 생활적인 습관 등 잘지켜주신다면 만족하는 효과를 기대할수 있습니다";
+            else if (dialog.userInput.text.indexOf("피부") >= 0) {
+                options.qs = {
+                    company: "포에버성형외과",
+                    month:"2",
+                    year:"2018",
+                    category:"피부"
+                };
+                dialog.output[0].text = "피부 이벤트 아래와 같습니다.";
             }
-            dialog.output[0].buttons = [
-                {
-                    text: "이전으로 가기"
-                },
-                {
-                    text: "처음으로 돌아가기"
+
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                    callback();
                 }
-            ];
-			callback();
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < body.length; i++) {
+                        var ss = "" + (i + 1) + ". " + body[i].name;
+                        dialog.output[0].buttons.push({text: ss});
+                    }
+                    dialog.output[0].buttons.push(
+                        {
+                            text: "이전으로 가기"
+                        },
+                        {
+                            text: "처음으로 돌아가기"
+                        }
+                    );
+                    callback();
+                }
+            });
 		}
 	});
-    bot.setTask('event2month2',
+
+
+    bot.setType("eventlist", {
+        typeCheck: function (dialog, context, callback) {
+            var modelname = 'dermatology_moneybrain_event';
+            var options = {};
+            options.url = SERVER_HOST + '/api/' + modelname;
+            options.qs = {
+                company: "포에버성형외과",
+                month:"2",
+                year:"2018"
+            };
+
+            request.get(options, function (err, response, body) {
+                if (err) {
+                    console.log('err:' + err);
+                    callback();
+                }
+                else {
+                    body = JSON.parse(body);
+                    console.log(response.statusCode);
+                    for(var i=0;i<body.length;i++){
+                        if(dialog.userInput.text.indexOf(body[i].name)!==-1){
+                        context.session.event=body[i];
+                            callback(true);
+                        }
+                    }
+                    callback(false);
+                }
+            });
+        }
+    });
+
+    bot.setTask('showevent',
         {
-            action: function (dialog, context, callback)
-            {
-                if (dialog.userInput.text.indexOf("1") >= 0) {
-                    dialog.output[0].text = "상태를 봐야하지만 보통 1-2주부터 가능하십니다 ";
-                }
-                else if (dialog.userInput.text.indexOf("2") >= 0) {
-                    dialog.output[0].text = "3max고주파와 엔더몰로지 관리를  추천합니다 ";
-                }
-                else if (dialog.userInput.text.indexOf("3") >= 0) {
-                    dialog.output[0].text = "부가세 별도 1회 20만원 입니다 본원에 이벤트 중인 관리도 있으니 자세한 내용은 전화상담으로 안내해드리겠습니다";
-                }
-                else if (dialog.userInput.text.indexOf("4") >= 0) {
-                    dialog.output[0].text = "당연히 효과가 있습니다 지방흡인후 생길수 있는 피부의 유착 울퉁불퉁 탄력 저하등 전후 관리를 통해 확실하게 케어해드립니다";
+            action: function (dialog, context, callback) {
+
+                if (context.session.event.image !== undefined || context.session.event.image !== "") {
+                    dialog.output[0].image = {url: context.session.event.image}
                 }
                 dialog.output[0].buttons = [
+                    {
+                        text: "자세히 보기",
+                        url:context.session.event.image
+                    },
                     {
                         text: "이전으로 가기"
                     },
@@ -430,19 +496,22 @@ module.exports = function(bot) {
             options.url = SERVER_HOST + '/api/' + modelname;
             if (dialog.userInput.text.indexOf("성형") >= 0) {
                 options.qs = {
-                    department: "성형"
+                    department: "성형",
+                    company: "포에버성형외과"
                 };
                 dialog.output[0].text = "성형 파트 의료진을 소개합니다.";
             }
-            else if (dialog.userInput.text.indexOf("다이어트") >= 0) {
+            else if (dialog.userInput.text.indexOf("다이어트") >= 0 || dialog.userInput.text.indexOf("몸무게") >= 0) {
                 options.qs = {
-                    department: "다이어트"
+                    department: "다이어트",
+                    company: "포에버성형외과"
                 };
                 dialog.output[0].text = "다이어트 파트 의료진을 소개합니다.";
             }
             else if (dialog.userInput.text.indexOf("피부") >= 0) {
                 options.qs = {
-                    department:{ $in:["피부","피부(+성형실리프팅)"]}
+                    department:{ $in:["피부","피부(+성형실리프팅)"]},
+                    company: "포에버성형외과"
                 };
                 dialog.output[0].text = "피부 파트 의료진을 소개합니다.";
             }
