@@ -253,7 +253,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "+context.session.event.description+\n\n+context.session.event.name+\n+context.session.event.price+원"
+                                "text": "**+context.session.event.name+**\n\n+context.session.event.description+\n\n가격: +context.session.event.price+원"
                             }
                         ],
                         "task": {
