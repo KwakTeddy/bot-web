@@ -25,8 +25,9 @@ exports.renderIndex = function (req, res, next)
 
     if(req.path == '/')
     {
-        var lanCategory = ['ko', 'en', 'zh', 'jp'];
+        var lanCategory = ['ko', 'en', 'zh', 'ja'];
         var browserLan = req.headers["accept-language"].split('-')[0];
+
         var queryLan = req.query.lan;
         var code = queryLan || browserLan;
 
