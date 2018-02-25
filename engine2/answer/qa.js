@@ -52,7 +52,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             list[i].matchRate = 1;
                             list[i].added = 0;
 
-                            var categories = list[i].category.split('@@@');
+                            var categories = list[i].category ? list[i].category.split('@@@') : [];
                             for(var j=0; j<categories.length; j++)
                             {
                                 //사용자 입력중 대화학습의 카테고리와 일치하는 말이 있으면 가중치
