@@ -3,6 +3,7 @@ module.exports = function(options)
     options.dialogsetMinMatchRate = 0.7;
     options.version = 1.0;
     options.use = true;
+    options.useAutoCorrection = true;
     options.quibbles =
     {
         use: true,

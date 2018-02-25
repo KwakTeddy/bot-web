@@ -7,6 +7,8 @@ var Globals = require('./globals.js');
 
 var utils = require('./utils/utils.js');
 
+var AutoCorrection = require('./input/nlp/autoCorrection.js');
+
 var ContextManager = require('./context.js');
 var OutputManager = require('./output.js');
 var QNAManager = require('./answer/qa.js');
@@ -21,10 +23,9 @@ var Logger = require('./logger.js');
     // 딱 선택까지만 한다.
     var AnswerManager = function()
     {
-
     };
 
-    AnswerManager.prototype.noAnswer = function(bot, context, userInput, currentDialog, previousDialog, callback)
+    AnswerManager.prototype.noAnswer = function(bot, context, userInput, currentDialog, previousDialog, error, callback)
     {
         var quibble = undefined;
         if(bot.options.useQuibble)
@@ -42,6 +43,17 @@ var Logger = require('./logger.js');
         }
         else
         {
+            if(bot.options.useAutoCorrection)
+            {
+                var fixed = AutoCorrection.correction(userInput.text);
+
+                if(fixed != userInput.text)
+                {
+                    userInput.text = fixed;
+                    return this.answer(bot, context, userInput, error, callback);
+                }
+            }
+
             console.log();
             console.log(chalk.yellow('[[[ No Answer ]]]'));
 
@@ -104,7 +116,7 @@ var Logger = require('./logger.js');
             }
             else
             {
-                that.noAnswer(bot, userInput, currentDialog, previousDialog, callback);
+                that.noAnswer(bot, userInput, currentDialog, previousDialog, error, callback);
             }
         });
     };
@@ -167,7 +179,7 @@ var Logger = require('./logger.js');
                 }
                 else
                 {
-                    that.noAnswer(bot, userInput, currentDialog, previousDialog, callback);
+                    that.noAnswer(bot, userInput, currentDialog, previousDialog, error, callback);
                 }
             });
         });
@@ -224,7 +236,7 @@ var Logger = require('./logger.js');
             }
             else
             {
-                that.noAnswer(bot, userInput, currentDialog, previousDialog, callback);
+                that.noAnswer(bot, userInput, currentDialog, previousDialog, error, callback);
             }
         });
     };
@@ -322,7 +334,7 @@ var Logger = require('./logger.js');
                         previousDialog = {};
                     }
 
-                    that.noAnswer(bot, context, userInput, currentDialog, previousDialog, callback);
+                    that.noAnswer(bot, context, userInput, currentDialog, previousDialog, error, callback);
                 }
             });
         }
