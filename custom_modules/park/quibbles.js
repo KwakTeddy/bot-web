@@ -2,6 +2,7 @@ module.exports = function(bot)
 {
     var quibbles = [
     {
+        type: 'Noun',
         words: ['나이'],
         sentences: [
             "숫자는… 나이에 불과해가지고.. ",
@@ -17,6 +18,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         words: ['생일'],
         sentences: ["생일 보다는 그.. 다른 이야기.. 우주나.. 혼 같은.. ",
             "생일보단 .. 그.. 태어난날이라던지.. 그런걸 물어보는것이.. 좋다고 생각합니다.",
@@ -31,6 +33,7 @@ module.exports = function(bot)
             "생일.. 그것은.. 여야가 잘 합의해서.. 물어보시면 된다고… 생각합니다."]
     },
     {
+        type: 'Noun',
         words: ['이름'],
         sentences: [
             "이름은.. 내 이름이.. 그.. 이름이…",
@@ -60,6 +63,7 @@ module.exports = function(bot)
             "헤어스타일 이야기를 하는.. 국민이 불쌍하다.. 생각합니다."]
     },
     {
+        type: 'Noun',
         words: ['성별'],
         sentences: [
             "성별 보다는.. 그.. 우주의.. 기운의 이야기가.. 좋다라고 생각합니다.",
@@ -76,6 +80,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         words: ['몸매'],
         sentences: [
             "몸매를 자꾸.. 물어보면.. 혼이 비정상이 됩니다..",
@@ -90,6 +95,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         words: ['별명'],
         sentences: ["닉네임의 그 별명과..이렇게.. 그.. 별명과 또….",
         "별명이 지금.. 중요하다고 생각하세요?",
@@ -104,6 +110,7 @@ module.exports = function(bot)
         "그.. 제.. 아.. 별명이.. 워낙.. 딱.. 많다보니까.."]
     },
     {
+        type: 'Noun',
         "words": [
             "별명"
         ],
@@ -122,6 +129,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "애인"
         ],
@@ -140,6 +148,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "부모님"
         ],
@@ -156,6 +165,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "형제"
         ],
@@ -173,6 +183,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "집"
         ],
@@ -190,6 +201,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "초등학교"
         ],
@@ -208,6 +220,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "중학교"
         ],
@@ -226,6 +239,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "고등학교"
         ],
@@ -244,6 +258,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "대학교"
         ],
@@ -262,6 +277,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "직장"
         ],
@@ -280,6 +296,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "정치"
         ],
@@ -298,6 +315,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "경제"
         ],
@@ -315,6 +333,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "음악"
         ],
@@ -332,6 +351,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "스포츠"
         ],
@@ -349,6 +369,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "영화"
         ],
@@ -366,6 +387,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "만화"
         ],
@@ -383,6 +405,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "소설"
         ],
@@ -400,6 +423,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "미술"
         ],
@@ -417,6 +441,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "사진"
         ],
@@ -434,6 +459,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "드라마"
         ],
@@ -451,6 +477,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "TV프로"
         ],
@@ -468,6 +495,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "취미"
         ],
@@ -485,6 +513,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "목표"
         ],
@@ -502,6 +531,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "외국어"
         ],
@@ -519,6 +549,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "음식"
         ],
@@ -536,6 +567,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "여행"
         ],
@@ -553,6 +585,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "친구"
         ],
@@ -570,6 +603,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "애완동물"
         ],
@@ -587,6 +621,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "패션"
         ],
@@ -604,6 +639,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "사랑"
         ],
@@ -621,6 +657,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "명절"
         ],
@@ -638,6 +675,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "공휴일"
         ],
@@ -654,6 +692,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "종교"
         ],
@@ -671,6 +710,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "성격"
         ],
@@ -688,6 +728,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "가치"
         ],
@@ -705,6 +746,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "죽음"
         ],
@@ -722,6 +764,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "군대"
         ],
@@ -739,6 +782,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "유흥"
         ],
@@ -756,6 +800,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "학업"
         ],
@@ -773,6 +818,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "범죄"
         ],
@@ -790,6 +836,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "자동차"
         ],
@@ -807,6 +854,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "오토바이"
         ],
@@ -824,6 +872,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "비행기"
         ],
@@ -841,6 +890,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "버스"
         ],
@@ -858,6 +908,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "지하철"
         ],
@@ -875,6 +926,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "택시"
         ],
@@ -892,6 +944,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "날씨"
         ],
@@ -909,6 +962,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "계절"
         ],
@@ -926,6 +980,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "최순실"
         ],
@@ -937,6 +992,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "최태민"
         ],
@@ -947,6 +1003,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "세월호"
         ],
@@ -957,6 +1014,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "탄핵"
         ],
@@ -967,6 +1025,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "감옥"
         ],
@@ -977,6 +1036,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "헌법재판소"
         ],
@@ -987,6 +1047,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "박정희"
         ],
@@ -997,6 +1058,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "박지만"
         ],
@@ -1007,6 +1069,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "박근령"
         ],
@@ -1017,6 +1080,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "김재규"
         ],
@@ -1027,6 +1091,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "이명박"
         ],
@@ -1037,6 +1102,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "한나라당"
         ],
@@ -1047,6 +1113,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "안철수"
         ],
@@ -1057,6 +1124,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "문재인"
         ],
@@ -1067,6 +1135,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "정유라"
         ],
@@ -1077,6 +1146,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "장시호"
         ],
@@ -1087,6 +1157,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "이재용"
         ],
@@ -1097,6 +1168,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "이건희"
         ],
@@ -1107,6 +1179,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "삼성"
         ],
@@ -1117,6 +1190,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "국민연금"
         ],
@@ -1127,6 +1201,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "부정선거"
         ],
@@ -1137,6 +1212,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "재산"
         ],
@@ -1147,6 +1223,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "사주"
         ],
@@ -1157,6 +1234,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "은지원"
         ],
@@ -1167,6 +1245,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "육영수"
         ],
@@ -1177,6 +1256,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "청와대"
         ],
@@ -1187,6 +1267,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "검찰"
         ],
@@ -1197,6 +1278,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "이정미"
         ],
@@ -1207,6 +1289,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "박사모"
         ],
@@ -1217,6 +1300,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Noun',
         "words": [
             "이정희"
         ],
@@ -1227,6 +1311,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "되다",
@@ -1244,6 +1329,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "되다",
@@ -1261,6 +1347,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "되다",
@@ -1277,6 +1364,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "되다",
@@ -1293,6 +1381,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "있다",
@@ -1308,6 +1397,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "있다",
@@ -1324,6 +1414,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "있다",
@@ -1340,6 +1431,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "있다",
@@ -1355,6 +1447,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "이다",
@@ -1370,6 +1463,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "이다",
@@ -1384,6 +1478,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "이다",
@@ -1399,6 +1494,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "아니다",
@@ -1414,6 +1510,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "아니다",
@@ -1429,6 +1526,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "않다",
@@ -1444,6 +1542,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "않다",
@@ -1460,6 +1559,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "없다",
@@ -1476,6 +1576,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "없다",
@@ -1491,6 +1592,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "없다",
@@ -1506,6 +1608,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "좋다",
@@ -1522,6 +1625,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "좋다",
@@ -1536,6 +1640,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "좋다",
@@ -1552,6 +1657,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "좋다",
@@ -1567,6 +1673,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "좋다",
@@ -1583,6 +1690,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싫다",
@@ -1598,6 +1706,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싫다",
@@ -1613,6 +1722,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싫다",
@@ -1628,6 +1738,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "크다",
@@ -1643,6 +1754,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "크다",
@@ -1659,6 +1771,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "작다",
@@ -1673,6 +1786,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "작다",
@@ -1689,6 +1803,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "어떻다",
@@ -1704,6 +1819,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "어떻다",
@@ -1718,6 +1834,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "어떠하다",
@@ -1732,6 +1849,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "어떠하다",
@@ -1746,6 +1864,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "재미있다",
@@ -1760,6 +1879,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "재미있다",
@@ -1774,6 +1894,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "재미있다",
@@ -1788,6 +1909,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "재미있다",
@@ -1802,6 +1924,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "재미있다",
@@ -1816,6 +1939,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "재미있다",
@@ -1830,6 +1954,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "알다",
@@ -1843,6 +1968,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "알다",
@@ -1858,6 +1984,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "보다",
@@ -1873,6 +2000,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "보다",
@@ -1888,6 +2016,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "보다",
@@ -1902,6 +2031,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "보다",
@@ -1916,6 +2046,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "보다",
@@ -1930,6 +2061,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "쓰다",
@@ -1944,6 +2076,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "쓰다",
@@ -1958,6 +2091,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "쓰다",
@@ -1972,6 +2106,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "쓰다",
@@ -1986,6 +2121,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "쓰다",
@@ -1999,6 +2135,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싶다",
@@ -2013,6 +2150,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싶다",
@@ -2027,6 +2165,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싶다",
@@ -2041,6 +2180,7 @@ module.exports = function(bot)
         ]
     },
     {
+        type: 'Verb',
         "words": [
             {
                 "word": "싶다",
