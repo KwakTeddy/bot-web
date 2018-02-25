@@ -68,10 +68,6 @@ var dialogs = [
                 "name": "건강검진예약 및 결과문의",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "건강검진예약 및 결과문의"
                     }
                 ],
@@ -189,10 +185,6 @@ var dialogs = [
                 "name": "버스",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "버스"
                     }
                 ],
@@ -230,10 +222,6 @@ var dialogs = [
                         "name": "셔틀버스",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "셔틀"
                             }
                         ],
@@ -249,10 +237,6 @@ var dialogs = [
                         "name": "시내버스",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "시내 버스"
                             }
                         ],
@@ -268,10 +252,6 @@ var dialogs = [
                         "name": "고속버스",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "고속버스"
                             }
                         ],
@@ -289,10 +269,6 @@ var dialogs = [
                 "name": "지하철",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "지하철"
                     }
                 ],
@@ -323,10 +299,6 @@ var dialogs = [
                 "name": "기차",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "기차"
                     }
                 ],
@@ -342,10 +314,6 @@ var dialogs = [
                 "name": "자가용",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "자가용"
                     }
                 ],
@@ -361,10 +329,6 @@ var dialogs = [
                         "name": "주차",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "주차"
                             }
                         ],
@@ -418,10 +382,6 @@ var dialogs = [
                                 "name": "주차장 위치",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "주차장 위치"
                                     }
                                 ],
@@ -446,10 +406,6 @@ var dialogs = [
                                 "name": "주차장 이용 방식",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "주차장 이용 방식"
                                     }
                                 ],
@@ -465,10 +421,6 @@ var dialogs = [
                                 "name": "주차 이용 가능 시간",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "주차 이용 가능 시간"
                                     }
                                 ],
@@ -484,10 +436,6 @@ var dialogs = [
                                 "name": "주차장 규모",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "주차장 규모"
                                     }
                                 ],
@@ -503,10 +451,6 @@ var dialogs = [
                                 "name": "주차요금",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "주차요금"
                                     }
                                 ],
@@ -522,10 +466,6 @@ var dialogs = [
                                 "name": "무료 및 할인 주차 정보",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "무료 및 할인 주차 정보"
                                     }
                                 ],
@@ -541,10 +481,6 @@ var dialogs = [
                                 "name": "기간권 정보",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "기간권 정보"
                                     }
                                 ],
@@ -566,10 +502,6 @@ var dialogs = [
         "name": "진료안내",
         "input": [
             {
-                "text": {
-                    "raw": " ",
-                    "nlp": ""
-                },
                 "intent": "진료안내"
             },
             {
@@ -706,10 +638,6 @@ var dialogs = [
                                 "name": "예약 방법",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "예약 방법"
                                     }
                                 ],
@@ -740,10 +668,6 @@ var dialogs = [
                                 "name": "진료 받기 위한 필요 서류 안내",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "필요 서류"
                                     }
                                 ],
@@ -761,10 +685,6 @@ var dialogs = [
                         "name": "진료",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "진료"
                             }
                         ],
@@ -798,10 +718,6 @@ var dialogs = [
                                 "name": "외래 진료 시간",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "외래 진료 시간"
                                     }
                                 ],
@@ -817,10 +733,6 @@ var dialogs = [
                                 "name": "진료 절차 단계",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "진료 절차 단계"
                                     }
                                 ],
@@ -871,12 +783,7 @@ var dialogs = [
                                     {
                                         "name": "진료 받은적이 있는 분",
                                         "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                }
-                                            }
+                                            {}
                                         ],
                                         "output": [
                                             {
@@ -894,10 +801,6 @@ var dialogs = [
                         "name": "선택진료비",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "선택진료비"
                             },
                             {
@@ -919,10 +822,6 @@ var dialogs = [
                         "name": "선택 진료",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "선택 진료"
                             }
                         ],
@@ -938,10 +837,6 @@ var dialogs = [
                         "name": "보험 적용",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "보험 적용"
                             }
                         ],
@@ -958,12 +853,7 @@ var dialogs = [
             {
                 "name": "응급진료",
                 "input": [
-                    {
-                        "text": {
-                            "raw": "",
-                            "nlp": ""
-                        }
-                    },
+                    {},
                     {
                         "text": {
                             "raw": "응급",
@@ -1051,10 +941,6 @@ var dialogs = [
                 "name": "진료 예약 상담",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "진료예약상담"
                     }
                 ],
@@ -1088,10 +974,6 @@ var dialogs = [
                         "name": "전원 신청방법",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "전원 신청 방법"
                             }
                         ],
@@ -1107,10 +989,6 @@ var dialogs = [
                         "name": "가정간호 정의 및 목적",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정간호 - 정의 및 목적"
                             }
                         ],
@@ -1126,10 +1004,6 @@ var dialogs = [
                         "name": "가정간호 대상",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정 간호 대상"
                             }
                         ],
@@ -1145,10 +1019,6 @@ var dialogs = [
                         "name": "가정 간호 내용",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정 간호 내용"
                             }
                         ],
@@ -1164,10 +1034,6 @@ var dialogs = [
                         "name": "가정 간호 신청 방법",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정간호 신청 방법"
                             }
                         ],
@@ -1183,10 +1049,6 @@ var dialogs = [
                         "name": "가정 간호 가능 지역",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정간호 가능 지역"
                             }
                         ],
@@ -1202,10 +1064,6 @@ var dialogs = [
                         "name": "가정 간호 비용",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정간호 비용"
                             }
                         ],
@@ -1221,10 +1079,6 @@ var dialogs = [
                         "name": "가정 간호 상담",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "가정간호 상담"
                             }
                         ],
@@ -1295,10 +1149,6 @@ var dialogs = [
                 "name": "빈소",
                 "input": [
                     {
-                        "text": {
-                            "raw": "",
-                            "nlp": ""
-                        },
                         "intent": "빈소"
                     }
                 ],
@@ -1352,10 +1202,6 @@ var dialogs = [
                 "name": "객실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "객실"
                     },
                     {
@@ -1377,10 +1223,6 @@ var dialogs = [
                 "name": "편의점 & 마트",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "편의점"
                     }
                 ],
@@ -1418,10 +1260,6 @@ var dialogs = [
                         "name": "별관 편의점",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "별관 편의점"
                             }
                         ],
@@ -1446,10 +1284,6 @@ var dialogs = [
                         "name": "동관 편의점",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 편의점"
                             }
                         ],
@@ -1474,10 +1308,6 @@ var dialogs = [
                         "name": "H마트",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "H마트"
                             }
                         ],
@@ -1504,17 +1334,9 @@ var dialogs = [
                 "name": "카페 & 커피",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "카페"
                     },
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "커피"
                     }
                 ],
@@ -1560,10 +1382,6 @@ var dialogs = [
                         "name": "별관카페",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "별관 커피숍"
                             }
                         ],
@@ -1588,10 +1406,6 @@ var dialogs = [
                         "name": "동관카페",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 커피숍"
                             }
                         ],
@@ -1616,10 +1430,6 @@ var dialogs = [
                         "name": "신관카페",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 커피숍"
                             }
                         ],
@@ -1644,10 +1454,6 @@ var dialogs = [
                         "name": "밀탑",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "밀탑(빙수전문점"
                             }
                         ],
@@ -1672,10 +1478,6 @@ var dialogs = [
                         "name": "베즐리",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "베이커리카페(베즐리"
                             }
                         ],
@@ -1702,10 +1504,6 @@ var dialogs = [
                 "name": "동관 한식",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "동관 한식"
                     }
                 ],
@@ -1747,10 +1545,6 @@ var dialogs = [
                         "name": "금강산",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "한식당(금강산"
                             }
                         ],
@@ -1775,10 +1569,6 @@ var dialogs = [
                         "name": "한강",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "한식당(한강"
                             }
                         ],
@@ -1803,10 +1593,6 @@ var dialogs = [
                         "name": "직원식당, 보호자식당",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "직원식당보호자식당"
                             }
                         ],
@@ -1831,10 +1617,6 @@ var dialogs = [
                         "name": "스카이라운지",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "스카이라운지"
                             }
                         ],
@@ -1861,10 +1643,6 @@ var dialogs = [
                 "name": "동관 식당",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "동관 식당"
                     }
                 ],
@@ -1906,10 +1684,6 @@ var dialogs = [
                 "name": "별관 식당",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "별관 식당"
                     }
                 ],
@@ -1943,10 +1717,6 @@ var dialogs = [
                         "name": "가람",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "한식당(가람"
                             }
                         ],
@@ -1971,10 +1741,6 @@ var dialogs = [
                         "name": "국수나무",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "국수나무"
                             }
                         ],
@@ -2001,10 +1767,6 @@ var dialogs = [
                 "name": "신관 식당",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "신관 식당"
                     }
                 ],
@@ -2038,10 +1800,6 @@ var dialogs = [
                         "name": "남경",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "중식당(남경"
                             },
                             {
@@ -2072,10 +1830,6 @@ var dialogs = [
                         "name": "푸드코트",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "푸드코트(한식"
                             }
                         ],
@@ -2102,10 +1856,6 @@ var dialogs = [
                 "name": "한식",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "한식"
                     }
                 ],
@@ -2151,10 +1901,6 @@ var dialogs = [
                 "name": "양식",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "양식"
                     }
                 ],
@@ -2188,10 +1934,6 @@ var dialogs = [
                 "name": "일식, 나미",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "일식당(나미"
                     },
                     {
@@ -2222,10 +1964,6 @@ var dialogs = [
                 "name": "식당",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "식당"
                     }
                 ],
@@ -2267,10 +2005,6 @@ var dialogs = [
                 "name": "은행",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "은행"
                     }
                 ],
@@ -2304,10 +2038,6 @@ var dialogs = [
                         "name": "동관 KEB하나은행",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 KEB하나은행"
                             }
                         ],
@@ -2332,10 +2062,6 @@ var dialogs = [
                         "name": "신관 KEB하나은행",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 KEB하나은행"
                             }
                         ],
@@ -2362,10 +2088,6 @@ var dialogs = [
                 "name": "CT실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "CT"
                     }
                 ],
@@ -2403,10 +2125,6 @@ var dialogs = [
                         "name": "서관 CT실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관CT실"
                             }
                         ],
@@ -2431,10 +2149,6 @@ var dialogs = [
                         "name": "신관 CT실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 CT실"
                             }
                         ],
@@ -2459,10 +2173,6 @@ var dialogs = [
                         "name": "응급 CT실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "외래응급 CT MR실"
                             }
                         ],
@@ -2518,10 +2228,6 @@ var dialogs = [
                         "name": "서관 수술실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관수술실"
                             }
                         ],
@@ -2546,10 +2252,6 @@ var dialogs = [
                         "name": "동관 수술실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 수술실"
                             }
                         ],
@@ -2574,10 +2276,6 @@ var dialogs = [
                         "name": "신관 수술실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 수술실"
                             }
                         ],
@@ -2604,10 +2302,6 @@ var dialogs = [
                 "name": "촬영실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "촬영실"
                     }
                 ],
@@ -2641,10 +2335,6 @@ var dialogs = [
                         "name": "동관 외래 촬영실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 외래 촬영실"
                             }
                         ],
@@ -2669,10 +2359,6 @@ var dialogs = [
                         "name": "동관 일반 촬영실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 일반촬영실"
                             }
                         ],
@@ -2699,10 +2385,6 @@ var dialogs = [
                 "name": "주사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "주사실"
                     }
                 ],
@@ -2740,10 +2422,6 @@ var dialogs = [
                         "name": "서관 주사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관 주사실"
                             }
                         ],
@@ -2768,10 +2446,6 @@ var dialogs = [
                         "name": "신관 주사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 주사실"
                             }
                         ],
@@ -2796,10 +2470,6 @@ var dialogs = [
                         "name": "소아 주사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "소아 주사실"
                             }
                         ],
@@ -2826,10 +2496,6 @@ var dialogs = [
                 "name": "중환자실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "중환자실"
                     }
                 ],
@@ -2871,10 +2537,6 @@ var dialogs = [
                         "name": "서관 중환자실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관 중환자실"
                             }
                         ],
@@ -2899,10 +2561,6 @@ var dialogs = [
                         "name": "동관 중환자실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 중환자실"
                             }
                         ],
@@ -2927,10 +2585,6 @@ var dialogs = [
                         "name": "소아 중환자실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "소아중환자실"
                             }
                         ],
@@ -2955,10 +2609,6 @@ var dialogs = [
                         "name": "신생아 중환자실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신생아 중환자실"
                             }
                         ],
@@ -2992,10 +2642,6 @@ var dialogs = [
                                 "name": "신생아 중환자실1",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "신생아중환자실1"
                                     }
                                 ],
@@ -3021,10 +2667,6 @@ var dialogs = [
                                 "name": "신생아 중환자실2",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "신생아중환자실2"
                                     }
                                 ],
@@ -3053,10 +2695,6 @@ var dialogs = [
                 "name": "채혈실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "채혈실"
                     }
                 ],
@@ -3090,10 +2728,6 @@ var dialogs = [
                         "name": "서관 채혈실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관 채혈실"
                             }
                         ],
@@ -3118,10 +2752,6 @@ var dialogs = [
                         "name": "신관 채혈실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 채혈실"
                             }
                         ],
@@ -3181,10 +2811,6 @@ var dialogs = [
                         "name": "동관 처음 오신 분 창구",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 처음 오신 분 창구"
                             }
                         ],
@@ -3209,10 +2835,6 @@ var dialogs = [
                         "name": "신관 처음 오신 분 창구",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 처음 오신분 창구"
                             }
                         ],
@@ -3239,10 +2861,6 @@ var dialogs = [
                 "name": "초음파실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "초음파실"
                     }
                 ],
@@ -3276,10 +2894,6 @@ var dialogs = [
                         "name": "서관 초음파실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관 초음파실"
                             }
                         ],
@@ -3304,10 +2918,6 @@ var dialogs = [
                         "name": "신관 초음파실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 초음파실"
                             }
                         ],
@@ -3334,10 +2944,6 @@ var dialogs = [
                 "name": "투시 조영실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "투시조영실"
                     }
                 ],
@@ -3371,10 +2977,6 @@ var dialogs = [
                         "name": "서관 투시조영실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관 투시조영실"
                             }
                         ],
@@ -3399,10 +3001,6 @@ var dialogs = [
                         "name": "신관 투시조영실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 투시조영실"
                             }
                         ],
@@ -3429,10 +3027,6 @@ var dialogs = [
                 "name": "핵의학 검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "핵의학검사실"
                     }
                 ],
@@ -3470,10 +3064,6 @@ var dialogs = [
                         "name": "동관 핵의학과 영상검사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 핵의학과 영상검사실"
                             }
                         ],
@@ -3498,10 +3088,6 @@ var dialogs = [
                         "name": "동관 핵의학과 혈액 검사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 핵의학과 혈액검사실"
                             }
                         ],
@@ -3526,10 +3112,6 @@ var dialogs = [
                         "name": "신관 핵의학 영상 검사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신관 핵의학 영상 검사실"
                             }
                         ],
@@ -3556,10 +3138,6 @@ var dialogs = [
                 "name": "R의무기록/영상사본",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "의무기록 발급 절차"
                     }
                 ],
@@ -3593,10 +3171,6 @@ var dialogs = [
                         "name": "서관 의무기록/영상사본 발급처",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "서관 의무기록영상사본발급"
                             }
                         ],
@@ -3621,10 +3195,6 @@ var dialogs = [
                         "name": "동관 의무기록/영상사본 발급처",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 의무기록영상사본발급"
                             }
                         ],
@@ -3651,10 +3221,6 @@ var dialogs = [
                 "name": "MR실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "MR"
                     }
                 ],
@@ -3692,10 +3258,6 @@ var dialogs = [
                         "name": "동관 MR실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "동관 MR실"
                             }
                         ],
@@ -3776,10 +3338,6 @@ var dialogs = [
                 "name": "내시경실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "내시경"
                     }
                 ],
@@ -3821,10 +3379,6 @@ var dialogs = [
                         "name": "기관지 내시경 검사실",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "기관지내시경검사실"
                             }
                         ],
@@ -3932,10 +3486,6 @@ var dialogs = [
                 "name": "종교시설",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "종교시설"
                     }
                 ],
@@ -3973,17 +3523,9 @@ var dialogs = [
                         "name": "기독교",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "기독교"
                             },
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "기독교원목실"
                             }
                         ],
@@ -4008,17 +3550,9 @@ var dialogs = [
                         "name": "불교",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "불교"
                             },
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "불교법당"
                             }
                         ],
@@ -4043,17 +3577,9 @@ var dialogs = [
                         "name": "천주교",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "천주교"
                             },
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "천주교원목실"
                             }
                         ],
@@ -4080,10 +3606,6 @@ var dialogs = [
                 "name": "대장항문 클리닉",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "대장항문클리닉"
                     }
                 ],
@@ -4108,10 +3630,6 @@ var dialogs = [
                 "name": "감염내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "감염내과"
                     }
                 ],
@@ -4136,10 +3654,6 @@ var dialogs = [
                 "name": "사이버나이프센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "사이버나이프센터"
                     }
                 ],
@@ -4164,10 +3678,6 @@ var dialogs = [
                 "name": "간담도췌외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "간담도췌외과"
                     }
                 ],
@@ -4192,10 +3702,6 @@ var dialogs = [
                 "name": "간센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "간센터"
                     }
                 ],
@@ -4220,10 +3726,6 @@ var dialogs = [
                 "name": "간이식 및 간담도외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "간이식 및 간담도외과"
                     }
                 ],
@@ -4248,10 +3750,6 @@ var dialogs = [
                 "name": "담도/췌장센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "담도췌장센터"
                     }
                 ],
@@ -4276,10 +3774,6 @@ var dialogs = [
                 "name": "대장항문외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "대장항문외과"
                     }
                 ],
@@ -4304,10 +3798,6 @@ var dialogs = [
                 "name": "상부위장관외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "상부위장관외과"
                     }
                 ],
@@ -4332,10 +3822,6 @@ var dialogs = [
                 "name": "소화기내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "소화기내과"
                     }
                 ],
@@ -4360,10 +3846,6 @@ var dialogs = [
                 "name": "암교육정보센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "암교육정보센터"
                     }
                 ],
@@ -4388,10 +3870,6 @@ var dialogs = [
                 "name": "암통합진료센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "암통합진료센터"
                     }
                 ],
@@ -4416,10 +3894,6 @@ var dialogs = [
                 "name": "염증성 질환센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "염증성장질환센터"
                     }
                 ],
@@ -4444,10 +3918,6 @@ var dialogs = [
                 "name": "외래약국",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "외래약국"
                     }
                 ],
@@ -4472,10 +3942,6 @@ var dialogs = [
                 "name": "유방 내분비 외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "유방내분비외과"
                     }
                 ],
@@ -4500,10 +3966,6 @@ var dialogs = [
                 "name": "유방암 클리닉",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "유방암클리닉"
                     }
                 ],
@@ -4528,10 +3990,6 @@ var dialogs = [
                 "name": "응급의료센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "응급의료센터"
                     }
                 ],
@@ -4556,10 +4014,6 @@ var dialogs = [
                 "name": "응급중환자실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "응급중환자실"
                     }
                 ],
@@ -4584,10 +4038,6 @@ var dialogs = [
                 "name": "응급촬영실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "응급촬영실"
                     }
                 ],
@@ -4612,10 +4062,6 @@ var dialogs = [
                 "name": "일반외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "일반외과"
                     }
                 ],
@@ -4640,10 +4086,6 @@ var dialogs = [
                 "name": "재활의학과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "재활의학과"
                     }
                 ],
@@ -4671,10 +4113,6 @@ var dialogs = [
                 "name": "종양내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "종양내과"
                     }
                 ],
@@ -4699,10 +4137,6 @@ var dialogs = [
                 "name": "폐식도외과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "폐식도외과"
                     }
                 ],
@@ -4727,10 +4161,6 @@ var dialogs = [
                 "name": "혈액내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "혈액내과"
                     }
                 ],
@@ -4755,10 +4185,6 @@ var dialogs = [
                 "name": "기관지내시경검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "기관지내시경검사실"
                     }
                 ],
@@ -4783,10 +4209,6 @@ var dialogs = [
                 "name": "류마티스내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "류마티스내과"
                     }
                 ],
@@ -4811,10 +4233,6 @@ var dialogs = [
                 "name": "알레르기 검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "알레르기검사실"
                     }
                 ],
@@ -4839,10 +4257,6 @@ var dialogs = [
                 "name": "알레르기 내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "알레르기내과"
                     }
                 ],
@@ -4867,10 +4281,6 @@ var dialogs = [
                 "name": "유방두경부영상의학검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "유방두경부영상의학검사실"
                     }
                 ],
@@ -4895,10 +4305,6 @@ var dialogs = [
                 "name": "입원전검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원전검사실"
                     }
                 ],
@@ -4923,10 +4329,6 @@ var dialogs = [
                 "name": "장기이식센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "장기이식센터"
                     }
                 ],
@@ -4951,10 +4353,6 @@ var dialogs = [
                 "name": "천식 COPD센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "천식COPD센터"
                     }
                 ],
@@ -4979,10 +4377,6 @@ var dialogs = [
                 "name": "호흡기검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "호흡기검사실"
                     }
                 ],
@@ -5007,10 +4401,6 @@ var dialogs = [
                 "name": "호흡기내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "호흡기내과"
                     }
                 ],
@@ -5035,10 +4425,6 @@ var dialogs = [
                 "name": "마취통증의학과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "마취통증의학과"
                     }
                 ],
@@ -5063,10 +4449,6 @@ var dialogs = [
                 "name": "서관 중환자 면회 대기실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "서관 중환자면회대기실"
                     }
                 ],
@@ -5091,10 +4473,6 @@ var dialogs = [
                 "name": "배변장애 치료실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "배변장애치료실"
                     }
                 ],
@@ -5119,10 +4497,6 @@ var dialogs = [
                 "name": "상부위장관 내시경 검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "상부위장관내시경검사실"
                     }
                 ],
@@ -5147,10 +4521,6 @@ var dialogs = [
                 "name": "췌담도검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "췌담도검사실"
                     }
                 ],
@@ -5175,10 +4545,6 @@ var dialogs = [
                 "name": "하부위장관 내시경 검사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "하부위장관내시경검사실"
                     }
                 ],
@@ -5203,10 +4569,6 @@ var dialogs = [
                 "name": "뷰티케어 샵",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "뷰티케어 샵"
                     }
                 ],
@@ -5231,10 +4593,6 @@ var dialogs = [
                 "name": "암병원 주사실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "암병원 주사실"
                     }
                 ],
@@ -5259,10 +4617,6 @@ var dialogs = [
                 "name": "긴급진료실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "긴급진료실"
                     }
                 ],
@@ -5287,10 +4641,6 @@ var dialogs = [
                 "name": "병동",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "병동"
                     }
                 ],
@@ -5340,10 +4690,6 @@ var dialogs = [
                 "name": "단기병동",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "단기병동"
                     }
                 ],
@@ -5368,10 +4714,6 @@ var dialogs = [
                 "name": "방사선종양학과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "방사선종양학과"
                     }
                 ],
@@ -5396,10 +4738,6 @@ var dialogs = [
                 "name": "의료용품점",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "의료용품점"
                     }
                 ],
@@ -5424,10 +4762,6 @@ var dialogs = [
                 "name": "현대드림투어",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "현대드림투어"
                     }
                 ],
@@ -5452,10 +4786,6 @@ var dialogs = [
                 "name": "화원(꽃집)",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "화원(꽃집"
                     }
                 ],
@@ -5480,10 +4810,6 @@ var dialogs = [
                 "name": "휴대전화 대리점",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "휴대전화 대리점"
                     }
                 ],
@@ -5508,10 +4834,6 @@ var dialogs = [
                 "name": "가정의학과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "가정의학과"
                     }
                 ],
@@ -5536,10 +4858,6 @@ var dialogs = [
                 "name": "갤러리",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "갤러리"
                     }
                 ],
@@ -5564,10 +4882,6 @@ var dialogs = [
                 "name": "내분비내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "내분비내과"
                     }
                 ],
@@ -5592,10 +4906,6 @@ var dialogs = [
                 "name": "노년내과",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "노년내과"
                     }
                 ],
@@ -5620,10 +4930,6 @@ var dialogs = [
                 "name": "당뇨병센터",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "당뇨병센터"
                     }
                 ],
@@ -8789,10 +8095,6 @@ var dialogs = [
                 "name": "입원 결정",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 결정"
                     }
                 ],
@@ -8808,10 +8110,6 @@ var dialogs = [
                 "name": "기준병실 확대 운영",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "기준병실 확대 운영"
                     }
                 ],
@@ -8827,10 +8125,6 @@ var dialogs = [
                 "name": "입원 예약 및 수속",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 예약 및 수속"
                     }
                 ],
@@ -8880,10 +8174,6 @@ var dialogs = [
                         "name": "입원 예약 방법",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원 예약 방법"
                             }
                         ],
@@ -8899,10 +8189,6 @@ var dialogs = [
                         "name": "입원 예정일",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원예정일"
                             }
                         ],
@@ -8918,10 +8204,6 @@ var dialogs = [
                         "name": "병실 배정",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "병실 배정"
                             }
                         ],
@@ -8937,10 +8219,6 @@ var dialogs = [
                         "name": "입원 수속 절차",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원수속절차"
                             }
                         ],
@@ -8956,10 +8234,6 @@ var dialogs = [
                         "name": "입원 약정서 작성요령",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원약정서 작성요령"
                             },
                             {
@@ -9004,10 +8278,6 @@ var dialogs = [
                 "name": "퇴원",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "퇴원"
                     }
                 ],
@@ -9023,10 +8293,6 @@ var dialogs = [
                 "name": "입원생활 - 출입",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 생활 - 출입"
                     }
                 ],
@@ -9042,10 +8308,6 @@ var dialogs = [
                 "name": "입원생활 - 병문안",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 생활 - 병문안 시간, 준수수칙"
                     }
                 ],
@@ -9061,10 +8323,6 @@ var dialogs = [
                 "name": "입원 생활 - 보호자 안내",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 생활 - 보호자석 이용 안내"
                     }
                 ],
@@ -9080,10 +8338,6 @@ var dialogs = [
                 "name": "입원생활 - 회진",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원안내 - 회진"
                     }
                 ],
@@ -9099,10 +8353,6 @@ var dialogs = [
                 "name": "입원생활 - 간호사 호출방법",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 생활 - 간호사 호출방법"
                     }
                 ],
@@ -9118,10 +8368,6 @@ var dialogs = [
                 "name": "입원 준비물품",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원 준비물품"
                     }
                 ],
@@ -9137,10 +8383,6 @@ var dialogs = [
                 "name": "병실내 창문/방충망",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "병실내 창문방충망"
                     }
                 ],
@@ -9156,10 +8398,6 @@ var dialogs = [
                 "name": "입원시 지참약관리",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원시 지참약관리"
                     }
                 ],
@@ -9175,10 +8413,6 @@ var dialogs = [
                 "name": "환자 팔찌 착용안내",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "환자 팔찌 착용안내"
                     }
                 ],
@@ -9194,10 +8428,6 @@ var dialogs = [
                 "name": "wifi",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "wifi"
                     }
                 ],
@@ -9213,10 +8443,6 @@ var dialogs = [
                 "name": "시트",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "시트"
                     }
                 ],
@@ -9232,10 +8458,6 @@ var dialogs = [
                 "name": "담요",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "담요"
                     }
                 ],
@@ -9251,10 +8473,6 @@ var dialogs = [
                 "name": "흡연",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "흡연"
                     }
                 ],
@@ -9270,10 +8488,6 @@ var dialogs = [
                 "name": "오물실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "오물실"
                     }
                 ],
@@ -9289,10 +8503,6 @@ var dialogs = [
                 "name": "다용도실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "다용도실"
                     }
                 ],
@@ -9308,10 +8518,6 @@ var dialogs = [
                 "name": "샤워실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "샤워실"
                     }
                 ],
@@ -9327,10 +8533,6 @@ var dialogs = [
                 "name": "휴게실",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "휴게실"
                     }
                 ],
@@ -9346,10 +8548,6 @@ var dialogs = [
                 "name": "간병인 신청",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "간병인 신청"
                     }
                 ],
@@ -9383,10 +8581,6 @@ var dialogs = [
                         "name": "간병인 신청 - 요금",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "간병인 신청 - 요금"
                             }
                         ],
@@ -9402,10 +8596,6 @@ var dialogs = [
                         "name": "간병인 신청 - 전화번호",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "간병인 신청 - 전화번호"
                             }
                         ],
@@ -9423,10 +8613,6 @@ var dialogs = [
                 "name": "불만 및 고충 사항",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "불만 및 고충사항"
                     }
                 ],
@@ -9464,10 +8650,6 @@ var dialogs = [
                         "name": "불만 및 고충사항 - 상담안내",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "불만 및 고충사항 - 상담안내"
                             }
                         ],
@@ -9483,10 +8665,6 @@ var dialogs = [
                         "name": "불만 및 고충사항 - 상담방법",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "불만 및 고충사항 - 상담방법"
                             }
                         ],
@@ -9502,10 +8680,6 @@ var dialogs = [
                         "name": "불만 및 고충사항 - 처리절차",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "불만 및 고충사항 - 처리절차"
                             }
                         ],
@@ -9523,10 +8697,6 @@ var dialogs = [
                 "name": "발급가능 내용",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "발급가능 내용"
                     }
                 ],
@@ -9541,12 +8711,7 @@ var dialogs = [
             {
                 "name": "신청 준비물 - 본인",
                 "input": [
-                    {
-                        "text": {
-                            "raw": "",
-                            "nlp": ""
-                        }
-                    }
+                    {}
                 ],
                 "output": [
                     {
@@ -9870,10 +9035,6 @@ var dialogs = [
                 "name": "신청 준비물 - 동의가능",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "신청 준비물 - 동의가능"
                     }
                 ],
@@ -10001,10 +9162,6 @@ var dialogs = [
                                 }
                             },
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신청 준비물 - 환자사망"
                             }
                         ],
@@ -10026,10 +9183,6 @@ var dialogs = [
                                 }
                             },
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "신청 준비물 - 의식불명"
                             }
                         ],
@@ -10151,10 +9304,6 @@ var dialogs = [
                 "name": "서류발급 - 준비물",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "서류 발급 - 준비물"
                     }
                 ],
@@ -10232,10 +9381,6 @@ var dialogs = [
                 "name": "서류 발급시간, 비용",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "서류 발급시간, 비용"
                     }
                 ],
@@ -10251,10 +9396,6 @@ var dialogs = [
                 "name": "서류발급 - 가능서류",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "서류 발급 - 가능서류"
                     }
                 ],
@@ -10270,10 +9411,6 @@ var dialogs = [
                 "name": "입원비",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원비"
                     }
                 ],
@@ -10307,10 +9444,6 @@ var dialogs = [
                         "name": "입원치료 - 중간계산서",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "중간계산서"
                             }
                         ],
@@ -10326,10 +9459,6 @@ var dialogs = [
                         "name": "입원치료 - 무통장입금",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "무통장 입금"
                             }
                         ],
@@ -10347,10 +9476,6 @@ var dialogs = [
                 "name": "식사",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "식사"
                     }
                 ],
@@ -10396,10 +9521,6 @@ var dialogs = [
                         "name": "입원 생활 - 식사시간",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "식사시간"
                             }
                         ],
@@ -10415,10 +9536,6 @@ var dialogs = [
                         "name": "입원생활 - 식이 변경",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원 생활 - 식이 변경"
                             }
                         ],
@@ -10434,10 +9551,6 @@ var dialogs = [
                         "name": "입원생활 - 식판 수거",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원 생활 -식판 수거"
                             }
                         ],
@@ -10453,10 +9566,6 @@ var dialogs = [
                         "name": "입원생활 - 보호자석 이용 안내",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원 생활 - 보호자석 이용 안내"
                             }
                         ],
@@ -10472,10 +9581,6 @@ var dialogs = [
                         "name": "입원생활 - 냉장고 이용안내",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "입원 생활 - 냉장고 이용 안내"
                             }
                         ],
@@ -10493,10 +9598,6 @@ var dialogs = [
                 "name": "입원진료비안내",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "입원진비"
                     }
                 ],
@@ -10512,10 +9613,6 @@ var dialogs = [
                 "name": "증명서 발급위치",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "증명서 발급위치"
                     }
                 ],
@@ -10588,10 +9685,6 @@ var dialogs = [
                                 "name": "증명서A",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "증명서A"
                                     }
                                 ],
@@ -10663,10 +9756,6 @@ var dialogs = [
                                 "name": "증명서B",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "증명서B"
                                     }
                                 ],
@@ -10744,10 +9833,6 @@ var dialogs = [
                                 "name": "증명서C",
                                 "input": [
                                     {
-                                        "text": {
-                                            "raw": " ",
-                                            "nlp": ""
-                                        },
                                         "intent": "증명서C"
                                     }
                                 ],
@@ -10765,10 +9850,6 @@ var dialogs = [
                         "name": "의무기록 발급 절차",
                         "input": [
                             {
-                                "text": {
-                                    "raw": " ",
-                                    "nlp": ""
-                                },
                                 "intent": "의무기록 발급 절차"
                             }
                         ],
@@ -10820,10 +9901,6 @@ var dialogs = [
                                         "name": "서관 의무기록/영상사본발급",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": " ",
-                                                    "nlp": ""
-                                                },
                                                 "intent": "서관 의무기록영상사본발급"
                                             }
                                         ],
@@ -10848,10 +9925,6 @@ var dialogs = [
                                         "name": "동관 의무기록/영상사본발급",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": " ",
-                                                    "nlp": ""
-                                                },
                                                 "intent": "동관 의무기록영상사본발급"
                                             }
                                         ],
@@ -10875,12 +9948,7 @@ var dialogs = [
                                     {
                                         "name": "New Dialog2",
                                         "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                }
-                                            }
+                                            {}
                                         ],
                                         "output": [
                                             {
@@ -10901,10 +9969,6 @@ var dialogs = [
                 "name": "CT검사",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "CT검사"
                     }
                 ],
@@ -10982,10 +10046,6 @@ var dialogs = [
                 "name": "MR검사",
                 "input": [
                     {
-                        "text": {
-                            "raw": " ",
-                            "nlp": ""
-                        },
                         "intent": "MR검사"
                     }
                 ],

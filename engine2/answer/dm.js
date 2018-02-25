@@ -39,7 +39,7 @@ var ContextManager = require('../context.js');
             }
         }
 
-        return count == words.length;
+        return count == nlpText.split(' ').length;
     };
 
     DialogGraphManager.prototype.checkEntities = function(src, dest)
@@ -111,7 +111,7 @@ var ContextManager = require('../context.js');
                         return nextInput();
                     }
                 }
-                if(key == 'text')
+                else if(key == 'text')
                 {
                     if(input.text.raw && input.text.nlp)
                     {
@@ -365,7 +365,7 @@ var ContextManager = require('../context.js');
             {
                 if(selectedDialog[0].matchRate)
                 {
-                    if(selectedDialog[0].matchRate >= 0.5)
+                    if(selectedDialog[0].matchRate >= (bot.options.dialoggraphMinMatchRate || 0.5))
                     {
                         callback(selectedDialog[0]);
                     }
@@ -508,7 +508,11 @@ var ContextManager = require('../context.js');
                     {
                         if(selectedDialogs[0].matchRate)
                         {
-                            if(selectedDialogs[0].matchRate >= (bot.options.globalSearch.minMatchRate || 0.5) && (!foundDialog.matchRate || selectedDialogs[0].matchRate > foundDialog.matchRate))
+                            if(!foundDialog)
+                            {
+                                foundDialog = selectedDialogs[0];
+                            }
+                            else if(selectedDialogs[0].matchRate >= (bot.options.globalSearch.minMatchRate || 0.5) && (!foundDialog.matchRate || selectedDialogs[0].matchRate > foundDialog.matchRate))
                             {
                                 foundDialog = selectedDialogs[0];
                             }
