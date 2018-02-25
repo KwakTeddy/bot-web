@@ -8,7 +8,7 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 module.exports.analysis = function(req, res)
 {
     var query = [
-        {$match: { botId: req.params.botId, fail: true, inOut: true, clear: { $not: /intent/ }, dialog: {$nin: [':reset user', ':build']}, dialogId: {$ne: null}, dialogName: {$ne: null} } },
+        {$match: { botId: req.params.botId, isFail: true, inOut: true, clear: { $not: /intent/ }, dialog: {$nin: [':reset user', ':build', null]}, dialogId: {$ne: null}, dialogName: {$ne: null} } },
         {$group: { _id: '$dialog', id: {$first: '$_id'}, clear: {$first: '$clear'}, nlpDialog: { $first: '$nlpDialog' }, count: {$sum: 1} } },
         {$sort: { count: -1 }},
         {$limit: 100}

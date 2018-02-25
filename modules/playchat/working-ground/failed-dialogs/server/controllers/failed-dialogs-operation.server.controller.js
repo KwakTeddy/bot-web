@@ -13,7 +13,6 @@ module.exports.analysis = function(req, res)
     match.isFail = true;
     // match.channel = { $ne: 'socket' };
     match.clear = { $not: new RegExp(req.query.ignoreType) };
-
     UserDialog.aggregate(
         [
             {$match: match},
@@ -37,7 +36,16 @@ module.exports.analysis = function(req, res)
 
 module.exports.clear = function(req, res)
 {
-    UserDialog.update({ botId: req.params.botId, isFail: true, dialog: req.body.dialog}, { $set: { clear: req.body.clear || 'qna|graph|intent'} }, {multi: true}).exec(function(err, result)
+    var query = {
+        botId: req.params.botId,
+        isFail: true,
+        dialog: req.body.dialog
+    };
+    if(req.body.preDialogId)
+        query.preDialogId = req.body.preDialogId;
+
+    console.log(query);
+    UserDialog.update(query, { $set: { clear: req.body.clear || 'qna|graph|intent'} }, {multi: true}).exec(function(err, result)
     {
         if(err)
         {

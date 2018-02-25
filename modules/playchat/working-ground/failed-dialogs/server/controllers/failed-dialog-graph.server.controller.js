@@ -9,7 +9,7 @@ module.exports.analysis = function(req, res)
                     botId: req.params.botId,
                     dialogType: 'dialog',
                     clear: {$not: /dialog/},
-                    dialog: {$nin: [':reset user', ':build']},
+                    dialog: {$nin: [':reset user', ':build', null]},
                     inOut: true,
                     isFail: true,
                     preDialogId: {$ne: null},

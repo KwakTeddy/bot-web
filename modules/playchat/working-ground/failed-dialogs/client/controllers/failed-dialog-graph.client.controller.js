@@ -14,7 +14,6 @@ angular.module('playchat').controller('FailedDialogGraphController', ['$window',
 
             FailedDialogGraphService.query({ botId: chatbot.id, page: page, countPerPage: countPerPage }, function(result)
             {
-                console.log(result)
                 $scope.list = result;
             },
             function(err)
@@ -35,8 +34,7 @@ angular.module('playchat').controller('FailedDialogGraphController', ['$window',
 
         $scope.ignore = function(item)
         {
-            console.log(item)
-            FailedDialogService.update({ botId: chatbot.name, _id: item.id, clear: (item.clear ? item.clear + '|graph' : 'graph') , dialog: item._id.preDialogName}, function()
+            FailedDialogService.update({ botId: chatbot.id, _id: item.id, clear: (item.clear ? item.clear + '|graph' : 'graph') , dialog: item._id.dialog, preDialogId: item._id.preDialogId}, function()
             {
                 var index = $scope.list.indexOf(item);
                 $scope.list.splice(index, 1);
