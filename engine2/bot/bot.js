@@ -31,6 +31,7 @@ var Dialogset = mongoose.model('Dialogset');
                 use: false
             },
             dialogsetMinMatchRate: 0.5,
+            dialoggraphMinMatchRate: 0.5,
             intentMinMatchRate: 0.5,
             useQuibble: false,
             paging: {

@@ -100,16 +100,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(data.fileName, { isView: true, target: data.name });
         });
 
-        $scope.$on('$locationChangeStart', function(event, next, current)
-        {
-            if(DialogGraph.isDirty())
-            {
-                if(!confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
-                {
-                    event.preventDefault();
-                }
-            }
-        });
+        // $scope.$on('$locationChangeStart', function(event, next, current)
+        // {
+        //     if(DialogGraph.isDirty())
+        //     {
+        //         if(!confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
+        //         {
+        //             event.preventDefault();
+        //         }
+        //     }
+        // });
 
         $scope.$on('saveDialogGraph', function(context, data)
         {

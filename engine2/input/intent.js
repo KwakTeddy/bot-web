@@ -4,6 +4,8 @@ var Transaction = require('../utils/transaction.js');
 
 var IntentContent = mongoose.model('IntentContent');
 
+var MatchedIntent = mongoose.model('MatchedIntent');
+
 (function()
 {
     var IntentManager = function()
@@ -147,6 +149,21 @@ var IntentContent = mongoose.model('IntentContent');
                 {
                     return (b.matchRate + b.added) - (a.matchRate + a.added);
                 });
+
+                if(matchedList.length > 0)
+                {
+                    var matchedIntent = new MatchedIntent();
+                    matchedIntent.botId = context.bot.id;
+                    matchedIntent.intent = matchedList[0]._id;
+
+                    matchedIntent.save(function(err)
+                    {
+                        if(err)
+                        {
+                            return console.log(err);
+                        }
+                    });
+                }
 
                 callback(null, matchedList);
             });

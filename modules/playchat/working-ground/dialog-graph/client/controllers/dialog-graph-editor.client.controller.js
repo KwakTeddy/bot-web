@@ -171,6 +171,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
         else
         {
+            delete $scope.dialog.input[index].text;
             $scope.inputNLU(index+1, done);
         }
     };
