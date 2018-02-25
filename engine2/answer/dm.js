@@ -132,10 +132,10 @@ var ContextManager = require('../context.js');
                             }
                         }
                     }
-                    else
-                    {
-                        return nextInput();
-                    }
+                    // else
+                    // {
+                    //     return nextInput();
+                    // }
                 }
                 else if(key == 'entities')
                 {
