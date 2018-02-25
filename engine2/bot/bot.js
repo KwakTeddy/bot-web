@@ -36,7 +36,8 @@ var Dialogset = mongoose.model('Dialogset');
             paging: {
                 use: false,
                 perPage: 10
-            }
+            },
+            useAutoCorrection: false
         };
         this.dialogMap = {};
         this.parentDialogMap = {};

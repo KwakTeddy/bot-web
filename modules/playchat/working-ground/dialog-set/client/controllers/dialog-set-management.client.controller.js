@@ -5,6 +5,7 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set'), '/modules/playchat/gnb/client/imgs/speech.png');
 
     var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
+    var DialogSetsUploadCheckService = $resource('/api/:botId/dialogsets/checkUploadEnd/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' });
     var DialogSetsPageService = $resource('/api/:botId/dialogsets/totalpage', { botId: '@botId' });
     var DialogSetsUsableService = $resource('/api/:botId/dialogsets/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -78,6 +79,35 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                     }
                 }
 
+                for(var i=0; i<list.length; i++)
+                {
+                    if(list[i].importState)
+                    {
+                        (function(target)
+                        {
+                            var intervalKey = setInterval(function()
+                            {
+                                DialogSetsUploadCheckService.get({ botId: chatbot.id, dialogsetId: target._id }, function(r)
+                                {
+                                    if(r.result == 'ok')
+                                    {
+                                        clearInterval(intervalKey);
+                                        target.importState = '';
+                                    }
+                                    else if(r.result == 'nothing')
+                                    {
+                                        clearInterval(intervalKey);
+                                    }
+                                },
+                                function(err)
+                                {
+
+                                });
+                            }, 500);
+                        })(list[i]);
+                    }
+                }
+
                 if(!title && !check)
                 {
                     DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
@@ -138,6 +168,26 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
             {
                 DialogSetsService.save(params, function(result)
                 {
+                    var intervalKey = setInterval(function()
+                    {
+                        DialogSetsUploadCheckService.get({ botId: chatbot.id, dialogsetId: result._id }, function(r)
+                        {
+                            if(r.result == 'ok')
+                            {
+                                clearInterval(intervalKey);
+                                result.importState = '';
+                            }
+                            else if(r.result == 'nothing')
+                            {
+                                clearInterval(intervalKey);
+                            }
+                        },
+                        function(err)
+                        {
+
+                        });
+                    }, 500);
+
                     $scope.dialogsets.unshift(result);
                     var inputs = document.querySelectorAll( '.inputfile' );
                     Array.prototype.forEach.call( inputs, function( input ) {
@@ -193,8 +243,11 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                         openDialogsets = JSON.parse(openDialogsets);
                     }
 
-                    delete openDialogsets[chatbot.id][item.title];
+                    if(openDialogsets[chatbot.id])
+                        delete openDialogsets[chatbot.id][item.title];
                     $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+                    $rootScope.$broadcast('simulator-build');
                 });
             }
         };

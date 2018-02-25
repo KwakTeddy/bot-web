@@ -15,7 +15,27 @@ var dialogs = [
                 "text": "텍스트만 있습니다."
             }
         ],
-        "id": "default0"
+        "id": "default0",
+        "children": [
+            {
+                "name": "New Dialog",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "2"
+                    }
+                ],
+                "id": "default4"
+            }
+        ]
     },
     {
         "name": "텍스트 + 이미지",
@@ -181,7 +201,12 @@ var commonDialogs = [
         "filename": "defaultcommon",
         "name": "답변없음",
         "input": "",
-        "output": "알아듣지 못했습니다."
+        "output": [
+            {
+                "kind": "Content",
+                "text": "알아듣지 못했습니다."
+            }
+        ]
     }
 ];
 

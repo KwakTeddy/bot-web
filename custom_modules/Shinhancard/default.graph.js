@@ -40,8 +40,8 @@ var dialogs = [
                 "input": [
                     {
                         "text": {
-                            "raw": "신한 FAN에 가입하고 싶어요!",
-                            "nlp": "신한 FAN 에 가입 하다 싶다"
+                            "raw": "신한 FAN 가입",
+                            "nlp": "신한 FAN 가입"
                         }
                     },
                     {

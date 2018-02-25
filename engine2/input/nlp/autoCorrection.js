@@ -12,7 +12,7 @@ var WordModelSchema = new Schema(
 });
 
 var WordModel = mongoose.model('wordcorrection', WordModelSchema);
-
+var cron = require('node-cron');
 
 var speller_en = require('./auto-correction/speller_en');
 var speller_ko = require('./auto-correction/speller_ko');
@@ -21,6 +21,13 @@ var speller_ko = require('./auto-correction/speller_ko');
 {
     var AutoCorrection = function()
     {
+        var that = this;
+        cron.schedule('* * * * *', function()
+        {
+            that.batchCorrectionDB();
+        });
+
+        this.loadWordCorrections();
     };
 
     AutoCorrection.prototype.batchCorrectionDB = function(callback)
@@ -31,6 +38,7 @@ var speller_ko = require('./auto-correction/speller_ko');
 
         UserDialog.find(query).lean().sort('+created').exec(function (err, docs)
         {
+            console.log('자동수정: ', docs);
             if(docs)
             {
                 async.eachSeries(docs, function (doc, cb)
@@ -134,4 +142,6 @@ var speller_ko = require('./auto-correction/speller_ko');
 
         return tokens.join(' ');
     };
+
+    module.exports = new AutoCorrection();
 })();

@@ -97,8 +97,26 @@ var randomQuibble = function(qs)
     QuibbleManager.prototype.process = function(quibbles, userInput)
     {
         var nlp = userInput.nlp;
+        var nlpText = userInput.nlpText;
         var inputRaw = userInput.text;
         var sentenceInfo = userInput.sentence;
+
+        var nlpCount = 0;
+        for(var i=0; i<nlp.length; i++)
+        {
+            if(nlp[i].pos == 'Noun')
+            {
+                nlpCount += 3;
+            }
+            else if(nlp[i].pos == 'Verb')
+            {
+                nlpCount += 2;
+            }
+            else
+            {
+                nlpCount += 1;
+            }
+        }
 
         for(var i=0; i<quibbles.length; i++)
         {
@@ -106,14 +124,30 @@ var randomQuibble = function(qs)
             {
                 if(typeof quibbles[i].words[j] == 'string')
                 {
-                    if(inputRaw.indexOf(quibbles[i].words[j]) != -1 && quibbles[i].words[j].length / inputRaw.length >= 0.5)
+                    if(inputRaw.indexOf(quibbles[i].words[j]) != -1)
                     {
                         return randomQuibble(quibbles[i].sentences);
                     }
                 }
                 else
                 {
-                    if(inputRaw.indexOf(quibbles[i].words[j].word) != -1 && quibbles[i].words[j].word.length / inputRaw.length >= 0.5)
+                    var word = quibbles[i].words[j].word;
+                    if(typeof word == 'string' && nlpText.indexOf(word) != -1)
+                    {
+                        if(quibbles[i].words[j].questionWord && (quibbles[i].words[j].questionWord == 'yesno' || nlpText.indexOf(quibbles[i].words[j].questionWord) != -1))
+                        {
+                            return randomQuibble(quibbles[i].sentences);
+                        }
+                        else if(quibbles[i].words[j].sentenceType && quibbles[i].words[j].sentenceType == userInput.sentenceInfo)
+                        {
+                            return randomQuibble(quibbles[i].sentences);
+                        }
+                    }
+                    else if(!word && quibbles[i].words[j].sentenceType && quibbles[i].words[j].sentenceType == userInput.sentenceInfo)
+                    {
+                        return randomQuibble(quibbles[i].sentences);
+                    }
+                    else if(inputRaw.indexOf(quibbles[i].words[j].word) != -1 && quibbles[i].words[j].word.length / inputRaw.length >= 0.5)
                     {
                         return randomQuibble(quibbles[i].sentences);
                     }

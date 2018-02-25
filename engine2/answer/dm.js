@@ -172,11 +172,13 @@ var ContextManager = require('../context.js');
                             return nextInput();
                         }
                     });
+
+                    return;
                 }
                 else if(key == 'if')
                 {
                     var dialogInstance = ContextManager.createDialogInstance(dialog, userInput);
-                    result = result && (function(dialog, context, input)
+                    result = (function(dialog, context, input)
                     {
                         try
                         {
@@ -193,6 +195,11 @@ var ContextManager = require('../context.js');
                         return false;
 
                     })(dialogInstance, context, input);
+
+                    if(!result)
+                    {
+                        return nextInput();
+                    }
                 }
                 else if(key == 'regexp')
                 {
