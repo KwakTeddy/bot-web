@@ -11,35 +11,75 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
 
     $scope.currentTab = 'logcontent';
 
+    $scope.taskLogs = [];
     $scope.$on('onlog', function(context, data)
     {
-        var selector = '#logcontent';
+        console.log(data);
 
-        if(data.message.indexOf('entities: ') != -1)
+        if(expandMode == -1)
         {
-            selector = '#entitycontent';
-        }
-        else if(data.message.indexOf('intent: ') != -1)
-        {
-            selector = '#intentcontent';
+            $scope.toggleExpand();
         }
 
-        var log = data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
-        angular.element(selector).append('<div>' + log + '</div>');
-
-        if(scrollTimer)
+        if(data.type == 'input')
         {
-            clearTimeout(scrollTimer);
+            $scope.userText = data.log.text;
+            $scope.nlpText = data.log.nlpText;
+            $scope.nlp = data.log.nlp;
+            $scope.intents = data.log.intents;
+            $scope.entities = data.log.entities;
         }
-
-        scrollTimer = setTimeout(function()
+        else if(data.type == 'answer')
         {
-            var logContent = angular.element('.logcontent > div').get(0);
-            if(logContent)
+            $scope.target = data.log.target;
+            $scope.output = data.log.output;
+        }
+        else if(data.type == 'task')
+        {
+            if(typeof data.log.logs == 'string')
             {
-                logContent.parentElement.scrollTop = logContent.offsetHeight;
+                $scope.taskLogs.push(data.log.logs);
             }
-        }, 300);
+            else
+            {
+                var lines = '';
+                for(var key in data.log.logs)
+                {
+                    lines += data.log.logs[key] + ' ';
+                }
+
+                $scope.taskLogs.push(lines);
+            }
+        }
+
+
+        // var selector = '#logcontent';
+        //
+        // if(data.message.indexOf('entities: ') != -1)
+        // {
+        //     selector = '#entitycontent';
+        // }
+        // else if(data.message.indexOf('intent: ') != -1)
+        // {
+        //     selector = '#intentcontent';
+        // }
+        //
+        // var log = data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
+        // angular.element(selector).append('<div>' + log + '</div>');
+        //
+        // if(scrollTimer)
+        // {
+        //     clearTimeout(scrollTimer);
+        // }
+        //
+        // scrollTimer = setTimeout(function()
+        // {
+        //     var logContent = angular.element('.logcontent > div').get(0);
+        //     if(logContent)
+        //     {
+        //         logContent.parentElement.scrollTop = logContent.offsetHeight;
+        //     }
+        // }, 300);
     });
 
     $scope.selectTab = function(e, selector)
@@ -70,7 +110,6 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         else if(expandMode == 500)
         {
             expandMode = -1;
-
             angular.element('.log-analysis').css('height', '').css('top', '0').css('height', 'auto');
         }
         else if(expandMode == -1)
@@ -90,7 +129,23 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
 
     $(document).ready(function()
     {
+        angular.element('.log-analysis').css('height', expandMode + 'px');
         $scope.close();
+
+        angular.element('#logroom > table > thead th').on('click', function()
+        {
+            if(expandMode == -1)
+            {
+                expandMode = 0;
+                angular.element('.working-ground').css('bottom', '211px');
+                angular.element('.log-analysis').css('height', '').css('top', '');
+            }
+        });
+
+        setTimeout(function()
+        {
+            angular.element('.log-analysis').css('transition', 'all 0.2s');
+        }, 500);
     });
 
     $scope.lan=LanguageService;

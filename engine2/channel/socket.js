@@ -3,6 +3,9 @@
 module.exports.init = function(socket)
 {
     var Engine = require('../core.js');
+    var Logger = require('../logger.js');
+
+    Logger.socket = socket;
 
     // logger.systemLog('user connected');
     // bot.setBotSocket(socket);

@@ -132,6 +132,8 @@ var Transaction = require('./utils/transaction.js');
                         var userInput = { text: inputRaw };
                         InputManager.analysis(bot, context, userInput, error, function()
                         {
+                            Logger.analysisLog('input', userInput);
+
                             var transaction = new Transaction.sync();
 
                             if(bot.options.useKnowledgeMemory)

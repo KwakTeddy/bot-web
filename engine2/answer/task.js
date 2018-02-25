@@ -1,6 +1,8 @@
 var chalk = require('chalk');
 var async = require('async');
 
+var Logger = require('../logger.js');
+
 var Transaction = require('../utils/transaction.js');
 
 (function()
@@ -28,16 +30,32 @@ var Transaction = require('../utils/transaction.js');
         {
             transaction.call(function(done)
             {
-                console.log(chalk.yellow('[[[ Task - preCallback ]]]'));
-                task.preCallback.call(task, dialogInstance, context, function(retryMessage)
+                try
                 {
-                    if(retryMessage)
-                    {
-                        return callback(true, retryMessage);
-                    }
+                    console.log(chalk.yellow('[[[ Task - preCallback ]]]'));
 
-                    done();
-                });
+                    var origin = console.log;
+                    console.log = function()
+                    {
+                        Logger.analysisLog('task', { logs: arguments });
+                    };
+
+                    task.preCallback.call(task, dialogInstance, context, function(retryMessage)
+                    {
+                        console.log = origin;
+                        if(retryMessage)
+                        {
+                            return callback(true, retryMessage);
+                        }
+
+                        done();
+                    });
+                }
+                catch(err)
+                {
+                    console.error(err);
+                    Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                }
             });
         }
 
@@ -45,16 +63,32 @@ var Transaction = require('../utils/transaction.js');
         {
             transaction.call(function(done)
             {
-                console.log(chalk.yellow('[[[ Task - action ]]]'));
-                task.action.call(task, dialogInstance, context, function(retryMessage)
+                try
                 {
-                    if(retryMessage)
-                    {
-                        return callback(true, retryMessage);
-                    }
+                    console.log(chalk.yellow('[[[ Task - action ]]]'));
 
-                    done();
-                });
+                    var origin = console.log;
+                    console.log = function()
+                    {
+                        Logger.analysisLog('task', { logs: arguments });
+                    };
+
+                    task.action.call(task, dialogInstance, context, function(retryMessage)
+                    {
+                        console.log = origin;
+                        if(retryMessage)
+                        {
+                            return callback(true, retryMessage);
+                        }
+
+                        done();
+                    });
+                }
+                catch(err)
+                {
+                    console.error(err);
+                    Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                }
             });
         }
 
@@ -62,16 +96,33 @@ var Transaction = require('../utils/transaction.js');
         {
             transaction.call(function(done)
             {
-                console.log(chalk.yellow('[[[ Task - postCallback ]]]'));
-                task.postCallback.call(task, dialogInstance, context, function(retryMessage)
+                try
                 {
-                    if(retryMessage)
-                    {
-                        return callback(true, retryMessage);
-                    }
+                    console.log(chalk.yellow('[[[ Task - postCallback ]]]'));
 
-                    done();
-                });
+                    var origin = console.log;
+                    console.log = function()
+                    {
+                        Logger.analysisLog('task', { logs: arguments });
+                    };
+
+                    task.postCallback.call(task, dialogInstance, context, function(retryMessage)
+                    {
+                        console.log = origin;
+
+                        if(retryMessage)
+                        {
+                            return callback(true, retryMessage);
+                        }
+
+                        done();
+                    });
+                }
+                catch(err)
+                {
+                    console.error(err);
+                    Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                }
             });
         }
 
@@ -155,7 +206,15 @@ var Transaction = require('../utils/transaction.js');
                 {
                     if(typeof t == 'function')
                     {
-                        t.call(t, dialogInstance, context, next);
+                        try
+                        {
+                            t.call(t, dialogInstance, context, next);
+                        }
+                        catch(err)
+                        {
+                            console.error(err);
+                            Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                        }
                     }
                     else if(typeof t == 'string')
                     {
@@ -187,6 +246,7 @@ var Transaction = require('../utils/transaction.js');
         }
         else
         {
+            Logger.analysisLog('task', { logs: name + ' undefined' });
             callback();
         }
     };

@@ -38,7 +38,6 @@ var speller_ko = require('./auto-correction/speller_ko');
 
         UserDialog.find(query).lean().sort('+created').exec(function (err, docs)
         {
-            console.log('자동수정: ', docs);
             if(docs)
             {
                 async.eachSeries(docs, function (doc, cb)

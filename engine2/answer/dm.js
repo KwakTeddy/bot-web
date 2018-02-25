@@ -4,6 +4,8 @@ var chalk = require('chalk');
 var Transaction = require('../utils/transaction.js');
 var utils = require('../utils/utils.js');
 
+var Logger = require('../logger.js');
+
 var Globals = require('../globals.js');
 var TaskManager = require('./task.js');
 var ActionManager = require('./action.js');

@@ -35,6 +35,7 @@ var utils = require('./utils/utils.js');
         dialogInstance.id = srcDialog.id;
         dialogInstance.task = srcDialog.task;
         dialogInstance.card = srcDialog;
+        dialogInstance.matchRate = srcDialog.matchRate;
         dialogInstance.userInput = userInput;
         dialogInstance.output = utils.clone(srcDialog.output);
         dialogInstance.options = {};

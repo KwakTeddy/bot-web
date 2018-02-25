@@ -17,6 +17,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
 
     var Logger = function()
     {
+        this.socket = undefined;
     };
 
     function updateCacheBotUser()
@@ -93,6 +94,14 @@ var UserDialogLog = mongoose.model('UserDialogLog');
         updateCacheBotUser();
         updateCacheUserDialog();
     });
+
+    Logger.prototype.analysisLog = function(type, log)
+    {
+        if(this.socket)
+        {
+            this.socket.emit('analysis_log', { type: type, log: log });
+        }
+    };
 
     Logger.prototype.logBotUser = function(botId, channel, userKey)
     {

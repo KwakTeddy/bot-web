@@ -187,6 +187,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        Socket.on('analysis_log', function(data)
+        {
+            $rootScope.$broadcast('onlog', data);
+        });
+
         //event handling
         Socket.on('send_msg', function(data)
         {
@@ -348,7 +353,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             if(e.target.className.indexOf('speech-text') != -1)
                 return;
 
-            angular.element('#simulatorInput').focus();
+            // angular.element('#simulatorInput').focus();
         });
 
         $scope.init();
