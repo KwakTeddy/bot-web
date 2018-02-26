@@ -170,21 +170,18 @@
 .dialog-editor-input + .editable
 {
     position: absolute;
-    top: 1px;
+    top: 22px;
     right: 45px;
     left: 10px;
     bottom: 1px;
-
     outline: 0;
-
-    padding: 10px 0 5px 0 !important;
-
     font-size: 13px;
-
     white-space: nowrap;
     overflow: hidden;
-
     cursor: text;
+    height: 30px;
+    padding: 5px 2px;
+    box-sizing: border-box;
 }
 
 .dialog-editor-input + .editable > span
@@ -298,7 +295,7 @@
 {
     position: absolute;
     right: 10px;
-    top: 5px;
+    top: 20px;
     bottom: 0;
     height: 100%;
     font-size: 24px;
@@ -463,6 +460,7 @@
 {
     position: relative;
     margin-top: 20px;
+    text-align: center;
 }
 
 .dialog-editor-input-wrapper:first-child
@@ -470,22 +468,29 @@
     margin-top: 0;
 }
 
-.dialog-editor-input-wrapper::after
+.dialog-editor-input-wrapper::before
 {
-    content: attr(data-nlu);
+    content: 'or';
     font-size: 11px;
-    font-weight: 100;
-    color: #363636;
-    position: absolute;
-    bottom: -20px;
-    left: 0;
+    top: -5px;
+    position: relative;
+}
+
+.dialog-editor-input-wrapper:first-child::before
+{
+    content: '';
 }
 
 .dialog-editor-input-wrapper .delete-img
 {
     position: absolute;
     right: 24px;
-    top: 8px;
+    top: 23px;
+}
+
+.dialog-editor-input-wrapper .editable
+{
+    text-align: left;
 }
 
 .dialog-editor-output-box
