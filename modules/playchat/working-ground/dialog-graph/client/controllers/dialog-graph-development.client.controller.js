@@ -45,6 +45,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
+        $scope.$on('refreshGraph', function(context, data)
+        {
+            $scope.loadFile(data.fileName || 'default.graph.js');
+        });
+
         $scope.$on('makeNewType', function(context, name, sourceFileName)
         {
             var text = '\nvar ' + name + ' = {\n' +
