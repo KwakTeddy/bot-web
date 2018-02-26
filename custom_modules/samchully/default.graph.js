@@ -2537,6 +2537,12 @@ var commonDialogs = [
             },
             {
                 "text": {
+                    "raw": "시작하기",
+                    "nlp": "시작 하다"
+                }
+            },
+            {
+                "text": {
                     "raw": "시작",
                     "nlp": "시작"
                 }
