@@ -1,3 +1,5 @@
+var path = require('path');
+
 var openNLP = require('./opennlp/opennlp.js');
 var posTagger = new openNLP().posTagger;
 
@@ -5,6 +7,9 @@ var CBTags = require('./cbTags.js');
 var UserDictionary = require('./userDictionary.js');
 var SentenceInfo = require('./sentenceInfo.js');
 var TurnTaking = require('./turnTaking.js').en;
+
+var Typos = require('./typos.js');
+var typos = new Typos('en');
 
 (function()
 {
@@ -41,21 +46,14 @@ var TurnTaking = require('./turnTaking.js').en;
         var arr = inputRaw.split(' ');
         for (var i=0; i<arr.length; i++)
         {
-            if(i>0)
+            if (i > 0)
             {
                 tempInRaw += ' ';
             }
 
-            var tempStr = '';
-            if (arr[i] != undefined && arr[i] != null)
-            {
-                if (arr[i] in this.dictionary)
-                {
-                    tempStr = this.dictionary[arr[i]];
-                }
-            }
+            var tempStr = typos.checkAndReplace('en', arr[i]);
 
-            if (tempStr == '')
+            if (!tempStr)
             {
                 tempInRaw += arr[i];
             }
@@ -80,7 +78,7 @@ var TurnTaking = require('./turnTaking.js').en;
 
             if (!result)
             {
-                result = tempInputRaw;
+                result = [tempInputRaw];
             }
 
             var textArr = inputRaw.split(' ');
@@ -91,7 +89,7 @@ var TurnTaking = require('./turnTaking.js').en;
                 var entry = {};
 
                 entry.text = textArr[i];
-                entry.text = result[i];
+                entry.pos = result[i];
                 if (entry.text == 'like' || entry.text == 'like.' || entry.text == 'like?')
                 {
                     entry.pos = 'Verb'

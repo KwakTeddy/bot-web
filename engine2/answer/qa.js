@@ -15,7 +15,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
     QA.prototype.findExactly = function(dialogsets, inputRaw, done, callback)
     {
-        DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('context').lean().exec(function(err, list)
+        DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('dialogset').populate('context').lean().exec(function(err, list)
         {
             if(err)
             {
@@ -147,7 +147,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
             async.eachSeries(findWords, function(word, next)
             {
-                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
+                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('dialogset').populate('context').lean().exec(function(err, list)
                 {
                     if(err)
                     {

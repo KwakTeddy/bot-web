@@ -110,13 +110,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr ng-if="target.card">
                                     <th>Dialog Id</th>
-                                    <td>{{ target.id }}</td>
+                                    <td>{{ target.card.id }}</td>
                                 </tr>
-                                <tr>
+                                <tr ng-if="target.card">
                                     <th>Dialog Name</th>
                                     <td>{{ target.card.name }}</td>
+                                </tr>
+                                <tr ng-if="!target.card && target.dialogset">
+                                    <th>Dialogset Name</th>
+                                    <td>{{ target.dialogset.title}}</td>
+                                </tr>
+                                <tr ng-if="!target.card && target.dialogset">
+                                    <th>Matched Dialog</th>
+                                    <td>{{ target.inputRaw[0] }}</td>
                                 </tr>
                                 <tr>
                                     <th>일치율</th>
