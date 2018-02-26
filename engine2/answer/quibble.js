@@ -1,8 +1,6 @@
-var async = require('async');
-
 var randomQuibble = function(qs)
 {
-    return qs[Math.floor(Math.random() * qs.length)];
+    return qa ? qs[Math.floor(Math.random() * qs.length)] : undefined;
 };
 
 (function()
