@@ -79,14 +79,17 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
             var inputRawList = [];
 
-            for(var i=0; i<split.length; i++)
+            if(bot.options.useSynonymDictionary)
             {
-                for(var j=0; j<synonyms.length; j++)
+                for(var i=0; i<split.length; i++)
                 {
-                    var index = synonyms[j].synonyms.indexOf(split[i]);
-                    if(index != -1)
+                    for(var j=0; j<synonyms.length; j++)
                     {
-                        inputRawList.push(inputRaw.replace(new RegExp(split[i], 'gi'), synonyms[j].synonyms[index]));
+                        var index = synonyms[j].synonyms.indexOf(split[i]);
+                        if(index != -1)
+                        {
+                            inputRawList.push(inputRaw.replace(new RegExp(split[i], 'gi'), synonyms[j].synonyms[index]));
+                        }
                     }
                 }
             }
@@ -115,23 +118,30 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             for(var j=0; j<nlp.length; j++)
             {
                 var word = nlp[j];
-                if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
+                if(that.exclude.indexOf(word.text) != -1 || !word.text.trim() || word.pos == 'Josa' || word.pos == 'Suffix')
                 {
-                    return next();
+                    continue;
                 }
 
-                for(var i=0; i<synonyms.length; i++)
+                if(bot.options.useSynonymDictionary)
                 {
-                    var list = synonyms[i].synonyms;
-                    if(list.indexOf(word.text) != -1) // nlp 처리된거에 동의어를 발견하면
+                    for(var i=0; i<synonyms.length; i++)
                     {
-                        word.synonyms = list; // 넣고
-                        findWords = findWords.concat(list);
+                        var list = synonyms[i].synonyms;
+                        if(list.indexOf(word.text) != -1) // nlp 처리된거에 동의어를 발견하면
+                        {
+                            word.synonyms = list; // 넣고
+                            findWords = findWords.concat(list);
+                        }
+                        else
+                        {
+                            findWords.push(word.text);
+                        }
                     }
-                    else
-                    {
-                        findWords.push(word.text);
-                    }
+                }
+                else
+                {
+                    findWords.push(word.text);
                 }
             }
 
@@ -209,7 +219,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                 }
 
                                 var index = -1;
-                                if(nlp[j].synonyms) // 동의어가 있으면
+                                if(bot.options.useSynonymDictionary && nlp[j].synonyms) // 동의어가 있으면
                                 {
                                     //동의어중에 하나라도 input에 들어있으면 성공
                                     for(var k=0; k<nlp[j].synonyms.length; k++)
