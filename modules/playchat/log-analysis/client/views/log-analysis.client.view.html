@@ -50,13 +50,20 @@
         <tbody>
             <tr>
                 <td>
-                    <div ng-show="userText">
-                        <div class="log-row">사용자 입력 텍스트: {{ userText }}</div>
-                        <div class="log-row">자연어처리 결과 : {{ nlpText }}</div>
+                    <div ng-show="userInput">
+                        <div class="log-row">사용자 입력 텍스트: {{ userInput.text }}</div>
+                        <div class="log-row">자연어처리 결과 : {{ userInput.nlpText }}</div>
                         <div class="log-row">
                             <p>자연어 분석</p>
                             <ul>
-                                <li ng-repeat="n in nlp">{{ n.text }} [품사: {{ n.pos }}]</li>
+                                <li ng-repeat="n in userInput.nlp">{{ n.text }} [품사: {{ n.pos }}]</li>
+                            </ul>
+                        </div>
+                        <div class="log-row" ng-show="userInput.matchedIntent">일치 인텐트: {{ userInput.matchedIntent }}</div>
+                        <div class="log-row" ng-show="userInput.matchedEntity">
+                            <div>엔터티 분석</div>
+                            <ul>
+                                <li>@{{ userInput.matchedEntity.key }} - {{ userInput.matchedEntity.matchedName }}</li>
                             </ul>
                         </div>
                     </div>
@@ -126,11 +133,11 @@
                                     <th>Matched Dialog</th>
                                     <td>{{ target.inputRaw[0] }}</td>
                                 </tr>
-                                <tr>
+                                <tr ng-show="target.matchRate">
                                     <th>MatchRate</th>
                                     <td>{{ target.matchRate }}</td>
                                 </tr>
-                                <tr>
+                                <tr ng-show="target.requiredMatchRate">
                                     <th>Minimum MatchRate</th>
                                     <td>{{ target.requiredMatchRate }}</td>
                                 </tr>

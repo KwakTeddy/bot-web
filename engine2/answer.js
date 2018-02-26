@@ -105,7 +105,7 @@ var Logger = require('./logger.js');
         var tempDialogInstance = ContextManager.createDialogInstance(target, userInput);
         DialogGraphManager.exec(bot, context, tempDialogInstance, function(output, dialogInstance)
         {
-            output = OutputManager.make(context, dialogInstance, output);
+            output = OutputManager.make(context, userInput, dialogInstance, output);
 
             var currentDialog = context.session.history[0];
             var previousDialog = undefined;
@@ -168,7 +168,7 @@ var Logger = require('./logger.js');
         {
             DialogGraphManager.exec(bot, context, context.session.retryDialogInstance, function(output, dialogInstance)
             {
-                output = OutputManager.make(context, dialogInstance, output);
+                output = OutputManager.make(context, userInput, dialogInstance, output);
 
                 var currentDialog = context.session.history[0];
                 var previousDialog = undefined;
@@ -226,7 +226,7 @@ var Logger = require('./logger.js');
                 dialogInstance = d;
             }
             // cloneDialog.output = output;
-            output = OutputManager.make(context, dialogInstance, output);
+            output = OutputManager.make(context, userInput, dialogInstance, output);
 
             var currentDialog = context.session.history[0];
             var previousDialog = undefined;
@@ -317,6 +317,8 @@ var Logger = require('./logger.js');
 
             transaction.done(function()
             {
+                Logger.analysisLog('input', userInput);
+
                 context.session.currentCategory = '';
 
                 if(bot.options.hybrid.use)

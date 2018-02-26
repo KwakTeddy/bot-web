@@ -14,8 +14,6 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
     $scope.taskLogs = [];
     $scope.$on('onlog', function(context, data)
     {
-        console.log(data);
-
         if(expandMode == -1)
         {
             $scope.toggleExpand();
@@ -23,11 +21,8 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
 
         if(data.type == 'input')
         {
-            $scope.userText = data.log.text;
-            $scope.nlpText = data.log.nlpText;
-            $scope.nlp = data.log.nlp;
-            $scope.intents = data.log.intents;
-            $scope.entities = data.log.entities;
+            $scope.userInput = data.log;
+            console.log('음 : ', data.log);
         }
         else if(data.type == 'answer')
         {

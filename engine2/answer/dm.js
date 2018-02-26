@@ -52,7 +52,7 @@ var ContextManager = require('../context.js');
                 {
                     if(src[i].trim() == key)
                     {
-                        return key;
+                        return { key: key, matchedName: dest[key][0].matchedName };
                     }
                 }
             }
@@ -64,7 +64,7 @@ var ContextManager = require('../context.js');
             {
                 if(src == key)
                 {
-                    return key;
+                    return { key: key, matchedName: dest[key][0].matchedName };
                 }
             }
         }
@@ -100,6 +100,7 @@ var ContextManager = require('../context.js');
                         if(check)
                         {
                             dialog.matchRate = intents[0].matchRate;
+                            userInput.matchedIntent = input.intent;
                         }
                         else
                         {
@@ -143,6 +144,10 @@ var ContextManager = require('../context.js');
                     if(!check)
                     {
                         return nextInput();
+                    }
+                    else
+                    {
+                        userInput.matchedEntity = check;
                     }
                 }
                 else if(key == 'types')

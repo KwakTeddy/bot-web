@@ -42,7 +42,7 @@ var utils = require('./utils/utils.js');
 
     };
 
-    OutputManager.prototype.make = function(context, dialog, output)
+    OutputManager.prototype.make = function(context, userInput, dialog, output)
     {
         output = utils.clone(output);
 
@@ -97,7 +97,9 @@ var utils = require('./utils/utils.js');
                     if(key)
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
-                        var list = getValue({ context: context, dialog: dialog, bot: bot }, key);
+                        var values = { context: context, dialog: dialog, bot: bot };
+                        values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
+                        var list = getValue(value, key);
                         if(list)
                         {
                             var resultText = '';
@@ -166,11 +168,13 @@ var utils = require('./utils/utils.js');
                     return '';
                 });
 
-                result = result.replace(new RegExp(REPLACED_TAG + "([\\w가-힣\\d-_\\.]+)" + REPLACED_TAG, "g"), function replacer(match, key)
+                result = result.replace(new RegExp(REPLACED_TAG + "([\\w가-힣\\d-_\\.@]+)" + REPLACED_TAG, "g"), function replacer(match, key)
                 {
                     if(key)
                     {
-                        var replaced = getValue({ context: context, dialog: dialog, bot: bot }, key);
+                        var values = { context: context, dialog: dialog, bot: bot };
+                        values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
+                        var replaced = getValue(values, key);
                         if(replaced !== undefined && replaced !== null)
                         {
                             return replaced;

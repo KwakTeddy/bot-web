@@ -91,7 +91,7 @@ var EntityContentSynonym = mongoose.model('EntityContentSynonym');
 
                         if(docs[i].contentId)
                         {
-                            entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+                            entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name, matchedName: word });
                         }
                     }
                 }
