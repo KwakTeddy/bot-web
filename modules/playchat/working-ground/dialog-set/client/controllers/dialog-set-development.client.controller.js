@@ -131,6 +131,22 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 });
             }
 
+            angular.element('.new-dialog-title+form .question-area').find('textarea').each(function(index)
+            {
+                if(index > 0)
+                {
+                    $(this).remove();
+                }
+            });
+
+            angular.element('.new-dialog-title+form .answer-area').find('textarea').each(function(index)
+            {
+                if(index > 0)
+                {
+                    $(this).remove();
+                }
+            });
+
             // $rootScope.$broadcast('simulator-build');
         };
 
