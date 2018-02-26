@@ -27,7 +27,49 @@ var dialogs = [
         "id": "default0",
         "task": {
             "name": "introduction"
-        }
+        },
+        "children": [
+            {
+                "name": "1.병원 소개 이전으로",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default10"
+            },
+            {
+                "name": "1.벙원 소개 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default12"
+            }
+        ]
     },
     {
         "name": "2.교통편",
@@ -78,6 +120,46 @@ var dialogs = [
         },
         "children": [
             {
+                "name": "2.교통편 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default13"
+            },
+            {
+                "name": "2.교통편 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default18"
+            },
+            {
                 "name": "2.1 버스",
                 "input": [
                     {
@@ -93,7 +175,52 @@ var dialogs = [
                 "task": {
                     "name": "transportationway"
                 },
-                "id": "default3"
+                "id": "default3",
+                "children": [
+                    {
+                        "name": "New Dialog",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "2.1버스 이전으로 가기",
+                                    "nlp": "2 . 1 버스 이전 으로 가기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "back"
+                            }
+                        ],
+                        "task": {
+                            "name": "이전으로 가기"
+                        },
+                        "id": "default19"
+                    },
+                    {
+                        "name": "2.1버스 처음으로 돌아가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "처음으로 돌아가기",
+                                    "nlp": "처음 으로 돌아가다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "call",
+                                "dialogId": "startDialog",
+                                "dialogName": "시작"
+                            }
+                        ],
+                        "id": "default20"
+                    }
+                ]
             }
         ]
     },
@@ -157,7 +284,89 @@ var dialogs = [
                 "task": {
                     "name": "showdean"
                 },
-                "id": "default4"
+                "id": "default4",
+                "children": [
+                    {
+                        "name": "3.의료진 소개 내용 이전으로 가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "이전으로 가기",
+                                    "nlp": "이전 으로 가기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "back"
+                            }
+                        ],
+                        "id": "default23"
+                    },
+                    {
+                        "name": "3.의료진 소개 내용 처음으로 돌아가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "처음으로 돌아가기",
+                                    "nlp": "처음 으로 돌아가다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "call",
+                                "dialogId": "startDialog",
+                                "dialogName": "시작"
+                            }
+                        ],
+                        "id": "default24"
+                    }
+                ]
+            },
+            {
+                "name": "3.의료진 소개 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default21"
+            },
+            {
+                "name": "3.의료진 소개 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default22"
             }
         ]
     },
@@ -165,7 +374,7 @@ var dialogs = [
         "name": "4.2월 이벤트",
         "input": [
             {
-                "regexp": "^4$"
+                "regexp": "^4"
             },
             {
                 "text": {
@@ -193,6 +402,14 @@ var dialogs = [
                     },
                     {
                         "text": "3. 감량제 다이어트 이벤트"
+                    },
+                    {
+                        "url": "",
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음으로 돌아가기"
                     }
                 ]
             }
@@ -256,12 +473,338 @@ var dialogs = [
                         "task": {
                             "name": "showevent"
                         },
-                        "id": "default11"
+                        "id": "default11",
+                        "children": [
+                            {
+                                "name": "4.1.1대답 이전으로 가기",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "이전으로 가기",
+                                            "nlp": "이전 으로 가기"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "",
+                                        "type": "back"
+                                    }
+                                ],
+                                "id": "default29"
+                            },
+                            {
+                                "name": "4.1.1대답 처음으로 돌아가기",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "처음으로 돌아가기",
+                                            "nlp": "처음 으로 돌아가다"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "",
+                                        "type": "call",
+                                        "dialogId": "startDialog",
+                                        "dialogName": "시작"
+                                    }
+                                ],
+                                "id": "default30"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "4.1감량제 이전으로 가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "이전으로 가기",
+                                    "nlp": "이전 으로 가기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "back"
+                            }
+                        ],
+                        "id": "default27"
+                    },
+                    {
+                        "name": "4.1감량제 처음으로 돌아가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "처음으로 돌아가기",
+                                    "nlp": "처음 으로 돌아가다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "call",
+                                "dialogId": "startDialog",
+                                "dialogName": "시작"
+                            }
+                        ],
+                        "id": "default28"
                     }
                 ],
                 "task": {
                     "name": "event2month1"
                 }
+            },
+            {
+                "name": "4.2월 이벤트 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default25"
+            },
+            {
+                "name": "4.2월 이벤트 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default26"
+            }
+        ]
+    },
+    {
+        "name": "5.상담 신청",
+        "input": [
+            {
+                "regexp": "^5"
+            },
+            {
+                "text": {
+                    "raw": "상담 신청",
+                    "nlp": "상담 신청"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담 예약",
+                    "nlp": "상담 예약"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담 해줘",
+                    "nlp": "상담 해주다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담 하고 싶다",
+                    "nlp": "상담 하다 싶다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담 하고 싶어",
+                    "nlp": "상담 하다 싶다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담 하고 싶은데",
+                    "nlp": "상담 하다 싶다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담하다",
+                    "nlp": "상담 하다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담해줘",
+                    "nlp": "상담 해주다"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상담하고 싶은데",
+                    "nlp": "상담 하고 싶다"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "상담 받고 싶은 시술은 어떤 것인가요? 복수일 경우 하나만 선택해주셔도 됩니다.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "성형"
+                    },
+                    {
+                        "url": "",
+                        "text": "피부&쁘띠"
+                    },
+                    {
+                        "url": "",
+                        "text": "다이어트"
+                    },
+                    {
+                        "url": "",
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음으로 돌아가기"
+                    }
+                ]
+            }
+        ],
+        "id": "default14",
+        "children": [
+            {
+                "name": "5.상담 신청 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default31"
+            },
+            {
+                "name": "5.상담 신청 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default32"
+            },
+            {
+                "name": "5.1상담 신청",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "아래의 신청하기 버튼을 눌러서 신청을 완료해주세요",
+                        "buttons": [
+                            {
+                                "url": "http://hippomarketing.co.kr/foreverLanding.html",
+                                "text": "상담신청"
+                            },
+                            {
+                                "url": "",
+                                "text": "이전으로 가기"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음으로 돌아가기"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default15",
+                "children": [
+                    {
+                        "name": "5.1상담 신청 이전으로 가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "이전으로 가기",
+                                    "nlp": "이전 으로 가기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "back"
+                            }
+                        ],
+                        "id": "default33"
+                    },
+                    {
+                        "name": "5.1상담 신청 처음으로 돌아가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "처음으로 돌아가기",
+                                    "nlp": "처음 으로 돌아가다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "call",
+                                "dialogId": "startDialog",
+                                "dialogName": "시작"
+                            }
+                        ],
+                        "id": "default34"
+                    }
+                ]
             }
         ]
     },
@@ -297,7 +840,49 @@ var dialogs = [
         "task": {
             "name": "nlp_transportation"
         },
-        "id": "default5"
+        "id": "default5",
+        "children": [
+            {
+                "name": "4.교통편 자연어 처리 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default35"
+            },
+            {
+                "name": "4.교통편 자연어 처리 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default36"
+            }
+        ]
     },
     {
         "name": "5.의료진 자연어 처리",
@@ -317,103 +902,47 @@ var dialogs = [
         "id": "default6",
         "task": {
             "name": "showdean"
-        }
-    },
-    {
-        "name": "5.상담 신청",
-        "input": [
-            {
-                "regexp": "^5$"
-            },
-            {
-                "text": {
-                    "raw": "상담 신청",
-                    "nlp": "상담 신청"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상담 예약",
-                    "nlp": "상담 예약"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상담 해줘",
-                    "nlp": "상담 해줘"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상담 하고 싶다",
-                    "nlp": "상담 하고 싶다"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상담 하고 싶어",
-                    "nlp": "상담 하고 싶어"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상담 하고 싶은데",
-                    "nlp": "상담 하고 싶은데"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상담하다",
-                    "nlp": "상담하다"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "상담 받고 싶은 시술은 어떤 것인가요? 복수일 경우 하나만 선택해주셔도 됩니다.",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "성형"
-                    },
-                    {
-                        "url": "",
-                        "text": "피부&쁘띠"
-                    },
-                    {
-                        "url": "",
-                        "text": "다이어트"
-                    }
-                ]
-            }
-        ],
-        "id": "default14",
+        },
         "children": [
             {
-                "name": "5.1상담 신청",
+                "name": "5.의료진 자연어 처리 이전으로 가기",
                 "input": [
                     {
                         "text": {
-                            "raw": "",
-                            "nlp": ""
-                        },
-                        "if": "true"
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
                     }
                 ],
                 "output": [
                     {
-                        "kind": "Content",
-                        "text": "아래의 신청하기 버튼을 눌러서 신청을 완료해주세요",
-                        "buttons": [
-                            {
-                                "url": "http://hippomarketing.co.kr/foreverLanding.html",
-                                "text": "상담신청"
-                            }
-                        ]
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
                     }
                 ],
-                "id": "default15"
+                "id": "default37"
+            },
+            {
+                "name": "5.의료진 자연어 처리 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default38"
             }
         ]
     },
@@ -502,7 +1031,89 @@ var dialogs = [
                 "id": "default17",
                 "task": {
                     "name": "showdean"
-                }
+                },
+                "children": [
+                    {
+                        "name": "6.1성형 원장 소개 이전으로 가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "이전으로 가기",
+                                    "nlp": "이전 으로 가기"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "back"
+                            }
+                        ],
+                        "id": "default41"
+                    },
+                    {
+                        "name": "6.1성형 원장 소개 처음으로 돌아가기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "처음으로 돌아가기",
+                                    "nlp": "처음 으로 돌아가다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "call",
+                                "dialogId": "startDialog",
+                                "dialogName": "시작"
+                            }
+                        ],
+                        "id": "default42"
+                    }
+                ]
+            },
+            {
+                "name": "6.성형 원장 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default39"
+            },
+            {
+                "name": "6.성형 원장 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default40"
             }
         ]
     },
@@ -514,6 +1125,12 @@ var dialogs = [
                     "raw": "전화번호",
                     "nlp": "전화번호"
                 }
+            },
+            {
+                "text": {
+                    "raw": "전화번호알려줘",
+                    "nlp": "전화번호 알다"
+                }
             }
         ],
         "output": [
@@ -522,12 +1139,58 @@ var dialogs = [
                 "text": "포에버성형외과 \n고객센터 ☎02-561-5773~4 를 이용가능하십니다. \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다.",
                 "buttons": [
                     {
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "url": "",
                         "text": "처음으로 돌아가기"
                     }
                 ]
             }
         ],
-        "id": "default9"
+        "id": "default9",
+        "children": [
+            {
+                "name": "7.전화번호 이전으로 가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "이전으로 가기",
+                            "nlp": "이전 으로 가기"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "back"
+                    }
+                ],
+                "id": "default43"
+            },
+            {
+                "name": "7.전화번호 처음으로 돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "처음으로 돌아가기",
+                            "nlp": "처음 으로 돌아가다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
+                    }
+                ],
+                "id": "default44"
+            }
+        ]
     }
 ];
 
@@ -620,15 +1283,15 @@ var commonDialogs = [
         "input": "",
         "output": [
             {
-                "text": "죄송해요 고객님. 제가 이해하지 못하는 부분이에요~\n\n다른 궁금하신 걸 물어봐주시겠어요?^^",
+                "text": "죄송해요 고객님. 제가 이해하지 못하는 부분이에요~\n\n포에버성형외과 고객센터(☎02-561-5773~4)를 이용가능하십니다.\n\n다른 궁금하신 걸 물어봐주시겠어요?^^",
                 "kind": "Content"
             },
             {
-                "text": "앗, 그 부분은 저도 잘 모르겠어요.\n다음번에 학습해서 알려드리겠습니다!",
+                "text": "앗, 그 부분은 저도 잘 모르겠어요.\n\n포에버성형외과 고객센터(☎02-561-5773~4)를 이용가능하십니다.\n\n다음번에 학습해서 알려드리겠습니다!",
                 "kind": "Content"
             },
             {
-                "text": "그건 아직 학습되지 않아서 알려드릴수가 없네요ㅠ.ㅠ\n다른 궁금하신 걸 물어봐주세요!",
+                "text": "그건 아직 학습되지 않아서 알려드릴수가 없네요ㅠ.ㅠ\n\n포에버성형외과 고객센터(☎02-561-5773~4)를 이용가능하십니다.\n\n다른 궁금하신 걸 물어봐주세요!",
                 "kind": "Content"
             }
         ]
