@@ -1239,6 +1239,10 @@ module.exports = function(bot)
                                 if(item[i].CHK_ITM_NM)
                                 {
                                     chkItmNm += ' - ' + item[i].CHK_ITM_NM + '\n';
+                                    if(item[i].CHK_ITM_BNM)
+                                    {
+                                        chkItmNm += ' → ' + item[i].CHK_ITM_BNM + '\n';
+                                    }
                                 }
                             }
 
@@ -1285,7 +1289,7 @@ module.exports = function(bot)
                                         test += '부적합개선여부: 미개선\n';
                                     }
 
-                                    test += '부적합 시설: ' + item.CHK_ITM_NM + (item.CHK_ITM_BNM ? ' → ' + item.CHK_ITM_BNM : '') + '\n';
+                                    test += '부적합 시설: ' + item.CHK_ITM_NM + '\n';
                                 }
                             }
                             else
@@ -1395,10 +1399,17 @@ module.exports = function(bot)
                         {
                             msg += body.E_FCNTMM + '월';
                         }
+
                         if(body.E_SCNTMM != '00')
                         {
-                            msg += ', ' + body.E_SCNTMM + '월';
+                            if(msg)
+                            {
+                                msg += ', ';
+                            }
+
+                            msg += body.E_SCNTMM + '월';
                         }
+
                         if(!msg.length)
                         {
                             msg = '없음';
