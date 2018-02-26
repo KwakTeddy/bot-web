@@ -127,8 +127,12 @@
                                     <td>{{ target.inputRaw[0] }}</td>
                                 </tr>
                                 <tr>
-                                    <th>일치율</th>
+                                    <th>MatchRate</th>
                                     <td>{{ target.matchRate }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Minimum MatchRate</th>
+                                    <td>{{ target.requiredMatchRate }}</td>
                                 </tr>
                                 <tr ng-if="output.kind == 'Action'">
                                     <th>Action 유형</th>

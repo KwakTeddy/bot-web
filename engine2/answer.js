@@ -25,7 +25,7 @@ var Logger = require('./logger.js');
     {
     };
 
-    AnswerManager.prototype.noAnswer = function(bot, context, userInput, currentDialog, previousDialog, error, callback)
+    AnswerManager.prototype.noAnswer = function(transaction, bot, context, userInput, currentDialog, previousDialog, error, callback)
     {
         var quibble = undefined;
         if(bot.options.useQuibble)
@@ -58,9 +58,16 @@ var Logger = require('./logger.js');
             console.log();
             console.log(chalk.yellow('[[[ No Answer ]]]'));
 
+            var target = undefined;
+            if(transaction.qa && transaction.qa.matchedDialog)
+            {
+                target = transaction.qa.matchedDialog;
+                target.requiredMatchRate = bot.options.dialogsetMinMatchRate;
+            }
+
             var dialog = bot.dialogMap['noanswer'];
             var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
-            Logger.analysisLog('answer', { output: { text : output } });
+            Logger.analysisLog('answer', { target: target, output: { text : output } });
             Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
         }
@@ -310,9 +317,6 @@ var Logger = require('./logger.js');
 
             transaction.done(function()
             {
-                //qa와 dm에서 골라진거 matchRate비교해야함
-                console.log(transaction);
-
                 context.session.currentCategory = '';
 
                 if(bot.options.hybrid.use)
@@ -347,7 +351,7 @@ var Logger = require('./logger.js');
                         previousDialog = { card: {} };
                     }
 
-                    that.noAnswer(bot, context, userInput, currentDialog, previousDialog, error, callback);
+                    that.noAnswer(transaction, bot, context, userInput, currentDialog, previousDialog, error, callback);
                 }
             });
         }

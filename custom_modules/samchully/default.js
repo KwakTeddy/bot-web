@@ -383,7 +383,6 @@ module.exports = function(bot)
 
             if(context.session.auth && customerList.length != 1)
             {
-
                 dialog.output[0].buttons = [];
                 for(var i = 0; i < customerList.length; i++)
                 {
