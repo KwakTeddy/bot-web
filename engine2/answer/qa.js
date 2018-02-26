@@ -13,18 +13,56 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         this.exclude = ['하다', '이다']; // 다른 언어는???
     };
 
-    QA.prototype.find = function(bot, context, inputRaw, nlp, nlpText, callback)
+    QA.prototype.findExactly = function(dialogsets, inputRaw, done, callback)
+    {
+        DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('context').lean().exec(function(err, list)
+        {
+            if(err)
+            {
+                return callback(err);
+            }
+            else
+            {
+                if(list && list.length > 0)
+                {
+                    for(var i=0; i<list.length; i++)
+                    {
+                        list[i].matchRate = 1;
+                        list[i].added = 0;
+
+                        var categories = list[i].category ? list[i].category.split('@@@') : [];
+                        for(var j=0; j<categories.length; j++)
+                        {
+                            //사용자 입력중 대화학습의 카테고리와 일치하는 말이 있으면 가중치
+                            if(inputRaw.indexOf(categories[j]) != -1)
+                            {
+                                list[i].added += 0.1;
+                            }
+
+                            //대화학습의 카테고리가 현재 문맥의 카테고리와 일치하는 부분이 있으면 가중치
+                            if(context.session.currentCategory && context.session.currentCategory.indexOf(categories[j]) != -1 || (bot.options.topicKeywords && bot.options.topicKeywords.indexOf(categories[j]) != -1))
+                            {
+                                list[i].added += 0.2;
+                            }
+                        }
+
+                        list = list.sort(function(a, b)
+                        {
+                            return (b.matchRate + b.added) - (a.matchRate + a.added);
+                        });
+                    }
+
+                    return callback(null, list);
+                }
+
+                done();
+            }
+        });
+    };
+
+    QA.prototype.find = function(bot, context, inputRaw, synonyms, nlp, nlpText, callback)
     {
         var that = this;
-
-        var totalPoint = 0;
-        for(var i=0; i<nlp.length; i++)
-        {
-            if(nlp[i].pos == 'Josa' || nlp[i].pos == 'Suffix')
-            {
-                continue;
-            }
-        }
 
         var dialogsets = [];
         for(var i=0; i<bot.dialogsets.length; i++)
@@ -37,48 +75,34 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
         transaction.call(function(done)
         {
-            DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('context').lean().exec(function(err, list)
+            var split = inputRaw.split(' ');
+
+            var inputRawList = [];
+
+            for(var i=0; i<split.length; i++)
             {
-                if(err)
+                for(var j=0; j<synonyms.length; j++)
                 {
-                    return callback(err);
-                }
-                else
-                {
-                    if(list && list.length > 0)
+                    var index = synonyms[j].synonyms.indexOf(split[i]);
+                    if(index != -1)
                     {
-                        for(var i=0; i<list.length; i++)
-                        {
-                            list[i].matchRate = 1;
-                            list[i].added = 0;
-
-                            var categories = list[i].category ? list[i].category.split('@@@') : [];
-                            for(var j=0; j<categories.length; j++)
-                            {
-                                //사용자 입력중 대화학습의 카테고리와 일치하는 말이 있으면 가중치
-                                if(inputRaw.indexOf(categories[j]) != -1)
-                                {
-                                    list[i].added += 0.1;
-                                }
-
-                                //대화학습의 카테고리가 현재 문맥의 카테고리와 일치하는 부분이 있으면 가중치
-                                if(context.session.currentCategory && context.session.currentCategory.indexOf(categories[j]) != -1 || (bot.options.topicKeywords && bot.options.topicKeywords.indexOf(categories[j]) != -1))
-                                {
-                                    list[i].added += 0.2;
-                                }
-                            }
-
-                            list = list.sort(function(a, b)
-                            {
-                                return (b.matchRate + b.added) - (a.matchRate + a.added);
-                            });
-                        }
-
-                        return callback(null, list);
+                        inputRawList.push(inputRaw.replace(new RegExp(split[i], 'gi'), synonyms[j].synonyms[index]));
                     }
-
-                    done();
                 }
+            }
+
+            if(inputRawList.length <= 0)
+            {
+                inputRawList.push(inputRaw);
+            }
+
+            async.eachSeries(inputRawList, function(i, next)
+            {
+                that.findExactly(dialogsets, i, next, callback);
+            },
+            function()
+            {
+                done();
             });
         });
 
@@ -86,15 +110,34 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         {
             var checkDuplicate = {};
             var matchedList = [];
+            var findWords = [];
 
-            async.eachSeries(nlp, function(word, next)
+            for(var j=0; j<nlp.length; j++)
             {
+                var word = nlp[j];
                 if(that.exclude.indexOf(word.text) != -1 || !word.text.trim())
                 {
                     return next();
                 }
 
-                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
+                for(var i=0; i<synonyms.length; i++)
+                {
+                    var list = synonyms[i].synonyms;
+                    if(list.indexOf(word.text) != -1) // nlp 처리된거에 동의어를 발견하면
+                    {
+                        word.synonyms = list; // 넣고
+                        findWords = findWords.concat(list);
+                    }
+                    else
+                    {
+                        findWords.push(word.text);
+                    }
+                }
+            }
+
+            async.eachSeries(findWords, function(word, next)
+            {
+                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('context').lean().exec(function(err, list)
                 {
                     if(err)
                     {
@@ -149,7 +192,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     {
                         var maxCount = -1;
                         var targetInput = undefined;
-
                         var maxPoint = -1;
                         for(var k=0; k<matchedList[i].input.length; k++) // 멀티 input인경우
                         {
@@ -166,7 +208,24 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                     continue;
                                 }
 
-                                var index = input.indexOf(nlp[j].text);
+                                var index = -1;
+                                if(nlp[j].synonyms) // 동의어가 있으면
+                                {
+                                    //동의어중에 하나라도 input에 들어있으면 성공
+                                    for(var k=0; k<nlp[j].synonyms.length; k++)
+                                    {
+                                        index = input.indexOf(nlp[j].synonyms[k]);
+                                        if(index != -1)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    index = input.indexOf(nlp[j].text);
+                                }
+
                                 if(index != -1)
                                 {
                                     if(nlp[j].pos == 'Noun')
@@ -238,7 +297,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         // }
                     }
 
-                    var categories = matchedList[i].category.split('@@@');
+                    var categories = matchedList[i].category ? matchedList[i].category.split('@@@') : [];
                     for(var j=0; j<categories.length; j++)
                     {
                         if(inputRaw.indexOf(categories[j]) != -1)

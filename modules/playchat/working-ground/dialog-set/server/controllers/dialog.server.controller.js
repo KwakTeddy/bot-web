@@ -163,7 +163,7 @@ exports.update = function(req, res)
         async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
             inputRaw = inputRaw.trim();
-            var language = req.body.language;
+            var language = req.query.language;
             NLPManager.getNlpedText(language, inputRaw, function(err, lastChar, nlpText, nlp)
             {
                 if(err)

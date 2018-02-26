@@ -26,8 +26,6 @@ var speller_ko = require('./auto-correction/speller_ko');
         {
             that.batchCorrectionDB();
         });
-
-        this.loadWordCorrections();
     };
 
     AutoCorrection.prototype.batchCorrectionDB = function(callback)
