@@ -558,280 +558,299 @@
 
             $scope.onKeyDown = function(e)
             {
-                if($scope.showInputList)
+                console.log('키코드 : ', e.keyCode, e.key);
+
+                var selection = window.getSelection();
+                var text = selection.focusNode.textContent;
+
+                //플레이스홀더 처리
+                if((e.keyCode == 8 || e.keyCode == 46) && text.length == 1)
                 {
-                    if(e.keyCode == 38) // up
-                    {
-                        moveInputListSelection('up');
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                    }
-                    else if(e.keyCode == 40) // down
-                    {
-                        moveInputListSelection('down');
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                    }
-                    else if(e.keyCode == 27) // esc
-                    {
-                        initInputList(true);
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                    }
-                    else if(e.keyCode == 13) // enter
-                    {
-                        var selectedText = angular.element('.dialog-editor-input-list-box > ul > li.selected').text();
-                        if(selectedText == LanguageService('Add New')) //새로 만들기 선택시 예외처리
-                        {
-                            createGuidedInput();
-                        }
-                        else
-                        {
-                            var selection = window.getSelection();
-                            selection.focusNode.textContent = selectedText;
-
-                            var span = document.createElement('span');
-                            span.innerText = String.fromCharCode(160);
-                            e.currentTarget.appendChild(span);
-
-                            CaretService.placeCaretAtEnd(span);
-
-                            e.preventDefault();
-                            e.stopImmediatePropagation();
-                        }
-                    }
+                    angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
                 }
                 else
                 {
-                    if(e.keyCode == 13) //enter
-                    {
-                        var selection = window.getSelection();
-                        var focusedElement = selection.focusNode.parentElement;
-                        var type = focusedElement.getAttribute('data-type');
-
-                        if(type == null || type == 'if' || type == 'regexp')
-                        {
-                            var lastSpanElement = document.createElement('span');
-                            lastSpanElement.innerText = String.fromCharCode(160);
-                            focusedElement.after(lastSpanElement);
-
-                            CaretService.placeCaretAtEnd(lastSpanElement);
-                            initInputList(true);
-                        }
-
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                    }
+                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
                 }
+
+                // 정규식은 // 두개를 입력하면 입력할 수 있게 한다.
+                // 그리고 키워드방식을 제외한 모든 입력은 enter로만 종결시킨다. 정규식 안에서 #@등 특문 쓰지 못하는 문제. 그리고 정규식은 gi도 입력할 수 있어야 함.
+
+
+                // if($scope.showInputList)
+                // {
+                //     if(e.keyCode == 38) // up
+                //     {
+                //         moveInputListSelection('up');
+                //         e.preventDefault();
+                //         e.stopImmediatePropagation();
+                //     }
+                //     else if(e.keyCode == 40) // down
+                //     {
+                //         moveInputListSelection('down');
+                //         e.preventDefault();
+                //         e.stopImmediatePropagation();
+                //     }
+                //     else if(e.keyCode == 27) // esc
+                //     {
+                //         initInputList(true);
+                //         e.preventDefault();
+                //         e.stopImmediatePropagation();
+                //     }
+                //     else if(e.keyCode == 13) // enter
+                //     {
+                //         var selectedText = angular.element('.dialog-editor-input-list-box > ul > li.selected').text();
+                //         if(selectedText == LanguageService('Add New')) //새로 만들기 선택시 예외처리
+                //         {
+                //             createGuidedInput();
+                //         }
+                //         else
+                //         {
+                //             var selection = window.getSelection();
+                //             selection.focusNode.textContent = selectedText;
+                //
+                //             var span = document.createElement('span');
+                //             span.innerText = String.fromCharCode(160);
+                //             e.currentTarget.appendChild(span);
+                //
+                //             CaretService.placeCaretAtEnd(span);
+                //
+                //             e.preventDefault();
+                //             e.stopImmediatePropagation();
+                //         }
+                //     }
+                // }
+                // else
+                // {
+                //     if(e.keyCode == 13) //enter
+                //     {
+                //         var selection = window.getSelection();
+                //         var focusedElement = selection.focusNode.parentElement;
+                //         var type = focusedElement.getAttribute('data-type');
+                //
+                //         if(type == null || type == 'if' || type == 'regexp')
+                //         {
+                //             var lastSpanElement = document.createElement('span');
+                //             lastSpanElement.innerText = String.fromCharCode(160);
+                //             focusedElement.after(lastSpanElement);
+                //
+                //             CaretService.placeCaretAtEnd(lastSpanElement);
+                //             initInputList(true);
+                //         }
+                //
+                //         e.preventDefault();
+                //         e.stopImmediatePropagation();
+                //     }
+                // }
             };
 
             $scope.onKeyUp = function(e)
             {
-                var selection = window.getSelection();
-                var text = selection.focusNode.textContent;
-                if(e.currentTarget.innerText)
-                {
-                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
-                }
-                else
-                {
-                    angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
-                }
-
-                if(selection.focusNode.parentElement.nodeName == 'SPAN')
-                {
-                    //span이 한 번 생성된 후에 다 지우고 다시 입력하면 span이 생김.
-                    selection.focusNode.parentElement.style.backgroundColor = '';
-                    selection.focusNode.parentElement.style.color = '';
-                }
-
-                // 유형 span 생성
-                if(e.key == '#' || e.key == '@' || e.key == '$' || e.key == '/' || (e.key == '(' && text.indexOf('if(') != -1))
-                {
-                    $scope.isAdvancedMode = true;
-
-                    var type = 'intent';
-                    var replacedText = e.key;
-                    var typeText = e.key;
-                    var focusIndex = -1;
-
-                    if(e.key == '@')
-                    {
-                        type = 'entities';
-                    }
-                    else if(e.key == '$')
-                    {
-                        type = 'types';
-                    }
-                    else if(e.key == '/')
-                    {
-                        type = 'regexp';
-                        typeText = '//';
-                        replacedText = '/';
-                        focusIndex = 1;
-                    }
-                    else if(text.indexOf('if(') != -1)
-                    {
-                        type = 'if';
-                        typeText = 'if()';
-                        replacedText = 'if(';
-                        focusIndex = 3;
-                    }
-
-                    selection.focusNode.textContent = text.replace(replacedText, '');
-
-                    var span = document.createElement('span');
-                    span.className = type;
-                    span.setAttribute('data-type', type);
-                    span.innerText = typeText;
-                    e.currentTarget.appendChild(span);
-
-                    if(focusIndex > 0)
-                    {
-                        CaretService.placeCaretAtIndex(span.childNodes[0], focusIndex);
-                    }
-                    else
-                    {
-                        CaretService.placeCaretAtEnd(span);
-                    }
-
-                    if(selection.focusNode.textContent.length == 0 && selection.focusNode.parentElement.nodeName == 'SPAN')
-                    {
-                        selection.focusNode.parentElement.parentElement.removeChild(selection.focusNode.parentElement);
-                    }
-                }
-
-                // 유형 span에 focus가 왔다면
-                selection = window.getSelection();
-                text = selection.focusNode.textContent;
-
-                var target = undefined;
-                if(e.keyCode != 38 && e.keyCode != 40) //38 == 윗 방향키 , 40 == 아래 방향키
-                {
-                    //up, down은 목록에서 고르는것이기 때문에 reload 하지 않는다.
-                    if((target = selection.focusNode).nodeName == 'SPAN' || (selection.focusNode.nodeName == '#text' && (target = selection.focusNode.parentElement).nodeName == 'SPAN'))
-                    {
-                        var type = target.getAttribute('data-type');
-                        if(type == 'intent')
-                        {
-                            showIntentInputList(text.replace('#', ''), target, function(selected)
-                            {
-                                target.innerText = selected || text;
-
-                                CaretService.placeCaretAtEnd(target);
-
-                                var span = document.createElement('span');
-                                span.innerText = String.fromCharCode(160);
-                                e.currentTarget.appendChild(span);
-
-                                setTimeout(function()
-                                {
-                                    CaretService.placeCaretAtEnd(span);
-                                }, 10);
-
-                                initInputList(true);
-                            });
-                        }
-                        else if(type == 'entities')
-                        {
-                            showEntityInputList(text.replace('@', ''), target, function(selected)
-                            {
-                                target.innerText = selected || text;
-
-                                CaretService.placeCaretAtEnd(target);
-
-                                var span = document.createElement('span');
-                                span.innerText = String.fromCharCode(160);
-                                e.currentTarget.appendChild(span);
-
-                                setTimeout(function()
-                                {
-                                    CaretService.placeCaretAtEnd(span);
-                                }, 10);
-
-                                initInputList(true);
-                            });
-                        }
-                        else if(type == 'types')
-                        {
-                            showTypeInputList(text.replace('$', ''), target, function(selected)
-                            {
-                                target.innerText = selected || text;
-
-                                var span = document.createElement('span');
-                                span.innerText = String.fromCharCode(160);
-                                e.currentTarget.appendChild(span);
-
-                                setTimeout(function()
-                                {
-                                    CaretService.placeCaretAtEnd(span);
-                                }, 10);
-
-                                initInputList(true);
-                            });
-                        }
-                    }
-                }
-
-                if(target && target.nodeName == 'SPAN')
-                {
-                    var type = target.getAttribute('data-type');
-                    if
-                    (
-                        (type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
-                       || (type == 'if' && (!target.innerText.startsWith('if(') || !target.innerText.endsWith(')')))
-                       || (type == 'intent' && !target.innerText.startsWith('#'))
-                       || (type == 'entities' && (!target.innerText.startsWith('@')))
-                       || (type == 'types' && (!target.innerText.startsWith('$')))
-                    )
-                    {
-                        text = target.innerText;
-
-                        selection = window.getSelection();
-                        var offset = selection.anchorOffset;
-
-                        var node = document.createTextNode(text);
-                        e.currentTarget.insertBefore(node, target);
-                        e.currentTarget.removeChild(target);
-
-                        CaretService.placeCaretAtIndex(node, offset);
-                    }
-                }
-
-                if(!text.startsWith('#') && !text.startsWith('@') && !text.startsWith('$'))
-                {
-                    initInputList(false);
-
-                    if(text.length > 1 && text.startsWith('/') && text.endsWith('/'))
-                    {
-                        angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
-                    }
-                    else if(text.startsWith('if(') && text.endsWith(')'))
-                    {
-                        angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
-                    }
-                    else
-                    {
-                        if(text.trim())
-                        {
-                            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
-                            {
-                                angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
-                            }, function(error)
-                            {
-                                console.log('에러 : ', error);
-                            });
-                        }
-                        else
-                        {
-                            angular.element('.dialog-editor-input-description').text('');
-                        }
-                    }
-                }
-                else
-                {
-                    angular.element('.dialog-editor-input-description').text('');
-                }
+                // var selection = window.getSelection();
+                // var text = selection.focusNode.textContent;
+                // if(e.currentTarget.innerText)
+                // {
+                //     angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
+                // }
+                // else
+                // {
+                //     angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+                // }
+                //
+                // if(selection.focusNode.parentElement.nodeName == 'SPAN')
+                // {
+                //     //span이 한 번 생성된 후에 다 지우고 다시 입력하면 span이 생김.
+                //     selection.focusNode.parentElement.style.backgroundColor = '';
+                //     selection.focusNode.parentElement.style.color = '';
+                // }
+                //
+                // // 유형 span 생성
+                // if(e.key == '#' || e.key == '@' || e.key == '$' || e.key == '/' || (e.key == '(' && text.indexOf('if(') != -1))
+                // {
+                //     $scope.isAdvancedMode = true;
+                //
+                //     var type = 'intent';
+                //     var replacedText = e.key;
+                //     var typeText = e.key;
+                //     var focusIndex = -1;
+                //
+                //     if(e.key == '@')
+                //     {
+                //         type = 'entities';
+                //     }
+                //     else if(e.key == '$')
+                //     {
+                //         type = 'types';
+                //     }
+                //     else if(e.key == '/')
+                //     {
+                //         type = 'regexp';
+                //         typeText = '//';
+                //         replacedText = '/';
+                //         focusIndex = 1;
+                //     }
+                //     else if(text.indexOf('if(') != -1)
+                //     {
+                //         type = 'if';
+                //         typeText = 'if()';
+                //         replacedText = 'if(';
+                //         focusIndex = 3;
+                //     }
+                //
+                //     selection.focusNode.textContent = text.replace(replacedText, '');
+                //
+                //     var span = document.createElement('span');
+                //     span.className = type;
+                //     span.setAttribute('data-type', type);
+                //     span.innerText = typeText;
+                //     e.currentTarget.appendChild(span);
+                //
+                //     if(focusIndex > 0)
+                //     {
+                //         CaretService.placeCaretAtIndex(span.childNodes[0], focusIndex);
+                //     }
+                //     else
+                //     {
+                //         CaretService.placeCaretAtEnd(span);
+                //     }
+                //
+                //     if(selection.focusNode.textContent.length == 0 && selection.focusNode.parentElement.nodeName == 'SPAN')
+                //     {
+                //         selection.focusNode.parentElement.parentElement.removeChild(selection.focusNode.parentElement);
+                //     }
+                // }
+                //
+                // // 유형 span에 focus가 왔다면
+                // selection = window.getSelection();
+                // text = selection.focusNode.textContent;
+                //
+                // var target = undefined;
+                // if(e.keyCode != 38 && e.keyCode != 40) //38 == 윗 방향키 , 40 == 아래 방향키
+                // {
+                //     //up, down은 목록에서 고르는것이기 때문에 reload 하지 않는다.
+                //     if((target = selection.focusNode).nodeName == 'SPAN' || (selection.focusNode.nodeName == '#text' && (target = selection.focusNode.parentElement).nodeName == 'SPAN'))
+                //     {
+                //         var type = target.getAttribute('data-type');
+                //         if(type == 'intent')
+                //         {
+                //             showIntentInputList(text.replace('#', ''), target, function(selected)
+                //             {
+                //                 target.innerText = selected || text;
+                //
+                //                 CaretService.placeCaretAtEnd(target);
+                //
+                //                 var span = document.createElement('span');
+                //                 span.innerText = String.fromCharCode(160);
+                //                 e.currentTarget.appendChild(span);
+                //
+                //                 setTimeout(function()
+                //                 {
+                //                     CaretService.placeCaretAtEnd(span);
+                //                 }, 10);
+                //
+                //                 initInputList(true);
+                //             });
+                //         }
+                //         else if(type == 'entities')
+                //         {
+                //             showEntityInputList(text.replace('@', ''), target, function(selected)
+                //             {
+                //                 target.innerText = selected || text;
+                //
+                //                 CaretService.placeCaretAtEnd(target);
+                //
+                //                 var span = document.createElement('span');
+                //                 span.innerText = String.fromCharCode(160);
+                //                 e.currentTarget.appendChild(span);
+                //
+                //                 setTimeout(function()
+                //                 {
+                //                     CaretService.placeCaretAtEnd(span);
+                //                 }, 10);
+                //
+                //                 initInputList(true);
+                //             });
+                //         }
+                //         else if(type == 'types')
+                //         {
+                //             showTypeInputList(text.replace('$', ''), target, function(selected)
+                //             {
+                //                 target.innerText = selected || text;
+                //
+                //                 var span = document.createElement('span');
+                //                 span.innerText = String.fromCharCode(160);
+                //                 e.currentTarget.appendChild(span);
+                //
+                //                 setTimeout(function()
+                //                 {
+                //                     CaretService.placeCaretAtEnd(span);
+                //                 }, 10);
+                //
+                //                 initInputList(true);
+                //             });
+                //         }
+                //     }
+                // }
+                //
+                // if(target && target.nodeName == 'SPAN')
+                // {
+                //     var type = target.getAttribute('data-type');
+                //     if
+                //     (
+                //         (type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
+                //        || (type == 'if' && (!target.innerText.startsWith('if(') || !target.innerText.endsWith(')')))
+                //        || (type == 'intent' && !target.innerText.startsWith('#'))
+                //        || (type == 'entities' && (!target.innerText.startsWith('@')))
+                //        || (type == 'types' && (!target.innerText.startsWith('$')))
+                //     )
+                //     {
+                //         text = target.innerText;
+                //
+                //         selection = window.getSelection();
+                //         var offset = selection.anchorOffset;
+                //
+                //         var node = document.createTextNode(text);
+                //         e.currentTarget.insertBefore(node, target);
+                //         e.currentTarget.removeChild(target);
+                //
+                //         CaretService.placeCaretAtIndex(node, offset);
+                //     }
+                // }
+                //
+                // if(!text.startsWith('#') && !text.startsWith('@') && !text.startsWith('$'))
+                // {
+                //     initInputList(false);
+                //
+                //     if(text.length > 1 && text.startsWith('/') && text.endsWith('/'))
+                //     {
+                //         angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
+                //     }
+                //     else if(text.startsWith('if(') && text.endsWith(')'))
+                //     {
+                //         angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
+                //     }
+                //     else
+                //     {
+                //         if(text.trim())
+                //         {
+                //             DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+                //             {
+                //                 angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
+                //             }, function(error)
+                //             {
+                //                 console.log('에러 : ', error);
+                //             });
+                //         }
+                //         else
+                //         {
+                //             angular.element('.dialog-editor-input-description').text('');
+                //         }
+                //     }
+                // }
+                // else
+                // {
+                //     angular.element('.dialog-editor-input-description').text('');
+                // }
             };
 
             $scope.addInput = function(e)
