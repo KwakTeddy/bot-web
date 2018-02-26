@@ -1,6 +1,6 @@
 var randomQuibble = function(qs)
 {
-    return qa ? qs[Math.floor(Math.random() * qs.length)] : undefined;
+    return qs ? qs[Math.floor(Math.random() * qs.length)] : undefined;
 };
 
 (function()
