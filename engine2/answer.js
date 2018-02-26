@@ -290,15 +290,22 @@ var Logger = require('./logger.js');
 
             transaction.call(function(done)
             {
-                DialogGraphManager.find(bot, context, userInput, function(err, matchedDialog)
+                if(!context.session.findOnlyQA)
                 {
-                    if(matchedDialog)
+                    DialogGraphManager.find(bot, context, userInput, function(err, matchedDialog)
                     {
-                        transaction.dm = { type: 'dm', matchedDialog: matchedDialog };
-                    }
+                        if(matchedDialog)
+                        {
+                            transaction.dm = { type: 'dm', matchedDialog: matchedDialog };
+                        }
 
+                        done();
+                    });
+                }
+                else
+                {
                     done();
-                });
+                }
             });
 
             transaction.done(function()
