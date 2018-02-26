@@ -38,7 +38,8 @@ var Dialogset = mongoose.model('Dialogset');
                 use: false,
                 perPage: 10
             },
-            useAutoCorrection: false
+            useAutoCorrection: false,
+            useSynonymDictionary: false
         };
         this.dialogMap = {};
         this.parentDialogMap = {};
