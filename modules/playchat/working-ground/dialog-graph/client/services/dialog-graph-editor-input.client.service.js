@@ -513,21 +513,21 @@
                 {
                     showIntentInputList(text.replace('#', ''), target, function(selected)
                     {
-                        selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                        selectionListThenCreateBlankSpan(e, selected, selection.focusNode);
                     });
                 }
                 else if(type == 'entities')
                 {
                     showEntityInputList(text.replace('@', ''), target, function(selected)
                     {
-                        selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                        selectionListThenCreateBlankSpan(e, selected, selection.focusNode);
                     });
                 }
                 else if(type == 'types')
                 {
                     showTypeInputList(text.replace('$', ''), target, function(selected)
                     {
-                        selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                        selectionListThenCreateBlankSpan(e, selected, selection.focusNode);
                     });
                 }
                 else if(type == 'regexp')
@@ -708,16 +708,16 @@
                                 var target = createNewTypeSpan(e, focusNode, '#', 'intent');
                                 showIntentInputList('#', function(selected)
                                 {
-                                    selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                                    selectionListThenCreateBlankSpan(e, selected , target);
                                 });
                             }
                             else if(e.key == '@')
                             {
                                 $scope.isAdvancedMode = true;
-                                createNewTypeSpan(e, focusNode, '@', 'entity');
+                                createNewTypeSpan(e, focusNode, '@', 'entities');
                                 showEntityInputList('@', function(selected)
                                 {
-                                    selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                                    selectionListThenCreateBlankSpan(e, selected , target);
                                 });
                             }
                             else if(e.key == '$')
@@ -726,7 +726,7 @@
                                 createNewTypeSpan(e, focusNode, '$', 'types');
                                 showTypeInputList('$', function(selected)
                                 {
-                                    selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                                    selectionListThenCreateBlankSpan(e, selected , target);
                                 });
                             }
                         }
@@ -826,18 +826,16 @@
                 {
                     if(focusNode.textContent.trim().startsWith('#'))
                     {
-                        var target = focusNode.parentElement;
                         showIntentInputList(focusNode.textContent.trim().substring(1), function(selected)
                         {
-                            selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                            selectionListThenCreateBlankSpan(e, selected, focusNode);
                         });
                     }
                     else if(focusNode.textContent.trim().startsWith('@'))
                     {
-                        var target = focusNode.parentElement;
                         showEntityInputList(focusNode.textContent.trim().substring(1), function(selected)
                         {
-                            selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                            selectionListThenCreateBlankSpan(e, selected, focusNode);
                         });
                     }
                     else if(focusNode.textContent.trim().startsWith('$'))
@@ -845,7 +843,7 @@
                         var target = focusNode.parentElement;
                         showTypeInputList(focusNode.textContent.trim().substring(1), function(selected)
                         {
-                            selectionListThenCreateBlankSpan(e, selected || target.innerText, target);
+                            selectionListThenCreateBlankSpan(e, selected, focusNode);
                         });
                     }
                     else if(!$scope.showInputList)
