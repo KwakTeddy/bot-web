@@ -36,6 +36,7 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
         {
             DialogGraphUsageService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(doc)
             {
+                console.log(doc)
                 $scope.scenarioIndex = {};
                 $scope.scenarioUsageList = [];
 

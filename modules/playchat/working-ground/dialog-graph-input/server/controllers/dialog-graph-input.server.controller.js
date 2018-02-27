@@ -10,7 +10,17 @@ module.exports.analysis = function(req, res)
     var botId = req.params.botId;
 
     var query = [
-        { $match: { botId: botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, inOut: true, dialogId: {$ne: null}, dialogName: {$ne: null}, nlpDialog: {$nin: [':build', ':reset uesr']}} },
+        { $match:
+                {
+                    botId: botId,
+                    created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
+                    inOut: true,
+                    dialogType: 'dialog',
+                    dialogId: {$nin: [null, 'startDialog']},
+                    dialogName: {$ne: null},
+                    nlpDialog: {$nin: [':build', ':reset uesr']}
+                }
+        },
         { $group: { _id: { dialogName: '$dialogName', dialog: '$nlpDialog'}, count: { $sum: 1 } } }
     ];
 
