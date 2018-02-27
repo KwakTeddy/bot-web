@@ -59,7 +59,6 @@
                         }
                         else if(key == 'regexp')
                         {
-                            text = '/' + text + '/';
                         }
                         else if(key == 'if')
                         {
@@ -429,67 +428,65 @@
                     e.currentTarget.removeChild(textNodes[i]);
                 }
 
-                console.log('블러');
+                if(!$scope.tempInputList)
+                {
+                    $scope.tempInputList = [];
+                }
 
-                // if(!$scope.tempInputList)
-                // {
-                //     $scope.tempInputList = [];
-                // }
-                //
-                // var input = $scope.tempInputList[index] = {};
-                //
-                // var children = e.currentTarget.childNodes;
-                // for(var i=0; i<children.length; i++)
-                // {
-                //     if(children[i].nodeName == '#text')
-                //     {
-                //         input.text = { raw: children[i].textContent, nlp: '' };
-                //     }
-                //     else if(children[i].nodeName == 'SPAN')
-                //     {
-                //         var type = children[i].getAttribute('data-type');
-                //         if(type)
-                //         {
-                //             if(type == 'types')
-                //             {
-                //                 var text = children[i].innerText.replace('$', '');
-                //                 if(input[type] && input[type].indexOf(text) == -1)
-                //                 {
-                //                     input[type].push(text);
-                //                 }
-                //                 else if(!input[type])
-                //                 {
-                //                     input[type] = [text];
-                //                 }
-                //             }
-                //             else
-                //             {
-                //                 input[type] = children[i].innerText.replace('#', '').replace('@', '').replace(/\//gi, '').replace('if(', '').replace(')', '');
-                //             }
-                //         }
-                //         else
-                //         {
-                //             input.text = { raw: children[i].innerText, nlp: '' };
-                //         }
-                //     }
-                // }
-                //
-                // for(var i=0; i<$scope.tempInputList.length; i++)
-                // {
-                //     if(!$scope.tempInputList[i] || Object.keys($scope.tempInputList[i]).length == 0)
-                //     {
-                //         angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().attr('required', 'true');
-                //     }
-                //     else
-                //     {
-                //         angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().removeAttr('required');
-                //     }
-                // }
-                //
-                // angular.element('.dialog-editor-input-description').text('');
-                // angular.element('.dialog-editor-body').css('overflow', 'auto');
-                //
-                // initInputList(true);
+                var input = $scope.tempInputList[index] = {};
+
+                var children = e.currentTarget.childNodes;
+                for(var i=0; i<children.length; i++)
+                {
+                    if(children[i].nodeName == '#text')
+                    {
+                        input.text = { raw: children[i].textContent, nlp: '' };
+                    }
+                    else if(children[i].nodeName == 'SPAN')
+                    {
+                        var type = children[i].className;
+                        if(type)
+                        {
+                            if(type == 'types')
+                            {
+                                var text = children[i].innerText.replace('$', '');
+                                if(input[type] && input[type].indexOf(text) == -1)
+                                {
+                                    input[type].push(text);
+                                }
+                                else if(!input[type])
+                                {
+                                    input[type] = [text];
+                                }
+                            }
+                            else
+                            {
+                                input[type] = children[i].innerText.replace('#', '').replace('@', '').replace('if(', '').replace(')', '');
+                            }
+                        }
+                        else
+                        {
+                            input.text = { raw: children[i].innerText, nlp: '' };
+                        }
+                    }
+                }
+
+                for(var i=0; i<$scope.tempInputList.length; i++)
+                {
+                    if(!$scope.tempInputList[i] || Object.keys($scope.tempInputList[i]).length == 0)
+                    {
+                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().attr('required', 'true');
+                    }
+                    else
+                    {
+                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().removeAttr('required');
+                    }
+                }
+
+                angular.element('.dialog-editor-input-description').text('');
+                angular.element('.dialog-editor-body').css('overflow', 'auto');
+
+                initInputList(true);
             };
 
             $scope.focusGuideBox = function(e)

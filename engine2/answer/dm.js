@@ -213,7 +213,21 @@ var ContextManager = require('../context.js');
                     var regexp = undefined;
                     try
                     {
-                        regexp = new RegExp(input.regexp, 'gi');
+                        regexp = input.regexp;
+                        var options = 'gi';
+                        if(regexp.startsWith('/'))
+                        {
+                            regexp = regexp.substring(1);
+                            var split = regexp.split('/');
+                            if(split[1])
+                            {
+                                options = split[1];
+                            }
+
+                            regexp = split[0];
+                        }
+
+                        regexp = new RegExp(regexp, options);
                         if(regexp.test(rawText))
                         {
                             var match = rawText.match(regexp);

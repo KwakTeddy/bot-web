@@ -888,7 +888,7 @@
                     }
                     else if(key == 'regexp')
                     {
-                        displayText = '/' + input[key] + '/';
+                        displayText = input[key];
                     }
                     else if(key == 'text')
                     {
