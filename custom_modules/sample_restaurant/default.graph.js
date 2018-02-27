@@ -444,34 +444,6 @@ var dialogs = [
         ]
     },
     {
-        "name": "4.영업시간",
-        "input": [
-            {
-                "regexp": "영업시간"
-            },
-            {
-                "regexp": "영업"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "<+bot.name+> 영업시간\n\nOpen hour\n오전 11시 30분 - 저녁 10시\n(last order / 9시)\n\nBreak time\n평일 오후 3 - 4시\n\n일요일은 쉽니다",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "이전으로 가기"
-                    },
-                    {
-                        "url": "",
-                        "text": "처음으로 돌아가기"
-                    }
-                ]
-            }
-        ],
-        "id": "default17"
-    },
-    {
         "name": "5. 지도",
         "input": [
             {
@@ -485,6 +457,12 @@ var dialogs = [
             },
             {
                 "regexp": "어디"
+            },
+            {
+                "regexp": "버스"
+            },
+            {
+                "regexp": "지하철"
             }
         ],
         "output": [
@@ -512,6 +490,43 @@ var dialogs = [
             }
         ],
         "id": "default18"
+    },
+    {
+        "name": "4.영업시간",
+        "input": [
+            {
+                "regexp": "영업시간"
+            },
+            {
+                "regexp": "영업"
+            },
+            {
+                "regexp": "열어"
+            },
+            {
+                "regexp": "출근"
+            },
+            {
+                "regexp": "퇴근"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "<+bot.name+> 영업시간\n\nOpen hour\n오전 11시 30분 - 저녁 10시\n(last order / 9시)\n\nBreak time\n평일 오후 3 - 4시\n\n일요일은 쉽니다",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "이전으로 가기"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음으로 돌아가기"
+                    }
+                ]
+            }
+        ],
+        "id": "default17"
     }
 ];
 

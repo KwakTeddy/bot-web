@@ -183,35 +183,35 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-            context.session.confirmlist=[];
-            for(var i=0;i<context.user.order.length;i++){
-                if(dialog.userInput.text.indexOf(context.user.order[i].name)!==-1){
-                    context.session.confirmlist.push(context.user.order[i]);
+            if(context.user.order) {
+                context.session.confirmlist = [];
+                for (var i = 0; i < context.user.order.length; i++) {
+                    if (dialog.userInput.text.indexOf(context.user.order[i].name) !== -1) {
+                        context.session.confirmlist.push(context.user.order[i]);
+                    }
                 }
+                var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다.\n\n";
+                for (var i = 0; i < context.session.confirmlist.length; i++) {
+                    text = text.concat((i + 1) + '.\n일시: ' + context.session.confirmlist[i].date + " " + context.session.confirmlist[i].time + '\n' +
+                        '인원: ' + context.session.confirmlist[i].peoplenumber + '명\n' +
+                        '연락처: ' + context.session.confirmlist[i].mobile + '\n\n');
+                }
+                    dialog.output[0].text = text;
+                    callback();
             }
-            var text=dialog.userInput.text+"님의 예약 내용은 아래와 같습니다.\n\n";
-            for(var i=0;i<context.session.confirmlist.length;i++){
-                    text=text.concat((i+1)+'.\n일시: '+context.session.confirmlist[i].date+" "+context.session.confirmlist[i].time+'\n'+
-                        '인원: ' +context.session.confirmlist[i].peoplenumber+'명\n'+
-                        '연락처: ' +context.session.confirmlist[i].mobile+'\n\n');
-            }
-            if (context.session.confirmlist.length<=0) {
-                dialog.output[0].text=dialog.userInput.text+"님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
-                dialog.output[0].buttons=[
+            else{
+                dialog.output[0].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                dialog.output[0].buttons = [
                     {
-                        text:"예약하기"
+                        text: "예약하기"
                     },
                     {
-                        text:"이전으로 가기"
+                        text: "이전으로 가기"
                     },
                     {
-                        text:"처음으로 돌아가기"
+                        text: "처음으로 돌아가기"
                     }
                 ];
-                callback();
-            }
-            else {
-                dialog.output[0].text=text;
                 callback();
             }
 		}
