@@ -196,32 +196,6 @@
 
         angular.element('.dialog-graph-code-editor').get(0).openCodeEditor = openCodeEditor;
 
-        $scope.search = function(e)
-        {
-            if(e.keyCode == 13)
-            {
-                var value = e.currentTarget.value;
-
-                var content = editor.getValue();
-                editor.focus();
-
-                var split = content.split('\n');
-                for (var i = 0; i < split.length; i++)
-                {
-                    if (split[i].indexOf(value) != -1)
-                    {
-                        editor.setCursor({line: i + 50, ch: 1});
-                        editor.setCursor({line: i, ch: 1});
-
-                        return;
-                    }
-                }
-
-                e.stopPropagation();
-                e.preventDefault();
-            }
-        };
-
         $scope.save = function()
         {
             DialogGraphsService.save({ botId: chatbot.id, fileName: $scope.currentFileName, data: editor.getValue() }, function()

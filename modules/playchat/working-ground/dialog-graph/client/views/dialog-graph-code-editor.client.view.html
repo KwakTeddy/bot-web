@@ -24,6 +24,11 @@
     margin-left: 33px !important;
 }
 
+.CodeMirror pre
+{
+    padding-left: 20px !important;
+}
+
 .dialog-graph-code-editor-search
 {
     float: left;
@@ -36,10 +41,18 @@
     background-position-x: 220px !important;
 }
 </style>
-
+<link rel="stylesheet" href="http://codemirror.net/addon/dialog/dialog.css">
+<link rel="stylesheet" href="http://codemirror.net/addon/search/matchesonscrollbar.css">
+<script src="http://codemirror.net/addon/dialog/dialog.js"></script>
+<script src="http://codemirror.net/addon/search/searchcursor.js"></script>
+<script src="http://codemirror.net/addon/search/search.js"></script>
+<script src="http://codemirror.net/addon/scroll/annotatescrollbar.js"></script>
+<script src="http://codemirror.net/addon/search/matchesonscrollbar.js"></script>
 <form ng-controller="DialogGraphCodeEditorController">
     <div class="dialog-graph-code-editor-search">
-        <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+        <!--<input id="search" name="search" type="search" class="search" ng-keydown="search($event);">-->
+        <p>{{lan('search description1')}}</p>
+        <p style="margin-top: 5px;">{{lan('search description2')}}</p>
     </div>
     <div class="dialog-graph-code-editor-controller">
         <button type="button" class="default-button" ng-click="backToGraph();" ng-if="mode == 'graphsource'" style="width: 200px;">{{lan('Back to Graph edit mode') }}</button>

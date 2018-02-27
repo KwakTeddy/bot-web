@@ -106,7 +106,8 @@ module.exports = function(bot)
             var customerList = context.session.customerList;
             for(var i = 0; i < customerList.length; i++)
             {
-                if(i + 1 == dialog.userInput.text)
+ 
+               if(i + 1 == dialog.userInput.text)
                 {
                     selected = customerList[i];
                     break;

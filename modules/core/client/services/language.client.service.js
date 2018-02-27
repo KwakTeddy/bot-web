@@ -607,6 +607,18 @@
                 "jp": "更新は保存されません。 保存せずに終了しますか？",
                 "zh": "更新没有保存。 你想关闭而不储蓄？"
             },
+            "search description1": {
+              "ko": "검색: Ctrl or Command + F",
+              "en": "Search: Ctrl or Command + F",
+              "jp": "サーチ: Ctrl or Command + F",
+              "zh": "搜索: Ctrl or Command + F"
+            },
+            "search description2": {
+                "ko": "다음으로 계속 검색: Ctrl or Command + G",
+                "en": "Next Occurrence: Ctrl or Command + G",
+                "jp": "次の発生: Ctrl or Command + G",
+                "zh": "下一次发生: Ctrl or Command + G"
+            },
             "Graph Loading Failed": {
                 "ko": "그래프 로드 실패",
                 "en": "Graph Loading Failed",
