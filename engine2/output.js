@@ -98,7 +98,11 @@ var utils = require('./utils/utils.js');
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
                         var values = { context: context, dialog: dialog, bot: bot };
-                        values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
+                        if(userInput.matchedEntity)
+                        {
+                            values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
+                        }
+
                         var list = getValue(value, key);
                         if(list)
                         {
@@ -173,7 +177,11 @@ var utils = require('./utils/utils.js');
                     if(key)
                     {
                         var values = { context: context, dialog: dialog, bot: bot };
-                        values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
+                        if(userInput.matchedEntity)
+                        {
+                            values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
+                        }
+
                         var replaced = getValue(values, key);
                         if(replaced !== undefined && replaced !== null)
                         {
