@@ -78,7 +78,27 @@ var dialogs = [
                     }
                 ],
                 "id": "default227",
-                "children": []
+                "children": [
+                    {
+                        "name": "New Dialog1",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "",
+                                    "nlp": ""
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "",
+                                "buttons": []
+                            }
+                        ],
+                        "id": "default286"
+                    }
+                ]
             },
             {
                 "name": "예약일 확인",
