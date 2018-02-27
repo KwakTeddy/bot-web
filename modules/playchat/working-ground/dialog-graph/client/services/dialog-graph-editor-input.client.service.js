@@ -109,7 +109,7 @@
             }
         };
 
-        DialogGraphEditorInput.make = function($scope, $rootScope)
+        DialogGraphEditorInput.make = function($scope, $rootScope, DialogGraphEditor)
         {
             $scope.isShowPlaceHolder = true;
             $scope.getInputPlaceHolder = function()
@@ -640,6 +640,8 @@
 
             $scope.onKeyDown = function(e)
             {
+                DialogGraphEditor.isDirty = true;
+
                 var selection = window.getSelection();
                 var focusNode = selection.focusNode;
 

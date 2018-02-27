@@ -598,8 +598,14 @@
             "Update is not saved. Do you want to exit without saving?": {
                 "ko": "변경사항이 저장되지 않았습니다. 이동하시겠습니까?",
                 "en": "Update is not saved. Do you want to exit without saving?",
-                "jp": "変更事項が保存されませんでした。 移動しますか。",
+                "jp": "変更事項が保存されませんでした。 移動しますか。?",
                 "zh": "变动的部分还没有进行保存。您确定要转向其他页面吗？"
+            },
+            "Update is not saved. Do you want to close without saving?": {
+                "ko": "변경사항이 저장되지 않았습니다. 취소하시겠습니까?",
+                "en": "Update is not saved. Do you want to close without saving?",
+                "jp": "更新は保存されません。 保存せずに終了しますか？",
+                "zh": "更新没有保存。 你想关闭而不储蓄？"
             },
             "Graph Loading Failed": {
                 "ko": "그래프 로드 실패",

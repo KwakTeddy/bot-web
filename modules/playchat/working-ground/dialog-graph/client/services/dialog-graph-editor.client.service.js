@@ -14,11 +14,15 @@
             this.bindCallback = undefined;
             this.saveCallback = undefined;
             this.closeCallback = undefined;
+            this.isDirty = false;
             this.myBotAuth = { read: true, edit: true };
         };
 
         DialogGraphEditor.prototype.open = function(parent, dialog, which)
         {
+            console.log('오픈 : ');
+            this.isDirty = false;
+
             if(!this.myBotAuth.edit)
             {
                 return alert(LanguageService('You do not have permission to edit this bot'));
