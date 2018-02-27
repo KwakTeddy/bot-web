@@ -42,7 +42,7 @@
                                 data-index="{{$index}}"
                             ></div>
 
-                            <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($event, $index);">
+                            <img ng-if="dialog.input.length > 1" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($event, $index);">
 
                             <span ng-if="$index == dialog.input.length-1" class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>
                         </div>
