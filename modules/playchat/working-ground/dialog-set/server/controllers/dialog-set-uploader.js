@@ -3,8 +3,6 @@ var XLSX = require('xlsx');
 var async = require('async');
 var fs = require('fs');
 
-var csv = require('csvtojson');
-
 var mongoose = require('mongoose');
 var CustomContext = mongoose.model('CustomContext');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
@@ -94,8 +92,6 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
         var range = XLSX.utils.decode_range(ws['!ref']);
 
-        console.log('레인지 : ', range);
-
         var dialogsetList = [];
         var lastData = undefined;
         for(var r=1; r<range.e.r; r++)
@@ -134,16 +130,19 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                 dialogsetList.push(lastData);
             }
 
-            lastData.category = category;
-
-            if(q)
+            if(lastData)
             {
-                lastData.q.push(q);
-            }
+                lastData.category = category;
 
-            if(a)
-            {
-                lastData.a.push(a);
+                if(q)
+                {
+                    lastData.q.push(q);
+                }
+
+                if(a)
+                {
+                    lastData.a.push(a);
+                }
             }
         }
 
@@ -155,8 +154,6 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
             dialogsetDialog.input = [];
             dialogsetDialog.output = item.a;
             dialogsetDialog.category = item.category;
-
-            console.log('세이브 : ', item.q);
 
             async.eachSeries(item.q, function(q, next)
             {
@@ -182,45 +179,79 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
     Uploader.prototype.uploadFromCsv = function(botId, language, dialogsetId, filePath, callback)
     {
-        var list = [];
-        csv().fromFile(filePath).on('json', function(obj)
-        {
-            var line = [];
+        var data = fs.readFileSync(filePath);
 
-            for(var key in obj)
+        data = data.toString();
+
+        var list = [];
+        var split = data.split('\r\n');
+        for(var i=1; i<split.length; i++)
+        {
+            var line = split[i];
+            var matched = line.match(/,"[^"]*"/gi);
+
+            if(matched)
             {
-                line.push(obj[key]);
+                for(var j=0; j<matched.length; j++)
+                {
+                    line = line.replace(matched[j], '');
+                }
             }
 
-            list.push(line);
-        }).on('done', function()
-        {
-            var dialogsetList = [];
-            var lastData = undefined;
-            for(var i=0; i<list.length; i++)
+            line = line.trim();
+
+            var obj = [];
+            var subSplit = line.split(',');
+
+            var j = 0;
+            for(; j<subSplit.length; j++)
             {
-                var item = list[i];
+                obj.push(subSplit[j]);
+            }
 
-                var category = '';
-                for(var j=0; j<item.length-2; j++)
+            if(matched)
+            {
+                for(var k=0; k<matched.length; k++)
                 {
-                    if(category)
+                    var s = matched[k].replace(/"/gi, '').substring(1);
+                    if(s.trim())
                     {
-                        category += '@@@';
+                        obj.push(s);
                     }
-
-                    category += item[j];
                 }
+            }
 
-                var q = item[item.length-2];
-                var a = item[item.length-1];
+            list.push(obj);
+        }
 
-                if(q && a)
+        var dialogsetList = [];
+        var lastData = undefined;
+        for(var i=0; i<list.length; i++)
+        {
+            var item = list[i];
+
+            var category = '';
+            for(var j=0; j<item.length-2; j++)
+            {
+                if(category)
                 {
-                    lastData = { q: [], a: [] };
-                    dialogsetList.push(lastData);
+                    category += '@@@';
                 }
 
+                category += item[j];
+            }
+
+            var q = item[item.length-2];
+            var a = item[item.length-1];
+
+            if(q && a)
+            {
+                lastData = { q: [], a: [] };
+                dialogsetList.push(lastData);
+            }
+
+            if(lastData)
+            {
                 lastData.category = category;
 
                 if(q)
@@ -233,36 +264,37 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                     lastData.a.push(a);
                 }
             }
+        }
 
-            async.eachSeries(dialogsetList, function(item, next)
+        async.eachSeries(dialogsetList, function(item, next)
+        {
+            var dialogsetDialog = new DialogsetDialog();
+            dialogsetDialog.dialogset = dialogsetId;
+            dialogsetDialog.inputRaw = item.q;
+            dialogsetDialog.input = [];
+            dialogsetDialog.output = item.a;
+            dialogsetDialog.category = item.category;
+
+            async.eachSeries(item.q, function(q, next)
             {
-                var dialogsetDialog = new DialogsetDialog();
-                dialogsetDialog.dialogset = dialogsetId;
-                dialogsetDialog.inputRaw = item.q;
-                dialogsetDialog.input = [];
-                dialogsetDialog.output = item.a;
-                dialogsetDialog.category = item.category;
-
-                async.eachSeries(item.q, function(q, next)
+                NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
                 {
-                    NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
-                    {
-                        dialogsetDialog.input.push(nlpText);
-                        next();
-                    });
-                },
-                function()
-                {
-                    dialogsetDialog.save(function()
-                    {
-                        next();
-                    });
+                    dialogsetDialog.input.push(nlpText);
+                    next();
                 });
             },
             function()
             {
-                callback();
+                dialogsetDialog.save(function()
+                {
+                    console.log(item.q);
+                    next();
+                });
             });
+        },
+        function()
+        {
+            callback();
         });
 
         // var data = fs.readFileSync(filePath);

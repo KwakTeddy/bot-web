@@ -108,6 +108,9 @@ var Logger = require('./logger.js');
             output = OutputManager.make(context, userInput, dialogInstance, output);
 
             var currentDialog = context.session.history[0];
+            if(!currentDialog.userInput)
+                currentDialog.userInput = userInput;
+
             var previousDialog = undefined;
             if(context.session.history.length > 1)
             {
@@ -171,6 +174,9 @@ var Logger = require('./logger.js');
                 output = OutputManager.make(context, userInput, dialogInstance, output);
 
                 var currentDialog = context.session.history[0];
+                if(!currentDialog.userInput)
+                    currentDialog.userInput = userInput;
+
                 var previousDialog = undefined;
                 if(context.session.history.length > 1)
                 {
@@ -229,6 +235,9 @@ var Logger = require('./logger.js');
             output = OutputManager.make(context, userInput, dialogInstance, output);
 
             var currentDialog = context.session.history[0];
+            if(!currentDialog.userInput)
+                currentDialog.userInput = userInput;
+
             var previousDialog = undefined;
             if(context.session.history.length > 1)
             {
@@ -343,6 +352,8 @@ var Logger = require('./logger.js');
                 else
                 {
                     var currentDialog = context.session.history[0];
+                    if(!currentDialog.userInput)
+                        currentDialog.userInput = userInput;
                     var previousDialog = undefined;
                     if(context.session.history.length > 1)
                     {

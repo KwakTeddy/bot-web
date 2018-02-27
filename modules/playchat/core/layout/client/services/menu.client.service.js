@@ -37,7 +37,7 @@
 
             this.operation = { name: LanguageService('Operation'), icon: 'operat_1.png', url: '/operation', childMenus: [
                 { name: LanguageService('User'), url: '/operation/user', icon: 'user_mini.png' },
-                { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
+                // { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
                 // { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
                 { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };

@@ -18,7 +18,7 @@
                 <div class="dialog-editor-row">
                     <p class="dialog-editor-subject">{{lan('Card Name')}}</p>
                     <div class="dialog-editor-input-box">
-                        <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true">
+                        <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true" ng-change="onKeyDownForCardName();">
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                     <div class="dialog-editor-input-box">
 
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input">
-                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder();}}" required="true" style="color: white;" tabindex="-1">
+                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder();}}" required="true" style="color: white;" tabindex="-1" ng-click="moveFocusToEditable($event);" ng-focus="moveFocusToEditable($event);">
 
                             <div
                                 class="editable"
@@ -42,7 +42,7 @@
                                 data-index="{{$index}}"
                             ></div>
 
-                            <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($event, $index);">
+                            <img ng-if="dialog.input.length > 1" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($event, $index);">
 
                             <span ng-if="$index == dialog.input.length-1" class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>
                         </div>
@@ -121,9 +121,26 @@
                                     <img style="width: 100%;" ng-src="{{ output.uploader.item }}">
                                     <div>
                                         <p>{{lan('Click to change image') }}</p>
-                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);">
+                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);" style="cursor: pointer;">
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="dialog-editor-output-box-row button" ng-click="addExternalImage(output)">
+                                <div>
+                                    <span class="blue-label">{{lan('Insert external image') }}</span>
+                                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                                </div>
+                            </div>
+
+                            <div class="dialog-editor-output-box-row" ng-show="isAddExternalImage && !output.image.displayname">
+                                <div class="dialog-editor-output-image-box" ng-show="output.image.url && !output.image.displayname">
+                                    <img style="width: 100%;" ng-src="{{ output.image.url }}">
+                                    <div>
+                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);" style="cursor: pointer;">
+                                    </div>
+                                </div>
+                                <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="output.image.url">
                             </div>
 
                             <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">

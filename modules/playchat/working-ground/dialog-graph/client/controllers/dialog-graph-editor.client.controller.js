@@ -95,9 +95,14 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         });
     };
 
-    DialogGraphEditorInput.make($scope, $rootScope);
-    DialogGraphEditorOutput.make($scope);
-    DialogGraphEditorTask.make($scope);
+    DialogGraphEditorInput.make($scope, $rootScope, DialogGraphEditor);
+    DialogGraphEditorOutput.make($scope, DialogGraphEditor);
+    DialogGraphEditorTask.make($scope, DialogGraphEditor);
+
+    $scope.onKeyDownForCardName = function()
+    {
+        DialogGraphEditor.isDirty = true;
+    };
 
     $scope.parseResult = function()
     {

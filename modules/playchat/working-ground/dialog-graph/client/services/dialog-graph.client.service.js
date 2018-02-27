@@ -497,9 +497,18 @@
                     if(e.keyCode == 27)
                     {
                         //ESC
-                        that.editor.close();
-                        if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
-                            e.target.blur();
+                        if(that.editor.isDirty && confirm(that.$scope.lan('Update is not saved. Do you want to close without saving?')))
+                        {
+                            that.editor.close();
+                            if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
+                                e.target.blur();
+                        }
+                        else
+                        {
+                            that.editor.close();
+                            if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
+                                e.target.blur();
+                        }
                     }
                     else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
                     {

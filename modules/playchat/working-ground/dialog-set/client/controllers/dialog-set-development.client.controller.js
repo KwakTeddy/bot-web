@@ -203,7 +203,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
                 var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
-                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus();
+                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus().removeAttr('required');
             }
         };
 

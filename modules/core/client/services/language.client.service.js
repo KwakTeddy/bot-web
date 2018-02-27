@@ -598,8 +598,26 @@
             "Update is not saved. Do you want to exit without saving?": {
                 "ko": "변경사항이 저장되지 않았습니다. 이동하시겠습니까?",
                 "en": "Update is not saved. Do you want to exit without saving?",
-                "jp": "変更事項が保存されませんでした。 移動しますか。",
+                "jp": "変更事項が保存されませんでした。 移動しますか。?",
                 "zh": "变动的部分还没有进行保存。您确定要转向其他页面吗？"
+            },
+            "Update is not saved. Do you want to close without saving?": {
+                "ko": "변경사항이 저장되지 않았습니다. 취소하시겠습니까?",
+                "en": "Update is not saved. Do you want to close without saving?",
+                "jp": "更新は保存されません。 保存せずに終了しますか？",
+                "zh": "更新没有保存。 你想关闭而不储蓄？"
+            },
+            "search description1": {
+              "ko": "검색: Ctrl or Command + F",
+              "en": "Search: Ctrl or Command + F",
+              "jp": "サーチ: Ctrl or Command + F",
+              "zh": "搜索: Ctrl or Command + F"
+            },
+            "search description2": {
+                "ko": "다음으로 계속 검색: Ctrl or Command + G",
+                "en": "Next Occurrence: Ctrl or Command + G",
+                "jp": "次の発生: Ctrl or Command + G",
+                "zh": "下一次发生: Ctrl or Command + G"
             },
             "Graph Loading Failed": {
                 "ko": "그래프 로드 실패",
@@ -792,6 +810,12 @@
                 "en": "Add image",
                 "jp": "イメージの挿入",
                 "zh": "添加图片"
+            },
+            "Insert external image": {
+                "ko": "외부 이미지 삽입",
+                "en": "Add image",
+                "jp": "外部画像を挿入",
+                "zh": "插入外部图像"
             },
             "Click to change image": {
                 "ko": "이미지 변경",

@@ -5,7 +5,7 @@
 
     angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $timeout, $rootScope, FileUploader, LanguageService)
     {
-        var make = function($scope)
+        var make = function($scope, DialogGraphEditor)
         {
             $scope.outputTypeChanged = function($event)
             {
@@ -68,6 +68,8 @@
 
             $scope.addOutput = function(e)
             {
+                DialogGraphEditor.isDirty = true;
+
                 var output = { kind: 'Content', text: '' };
                 $scope.dialog.output.push(output);
                 $scope.setOutputImageUploader($scope.dialog.output.length - 1);
@@ -77,6 +79,8 @@
 
             $scope.deleteOutput = function(output, index)
             {
+                DialogGraphEditor.isDirty = true;
+
                 if(output.length == 1)
                 {
                     alert('마지막 Output은 삭제할 수 없습니다');
@@ -86,8 +90,23 @@
                 output.splice(index, 1);
             };
 
+            $scope.isAddExternalImage = false;
+            $scope.addExternalImage = function(output)
+            {
+                if(output.image && output.image.displayname)
+                {
+                    delete output.image.url;
+                    delete output.image.displayname;
+                    output.uploader.item = 'none';
+                }
+
+                $scope.isAddExternalImage = true;
+            };
+
             $scope.addOutputImage = function(e)
             {
+                DialogGraphEditor.isDirty = true;
+
                 $timeout(function()
                 {
                     console.log(e.currentTarget.children[1]);
@@ -97,6 +116,8 @@
 
             $scope.deleteOutputImage = function(e, index)
             {
+                DialogGraphEditor.isDirty = true;
+
                 delete $scope.dialog.output[index].image;
                 $scope.dialog.output[index].uploader.item = 'none';
 
@@ -114,6 +135,8 @@
 
             $scope.addOutputButton = function(e, output)
             {
+                DialogGraphEditor.isDirty = true;
+
                 if(!output.buttons) output.buttons = [];
 
                 output.buttons.push({ url : '', text: ''});
@@ -126,6 +149,8 @@
 
             $scope.addActionButton = function(output)
             {
+                DialogGraphEditor.isDirty = true;
+
                 output.kind = 'Action';
             };
 

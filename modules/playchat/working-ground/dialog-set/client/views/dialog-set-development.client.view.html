@@ -82,11 +82,11 @@
             <form ng-submit="addDialog($event);">
                 <div class="topic-area"></div>
                 <div class="question-area">
-                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
+                    <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
                     <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="answer-area">
-                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
+                    <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
                     <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="functions-area" style="margin-top: 5px;">

@@ -11,7 +11,7 @@
 
         var chatbot = $cookies.getObject('chatbot');
 
-        var make = function($scope)
+        var make = function($scope, DialogGraphEditor)
         {
             TaskService.query({ botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : '') }, function(list)
             {
@@ -79,6 +79,8 @@
                 {
                     if(selectedTask)
                     {
+                        DialogGraphEditor.isDirty = true;
+
                         if(selectedTask.children[0])
                         {
                             if(!$scope.dialog.task)
@@ -109,6 +111,8 @@
 
             $scope.taskKeyUp = function(e)
             {
+                DialogGraphEditor.isDirty = true;
+
                 var value = e.currentTarget.value;
 
                 if(value)
@@ -138,6 +142,7 @@
 
             $scope.selectTask = function(e, task)
             {
+                DialogGraphEditor.isDirty = true;
                 $scope.dialog.task = { name: task.name };
             };
 
@@ -150,6 +155,8 @@
 
             $scope.createTask = function(taskName)
             {
+                DialogGraphEditor.isDirty = true;
+
                 if(!taskName)
                 {
                     alert(LanguageService('Please enter Task name'));

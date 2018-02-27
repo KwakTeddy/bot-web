@@ -26,100 +26,58 @@ angular.module("playchat").controller("DialogTrainingInputController", ['$scope'
             {
                 console.log(result);
 
-                var data = {};
-                var summary = {};
-                for(var i=0; i<result.length; i++)
-                {
-                    data[result[i]._id.dialog] = result[i];
-
-                    if(!summary[result[i]._id.dialog])
-                        summary[result[i]._id.dialog] = {};
-
-                    if(!summary[result[i]._id.dialog][result[i]._id.preDialogName])
-                        summary[result[i]._id.dialog][result[i]._id.preDialogName] = 0;
-
-                    summary[result[i]._id.dialog][result[i]._id.preDialogName] += result[i].count;
-                }
-
-                console.log(summary)
+                var dialogNameIdx = {};
 
                 var list = [];
-                for(var key in summary)
+
+                for(var i = 0; i < result.length; i++)
+                {
+                    if(dialogNameIdx[result[i]._id.dialogName])
+                    {
+                        var obj = {};
+                        dialogNameIdx[result[i]._id.dialogName][result[i]._id.dialog] = result[i].count;
+
+                    }
+                    else
+                    {
+                        var obj = {};
+                        obj[result[i]._id.dialog] = result[i].count;
+                        dialogNameIdx[result[i]._id.dialogName] = obj;
+                    }
+                }
+
+                for(var dialogName in dialogNameIdx)
                 {
                     var userInput = [];
-                    console.log(data[key]._id.dialog)
-                    console.log(typeof data[key]._id.dialog)
-                    var object = { input: data[key]._id.dialog + '\n', userInput: userInput };
-
+                    var item = {};
                     var sum = 0;
-                    for(var subkey in summary[key])
+
+                    item.input = dialogName;
+
+                    for(var raw in dialogNameIdx[dialogName])
                     {
-                        sum += summary[key][subkey];
-                        userInput.push({ name : subkey, count: summary[key][subkey] });
+                        var obj = {};
+                        obj.raw = raw;
+                        obj.count = dialogNameIdx[dialogName][raw];
+                        userInput.push(obj);
+
+                        sum += obj.count;
                     }
 
-                    userInput.sort(function(a, b)
+
+                    item.userInput = userInput;
+                    item.sum = sum;
+
+
+                    list.push(item);
+
+                    for(var j = 0; j < userInput.length; j++)
                     {
-                        return b.count - a.count;
-                    });
-
-                    object.sum = sum;
-
-                    list.push(object);
-
-                    var input = '';
-                    for(var i=0; i<object.userInput.length; i++)
-                    {
-                        input += object.userInput[i].name + ':' + object.userInput[i].count + '\n';
+                        var input = undefined;
+                        if(j === 0) input = dialogName;
+                        excelData.push({ q: input, input: userInput[j].raw, count: userInput[j].count});
                     }
-
-                    excelData.push({ q: object.input, input: input, sum: sum});
                 }
-                console.log(list)
-
-                // for(var i=0; i<result.length; i++)
-                // {
-                //     data[result[i].dialogId._id] = result[i];
-                //
-                //     if(!summary[result[i].dialogId._id])
-                //         summary[result[i].dialogId._id] = {};
-                //
-                //     if(!summary[result[i].dialogId._id][result[i]._id.preDialogName])
-                //         summary[result[i].dialogId._id][result[i]._id.preDialogName] = 0;
-                //
-                //     summary[result[i].dialogId._id][result[i]._id.preDialogName] += result[i].count;
-                // }
-
-                // var list = [];
-                // for(var key in summary)
-                // {
-                //     var userInput = [];
-                //     var object = { input: data[key].dialogId.inputRaw.join('\n'), userInput: userInput };
-                //
-                //     var sum = 0;
-                //     for(var subkey in summary[key])
-                //     {
-                //         sum += summary[key][subkey];
-                //         userInput.push({ name : subkey, count: summary[key][subkey] });
-                //     }
-                //
-                //     userInput.sort(function(a, b)
-                //     {
-                //         return b.count - a.count;
-                //     });
-                //
-                //     object.sum = sum;
-                //
-                //     list.push(object);
-                //
-                //     var input = '';
-                //     for(var i=0; i<object.userInput.length; i++)
-                //     {
-                //         input += object.userInput[i].name + ':' + object.userInput[i].count + '\n';
-                //     }
-                //
-                //     excelData.push({ q: object.input, input: input, sum: sum});
-                // }
 
                 $scope.list = list;
 
@@ -135,11 +93,11 @@ angular.module("playchat").controller("DialogTrainingInputController", ['$scope'
         {
             var template = {
                 sheetName: '대화 학습 입력',
-                columnOrder: ["q", "input", 'sum'],
+                columnOrder: ["q", "input", 'count'],
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, '대화 학습 입력', $scope.date, template);
+            ExcelDownloadService.download(chatbot.name, '대화 학습 입력', $scope.date, template);
         };
     })();
 

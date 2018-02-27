@@ -109,10 +109,16 @@
             }
         };
 
-        DialogGraphEditorInput.make = function($scope, $rootScope)
+        DialogGraphEditorInput.make = function($scope, $rootScope, DialogGraphEditor)
         {
+            $scope.isShowPlaceHolder = true;
             $scope.getInputPlaceHolder = function()
             {
+                if(!$scope.isShowPlaceHolder)
+                {
+                    return;
+                }
+
                 if($scope.isAdvancedMode)
                 {
                     return LanguageService('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)');
@@ -185,10 +191,8 @@
                 });
             };
 
-            var selectInput = function(textInput, callback)
+            var onMousedownOnTypeList = function(callback)
             {
-                var text = angular.element(textInput).text();
-
                 angular.element('.dialog-editor-input-list-box > ul > li').on('mousedown', function()
                 {
                     if(angular.element(this).attr('data-type') == 'addNew')
@@ -202,11 +206,11 @@
                 });
             };
 
-            var showIntentInputList = function(name, target, callback)
+            var showIntentInputList = function(name, callback)
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
-                $scope.showInputList = true;
+                $scope.showInputList = '#';
                 IntentService.query({ botId: chatbot.id, page: 1, countPerPage: 10, name: name ? name.trim() : '' }, function(result)
                 {
                     var html = '';
@@ -219,7 +223,7 @@
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
-                    selectInput(target, callback);
+                    onMousedownOnTypeList(callback);
 
                     var page = 1;
                     var ul = angular.element('.dialog-editor-input-list-box > ul');
@@ -245,7 +249,7 @@
                 });
             };
 
-            var showEntityInputList = function(name, target, callback)
+            var showEntityInputList = function(name, callback)
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
@@ -262,7 +266,7 @@
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
-                    selectInput(target, callback);
+                    onMousedownOnTypeList(callback);
 
                     var page = 1;
                     var ul = angular.element('.dialog-editor-input-list-box > ul');
@@ -288,7 +292,7 @@
                 });
             };
 
-            var showTypeInputList = function(name, target, callback)
+            var showTypeInputList = function(name, callback)
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
@@ -319,11 +323,39 @@
 
                     angular.element('.dialog-editor-input-list-box > ul').html(html).find('li:first').attr('class', 'selected');
                     makeMoveInputListSelectionByMouseOver();
-                    selectInput(target, callback);
+                    onMousedownOnTypeList(callback);
                 });
             };
 
-            var createGuidedInput = function () {
+            var openAddPanel = function(focusedText, focusedElement, type, typeText)
+            {
+                var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]').show();
+                target.css('right', '0');
+
+                setTimeout(function()
+                {
+                    if(target.find('form').get(0).open)
+                        target.find('form').get(0).open();
+                }, 501);
+
+                if(target.find('form').get(0).openCallback)
+                    target.find('form').get(0).openCallback(focusedText.replace(typeText, ''));
+
+                target.find('form').get(0).saveCallback = function(name)
+                {
+                    callback('#' + name);
+                    target.css('right', '-368px');
+                };
+
+                target.find('form').get(0).closeCallback = function()
+                {
+                    CaretService.placeCaretAtEnd(focusedElement);
+                    target.css('right', '-368px');
+                };
+            };
+
+            var createGuidedInput = function ()
+            {
                 var selection = window.getSelection();
 
                 var focusedElement = selection.focusNode.parentElement;
@@ -348,59 +380,13 @@
                     initInputList(true);
                 };
 
-
                 if(focusedText.startsWith('#'))
                 {
-                    var target = angular.element('.dialog-editor-creation-panel[data-type="intent"]').show();
-                    target.css('right', '0');
-
-                    setTimeout(function()
-                    {
-                        if(target.find('form').get(0).open)
-                            target.find('form').get(0).open();
-                    }, 501);
-
-                    if(target.find('form').get(0).openCallback)
-                        target.find('form').get(0).openCallback(focusedText.replace('#', ''));
-
-                    target.find('form').get(0).saveCallback = function(name)
-                    {
-                        callback('#' + name);
-                        target.css('right', '-368px');
-                    };
-
-                    target.find('form').get(0).closeCallback = function()
-                    {
-                        CaretService.placeCaretAtEnd(focusedElement);
-                        target.css('right', '-368px');
-                    };
+                    openAddPanel(focusedText, focusedElement, 'intent', '#');
                 }
                 else if(focusedText.startsWith('@'))
                 {
-                    var target = angular.element('.dialog-editor-creation-panel[data-type="entity"]').show();
-                    target.css('right', '0');
-
-                    setTimeout(function()
-                    {
-                        if(target.find('form').get(0).open)
-                            target.find('form').get(0).open();
-                    }, 501);
-
-                    if(target.find('form').get(0).openCallback)
-                        target.find('form').get(0).openCallback(focusedText.replace('@', ''));
-
-                    target.find('form').get(0).saveCallback = function(name)
-                    {
-                        callback('@' + name + ' ');
-                        target.css('right', '-368px');
-                    };
-
-                    target.find('form').get(0).closeCallback = function()
-                    {
-                        CaretService.placeCaretAtEnd(focusedElement);
-                        target.css('right', '-368px');
-
-                    };
+                    openAddPanel(focusedText, focusedElement, 'entity', '@');
                 }
                 else if(focusedText.startsWith('$'))
                 {
@@ -408,72 +394,102 @@
                 }
             };
 
-            $scope.focusToSpan = function(e)
-            {
-                e.currentTarget.nextElementSibling.focus();
-            };
-
             $scope.onBlur = function(e, index)
             {
-                if(!$scope.tempInputList)
+                if($scope.lastFocusTarget)
                 {
-                    $scope.tempInputList = [];
+                    //인텐트 리스트 등에서 클릭했을때 포커스를 위해서
+                    CaretService.placeCaretAtEnd($scope.lastFocusTarget);
+                    $scope.lastFocusTarget = undefined;
+
+                    return;
                 }
 
-                var input = $scope.tempInputList[index] = {};
-
+                var textNodes = [];
                 var children = e.currentTarget.childNodes;
                 for(var i=0; i<children.length; i++)
                 {
-                    if(children[i].nodeName == '#text')
+                    if(children[i].nodeName == '#text' || !children[i].className)
                     {
-                        input.text = { raw: children[i].textContent, nlp: '' };
-                    }
-                    else if(children[i].nodeName == 'SPAN')
-                    {
-                        var type = children[i].getAttribute('data-type');
-                        if(type)
+                        var text = (children[i].textContent || children[i].innerText);
+                        if(text && text.trim())
                         {
-                            if(type == 'types')
-                            {
-                                var text = children[i].innerText.replace('$', '');
-                                if(input[type] && input[type].indexOf(text) == -1)
-                                {
-                                    input[type].push(text);
-                                }
-                                else if(!input[type])
-                                {
-                                    input[type] = [text];
-                                }
-                            }
-                            else
-                            {
-                                input[type] = children[i].innerText.replace('#', '').replace('@', '').replace(/\//gi, '').replace('if(', '').replace(')', '');
-                            }
-                        }
-                        else
-                        {
-                            input.text = { raw: children[i].innerText, nlp: '' };
+                            textNodes.push(children[i]);
                         }
                     }
                 }
 
-                for(var i=0; i<$scope.tempInputList.length; i++)
+                for(var i=0; i<textNodes.length; i++)
                 {
-                    if(!$scope.tempInputList[i] || Object.keys($scope.tempInputList[i]).length == 0)
-                    {
-                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().attr('required', 'true');
-                    }
-                    else
-                    {
-                        angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().removeAttr('required');
-                    }
+                    var span = document.createElement('span');
+                    span.innerText = (textNodes[i].textContent || textNodes[i].innerText).trim();
+                    span.className = 'text';
+
+                    e.currentTarget.insertBefore(span, textNodes[i]);
+                    e.currentTarget.removeChild(textNodes[i]);
                 }
 
-                angular.element('.dialog-editor-input-description').text('');
-                angular.element('.dialog-editor-body').css('overflow', 'auto');
+                console.log('블러');
 
-                initInputList(true);
+                // if(!$scope.tempInputList)
+                // {
+                //     $scope.tempInputList = [];
+                // }
+                //
+                // var input = $scope.tempInputList[index] = {};
+                //
+                // var children = e.currentTarget.childNodes;
+                // for(var i=0; i<children.length; i++)
+                // {
+                //     if(children[i].nodeName == '#text')
+                //     {
+                //         input.text = { raw: children[i].textContent, nlp: '' };
+                //     }
+                //     else if(children[i].nodeName == 'SPAN')
+                //     {
+                //         var type = children[i].getAttribute('data-type');
+                //         if(type)
+                //         {
+                //             if(type == 'types')
+                //             {
+                //                 var text = children[i].innerText.replace('$', '');
+                //                 if(input[type] && input[type].indexOf(text) == -1)
+                //                 {
+                //                     input[type].push(text);
+                //                 }
+                //                 else if(!input[type])
+                //                 {
+                //                     input[type] = [text];
+                //                 }
+                //             }
+                //             else
+                //             {
+                //                 input[type] = children[i].innerText.replace('#', '').replace('@', '').replace(/\//gi, '').replace('if(', '').replace(')', '');
+                //             }
+                //         }
+                //         else
+                //         {
+                //             input.text = { raw: children[i].innerText, nlp: '' };
+                //         }
+                //     }
+                // }
+                //
+                // for(var i=0; i<$scope.tempInputList.length; i++)
+                // {
+                //     if(!$scope.tempInputList[i] || Object.keys($scope.tempInputList[i]).length == 0)
+                //     {
+                //         angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().attr('required', 'true');
+                //     }
+                //     else
+                //     {
+                //         angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]').prev().removeAttr('required');
+                //     }
+                // }
+                //
+                // angular.element('.dialog-editor-input-description').text('');
+                // angular.element('.dialog-editor-body').css('overflow', 'auto');
+                //
+                // initInputList(true);
             };
 
             $scope.focusGuideBox = function(e)
@@ -484,9 +500,7 @@
             $scope.onFocus = function()
             {
                 var selection = window.getSelection();
-
                 var target = selection.focusNode.parentElement;
-
                 if(selection.focusNode.className == 'editable')
                 {
                     target = selection.focusNode;
@@ -499,27 +513,21 @@
                 {
                     showIntentInputList(text.replace('#', ''), target, function(selected)
                     {
-                        target.innerText = selected || text;
-                        CaretService.placeCaretAtEnd(target);
-                        initInputList(true);
+                        selectionListThenCreateBlankSpan(e, selected, selection.focusNode);
                     });
                 }
                 else if(type == 'entities')
                 {
                     showEntityInputList(text.replace('@', ''), target, function(selected)
                     {
-                        target.innerText = selected || text;
-                        CaretService.placeCaretAtEnd(target);
-                        initInputList(true);
+                        selectionListThenCreateBlankSpan(e, selected, selection.focusNode);
                     });
                 }
                 else if(type == 'types')
                 {
                     showTypeInputList(text.replace('$', ''), target, function(selected)
                     {
-                        target.innerText = selected || text;
-                        CaretService.placeCaretAtEnd(target);
-                        initInputList(true);
+                        selectionListThenCreateBlankSpan(e, selected, selection.focusNode);
                     });
                 }
                 else if(type == 'regexp')
@@ -556,281 +564,298 @@
                 }
             };
 
+            $scope.moveFocusToEditable = function(e)
+            {
+                e.currentTarget.nextElementSibling.focus();
+            };
+
+            var createTextSpan = function(e, focusNode, newText, className)
+            {
+                var text = focusNode.textContent;
+
+                var newSpan = document.createElement('span');
+                newSpan.innerText = newText;
+
+                if(focusNode.parentElement.nodeName != 'SPAN')
+                {
+                    var span = document.createElement('span');
+                    span.className = className;
+                    span.innerText = text.trim();
+                    e.currentTarget.appendChild(span);
+
+                    focusNode.textContent = '';
+                }
+                else if(!focusNode.parentElement.className)
+                {
+                    focusNode.parentElement.className = 'text';
+                }
+
+                e.currentTarget.appendChild(newSpan);
+
+                CaretService.placeCaretAtEnd(newSpan);
+
+                e.preventDefault();
+            };
+
+            var createNewTypeSpan = function(e, focusNode, newText, className)
+            {
+                if(focusNode.nodeName != 'DIV' && !focusNode.textContent.trim())
+                {
+                    focusNode.parentElement.removeChild(focusNode);
+                }
+
+                var newSpan = document.createElement('span');
+                newSpan.innerText = newText;
+                newSpan.className = className;
+                e.currentTarget.appendChild(newSpan);
+                CaretService.placeCaretAtEnd(newSpan);
+                e.preventDefault();
+
+                return newSpan;
+            };
+
+            var selectionListThenCreateBlankSpan = function(e, selectedText, focusNode)
+            {
+                if(selectedText == LanguageService('Add New'))
+                {
+                    createGuidedInput();
+                }
+                else
+                {
+                    focusNode.textContent = selectedText;
+
+                    var span = document.createElement('span');
+                    span.innerText = String.fromCharCode(160);
+                    e.currentTarget.appendChild(span);
+
+                    $scope.lastFocusTarget = span;
+                    CaretService.placeCaretAtEnd(span);
+
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+
+                initInputList(true);
+            };
+
             $scope.onKeyDown = function(e)
             {
+                DialogGraphEditor.isDirty = true;
+
+                var selection = window.getSelection();
+                var focusNode = selection.focusNode;
+
+                if(focusNode.parentElement.nodeName == 'SPAN')
+                {
+                    focusNode.parentElement.style.backgroundColor = '';
+                }
+
+                //플레이스홀더 처리
+                if((e.keyCode == 8 || e.keyCode == 46))
+                {
+                    if(e.currentTarget.innerText.length == 1)
+                    {
+                        $scope.isShowPlaceHolder = true;
+                        angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+                    }
+                }
+                else if(e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 16 && e.keyCode != 17 && e.keyCode != 91 && e.keyCode != 18)
+                {
+                    $scope.isShowPlaceHolder = false;
+                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
+                }
+
                 if($scope.showInputList)
                 {
-                    if(e.keyCode == 38) // up
+                    if(e.keyCode == 38)
                     {
                         moveInputListSelection('up');
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }
-                    else if(e.keyCode == 40) // down
+                    else if(e.keyCode == 40)
                     {
                         moveInputListSelection('down');
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }
-                    else if(e.keyCode == 27) // esc
+                    else if(e.keyCode == 27)
                     {
-                        initInputList(true);
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
+
                     }
-                    else if(e.keyCode == 13) // enter
+                    else if(e.keyCode == 13)
                     {
                         var selectedText = angular.element('.dialog-editor-input-list-box > ul > li.selected').text();
-                        if(selectedText == LanguageService('Add New')) //새로 만들기 선택시 예외처리
-                        {
-                            createGuidedInput();
-                        }
-                        else
-                        {
-                            var selection = window.getSelection();
-                            selection.focusNode.textContent = selectedText;
-
-                            var span = document.createElement('span');
-                            span.innerText = String.fromCharCode(160);
-                            e.currentTarget.appendChild(span);
-
-                            CaretService.placeCaretAtEnd(span);
-
-                            e.preventDefault();
-                            e.stopImmediatePropagation();
-                        }
+                        selectionListThenCreateBlankSpan(e, selectedText, focusNode);
+                        initInputList(true);
                     }
                 }
                 else
                 {
-                    if(e.keyCode == 13) //enter
+                    // 엔터 입력시 입력 마무으리
+                    if(e.keyCode == 13)
                     {
-                        var selection = window.getSelection();
-                        var focusedElement = selection.focusNode.parentElement;
-                        var type = focusedElement.getAttribute('data-type');
-
-                        if(type == null || type == 'if' || type == 'regexp')
+                        if(focusNode.nodeName == '#text' || !focusNode.parentElement.className)
                         {
-                            var lastSpanElement = document.createElement('span');
-                            lastSpanElement.innerText = String.fromCharCode(160);
-                            focusedElement.after(lastSpanElement);
-
-                            CaretService.placeCaretAtEnd(lastSpanElement);
-                            initInputList(true);
+                            createTextSpan(e, focusNode, String.fromCharCode(160), 'text');
                         }
-
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
                     }
+                    else if(focusNode.parentElement.nodeName != 'SPAN' || !focusNode.parentElement.className)
+                    {
+                        if(focusNode.textContent.trim().length == 0)
+                        {
+                            if(e.key == '#')
+                            {
+                                $scope.isAdvancedMode = true;
+                                var target = createNewTypeSpan(e, focusNode, '#', 'intent');
+                                showIntentInputList('#', function(selected)
+                                {
+                                    selectionListThenCreateBlankSpan(e, selected , target);
+                                });
+                            }
+                            else if(e.key == '@')
+                            {
+                                $scope.isAdvancedMode = true;
+                                createNewTypeSpan(e, focusNode, '@', 'entities');
+                                showEntityInputList('@', function(selected)
+                                {
+                                    selectionListThenCreateBlankSpan(e, selected , target);
+                                });
+                            }
+                            else if(e.key == '$')
+                            {
+                                $scope.isAdvancedMode = true;
+                                createNewTypeSpan(e, focusNode, '$', 'types');
+                                showTypeInputList('$', function(selected)
+                                {
+                                    selectionListThenCreateBlankSpan(e, selected , target);
+                                });
+                            }
+                        }
+                        else if(e.key == '(' && focusNode.textContent.trim().startsWith('if') && (focusNode.parentElement.nodeName == 'DIV' || !focusNode.parentElement.className))
+                        {
+                            $scope.isAdvancedMode = true;
+
+                            $scope.showInputList = 'if';
+
+                            var span = document.createElement('span');
+                            span.className = 'if';
+                            span.innerText = 'if()';
+
+                            e.currentTarget.appendChild(span);
+
+                            focusNode.textContent = '';
+
+                            CaretService.placeCaretAtIndex(span.childNodes[0], 3);
+
+                            e.preventDefault();
+                        }
+                        else if(e.key == '/' && focusNode.textContent.trim().startsWith('/') && (focusNode.parentElement.nodeName == 'DIV' || !focusNode.parentElement.className))
+                        {
+                            var text = focusNode.textContent.trim();
+
+                            var span = document.createElement('span');
+                            span.className = 'regexp';
+                            span.innerText = text + '/';
+
+                            e.currentTarget.appendChild(span);
+
+                            focusNode.textContent = '';
+
+                            CaretService.placeCaretAtIndex(span.childNodes[0], text.length+1);
+
+                            e.preventDefault();
+                        }
+                    }
+                }
+            };
+
+            var showNLPText = function(focusNode)
+            {
+                var text = focusNode.textContent;
+                if(text.trim())
+                {
+                    DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+                    {
+                        if(result.text.trim())
+                        {
+                            angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
+                        }
+                        else
+                        {
+                            angular.element('.dialog-editor-input-description').text('');
+                        }
+                    });
+                }
+                else
+                {
+                    initInputList(true);
                 }
             };
 
             $scope.onKeyUp = function(e)
             {
                 var selection = window.getSelection();
-                var text = selection.focusNode.textContent;
-                if(e.currentTarget.innerText)
+                var focusNode = selection.focusNode;
+
+                if(e.keyCode == 8 || e.keyCode == 46)
                 {
-                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
-                }
-                else
-                {
-                    angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
-                }
-
-                if(selection.focusNode.parentElement.nodeName == 'SPAN')
-                {
-                    //span이 한 번 생성된 후에 다 지우고 다시 입력하면 span이 생김.
-                    selection.focusNode.parentElement.style.backgroundColor = '';
-                    selection.focusNode.parentElement.style.color = '';
-                }
-
-                // 유형 span 생성
-                if(e.key == '#' || e.key == '@' || e.key == '$' || e.key == '/' || (e.key == '(' && text.indexOf('if(') != -1))
-                {
-                    $scope.isAdvancedMode = true;
-
-                    var type = 'intent';
-                    var replacedText = e.key;
-                    var typeText = e.key;
-                    var focusIndex = -1;
-
-                    if(e.key == '@')
+                    if($scope.showInputList)
                     {
-                        type = 'entities';
-                    }
-                    else if(e.key == '$')
-                    {
-                        type = 'types';
-                    }
-                    else if(e.key == '/')
-                    {
-                        type = 'regexp';
-                        typeText = '//';
-                        replacedText = '/';
-                        focusIndex = 1;
-                    }
-                    else if(text.indexOf('if(') != -1)
-                    {
-                        type = 'if';
-                        typeText = 'if()';
-                        replacedText = 'if(';
-                        focusIndex = 3;
-                    }
-
-                    selection.focusNode.textContent = text.replace(replacedText, '');
-
-                    var span = document.createElement('span');
-                    span.className = type;
-                    span.setAttribute('data-type', type);
-                    span.innerText = typeText;
-                    e.currentTarget.appendChild(span);
-
-                    if(focusIndex > 0)
-                    {
-                        CaretService.placeCaretAtIndex(span.childNodes[0], focusIndex);
-                    }
-                    else
-                    {
-                        CaretService.placeCaretAtEnd(span);
-                    }
-
-                    if(selection.focusNode.textContent.length == 0 && selection.focusNode.parentElement.nodeName == 'SPAN')
-                    {
-                        selection.focusNode.parentElement.parentElement.removeChild(selection.focusNode.parentElement);
-                    }
-                }
-
-                // 유형 span에 focus가 왔다면
-                selection = window.getSelection();
-                text = selection.focusNode.textContent;
-
-                var target = undefined;
-                if(e.keyCode != 38 && e.keyCode != 40) //38 == 윗 방향키 , 40 == 아래 방향키
-                {
-                    //up, down은 목록에서 고르는것이기 때문에 reload 하지 않는다.
-                    if((target = selection.focusNode).nodeName == 'SPAN' || (selection.focusNode.nodeName == '#text' && (target = selection.focusNode.parentElement).nodeName == 'SPAN'))
-                    {
-                        var type = target.getAttribute('data-type');
-                        if(type == 'intent')
+                        if($scope.showInputList == 'if' && (!focusNode.textContent.trim().startsWith('if(') || !focusNode.textContent.trim().endsWith(')')))
                         {
-                            showIntentInputList(text.replace('#', ''), target, function(selected)
-                            {
-                                target.innerText = selected || text;
-
-                                CaretService.placeCaretAtEnd(target);
-
-                                var span = document.createElement('span');
-                                span.innerText = String.fromCharCode(160);
-                                e.currentTarget.appendChild(span);
-
-                                setTimeout(function()
-                                {
-                                    CaretService.placeCaretAtEnd(span);
-                                }, 10);
-
-                                initInputList(true);
-                            });
+                            initInputList(true);
                         }
-                        else if(type == 'entities')
+                        else if($scope.showInputList == 'regexp' && (!focusNode.textContent.trim().startsWith('/') || !focusNode.textContent.trim().endsWith('/')))
                         {
-                            showEntityInputList(text.replace('@', ''), target, function(selected)
-                            {
-                                target.innerText = selected || text;
-
-                                CaretService.placeCaretAtEnd(target);
-
-                                var span = document.createElement('span');
-                                span.innerText = String.fromCharCode(160);
-                                e.currentTarget.appendChild(span);
-
-                                setTimeout(function()
-                                {
-                                    CaretService.placeCaretAtEnd(span);
-                                }, 10);
-
-                                initInputList(true);
-                            });
+                            initInputList(true);
                         }
-                        else if(type == 'types')
+                        else if(!focusNode.textContent.startsWith($scope.showInputList))
                         {
-                            showTypeInputList(text.replace('$', ''), target, function(selected)
-                            {
-                                target.innerText = selected || text;
-
-                                var span = document.createElement('span');
-                                span.innerText = String.fromCharCode(160);
-                                e.currentTarget.appendChild(span);
-
-                                setTimeout(function()
-                                {
-                                    CaretService.placeCaretAtEnd(span);
-                                }, 10);
-
-                                initInputList(true);
-                            });
+                            initInputList(true);
                         }
+
+                        angular.element('.dialog-editor-input-description').text('');
+                    }
+                    else if(focusNode.textContent.trim().length == 0)
+                    {
+                        showNLPText(focusNode);
+                        $scope.isShowPlaceHolder = true;
+                        angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
                     }
                 }
-
-                if(target && target.nodeName == 'SPAN')
+                else if(e.keyCode == 37 || e.keyCode == 39 || ($scope.showInputList && e.keyCode != 38 && e.keyCode != 40))
                 {
-                    var type = target.getAttribute('data-type');
-                    if
-                    (
-                        (type == 'regexp' && (target.innerText.length <= 1 || !target.innerText.startsWith('/') || !target.innerText.endsWith('/')))
-                       || (type == 'if' && (!target.innerText.startsWith('if(') || !target.innerText.endsWith(')')))
-                       || (type == 'intent' && !target.innerText.startsWith('#'))
-                       || (type == 'entities' && (!target.innerText.startsWith('@')))
-                       || (type == 'types' && (!target.innerText.startsWith('$')))
-                    )
+                    if(focusNode.textContent.trim().startsWith('#'))
                     {
-                        text = target.innerText;
-
-                        selection = window.getSelection();
-                        var offset = selection.anchorOffset;
-
-                        var node = document.createTextNode(text);
-                        e.currentTarget.insertBefore(node, target);
-                        e.currentTarget.removeChild(target);
-
-                        CaretService.placeCaretAtIndex(node, offset);
+                        showIntentInputList(focusNode.textContent.trim().substring(1), function(selected)
+                        {
+                            selectionListThenCreateBlankSpan(e, selected, focusNode);
+                        });
+                    }
+                    else if(focusNode.textContent.trim().startsWith('@'))
+                    {
+                        showEntityInputList(focusNode.textContent.trim().substring(1), function(selected)
+                        {
+                            selectionListThenCreateBlankSpan(e, selected, focusNode);
+                        });
+                    }
+                    else if(focusNode.textContent.trim().startsWith('$'))
+                    {
+                        var target = focusNode.parentElement;
+                        showTypeInputList(focusNode.textContent.trim().substring(1), function(selected)
+                        {
+                            selectionListThenCreateBlankSpan(e, selected, focusNode);
+                        });
+                    }
+                    else if(!$scope.showInputList)
+                    {
+                        showNLPText(focusNode);
                     }
                 }
-
-                if(!text.startsWith('#') && !text.startsWith('@') && !text.startsWith('$'))
+                else if(!$scope.showInputList)
                 {
-                    initInputList(false);
-
-                    if(text.length > 1 && text.startsWith('/') && text.endsWith('/'))
-                    {
-                        angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
-                    }
-                    else if(text.startsWith('if(') && text.endsWith(')'))
-                    {
-                        angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
-                    }
-                    else
-                    {
-                        if(text.trim())
-                        {
-                            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
-                            {
-                                angular.element('.dialog-editor-input-description').text('[nlu] ' + result.text);
-                            }, function(error)
-                            {
-                                console.log('에러 : ', error);
-                            });
-                        }
-                        else
-                        {
-                            angular.element('.dialog-editor-input-description').text('');
-                        }
-                    }
-                }
-                else
-                {
-                    angular.element('.dialog-editor-input-description').text('');
+                    showNLPText(focusNode);
                 }
             };
 
