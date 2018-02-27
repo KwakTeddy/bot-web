@@ -6,7 +6,17 @@ var bot_js = require(path.resolve('./engine2/bot.js'));
 exports.dialogGraphUsage = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, inOut: true,  nlpDialog: {$ne: ':reset user'}, dialogName: {$nin: ["답변없음", '시작', 'no_dialog']}, dialogId: {$ne: null} } },
+        { $match:
+                {
+                    botId: req.params.botId,
+                    created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
+                    inOut: true,
+                    nlpDialog: {$ne: ':reset user'},
+                    dialogName: {$nin: ["답변없음", '시작', 'no_dialog']},
+                    dialogId: {$ne: null},
+                    dialogType: 'dialog'
+                }
+        },
         { $project:
             {
                 _id: 0,

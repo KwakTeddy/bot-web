@@ -9,14 +9,14 @@ module.exports.analysis = function(req, res)
             {$match:
                 {
                     botId : req.params.botId,
-                    created : { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
+                    dialog: { $nin: [null,":reset user", ":build " + req.params.botId + " reset", ':build'] },
                     inOut : true,
-                    nlpDialog: { $ne: null, $nin: [":reset user", ":build " + req.params.botId + " reset", ':build'] },
                     isFail : true,
+                    created : { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
                     "channel.name" : { $ne: 'channel' }
                 }
             },
-            {$group: {_id: {dialog:'$nlpDialog'}, id: {$first: '$_id'}, count: {$sum: 1}}},
+            {$group: {_id: {dialog:'$dialog'}, id: {$first: '$_id'}, count: {$sum: 1}}},
             {$sort: {count: -1}},
             {$limit: 300}
         ]

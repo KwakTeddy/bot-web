@@ -19,6 +19,7 @@ angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scop
         {
             FailedDialogsService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
+                console.log(result)
 
                 $scope.$parent.loaded('working-ground');
                 $scope.list = result;

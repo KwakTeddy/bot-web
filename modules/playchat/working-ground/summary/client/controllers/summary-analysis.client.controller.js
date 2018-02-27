@@ -81,14 +81,26 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             var kakao = 0;
             var naver = 0;
             var socket = 0;
-            var total = 0;
 
             result.list.forEach(function (data) {
-                facebook += data.facebook;
-                kakao += data.kakao ;
-                naver += data.navertalk;
-                socket += data.socket;
-                total += data.total;
+                switch (data.channel)
+                {
+                    case 'facebook':
+                        facebook++;
+                        break;
+                    case 'kakao':
+                        kakao++;
+                        break;
+                    case 'naver':
+                        naver++;
+                        break;
+                    case 'socket':
+                        socket++;
+                        break;
+                    default :
+                        break;
+
+                }
             });
 
             var context = document.getElementById("botUserByChannel").getContext('2d');
@@ -304,6 +316,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         UserInputStatistics.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
+            console.log(result)
             $scope.userInputStatistics = JSON.parse(JSON.stringify(result));
         },
         function(err)
@@ -322,6 +335,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         ScenarioUsageService.get({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
+            console.log(result)
             $scope.scenarioUsageList = result.scenarioUsage;
         },
         function(err)

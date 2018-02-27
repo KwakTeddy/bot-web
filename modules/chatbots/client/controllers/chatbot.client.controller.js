@@ -232,21 +232,22 @@
 
         $scope.shareChatbot = function()
         {
+            console.log($scope.share)
             if(!$scope.share.read && !$scope.share.write)
             {
                 alert($scope.lan('Please select at least one permission'));
                 return false;
             }
 
-            ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
-            {
-                $scope.openShareModal = false;
-                alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
-            },
-            function(err)
-            {
-                alert(err.data.message);
-            });
+            // ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
+            // {
+            //     $scope.openShareModal = false;
+            //     alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
+            // },
+            // function(err)
+            // {
+            //     alert(err.data.message);
+            // });
         };
 
         $scope.moveToCreate = function()

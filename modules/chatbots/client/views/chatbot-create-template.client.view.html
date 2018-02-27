@@ -10,13 +10,13 @@
         <div class="form-row">
             <label class="required">
                 <span class="form-title">{{ lan('Name') }}</span>
-                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true" autofocus="true">
+                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" maxlength="30" ng-required="true" autofocus="true">
             </label>
         </div>
         <div class="form-row">
             <label>
                 <span class="form-title">{{ lan('Description') }}</span>
-                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
+                <input type="text" placeholder="" ng-model="bot.description" maxlength="100" class="entity-title data-input">
             </label>
         </div>
 
