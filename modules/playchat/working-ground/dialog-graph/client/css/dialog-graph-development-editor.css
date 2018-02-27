@@ -170,7 +170,7 @@
 .dialog-editor-input + .editable
 {
     position: absolute;
-    top: 22px;
+    top: 15px;
     right: 45px;
     left: 10px;
     bottom: 1px;
@@ -179,20 +179,39 @@
     white-space: nowrap;
     overflow: hidden;
     cursor: text;
-    height: 30px;
-    padding: 5px 2px;
+    height: 40px;
+    padding: 12px 2px;
     box-sizing: border-box;
 }
 
 .dialog-editor-input + .editable > span
 {
     outline: 0;
+    padding: 3px;
 }
+
+/*.dialog-editor-input + .editable > span::before*/
+/*{*/
+    /*content: '&';*/
+    /*font-size: 10px;*/
+    /*position: relative;*/
+    /*top: 0;*/
+    /*left: -14px;*/
+/*}*/
+
+/*.dialog-editor-input + .editable > span:first-child*/
+/*{*/
+    /*margin-left: 0 !important;*/
+/*}*/
+
+/*.dialog-editor-input + .editable > span:first-child::before*/
+/*{*/
+    /*content: '';*/
+/*}*/
 
 .dialog-editor-input + .editable > span.text
 {
     background-color: #e0e0e0;
-    margin: 0 3px;
 }
 
 .dialog-editor-input + .editable > span:first-child
@@ -202,32 +221,32 @@
 
 .dialog-editor-input + .editable > span.intent
 {
-    background-color: #aeb0ff;
-    margin: 0 3px;
+    background-color: #f0f8fd;
+    color: #2c94ca;
 }
 
 .dialog-editor-input + .editable > span.entities
 {
-    background-color: rgba(2,125,24,.44);
-    margin: 0 3px;
+    background-color: #f0f8fd;
+    color: #289c22;
 }
 
 .dialog-editor-input + .editable > span.types
 {
-    background-color: #b5cfff;
-    margin: 0 3px;
+    background-color: #f0f8fd;
+    color: #206fff;
 }
 
 .dialog-editor-input + .editable > span.regexp
 {
-    background-color: #ffb9cc;
-    margin: 0 3px;
+    background-color: #f0f8fd;
+    color: #ff4d7e;
 }
 
 .dialog-editor-input + .editable > span.if
 {
-    background-color: #ffbe3e;
-    margin: 0 3px;
+    background-color: #f0f8fd;
+    color: #de9300;
 }
 
 .dialog-editor-input + .editable br
@@ -301,7 +320,7 @@
 {
     position: absolute;
     right: 10px;
-    top: 20px;
+    top: 21px;
     bottom: 0;
     height: 100%;
     font-size: 24px;
@@ -372,87 +391,6 @@
 {
     vertical-align: middle;
     padding-left: 6px;
-}
-
-.dialog-editor-input-item.text
-{
-    background-color: rgba(243, 243, 243, 0.65);
-    border: 1px solid #bfbfbf;
-}
-
-.dialog-editor-input-item.regexp
-{
-    background-color: #fdf7f7;
-    border: 1px solid #ffb9cc;
-}
-
-.dialog-editor-input-item.regexp span::before
-{
-    content: '/';
-    color: rgb(234, 67, 53);
-    margin-right: 4px;
-}
-
-.dialog-editor-input-item.regexp span::after
-{
-    content: '/';
-    color: rgb(234, 67, 53);
-    margin-left: 4px;
-}
-
-.dialog-editor-input-item.intent
-{
-    background-color: #f8f8ff;
-    border: 1px solid #aeb0ff;
-}
-
-.dialog-editor-input-item.entities
-{
-    background-color: rgba(239, 255, 242, 0.46);
-    border: 1px solid rgba(2, 125, 24, 0.44);
-}
-
-.dialog-editor-input-item.if
-{
-    background-color: #fffbee;
-    border: 1px solid #ffbe3e;
-}
-
-.dialog-editor-input-item.if span::before
-{
-    content: 'if(';
-    margin-right: 4px;
-    color: rgb(251, 188, 5);
-}
-
-.dialog-editor-input-item.if span::after
-{
-    content: ')';
-    margin-left: 4px;
-    color: rgb(251, 188, 5);
-}
-
-.dialog-editor-input-item.types
-{
-    border: 1px solid #b5cfff;
-    background-color: #dbe3f3;
-}
-
-.dialog-editor-input-box .and
-{
-    font-size: 12px;
-    font-weight: 100;
-    color: #58bcf3;
-    margin: 0 3px 0 6px;
-}
-
-.dialog-editor-input-box .or
-{
-    font-size: 12px;
-    font-weight: 100;
-    color: #58bcf3;
-    text-align: center;
-    margin: 8px 0;
 }
 
 .dialog-editor-input-box input + .delete-img
