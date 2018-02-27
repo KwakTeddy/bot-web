@@ -90,6 +90,19 @@
                 output.splice(index, 1);
             };
 
+            $scope.isAddExternalImage = false;
+            $scope.addExternalImage = function(output)
+            {
+                if(output.image && output.image.displayname)
+                {
+                    delete output.image.url;
+                    delete output.image.displayname;
+                    output.uploader.item = 'none';
+                }
+
+                $scope.isAddExternalImage = true;
+            };
+
             $scope.addOutputImage = function(e)
             {
                 DialogGraphEditor.isDirty = true;

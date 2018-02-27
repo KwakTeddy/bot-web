@@ -811,6 +811,12 @@
                 "jp": "イメージの挿入",
                 "zh": "添加图片"
             },
+            "Insert external image": {
+                "ko": "외부 이미지 삽입",
+                "en": "Add image",
+                "jp": "外部画像を挿入",
+                "zh": "插入外部图像"
+            },
             "Click to change image": {
                 "ko": "이미지 변경",
                 "en": "Click to change image",
