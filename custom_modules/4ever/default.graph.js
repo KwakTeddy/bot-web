@@ -1216,6 +1216,12 @@ var commonDialogs = [
                     "raw": "처음",
                     "nlp": "처음"
                 }
+            },
+            {
+                "text": {
+                    "raw": "대화 시작",
+                    "nlp": "대화 시작"
+                }
             }
         ],
         "output": [
