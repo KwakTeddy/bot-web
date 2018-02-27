@@ -640,8 +640,6 @@
 
             $scope.onKeyDown = function(e)
             {
-                console.log('키코드 : ', e.keyCode, e.key);
-
                 var selection = window.getSelection();
                 var focusNode = selection.focusNode;
 
