@@ -89,11 +89,6 @@ var Transaction = require('./utils/transaction.js');
                     return outCallback(SystemMessages['You can\'t use this bot']);
                 }
 
-                if(!bot.options.version)
-                {
-                    return errCallback('old-version');
-                }
-
                 var contextKey = channel + '_' + botId + '_' + userKey;
                 that.redis.get(contextKey, function(err, context)
                 {
@@ -122,6 +117,11 @@ var Transaction = require('./utils/transaction.js');
                         {
                             Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
                             return;
+                        }
+
+                        if(!bot.options.version)
+                        {
+                            return errCallback('old-version');
                         }
 
                         if(context.session.history.length > 10)

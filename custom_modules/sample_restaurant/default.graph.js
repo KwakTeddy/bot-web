@@ -630,7 +630,10 @@ var commonDialogs = [
         "name": "답변없음",
         "input": "",
         "output": [
-c
+            {
+                "kind": "Content",
+                "text": "답변없음."
+            }
         ]
     }
 ];
