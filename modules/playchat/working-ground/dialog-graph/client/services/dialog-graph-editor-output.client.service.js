@@ -147,6 +147,22 @@
                 });
             };
 
+            $scope.moveButtonToUp = function(output, button)
+            {
+                var index = output.buttons.indexOf(button);
+                if(index > 0)
+                {
+                    var target = output.buttons[index-1];
+                    output.buttons[index-1] = button;
+                    output.buttons[index] = target;
+                }
+            };
+
+            $scope.moveButtonToDown = function(output, button)
+            {
+
+            };
+
             $scope.addActionButton = function(output)
             {
                 DialogGraphEditor.isDirty = true;

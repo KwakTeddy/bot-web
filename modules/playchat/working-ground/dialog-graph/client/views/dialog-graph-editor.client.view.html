@@ -148,9 +148,11 @@
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
 
-                            <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
+                            <div class="dialog-editor-output-box-row button-group" ng-repeat="button in output.buttons">
                                 <input type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true">
                                 <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url">
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png" class="dialog-editor-output-buttons-arrow" style="top: 5px; transform: rotate(-180deg);" ng-click="moveButtonToUp(output, button);">
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png" class="dialog-editor-output-buttons-arrow" style="top: 20px;" ng-click="moveButtonToDown(output, button);">
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
 

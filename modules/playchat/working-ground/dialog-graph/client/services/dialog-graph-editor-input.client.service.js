@@ -438,11 +438,7 @@
                 var children = e.currentTarget.childNodes;
                 for(var i=0; i<children.length; i++)
                 {
-                    if(children[i].nodeName == '#text')
-                    {
-                        input.text = { raw: children[i].textContent, nlp: '' };
-                    }
-                    else if(children[i].nodeName == 'SPAN')
+                    if(children[i].nodeName == 'SPAN')
                     {
                         var type = children[i].className;
                         if(type)
@@ -459,14 +455,14 @@
                                     input[type] = [text];
                                 }
                             }
+                            else if(type == 'text')
+                            {
+                                input.text = { raw: children[i].innerText, nlp: '' };
+                            }
                             else
                             {
                                 input[type] = children[i].innerText.replace('#', '').replace('@', '').replace('if(', '').replace(')', '');
                             }
-                        }
-                        else
-                        {
-                            input.text = { raw: children[i].innerText, nlp: '' };
                         }
                     }
                 }
