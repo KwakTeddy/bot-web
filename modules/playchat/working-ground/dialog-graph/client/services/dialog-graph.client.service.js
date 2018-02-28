@@ -925,12 +925,12 @@
             {
                 var template = '<div>';
 
+                template += '<div>' + output.text.replace(/\n/gi, '<br/>') + '</div>';
+
                 if(output.kind == 'Action')
                 {
                     template += '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
                 }
-
-                template += '<div><span>' + output.text + '</span></div>';
 
                 template += '</div>';
 
