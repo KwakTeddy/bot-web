@@ -140,6 +140,7 @@
                                         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);" style="cursor: pointer;">
                                     </div>
                                 </div>
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteExternalImage();" style="cursor: pointer; position: absolute; top: 5px; right: 5px;">
                                 <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="output.image.url">
                             </div>
 
@@ -148,9 +149,11 @@
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
 
-                            <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
+                            <div class="dialog-editor-output-box-row button-group" ng-repeat="button in output.buttons">
                                 <input type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true">
                                 <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url">
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png" class="dialog-editor-output-buttons-arrow" style="top: 5px; transform: rotate(-180deg);" ng-click="moveButtonToUp(output, button);">
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png" class="dialog-editor-output-buttons-arrow" style="top: 20px;" ng-click="moveButtonToDown(output, button);">
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
 
@@ -170,8 +173,8 @@
                                     <div class="dialog-editor-select-input" ng-class="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? '' : 'disabled'">
                                         <input type="text" ng-model="output.dialogName" ng-required="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? true : false" placeholder="{{lan('Dialog Input') }}" ng-focus="onActionFocus($event);" ng-keydown="onActionKeyDown($event, output);" ng-keyup="onActionKeyUp($event);">
                                         <ul class="dialog-editor-select-options">
-                                            <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
-                                            <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
+                                            <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)" data-id="{{ dialog.id }}">{{ dialog.name }}</li>
+                                            <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)" data-id="{{ dialog.id }}">{{ dialog.name }}</li>
                                         </ul>
                                     </div>
                                     <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 9px; right: 12px;" ng-click="deleteActionButton(output);">

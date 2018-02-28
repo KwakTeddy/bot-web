@@ -103,6 +103,16 @@
                 $scope.isAddExternalImage = true;
             };
 
+            $scope.deleteExternalImage = function(output)
+            {
+                $scope.isAddExternalImage = false;
+                if(output.image)
+                {
+                    delete output.image.url;
+                    delete output.image.displayname;
+                }
+            };
+
             $scope.addOutputImage = function(e)
             {
                 DialogGraphEditor.isDirty = true;
@@ -145,6 +155,28 @@
                 {
                     e.currentTarget.previousElementSibling.querySelector('input').focus();
                 });
+            };
+
+            $scope.moveButtonToUp = function(output, button)
+            {
+                var index = output.buttons.indexOf(button);
+                if(index > 0)
+                {
+                    var target = output.buttons[index-1];
+                    output.buttons[index-1] = button;
+                    output.buttons[index] = target;
+                }
+            };
+
+            $scope.moveButtonToDown = function(output, button)
+            {
+                var index = output.buttons.indexOf(button);
+                if(index != -1 && index < output.buttons.length - 1)
+                {
+                    var target = output.buttons[index+1];
+                    output.buttons[index+1] = button;
+                    output.buttons[index] = target;
+                }
             };
 
             $scope.addActionButton = function(output)
@@ -207,8 +239,12 @@
                 }
                 else if(e.keyCode == 13) //enter
                 {
-                    var name = angular.element(e.currentTarget).next().find('.selected').text();
-                    output.dialog = name;
+                    var selected = angular.element(e.currentTarget).next().find('.selected');
+                    var id = selected.attr('data-id');
+                    var name = selected.text();
+                    output.dialogId = id;
+                    output.dialogName = name;
+                    output.kind = 'Action';
 
                     e.currentTarget.blur();
                 }

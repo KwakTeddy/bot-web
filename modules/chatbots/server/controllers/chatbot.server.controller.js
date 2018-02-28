@@ -1,6 +1,7 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var fs = require('fs');
+var accepts = require('accepts');
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
@@ -16,6 +17,7 @@ var Entity = mongoose.model('Entity');
 var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
 var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
 
+var lanService = require(path.resolve('./modules/core/server/controllers/front.language.js'));
 exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
@@ -384,6 +386,9 @@ exports.delete = function(req, res)
 
 exports.share = function(req, res)
 {
+    var accept = accepts(req);
+    var browserLan = accept.languages()[0];
+
     User.findOne({ $or: [{ email: req.body.data.email }, { username: req.body.data.email }] }).exec(function(err, item)
     {
         if(err)
@@ -413,7 +418,7 @@ exports.share = function(req, res)
         }
         else
         {
-            res.status(404).send({ message: req.body.data.email + ' is not found' });
+            res.status(404).send({ message: req.body.data.email + ' ' + lanService(browserLan)['L091'] });
         }
     });
 };

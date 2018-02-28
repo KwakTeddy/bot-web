@@ -1104,3 +1104,24 @@
     border-left: 1px solid #ddd;
     padding: 4px;
 }
+
+.dialog-editor-output-buttons-arrow
+{
+    position: absolute;
+    left: 25px;
+    opacity: 0.7;
+    cursor: pointer;
+    display: none;
+
+    transition: opacity 0.7s;
+}
+
+.dialog-editor-output-box-row.button-group:hover .dialog-editor-output-buttons-arrow
+{
+    display: inline-block;
+}
+
+.dialog-editor-output-buttons-arrow:hover
+{
+    opacity: 1;
+}

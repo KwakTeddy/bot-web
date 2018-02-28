@@ -153,6 +153,17 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         for(var i=0; i<result.output.length; i++)
         {
             delete result.output[i].uploader;
+
+            if(result.output[i].buttons)
+            {
+                for(var j=0; j<result.output[i].buttons.length; j++)
+                {
+                    if(!result.output[i].buttons[j].url)
+                    {
+                        delete result.output[i].buttons[j].url;
+                    }
+                }
+            }
         }
 
         return result;

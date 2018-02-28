@@ -22,7 +22,6 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         if(data.type == 'input')
         {
             $scope.userInput = data.log;
-            console.log('음 : ', data.log);
         }
         else if(data.type == 'answer')
         {
@@ -46,35 +45,6 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
                 $scope.taskLogs.push(lines);
             }
         }
-
-
-        // var selector = '#logcontent';
-        //
-        // if(data.message.indexOf('entities: ') != -1)
-        // {
-        //     selector = '#entitycontent';
-        // }
-        // else if(data.message.indexOf('intent: ') != -1)
-        // {
-        //     selector = '#intentcontent';
-        // }
-        //
-        // var log = data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
-        // angular.element(selector).append('<div>' + log + '</div>');
-        //
-        // if(scrollTimer)
-        // {
-        //     clearTimeout(scrollTimer);
-        // }
-        //
-        // scrollTimer = setTimeout(function()
-        // {
-        //     var logContent = angular.element('.logcontent > div').get(0);
-        //     if(logContent)
-        //     {
-        //         logContent.parentElement.scrollTop = logContent.offsetHeight;
-        //     }
-        // }, 300);
     });
 
     $scope.selectTab = function(e, selector)
@@ -115,11 +85,17 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         }
     };
 
-    $scope.close = function()
+    $scope.close = function(e)
     {
         angular.element('.log-analysis').css('height', '39px').css('overflow', 'hidden').css('top', '');
         angular.element('.working-ground').css('bottom', '39px');
         expandMode = -1;
+
+        if(e)
+        {
+            e.preventDefault();
+            e.stopPropagation();
+        }
     };
 
     $(document).ready(function()

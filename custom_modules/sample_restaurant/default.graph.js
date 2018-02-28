@@ -3,10 +3,10 @@ var dialogs = [
         "name": "1. 메뉴보기",
         "input": [
             {
-                "regexp": "^1"
+                "regexp": "/^1/"
             },
             {
-                "regexp": "메뉴"
+                "regexp": "/메뉴/"
             },
             {
                 "text": {
@@ -21,23 +21,18 @@ var dialogs = [
                 "text": "메뉴리스트 아래와 같습니다.",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "1. 하우스 함박스테이크"
                     },
                     {
-                        "url": "",
                         "text": "2. 라구 라이스"
                     },
                     {
-                        "url": "",
                         "text": "3. 팬 스테이크"
                     },
                     {
-                        "url": "",
                         "text": "이전으로 가기"
                     },
                     {
-                        "url": "",
                         "text": "처음으로 돌아가기"
                     }
                 ]

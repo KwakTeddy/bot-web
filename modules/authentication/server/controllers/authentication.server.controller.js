@@ -100,12 +100,6 @@ module.exports.signin = function(req, res, next)
                 user.password = undefined;
                 user.salt = undefined;
 
-                if(user.state === false)
-                {
-                    res.status(401).send('not registration');
-                    return;
-                }
-
                 req.login(user, function (err)
                 {
                     if (err)
@@ -176,7 +170,6 @@ module.exports.signup = function(req, res, next)
 
     // Add missing user fields
     user.provider = 'local';
-    user.state = false; // for closed beta
     // user.displayName = user.username;
 
     makeUsername(0, function(username)

@@ -78,7 +78,7 @@
                             <li class="card_detail_item_header">{{ lan('Chatbot') }}</li>
                         </ul>
                         <ul class="list mt20">
-                            <li class="card_detail_item_content1">{{ selectedBot.id }}</li>
+                            <li class="card_detail_item_content1">{{ selectedBot.name }}</li>
                         </ul>
                         <ul class="list clear">
                             <li class="card_detail_item_header">{{ lan('Share') }}</li>
@@ -92,7 +92,7 @@
                             <li class="ml10 mt10">
                                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="share.read">
                                 <label for="checkBox1" class="label">{{ lan('Read') }}</label>
-                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.edit">
+                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.write" ng-click="share.read = true">
                                 <label for="checkBox2" class="label">{{ lan('Write') }}</label>
                             </li>
                         </ul>

@@ -52,16 +52,14 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('makeNewType', function(context, name, sourceFileName)
         {
-            var text = '\nvar ' + name + ' = {\n' +
-                       '  typeCheck: function (dialog, context, callback) {\n' +
-                       '    var matched = true;\n' +
-                       '    var parsedData = \'example\';\n' +
-                       '    \n' +
-                       '    callback(matched, parsedData);\n' +
-                       '\t}\n' +
-                       '};\n' +
-                       '\n' +
-                       'bot.setType(\'' + name + '\', ' + name + ');';
+            var text = '    bot.setType(\'' + name + '\',\n' +
+                       '    {\n' +
+                       '        typeCheck: function (dialog, context, callback)\n' +
+                       '        {\n' +
+                       '            var matched = false;\n' +
+                       '            callback(matched);\n' +
+                       '        }\n' +
+                       '    });';
             for(var i=0; i<$scope.fileList.length; i++)
             {
                 if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))

@@ -9,9 +9,10 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
     $scope.menus = [];
     $scope.botName = chatbot.name;
     $scope.path = $location.path();
-
+    $scope.botAuth = chatbot.myBotAuth;
     (function()
     {
+
         $scope.drawMenu = function()
         {
             var savedMenu = [];

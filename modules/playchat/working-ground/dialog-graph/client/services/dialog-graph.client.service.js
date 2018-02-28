@@ -888,7 +888,7 @@
                     }
                     else if(key == 'regexp')
                     {
-                        displayText = '/' + input[key] + '/';
+                        displayText = input[key];
                     }
                     else if(key == 'text')
                     {
@@ -900,6 +900,7 @@
                     }
 
                     template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
+                    break;
                 }
             }
 
@@ -908,28 +909,16 @@
 
         var makeOutputTemplate = function(output)
         {
-            if(typeof output == 'string')
-            {
-                return '<div><span>' + output + '</span></div>';
-            }
-            else if(typeof output.output == 'string')
-            {
-                return '<div><span>' + output.output + '</span></div>';
-            }
-            else if(typeof output.output == 'object')
-            {
-                return '<div><span>' + output.output.output ? output.output.output : output.output.text + '</span></div>';
-            }
-            else if(output.text)
+            if(output.text)
             {
                 var template = '<div>';
+
+                template += '<div>' + output.text.replace(/\n/gi, '<br/>') + '</div>';
 
                 if(output.kind == 'Action')
                 {
                     template += '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
                 }
-
-                template += '<div><span>' + output.text + '</span></div>';
 
                 template += '</div>';
 
