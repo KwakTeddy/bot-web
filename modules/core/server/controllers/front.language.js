@@ -100,6 +100,7 @@ module.exports = function(code)
             "L088":"",
             "L089":"",
             "L090":"",
+            "L091":"찾을 수 없습니다.",
             "lan" : "ko"
         },
         en: {
@@ -201,6 +202,7 @@ module.exports = function(code)
             "L088":"Blog",
             "L089":"Facebook",
             "L090":"contact with us",
+            "L090":"is not found",
             "lan" : "en"
 
         },
@@ -303,6 +305,7 @@ module.exports = function(code)
             "L088":"博客",
             "L089":"Facebook",
             "L090":"联系我们",
+            "L091":"未找到",
             "lan" : "zh"
 
         },
@@ -405,6 +408,7 @@ module.exports = function(code)
             "L088":"",
             "L089":"",
             "L090":"",
+            "L091":"見つけることができません。",
             "lan" : "jp"
 
         }
