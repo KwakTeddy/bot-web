@@ -395,7 +395,7 @@
                 "ko": "설명",
                 "en": "Description",
                 "jp": "説明",
-                "zh": "描述"
+                "zh": "说明"
             },
             "Create": {
                 "ko": "Create",
@@ -449,7 +449,7 @@
                 "ko": "대화 시나리오",
                 "en": "Dialog Scenario",
                 "jp": "ダイアログシナリオ",
-                "zh": "对话方案"
+                "zh": "场景对话框图"
             },
             "Dialog Learning trains questions and answers accordingly.": {
                 "ko": "대화 학습 기능은 1:1로 이루어진 질문답변을 챗봇에게 학습 시키는 기능입니다.",
@@ -479,7 +479,7 @@
                 "ko": "대화 셋",
                 "en": "Dialog Set",
                 "jp": "ダイアログセット",
-                "zh": "对话框设置"
+                "zh": "对话学习"
             },
             "Intent": {
                 "ko": "인텐트",
@@ -509,7 +509,7 @@
                 "ko": "대화 그래프를 관리 할 수 있습니다.",
                 "en": "Manage your dialog graph.",
                 "jp": "対話のグラフを管理できます。",
-                "zh": "可以管理对话框图。"
+                "zh": "可以管理场景对话框图。"
             },
             "Add or Edit your Intent.": {
                 "ko": "Intent를 추가 및 편집 할 수 있습니다.",
@@ -545,7 +545,7 @@
                 "ko": "New Dialog",
                 "en": "New Dialog",
                 "jp": "新しい対話",
-                "zh": "新的对话框"
+                "zh": "新的场景对话框"
             },
             "Topic": {
                 "ko": "Topic",
@@ -695,7 +695,7 @@
                 "ko": "차일드 생성",
                 "en": "Add Child",
                 "jp": "チャイルド生成",
-                "zh": "添加子对话框"
+                "zh": "添加子场景对话框"
             },
             "Move Up": {
                 "ko": "위로 가기",
@@ -731,7 +731,7 @@
                 "ko": "새로만들기",
                 "en": "New dialog",
                 "jp": "新たに創出すること",
-                "zh": "新的对话框"
+                "zh": "新的场景对话框"
             },
             "Advanced": {
                 "ko": "고급",
@@ -743,7 +743,7 @@
                 "ko": "대화이름",
                 "en": "Dialog name",
                 "jp": "対話の名前",
-                "zh": "对话框名称"
+                "zh": "场景对话框名称"
             },
             "Input": {
                 "ko": "입력값",
@@ -832,7 +832,7 @@
             "Add action": {
                 "ko": "대화 흐름 조절",
                 "en": "Control dialog flow",
-                "zh": "控制对话框流程",
+                "zh": "控制对话走向",
                 "jp": "ダイアログフローの制御"
             },
             "Action1": {
@@ -851,7 +851,7 @@
                 "ko": "대화 선택",
                 "en": "Dialog Select",
                 "jp": "対話選択",
-                "zh": "对话框选择"
+                "zh": "对话选择"
             },
             "Option": {
                 "ko": "옵션",
@@ -1055,7 +1055,7 @@
                 "ko": "대화셋 이름을 입력해주세요",
                 "en": "Dialog Set Name",
                 "jp": "デファセッの名前を入力してください",
-                "zh": "对话框设置名称"
+                "zh": "学习对话框名称"
             },
             "Type contents": {
                 "ko": "내용을 입력해주세요",
@@ -1181,7 +1181,7 @@
                 "ko": "실패대화",
                 "en": "Failed Dialog",
                 "jp": "失敗対話",
-                "zh": "失败的对话框"
+                "zh": "失败的场景对话框"
             },
             "Management": {
                 "ko": "관리",
@@ -1193,7 +1193,7 @@
                 "ko": "이전 대화",
                 "en": "Previous Dialog",
                 "jp": "以前対話",
-                "zh": "上一个对话框"
+                "zh": "上一个场景对话框"
             },
             "User Input": {
                 "ko": "사용자 입력",
@@ -1547,7 +1547,7 @@
                 "ko": "요약",
                 "en": "Summary",
                 "jp": "要約",
-                "zh": "概括"
+                "zh": "总结"
             },
             "Dialog Traffic": {
                 "ko": "대화량",
@@ -1559,31 +1559,31 @@
                 "ko": "세션",
                 "en": "Session",
                 "jp": "セッション",
-                "zh": "对话"
+                "zh": "对话情况"
             },
             "Dialog Graph Path": {
                 "ko": "대화 경로",
                 "en": "Dialog Graph Path",
                 "jp": "対話ルート",
-                "zh": "对话框图路径"
+                "zh": "场景对话框图路径"
             },
             "Dialog Training": {
                 "ko": "대화학습",
                 "en": "Dialog Training",
-                "zh": "对话培训",
+                "zh": "对话学习",
                 "jp": "ダイアログトレーニング"
             },
             "Dialog Set Usage": {
                 "ko": "대화셋 이용",
                 "en": "Dialog Set Usage",
                 "jp": "ダイアログセットの使用法",
-                "zh": "对话框设置用法"
+                "zh": "场景对话框使用量"
             },
             "Dialog Scenario Usage": {
                 "ko": "대화 시나리오 이용",
                 "en": "Dialog Scenario Usage",
                 "jp": "ダイアログシナリオの使用法",
-                "zh": "对话方案使用情况"
+                "zh": "场景对话框图使用情况"
             },
             "User Detail": {
                 "ko": "사용자 세부 정보",
@@ -1601,13 +1601,13 @@
                 "ko": "대화 그래프 입력값",
                 "en": "Dialog Graph Input",
                 "jp": "対話のグラフの入力値",
-                "zh": "对话框图输入"
+                "zh": "场景对话框图输入"
             },
             "Failed Dialogs": {
                 "ko": "실패 대화",
                 "en": "Failed Dialogs",
                 "jp": "失敗対話",
-                "zh": "失败的对话框"
+                "zh": "失败的场景对话框"
             },
             "Bot Link": {
                 "ko": "Bot Link",
@@ -1790,7 +1790,7 @@
             "Dialog Input": {
                 "ko": "대화입력",
                 "en": "Dialog Input",
-                "zh": "对话框输入",
+                "zh": "对话输入",
                 "jp": "ダイアログ入力"
             },
             "Basic Information": {
@@ -1820,13 +1820,13 @@
             "Choose Dialogset": {
                 "ko": "대화셋 선택",
                 "en": "Choose Dialogset",
-                "zh": "选择对话框",
+                "zh": "选择场景对话框",
                 "jp": "ダイアログセットを選択"
             },
             "Enter dialogset name": {
                 "ko": "대화셋 이름을 입력해주세요",
                 "en": "Enter dialogset name",
-                "zh": "输入对话框名称。",
+                "zh": "输入场景对话框名称。",
                 "jp": "ダイアログセット名を入力します。"
             },
             "If you would like to receive the e-mail again, please click on the again button.": {
@@ -1977,7 +1977,7 @@
             "Usage of Dialog Set": {
                 "ko": "대화 사용량",
                 "en": "Usage of Dialog Set",
-                "zh": "对话框的使用",
+                "zh": "场景对话框的使用",
                 "jp": "ダイアログセットの使用法"
             },
             "Ratio": {
@@ -2001,7 +2001,7 @@
             "Graph Path" :{
                 "ko": "그래프 경로",
                 "en": "Graph Path",
-                "zh": "对话框图路径",
+                "zh": "场景对话框图路径",
                 "jp": "グラフパス"
             },
             "Usage Count": {
@@ -2098,7 +2098,7 @@
             "Manage Conversation Graph":{
                 "ko": "대화그래프관리",
                 "en": "Manage Conversation Graph",
-                "zh": "对话框图管理",
+                "zh": "场景对话框图管理",
                 "jp": "Manage Conversation Graph"
             },
             "Manage Intent":{
@@ -2194,7 +2194,7 @@
             "Let it study conversation":{
                 "ko": "대화 학습 시키기",
                 "en": "Let it study conversation",
-                "zh": "让它学习对话",
+                "zh": "开始对话学习",
                 "jp": "Let it study conversation"
             },
             "We may let it learn how to answer accordingly towards the questions guests has asked":{
@@ -2230,13 +2230,13 @@
             "Connect Channel":{
                 "ko": "채널 연결",
                 "en": "Connect Channel",
-                "zh": "链接频道",
+                "zh": "连接频道",
                 "jp": "Connect Channel"
             },
             "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.":{
                 "ko": "전화, 카카오톡, 페이스북에 연결해서 챗봇을 서비스합니다.",
                 "en": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.",
-                "zh": "我们提供连接到电话，Kakao Talk和Facebook以提供聊天机器人的服务。",
+                "zh": "我们提供将聊天机器人连接到电话，微信，Kakao Talk和Facebook等平台上的服务。",
                 "jp": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook."
             },
             "Dialogue Breakdown":{
@@ -2248,13 +2248,13 @@
             "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.":{
                 "ko": "인공지능이 자동으로 상담한 대화내역을 확인 할 수 있습니다.",
                 "en": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.",
-                "zh": "您可以查看AI自动咨询的对话历史记录。",
+                "zh": "您可以查看AI回复的对话历史记录。",
                 "jp": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation."
             },
             "We can make it learn how to answer to the questions that it was not able to reply.":{
                 "ko": "응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.",
                 "en": "We can make it learn how to answer to the questions that it was not able to reply.",
-                "zh": "您可以让它学习回答它回答不了的问题。",
+                "zh": "您可以让它学习它回答不了的问题。",
                 "jp": "We can make it learn how to answer to the questions that it was not able to reply."
             },
             "usage statistics":{
@@ -2694,7 +2694,7 @@
             "Open Dialogset": {
                 "ko": "대화셋 열기",
                 "en": "Open Dialogset",
-                "zh": "打开对话框",
+                "zh": "打开学习对话框",
                 "jp": "開くダイアログセット"
             },
             "Template Download": {
@@ -2722,19 +2722,19 @@
                 "ko": "대화 그래프로 이동하기",
                 "en": "Move to Dialog Graph",
                 "jp": "Move to Dialog Graph",
-                "zh": "转到对话框图"
+                "zh": "转到场景对话框图"
             },
             "Navigate Dialog": {
                 "ko": "다이얼로그 네이게이션",
                 "en": "Navigate Dialog",
                 "jp": "Navigate Dialog",
-                "zh": "导航对话框"
+                "zh": "对话导航"
             },
             "Move Dialog Up/Down": {
                 "ko": "다이얼로그 위/아래로 옮기기",
                 "en": "Move Dialog Up/Down",
                 "jp": "Move Dialog Up/Down",
-                "zh": "向上/向下移动对话框"
+                "zh": "向上/向下移动场景对话框"
             },
             "Open Edit Dialog": {
                 "ko": "다이얼로그 수정하기",
@@ -2752,31 +2752,31 @@
                 "ko": "Child 다이얼로그 추가하기",
                 "en": "Add Child dialog",
                 "jp": "Add Child dialog",
-                "zh": "添加子对话框"
+                "zh": "添加子场景对话框"
             },
             "Add Sibling dialog": {
                 "ko": "Sibling 다이얼로그 추가하기",
                 "en": "Add Sibling dialog",
                 "jp": "Add Sibling dialog",
-                "zh": "添加姊妹对话框"
+                "zh": "添加姊妹场景对话框"
             },
             "Delete Dialog": {
                 "ko": "다이얼로그 삭제",
                 "en": "Delete Dialog",
                 "jp": "Delete Dialog",
-                "zh": "删除对话框"
+                "zh": "删除场景对话框"
             },
             "Expand/Collapse Child Dialog": {
                 "ko": "Child 다이얼로그 늘이기/줄이기",
                 "en": "Expand/Collapse Child Dialog",
                 "jp": "Expand/Collapse Child Dialog",
-                "zh": "展开/折叠子对话框"
+                "zh": "展开/折叠子场景对话框"
             },
             "Dialog Graph Editor ShortCut": {
                 "ko": "대화 그래프 수정 바로가기",
                 "en": "Dialog Graph Editor ShortCut",
                 "jp": "Dialog Graph Editor ShortCut",
-                "zh": "对话框图编辑快捷方式"
+                "zh": "场景对话框图编辑快捷方式"
             },
             "Move focus to next input": {
                 "ko": "다음 인풋으로 이동하기",
@@ -2818,7 +2818,7 @@
                 "ko": "Dialog Graph Code Editor Shortcut",
                 "en": "Dialog Graph Code Editor Shortcut",
                 "jp": "Dialog Graph Code Editor Shortcut",
-                "zh": "转到对话框图代码"
+                "zh": "转到场景对话框图代码"
             },
             "Move to previous or next tab": {
                 "ko": "Move to previous or next tab",
@@ -2830,13 +2830,13 @@
                 "ko": "Dialog Set Shortcut",
                 "en": "Dialog Set Shortcut",
                 "jp": "Dialog Set Shortcut",
-                "zh": "对话框设置快捷方式"
+                "zh": "学习对话框快捷方式"
             },
             "Add Multi Input or Output": {
                 "ko": "multi input/output 추가",
                 "en": "Add Multi Input or Output",
                 "jp": "Add Multi Input or Output",
-                "zh": "对话框设置快捷方式"
+                "zh": "对话学习快捷方式"
             },
             "Move focus to upper or lower input": {
                 "ko": "Move focus to upper or lower input",
@@ -2860,7 +2860,7 @@
                 "ko": "Move focus to dialog graph or dialog set",
                 "en": "Move focus to dialog graph or dialog set",
                 "jp": "Move focus to dialog graph or dialog set",
-                "zh": "将光标移动到对话框图或者对话集处"
+                "zh": "将光标移动到场景对话框图或者对话集处"
             },
             "Reset simulator": {
                 "ko": "Reset simulator",
@@ -2883,7 +2883,7 @@
             "Sample Bot": {
                 "ko": "샘플로 만들기",
                 "en": "Create by sample",
-                "zh": "按样品创建",
+                "zh": "使用样本创建",
                 "jp": "サンプルで作成"
             },
             "Email has been sent again.": {
@@ -2955,7 +2955,7 @@
             "Move Dialog": {
                 "ko": "대화 이동",
                 "en": "Call",
-                "zh": "移动对话框",
+                "zh": "移动场景对话框",
                 "jp": "移動ダイアログ"
             },
             "Ask the question again": {
@@ -2967,13 +2967,13 @@
             "Search after dialog moved": {
                 "ko": "대화 이동 후 검색",
                 "en": "Search after dialog moved",
-                "zh": "搜索对话框后移动。",
+                "zh": "移动场景对话框后搜索。",
                 "jp": "ダイアログが移動した後の検索。"
             },
             "Move to previous dialog": {
                 "ko": "이전 대화로 이동",
                 "en": "Move to previous dialog",
-                "zh": "移到上一个对话框",
+                "zh": "移到上一个场景对话框",
                 "jp": "前のダイアログに移動"
             },
             "Move to parent dialog": {

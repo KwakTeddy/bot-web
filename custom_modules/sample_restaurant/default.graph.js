@@ -630,10 +630,7 @@ var commonDialogs = [
         "name": "답변없음",
         "input": "",
         "output": [
-            {
-                "text": "알아듣지 못했습니다.",
-                "kind": "Content"
-            }
+c
         ]
     }
 ];
