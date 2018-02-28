@@ -173,8 +173,8 @@
                                     <div class="dialog-editor-select-input" ng-class="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? '' : 'disabled'">
                                         <input type="text" ng-model="output.dialogName" ng-required="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? true : false" placeholder="{{lan('Dialog Input') }}" ng-focus="onActionFocus($event);" ng-keydown="onActionKeyDown($event, output);" ng-keyup="onActionKeyUp($event);">
                                         <ul class="dialog-editor-select-options">
-                                            <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
-                                            <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
+                                            <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)" data-id="{{ dialog.id }}">{{ dialog.name }}</li>
+                                            <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)" data-id="{{ dialog.id }}">{{ dialog.name }}</li>
                                         </ul>
                                     </div>
                                     <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 9px; right: 12px;" ng-click="deleteActionButton(output);">

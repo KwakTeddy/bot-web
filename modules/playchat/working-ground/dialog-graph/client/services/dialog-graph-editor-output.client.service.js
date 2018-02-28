@@ -239,8 +239,12 @@
                 }
                 else if(e.keyCode == 13) //enter
                 {
-                    var name = angular.element(e.currentTarget).next().find('.selected').text();
-                    output.dialog = name;
+                    var selected = angular.element(e.currentTarget).next().find('.selected');
+                    var id = selected.attr('data-id');
+                    var name = selected.text();
+                    output.dialogId = id;
+                    output.dialogName = name;
+                    output.kind = 'Action';
 
                     e.currentTarget.blur();
                 }
