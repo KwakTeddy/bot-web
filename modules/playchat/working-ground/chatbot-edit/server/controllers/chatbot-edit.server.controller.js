@@ -5,7 +5,7 @@ var BotAuth = mongoose.model('BotAuth');
 
 module.exports.find = function(req, res)
 {
-    BotAuth.find({ bot: req.params.botId, user: req.user._id }).populate('user').exec(function(err, list)
+    BotAuth.find({ bot: req.params.botId}).populate('user').exec(function(err, list)
     {
         if(err)
         {
