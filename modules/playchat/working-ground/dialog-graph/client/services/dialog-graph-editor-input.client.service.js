@@ -70,9 +70,7 @@
                             if(text.raw.trim())
                             {
                                 isBinded = true;
-
-                                var node = document.createTextNode(text.raw);
-                                target.append(node);
+                                target.append('<span class="text">' + text.raw + '</span>');
                             }
                         }
                         else
@@ -81,7 +79,7 @@
                             {
                                 isBinded = true;
 
-                                var html = '<span class="' + key + '" data-type="' + key + '">' + text + '</span>';
+                                var html = '<span class="' + key + '">' + text + '</span>';
                                 target.append(html);
                             }
                         }

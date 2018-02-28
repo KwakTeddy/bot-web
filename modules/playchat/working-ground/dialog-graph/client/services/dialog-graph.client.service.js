@@ -900,6 +900,7 @@
                     }
 
                     template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
+                    break;
                 }
             }
 
