@@ -909,19 +909,7 @@
 
         var makeOutputTemplate = function(output)
         {
-            if(typeof output == 'string')
-            {
-                return '<div><span>' + output + '</span></div>';
-            }
-            else if(typeof output.output == 'string')
-            {
-                return '<div><span>' + output.output + '</span></div>';
-            }
-            else if(typeof output.output == 'object')
-            {
-                return '<div><span>' + output.output.output ? output.output.output : output.output.text + '</span></div>';
-            }
-            else if(output.text)
+            if(output.text)
             {
                 var template = '<div>';
 
