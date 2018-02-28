@@ -71,7 +71,10 @@
 
             for(var i=0,l=$scope.intent.intentContents.length; i<l; i++)
             {
-                params.intentContents.push($scope.intent.intentContents[i].content);
+                if($scope.intent.intentContents[i].content)
+                {
+                    params.intentContents.push($scope.intent.intentContents[i].content);
+                }
             }
 
             IntentService.save(params, function()
