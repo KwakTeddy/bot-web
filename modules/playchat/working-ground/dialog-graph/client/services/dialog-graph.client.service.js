@@ -12,6 +12,8 @@
 
         var Menu = function()
         {
+            this.tempDialog = undefined;
+            this.tempDialogElement = undefined;
             this.currentDialog = undefined;
             this.isOpened = false;
         };
@@ -37,6 +39,97 @@
         {
             var dialog = this.currentDialog.get(0).children[0].dialog;
             instance.editor.open(dialog, null);
+
+            this.closeMenu();
+        };
+
+        Menu.prototype.cut = function()
+        {
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+            var parent = this.currentDialog.parent().parent();
+            var parentDialog = parent.get(0).children[0].dialog;
+
+            instance.focusById(parentDialog.id);
+
+            var index = parentDialog.children.indexOf(dialog);
+            parentDialog.children.splice(index, 1);
+
+            parent.find('.graph-fold').get(0).style.display = 'none';
+
+            this.currentDialog.next().css('margin-top', '21.4px');
+            this.currentDialog.parent().get(0).removeChild(this.currentDialog.get(0));
+            
+            this.tempDialogElement = this.currentDialog;
+            this.tempDialog = dialog;
+            this.closeMenu();
+
+            instance.refreshLine();
+
+            angular.element('#menuPaste').attr('data-using', 'true');
+        };
+
+        var changeDialogInfo = function(dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                dialogs[i].id += '-Clone';
+                dialogs[i].name += '-Clone';
+
+                if(dialogs[i].children)
+                {
+                    changeDialogInfo(dialogs[i].children);
+                }
+            }
+        };
+
+        Menu.prototype.copy = function()
+        {
+            var dialog = JSON.parse(JSON.stringify(this.currentDialog.get(0).children[0].dialog));
+
+            var clone = this.currentDialog.get(0).cloneNode(true);
+
+            this.tempDialogElement = angular.element(clone);
+            this.tempDialog = dialog;
+
+            this.tempDialog.id += '-Clone';
+            this.tempDialog.name += '-Clone';
+
+            if(this.tempDialog.children)
+            {
+                changeDialogInfo(this.tempDialog.children);
+            }
+
+            this.tempDialogElement.attr('id', this.tempDialog.id);
+            this.tempDialogElement.find('.graph-dialog-header span').text(this.tempDialog.name);
+
+            this.closeMenu();
+
+            angular.element('#menuPaste').attr('data-using', 'true');
+        };
+
+        Menu.prototype.paste = function()
+        {
+            if(this.tempDialog && this.tempDialogElement)
+            {
+                var parentDialog = this.currentDialog.get(0).children[0].dialog;
+                (parentDialog.children || (parentDialog.children = [])).push(this.tempDialog);
+                this.tempDialogElement.insertBefore(this.currentDialog.find('.plus'));
+
+                instance.focusById(this.tempDialog.id);
+
+                this.tempDialog = undefined;
+                this.tempDialogElement = undefined;
+
+                this.currentDialog.find('.graph-fold').get(0).style.display = '';
+
+                instance.refreshLine();
+
+                instance.dirty = true;
+
+                instance.$rootScope.$broadcast('saveDialogGraph', { saveFileName: instance.fileName });
+            }
+
+            angular.element('#menuPaste').attr('data-using', 'false');
 
             this.closeMenu();
         };

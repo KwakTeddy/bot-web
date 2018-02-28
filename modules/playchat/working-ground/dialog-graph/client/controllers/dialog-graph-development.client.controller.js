@@ -487,7 +487,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.save = function(saveFileName)
         {
-            if(!$scope.isDirty)
+            if(!DialogGraph.isDirty())
                 return;
 
             var data = DialogGraph.getCompleteData();

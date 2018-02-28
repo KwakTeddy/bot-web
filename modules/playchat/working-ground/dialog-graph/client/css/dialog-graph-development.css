@@ -644,6 +644,17 @@
     color: white;
 }
 
+.dialog-menu > li[data-using=false]
+{
+    color: gray;
+}
+
+.dialog-menu > li[data-using=false]:hover a
+{
+    background-color: transparent;
+    color: gray;
+}
+
 .dialog-menu > li:first-child
 {
     text-align: center;
