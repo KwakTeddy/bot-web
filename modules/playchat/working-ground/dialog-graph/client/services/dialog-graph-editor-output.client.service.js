@@ -103,6 +103,16 @@
                 $scope.isAddExternalImage = true;
             };
 
+            $scope.deleteExternalImage = function(output)
+            {
+                $scope.isAddExternalImage = false;
+                if(output.image)
+                {
+                    delete output.image.url;
+                    delete output.image.displayname;
+                }
+            };
+
             $scope.addOutputImage = function(e)
             {
                 DialogGraphEditor.isDirty = true;
@@ -160,7 +170,13 @@
 
             $scope.moveButtonToDown = function(output, button)
             {
-
+                var index = output.buttons.indexOf(button);
+                if(index != -1 && index < output.buttons.length - 1)
+                {
+                    var target = output.buttons[index+1];
+                    output.buttons[index+1] = button;
+                    output.buttons[index] = target;
+                }
             };
 
             $scope.addActionButton = function(output)
