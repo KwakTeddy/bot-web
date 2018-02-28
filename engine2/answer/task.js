@@ -37,7 +37,7 @@ var Transaction = require('../utils/transaction.js');
                     var origin = console.log;
                     console.log = function()
                     {
-                        Logger.analysisLog('task', { logs: arguments });
+                        Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
                     };
 
                     task.preCallback.call(task, dialogInstance, context, function(retryMessage)
@@ -54,7 +54,7 @@ var Transaction = require('../utils/transaction.js');
                 catch(err)
                 {
                     console.error(err);
-                    Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                    Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
                 }
             });
         }
@@ -70,7 +70,7 @@ var Transaction = require('../utils/transaction.js');
                     var origin = console.log;
                     console.log = function()
                     {
-                        Logger.analysisLog('task', { logs: arguments });
+                        Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
                     };
 
                     task.action.call(task, dialogInstance, context, function(retryMessage)
@@ -87,7 +87,7 @@ var Transaction = require('../utils/transaction.js');
                 catch(err)
                 {
                     console.error(err);
-                    Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                    Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
                 }
             });
         }
@@ -103,7 +103,7 @@ var Transaction = require('../utils/transaction.js');
                     var origin = console.log;
                     console.log = function()
                     {
-                        Logger.analysisLog('task', { logs: arguments });
+                        Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
                     };
 
                     task.postCallback.call(task, dialogInstance, context, function(retryMessage)
@@ -121,7 +121,7 @@ var Transaction = require('../utils/transaction.js');
                 catch(err)
                 {
                     console.error(err);
-                    Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                    Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
                 }
             });
         }
@@ -213,7 +213,7 @@ var Transaction = require('../utils/transaction.js');
                         catch(err)
                         {
                             console.error(err);
-                            Logger.analysisLog('task', { logs: JSON.stringify(err) });
+                            Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
                         }
                     }
                     else if(typeof t == 'string')
@@ -246,7 +246,7 @@ var Transaction = require('../utils/transaction.js');
         }
         else
         {
-            Logger.analysisLog('task', { logs: name + ' undefined' });
+            Logger.analysisLog('task', { logs: name + ' undefined' }, context.user.userKey);
             callback();
         }
     };

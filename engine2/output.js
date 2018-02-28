@@ -103,7 +103,7 @@ var utils = require('./utils/utils.js');
                             values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
                         }
 
-                        var list = getValue(value, key);
+                        var list = getValue(values, key);
                         if(list)
                         {
                             var resultText = '';

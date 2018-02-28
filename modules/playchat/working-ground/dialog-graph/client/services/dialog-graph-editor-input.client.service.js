@@ -324,7 +324,7 @@
                 });
             };
 
-            var openAddPanel = function(focusedText, focusedElement, type, typeText)
+            var openAddPanel = function(focusedText, focusedElement, type, typeText, callback)
             {
                 var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]').show();
                 target.css('right', '0');
@@ -379,11 +379,11 @@
 
                 if(focusedText.startsWith('#'))
                 {
-                    openAddPanel(focusedText, focusedElement, 'intent', '#');
+                    openAddPanel(focusedText, focusedElement, 'intent', '#', callback);
                 }
                 else if(focusedText.startsWith('@'))
                 {
-                    openAddPanel(focusedText, focusedElement, 'entity', '@');
+                    openAddPanel(focusedText, focusedElement, 'entity', '@', callback);
                 }
                 else if(focusedText.startsWith('$'))
                 {
