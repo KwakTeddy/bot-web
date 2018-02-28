@@ -25,7 +25,7 @@ var Logger = require('./logger.js');
     {
     };
 
-    AnswerManager.prototype.noAnswer = function(transaction, bot, context, userInput, currentDialog, previousDialog, error, callback)
+    AnswerManager.prototype.noAnswer = function(transaction, bot, context, userInput, previousDialog, error, callback)
     {
         var quibble = undefined;
         if(bot.options.useQuibble)
@@ -39,7 +39,7 @@ var Logger = require('./logger.js');
             console.log(chalk.yellow('[[[ Quibble ]]]'));
 
             Logger.analysisLog('answer', { output: { text : quibble } }, context.user.userKey);
-            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, 'quibble', 'quibble', previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
         }
         else
@@ -68,7 +68,7 @@ var Logger = require('./logger.js');
             var dialog = bot.dialogMap['noanswer'];
             var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
             Logger.analysisLog('answer', { target: target, output: { text : output } }, context.user.userKey);
-            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, output, dialog.id, dialog.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
         }
     };
@@ -129,7 +129,7 @@ var Logger = require('./logger.js');
             }
             else
             {
-                that.noAnswer(bot, userInput, currentDialog, previousDialog, error, callback);
+                that.noAnswer(bot, userInput, previousDialog, error, callback);
             }
         });
     };
@@ -195,7 +195,7 @@ var Logger = require('./logger.js');
                 }
                 else
                 {
-                    that.noAnswer(bot, userInput, currentDialog, previousDialog, error, callback);
+                    that.noAnswer(bot, userInput, previousDialog, error, callback);
                 }
             });
         });
@@ -257,7 +257,7 @@ var Logger = require('./logger.js');
             }
             else
             {
-                that.noAnswer(bot, userInput, currentDialog, previousDialog, error, callback);
+                that.noAnswer(bot, userInput, previousDialog, error, callback);
             }
         });
     };
@@ -351,9 +351,6 @@ var Logger = require('./logger.js');
                 }
                 else
                 {
-                    var currentDialog = context.session.history[0];
-                    if(!currentDialog.userInput)
-                        currentDialog.userInput = userInput;
                     var previousDialog = undefined;
                     if(context.session.history.length > 1)
                     {
@@ -364,7 +361,7 @@ var Logger = require('./logger.js');
                         previousDialog = { card: {} };
                     }
 
-                    that.noAnswer(transaction, bot, context, userInput, currentDialog, previousDialog, error, callback);
+                    that.noAnswer(transaction, bot, context, userInput, previousDialog, error, callback);
                 }
             });
         }

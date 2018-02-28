@@ -36,7 +36,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         //테스트용
         this.PAGE_ACCESS_TOKEN = 'EAAEQcB2wZC5MBAM74uGkfE97nqjZBh7JXa2B6RYJ6zx6SUTuJXp2Kanyfz87Bpt2dLWq3GcG2M1nGCyaj94XfLfDZCNQG26hJudPne2kjKUKLx0t6yj3XdH1KKGUheffAw507Qkjt4J58H5x0ZCnYEodQzkoZAXXrqEjwRXhK7AZDZD';
 
-        this.accessTokens = {};
+        this.pageInfos = {};
     };
 
     Facebook.prototype.get = function(req, res)
@@ -52,11 +52,43 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         }
     };
 
+    Facebook.prototype.sendMessage = function(botId, accessToken, message, sender)
+    {
+        var Engine = require('../core.js');
+
+        var that = this;
+        if(message.text)
+        {
+            Engine.process(botId, 'facebook', sender.id, message.text, {}, function(context, out)
+            {
+                var output = out.output;
+                var message = that.makeOutputMessage(output);
+
+                request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + accessToken, json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
+                {
+                    console.log(body);
+                });
+            },
+            function(err)
+            {
+                if(err == 'old-version')
+                {
+                    request.post({ url : 'https://old.playchat.ai/facebook/' + botId + '/webhook', json: data }, function(err, response, body)
+                    {
+                        console.log(body);
+                    });
+                }
+                else
+                {
+                    console.log(err);
+                }
+            });
+        }
+    };
+
     Facebook.prototype.post = function(req, res)
     {
         var that = this;
-        var Engine = require('../core.js');
-
         var data = req.body;
 
         if(data.object == 'page')
@@ -75,50 +107,15 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
                     console.log(recipient);
                     console.log(message);
 
-                    if(message.text)
+                    that.getPageInfo(recipient.id, function(err, data)
                     {
-                        Engine.process(req.params.bot, 'facebook', sender.id, message.text, {}, function(context, out)
+                        if(!err)
                         {
-                            var output = out.output;
-                            var message = that.makeOutputMessage(output);
+                            that.pageInfos[recipient.id] = data;
 
-                            if(that.accessTokens[recipient.id])
-                            {
-                                request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + that.accessTokens[recipient.id], json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
-                                {
-                                    console.log(body);
-                                });
-                            }
-                            else
-                            {
-                                that.getAccessToken(recipient.id, function(err, accessToken)
-                                {
-                                    if(!err)
-                                    {
-                                        that.accessTokens[recipient.id] = accessToken;
-                                        request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + that.accessTokens[recipient.id], json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
-                                        {
-                                            console.log(body);
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        function(err)
-                        {
-                            if(err == 'old-version')
-                            {
-                                request.post({ url : 'https://old.playchat.ai/facebook/' + req.params.bot + '/webhook', json: data }, function(err, response, body)
-                                {
-                                    console.log(body);
-                                });
-                            }
-                            else
-                            {
-                                console.log(err);
-                            }
-                        });
-                    }
+                            that.sendMessage(data.userBotId, data.accessToken, message, sender);
+                        }
+                    });
 
                     next();
                 },
@@ -138,7 +135,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         }
     };
 
-    Facebook.prototype.getAccessToken = function(senderId, callback)
+    Facebook.prototype.getPageInfo = function(senderId, callback)
     {
         UserBotFbPage.findOne({ pageId: senderId }).exec(function(err, data)
         {
@@ -148,7 +145,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
             }
             else
             {
-                callback(null, data.accessToken);
+                callback(null, data);
             }
         });
     };

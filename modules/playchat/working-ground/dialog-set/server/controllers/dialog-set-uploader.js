@@ -96,8 +96,8 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         var lastData = undefined;
         for(var r=1; r<range.e.r; r++)
         {
-            var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })].v.trim();
-            var a = ws[XLSX.utils.encode_cell({ c: range.e.c, r: r })].v.trim();
+            var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })].v;
+            var a = ws[XLSX.utils.encode_cell({ c: range.e.c, r: r })].v;
 
             var category = '';
             for(var c=0; c<range.e.c-1; c++)
@@ -136,12 +136,12 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
                 if(q)
                 {
-                    lastData.q.push(q);
+                    lastData.q.push(q.trim());
                 }
 
                 if(a)
                 {
-                    lastData.a.push(a);
+                    lastData.a.push(a.trim());
                 }
             }
         }
