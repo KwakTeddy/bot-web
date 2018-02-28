@@ -62,7 +62,7 @@
             }, 100);
         };
 
-        $scope.save = function(e)
+        $scope.save = function()
         {
             var params = {};
             params.botId = chatbot.id;

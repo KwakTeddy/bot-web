@@ -38,7 +38,7 @@ var Logger = require('./logger.js');
             console.log();
             console.log(chalk.yellow('[[[ Quibble ]]]'));
 
-            Logger.analysisLog('answer', { output: { text : quibble } });
+            Logger.analysisLog('answer', { output: { text : quibble } }, context.user.userKey);
             Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
         }
@@ -67,7 +67,7 @@ var Logger = require('./logger.js');
 
             var dialog = bot.dialogMap['noanswer'];
             var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
-            Logger.analysisLog('answer', { target: target, output: { text : output } });
+            Logger.analysisLog('answer', { target: target, output: { text : output } }, context.user.userKey);
             Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, currentDialog.output[0].text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
         }
@@ -215,7 +215,7 @@ var Logger = require('./logger.js');
         console.log(transaction.qa.matchedDialog);
         console.log(text);
 
-        Logger.analysisLog('answer', { target: transaction.qa.matchedDialog, output: { text : text } });
+        Logger.analysisLog('answer', { target: transaction.qa.matchedDialog, output: { text : text } }, context.user.userKey);
         Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
 
         callback({ type: 'qa', output: { text: text }});
@@ -250,7 +250,7 @@ var Logger = require('./logger.js');
 
             if(output)
             {
-                Logger.analysisLog('answer', { target: dialogInstance, output: output });
+                Logger.analysisLog('answer', { target: dialogInstance, output: output }, context.user.userKey);
                 Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
                 callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
@@ -326,7 +326,7 @@ var Logger = require('./logger.js');
 
             transaction.done(function()
             {
-                Logger.analysisLog('input', userInput);
+                Logger.analysisLog('input', userInput, context.user.userKey);
 
                 context.session.currentCategory = '';
 
