@@ -593,7 +593,8 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
                     return;
 
-                if(e.srcElement.nodeName != 'BODY')
+                console.log('키코드 : ', e.keyCode);
+                if(that.editor.isOpen)
                 {
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
@@ -621,216 +622,215 @@
 
                     return;
                 }
-                else if(e.keyCode == 27)
+                else
                 {
-                    that.editor.close();
-                }
-
-                if(e.keyCode == 39) // right
-                {
-                    if(e.ctrlKey || e.metaKey)
+                    if(e.keyCode == 27)
                     {
-
+                        that.editor.close();
                     }
-                    else if(e.altKey)
+                    else if(e.keyCode == 39) // right
                     {
-                        var next = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).next();
-                        if(next.length == 1)
+                        if(e.ctrlKey || e.metaKey)
                         {
-                            var id = next.attr('id').replace(/\./gi, '\\\\.');
 
-                            that.$scope.selectTab({ currentTarget: '#' + id}, next.attr('id'));
-
-                            that.$scope.currentTabName = next.attr('id');
                         }
-                    }
-                    else
-                    {
-                        if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
+                        else if(e.altKey)
                         {
-                            if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+                            var next = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).next();
+                            if(next.length == 1)
                             {
-                                // that.focus(that.focusedTarget.nextElementSibling.children[0]);
+                                var id = next.attr('id').replace(/\./gi, '\\\\.');
+
+                                that.$scope.selectTab({ currentTarget: '#' + id}, next.attr('id'));
+
+                                that.$scope.currentTabName = next.attr('id');
+                            }
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
+                            {
+                                if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+                                {
+                                    // that.focus(that.focusedTarget.nextElementSibling.children[0]);
+                                }
+                                else
+                                {
+                                    that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
+                                }
+                            }
+                        }
+
+                        e.preventDefault();
+                    }
+                    else if(e.keyCode == 40) // down
+                    {
+                        if(e.ctrlKey || e.metaKey)
+                        {
+                            that.moveDownDialog(angular.element(that.focusedTarget.parentElement));
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.parentElement.nextElementSibling)
+                            {
+                                if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
+                                {
+                                    if(that.focusedTarget.parentElement.parentElement.parentElement.nextElementSibling)
+                                    {
+                                        var parent = that.focusedTarget.parentElement.parentElement.parentElement;
+                                        var target = undefined;
+                                        do
+                                        {
+                                            parent = parent.nextElementSibling;
+                                            if(parent.children.length <= 1)
+                                                return;
+
+                                            target = parent.children[1].children.length > 1 ? parent.children[1].children[0] : undefined;
+
+                                        } while(!target);
+
+                                        that.focus(target.children[0]);
+                                    }
+
+                                    // that.focus(that.focusedTarget.parentElement.nextElementSibling);
+                                }
+                                else
+                                {
+                                    that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
+                                }
+                            }
+                        }
+
+                        e.preventDefault();
+                    }
+                    else if(e.keyCode == 37) // left
+                    {
+                        if(e.ctrlKey || e.metaKey)
+                        {
+
+                        }
+                        else if(e.altKey)
+                        {
+                            var prev = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
+                            var id = prev.attr('id').replace(/\./gi, '\\\\.');
+
+                            that.$scope.selectTab({ currentTarget: '#' + id}, prev.attr('id'));
+
+                            that.$scope.currentTabName = prev.attr('id');
+                        }
+                        else
+                        {
+                            if (that.focusedTarget.className.indexOf('plus') != -1)
+                            {
+                                // that.focus(that.focusedTarget.parentElement.previousElementSibling);
+                            }
+                            else if (that.focusedTarget.parentElement.parentElement.previousElementSibling)
+                            {
+                                that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
+                            }
+                        }
+
+                        e.preventDefault();
+                    }
+                    else if(e.keyCode == 38) // up
+                    {
+                        if(e.ctrlKey || e.metaKey)
+                        {
+                            that.moveUpDialog(angular.element(that.focusedTarget.parentElement));
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.className.indexOf('plus') != -1)
+                            {
+
+                                // that.focus(that.focusedTarget.previousElementSibling.children[0]);
+                            }
+                            else if(that.focusedTarget.parentElement.previousElementSibling)
+                            {
+                                that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
                             }
                             else
                             {
-                                that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
-                            }
-                        }
-                    }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 40) // down
-                {
-                    if(e.ctrlKey || e.metaKey)
-                    {
-                        that.moveDownDialog(angular.element(that.focusedTarget.parentElement));
-                    }
-                    else
-                    {
-                        if(that.focusedTarget.parentElement.nextElementSibling)
-                        {
-                            if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
-                            {
-                                if(that.focusedTarget.parentElement.parentElement.parentElement.nextElementSibling)
+                                if(that.focusedTarget.parentElement.parentElement.parentElement.previousElementSibling)
                                 {
                                     var parent = that.focusedTarget.parentElement.parentElement.parentElement;
                                     var target = undefined;
                                     do
                                     {
-                                        parent = parent.nextElementSibling;
+                                        parent = parent.previousElementSibling;
                                         if(parent.children.length <= 1)
                                             return;
 
-                                        target = parent.children[1].children.length > 1 ? parent.children[1].children[0] : undefined;
+                                        target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
 
                                     } while(!target);
 
                                     that.focus(target.children[0]);
                                 }
-
-                                // that.focus(that.focusedTarget.parentElement.nextElementSibling);
-                            }
-                            else
-                            {
-                                that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
                             }
                         }
+
+                        e.preventDefault();
                     }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 37) // left
-                {
-                    if(e.ctrlKey || e.metaKey)
+                    else if(e.keyCode == 13)
                     {
+                        //ENTER
+                        var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                        var dialog = that.focusedTarget.dialog;
 
+                        that.editor.open(parent ? parent.dialog : undefined, dialog);
                     }
-                    else if(e.altKey)
+                    else if(e.keyCode == 45)
                     {
-                        var prev = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
-                        var id = prev.attr('id').replace(/\./gi, '\\\\.');
-
-                        that.$scope.selectTab({ currentTarget: '#' + id}, prev.attr('id'));
-
-                        that.$scope.currentTabName = prev.attr('id');
-                    }
-                    else
-                    {
-                        if (that.focusedTarget.className.indexOf('plus') != -1)
+                        //INSERT
+                        if(e.shiftKey)
                         {
-                            // that.focus(that.focusedTarget.parentElement.previousElementSibling);
-                        }
-                        else if (that.focusedTarget.parentElement.parentElement.previousElementSibling)
-                        {
-                            that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
-                        }
-                    }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 38) // up
-                {
-                    if(e.ctrlKey || e.metaKey)
-                    {
-                        that.moveUpDialog(angular.element(that.focusedTarget.parentElement));
-                    }
-                    else
-                    {
-                        if(that.focusedTarget.className.indexOf('plus') != -1)
-                        {
-
-                            // that.focus(that.focusedTarget.previousElementSibling.children[0]);
-                        }
-                        else if(that.focusedTarget.parentElement.previousElementSibling)
-                        {
-                            that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                            var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                            that.editor.open(parent.dialog, null);
                         }
                         else
                         {
-                            if(that.focusedTarget.parentElement.parentElement.parentElement.previousElementSibling)
-                            {
-                                var parent = that.focusedTarget.parentElement.parentElement.parentElement;
-                                var target = undefined;
-                                do
-                                {
-                                    parent = parent.previousElementSibling;
-                                    if(parent.children.length <= 1)
-                                        return;
-
-                                    target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
-
-                                } while(!target);
-
-                                that.focus(target.children[0]);
-                            }
+                            that.editor.open(that.focusedTarget.dialog, null);
                         }
                     }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 13)
-                {
-                    //ENTER
-                    var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
-                    var dialog = that.focusedTarget.dialog;
-
-                    that.editor.open(parent ? parent.dialog : undefined, dialog);
-                }
-                else if(e.keyCode == 45)
-                {
-                    //INSERT
-                    if(e.shiftKey)
+                    else if(e.keyCode == 46)
                     {
-                        var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
-                        that.editor.open(parent.dialog, null);
+                        //DEL
+                        that.deleteDialog(angular.element(that.focusedTarget.parentElement));
                     }
-                    else
+                    else if(e.keyCode == 32)
                     {
-                        that.editor.open(that.focusedTarget.dialog, null);
+                        var target = that.focusedTarget.nextElementSibling;
+                        that.toggleChild(target);
                     }
-                }
-                else if(e.keyCode == 46)
-                {
-                    //DEL
-                    that.deleteDialog(angular.element(that.focusedTarget.parentElement));
-                }
-                else if(e.keyCode == 32)
-                {
-                    var target = that.focusedTarget.nextElementSibling;
-                    that.toggleChild(target);
-                }
-                else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
-                {
-                    that.$scope.save();
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else if(e.keyCode == 90 && (e.metaKey || e.ctrlKey))
-                {
-                    if(e.shiftKey)
+                    else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
                     {
-                        that.$scope.redo();
+                        that.$scope.save();
+
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
-                    else
+                    else if(e.keyCode == 90 && (e.metaKey || e.ctrlKey))
                     {
-                        that.$scope.undo();
+                        if(e.shiftKey)
+                        {
+                            that.$scope.redo();
+                        }
+                        else
+                        {
+                            that.$scope.undo();
+                        }
+
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
+                    else if(e.keyCode == 186 && e.shiftKey)
+                    {
+                        angular.element('#search').focus();
 
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else if(e.keyCode == 186 && e.shiftKey)
-                {
-                    angular.element('#search').focus();
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else
-                {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
                 }
             });
         };
@@ -1376,7 +1376,6 @@
                 imageTemplate = '<div class="graph-dialog-image">' + imageTemplate + '</div>';
             }
 
-
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
@@ -1387,6 +1386,11 @@
             });
 
             t.find('.graph-dialog-item').get(0).dialog = dialog;
+
+            if(!dialog.children || dialog.children.length == 0)
+            {
+                t.find('.graph-fold').hide();
+            }
 
             makeDialogDraggable(t.find('.graph-dialog-item').get(0));
 
@@ -1564,9 +1568,7 @@
         {
             for(var i=0; i<list.length; i++)
             {
-                var target = list[i].previousElementSibling.parentElement;
-
-                list[i].style.top = (target.offsetTop + 35) + 'px';
+                list[i].style.top = '55px';
             }
         };
 
