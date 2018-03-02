@@ -709,8 +709,6 @@
                     }
                     else if(e.altKey)
                     {
-                        console.log(that.$scope.currentTabName.replace(/\./gi, '\\\\.'));
-
                         var prev = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
                         var id = prev.attr('id').replace(/\./gi, '\\\\.');
 
@@ -1568,8 +1566,7 @@
             {
                 var target = list[i].previousElementSibling.parentElement;
 
-                var half = target.offsetHeight / 2;
-                list[i].style.top = ((half > 90 ? 90 : half) - 11) + 'px';
+                list[i].style.top = (target.offsetTop + 35) + 'px';
             }
         };
 
@@ -1677,7 +1674,7 @@
         {
             var half = src.offsetHeight / 2;
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop - 1 + (half > PLUS_BUTTON_MARGIN_TOP ? PLUS_BUTTON_MARGIN_TOP : half);
+            var y1 = dest.offsetTop + dest.offsetHeight / 2;
 
             var x2 = dest.offsetLeft;
             var y2 = dest.offsetTop + dest.offsetHeight / 2;
@@ -1707,7 +1704,7 @@
             var srcHalf = (src.offsetHeight / 2);
 
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + (srcHalf > 90 ? 90 : srcHalf);
+            var y1 = src.offsetTop + 67;
 
             for(var i=0, l=children.length; i<l; i++)
             {
@@ -1756,7 +1753,7 @@
                 {
                     //일반 다이얼로그
                     x2 = dest.offsetLeft;
-                    y2 = dest.offsetTop + (srcHalf > 90 ? 90 : srcHalf);
+                    y2 = dest.offsetTop + 67;
 
                     if(i == 0)
                     {
