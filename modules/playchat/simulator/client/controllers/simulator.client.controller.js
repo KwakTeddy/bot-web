@@ -63,14 +63,25 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             else
                 date = new Date();
 
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
+            var options = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
-            hour = hour < 10 ? '0' + hour : hour;
-            min = min < 10 ? '0' + min : min;
-            return month + "월 " + day + "일 " + hour + ':' + min;
+            var code = $cookies.get('language');
+            if(code == 'ko')
+            {
+                return date.toLocaleDateString('ko-KR', options);
+            }
+            else if(code == 'zh')
+            {
+                return date.toLocaleDateString('zh-CN', options);
+            }
+            else if(code == 'jp')
+            {
+                return date.toLocaleDateString('ja-JP', options);
+            }
+            else
+            {
+                return date.toLocaleDateString('en-US', options);
+            }
         };
 
         var addBotBubble = function(text, time)
