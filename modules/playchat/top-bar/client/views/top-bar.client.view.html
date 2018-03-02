@@ -95,14 +95,14 @@
             <button type="button" class="blue-button" style="width: auto;padding:8px;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
         </span>
         <span style="margin: 0 15px;width:100px;">
-            <div class="select-wrapper">
+            <label class="select-label">
                 <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
                     <option value="ko">{{ lan('Korean') }}</option>
                     <option value="en">{{ lan('English') }}</option>
                     <option value="zh">{{ lan('Chinese') }}</option>
                     <option value="jp">{{ lan('Japanese') }}</option>
                 </select>
-            </div>
+            </label>
         </span>
         <a class="login" href="#" ng-click="openMenu($event);"></a>
         <ul class="popup-menu user-menu">

@@ -16,11 +16,12 @@
             this.closeCallback = undefined;
             this.isDirty = false;
             this.myBotAuth = { read: true, edit: true };
+            this.isOpen = false;
         };
 
         DialogGraphEditor.prototype.open = function(parent, dialog, which)
         {
-            console.log('오픈 : ');
+            this.isOpen = true;
             this.isDirty = false;
 
             if(!this.myBotAuth.edit)
@@ -34,7 +35,7 @@
 
             setTimeout(function()
             {
-                if(which == 'header')
+                if(!which || which == 'header')
                 {
                     var el = angular.element('#graphDialogEditor .dialog-editor-input:first').focus().get(0);
                     el.setSelectionRange(0, el.value.length);
@@ -47,7 +48,7 @@
                 else if(which == 'output')
                 {
                     var el = angular.element('#graphDialogEditor .dialog-editor-output-text textarea').focus().get(0);
-
+                    el.focus();
                 }
             }, 502);
 
@@ -90,6 +91,8 @@
             {
                 this.closeCallback();
             }
+
+            this.isOpen = false;
         };
 
         if(!instance)

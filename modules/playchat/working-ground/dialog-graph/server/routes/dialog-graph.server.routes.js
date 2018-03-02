@@ -11,4 +11,5 @@ module.exports = function(app)
     app.post('/api/:botId/dialog-graphs/:fileName', dialoggraphs.saveFile);
     app.delete('/api/:botId/dialog-graphs/:fileName', dialoggraphs.deleteFile);
     app.get('/api/:botId/dialog-graphs/nlp/:text', dialoggraphs.getNlp);
+    app.get('/api/dialog-graphs-template', dialoggraphs.getBlankTemplate);
 };

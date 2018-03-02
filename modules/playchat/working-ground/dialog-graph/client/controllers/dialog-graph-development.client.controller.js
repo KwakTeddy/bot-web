@@ -12,6 +12,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
+    $scope.focus = true;
 
     DialogGraphEditor.myBotAuth = chatbot.myBotAuth;
 
@@ -21,6 +22,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     angular.element('.video-popup').css('left', '75px');
 
     // 실제 그래프 로직이 들어있는 서비스
+    DialogGraph.isFocused = true;
     DialogGraph.setScope($compile, $scope, $rootScope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     DialogGraph.setCanvas('#graphDialogCanvas');
@@ -48,6 +50,12 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.$on('refreshGraph', function(context, data)
         {
             $scope.loadFile(data.fileName || 'default.graph.js');
+        });
+
+        $scope.$on('releaseGraphFocus', function()
+        {
+            $scope.focus = false;
+            DialogGraph.isFocused = false;
         });
 
         $scope.$on('makeNewType', function(context, name, sourceFileName)
@@ -116,9 +124,21 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('saveDialogGraph', function(context, data)
         {
-            console.log(data.saveFileName);
             $scope.save(data.saveFileName);
         });
+
+        $scope.isFocused = function()
+        {
+            return $scope.focus;
+        };
+
+        $scope.toFocus = function()
+        {
+            $scope.focus = true;
+            DialogGraph.isFocused = true;
+
+            $rootScope.$broadcast('focusToDialogGraph');
+        };
 
         $scope.checkFailedDialog = function()
         {

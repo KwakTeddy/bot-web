@@ -263,6 +263,14 @@
     transition: right 0.5s;
 
     overflow: auto;
+
+    padding: 0 20px;
+    margin-bottom: 10px;
+}
+
+.graph-body.focused
+{
+    outline: 1px dashed #ddd;
 }
 
 #graphDialogCanvas

@@ -250,7 +250,7 @@
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
-                $scope.showInputList = true;
+                $scope.showInputList = '@';
                 EntityService.query({ botId: chatbot.id, page: 1, countPerPage: 10, name : name ? name.trim() : '' }, function(result)
                 {
                     var html = '';
@@ -293,7 +293,7 @@
             {
                 angular.element('.dialog-editor-body').css('overflow', 'hidden');
 
-                $scope.showInputList = true;
+                $scope.showInputList = '$';
 
                 // 나중에는 실제로 봇엔진이 들고있는 공통 타입들을 가지고 와야함.
                 var commons = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
@@ -340,7 +340,7 @@
 
                 target.find('form').get(0).saveCallback = function(name)
                 {
-                    callback('#' + name);
+                    callback(typeText + name);
                     target.css('right', '-368px');
                 };
 

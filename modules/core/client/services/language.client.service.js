@@ -3132,8 +3132,13 @@
                 "en": "Paste",
                 "zh": "糊",
                 "jp": "ペースト"
-            }
-
+            },
+            "DialogGraphManagementCreateDescription": {
+                "ko": "파일 이름은 알파벳 대문자 또는 알파벳 소문자로 시작해야하며 알파벳 또는 숫자 또는 대시 (-) 여야합니다.",
+                "en": "File names must start with a alphabet capital letter or a alphabet small letter and must be alphabet or number or dash(-).",
+                "zh": "文件名必须以字母大写或小写字母开头，并且必须是字母或数字或破折号（-）。",
+                "jp": "ファイル名はアルファベット大文字またはアルファベット小文字で始まり、アルファベットまたは数字またはダッシュ（-）でなければなりません。"
+            },
 
 
         };
