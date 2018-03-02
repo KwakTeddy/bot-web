@@ -69,11 +69,11 @@
                     </div>
                 </td>
                 <td>
-                    <div ng-show="intents && intents.length > 0">
+                    <div ng-show="userInput.intents && userInput.intents.length > 0">
                         <table style="width: 100%;">
                             <colgroup>
-                                <col style="width: 80%;"/>
-                                <col style="width: 20%;"/>
+                                <col style="width: 75%;"/>
+                                <col style="width: 25%;"/>
                             </colgroup>
                             <thead>
                                 <tr>
@@ -82,7 +82,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="intent in intents">
+                                <tr ng-repeat="intent in userInput.intents">
                                     <td>{{ intent.intentName }}</td>
                                     <td style="text-align: center;">{{ intent.matchRate }}</td>
                                 </tr>
@@ -91,10 +91,10 @@
                     </div>
                 </td>
                 <td>
-                    <div ng-repeat="(key, words) in entities">
+                    <div ng-repeat="(key, words) in userInput.entities">
                         <div>{{ key }}</div>
                         <ul>
-                            <li ng-repeat="word in words">{{ word.word }}</li>
+                            <li ng-repeat="word in words">{{ word.name }}</li>
                         </ul>
                     </div>
                 </td>
