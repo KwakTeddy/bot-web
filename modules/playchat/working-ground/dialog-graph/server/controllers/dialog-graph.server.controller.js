@@ -274,3 +274,10 @@ module.exports.getNlp = function(req, res)
         res.jsonp({ text: nlpText });
     });
 };
+
+module.exports.getBlankTemplate = function(req, res)
+{
+    var language = req.query.language;
+    var data = fs.readFileSync(path.resolve('./modules/chatbots/server/controllers/sample/blank/graph.' + language + '.template'));
+    res.send({ data: data.toString() });
+};

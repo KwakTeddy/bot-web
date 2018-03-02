@@ -66,7 +66,8 @@
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('File Name') }}</span>
-                        <input type="text" style="height: 35px; width: 85%;" placeholder="{{ lan('Type name of the file.') }}" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-zA-Z0-9-]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
+                        <p style="margin: 0; padding-left: 3px; padding-bottom: 5px; margin-bottom: 5px;">{{ lan('DialogGraphManagementCreateDescription') }}</p>
+                        <input type="text" style="height: 35px; width: 85%;" placeholder="{{ lan('Type name of the file.') }}" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-zA-Z]*[a-zA-Z0-9-]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
                     </label>
                     <p style="color: red; font-size: 12px; padding-left: 20px;">{{ modal.mgmtModal.data.error }}</p>
                 </div>
