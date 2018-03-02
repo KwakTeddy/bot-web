@@ -262,15 +262,15 @@
     position: relative;
 }
 
-.select-wrapper::after
-{
-    content: url(/modules/core/client/imgs/default_select_arrow.png);
-    position: absolute;
-    right: 4px;
-    background-color: white;
-    top: 9px;
-    cursor: pointer;
-}
+/*.select-wrapper::after*/
+/*{*/
+    /*content: url(/modules/core/client/imgs/default_select_arrow.png);*/
+    /*position: absolute;*/
+    /*right: 4px;*/
+    /*background-color: white;*/
+    /*top: 9px;*/
+    /*cursor: pointer;*/
+/*}*/
 
 .jumbo-select
 {
