@@ -466,19 +466,17 @@ var dialogs = [
                 "text": "<+bot.name+> 주소\n\n서울특별시 서초구 효령로4길 7",
                 "buttons": [
                     {
-                        "url": "https://map.naver.com/?mapmode=0&lng=39d126de18996d8a144a5a61be3b702e&title=%ED%95%98%EC%9A%B0%EC%8A%A4&pinId=38237621&dlevel=10&lat=5f024fcb2a6d36a67f5fa552eb4ad84e&enc=&pinType=site",
+                        "url": "https://map.naver.com/?query=%EC%84%9C%EC%9A%B8+%EC%84%9C%EC%B4%88%EA%B5%AC+%EA%B0%95%EB%82%A8%EB%8C%80%EB%A1%9C+373+(%EC%84%9C%EC%B4%88%EB%8F%99%2C+%ED%99%8D%EC%9A%B0%EB%B9%8C%EB%94%A9)+WeWork",
                         "text": "네이버지도보기"
                     },
                     {
-                        "url": "http://dmaps.kr/86qni",
+                        "url": "http://dmaps.kr/2i3bv",
                         "text": "daum지도보기"
                     },
                     {
-                        "url": "",
                         "text": "이전으로 가기"
                     },
                     {
-                        "url": "",
                         "text": "처음으로 돌아가기"
                     }
                 ]
