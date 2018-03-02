@@ -340,7 +340,7 @@
 
                 target.find('form').get(0).saveCallback = function(name)
                 {
-                    callback('#' + name);
+                    callback(typeText + name);
                     target.css('right', '-368px');
                 };
 
