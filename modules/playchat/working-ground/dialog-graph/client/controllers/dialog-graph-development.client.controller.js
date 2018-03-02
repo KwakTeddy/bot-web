@@ -136,6 +136,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         {
             $scope.focus = true;
             DialogGraph.isFocused = true;
+
+            $rootScope.$broadcast('focusToDialogGraph');
         };
 
         $scope.checkFailedDialog = function()

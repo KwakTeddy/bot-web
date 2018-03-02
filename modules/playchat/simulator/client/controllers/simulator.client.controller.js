@@ -348,7 +348,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
-        $scope.onFocus = function()
+        $scope.$on('focusToDialogGraph', function()
+        {
+            angular.element('#simulatorInput').blur();
+        });
+
+        $scope.onFocus = function(e)
         {
             $rootScope.$broadcast('releaseGraphFocus');
         };
