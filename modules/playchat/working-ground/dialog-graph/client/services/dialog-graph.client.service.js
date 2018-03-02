@@ -531,7 +531,11 @@
         {
             if(id)
             {
-                this.deleteDialog(angular.element('#' + id));
+                var target = angular.element('#' + id);
+                if(target.length > 0)
+                {
+                    this.deleteDialog(angular.element('#' + id));
+                }
             }
         };
 
@@ -574,6 +578,11 @@
             instance.refresh();
             instance.setDirty(true);
             instance.focusById(afterFocusId);
+
+            if(this.editor.focusId != dialog.id)
+            {
+                this.editor.close();
+            }
         };
 
         DialogGraph.prototype.bindKeyboardEventToCanvas = function()
@@ -796,7 +805,6 @@
                 }
                 else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
                 {
-                    console.log('세이브???');
                     that.$scope.save();
 
                     e.preventDefault();

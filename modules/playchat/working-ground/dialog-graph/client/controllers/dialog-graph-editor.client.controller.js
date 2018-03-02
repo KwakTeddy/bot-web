@@ -78,8 +78,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 }
             }
 
-            console.log('아웃풋 : ', $scope.dialog.output);
-
             setTimeout(function()
             {
                 DialogGraphEditorInput.init($scope); // 편집시에 초기화
@@ -332,6 +330,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             dialog = result;
 
+            DialogGraphEditor.focusId = dialog.id;
+
             DialogGraph.addChildDialog(parent, result);
 
             DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children:first'), dialog);
@@ -352,6 +352,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
         else if(dialog)
         {
+            DialogGraphEditor.focusId = dialog.id;
             $scope.isNew = undefined;
         }
 

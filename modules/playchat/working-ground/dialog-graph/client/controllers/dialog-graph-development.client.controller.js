@@ -116,7 +116,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('saveDialogGraph', function(context, data)
         {
-            console.log(data.saveFileName);
             $scope.save(data.saveFileName);
         });
 
