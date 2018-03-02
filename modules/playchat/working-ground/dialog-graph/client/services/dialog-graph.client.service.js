@@ -983,7 +983,7 @@
                     {
                         displayText = input[key];
                     }
-                    else if(key == 'text')
+                    else if(key == 'text' && input[key].raw.trim())
                     {
                         displayText = input[key].raw;
                     }
@@ -992,8 +992,11 @@
                         displayText = 'if(' + input[key].replace(/[\n\r]*/gi, '').trim() + ')';
                     }
 
-                    template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
-                    break;
+                    if(displayText)
+                    {
+                        template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
+                        break;
+                    }
                 }
             }
 

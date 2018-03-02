@@ -52,7 +52,7 @@ var ContextManager = require('../context.js');
                 {
                     if(src[i].trim() == key)
                     {
-                        return { key: key, matchedName: dest[key][0].matchedName };
+                        return { key: key, matchedName: dest[key][0].matchWord.join(', ') };
                     }
                 }
             }
@@ -64,7 +64,7 @@ var ContextManager = require('../context.js');
             {
                 if(src == key)
                 {
-                    return { key: key, matchedName: dest[key][0].matchedName };
+                    return { key: key, matchedName: dest[key][0].matchWord.join(', ') };
                 }
             }
         }
