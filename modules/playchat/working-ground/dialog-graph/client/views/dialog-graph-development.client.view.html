@@ -106,7 +106,7 @@ caption
                 <!--top: 2px;-->
         </div>
     </div>
-    <div class="graph-body">
+    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
         <div id="graphDialogCanvas"></div>
 
         <ul class="dialog-menu" style="display: none;">

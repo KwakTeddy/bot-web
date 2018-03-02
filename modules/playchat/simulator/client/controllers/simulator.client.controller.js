@@ -348,6 +348,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        $scope.onFocus = function()
+        {
+            $rootScope.$broadcast('releaseGraphFocus');
+        };
+
         $scope.refresh = function()
         {
             clearBubble();
