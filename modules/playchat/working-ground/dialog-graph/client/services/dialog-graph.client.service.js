@@ -612,6 +612,10 @@
 
                     return;
                 }
+                else if(e.keyCode == 27)
+                {
+                    that.editor.close();
+                }
 
                 if(e.keyCode == 39) // right
                 {
