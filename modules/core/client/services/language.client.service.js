@@ -3174,8 +3174,13 @@
                 "en": "Bot id must be starts with alphabet small or capital letter",
                 "zh": "机器ID必须以字母小写或大写字母开头。",
                 "jp": "ボットIDはアルファベット小文字または大文字で始まる必要があります。"
+            },
+            "Has been applied": {
+                "ko": "적용되었습니다.",
+                "en": "Has been applied",
+                "zh": "已被应用。",
+                "jp": "適用された。"
             }
-
         };
 
         var list = {};
