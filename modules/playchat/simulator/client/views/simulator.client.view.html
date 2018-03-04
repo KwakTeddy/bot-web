@@ -19,6 +19,19 @@
 {
     margin-top: 0;
 }
+
+#simulator-bot-name, .system-text > .name
+{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.system-text > .name
+{
+    display: inline-block;
+    width: 45%;
+}
 </style>
 
 <script type="text/template" id="botAnswerTemplate">
@@ -56,7 +69,7 @@
 <div ng-controller="SimulatorController" style="height: 100%;">
     <div class="simulator-background">
         <div class="simulator-header">
-            <p id="simulator-bot-name">{{ chatbotName.length > 10 ? chatbotName.slice(0, 10) + '...' : chatbotName}}</p>
+            <p id="simulator-bot-name">{{ chatbotName }}</p>
             <a href="#" class="simulator-refresh" ng-click="refresh($event);"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reset.png"></a>
             <a href="#" class="simulator-close" ng-click="toggle($event);"></a>
         </div>
