@@ -18,54 +18,53 @@ module.exports = function(bot)
 		{
 		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("싱글")!==-1)
 		    {
+                context.session.selecroom="싱글룸";
+                context.session.price="50000";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797303x-1404764313.jpg"};
                 dialog.output[0].text = "☃싱글룸☃\n✔Single Room\n\n36m2 침실1, 욕실1, 화장실1\n55인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 50000원";
+                dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797303x-1404764313.jpg"};
+                dialog.output[1].text = "☃싱글룸☃\n✔Single Room\n\n36m2 침실1, 욕실1, 화장실1\n55인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 50000원";
             }
             else if(dialog.userInput.text.indexOf("2")!==-1 || dialog.userInput.text.indexOf("트윈")!==-1)
             {
+                context.session.selecroom="트윈룸";
+                context.session.price="80000";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797320x-1404764397.jpg"};
                 dialog.output[0].text = "☃트윈룸☃\n✔Twin Room\n\n48m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 80000원";
+                dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797320x-1404764397.jpg"};
+                dialog.output[1].text = "☃트윈룸☃\n✔Twin Room\n\n48m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 80000원";
             }
             else if(dialog.userInput.text.indexOf("3")!==-1 || dialog.userInput.text.indexOf("더블")!==-1)
             {
+                context.session.selecroom="더블룸";
+                context.session.price="100000";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797340x-1404764397.jpg"};
                 dialog.output[0].text = "☃더블룸☃\n✔Double Room\n\n침50m2 실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 100000원";
+                dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797340x-1404764397.jpg"};
+                dialog.output[1].text = "☃더블룸☃\n✔Double Room\n\n침50m2 실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 100000원";
             }
             else if(dialog.userInput.text.indexOf("4")!==-1 || dialog.userInput.text.indexOf("트리플")!==-1)
             {
+                context.session.selecroom="트리플룸";
+                context.session.price="120000";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797515x-1404764397.jpg"};
                 dialog.output[0].text = "☃트리플룸☃\n✔Triple Room\n\n60m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 120000원";
+                dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797515x-1404764397.jpg"};
+                dialog.output[1].text = "☃트리플룸☃\n✔Triple Room\n\n60m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 120000원";
             }
 			callback();
 		}
 	});
 
-	bot.setTask('savetime', 
-	{
-		action: function (dialog, context, callback)
-		{
-            context.session.time=dialog.userInput.text;
-			callback();
-		}
-	});
 	bot.setTask('savedatein',
 	{
 		action: function (dialog, context, callback)
 		{
-			context.session.datein=dialog.userInput.types.date;
-			console.log("666666666677777777766666"+context.session.datein);
-            var regDate =/(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})/;
-            var arr = regDate.exec(context.session.datein);
-            console.log("arr[1]"+arr[1]);
-            console.log("arr[2]"+arr[2]);
-            console.log("arr[3]"+arr[3]);
-            // 判断年、月、日的取值范围是否正确
-            context.session.inyear=arr[1];
-            context.session.inmonth=arr[2];
-            context.session.inday=arr[3];
-
-			callback();
-		}
+		    if(dialog.userInput.types.date!==undefined) {
+                context.session.datein = dialog.userInput.types.date;
+                callback();
+            }
+        }
 	});
     //计算天数差的函数，通用
     function  DateDiff(sDate1,  sDate2){    //sDate1和sDate2是2002-12-18格式
@@ -137,48 +136,24 @@ module.exports = function(bot)
         return (nYear % 400 == 0);
     }
 
-    bot.setType('savedateout',
+    bot.setTask('savedateout',
         {
-            typeCheck: function (dialog, context, callback) {
-                console.log("---------------------------");
-                var matched=false;
-                // 判断年、月、日的取值范围是否正确 
-                // 先判断格式上是否正确 
-                var regDate =/^(\d{4})[- ]?(\d{1,2})[- ]?(\d{1,2})$/;
-                if (!regDate.test(dialog.userInput.text))
-                {
-                    matched=false;
-                    callback(matched);
+            action: function (dialog, context, callback) {
+                if(dialog.userInput.types.date!==undefined) {
+                    context.session.dateout = dialog.userInput.types.date;
                 }
-                else{
-                    // 将年、月、日的值取到数组arr中，其中arr[0]为整个字符串，arr[1]-arr[3]为年、月、日
-                    var arr = regDate.exec(dialog.userInput.text);
-
-                    // 判断年、月、日的取值范围是否正确
-                    context.session.outyear=arr[1];
-                    context.session.outmonth=arr[2];
-                    context.session.outday=arr[3];
-
-                    var s1  =  context.session.inputyear+"-"+context.session.inputmonth+"-"+context.session.inputday;
-                    var s2  =  context.session.outyear+"-"+context.session.outmonth+"-"+context.session.outday;
+                    var s1  =  context.session.datein;
+                    var s2  =  context.session.dateout;
                     context.session.days=DateDiff(s1,s2);
-
-                    if(context.session.days>0){
-                        matched=IsMonthAndDateCorrect(arr[1], arr[2], arr[3]);
-                        context.session.dateout=s2;
-                        callback(matched);
-                    }
-                    else{matched=false; callback(matched);}
-                }
+                    callback();
             }
         });
 
-	bot.setTask('savepeoplenum', 
+	bot.setTask('savenum',
 	{
 		action: function (dialog, context, callback)
 		{
-            context.session.peoplenumber=dialog.userInput.types.peoplenumber;
-            console.log("context.session.peoplenumber: "+context.session.peoplenumber);
+            context.session.number=dialog.userInput.text;
 			callback();
 		}
 	});
@@ -191,19 +166,6 @@ module.exports = function(bot)
 			callback();
 		}
 	});
-
-	bot.setType('peoplenumber',
-    {
-        typeCheck: function (dialog, context, callback) {
-            var regDate = /^\d$/;
-            if (!regDate.test(dialog.userInput.text)) {
-                callback(false);
-            }
-            else {
-                callback(true, dialog.userInput.text);
-            }
-        }
-    });
 
 	bot.setTask('savemobile', 
 	{
@@ -283,21 +245,49 @@ module.exports = function(bot)
 
     bot.setTask('saveorder',
         {
-            action: function (dialog, context, callback)
-            {
-            	if(!context.user.order){
+
+            action: function (dialog, context, callback) {
+                if (!context.user.order) {
                     context.user.order=[];
-				}
-            	var neworder=
-            		{
-                        datein:context.session.datein,
-						time:context.session.time,
-						peoplenumber:context.session.peoplenumber,
-						name:context.session.name,
-						mobile:context.session.mobile
-            		};
-            	context.user.order.push(neworder);
-                callback();
+                }
+                    var number = Number(context.session.number);
+                    var price = Number(context.session.price);
+                    var allprice = number * price;
+                    context.session.allprice = String(allprice);
+
+                var date = new Date();
+                var seperator1 = "-";
+                var seperator2 = ":";
+                var month = date.getMonth() + 1;
+                var strDate = date.getDate();
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                    + " " + date.getHours() + seperator2 + date.getMinutes()
+                    + seperator2 + date.getSeconds();
+
+                context.session.time=currentdate;
+
+                    var neworder =
+                        {
+                            datein: context.session.datein,
+                            dateout: context.session.dateout,
+                            room: context.session.selecroom,
+                            number: context.session.number,
+                            name: context.session.name,
+                            mobile: context.session.mobile,
+                            price: context.session.price,
+                            allprice: context.session.allprice,
+                            time: currentdate,
+                            state: '예약',
+                            index: (context.user.order.length+1)
+                        };
+                    context.user.order.push(neworder);
+                    callback();
             }
         });
 
@@ -305,25 +295,28 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-            if(context.user.order) {
                 context.session.confirmlist = [];
-                for (var i = 0; i < context.user.order.length; i++) {
-                    if (dialog.userInput.text.indexOf(context.user.order[i].name) !== -1) {
-                        context.session.confirmlist.push(context.user.order[i]);
+                for (var j = 0; j < context.user.order.length; j++) {
+                    if (dialog.userInput.text.indexOf(context.user.order[j].name) !== -1 && context.user.order[j].state==="예약") {
+                        context.session.confirmlist.push(context.user.order[j]);
                     }
                 }
-                var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다.\n\n";
+                if(context.session.confirmlist.length>0){
+                var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다. 취소 하시고 싶은 예약의 번호를 입력해주세요. \n\n";
                 for (var i = 0; i < context.session.confirmlist.length; i++) {
-                    text = text.concat((i + 1) + '.\n일시: ' + context.session.confirmlist[i].datein + " " + context.session.confirmlist[i].time + '\n' +
-                        '인원: ' + context.session.confirmlist[i].peoplenumber + '명\n' +
+                    text = text.concat((i + 1) + '.\n입주날짜: ' + context.session.confirmlist[i].datein + '\n퇴실날짜: ' + context.session.confirmlist[i].dateout + '\n' +
+                        '객실: ' + context.session.confirmlist[i].room+ '\n' +
+                        '객실수: ' + context.session.confirmlist[i].number + '개\n' +
+                        '가격: ' + context.session.confirmlist[i].allprice + '개\n' +
+                        '예약 시간: ' + context.session.confirmlist[i].time + '\n' +
                         '연락처: ' + context.session.confirmlist[i].mobile + '\n\n');
                 }
-                    dialog.output[0].text = text;
+                dialog.output[0].text = text;
                     callback();
             }
             else{
-                dialog.output[0].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
-                dialog.output[0].buttons = [
+                dialog.output[1].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                dialog.output[1].buttons = [
                     {
                         text: "예약하기"
                     },
@@ -345,6 +338,47 @@ module.exports = function(bot)
 		{
 			dialog.output[0].image={url:"http://chuantu.biz/t6/239/1519783307x-1404764397.jpg"};
 			callback();
+		}
+	});
+
+	bot.setTask('orderstart', 
+	{
+		action: function (dialog, context, callback)
+		{
+            context.session.isorder=true;
+			callback();
+		}
+	});
+
+	bot.setTask('startmenu', 
+	{
+		action: function (dialog, context, callback)
+		{
+		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("메뉴")!==-1){
+		        context.session.isorder=false;
+            }
+			callback();
+		}
+	});
+
+	bot.setTask('deleteorder', 
+	{
+		action: function (dialog, context, callback)
+		{
+		    for(var i=0;i<context.session.confirmlist.length;i++) {
+		        var s=i+1;
+                if (dialog.userInput.text == s) {
+                    context.session.confirmlist[i].state="예약취소";
+
+                    for(var j=0;j<context.user.order.length;j++){
+                        if(context.session.confirmlist[i].index===context.user.order[j].index){
+                            context.user.order[j].state="예약취소";
+                            callback();
+                        }
+                    }
+                    callback();
+                }
+            }
 		}
 	});
 };

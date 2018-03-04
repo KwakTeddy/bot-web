@@ -21,27 +21,21 @@ var dialogs = [
                 "text": "메뉴리스트 아래와 같습니다.",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "1. 싱글룸"
                     },
                     {
-                        "url": "",
                         "text": "2. 트윈룸"
                     },
                     {
-                        "url": "",
                         "text": "3. 더블룸"
                     },
                     {
-                        "url": "",
                         "text": "4. 트리플룸"
                     },
                     {
-                        "url": "",
                         "text": "이전으로 가기"
                     },
                     {
-                        "url": "",
                         "text": "처음으로 돌아가기"
                     }
                 ]
@@ -58,7 +52,7 @@ var dialogs = [
                     {
                         "text": {
                             "raw": "싱글룸",
-                            "nlp": "싱글룸"
+                            "nlp": "싱글 룸"
                         }
                     },
                     {
@@ -76,7 +70,7 @@ var dialogs = [
                     {
                         "text": {
                             "raw": "더블룸",
-                            "nlp": "더블룸"
+                            "nlp": "더 블룸"
                         }
                     },
                     {
@@ -85,7 +79,7 @@ var dialogs = [
                     {
                         "text": {
                             "raw": "트리플룸",
-                            "nlp": "트리플룸"
+                            "nlp": "트리플 룸"
                         }
                     }
                 ],
@@ -95,11 +89,26 @@ var dialogs = [
                         "text": "☃하우스 함박스테이크☃\n  ✔house burgsteak\n\n상큼한 토마토 소스\n\n가격: 8900원",
                         "buttons": [
                             {
-                                "url": "",
                                 "text": "이전으로 가기"
                             },
                             {
-                                "url": "",
+                                "text": "처음으로 돌아가기"
+                            }
+                        ],
+                        "if": "context.session.isorder!==true"
+                    },
+                    {
+                        "kind": "Content",
+                        "text": "일 각실로 예약하시겠습니까?",
+                        "if": "context.session.isorder===true",
+                        "buttons": [
+                            {
+                                "text": "이 객실로 예약하기"
+                            },
+                            {
+                                "text": "이전으로 가기"
+                            },
+                            {
                                 "text": "처음으로 돌아가기"
                             }
                         ]
@@ -108,9 +117,35 @@ var dialogs = [
                 "task": {
                     "name": "image"
                 },
-                "id": "default1"
+                "id": "default1",
+                "children": [
+                    {
+                        "name": "1. 메뉴보기 예약하기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "이 객실로 예약하기",
+                                    "nlp": "이 객실 로 예약 하다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "객실 몇개 예약하실거에요? \n(ex: 2)",
+                                "type": "call",
+                                "dialogName": "2. 예약하기 인원",
+                                "dialogId": "default4"
+                            }
+                        ],
+                        "id": "default19"
+                    }
+                ]
             }
-        ]
+        ],
+        "task": {
+            "name": "startmenu"
+        }
     },
     {
         "name": "2. 예약하기 날짜",
@@ -158,33 +193,46 @@ var dialogs = [
                         "input": [
                             {
                                 "types": [
-                                    "savedateout"
+                                    "date"
                                 ]
                             }
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "예약하실 시간을 말씀해 주세요.\n(ex: 오후 4시)"
+                                "kind": "Action",
+                                "text": "어떤 객실을 예약해주실 건까요?\n 선택해주세요",
+                                "if": "context.session.days>=0",
+                                "type": "call",
+                                "dialogId": "default0",
+                                "dialogName": "1. 메뉴보기"
+                            },
+                            {
+                                "kind": "Action",
+                                "text": "퇴실날짜는 입주날짜보다 뒤에 있어야 됩니다.\n\n죄송하지만 확인하시고 다시 한번 입력해주시겠습니까?^^",
+                                "if": "context.session.days<0",
+                                "type": "repeat"
                             }
                         ],
+                        "task": {
+                            "name": "savedateout"
+                        },
                         "id": "default3",
                         "children": [
                             {
                                 "name": "2. 예약하기 인원",
                                 "input": [
                                     {
-                                        "if": "true"
+                                        "if": "false"
                                     }
                                 ],
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "몇명이 오실지 말씀해 주세요\n(ex: 6)"
+                                        "text": "객실 몇개 예약하실거에요? \n(ex: 2)"
                                     }
                                 ],
                                 "task": {
-                                    "name": "savetime"
+                                    "name": ""
                                 },
                                 "id": "default4",
                                 "children": [
@@ -192,9 +240,7 @@ var dialogs = [
                                         "name": "2. 예약하기 예약자",
                                         "input": [
                                             {
-                                                "types": [
-                                                    "peoplenumber"
-                                                ]
+                                                "regexp": "/^\\d/"
                                             }
                                         ],
                                         "output": [
@@ -204,7 +250,7 @@ var dialogs = [
                                             }
                                         ],
                                         "task": {
-                                            "name": "savepeoplenum"
+                                            "name": "savenum"
                                         },
                                         "id": "default5",
                                         "children": [
@@ -255,7 +301,7 @@ var dialogs = [
                                                                 "output": [
                                                                     {
                                                                         "kind": "Content",
-                                                                        "text": "예약내용을 확인해주세요.\n일시: +context.session.date+ +context.session.time+\n인원: +context.session.peoplenumber+명\n주문자성함: +context.session.name+\n연락처: +context.session.mobile+\n다음과 같이 예약신청하시겠습니까?"
+                                                                        "text": "예약내용을 확인해주세요.\n입주날짜: +context.session.datein+ \n퇴실날짜: +context.session.dateout+\n객실수: +context.session.number+개\n가격: +context.session.allprice+원\n예약 시간: +context.session.time+\n주문자성함: +context.session.name+\n연락처: +context.session.mobile+\n다음과 같이 예약신청하시겠습니까?"
                                                                     }
                                                                 ],
                                                                 "task": {
@@ -442,7 +488,10 @@ var dialogs = [
                 ],
                 "id": "default101"
             }
-        ]
+        ],
+        "task": {
+            "name": "orderstart"
+        }
     },
     {
         "name": "3. 예약확인",
@@ -481,13 +530,87 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "예약확인"
+                        "text": "예약확인",
+                        "if": "context.session.confirmlist.length>0"
+                    },
+                    {
+                        "kind": "Content",
+                        "text": "예약하기",
+                        "if": "context.session.confirmlist.length<=0",
+                        "type": "call",
+                        "dialogId": "default2",
+                        "dialogName": "2. 예약하기 날짜"
                     }
                 ],
                 "id": "default16",
                 "task": {
                     "name": "showlist"
-                }
+                },
+                "children": [
+                    {
+                        "name": "3. 예약확인 취소",
+                        "input": [
+                            {
+                                "regexp": "/^\\d/"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "삭제했습니다!",
+                                "buttons": [
+                                    {
+                                        "text": "이전으로 가기"
+                                    },
+                                    {
+                                        "text": "처음으로 돌아가기"
+                                    }
+                                ]
+                            }
+                        ],
+                        "task": {
+                            "name": "deleteorder"
+                        },
+                        "id": "default20"
+                    },
+                    {
+                        "name": "3. 예약확인 없는 경우 예약하기",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "예약하기",
+                                    "nlp": "예약 하다"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "",
+                                "type": "call",
+                                "dialogId": "default2",
+                                "dialogName": "2. 예약하기 날짜"
+                            }
+                        ],
+                        "id": "default22"
+                    },
+                    {
+                        "name": "3. 예약확인 취소 틀린 경우",
+                        "input": [
+                            {
+                                "if": "true"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "text": "죄송하지만 숫자만 다시 한번 입력해주시겠습니까?^^",
+                                "type": "repeat"
+                            }
+                        ],
+                        "id": "default21"
+                    }
+                ]
             }
         ]
     },
@@ -516,22 +639,20 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "<+bot.name+> 주소\n\n서울특별시 서초구 효령로4길 7",
+                "text": "<+bot.name+> 주소\n\n서울 서초구 강남대로 373 (서초동, 홍우빌딩) WeWork",
                 "buttons": [
                     {
-                        "url": "https://map.naver.com/?mapmode=0&lng=39d126de18996d8a144a5a61be3b702e&title=%ED%95%98%EC%9A%B0%EC%8A%A4&pinId=38237621&dlevel=10&lat=5f024fcb2a6d36a67f5fa552eb4ad84e&enc=&pinType=site",
+                        "url": "https://map.naver.com/?query=%EC%84%9C%EC%9A%B8+%EC%84%9C%EC%B4%88%EA%B5%AC+%EA%B0%95%EB%82%A8%EB%8C%80%EB%A1%9C+373+(%EC%84%9C%EC%B4%88%EB%8F%99%2C+%ED%99%8D%EC%9A%B0%EB%B9%8C%EB%94%A9)+WeWork",
                         "text": "네이버지도보기"
                     },
                     {
-                        "url": "http://dmaps.kr/86qni",
+                        "url": "http://dmaps.kr/2i3bv",
                         "text": "daum지도보기"
                     },
                     {
-                        "url": "",
                         "text": "이전으로 가기"
                     },
                     {
-                        "url": "",
                         "text": "처음으로 돌아가기"
                     }
                 ]
@@ -561,14 +682,12 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "<+bot.name+> 영업시간\n\nOpen hour\n오전 11시 30분 - 저녁 10시\n(last order / 9시)\n\nBreak time\n평일 오후 3 - 4시\n\n일요일은 쉽니다",
+                "text": "<+bot.name+> 영업시간\n\nOpen hour\n24시간\n\nBreak time\n평일 오후 12 - 1시\n\n쉬일 없습니다.",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "이전으로 가기"
                     },
                     {
-                        "url": "",
                         "text": "처음으로 돌아가기"
                     }
                 ]
@@ -703,4 +822,4 @@ module.exports = function(bot)
 {
 	bot.setDialogs(dialogs);
 	bot.setCommonDialogs(commonDialogs);
-};
+}
