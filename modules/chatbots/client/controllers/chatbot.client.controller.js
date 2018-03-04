@@ -44,7 +44,6 @@
             SharedChatBotService.query({}, function(list)
             {
                 $scope.sharedList = list;
-                console.log('머야??? : ', list);
             });
         };
 

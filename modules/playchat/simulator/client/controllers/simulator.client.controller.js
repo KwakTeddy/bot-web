@@ -94,16 +94,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
             }
 
-            var template = undefined;
-            var chabotName = undefined;
-
-            if(chatbot.name.length > 5)
-                chabotName = chatbot.name.slice(0, 5) + '...';
-            else
-                chabotName = chatbot.name;
-
-            template = angular.element('#botAnswerTemplate').html();
-            template = template.replace('{botName}', chabotName).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+            var template = angular.element('#botAnswerTemplate').html();
+            template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
             template = angular.element(template);
 
@@ -208,7 +200,21 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
-                if(data.type == 'dialog')
+                if(data.type == 'command')
+                {
+                    clearBubble();
+                    setTimeout(function()
+                    {
+                        if(data.dialogId)
+                        {
+                            $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
+                        }
+
+                        addBotBubble(data.output);
+                        $rootScope.$broadcast('onmsg', { message: data.output });    
+                    }, 100);
+                }
+                else if(data.type == 'dialog')
                 {
                     if(data.dialogId)
                     {
@@ -252,13 +258,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             else if(e.keyCode == 116) //F5
             {
-                clearBubble();
                 $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':build', false);
             }
             else if(e.keyCode == 117) //F6
             {
-                clearBubble();
                 $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':reset memory', false);
             }
@@ -316,15 +320,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.$on('simulator-build', function()
         {
-            console.log('빌드');
-            clearBubble();
             emitMsg(':build', false);
         });
 
         $scope.$on('simulator-build-without-reset-focus', function()
         {
             console.log('빌드');
-            clearBubble();
             emitMsg(':reload-bot-files', false);
         });
 
@@ -360,7 +361,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.refresh = function()
         {
-            clearBubble();
             emitMsg(':build', false);
         };
 

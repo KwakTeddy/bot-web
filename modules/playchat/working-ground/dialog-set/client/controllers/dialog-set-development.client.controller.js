@@ -29,6 +29,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         data: {}
     };
 
+    $scope.newAnswerInputCount = 1;
+    $scope.newQuestionInputCount = 1;
+
     //UI Handling
     (function()
     {
@@ -187,10 +190,10 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             });
         };
 
-        $scope.addInputElement = function(e)
+        $scope.addInputElement = function(e, type)
         {
             var check = false;
-            angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+            angular.element(e.currentTarget.parentElement).find('.textarea-wrapper > textarea').each(function()
             {
                 if(!this.value)
                 {
@@ -201,9 +204,18 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             if(!check)
             {
+                if(type == 'answer')
+                {
+                    $scope.newAnswerInputCount++;
+                }
+                else if(type == 'question')
+                {
+                    $scope.newQuestionInputCount++;
+                }
+
                 // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
-                var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
-                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus().removeAttr('required');
+                var target = angular.element(e.currentTarget.parentElement).find('.textarea-wrapper:last').get(0);
+                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).find('textarea').val('').focus().removeAttr('required');
             }
         };
 
@@ -254,7 +266,16 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     if(event.shiftKey)
                     {
                         //multi
-                        angular.element($compile(e.currentTarget.outerHTML)($scope)).insertAfter(e.currentTarget).val('').focus();
+                        angular.element($compile(e.currentTarget.parentElement.outerHTML)($scope)).insertAfter(e.currentTarget.parentElement).find('textarea').val('').focus();
+
+                        if(type == 'inputRaw')
+                        {
+                            $scope.newQuestionInputCount++;
+                        }
+                        else if(type == 'output')
+                        {
+                            $scope.newAnswerInputCount++;
+                        }
 
                         e.preventDefault();
                         e.stopPropagation();
@@ -294,6 +315,15 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                 if(!check)
                 {
+                    if(type == 'inputRaw')
+                    {
+                        $scope.newQuestionInputCount++;
+                    }
+                    else if(type == 'output')
+                    {
+                        $scope.newAnswerInputCount++;
+                    }
+
                     // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
                     var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
                     angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus();
@@ -303,13 +333,18 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 if(e.shiftKey)
                 {
-                    angular.element(e.currentTarget).prev().focus();
-                    angular.element(e.currentTarget).remove();
+                    angular.element(e.currentTarget).parent().prev().find('textarea').focus();
+                    angular.element(e.currentTarget).parent().remove();
+
+                    if(type == 'inputRaw')
+                    {
+                        $scope.newQuestionInputCount--;
+                    }
+                    else if(type == 'output')
+                    {
+                        $scope.newAnswerInputCount--;
+                    }
                 }
-            }
-            else
-            {
-                console.log(e.keyCode);
             }
         };
 
@@ -462,6 +497,19 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             dialogs.splice(index, 1);
         };
 
+        $scope.deleteNewInput = function(e, type)
+        {
+            angular.element(e.currentTarget.parentElement).remove();
+            if(type == 'answer')
+            {
+                $scope.newAnswerInputCount--;
+            }
+            else if(type == 'question')
+            {
+                $scope.newQuestionInputCount--;
+            }
+        };
+
         $scope.deleteDialog = function(dialog, e)
         {
             if(confirm($scope.lan('Are you sure you want to delete this item?')))
@@ -470,6 +518,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 {
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
+
+                    var index = $scope.dialogs.indexOf(dialog);
+                    $scope.dialogs.splice(index, 1);
 
                     // $rootScope.$broadcast('simulator-build');
                 });
@@ -677,6 +728,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         {
             DialogSetsService.save({ botId: chatbot._id, title: 'default', language: chatbot.language, usable: true }, function(dialogset)
             {
+                $rootScope.$broadcast('simulator-build');
+                
                 if(!openDialogsets[chatbot.id].hasOwnProperty('default'))
                 {
                     openDialogsets[chatbot.id]['default'] = dialogset._id;
