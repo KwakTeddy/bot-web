@@ -97,7 +97,7 @@ exports.findOne = function(req, res)
 
 exports.create = function(req, res)
 {
-    ChatBot.findOne({ name: req.body.name }).exec(function(err, bot)
+    ChatBot.findOne({ id: req.body.id }).exec(function(err, bot)
     {
         if(err)
         {
@@ -106,40 +106,51 @@ exports.create = function(req, res)
 
         if(bot)
         {
-            return res.status(400).send({ message: 'Duplicated Bot' });
+            return res.status(400).send({ message: 'Duplicated Bot Id' });
         }
 
-        var chatbot = new ChatBot(req.body);
-        chatbot.user = req.user;
-        chatbot.save(function(err)
+        ChatBot.findOne({ name: req.body.name }).exec(function(err, bot)
         {
             if(err)
             {
-                console.error(err);
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
+            if(bot)
             {
-                // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
-                // if(chatbot.templateId)
-                // {
-                //     var templateDir = path.resolve('./templates/' + req.body.templateDir);
-                //
-                //     var files = fs.readdirSync(templateDir + '/bot');
-                //     for(var i=0; i<files.length; i++)
-                //     {
-                //         if(files[i].endsWith('.js'))
-                //         {
-                //             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
-                //             fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
-                //         }
-                //     }
-                // }
-                // else
-                // {
-                if(!chatbot.templateId)
+                return res.status(400).send({ message: 'Duplicated Bot' });
+            }
+
+            var chatbot = new ChatBot(req.body);
+            chatbot.user = req.user;
+            chatbot.save(function(err)
+            {
+                if(err)
                 {
+                    console.error(err);
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
+                {
+                    // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
+                    // if(chatbot.templateId)
+                    // {
+                    //     var templateDir = path.resolve('./templates/' + req.body.templateDir);
+                    //
+                    //     var files = fs.readdirSync(templateDir + '/bot');
+                    //     for(var i=0; i<files.length; i++)
+                    //     {
+                    //         if(files[i].endsWith('.js'))
+                    //         {
+                    //             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
+                    //             fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
+                    //         }
+                    //     }
+                    // }
+                    // else
+                    // {
+                    var type = req.body.type || 'blank';
                     var dir = path.resolve('./custom_modules/' + req.body.id);
                     if(!fs.existsSync(dir))
                     {
@@ -149,12 +160,8 @@ exports.create = function(req, res)
                     var language = req.body.language;
                     if(language === undefined) language = 'en';
 
-                    if(req.body.isSample)
+                    if(type == 'sample')
                     {
-                        // var botjs = fs.readFileSync(__dirname + '/sample/bot.template');
-                        // var defaultjs = fs.readFileSync(__dirname + '/sample/default.template');
-                        // var graphjs = fs.readFileSync(__dirname + '/sample/graph.' + language + '.template');
-
                         var botjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/bot.template');
                         var defaultjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/default.template');
                         var graphjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template');
@@ -180,12 +187,12 @@ exports.create = function(req, res)
                                 else
                                 {
                                     IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function()
-                                    {
-                                    },
-                                    function(err)
-                                    {
-                                        console.error(err);
-                                    });
+                                        {
+                                        },
+                                        function(err)
+                                        {
+                                            console.error(err);
+                                        });
                                 }
                             });
                         }
@@ -214,10 +221,8 @@ exports.create = function(req, res)
                             });
                         }
                     }
-                    else
+                    else if(type == 'blank')
                     {
-                        // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
-                        // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
                         var botjs = fs.readFileSync(__dirname + '/sample/blank/bot.template');
                         var defaultjs = fs.readFileSync(__dirname + '/sample/blank/default.template');
                         var graphjs = fs.readFileSync(__dirname + '/sample/blank/graph.' + language + '.template');
@@ -226,24 +231,33 @@ exports.create = function(req, res)
                         fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                         fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                     }
-                }
-                // }
-
-                var botAuth = new BotAuth();
-                botAuth.bot = chatbot._id;
-                botAuth.user = req.user;
-                botAuth.giver = req.user;
-                botAuth.edit = true;
-
-                botAuth.save(function(err)
-                {
-                    if(err)
+                    else
                     {
-                        console.error(err);
-                        return res.status(400).send({ message: err.stack || err });
+                        var botjs = fs.readFileSync(path.resolve('./custom_modules/' + type + '/bot.js'));
+                        var defaultjs = fs.readFileSync(path.resolve('./custom_modules/' + type + '/default.js'));
+                        var graphjs = fs.readFileSync(path.resolve('./custom_modules/' + type + '/default.graph.js'));
+
+                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
+                        fs.writeFileSync(dir + '/default.js', defaultjs.toString());
+                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString());
                     }
 
-                    res.jsonp(chatbot);
+                    var botAuth = new BotAuth();
+                    botAuth.bot = chatbot._id;
+                    botAuth.user = req.user;
+                    botAuth.giver = req.user;
+                    botAuth.edit = true;
+
+                    botAuth.save(function(err)
+                    {
+                        if(err)
+                        {
+                            console.error(err);
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        res.jsonp(chatbot);
+                    });
                 });
             });
         });

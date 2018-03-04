@@ -2071,6 +2071,12 @@
                 "zh": "名称已经在使用",
                 "jp": "名前は既に使用しています"
             },
+            "BotId is already using": {
+                "ko": "봇 아이디가 이미 사용중입니다.",
+                "en": "BotId is already using",
+                "zh": "BotId已经在使用",
+                "jp": "BotIdは既に使用しています"
+            },
             "Manage Contents": {
                 "ko": "컨텐츠 관리",
                 "en": "Manage Contents",
@@ -2886,6 +2892,24 @@
                 "zh": "使用样本创建",
                 "jp": "サンプルで作成"
             },
+            "Sample Hotel": {
+                "ko": "샘플 호텔봇",
+                "en": "Sample Hotel Bot",
+                "zh": "酒店博特样本",
+                "jp": "サンプルホテルボット"
+            },
+            "Sample Restaurant": {
+                "ko": "샘플 레스토랑봇",
+                "en": "Sample Restaurant Bot",
+                "zh": "样本餐厅机器人",
+                "jp": "サンプルレストランボット"
+            },
+            "Sample Hospital": {
+                "ko": "샘플 병원봇",
+                "en": "Sample Hospital Bot",
+                "zh": "医院机器人样本",
+                "jp": "サンプル病院ボット"
+            },
             "Email has been sent again.": {
                 "ko": "이메일이 다시 전송되었습니다.",
                 "en": "Email has been sent again.",
@@ -3139,7 +3163,18 @@
                 "zh": "文件名必须以字母大写或小写字母开头，并且必须是字母或数字或破折号（-）。",
                 "jp": "ファイル名はアルファベット大文字またはアルファベット小文字で始まり、アルファベットまたは数字またはダッシュ（-）でなければなりません。"
             },
-
+            "Double click to editing": {
+                "ko": "편집하려면 더블클릭 하세요.",
+                "en": "Double click to editing",
+                "zh": "双击进行编辑。",
+                "jp": "ダブルクリックして編集します。"
+            },
+            "BotIdPattern": {
+                "ko": "봇 아이디는 알파벳 소문자 혹은 대문자로 시작해야 합니다.",
+                "en": "Bot id must be starts with alphabet small or capital letter",
+                "zh": "机器ID必须以字母小写或大写字母开头。",
+                "jp": "ボットIDはアルファベット小文字または大文字で始まる必要があります。"
+            }
 
         };
 
