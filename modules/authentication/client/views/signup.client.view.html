@@ -1,5 +1,5 @@
 <div class="signin-background">
-    <div id="logincontents" ng-if="successSignup === false" style="padding-top: 50px;">
+    <div id="logincontents" ng-if="successSignup === false && invalid === false && error === false && verified === false" style="padding-top: 50px;">
         <div class="mt16" style="margin-bottom: 20px;">
             <span class="p1">{{ lan('Create your account') }}</span>
             <!--<span class="p1">{{ lan('Registration for closed beta') }}</span>-->
@@ -61,6 +61,26 @@
         <div>
             <button type="button" class="blue-button" ng-click="receiveAgain();">{{ lan('Receive again') }}</button>
             <button type="button" class="blue-button" ng-click="moveToFront();">Home</button>
+        </div>
+    </div>
+    <div class="signup-complete-message" ng-if="invalid === true" style="text-align: center;">
+        <p class="p2">{{ lan('Your verification URL has expired.') }} {{ credentials.email }}</p>
+        <p class="p2">{{ lan('If you would like to receive the e-mail again, please click on the again button.') }}</p>
+        <div>
+            <button type="button" class="blue-button" ng-click="receiveAgain();">{{ lan('Receive again') }}</button>
+            <button type="button" class="blue-button" ng-click="moveToFront();">Home</button>
+        </div>
+    </div>
+    <div class="signup-complete-message" ng-if="error === true" style="text-align: center;">
+        <p class="p2">{{ errorMessage }}</p>
+        <div>
+            <button type="button" class="blue-button" ng-click="moveToFront();">Home</button>
+        </div>
+    </div>
+    <div class="signup-complete-message" ng-if="verified === true" style="text-align: center;">
+        <p class="p2">{{ lan('Your email is verified.') }}</p>
+        <div>
+            <a class="blue-button" href="/signin"><span style="color: white;">{{ lan('Get started right away.') }}</span></a>
         </div>
     </div>
 </div>
