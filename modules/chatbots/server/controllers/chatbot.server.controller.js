@@ -308,6 +308,25 @@ exports.rename = function(req, res)
     });
 };
 
+var getCloneName = function(name, index, callback)
+{
+    ChatBot.findOne({ name: name + (index == 0 ? '' : index) }).exec(function(err, item)
+    {
+        if(err)
+        {
+            callback(err);
+        }
+        else if(item)
+        {
+            getCloneName(name, index+1, callback);
+        }
+        else
+        {
+            callback(null, index);
+        }
+    });
+};
+
 exports.duplicate = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
@@ -319,48 +338,31 @@ exports.duplicate = function(req, res)
         }
         else
         {
-            var clone = new ChatBot();
-            clone.id = item.id + '_Clone';
-            clone.name = item.name + 'Clone';
-            clone.description = item.description;
-            clone.user = req.user;
-
-            clone.save(function(err)
+            getCloneName(item.name + 'Clone', 0, function(err, index)
             {
                 if(err)
                 {
+                    console.error(err);
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                if(!item.templateId)
+                var clone = new ChatBot();
+                clone.id = item.id + '_Clone' + (index == 0 ? '' : index);
+                clone.name = item.name + 'Clone' + (index == 0 ? '' : index);
+                clone.description = item.description;
+                clone.user = req.user;
+
+                clone.save(function(err)
                 {
-                    var dest = path.resolve('./custom_modules/' + item.id + '_Clone');
-                    ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
+                    if(err)
                     {
-                        if (err)
-                        {
-                            console.error(err);
-                            return res.status(400).send({ message: err.stack || err });
-                        }
+                        return res.status(400).send({ message: err.stack || err });
+                    }
 
-                        var fileList = fs.readdirSync(dest);
-                        for(var i=0; i<fileList.length; i++)
-                        {
-                            var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
-                            content = content.toString();
-                            content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
-
-                            fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
-                        }
-                        
-                        var botAuth = new BotAuth();
-                        botAuth.giver = req.user;
-                        botAuth.user = req.user;
-                        botAuth.bot = clone._id;
-                        botAuth.read = true;
-                        botAuth.edit = true;
-
-                        botAuth.save(function(err)
+                    if(!item.templateId)
+                    {
+                        var dest = path.resolve('./custom_modules/' + item.id + '_Clone' + (index == 0 ? '' : index));
+                        ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
                         {
                             if (err)
                             {
@@ -368,14 +370,40 @@ exports.duplicate = function(req, res)
                                 return res.status(400).send({ message: err.stack || err });
                             }
 
-                            res.jsonp(clone);
+                            var fileList = fs.readdirSync(dest);
+                            for(var i=0; i<fileList.length; i++)
+                            {
+                                var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
+                                content = content.toString();
+                                content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
+
+                                fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
+                            }
+
+                            var botAuth = new BotAuth();
+                            botAuth.giver = req.user;
+                            botAuth.user = req.user;
+                            botAuth.bot = clone._id;
+                            botAuth.read = true;
+                            botAuth.edit = true;
+
+                            botAuth.save(function(err)
+                            {
+                                if (err)
+                                {
+                                    console.error(err);
+                                    return res.status(400).send({ message: err.stack || err });
+                                }
+
+                                res.jsonp(clone);
+                            });
                         });
-                    });
-                }
-                else
-                {
-                    res.jsonp(clone);
-                }
+                    }
+                    else
+                    {
+                        res.jsonp(clone);
+                    }
+                });
             });
         }
     });
