@@ -324,7 +324,6 @@
             this.$rootScope = undefined;
 
             this.history = [];
-            this.historyIndex = 0;
 
             this.focusedTarget = undefined;
             this.testFocusedTarget = undefined;
@@ -341,6 +340,8 @@
             this.dirty = false;
 
             this.mode = 'dialog';
+
+            this.isFocused = true;
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -593,7 +594,6 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
                     return;
 
-                console.log('키코드 : ', e.keyCode);
                 if(that.editor.isOpen)
                 {
                     //에디터로 포커스 이동되어있을때
@@ -622,7 +622,7 @@
 
                     return;
                 }
-                else
+                else if(that.isFocused)
                 {
                     if(e.keyCode == 27)
                     {

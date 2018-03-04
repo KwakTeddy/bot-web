@@ -348,6 +348,16 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        $scope.$on('focusToDialogGraph', function()
+        {
+            angular.element('#simulatorInput').blur();
+        });
+
+        $scope.onFocus = function(e)
+        {
+            $rootScope.$broadcast('releaseGraphFocus');
+        };
+
         $scope.refresh = function()
         {
             clearBubble();

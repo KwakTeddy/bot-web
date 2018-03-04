@@ -42,25 +42,32 @@
             $scope.bot.sampleCategory = $scope.sampleCategory[0]
         }
 
-
+        if(!$scope.bot.id)
+        {
+            $scope.bot.id = $scope.templateId + '_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
+        }
 
         (function()
         {
-            if($scope.templateId != 'blank' && $scope.templateId != 'sample')
+            $scope.editBotId = function(e)
             {
-                ChatbotTemplatesService.get({ templateId: $stateParams.templateId }, function(template)
-                {
-                    console.log(template);
-
-                    $scope.template = template;
-
-                    angular.element('#templateCreateHtml').html('').append($compile(template.createHtml)($scope));
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-            }
+                angular.element(e.currentTarget).removeClass('disabled');
+            };
+            // if($scope.templateId != 'blank' && $scope.templateId != 'sample')
+            // {
+            //     ChatbotTemplatesService.get({ templateId: $stateParams.templateId }, function(template)
+            //     {
+            //         console.log(template);
+            //
+            //         $scope.template = template;
+            //
+            //         angular.element('#templateCreateHtml').html('').append($compile(template.createHtml)($scope));
+            //     },
+            //     function(err)
+            //     {
+            //         alert(err);
+            //     });
+            // }
 
             $scope.findAddress = function(e)
             {
@@ -159,18 +166,9 @@
 
             $scope.save = function()
             {
-
-                if(!$scope.bot.id)
-                {
-                    $scope.bot.id = $scope.templateId + '_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
-                }
-
-                // if(!$scope.bot.id.match(/^[a-zA-Z]+/))
-                // {
-                //     return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
-                // }
-                //var data={};
-                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, isSample: $scope.templateId == 'sample', sampleCategory: $scope.bot.sampleCategory }, function(chatbot)
+                var split = location.href.split('/');
+                var type = split[split.length-1];
+                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, type: type, sampleCategory: $scope.bot.sampleCategory }, function(chatbot)
                 {
                     delete chatbot.user;
                     chatbot.myBotAuth = { read: true, edit: true };
@@ -182,6 +180,10 @@
                     if(err.data.message == 'Duplicated Bot')
                     {
                         alert(LanguageService('Name is already using'));
+                    }
+                    else if(err.data.message == 'Duplicated Bot Id')
+                    {
+                        alert(LanguageService('BotId is already using'));
                     }
                     else
                     {
