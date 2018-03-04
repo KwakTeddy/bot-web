@@ -37,10 +37,6 @@
     </div>
 
     <div id="sharedBotContent" style="display: none;">
-        <div class="chatbot-new" ng-click="moveToCreate();">
-            <img src="/modules/chatbots/client/imgs/plus_white.png">
-            <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
-        </div>
         <div class="chatbots">
             <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectChatbot(chatbot.bot);">
                 <ul class="hei50">
