@@ -1574,16 +1574,26 @@
                 "jp": "ダイアログトレーニング"
             },
             "Dialog Set Usage": {
-                "ko": "대화셋 이용",
-                "en": "Dialog Set Usage",
-                "jp": "ダイアログセットの使用法",
-                "zh": "场景对话框使用量"
+                "ko": "대화량 - 대화셋",
+                "en": "Dialog Traffic - Dialog Set",
+                "jp": "デファリャン - ダイアログセット",
+                "zh": "对话量 - 对话框设置"
+
+                // "ko": "대화셋 이용",
+                // "en": "Dialog Set Usage",
+                // "jp": "ダイアログセットの使用法",
+                // "zh": "场景对话框使用量"
             },
             "Dialog Scenario Usage": {
-                "ko": "대화 시나리오 이용",
-                "en": "Dialog Scenario Usage",
-                "jp": "ダイアログシナリオの使用法",
-                "zh": "场景对话框图使用情况"
+                "ko": "대화량 - 시나리오",
+                "en": "Dialog Traffic - Dialog Scenario",
+                "jp": "デファリャン - ダイアログシナリオ",
+                "zh": "对话量 - 对话框场景"
+
+                // "ko": "대화 시나리오 이용",
+                // "en": "Dialog Scenario Usage",
+                // "jp": "ダイアログシナリオの使用法",
+                // "zh": "场景对话框图使用情况"
             },
             "User Detail": {
                 "ko": "사용자 세부 정보",
@@ -1592,16 +1602,37 @@
                 "zh": "用户详情"
             },
             "Dialog Training Input": {
-                "ko": "대화 학습 입력값",
-                "en": "Dialog Training Input",
-                "jp": "対話学習、入力値",
-                "zh": "对话学习输入"
+                "ko": "사용자 입력 - 대화셋",
+                "en": "User Input - Dialog set",
+                "jp": "ユーザー入力 - ダイアログセット",
+                "zh": "用户输入 - 对话框设置"
+
+                // "ko": "대화 학습 입력값",
+                // "en": "Dialog Training Input",
+                // "jp": "対話学習、入力値",
+                // "zh": "对话学习输入"
             },
             "Dialog Graph Input": {
-                "ko": "대화 그래프 입력값",
-                "en": "Dialog Graph Input",
-                "jp": "対話のグラフの入力値",
-                "zh": "场景对话框图输入"
+                "ko": "사용자 입력 - 대화 시나리오",
+                "en": "User Input - Dialog Scenario",
+                "jp": "ユーザー入力 - ダイアログシナリオ",
+                "zh": "用户输入 - 对话框场景"
+
+                // "ko": "대화 그래프 입력값",
+                // "en": "Dialog Graph Input",
+                // "jp": "対話のグラフの入力値",
+                // "zh": "场景对话框图输入"
+            },
+            "User Input Intent": {
+                "ko": "사용자 입력 - 인텐트",
+                "en": "User Input - Intent",
+                "jp": "ユーザー入力 - インテント",
+                "zh": "用户输入 - 意图"
+
+                // "ko": "대화 그래프 입력값",
+                // "en": "Dialog Graph Input",
+                // "jp": "対話のグラフの入力値",
+                // "zh": "场景对话框图输入"
             },
             "Failed Dialogs": {
                 "ko": "실패 대화",
