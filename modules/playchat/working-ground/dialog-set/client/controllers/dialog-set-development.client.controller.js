@@ -471,6 +471,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
 
+                    var index = $scope.dialogs.indexOf(dialog);
+                    $scope.dialogs.splice(index, 1);
+
                     // $rootScope.$broadcast('simulator-build');
                 });
             }
@@ -653,6 +656,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             }
             // 탭 셀렉트
             $scope.selectTab($scope.currentDialogsetId, title);
+
+            $rootScope.$broadcast('simulator-build');
         };
     })();
 
