@@ -82,12 +82,18 @@
             <form ng-submit="addDialog($event);">
                 <div class="topic-area"></div>
                 <div class="question-area">
-                    <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
-                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
+                    <div class="textarea-wrapper">
+                        <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
+                        <img ng-show="myBotAuth.edit && newQuestionInputCount > 1" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteNewInput($event, 'question');">
+                    </div>
+                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event, 'question');"></span>
                 </div>
                 <div class="answer-area">
-                    <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
-                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event);"></span>
+                    <div class="textarea-wrapper">
+                        <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
+                        <img ng-show="myBotAuth.edit && newAnswerInputCount > 1" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteNewInput($event, 'answer');">
+                    </div>
+                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event, 'answer');"></span>
                 </div>
                 <div class="functions-area" style="margin-top: 5px;">
                     <button class="blue-button"style="width: 90px;" ng-if="myBotAuth.edit"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> {{lan('Add') }}</button>
@@ -121,7 +127,7 @@
                             ng-keyup="watchModified('input', $event)"
                             ng-blur="saveModified('input', $event)"
                         >{{ input }}</textarea>
-                        <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
+                        <img ng-if="$index > 0 && myBotAuth.edit" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
                     </div>
 
                     <!--<textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw');" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">vvv</textarea>-->
@@ -139,7 +145,7 @@
                             ng-keyup="watchModified('output', $event)"
                             ng-blur="saveModified('input', $event)"
                         >{{ output }}</textarea>
-                        <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
+                        <img ng-if="$index > 0 && myBotAuth.edit" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
                     </div>
 
                     <!--<textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output');" ng-if="!isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>-->
