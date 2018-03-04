@@ -53,8 +53,8 @@
                     <td>{{ item.content }}</td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
-                        <a href="#" class="flR" ng-if="myBotAuth.edit" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" ng-if="myBotAuth.edit" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                        <a href="#" class="flR" ng-if="myBotAuth.edit && item.title != 'default'" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" ng-if="myBotAuth.edit && item.title != 'default'" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                     </td>
                     <td ng-if="!item.importState">
                         <div class="slide" ng-class="item.usable ? 'on' : ''" ng-if="myBotAuth.edit">
