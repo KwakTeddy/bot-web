@@ -6,7 +6,7 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 {
     $scope.$parent.loaded('top-bar');
 
-    var UserLanguageService = $resource('/api/users/language');
+    var UserService = $resource('/api/users');
     var ReportingService = $resource('/api/reporting');
 
     angular.element('.user-menu a').on('click', function()
@@ -35,7 +35,7 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     $scope.languageChange = function()
     {
-        UserLanguageService.save({ language: $scope.language }, function(result)
+        UserService.save({ language: $scope.language }, function(result)
         {
             user.language = $scope.language;
             $cookies.putObject('user', user);

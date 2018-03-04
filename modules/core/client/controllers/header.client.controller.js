@@ -6,7 +6,7 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 {
     $scope.isLogin = $cookies.get('login') == 'true';
 
-    var UserLanguageService = $resource('/api/users/language');
+    var UserService = $resource('/api/users');
     var ReportingService = $resource('/api/reporting');
 
     var user = $scope.user = $cookies.getObject('user');
@@ -26,7 +26,7 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
     $scope.languageChange = function()
     {
-        UserLanguageService.save({ language: $scope.language }, function(result)
+        UserService.save({ language: $scope.language }, function(result)
         {
             if(!user) user = {};
 

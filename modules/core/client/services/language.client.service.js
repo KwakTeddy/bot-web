@@ -3045,99 +3045,99 @@
             },
             "edu_input_keyword" : {
                 "ko": "기능가이드 챗봇 (사용자입력_키워드)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_keyword)",
+                "zh": "功能指南Chatbot（用户输入关键字）",
+                "jp": "機能ガイドチャットボット（ユーザー入力_キーワード）"
             },
             "edu_input_entity" : {
                 "ko": "기능가이드 챗봇 (사용자입력_엔터티)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_Entity)",
+                "zh": "功能指南Chatbot（用户输入实体）",
+                "jp": "機能ガイドChatbot（User Input_Entity）"
             },
             "edu_input_intent" : {
                 "ko": "기능가이드 챗봇 (사용자입력_인텐트)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_Intent)",
+                "zh": "功能指南Chatbot（用户Input_Intent）",
+                "jp": "機能ガイドチャットボット（ユーザー入力_番号）"
             },
             "edu_input_regexp" : {
                 "ko": "기능가이드 챗봇 (사용자입력_정규식)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_Regexp)",
+                "zh": "功能指南Chatbot（用户输入_Regexp）",
+                "jp": "機能ガイドChatbot（ユーザー入力_Regexp）"
             },
             "edu_input_type" : {
                 "ko": "기능가이드 챗봇 (사용자입력_타입)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_Type)",
+                "zh": "功能指南Chatbot（用户输入类型）",
+                "jp": "機能ガイドチャットボット（ユーザー入力タイプ）"
             },
             "edu_input_if" : {
                 "ko": "기능가이드 챗봇 (사용자입력_조건문)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_if)",
+                "zh": "功能指南Chatbot（用户输入_if）",
+                "jp": "機能ガイドChatbot（User Input_if）"
             },
             "edu_input_variable" : {
                 "ko": "기능가이드 챗봇 (사용자입력_변수)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (User Input_Variable)",
+                "zh": "功能指南Chatbot（用户输入变量）",
+                "jp": "機能ガイドチャットボット（ユーザー入力_可変）"
             },
             "edu_task_crawling" : {
                 "ko": "기능가이드 챗봇 (함수_크롤링)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Function_Crawling)",
+                "zh": "功能指南Chatbot（功能_爬行）",
+                "jp": "機能ガイドChatbot（Function_Crawling）"
             },
             "edu_task_api" : {
                 "ko": "기능가이드 챗봇 (함수_API)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Function_API)",
+                "zh": "功能指南Chatbot（Function_API）",
+                "jp": "機能ガイドChatbot（Function_API）"
             },
             "edu_output_variable" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_변수)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Chatbot Answer_Variable)",
+                "zh": "功能指南Chatbot（Chatbot Answer_Variable）",
+                "jp": "機能ガイドチャットボット（チャットボットAnswer_Variable）"
             },
             "edu_output_if" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_조건문)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Chatbot Answer_if)",
+                "zh": "功能指南Chatbot（Chatbot Answer_if）",
+                "jp": "機能ガイドチャットボット（Chatbot Answer_if）"
             },
             "edu_output_call" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_대화이동)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Chatbot Answer_Move other dialog)",
+                "zh": "功能指南Chatbot（Chatbot Answer_Move其他对话框）",
+                "jp": "機能ガイドチャットボット（Chatbot Answer_Move他のダイアログ）"
             },
             "edu_output_repeat" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_다시질문하기)",
-               "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Chatbot Answer_Repeat question)",
+                "zh": "功能指南Chatbot（Chatbot Answer_Repeat问题）",
+                "jp": "機能ガイドチャットボット（チャットボットアンサー_質問の返信）"
             },
             "edu_output_up" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_이전대화이동)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Chatbot Answer_Move previous dialog)",
+                "zh": "特征指南Chatbot（Chatbot Answer_Move前一个对话框）",
+                "jp": "機能ガイドチャットボット（チャットボットアンサー_前のダイアログ）"
             },
             "edu_output_callchild" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_대화이동 후 검색)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Chatbot Answer_Move Move other dialog then search)",
+                "zh": "特征指南Chatbot（Chatbot Answer_Move移动其他对话框然后搜索）",
+                "jp": "機能ガイドChatbot（Chatbot Answer_Move他のダイアログを移動してから検索する)"
             },
             "edu_output_returncall" : {
                 "ko": "기능가이드 챗봇 (챗봇답변_돌아오기용 대화이동)",
-                "en": "SampleBot Category",
-                "zh": "样本机器人分类",
-                "jp": "サンプルのボットカテゴリ"
+                "en": "Feature Guide Chatbot (Move other dialog for return)",
+                "zh": "功能指南Chatbot（移动其他对话框以返回）",
+                "jp": "機能ガイドチャットボット（他のダイアログを移動して戻る）"
             },
             "DM_Cut": {
                 "ko": "잘라내기",
