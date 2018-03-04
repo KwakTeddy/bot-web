@@ -296,40 +296,57 @@ module.exports = function(bot)
 		action: function (dialog, context, callback)
 		{
                 context.session.confirmlist = [];
-                for (var j = 0; j < context.user.order.length; j++) {
-                    if (dialog.userInput.text.indexOf(context.user.order[j].name) !== -1 && context.user.order[j].state==="예약") {
-                        context.session.confirmlist.push(context.user.order[j]);
+                if(context.user.order) {
+                    for (var j = 0; j < context.user.order.length; j++) {
+                        if (dialog.userInput.text.indexOf(context.user.order[j].name) !== -1 && context.user.order[j].state === "예약") {
+                            context.session.confirmlist.push(context.user.order[j]);
+                        }
+                    }
+                    if (context.session.confirmlist.length > 0) {
+                        var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다. 취소 하시고 싶은 예약의 번호를 입력해주세요. \n\n";
+                        for (var i = 0; i < context.session.confirmlist.length; i++) {
+                            text = text.concat((i + 1) + '.\n입주날짜: ' + context.session.confirmlist[i].datein + '\n퇴실날짜: ' + context.session.confirmlist[i].dateout + '\n' +
+                                '객실: ' + context.session.confirmlist[i].room + '\n' +
+                                '객실수: ' + context.session.confirmlist[i].number + '개\n' +
+                                '가격: ' + context.session.confirmlist[i].allprice + '개\n' +
+                                '예약 시간: ' + context.session.confirmlist[i].time + '\n' +
+                                '연락처: ' + context.session.confirmlist[i].mobile + '\n\n' + "처음으로 가시려면 '처음', 이전단계로 가시려면 '이전'을 입력해주세요");
+                        }
+                        dialog.output[0].text = text;
+                        callback();
+                    }
+                    else {
+                        dialog.output[1].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                        dialog.output[1].buttons = [
+                            {
+                                text: "예약하기"
+                            },
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            }
+                        ];
+                        callback();
                     }
                 }
-                if(context.session.confirmlist.length>0){
-                var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다. 취소 하시고 싶은 예약의 번호를 입력해주세요. \n\n";
-                for (var i = 0; i < context.session.confirmlist.length; i++) {
-                    text = text.concat((i + 1) + '.\n입주날짜: ' + context.session.confirmlist[i].datein + '\n퇴실날짜: ' + context.session.confirmlist[i].dateout + '\n' +
-                        '객실: ' + context.session.confirmlist[i].room+ '\n' +
-                        '객실수: ' + context.session.confirmlist[i].number + '개\n' +
-                        '가격: ' + context.session.confirmlist[i].allprice + '개\n' +
-                        '예약 시간: ' + context.session.confirmlist[i].time + '\n' +
-                        '연락처: ' + context.session.confirmlist[i].mobile + '\n\n');
-                }
-                dialog.output[0].text = text;
+                else{
+                    dialog.output[1].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                    dialog.output[1].buttons = [
+                        {
+                            text: "예약하기"
+                        },
+                        {
+                            text: "이전으로 가기"
+                        },
+                        {
+                            text: "처음으로 돌아가기"
+                        }
+                    ];
                     callback();
-            }
-            else{
-                dialog.output[1].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
-                dialog.output[1].buttons = [
-                    {
-                        text: "예약하기"
-                    },
-                    {
-                        text: "이전으로 가기"
-                    },
-                    {
-                        text: "처음으로 돌아가기"
-                    }
-                ];
-                callback();
-            }
-		}
+                }
+}
 	});
 
 	bot.setTask('start', 
