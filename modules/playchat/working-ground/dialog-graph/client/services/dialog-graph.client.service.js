@@ -402,8 +402,6 @@
             var canvas = this.canvas.get(0);
             var graphBody = canvas.parentElement;
 
-            var that = this;
-
             angular.element('.graph-body').on('click' ,function()
             {
                 // that.editor.close();
@@ -1095,6 +1093,8 @@
 
             var parent = undefined;
 
+            var startX = undefined;
+            var startY = undefined;
             var prevX = undefined;
             var prevY = undefined;
 
@@ -1127,6 +1127,9 @@
                 clone.style.left = e.pageX - left - 50 + scrollLeft + 'px';
                 clone.style.top = e.pageY - top - 63 - 30 + scrollTop + 'px';
 
+                startX = e.pageX;
+                startY = e.pageY;
+
                 e.stopPropagation();
             });
 
@@ -1135,18 +1138,13 @@
                 if(!dragStart)
                     return;
 
-                if(!clone.parentElement && prevX && prevY)
-                {
-                    if(Math.abs(prevX - e.clientX) < 10 && Math.abs(prevY - e.clientY) < 10)
-                    {
-                        prevX = e.clientX;
-                        prevY = e.clientY;
-                        return;
-                    }
-                }
-
                 prevX = e.clientX;
                 prevY = e.clientY;
+
+                if(Math.abs(startX - e.pageX) < 10 || Math.abs(startY - e.pageY) < 10)
+                {
+                    return;
+                }
 
                 if(!clone.parentElement)
                 {
