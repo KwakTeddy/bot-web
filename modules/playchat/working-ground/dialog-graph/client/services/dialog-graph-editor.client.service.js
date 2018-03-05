@@ -17,6 +17,8 @@
             this.isDirty = false;
             this.myBotAuth = { read: true, edit: true };
             this.isOpen = false;
+
+            this.timeout = undefined;
         };
 
         DialogGraphEditor.prototype.open = function(parent, dialog, which)
@@ -32,8 +34,7 @@
             angular.element('.graph-background').css('width', '80%');
             angular.element('#graphDialogEditor').css('right', '0');
 
-
-            setTimeout(function()
+            this.timeout = setTimeout(function()
             {
                 if(!which || which == 'header')
                 {
@@ -86,6 +87,11 @@
                 {
                     return false;
                 }
+            }
+
+            if(this.timeout)
+            {
+                clearTimeout(this.timeout);
             }
 
             angular.element('.graph-background').css('width', '');
