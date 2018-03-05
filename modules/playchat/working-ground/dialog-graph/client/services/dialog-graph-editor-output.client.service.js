@@ -186,10 +186,9 @@
                 }
             };
 
-            $scope.addActionButton = function(output)
+            $scope.addActionButton = function(dialog, output)
             {
                 DialogGraphEditor.isDirty = true;
-
                 output.kind = 'Action';
             };
 
