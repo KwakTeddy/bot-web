@@ -37,6 +37,9 @@
             'edu_output_returncall'
         ];
 
+        $scope.openUploadModal = false;
+        $scope.botImage = '';
+
         if($scope.templateId == 'sample')
         {
             $scope.bot.sampleCategory = $scope.sampleCategory[0]
@@ -46,6 +49,37 @@
         {
             $scope.bot.id = $scope.templateId + '_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
         }
+
+        (function()
+        {
+            $scope.uploader = new FileUploader({
+                url: '/api/' + $scope.bot.id + '/dialog-graphs/uploadImage',
+                alias: 'uploadFile',
+                autoUpload: true
+            });
+
+            $scope.uploader.onErrorItem = function(item, response, status, headers)
+            {
+                alert(response.message);
+            };
+
+            $scope.uploader.onSuccessItem = function(item, response, status, headers)
+            {
+                $scope.image = {
+                    url: response.url,
+                    displayname: item.file.name
+                };
+
+                $scope.botImage = response.url;
+
+                $scope.openUploadModal = false;
+            };
+
+            $scope.uploader.onProgressItem = function(fileItem, progress)
+            {
+                console.log(progress);
+            };
+        })();
 
         (function()
         {
@@ -168,12 +202,20 @@
             {
                 var split = location.href.split('/');
                 var type = split[split.length-1];
-                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, type: type, sampleCategory: $scope.bot.sampleCategory }, function(chatbot)
+                ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, imageFile: $scope.botImage, type: type, sampleCategory: $scope.bot.sampleCategory }, function(chatbot)
                 {
                     delete chatbot.user;
                     chatbot.myBotAuth = { read: true, edit: true };
-                    $cookies.putObject('chatbot', chatbot);
-                    $location.url('/playchat/?isFirst=true');
+
+                    if(JSON.stringify(chatbot).length > 4096)
+                    {
+                        alert(LanguageService('Image address string length is big. please down sizing image adress string length.'));
+                    }
+                    else
+                    {
+                        $cookies.putObject('chatbot', chatbot);
+                        $location.url('/playchat/?isFirst=true');
+                    }
                 },
                 function(err)
                 {
@@ -249,7 +291,7 @@
 
                 data.name = angular.element('input[data-bot-name="true"]').val();
 
-                ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username.replace(/\s/gi, '') + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
+                ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username.replace(/\s/gi, '') + '_' + new Date().getTime(), name: data.name, imageFile: $scope.botImage, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
                 {
                     delete chatbot.user;
 
@@ -282,6 +324,23 @@
             $scope.cancel = function()
             {
                 location.href = '/playchat/chatbots';
+            };
+
+            $scope.showUploadModal = function()
+            {
+                $scope.openUploadModal = true;
+            };
+
+            $scope.uploadImage = function(e)
+            {
+                e.currentTarget.previousElementSibling.click();
+            };
+
+            $scope.addExternalImage = function()
+            {
+                $scope.botImage = prompt(LanguageService('Write URL address here.'));
+
+                $scope.openUploadModal = false;
             };
 
 

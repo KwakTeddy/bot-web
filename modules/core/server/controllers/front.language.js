@@ -201,7 +201,7 @@ module.exports = function(code)
             "L087":"Comming Soon",
             "L088":"Blog",
             "L089":"Facebook",
-            "L090":"contact with us",
+            "L090":"Contact with us",
             "L090":"is not found",
             "lan" : "en"
 

@@ -201,7 +201,7 @@
 
         var changeCloneInfo = function (dialog)
         {
-            var postfix = 'Clone';
+            var postfix = '';
             while(!checkUniqueName((dialog.name + (postfix += ' Clone')), instance.userDialogs));
 
             dialog.name = dialog.name + postfix;
@@ -219,12 +219,21 @@
         {
             var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
             var dialog = this.currentDialog.get(0).children[0].dialog;
+            var index = -1;
+
+            for(var i=0; i<parentDialog.children.length; i++)
+            {
+                if(parentDialog.children[i].id == dialog.id)
+                {
+                    index = i;
+                    break;
+                }
+            }
 
             var clone = JSON.parse(JSON.stringify(dialog));
 
             changeCloneInfo(clone);
 
-            var index = parentDialog.children.indexOf(dialog);
             instance.addChildDialog(parentDialog, clone, index + 1);
 
             instance.refresh();
@@ -863,7 +872,7 @@
                     i--;
                 }
 
-                if(dialogs[i].children)
+                if(dialogs[i] && dialogs[i].children)
                 {
                     this.removeInitialDialog(dialogs[i].children);
                 }

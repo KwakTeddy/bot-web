@@ -21,11 +21,11 @@
                 </div>
                 <div class="leftboxinput">
                     <p>{{ lan('Password') }}</p>
-                    <input type="password" class="input_type09 mb10" ng-model="credentials.password" ng-required="true">
+                    <input type="password" class="input_type09 mb10" ng-model="credentials.password" ng-required="true" minlength="8">
                 </div>
                 <div class="leftboxinput">
                     <p>{{ lan('Password confirm') }}</p>
-                    <input type="password" class="input_type09 mb20" ng-model="credentials.passwordConfirm" ng-required="true">
+                    <input type="password" class="input_type09 mb20" ng-model="credentials.passwordConfirm" ng-required="true" minlength="8">
                 </div>
             </div>
             <div style="display: inline-block;">
@@ -35,11 +35,11 @@
                 </div>
                 <div class="leftboxinput">
                     <p>{{ lan('Phone') }}</p>
-                    <input type="text" class="input_type09 mb10" ng-model="credentials.phone" ng-required="true">
+                    <input type="text" class="input_type09 mb10" ng-model="credentials.phone" ng-required="true" pattern="/^[\.-)( ]*([0-9]{3})[\.-)( ]*([0-9]{3})[\.-)( ]*([0-9]{4})$/">
                 </div>
                 <div class="leftboxinput">
                     <p>{{ lan('Organization') }}</p>
-                    <input type="text" class="input_type09 mb10" ng-model="credentials.organization" ng-required="true">
+                    <input type="text" class="input_type09 mb10" ng-model="credentials.organization">
                 </div>
 
             </div>

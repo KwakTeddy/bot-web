@@ -106,6 +106,7 @@ module.exports.updateBot = function(req, res)
             item.name = req.body.name;
             item.description = req.body.description;
             item.language = req.body.language;
+            item.imageFile = req.body.imageFile;
 
             console.log('머지 : ', item);
 

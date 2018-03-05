@@ -326,6 +326,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         FailDialogsService.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
+            console.log('ㅁㄴㅇㄹ', result);
             $scope.failDialogs = JSON.parse(JSON.stringify(result));
         },
         function(err)
@@ -335,7 +336,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         ScenarioUsageService.get({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
-            console.log(result)
             $scope.scenarioUsageList = result.scenarioUsage;
         },
         function(err)

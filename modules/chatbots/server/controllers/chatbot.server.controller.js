@@ -190,12 +190,12 @@ exports.create = function(req, res)
                                 else
                                 {
                                     IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function()
-                                        {
-                                        },
-                                        function(err)
-                                        {
-                                            console.error(err);
-                                        });
+                                    {
+                                    },
+                                    function(err)
+                                    {
+                                        console.error(err);
+                                    });
                                 }
                             });
                         }

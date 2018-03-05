@@ -817,6 +817,18 @@
                 "jp": "イメージの挿入",
                 "zh": "添加图片"
             },
+            "Change chatbot image": {
+                "ko": "챗봇 이미지 변경",
+                "en": "Change chatbot image",
+                "zh": "更改chatbot图像。",
+                "jp": "chatbotイメージを変更します。"
+            },
+            "Upload bot image": {
+                "ko": "챗봇 이미지 업로드",
+                "en": "Add image",
+                "jp": "チャットボット画像をアップロードする",
+                "zh": "上传chatbot图片"
+            },
             "Insert external image": {
                 "ko": "외부 이미지 삽입",
                 "en": "Add image",
@@ -828,6 +840,12 @@
                 "en": "Click to change image",
                 "jp": "イメージ変更",
                 "zh": "点击更改图像"
+            },
+            "Click to upload image": {
+                "ko": "챗봇 이미지 업로드",
+                "en": "Click to upload image",
+                "jp": "クリックして画像をアップロード",
+                "zh": "点击上传图片"
             },
             "Add button": {
                 "ko": "버튼 삽입",
@@ -2336,35 +2354,35 @@
 
 
             //channel
-            "Create a Kakao YellowID(https://yellowid.kakao.com/login)":{
-                "ko": "카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)",
-                "en": "Create a Kakao YellowID(https://yellowid.kakao.com/login)",
-                "zh": "注册Kakao Talk Yellow账号(https://yellowid.kakao.com/login)",
-                "jp": "Create a Kakao YellowID(https://yellowid.kakao.com/login)"
+            "Create a Kakao YellowID(https://center-pf.kakao.com/login)":{
+                "ko": "카카오 플러스친구에 가입하세요.(https://center-pf.kakao.com/login)",
+                "en": "Create a Kakao Plusfriend account(https://center-pf.kakao.com/login)",
+                "zh": "创建一个Kakao Plusfriend帐户(https://center-pf.kakao.com/login)",
+                "jp": "Kakao Plusfriendアカウントを作成する(https://center-pf.kakao.com/login)"
             },
             "Make a Yellow ID profile.":{
-                "ko": "옐로아이디 프로필을 만들어요.",
-                "en": "Make a Yellow ID profile.",
-                "zh": "填写完Yellow账号的个人资料",
-                "jp": "Make a Yellow ID profile."
+                "ko": "새 플러스친구를 만들어 주세요.",
+                "en": "Make a new plusfriend.",
+                "zh": "做一个新的加上朋友。",
+                "jp": "新しいプラスフレンドを作る。"
             },
             "Go to the Auto ID page.":{
-                "ko": "옐로아이디 페이지 자동응답 탭으로 들어가요",
-                "en": "Go to the Auto ID page.",
-                "zh": "个人资料会自动转到相应Yellow账号的主页上",
-                "jp": "Go to the Auto ID page."
+                "ko": "플러스 친구 관리자 센터로 접속하세요.",
+                "en": "Go to the administrator page of plusfriend",
+                "zh": "转到plusfriend的管理员页面。",
+                "jp": "plusfriendの管理者ページに移動します。"
             },
             "Go to API auto-response setup page.":{
-                "ko": "API 자동응답 설정하기로 들어가요",
-                "en": "Go to API auto-response setup page.",
-                "zh": "然后进入API自动回复设置",
-                "jp": "Go to API auto-response setup page."
+                "ko": "스마트채팅 메뉴로 이동 후 API형 설정하기를 클릭하세요.",
+                "en": "Click to API setting button after go to smart chatting.",
+                "zh": "进入智能聊天后，点击API类型设置按钮。",
+                "jp": "スマートチャットに行った後、APIタイプ設定ボタンをクリックしてください。"
             },
             "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!":{
-                "ko": "앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!",
-                "en": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!",
+                "ko": "앱 이름, URL, 설명, 전화번호를 입력하세요. 이 때 URL을 아래의 Webhook URL로 설정해야 합니다.",
+                "en": "Set the app name, URL, description, and phone number. You need to set the URL to the Webhook URL below!",
                 "zh": "设置应用名称，URL，说明，电话号码。这时可以利用下面的URL对URL进行设置！",
-                "jp": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!"
+                "jp": "アプリ名、URL、説明、電話番号を設定します。 以下のWebhook URLにURLを設定する必要があります。"
             },
             "You must be a member of Line. Please log in first with Lind application or Web.":{
                 "ko": "LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요",
@@ -3247,6 +3265,12 @@
                 "en": "There are already added images. Do you want to change it?",
                 "zh": "已经添加了图像。 你想改变它吗？",
                 "jp": "既に画像が追加されています。 あなたはそれを変更したいですか？"
+            },
+            "Image address string length is big. please down sizing image adress string length.": {
+                "ko": "이미지 주소 문자열 길이가 깁니다. 이미지 주소 문자열 길이를 줄이십시오.",
+                "en": "Image address string length is big. please down sizing image adress string length.",
+                "zh": "图像地址字符串的长度很大。 请缩小图像地址字符串长度。",
+                "jp": "イメージアドレス文字列の長さが大きいです。 イメージアドレス文字列の長さを縮小してください。"
             }
         };
 
