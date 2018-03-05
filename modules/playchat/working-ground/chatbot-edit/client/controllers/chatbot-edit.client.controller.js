@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService', '$rootScope', function ($window, $scope, $resource, $cookies, LanguageService, $rootScope)
+    angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService', '$rootScope', 'FileUploader', function ($window, $scope, $resource, $cookies, LanguageService, $rootScope, FileUploader)
     {
         $scope.$parent.changeWorkingGroundName(LanguageService('Bot Profile'), '/modules/playchat/working-ground/chatbot-edit/client/imgs/botsetting.png');
 
@@ -13,26 +13,60 @@
 
         $scope.list = [];
         $scope.openShareModal = false;
+        $scope.openUploadModal = false;
         $scope.share = {};
+
+        $scope.botImage = '';
 
         (function()
         {
-            ChatbotEditService.get({ botId: chatbot._id }, function(bot)
-            {
-                chatbot = $scope.chatbot = bot;
-
-                $cookies.putObject(bot);
-            },
-            function(err)
-            {
-                alert(err.data.message);
+            $scope.uploader = new FileUploader({
+                url: '/api/' + chatbot.id + '/dialog-graphs/uploadImage',
+                alias: 'uploadFile',
+                autoUpload: true
             });
+
+            $scope.uploader.onErrorItem = function(item, response, status, headers)
+            {
+                alert(response.message);
+            };
+
+            $scope.uploader.onSuccessItem = function(item, response, status, headers)
+            {
+                $scope.image = {
+                    url: response.url,
+                    displayname: item.file.name
+                };
+
+                $scope.botImage = response.url;
+            };
+
+            $scope.uploader.onProgressItem = function(fileItem, progress)
+            {
+                console.log(progress);
+            };
+        })();
+
+        (function()
+        {
+            $scope.chatbot.imageFile = $scope.chatbot.imageFile || '/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png';
+
+            // ChatbotEditService.get({ botId: chatbot._id }, function(bot)
+            // {
+            //     chatbot = $scope.chatbot = bot;
+            //     $scope.chatbot.imageFile = '/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png';
+            //     $cookies.putObject(bot);
+            // },
+            // function(err)
+            // {
+            //     alert(err.data.message);
+            // });
 
             $scope.saveChatbot = function()
             {
-                ChatbotEditService.update({ botId: chatbot._id, name: $scope.chatbot.name, description: $scope.chatbot.description, language: $scope.chatbot.language }, function(editedBot)
+                ChatbotEditService.update({ botId: chatbot._id, name: $scope.chatbot.name, description: $scope.chatbot.description, language: $scope.chatbot.language, imageFile: $scope.chatbot.imageFile }, function(editedBot)
                 {
-                    $cookies.putObject("chatbot", editedBot);
+                    $cookies.putObject("chatbot", $scope.chatbot);
                     angular.element("#gnb-bot-name").html($scope.chatbot.name);
                     angular.element("#simulator-bot-name").html($scope.chatbot.name);
                     $rootScope.$broadcast('editChatbotInfo');
@@ -80,9 +114,29 @@
                 $scope.openShareModal = true;
             };
 
+            $scope.showUploadModal = function()
+            {
+                $scope.openUploadModal = true;
+            };
+
             $scope.closeShareModal = function()
             {
                 $scope.openShareModal = false;
+            };
+
+            $scope.closeUploadModal = function()
+            {
+                $scope.openUploadModal = false;
+            };
+
+            $scope.uploadImage = function(e)
+            {
+                e.currentTarget.previousElementSibling.click();
+            };
+
+            $scope.addExternalImage = function()
+            {
+                $scope.botImage = prompt(LanguageService('Write URL address here.'));
             };
 
             $scope.shareChatbot = function()
@@ -125,6 +179,13 @@
                         alert(err.data.message);
                     });
                 }
+            };
+
+            $scope.saveUpload = function()
+            {
+                $scope.openUploadModal = false;
+                $scope.chatbot.imageFile = $scope.botImage;
+                $scope.botImage = '';
             };
         })();
 

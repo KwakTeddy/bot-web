@@ -817,6 +817,18 @@
                 "jp": "イメージの挿入",
                 "zh": "添加图片"
             },
+            "Change chatbot image": {
+                "ko": "챗봇 이미지 변경",
+                "en": "Change chatbot image",
+                "zh": "更改chatbot图像。",
+                "jp": "chatbotイメージを変更します。"
+            },
+            "Upload bot image": {
+                "ko": "챗봇 이미지 업로드",
+                "en": "Add image",
+                "jp": "チャットボット画像をアップロードする",
+                "zh": "上传chatbot图片"
+            },
             "Insert external image": {
                 "ko": "외부 이미지 삽입",
                 "en": "Add image",
@@ -828,6 +840,12 @@
                 "en": "Click to change image",
                 "jp": "イメージ変更",
                 "zh": "点击更改图像"
+            },
+            "Click to upload image": {
+                "ko": "챗봇 이미지 업로드",
+                "en": "Click to upload image",
+                "jp": "クリックして画像をアップロード",
+                "zh": "点击上传图片"
             },
             "Add button": {
                 "ko": "버튼 삽입",
@@ -3247,6 +3265,12 @@
                 "en": "There are already added images. Do you want to change it?",
                 "zh": "已经添加了图像。 你想改变它吗？",
                 "jp": "既に画像が追加されています。 あなたはそれを変更したいですか？"
+            },
+            "Image address string length is big. please down sizing image adress string length.": {
+                "ko": "이미지 주소 문자열 길이가 깁니다. 이미지 주소 문자열 길이를 줄이십시오.",
+                "en": "Image address string length is big. please down sizing image adress string length.",
+                "zh": "图像地址字符串的长度很大。 请缩小图像地址字符串长度。",
+                "jp": "イメージアドレス文字列の長さが大きいです。 イメージアドレス文字列の長さを縮小してください。"
             }
         };
 

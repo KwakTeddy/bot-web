@@ -72,7 +72,7 @@
                 {
                     chatbot.myBotAuth = { read : result[0].read, edit: result[0].edit };
                     $cookies.putObject('chatbot', chatbot);
-                    $location.url('/playchat');
+                    // $location.url('/playchat');
                 }
                 else
                 {
