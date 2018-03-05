@@ -357,7 +357,7 @@
 
                 var focusedElement = selection.focusNode.parentElement;
 
-                if(selection.focusNode.className == 'editable')
+                if(focusedElement.className == 'editable')
                 {
                     focusedElement = selection.focusNode;
                 }

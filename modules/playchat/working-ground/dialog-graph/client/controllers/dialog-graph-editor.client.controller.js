@@ -270,6 +270,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 }
             }
 
+            $scope.originalDialog = undefined;
+
             // DialogGraph.refresh();
             DialogGraph.reloadDialog(result);
             DialogGraph.setDirty(true, $scope.currentFileName);
@@ -461,6 +463,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         $scope.$apply(function()
         {
             $scope.dialog.input = data.input;
+            $scope.dialog.input[0].text.raw = data.input[0].text.raw;
 
             for(var i=0; i<data.input.length; i++)
             {
@@ -470,9 +473,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                     {
                         (function(index)
                         {
-                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: data.input[index][key] }, function(result)
+                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: data.input[index].text.raw.trim() }, function(result)
                             {
-                                data.input[index][key] = result.text;
+                                data.input[index].text.nlp = result.text;
                             });
                         })(i);
                     }

@@ -156,8 +156,9 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             DialogGraph.onLoad(function()
             {
                 var data = {
-                    input: [{ text: dialog }]
+                    input: [{ text: { raw: dialog, nlp: '' } }]
                 };
+
                 DialogGraph.focusById(preDialogId);
 
                 setTimeout(function()
