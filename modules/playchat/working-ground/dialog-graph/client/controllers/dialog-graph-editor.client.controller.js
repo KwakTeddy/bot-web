@@ -229,7 +229,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         if($scope.isNew)
         {
-            DialogGraph.deleteDialogById($scope.isNew);
+            DialogGraph.deleteDialogById($scope.isNew, false);
         }
     });
 
@@ -337,8 +337,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children:first'), dialog);
             DialogGraph.refreshLine();
             // DialogGraph.refresh();
-            DialogGraph.setDirty(true);
+            // DialogGraph.setDirty(true);
             // DialogGraph.focusById(result.id);
+
+            $rootScope.$broadcast('saveDialogGraph', { saveFileName: DialogGraph.fileName, saveHistory: false });
 
             $scope.isNew = dialog.id;
 

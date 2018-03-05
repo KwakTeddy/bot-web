@@ -526,19 +526,19 @@
             this.deleteDialog(angular.element('#' + this.focusedDialog));
         };
 
-        DialogGraph.prototype.deleteDialogById = function(id)
+        DialogGraph.prototype.deleteDialogById = function(id, saveHistory)
         {
             if(id)
             {
                 var target = angular.element('#' + id);
                 if(target.length > 0)
                 {
-                    this.deleteDialog(angular.element('#' + id));
+                    this.deleteDialog(angular.element('#' + id), null, saveHistory);
                 }
             }
         };
 
-        DialogGraph.prototype.deleteDialog = function(target, withChildren)
+        DialogGraph.prototype.deleteDialog = function(target, withChildren, saveHistory)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
             var dialog = target.get(0).children[0].dialog;
@@ -575,7 +575,7 @@
 
             instance.focusedDialog = null;
             instance.refresh();
-            instance.setDirty(true);
+            instance.setDirty(true, this.fileName, saveHistory);
             instance.focusById(afterFocusId);
 
             if(this.editor.focusId != dialog.id)
@@ -2030,7 +2030,7 @@
             return data;
         };
 
-        DialogGraph.prototype.setDirty = function(dirty, saveFileName)
+        DialogGraph.prototype.setDirty = function(dirty, saveFileName, saveHistory)
         {
             this.dirty = (dirty === undefined ? true : dirty);
             if(this.dirtyCallback)
@@ -2038,7 +2038,7 @@
 
             if(this.dirty == true)
             {
-                this.$rootScope.$broadcast('saveDialogGraph', { saveFileName: saveFileName });
+                this.$rootScope.$broadcast('saveDialogGraph', { saveFileName: saveFileName, saveHistory: saveHistory });
             }
         };
 

@@ -124,7 +124,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('saveDialogGraph', function(context, data)
         {
-            $scope.save(data.saveFileName);
+            $scope.save(data.saveFileName, data.saveHistory);
         });
 
         $scope.isFocused = function()
@@ -505,7 +505,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
         };
 
-        $scope.save = function(saveFileName)
+        $scope.save = function(saveFileName, saveHistory)
         {
             if(!DialogGraph.isDirty())
                 return;
@@ -516,14 +516,20 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
                 //저장할때마다 history 업데이트
-                $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);
+                if(saveHistory !== false)
+                {
+                    $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);
+                }
 
                 GraphFileService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
                 {
                     if(result && result.dialogs && result.commonDialogs)
                     {
-                        $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
-                        $scope.graphHistoryIndex = $scope.graphHistory.length-1;
+                        if(saveHistory !== false)
+                        {
+                            $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
+                            $scope.graphHistoryIndex = $scope.graphHistory.length - 1;
+                        }
 
                         DialogGraph.setDirty(false);
 
