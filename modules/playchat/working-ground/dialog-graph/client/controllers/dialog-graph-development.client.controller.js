@@ -153,35 +153,23 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
             $scope.fromFailedDialog = true;
 
-            DialogGraph.onLoad(function()
+            DialogGraph.focusById(preDialogId);
+
+            setTimeout(function()
             {
-                var data = {
-                    input: [{ text: { raw: dialog, nlp: '' } }]
-                };
-
-                DialogGraph.focusById(preDialogId);
-
-                setTimeout(function()
+                DialogGraph.openEditorForFocused(dialog);
+                DialogGraphEditor.setSaveCallback(function(data)
                 {
-                    DialogGraph.openEditorForFocused();
-                    DialogGraphEditor.setSaveCallback(function(data)
+                    for(var i=0; i<data.input.length; i++)
                     {
-                        for(var i=0; i<data.input.length; i++)
+                        if(data.input[i].text == dialog)
                         {
-                            if(data.input[i].text == dialog)
-                            {
-                                $scope.failedDialogSaved = true;
-                                break;
-                            }
+                            $scope.failedDialogSaved = true;
+                            break;
                         }
-                    });
-                }, 100);
-
-                setTimeout(function()
-                {
-                    DialogGraph.bindDataToEditor(data);
-                }, 500);
-            });
+                    }
+                });
+            }, 100);
         };
 
         $scope.backToFailedDialog = function()
@@ -338,6 +326,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     {
                         angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
                     }
+
+                    $scope.checkFailedDialog();
                 }
                 else
                 {
@@ -674,7 +664,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         };
     })();
 
-    $scope.checkFailedDialog();
     $scope.initialize();
     $scope.getFileList();
     $scope.lan=LanguageService;

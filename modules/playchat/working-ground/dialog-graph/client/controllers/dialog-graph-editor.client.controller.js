@@ -399,7 +399,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         angular.element('.dialog-editor form .blue-button').click();
     });
 
-    DialogGraphEditor.setOpenCallback(function(parent, dialog)
+    DialogGraphEditor.setOpenCallback(function(parent, dialog, text)
     {
         if($scope.isNew)
         {
@@ -417,7 +417,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             //새로 추가하는 경우 바로 추가해줌.
             var result = {};
             result.name = DialogGraph.getRandomName();
-            result.input = [{ text: { raw: '', nlp: '' } }];
+            result.input = [{ text: { raw: text || '', nlp: '' } }];
             result.output = [{ kind: 'Content', text: '', buttons: [] }];
             result.task = undefined;
 
@@ -457,31 +457,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         $scope.parent = parent;
 
         $scope.initialize(parent, dialog);
-    },
-    function(data)
-    {
-        $scope.$apply(function()
-        {
-            $scope.dialog.input = data.input;
-            $scope.dialog.input[0].text.raw = data.input[0].text.raw;
-
-            for(var i=0; i<data.input.length; i++)
-            {
-                for(var key in data.input[i])
-                {
-                    if(key == 'text')
-                    {
-                        (function(index)
-                        {
-                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: data.input[index].text.raw.trim() }, function(result)
-                            {
-                                data.input[index].text.nlp = result.text;
-                            });
-                        })(i);
-                    }
-                }
-            }
-        })
     });
 
     $scope.lan=LanguageService;

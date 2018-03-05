@@ -1937,9 +1937,9 @@
             this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item').get(0));
         };
 
-        DialogGraph.prototype.openEditorForFocused = function()
+        DialogGraph.prototype.openEditorForFocused = function(text)
         {
-            this.editor.open(this.canvas.find('#' + this.focusedDialog + ' > .graph-dialog-item').get(0).dialog, null);
+            this.editor.open(this.canvas.find('#' + this.focusedDialog + ' > .graph-dialog-item').get(0).dialog, null, null, text);
         };
 
         DialogGraph.prototype.bindDataToEditor = function(data)

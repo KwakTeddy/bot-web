@@ -21,7 +21,7 @@
             this.timeout = undefined;
         };
 
-        DialogGraphEditor.prototype.open = function(parent, dialog, which)
+        DialogGraphEditor.prototype.open = function(parent, dialog, which, text)
         {
             this.isOpen = true;
             this.isDirty = false;
@@ -54,7 +54,7 @@
             }, 502);
 
             if(this.callback)
-                this.callback(parent, dialog);
+                this.callback(parent, dialog, text);
         };
 
         DialogGraphEditor.prototype.bindData = function(data)
