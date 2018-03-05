@@ -12,45 +12,45 @@ module.exports = function(bot)
         }
     });
 
-	bot.setTask('image', 
+	bot.setTask('image',
 	{
 		action: function (dialog, context, callback)
 		{
-		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("싱글")!==-1)
+		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("单人")!==-1)
 		    {
-                context.session.selecroom="싱글룸";
-                context.session.price="50000";
+                context.session.selecroom="单人间";
+                context.session.price="150";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797303x-1404764313.jpg"};
-                dialog.output[0].text = "☃싱글룸☃\n✔Single Room\n\n36m2 침실1, 욕실1, 화장실1\n55인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 50000원";
+                dialog.output[0].text = "☃单人间☃\n✔Single Room\n\n36m2 卧室1, 淋浴室1, 卫生间1\n55英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 150元";
                 dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797303x-1404764313.jpg"};
-                dialog.output[1].text = "☃싱글룸☃\n✔Single Room\n\n36m2 침실1, 욕실1, 화장실1\n55인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 50000원";
+                dialog.output[1].text = "☃单人间☃\n✔Single Room\n\n36m2 卧室1, 淋浴室1, 卫生间1\n55英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 150元";
             }
-            else if(dialog.userInput.text.indexOf("2")!==-1 || dialog.userInput.text.indexOf("트윈")!==-1)
+            else if(dialog.userInput.text.indexOf("2")!==-1 || dialog.userInput.text.indexOf("双人")!==-1)
             {
-                context.session.selecroom="트윈룸";
-                context.session.price="80000";
+                context.session.selecroom="双人间";
+                context.session.price="180";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797320x-1404764397.jpg"};
-                dialog.output[0].text = "☃트윈룸☃\n✔Twin Room\n\n48m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 80000원";
+                dialog.output[0].text = "☃双人间☃\n✔Twin Room\n\n48m2 卧室1, 淋浴室1, 卫生间1\n65英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 180元";
                 dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797320x-1404764397.jpg"};
-                dialog.output[1].text = "☃트윈룸☃\n✔Twin Room\n\n48m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 80000원";
+                dialog.output[1].text = "☃双人间☃\n✔Twin Room\n\n48m2 卧室1, 淋浴室1, 卫生间1\n65英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 180元";
             }
-            else if(dialog.userInput.text.indexOf("3")!==-1 || dialog.userInput.text.indexOf("더블")!==-1)
+            else if(dialog.userInput.text.indexOf("3")!==-1 || dialog.userInput.text.indexOf("大床")!==-1)
             {
-                context.session.selecroom="더블룸";
-                context.session.price="100000";
+                context.session.selecroom="大床房";
+                context.session.price="218";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797340x-1404764397.jpg"};
-                dialog.output[0].text = "☃더블룸☃\n✔Double Room\n\n침50m2 실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 100000원";
+                dialog.output[0].text = "☃大床房☃\n✔Double Room\n\n침50m2 실1, 淋浴室1, 卫生间1\n65英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 218元";
                 dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797340x-1404764397.jpg"};
-                dialog.output[1].text = "☃더블룸☃\n✔Double Room\n\n침50m2 실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 100000원";
+                dialog.output[1].text = "☃大床房☃\n✔Double Room\n\n침50m2 실1, 淋浴室1, 卫生间1\n65英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 218元";
             }
-            else if(dialog.userInput.text.indexOf("4")!==-1 || dialog.userInput.text.indexOf("트리플")!==-1)
+            else if(dialog.userInput.text.indexOf("4")!==-1 || dialog.userInput.text.indexOf("三人")!==-1)
             {
-                context.session.selecroom="트리플룸";
-                context.session.price="120000";
+                context.session.selecroom="三人间";
+                context.session.price="288";
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519797515x-1404764397.jpg"};
-                dialog.output[0].text = "☃트리플룸☃\n✔Triple Room\n\n60m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 120000원";
+                dialog.output[0].text = "☃三人间☃\n✔Triple Room\n\n60m2 卧室1, 淋浴室1, 卫生间1\n65英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 288元";
                 dialog.output[1].image = {url: "http://chuantu.biz/t6/239/1519797515x-1404764397.jpg"};
-                dialog.output[1].text = "☃트리플룸☃\n✔Triple Room\n\n60m2 침실1, 욕실1, 화장실1\n65인치 스마트 TV\n(위성 TV 52개 채널)\n\n300Mbps 초고속 인터넷\n유∙무선(wi-fi) 무료\n\n220V, 110V 전압 사용 가능\n커피·차 티백 무료 제공\n\n엑스트라 베드:\n1개 추가 30,000원/1박\n베이비 크립(무료)\n\n가격: 120000원";
+                dialog.output[1].text = "☃三人间☃\n✔Triple Room\n\n60m2 卧室1, 淋浴室1, 卫生间1\n65英寸智能电视\n(52个卫星频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 288元";
             }
 			callback();
 		}
@@ -158,7 +158,7 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('savename', 
+	bot.setTask('savename',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -167,7 +167,7 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('savemobile', 
+	bot.setTask('savemobile',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -180,7 +180,7 @@ module.exports = function(bot)
                 randomNum += '' + Math.floor(Math.random() * 10);
                 randomNum += '' + Math.floor(Math.random() * 10);
                 context.session.smsAuth = randomNum;
-                var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
+                var message = '[' + bot.name + ']' + ' 验证码 : ' + randomNum;
                 request.post(
                     'https://bot.moneybrain.ai/api/messages/sms/send',
                     {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
@@ -215,7 +215,7 @@ module.exports = function(bot)
     }
 	});
 
-	bot.setTask('recertification', 
+	bot.setTask('recertification',
 	{
 		action: function (dialog, context, callback) {
             var randomNum = '';
@@ -224,7 +224,7 @@ module.exports = function(bot)
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
             context.session.smsAuth = randomNum;
-            var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
+            var message = '[' + bot.name + ']' + ' 验证码 : ' + randomNum;
             request.post(
                 'https://bot.moneybrain.ai/api/messages/sms/send',
                 {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
@@ -283,7 +283,7 @@ module.exports = function(bot)
                             price: context.session.price,
                             allprice: context.session.allprice,
                             time: currentdate,
-                            state: '예약',
+                            state: '预订',
                             index: (context.user.order.length+1)
                         };
                     context.user.order.push(neworder);
@@ -291,58 +291,58 @@ module.exports = function(bot)
             }
         });
 
-	bot.setTask('showlist', 
+	bot.setTask('showlist',
 	{
 		action: function (dialog, context, callback)
 		{
                 context.session.confirmlist = [];
                 if(context.user.order) {
                     for (var j = 0; j < context.user.order.length; j++) {
-                        if (dialog.userInput.text.indexOf(context.user.order[j].name) !== -1 && context.user.order[j].state === "예약") {
+                        if (dialog.userInput.text.indexOf(context.user.order[j].name) !== -1 && context.user.order[j].state === "预订") {
                             context.session.confirmlist.push(context.user.order[j]);
                         }
                     }
                     if (context.session.confirmlist.length > 0) {
-                        var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다. 취소 하시고 싶은 예약의 번호를 입력해주세요. \n\n";
+                        var text = dialog.userInput.text + "预订的清单如下，如果您想取消的话请输入想取消的编号。\n\n";
                         for (var i = 0; i < context.session.confirmlist.length; i++) {
-                            text = text.concat((i + 1) + '.\n입주날짜: ' + context.session.confirmlist[i].datein + '\n퇴실날짜: ' + context.session.confirmlist[i].dateout + '\n' +
-                                '객실: ' + context.session.confirmlist[i].room + '\n' +
-                                '객실수: ' + context.session.confirmlist[i].number + '개\n' +
-                                '가격: ' + context.session.confirmlist[i].allprice + '개\n' +
-                                '예약 시간: ' + context.session.confirmlist[i].time + '\n' +
-                                '연락처: ' + context.session.confirmlist[i].mobile + '\n\n' );
+                            text = text.concat((i + 1) + '.\n入住日期: ' + context.session.confirmlist[i].datein + '\n退房日期: ' + context.session.confirmlist[i].dateout + '\n' +
+                                '客房: ' + context.session.confirmlist[i].room + '\n' +
+                                '预订房间数: ' + context.session.confirmlist[i].number + '个\n' +
+                                '价格: ' + context.session.confirmlist[i].allprice + '元\n' +
+                                '预订时间: ' + context.session.confirmlist[i].time + '\n' +
+                                '联系方式: ' + context.session.confirmlist[i].mobile + '\n\n');
                         }
-                        text = text.concat("처음으로 가시려면 '처음', 이전단계로 가시려면 '이전'을 입력해주세요");
+                        text = text.concat("如果您想回到初始画面，请回复'开始'，如果您想回到上一页，请回复'返回'。");
                         dialog.output[0].text = text;
                         callback();
                     }
                     else {
-                        dialog.output[1].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                        dialog.output[1].text = dialog.userInput.text + "还没有预订过哟\n\n想立即预订的话请按'预订'按钮。";
                         dialog.output[1].buttons = [
                             {
-                                text: "예약하기"
+                                text: "预订"
                             },
                             {
-                                text: "이전으로 가기"
+                                text: "返回上一页"
                             },
                             {
-                                text: "처음으로 돌아가기"
+                                text: "回到初始页面"
                             }
                         ];
                         callback();
                     }
                 }
                 else{
-                    dialog.output[1].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                    dialog.output[1].text = dialog.userInput.text + "还没有预订过哟\n\n想立即预订的话请按'预订'按钮。";
                     dialog.output[1].buttons = [
                         {
-                            text: "예약하기"
+                            text: "预订"
                         },
                         {
-                            text: "이전으로 가기"
+                            text: "返回上一页"
                         },
                         {
-                            text: "처음으로 돌아가기"
+                            text: "回到初始页面"
                         }
                     ];
                     callback();
@@ -350,7 +350,7 @@ module.exports = function(bot)
 }
 	});
 
-	bot.setTask('start', 
+	bot.setTask('start',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -359,7 +359,7 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('orderstart', 
+	bot.setTask('orderstart',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -368,7 +368,7 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('startmenu', 
+	bot.setTask('startmenu',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -379,18 +379,18 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('deleteorder', 
+	bot.setTask('deleteorder',
 	{
 		action: function (dialog, context, callback)
 		{
 		    for(var i=0;i<context.session.confirmlist.length;i++) {
 		        var s=i+1;
                 if (dialog.userInput.text == s) {
-                    context.session.confirmlist[i].state="예약취소";
+                    context.session.confirmlist[i].state="预订取消";
 
                     for(var j=0;j<context.user.order.length;j++){
                         if(context.session.confirmlist[i].index===context.user.order[j].index){
-                            context.user.order[j].state="예약취소";
+                            context.user.order[j].state="预订取消";
                             callback();
                         }
                     }

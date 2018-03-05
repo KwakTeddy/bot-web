@@ -1,42 +1,42 @@
 var dialogs = [
     {
-        "name": "1. 메뉴보기",
+        "name": "1. 查看客房清单",
         "input": [
             {
                 "regexp": "^1"
             },
             {
-                "regexp": "메뉴"
+                "regexp": "客房清单"
             },
             {
                 "text": {
-                    "raw": "메뉴보기",
-                    "nlp": "메뉴 보기"
+                    "raw": "查看客房清单",
+                    "nlp": "查看客房清单"
                 }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "메뉴리스트 아래와 같습니다.",
+                "text": "以下是客房清单: ",
                 "buttons": [
                     {
-                        "text": "1. 싱글룸"
+                        "text": "1. 单人间"
                     },
                     {
-                        "text": "2. 트윈룸"
+                        "text": "2. 双人间"
                     },
                     {
-                        "text": "3. 더블룸"
+                        "text": "3. 大床房"
                     },
                     {
-                        "text": "4. 트리플룸"
+                        "text": "4. 三人间"
                     },
                     {
-                        "text": "이전으로 가기"
+                        "text": "返回上一页"
                     },
                     {
-                        "text": "처음으로 돌아가기"
+                        "text": "回到初始页面"
                     }
                 ]
             }
@@ -44,15 +44,15 @@ var dialogs = [
         "id": "default0",
         "children": [
             {
-                "name": "1. 메뉴보기 1",
+                "name": "1. 查看客房清单 1",
                 "input": [
                     {
                         "regexp": "^1"
                     },
                     {
                         "text": {
-                            "raw": "싱글룸",
-                            "nlp": "싱글 룸"
+                            "raw": "单人间",
+                            "nlp": "单人间"
                         }
                     },
                     {
@@ -60,8 +60,8 @@ var dialogs = [
                     },
                     {
                         "text": {
-                            "raw": "트윈룸",
-                            "nlp": "트윈룸"
+                            "raw": "双人间",
+                            "nlp": "双人间"
                         }
                     },
                     {
@@ -69,8 +69,8 @@ var dialogs = [
                     },
                     {
                         "text": {
-                            "raw": "더블룸",
-                            "nlp": "더 블룸"
+                            "raw": "大床房",
+                            "nlp": "大床房"
                         }
                     },
                     {
@@ -78,38 +78,38 @@ var dialogs = [
                     },
                     {
                         "text": {
-                            "raw": "트리플룸",
-                            "nlp": "트리플 룸"
+                            "raw": "三人间",
+                            "nlp": "三人间"
                         }
                     }
                 ],
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "☃하우스 함박스테이크☃\n  ✔house burgsteak\n\n상큼한 토마토 소스\n\n가격: 8900원",
+                        "text": "☃单人间☃\n  ✔Single Room\n\n36m2 卧室1, 淋浴室1, 卫生间1\n55英寸智能电视\n(卫星52个频道)\n\n300Mbps超高速网络\n有线无线(wi-fi)免费\n\n220V, 110V插座提供\n咖啡，茶包免费提供\n\n加床服务:\n加一个床位100元/晚\n婴儿床(免费提供)\n\n价格: 150元",
                         "buttons": [
                             {
-                                "text": "이전으로 가기"
+                                "text": "返回上一页"
                             },
                             {
-                                "text": "처음으로 돌아가기"
+                                "text": "回到初始页面"
                             }
                         ],
                         "if": "context.session.isorder!==true"
                     },
                     {
                         "kind": "Content",
-                        "text": "일 각실로 예약하시겠습니까?",
+                        "text": "帮您预订这个房间吗？",
                         "if": "context.session.isorder===true",
                         "buttons": [
                             {
-                                "text": "이 객실로 예약하기"
+                                "text": "预订这个房间"
                             },
                             {
-                                "text": "이전으로 가기"
+                                "text": "返回上一页"
                             },
                             {
-                                "text": "처음으로 돌아가기"
+                                "text": "回到初始页面"
                             }
                         ]
                     }
@@ -120,21 +120,21 @@ var dialogs = [
                 "id": "default1",
                 "children": [
                     {
-                        "name": "1. 메뉴보기 예약하기",
+                        "name": "1. 查看客房清单 预约",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "이 객실로 예약하기",
-                                    "nlp": "이 객실 로 예약 하다"
+                                    "raw": "预订这个房间",
+                                    "nlp": "预订这个房间"
                                 }
                             }
                         ],
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "객실 몇개 예약하실거에요? \n(ex: 2)",
+                                "text": "需要帮您预订几个房间？ \n(ex: 2)",
                                 "type": "call",
-                                "dialogName": "2. 예약하기 인원",
+                                "dialogName": "2. 预订 人数",
                                 "dialogId": "default4"
                             }
                         ],
@@ -148,28 +148,28 @@ var dialogs = [
         }
     },
     {
-        "name": "2. 예약하기 날짜",
+        "name": "2. 预订 日期",
         "input": [
             {
-                "regexp": "예약하"
+                "regexp": "预订"
             },
             {
                 "regexp": "^2"
             },
             {
-                "regexp": "예약해"
+                "regexp": "预约"
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "입주하실 일자를 말씀해 주세요.\n(ex: 2017-02-06)"
+                "text": "请告诉我您的入住日期。\n(ex: 2017-02-06)"
             }
         ],
         "id": "default2",
         "children": [
             {
-                "name": "2. 예약하기 퇴실 날짜",
+                "name": "2. 预订 退房日期",
                 "input": [
                     {
                         "types": [
@@ -180,7 +180,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "퇴실일자를 말씀해 주세요.\n(ex: 2017-02-10)"
+                        "text": "请告诉我您的退房日期。\n(ex: 2017-02-10)"
                     }
                 ],
                 "task": {
@@ -189,7 +189,7 @@ var dialogs = [
                 "id": "default100",
                 "children": [
                     {
-                        "name": "2. 예약하기 시간",
+                        "name": "2. 预订 时间",
                         "input": [
                             {
                                 "types": [
@@ -200,15 +200,15 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "어떤 객실을 예약해주실 건까요?\n 선택해주세요",
+                                "text": "需要帮您预订什么类型的房间?\n 请在下方列表中选择。",
                                 "if": "context.session.days>=0",
                                 "type": "call",
                                 "dialogId": "default0",
-                                "dialogName": "1. 메뉴보기"
+                                "dialogName": "1. 查看客房清单"
                             },
                             {
                                 "kind": "Action",
-                                "text": "퇴실날짜는 입주날짜보다 뒤에 있어야 됩니다.\n\n죄송하지만 확인하시고 다시 한번 입력해주시겠습니까?^^",
+                                "text": "退房日期必须在入住日期之后。\n\n非常抱歉，请确认后再重新输入^^",
                                 "if": "context.session.days<0",
                                 "type": "repeat"
                             }
@@ -219,7 +219,7 @@ var dialogs = [
                         "id": "default3",
                         "children": [
                             {
-                                "name": "2. 예약하기 인원",
+                                "name": "2. 预订 人数",
                                 "input": [
                                     {
                                         "if": "false"
@@ -228,7 +228,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "객실 몇개 예약하실거에요? \n(ex: 2)"
+                                        "text": "需要帮您预订几个房间？ \n(ex: 2)"
                                     }
                                 ],
                                 "task": {
@@ -237,7 +237,7 @@ var dialogs = [
                                 "id": "default4",
                                 "children": [
                                     {
-                                        "name": "2. 예약하기 예약자",
+                                        "name": "2. 预订 预约人",
                                         "input": [
                                             {
                                                 "regexp": "/^\\d/"
@@ -246,7 +246,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "예약하실 이름을 입력해주세요."
+                                                "text": "请告诉我您的姓名。"
                                             }
                                         ],
                                         "task": {
@@ -255,7 +255,7 @@ var dialogs = [
                                         "id": "default5",
                                         "children": [
                                             {
-                                                "name": "2. 예약하기 휴대번호",
+                                                "name": "2. 预订 手机号",
                                                 "input": [
                                                     {
                                                         "if": "true"
@@ -264,7 +264,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "휴대폰 번호를 말씀해주세요.(01012123434)"
+                                                        "text": "请输入您的手机号码。(01012123434)"
                                                     }
                                                 ],
                                                 "task": {
@@ -273,7 +273,7 @@ var dialogs = [
                                                 "id": "default6",
                                                 "children": [
                                                     {
-                                                        "name": "2. 예약하기 인증번호",
+                                                        "name": "2. 预订 验证号码",
                                                         "input": [
                                                             {
                                                                 "types": [
@@ -284,13 +284,13 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Content",
-                                                                "text": "문자메세지(SMS)로 발송된 인증번호를 입력해주세요."
+                                                                "text": "请输入您收到的短信验证号码。"
                                                             }
                                                         ],
                                                         "id": "default7",
                                                         "children": [
                                                             {
-                                                                "name": "2. 예약확인",
+                                                                "name": "2. 查看预订信息",
                                                                 "input": [
                                                                     {
                                                                         "types": [
@@ -301,7 +301,7 @@ var dialogs = [
                                                                 "output": [
                                                                     {
                                                                         "kind": "Content",
-                                                                        "text": "예약내용을 확인해주세요.\n입주날짜: +context.session.datein+ \n퇴실날짜: +context.session.dateout+\n객실수: +context.session.number+개\n가격: +context.session.allprice+원\n예약 시간: +context.session.time+\n주문자성함: +context.session.name+\n연락처: +context.session.mobile+\n다음과 같이 예약신청하시겠습니까?"
+                                                                        "text": "以下是您的预订信息。\n入住日期: +context.session.datein+ \n退房日期: +context.session.dateout+\n预订房间数: +context.session.number+个\n价格: +context.session.allprice+元\n预订时间: +context.session.time+\n预订人姓名: +context.session.name+\n联系方式: +context.session.mobile+\n预订定信息正确吗?"
                                                                     }
                                                                 ],
                                                                 "task": {
@@ -310,81 +310,104 @@ var dialogs = [
                                                                 "id": "default8",
                                                                 "children": [
                                                                     {
-                                                                        "name": "2. 주문",
+                                                                        "name": "2. 预订",
                                                                         "input": [
                                                                             {
                                                                                 "text": {
-                                                                                    "raw": "네",
-                                                                                    "nlp": "네"
+                                                                                    "raw": "是的",
+                                                                                    "nlp": "是的"
                                                                                 }
                                                                             },
                                                                             {
                                                                                 "text": {
-                                                                                    "raw": "ㅇㅇ",
-                                                                                    "nlp": "ㅇㅇ"
+                                                                                    "raw": "好的",
+                                                                                    "nlp": "好的"
                                                                                 }
                                                                             },
                                                                             {
                                                                                 "text": {
-                                                                                    "raw": "ㅇ",
-                                                                                    "nlp": "ㅇ"
+                                                                                    "raw": "好",
+                                                                                    "nlp": "好"
                                                                                 }
                                                                             },
                                                                             {
                                                                                 "text": {
-                                                                                    "raw": "넹",
-                                                                                    "nlp": "넹"
+                                                                                    "raw": "正确",
+                                                                                    "nlp": "正确"
                                                                                 }
                                                                             },
                                                                             {
                                                                                 "text": {
-                                                                                    "raw": "웅",
-                                                                                    "nlp": "웅"
+                                                                                    "raw": "是",
+                                                                                    "nlp": "是"
                                                                                 }
                                                                             },
                                                                             {
                                                                                 "text": {
-                                                                                    "raw": "응",
-                                                                                    "nlp": "응"
+                                                                                    "raw": "嗯",
+                                                                                    "nlp": "嗯"
                                                                                 }
                                                                             }
                                                                         ],
                                                                         "output": [
                                                                             {
                                                                                 "kind": "Content",
-                                                                                "text": "예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n객실 확인 후 예약완료 문자를 보내 드리겠습니다.\n\n예약확인 하려면 \"예약확인\"버튼을 누러주세요\n처음으로 가려면 \"처음으로 돌아가기\" 버튼을 누러주세요",
+                                                                                "text": "已经为您完成了预约。\n\n但还没有得到最后确认，\n等确认房位后会给您发送短信通知您已经完成预订。\n\n想要查看预订信息的话请点击 \"查看预订信息\"按钮。\n想要回到初始换面的话请点击\"回到初始页面\"按钮。",
                                                                                 "buttons": [
                                                                                     {
                                                                                         "url": "",
-                                                                                        "text": "예약확인"
+                                                                                        "text": "查看预订信息"
                                                                                     },
                                                                                     {
                                                                                         "url": "",
-                                                                                        "text": "처음으로 돌아가기"
+                                                                                        "text": "回到初始页面"
                                                                                     }
                                                                                 ]
                                                                             }
                                                                         ],
-                                                                        "id": "default14"
+                                                                        "id": "default14",
+                                                                        "children": [
+                                                                            {
+                                                                                "name": "2. 预订信息 查看",
+                                                                                "input": [
+                                                                                    {
+                                                                                        "text": {
+                                                                                            "raw": "查看预订信息",
+                                                                                            "nlp": "查看预订信息"
+                                                                                        }
+                                                                                    }
+                                                                                ],
+                                                                                "output": [
+                                                                                    {
+                                                                                        "kind": "Action",
+                                                                                        "text": "",
+                                                                                        "type": "call",
+                                                                                        "dialogId": "default15",
+                                                                                        "dialogName": "3. 查看预订信息"
+                                                                                    }
+                                                                                ],
+                                                                                "id": "default23"
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 ]
                                                             },
                                                             {
-                                                                "name": "2. 예약하기 인증번호 재발송",
+                                                                "name": "2. 预订 验证号码 重发",
                                                                 "input": [
                                                                     {
                                                                         "text": {
-                                                                            "raw": "재발송",
-                                                                            "nlp": "재 발송"
+                                                                            "raw": "重发",
+                                                                            "nlp": "重发"
                                                                         }
                                                                     }
                                                                 ],
                                                                 "output": [
                                                                     {
                                                                         "kind": "Action",
-                                                                        "text": "재발송이 되었습니다.\n\n문자메세지(SMS)로 발송된 인증번호를 입력해주세요.",
+                                                                        "text": "已经重新发送。\n\n请输入您收到的短信验证号码。",
                                                                         "type": "call",
-                                                                        "dialogName": "2. 예약하기 인증번호",
+                                                                        "dialogName": "2. 预订 验证号码",
                                                                         "dialogId": "default7"
                                                                     }
                                                                 ],
@@ -394,7 +417,7 @@ var dialogs = [
                                                                 "id": "default13"
                                                             },
                                                             {
-                                                                "name": "2. 예약하기 인증번호 틀린경우",
+                                                                "name": "2. 预订 验证号码 错误情况",
                                                                 "input": [
                                                                     {
                                                                         "if": "true"
@@ -403,7 +426,7 @@ var dialogs = [
                                                                 "output": [
                                                                     {
                                                                         "kind": "Action",
-                                                                        "text": "입력하신 인증번호는 틀렸습니다.\n\n죄송하지만 확인하시고 다시 한번 입력해주시겠습니까?^^\n\n인증번호를 못 받은 경우에는 '재발송' 을 입력해주세요.",
+                                                                        "text": "您输入的验证号码有误。\n\n非常抱歉，请确认后再重新输入^^\n\n没有收到验证号码的情况，请输入'重发'。",
                                                                         "type": "repeat"
                                                                     }
                                                                 ],
@@ -415,7 +438,7 @@ var dialogs = [
                                                         }
                                                     },
                                                     {
-                                                        "name": "2.예약하기 휴대번호 틀린경우",
+                                                        "name": "2.预订 手机号 错误情况",
                                                         "input": [
                                                             {
                                                                 "if": "true"
@@ -424,7 +447,7 @@ var dialogs = [
                                                         "output": [
                                                             {
                                                                 "kind": "Action",
-                                                                "text": "입력하신 전화번호는 인식을 못하네요.\n\n죄송하지만 확인하시고 다시 한번 입력해주시겠습니까?^^",
+                                                                "text": "请输入的手机号格式不对。\n\n非常抱歉，请确认后再重新输入^^",
                                                                 "type": "repeat"
                                                             }
                                                         ],
@@ -435,7 +458,7 @@ var dialogs = [
                                         ]
                                     },
                                     {
-                                        "name": "2. 예약하기 인원 틀린 경우",
+                                        "name": "2. 预订 人数 错误情况",
                                         "input": [
                                             {
                                                 "if": "true"
@@ -444,7 +467,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "죄송하지만 숫자만 다시 한번 입력해주시겠습니까?^^",
+                                                "text": "非常抱歉，请输入纯数字^^",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -455,7 +478,7 @@ var dialogs = [
                         ]
                     },
                     {
-                        "name": "2. 예약하기 날짜 틀린 경우",
+                        "name": "2. 预订 日期 错误情况",
                         "input": [
                             {
                                 "if": "true"
@@ -464,7 +487,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "입력하신 날짜는 인식을 못하네요.\n\n죄송하지만 확인하시고 다시 한번 입력해주시겠습니까?^^",
+                                "text": "请输入的日期格式有误。\n\n非常抱歉，请确认后再重新输入^^",
                                 "type": "repeat"
                             }
                         ],
@@ -473,7 +496,7 @@ var dialogs = [
                 ]
             },
             {
-                "name": "2. 예약하기 퇴실 날짜 틀린 경우",
+                "name": "2. 预订 退房日期 错误情况",
                 "input": [
                     {
                         "if": "true"
@@ -482,7 +505,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "text": "입력하신 날짜는 인식을 못하거나 입주하는 날짜보다 일찍 되는 날짜입니다.\n\n죄송하지만 확인하시고 다시 한번 입력해주시겠습니까?^^",
+                        "text": "您输入的日期格式有误或者比入住日期小。\n\n非常抱歉，请确认后再重新输入^^",
                         "type": "repeat"
                     }
                 ],
@@ -494,25 +517,25 @@ var dialogs = [
         }
     },
     {
-        "name": "3. 예약확인",
+        "name": "3. 查看预订信息",
         "input": [
             {
                 "regexp": "^3"
             },
             {
-                "regexp": "예약확인"
+                "regexp": "查看预订信息"
             },
             {
-                "regexp": "예약 확인"
+                "regexp": "预订信息"
             },
             {
-                "regexp": "예약했"
+                "regexp": "预订的"
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "예약자성함을 입력해주세요."
+                "text": "请输入预订人姓名。"
             }
         ],
         "task": {
@@ -521,7 +544,7 @@ var dialogs = [
         "id": "default15",
         "children": [
             {
-                "name": "3. 예약확인 여부",
+                "name": "3. 是否查看预订信息",
                 "input": [
                     {
                         "if": "true"
@@ -530,16 +553,16 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "예약확인",
+                        "text": "查看预订信息",
                         "if": "context.session.confirmlist.length>0"
                     },
                     {
                         "kind": "Content",
-                        "text": "예약하기",
+                        "text": "预订",
                         "if": "context.session.confirmlist.length<=0",
                         "type": "call",
                         "dialogId": "default2",
-                        "dialogName": "2. 예약하기 날짜"
+                        "dialogName": "2. 预订 日期"
                     }
                 ],
                 "id": "default16",
@@ -548,7 +571,7 @@ var dialogs = [
                 },
                 "children": [
                     {
-                        "name": "3. 예약확인 취소",
+                        "name": "3. 查看预订信息 取消",
                         "input": [
                             {
                                 "regexp": "/^\\d/"
@@ -557,13 +580,13 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "삭제했습니다!",
+                                "text": "删除成功！",
                                 "buttons": [
                                     {
-                                        "text": "이전으로 가기"
+                                        "text": "返回上一页"
                                     },
                                     {
-                                        "text": "처음으로 돌아가기"
+                                        "text": "回到初始页面"
                                     }
                                 ]
                             }
@@ -574,12 +597,12 @@ var dialogs = [
                         "id": "default20"
                     },
                     {
-                        "name": "3. 예약확인 없는 경우 예약하기",
+                        "name": "3. 查看预订信息 没有预订情况",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "예약하기",
-                                    "nlp": "예약 하다"
+                                    "raw": "预订",
+                                    "nlp": "预订"
                                 }
                             }
                         ],
@@ -589,13 +612,13 @@ var dialogs = [
                                 "text": "",
                                 "type": "call",
                                 "dialogId": "default2",
-                                "dialogName": "2. 예약하기 날짜"
+                                "dialogName": "2. 预订 日期"
                             }
                         ],
                         "id": "default22"
                     },
                     {
-                        "name": "3. 예약확인 취소 틀린 경우",
+                        "name": "3. 查看预订信息 取消 错误情况",
                         "input": [
                             {
                                 "if": "true"
@@ -604,7 +627,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "죄송하지만 숫자만 다시 한번 입력해주시겠습니까?^^",
+                                "text": "非常抱歉，请输入纯数字?^^",
                                 "type": "repeat"
                             }
                         ],
@@ -615,45 +638,45 @@ var dialogs = [
         ]
     },
     {
-        "name": "5. 지도",
+        "name": "5. 地图",
         "input": [
             {
-                "regexp": "지도"
+                "regexp": "地图"
             },
             {
-                "regexp": "위치"
+                "regexp": "位置"
             },
             {
-                "regexp": "주소"
+                "regexp": "地址"
             },
             {
-                "regexp": "어디"
+                "regexp": "在哪"
             },
             {
-                "regexp": "버스"
+                "regexp": "公交"
             },
             {
-                "regexp": "지하철"
+                "regexp": "地铁"
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "<+bot.name+> 주소\n\n서울 서초구 강남대로 373 (서초동, 홍우빌딩) WeWork",
+                "text": "<+bot.name+>的地址：\n\n北京市二环创业大楼",
                 "buttons": [
                     {
                         "url": "https://map.naver.com/?query=%EC%84%9C%EC%9A%B8+%EC%84%9C%EC%B4%88%EA%B5%AC+%EA%B0%95%EB%82%A8%EB%8C%80%EB%A1%9C+373+(%EC%84%9C%EC%B4%88%EB%8F%99%2C+%ED%99%8D%EC%9A%B0%EB%B9%8C%EB%94%A9)+WeWork",
-                        "text": "네이버지도보기"
+                        "text": "NAVER地图"
                     },
                     {
                         "url": "http://dmaps.kr/2i3bv",
-                        "text": "daum지도보기"
+                        "text": "daum地图"
                     },
                     {
-                        "text": "이전으로 가기"
+                        "text": "返回上一页"
                     },
                     {
-                        "text": "처음으로 돌아가기"
+                        "text": "回到初始页面"
                     }
                 ]
             }
@@ -661,34 +684,37 @@ var dialogs = [
         "id": "default18"
     },
     {
-        "name": "4.영업시간",
+        "name": "4.营业时间",
         "input": [
             {
-                "regexp": "영업시간"
+                "regexp": "营业时间"
             },
             {
-                "regexp": "영업"
+                "regexp": "营业"
             },
             {
-                "regexp": "열어"
+                "regexp": "开门"
             },
             {
                 "regexp": "출근"
             },
             {
-                "regexp": "퇴근"
+                "regexp": "下班"
+            },
+            {
+                "regexp": "关门"
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "<+bot.name+> 영업시간\n\nOpen hour\n24시간\n\nBreak time\n평일 오후 12 - 1시\n\n쉬일 없습니다.",
+                "text": "<+bot.name+> 营业时间\n\nOpen hour\n24小时\n\nBreak time\n工作日中午12 - 1点\n\n没有休息日。",
                 "buttons": [
                     {
-                        "text": "이전으로 가기"
+                        "text": "返回上一页"
                     },
                     {
-                        "text": "처음으로 돌아가기"
+                        "text": "回到初始页面"
                     }
                 ]
             }
@@ -700,7 +726,7 @@ var dialogs = [
 var commonDialogs = [
     {
         "id": "startDialog",
-        "name": "시작",
+        "name": "开始",
         "input": [
             {
                 "text": {
@@ -710,33 +736,33 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "시작",
-                    "nlp": "시작"
+                    "raw": "开始",
+                    "nlp": "开始"
                 }
             },
             {
                 "text": {
-                    "raw": "처음",
-                    "nlp": "처음"
+                    "raw": "初始",
+                    "nlp": "初始"
                 }
             },
             {
                 "text": {
-                    "raw": "대화 시작",
-                    "nlp": "대화 시작"
+                    "raw": "开始对话",
+                    "nlp": "开始对话"
                 }
             },
             {
                 "text": {
-                    "raw": "처음으로 돌아가기",
-                    "nlp": "처음 으로 돌아가다"
+                    "raw": "回到初始页面",
+                    "nlp": "回到初始页面"
                 }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "<+bot.name+> 인공지능 챗봇입니다. 궁금하신 걸 물어보세요.\n\n아니면, 아래의 목록 중 번호를 입력하셔도 되요!\n\n1. 객실보기\n2. 예약하기\n3. 예약확인"
+                "text": "我是<+bot.name+>人工智能聊天机器人。 如果您有疑问随时可以问我哟~\n\n或者，您也可以告诉我以下列表中您想要查看的内容的编号！\n\n1. 查看客房请看\n2. 预订\n3. 查看预订信息"
             }
         ],
         "task": {
@@ -745,7 +771,7 @@ var commonDialogs = [
     },
     {
         "id": "backDialog",
-        "name": "이전",
+        "name": "返回",
         "input": [
             {
                 "text": {
@@ -755,14 +781,14 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "이전",
-                    "nlp": "이전"
+                    "raw": "返回",
+                    "nlp": "返回"
                 }
             },
             {
                 "text": {
-                    "raw": "이전으로 가기",
-                    "nlp": "이전으로 가기"
+                    "raw": "返回上一页",
+                    "nlp": "返回上一页"
                 }
             }
         ],
@@ -775,7 +801,7 @@ var commonDialogs = [
     },
     {
         "id": "upDialog",
-        "name": "상위",
+        "name": "上一页",
         "input": [
             {
                 "text": {
@@ -785,8 +811,8 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "상위",
-                    "nlp": "상위"
+                    "raw": "上一页",
+                    "nlp": "上一页"
                 }
             }
         ],
@@ -799,19 +825,19 @@ var commonDialogs = [
     },
     {
         "id": "noanswer",
-        "name": "답변없음",
+        "name": "没有回答",
         "input": "",
         "output": [
             {
-                "text": "죄송해요 고객님. 제가 이해하지 못하는 부분이에요~\n\n+bot.name+ 고객센터(☎02-858-5683)를 이용가능하십니다.\n\n다른 궁금하신 걸 물어봐주시겠어요?^^",
+                "text": "非常抱歉，您说的话我暂时理解不了~\n\n您可以拨打+bot.name+的客服中心电话(☎02-858-5683)\n\n您可以问我其他的问题哟~^^",
                 "kind": "Content"
             },
             {
-                "text": "앗, 그 부분은 저도 잘 모르겠어요.\n\n+bot.name+ 고객센터(☎02-858-5683)를 이용가능하십니다.\n\n다음번에 학습해서 알려드리겠습니다!",
+                "text": "啊，这个部分我暂时还不是很清楚耶。\n\n您可以拨打+bot.name+的客服中心电话(☎02-858-5683)\n\n等我学会了，下次再告诉您哟！",
                 "kind": "Content"
             },
             {
-                "text": "그건 아직 학습되지 않아서 알려드릴수가 없네요ㅠ.ㅠ\n\n+bot.name+ 고객센터(☎02-858-5683)를 이용가능하십니다.\n\n다른 궁금하신 걸 물어봐주세요!",
+                "text": "我还没有学过这个暂时回答不了您呢ㅠ.ㅠ\n\n您可以拨打+bot.name+的客服中心电话(☎02-858-5683)\n\n您也可以问我其他的问题!",
                 "kind": "Content"
             }
         ]
