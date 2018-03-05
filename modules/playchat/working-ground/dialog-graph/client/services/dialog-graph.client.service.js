@@ -1345,6 +1345,7 @@
             var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
+            var taskTemplate = '';
             var outputTemplate = '';
             var imageTemplate = '';
             var buttonTemplate = '';
@@ -1362,6 +1363,11 @@
             {
                 // 예전 그래프에 input이 리스트가 아닌것도 있었다.
                 inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+
+            if(dialog.task && dialog.task.name)
+            {
+                taskTemplate = '<div class="graph-dialog-input"><div style="font-weight: bold; font-style: italic; text-align: center;">' + dialog.task.name + '</div></div>';
             }
 
             if(typeof dialog.output == 'object')
@@ -1422,7 +1428,7 @@
                 imageTemplate = '<div class="graph-dialog-image">' + imageTemplate + '</div>';
             }
 
-            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
+            t = t.replace('{input}', inputTemplate).replace('{task}', taskTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
             var that = this;
@@ -1444,6 +1450,16 @@
 
             var parent = angular.element(this.canvas).find('#' + dialog.id).get(0);
             parent.replaceChild(itemElement, parent.children[0]);
+
+            var parentDialog = parent.parentElement.parentElement.children[0].dialog;
+            for(var i=0; i<parentDialog.children.length; i++)
+            {
+                if(parentDialog.children[i].id == dialog.id)
+                {
+                    parentDialog.children[i] = dialog;
+                    break;
+                }
+            }
 
             this.bindDialogFunctions(angular.element(parent));
 
@@ -1474,6 +1490,7 @@
             var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
+            var taskTemplate = '';
             var outputTemplate = '';
             var imageTemplate = '';
             var buttonTemplate = '';
@@ -1491,6 +1508,11 @@
             {
                 // 예전 그래프에 input이 리스트가 아닌것도 있었다.
                 inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+
+            if(dialog.task && dialog.task.name)
+            {
+                taskTemplate = '<div class="graph-dialog-input"><div style="font-weight: bold; font-style: italic; text-align: center;">' + dialog.task.name + '</div></div>';
             }
 
             if(typeof dialog.output == 'object')
@@ -1554,7 +1576,7 @@
             }
 
 
-            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
+            t = t.replace('{input}', inputTemplate).replace('{task}', taskTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
             var that = this;
