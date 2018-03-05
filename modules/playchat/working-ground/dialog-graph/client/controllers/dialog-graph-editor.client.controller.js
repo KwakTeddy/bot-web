@@ -97,17 +97,77 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     DialogGraphEditorOutput.make($scope, DialogGraphEditor);
     DialogGraphEditorTask.make($scope, DialogGraphEditor);
 
-    $scope.parseResult = function()
+    // $scope.parseResult = function()
+    // {
+    //     var result = {};
+    //     if($scope.oldDialog)
+    //     {
+    //         result = $scope.oldDialog;
+    //     }
+    //
+    //     for(var i=0; i<$scope.dialog.input.length; i++)
+    //     {
+    //         var input = $scope.dialog.input[i];
+    //         for(var key in input)
+    //         {
+    //             if(!input[key])
+    //                 delete input[key];
+    //         }
+    //     }
+    //
+    //     // 저장시 불필요한 데이터 삭제.
+    //     for(var i=0; i<$scope.dialog.output.length; i++)
+    //     {
+    //         // 이미지 업로드를 위한 데이터
+    //         delete $scope.dialog.output[i].uploader;
+    //
+    //         if($scope.dialog.output[i].buttons && $scope.dialog.output[i].buttons.length == 0)
+    //         {
+    //             // 화면 viewing을 위해 필요한 데이터 이므로 버튼이 없는경우 삭제.
+    //             delete $scope.dialog.output[i].buttons;
+    //         }
+    //     }
+    //
+    //     result.name = $scope.dialog.name;
+    //     result.input = $scope.dialog.input;
+    //     result.output = JSON.parse(angular.toJson($scope.dialog.output));
+    //     if($scope.dialog.task)
+    //     {
+    //         result.task = $scope.dialog.task;
+    //     }
+    //
+    //     console.log(result.output);
+    //
+    //     result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
+    //     result.output = JSON.parse(angular.toJson(result.output));
+    //     if(result.task)
+    //         result.task = JSON.parse(angular.toJson(result.task));
+    //
+    //     for(var i=0; i<result.output.length; i++)
+    //     {
+    //         delete result.output[i].uploader;
+    //
+    //         if(result.output[i].buttons)
+    //         {
+    //             for(var j=0; j<result.output[i].buttons.length; j++)
+    //             {
+    //                 if(!result.output[i].buttons[j].url)
+    //                 {
+    //                     delete result.output[i].buttons[j].url;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //
+    //     return result;
+    // };
+
+    $scope.parseDialog = function(dialog)
     {
         var result = {};
-        if($scope.oldDialog)
+        for(var i=0; i<dialog.input.length; i++)
         {
-            result = $scope.oldDialog;
-        }
-
-        for(var i=0; i<$scope.dialog.input.length; i++)
-        {
-            var input = $scope.dialog.input[i];
+            var input = dialog.input[i];
             for(var key in input)
             {
                 if(!input[key])
@@ -116,24 +176,24 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
 
         // 저장시 불필요한 데이터 삭제.
-        for(var i=0; i<$scope.dialog.output.length; i++)
+        for(var i=0; i<dialog.output.length; i++)
         {
             // 이미지 업로드를 위한 데이터
-            delete $scope.dialog.output[i].uploader;
+            delete dialog.output[i].uploader;
 
-            if($scope.dialog.output[i].buttons && $scope.dialog.output[i].buttons.length == 0)
+            if(dialog.output[i].buttons && dialog.output[i].buttons.length == 0)
             {
                 // 화면 viewing을 위해 필요한 데이터 이므로 버튼이 없는경우 삭제.
-                delete $scope.dialog.output[i].buttons;
+                delete dialog.output[i].buttons;
             }
         }
 
-        result.name = $scope.dialog.name;
-        result.input = $scope.dialog.input;
-        result.output = JSON.parse(angular.toJson($scope.dialog.output));
-        if($scope.dialog.task)
+        result.name = dialog.name;
+        result.input = dialog.input;
+        result.output = JSON.parse(angular.toJson(dialog.output));
+        if(dialog.task)
         {
-            result.task = $scope.dialog.task;
+            result.task = dialog.task;
         }
 
         console.log(result.output);
@@ -199,7 +259,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         {
             delete $scope.tempInputList;
 
-            var result = $scope.parseResult();
+            var result = $scope.parseDialog($scope.dialog);
 
             // DialogGraph.refresh();
             DialogGraph.reloadDialog(result);
@@ -224,8 +284,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         if($scope.originalDialog)
         {
-            var origin = JSON.stringify($scope.originalDialog);
-            var result = JSON.stringify($scope.parseResult());
+            var origin = JSON.stringify($scope.parseDialog($scope.originalDialog));
+            var result = JSON.stringify($scope.parseDialog($scope.dialog));
+
+            console.log(origin, result);
 
             if(origin != result)
             {
@@ -238,7 +300,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         if($scope.isNew)
         {
-            DialogGraph.deleteDialogById($scope.isNew, false);
+            DialogGraph.deleteDialogById($scope.isNew.id, false);
+        }
+        else if($scope.originalDialog && $scope.originalDialog.input.length == 1 && $scope.originalDialog.input[0].text && !$scope.originalDialog.input[0].text.raw.trim())
+        {
+            DialogGraph.deleteDialogById($scope.originalDialog.id, false);
         }
 
         return true;
@@ -324,6 +390,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     DialogGraphEditor.setOpenCallback(function(parent, dialog)
     {
+        if($scope.isNew)
+        {
+            DialogGraph.deleteDialogById($scope.isNew.id, false, false);
+        }
+
         $scope.currentFileName = $location.search().fileName || 'default.graph.js';
         $scope.controlDialogFlow = false;
 
@@ -353,7 +424,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             $rootScope.$broadcast('saveDialogGraph', { saveFileName: DialogGraph.fileName, saveHistory: false });
 
-            $scope.isNew = dialog.id;
+            $scope.isNew = dialog;
 
             DialogGraph.focusById(dialog.id);
 

@@ -182,9 +182,30 @@
             this.closeMenu();
         };
 
-        var changeCloneInfo = function (dialog) {
-            dialog.name += ' Clone';
-            dialog.id += 'Clone';
+        var checkUniqueName = function(name, dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                if(dialogs[i].name == name)
+                {
+                    return false;
+                }
+                else if(dialogs[i].children)
+                {
+                    return checkUniqueName(name, dialogs[i].children);
+                }
+            }
+
+            return true;
+        };
+
+        var changeCloneInfo = function (dialog)
+        {
+            var postfix = 'Clone';
+            while(!checkUniqueName((dialog.name + (postfix += ' Clone')), instance.userDialogs));
+
+            dialog.name = dialog.name + postfix;
+            dialog.id += postfix;
             if(dialog.children)
             {
                 for(var i = 0; i < dialog.children.length; i++)
@@ -281,7 +302,7 @@
 
                 if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
                 {
-                    angular.element('.dialog-menu').css('top', top - 50 + 'px');
+                    angular.element('.dialog-menu').css('top', top + (graphbody.offsetHeight + graphbody.scrollTop - (top + menuDialog.offsetHeight)) + 'px');
                 }
             }
 
@@ -533,19 +554,19 @@
             this.deleteDialog(angular.element('#' + this.focusedDialog));
         };
 
-        DialogGraph.prototype.deleteDialogById = function(id, saveHistory)
+        DialogGraph.prototype.deleteDialogById = function(id, saveHistory, isEditorClose)
         {
             if(id)
             {
                 var target = angular.element('#' + id);
                 if(target.length > 0)
                 {
-                    this.deleteDialog(angular.element('#' + id), null, saveHistory);
+                    this.deleteDialog(angular.element('#' + id), null, saveHistory, isEditorClose);
                 }
             }
         };
 
-        DialogGraph.prototype.deleteDialog = function(target, withChildren, saveHistory)
+        DialogGraph.prototype.deleteDialog = function(target, withChildren, saveHistory, isEditorClose)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
             var dialog = target.get(0).children[0].dialog;
@@ -585,7 +606,7 @@
             instance.setDirty(true, this.fileName, saveHistory);
             instance.focusById(afterFocusId);
 
-            if(this.editor.focusId != dialog.id)
+            if(this.editor.focusId != dialog.id && isEditorClose !== false)
             {
                 this.editor.close();
             }
@@ -832,6 +853,23 @@
             });
         };
 
+        DialogGraph.prototype.removeInitialDialog = function(dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                if(dialogs[i].input.length == 1 && dialogs[i].input[0].text && !dialogs[i].input[0].text.raw.trim())
+                {
+                    dialogs.splice(i, 1);
+                    i--;
+                }
+
+                if(dialogs[i].children)
+                {
+                    this.removeInitialDialog(dialogs[i].children);
+                }
+            }
+        };
+
         DialogGraph.prototype.loadFromFile = function(data, fileName)
         {
             this.dirty = false;
@@ -859,6 +897,8 @@
 
                 startDialog.children = this.userDialogs = data.dialogs;
                 this.graphData = startDialog;
+
+                this.removeInitialDialog(this.userDialogs);
 
                 this.refresh();
                 this.onLoad();
