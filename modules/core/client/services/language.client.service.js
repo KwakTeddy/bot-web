@@ -3241,6 +3241,12 @@
                 "en": "Your email is verified.",
                 "zh": "您的电子邮件已验证。",
                 "jp": "あなたの電子メールが確認されます。"
+            },
+            "There are already added images. Do you want to change it?": {
+                "ko": "이미 추가된 이미지가 있습니다. 변경하시겠습니까?",
+                "en": "There are already added images. Do you want to change it?",
+                "zh": "已经添加了图像。 你想改变它吗？",
+                "jp": "既に画像が追加されています。 あなたはそれを変更したいですか？"
             }
         };
 
