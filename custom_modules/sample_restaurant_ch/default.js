@@ -16,20 +16,20 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("하우스")!==-1)
+		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("汉堡")!==-1)
 		    {
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519733708x-1404764397.jpg"};
-                dialog.output[0].text = "☃하우스 함박스테이크☃\n✔house burgsteak\n\n상큼한 토마토 소스\n\n가격: 8900원";
+                dialog.output[0].text = "☃汉堡牛排☃\n✔house burgsteak\n\n清新西红柿酱味\n\n价格: 89元";
             }
-            else if(dialog.userInput.text.indexOf("2")!==-1 || dialog.userInput.text.indexOf("라구")!==-1)
+            else if(dialog.userInput.text.indexOf("2")!==-1 || dialog.userInput.text.indexOf("酱香")!==-1)
             {
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519734111x-1404764397.jpg"};
-                dialog.output[0].text = "☃라구 라이스☃\n✔ragu a bowl of rice\n\n가격: 9500원";
+                dialog.output[0].text = "☃酱香米饭☃\n✔ragu a bowl of rice\n\n价格: 95元";
             }
-            else if(dialog.userInput.text.indexOf("3")!==-1 || dialog.userInput.text.indexOf("팬")!==-1)
+            else if(dialog.userInput.text.indexOf("3")!==-1 || dialog.userInput.text.indexOf("黑椒")!==-1)
             {
                 dialog.output[0].image = {url: "http://chuantu.biz/t6/239/1519733729x-1404764397.jpg"};
-                dialog.output[0].text = "☃팬 스테이크☃\n✔pan steak\n\n뜨거운 스테이크&구운야채, 강황필라프\n\n가격: 15000원";
+                dialog.output[0].text = "☃黑椒牛排☃\n✔pan steak\n\n热腾腾的牛排&烤蔬菜, 姜黄饭\n\n价格: 115元";
             }
 			callback();
 		}
@@ -96,7 +96,7 @@ module.exports = function(bot)
                 randomNum += '' + Math.floor(Math.random() * 10);
                 randomNum += '' + Math.floor(Math.random() * 10);
                 context.session.smsAuth = randomNum;
-                var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
+                var message = '[' + bot.name + ']' + ' 验证码 : ' + randomNum;
                 request.post(
                     'https://bot.moneybrain.ai/api/messages/sms/send',
                     {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
@@ -140,7 +140,7 @@ module.exports = function(bot)
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
             context.session.smsAuth = randomNum;
-            var message = '[' + bot.name + ']' + ' 인증번호 : ' + randomNum;
+            var message = '[' + bot.name + ']' + ' 验证码 : ' + randomNum;
             request.post(
                 'https://bot.moneybrain.ai/api/messages/sms/send',
                 {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
@@ -190,26 +190,26 @@ module.exports = function(bot)
                         context.session.confirmlist.push(context.user.order[i]);
                     }
                 }
-                var text = dialog.userInput.text + "님의 예약 내용은 아래와 같습니다.\n\n";
+                var text = dialog.userInput.text + "的预订信息如下：\n\n";
                 for (var i = 0; i < context.session.confirmlist.length; i++) {
-                    text = text.concat((i + 1) + '.\n일시: ' + context.session.confirmlist[i].date + " " + context.session.confirmlist[i].time + '\n' +
-                        '인원: ' + context.session.confirmlist[i].peoplenumber + '명\n' +
-                        '연락처: ' + context.session.confirmlist[i].mobile + '\n\n');
+                    text = text.concat((i + 1) + '.\n时间: ' + context.session.confirmlist[i].date + " " + context.session.confirmlist[i].time + '\n' +
+                        '人数: ' + context.session.confirmlist[i].peoplenumber + '位\n' +
+                        '联系方式: ' + context.session.confirmlist[i].mobile + '\n\n');
                 }
                     dialog.output[0].text = text;
                     callback();
             }
             else{
-                dialog.output[0].text = dialog.userInput.text + "님의 예약 내역이 존재하지 않습니다.\n\n바로 예약하시려면 '예약하기'버튼을 누러주세요";
+                dialog.output[0].text = "暂时还没有"+dialog.userInput.text + "的预订信息。\n\n想立即预订的话请按'预订'按钮";
                 dialog.output[0].buttons = [
                     {
-                        text: "예약하기"
+                        text: "预订"
                     },
                     {
-                        text: "이전으로 가기"
+                        text: "返回上一页"
                     },
                     {
-                        text: "처음으로 돌아가기"
+                        text: "回到初始画面"
                     }
                 ];
                 callback();
