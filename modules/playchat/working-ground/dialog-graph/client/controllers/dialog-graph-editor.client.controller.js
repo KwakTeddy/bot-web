@@ -188,6 +188,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             }
         }
 
+        result.id = dialog.id;
         result.name = dialog.name;
         result.input = dialog.input;
         result.output = JSON.parse(angular.toJson(dialog.output));
@@ -260,6 +261,14 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             delete $scope.tempInputList;
 
             var result = $scope.parseDialog($scope.dialog);
+
+            if($scope.isNew)
+            {
+                for(var key in result)
+                {
+                    $scope.isNew[key] = result[key];
+                }
+            }
 
             // DialogGraph.refresh();
             DialogGraph.reloadDialog(result);
@@ -412,9 +421,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             dialog = result;
 
-            DialogGraphEditor.focusId = dialog.id;
+            DialogGraph.addChildDialog(parent, dialog);
 
-            DialogGraph.addChildDialog(parent, result);
+            DialogGraphEditor.focusId = dialog.id;
 
             DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children:first'), dialog);
             DialogGraph.refreshLine();
@@ -442,6 +451,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.isNew = undefined;
             $scope.originalDialog = JSON.parse(angular.toJson(dialog));
         }
+
+        $scope.parent = parent;
 
         $scope.initialize(parent, dialog);
     },
