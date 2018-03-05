@@ -253,29 +253,36 @@
 
         Menu.prototype.openMenu = function(e, dialog)
         {
-            this.isOpened = true;
-
-            var dialogCard = e.currentTarget.parentElement.parentElement;
-            var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
-            var top = dialogCard.offsetTop;
-
-            this.setCurrentDialog(dialog);
-
-            var graphbody = angular.element('.graph-body').get(0);
-
-            angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
-
-            var menuDialog = angular.element('.dialog-menu').get(0);
-
-            // -30은 스크롤바
-            if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+            if(this.isOpened)
             {
-                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+                this.closeMenu();
             }
-
-            if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+            else
             {
-                angular.element('.dialog-menu').css('top', top - 50 + 'px');
+                this.isOpened = true;
+
+                var dialogCard = e.currentTarget.parentElement.parentElement;
+                var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
+                var top = dialogCard.offsetTop;
+
+                this.setCurrentDialog(dialog);
+
+                var graphbody = angular.element('.graph-body').get(0);
+
+                angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
+
+                var menuDialog = angular.element('.dialog-menu').get(0);
+
+                // -30은 스크롤바
+                if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+                {
+                    angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+                }
+
+                if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+                {
+                    angular.element('.dialog-menu').css('top', top - 50 + 'px');
+                }
             }
 
             e.preventDefault();

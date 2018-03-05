@@ -436,6 +436,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('svg line').attr('shape-rendering', 'crispEdges');
             }
 
+            angular.element('.dialog-menu').css('zoom', $scope.zoom);
+
             DialogGraph.refreshLine();
         };
 
@@ -449,6 +451,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 // 1 이하로 줌이 내려가면 line이 사라지는 현상 해결용 코드
                 angular.element('svg line').attr('shape-rendering', 'geometricPrecision');
             }
+
+            angular.element('.dialog-menu').css('zoom', $scope.zoom);
 
             DialogGraph.refreshLine();
         };
