@@ -162,7 +162,7 @@
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
 
-                            <div class="dialog-editor-output-box-row" ng-if="output.kind == 'Action'">
+                            <div class="dialog-editor-output-box-row" ng-if="output.kind == 'Action' && dialog.id != 'startDialog'">
                                 <div style="font-size: 0; text-align: left;">
                                     <div class="select-wrapper">
                                         <select class="jumbo-select dialog-editor-action-type" style="width: 100%; display: block;" ng-model="output.type" ng-change="actionValueChanged(output);">

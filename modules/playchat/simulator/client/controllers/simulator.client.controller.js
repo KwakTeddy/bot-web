@@ -249,7 +249,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             if(e.keyCode == 13) //Enter
             {
-                var value = e.currentTarget.value;
+                var value = e.currentTarget.value.trim();
                 if(value)
                 {
                     emitMsg(value, true);
