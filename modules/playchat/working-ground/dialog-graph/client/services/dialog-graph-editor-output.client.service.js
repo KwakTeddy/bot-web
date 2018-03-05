@@ -95,9 +95,16 @@
             {
                 if(output.image && output.image.displayname)
                 {
-                    delete output.image.url;
-                    delete output.image.displayname;
-                    output.uploader.item = 'none';
+                    if(confirm(LanguageService('There are already added images. Do you want to change it?')))
+                    {
+                        delete output.image.url;
+                        delete output.image.displayname;
+                        output.uploader.item = 'none';
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
                 $scope.isAddExternalImage = true;
@@ -179,10 +186,9 @@
                 }
             };
 
-            $scope.addActionButton = function(output)
+            $scope.addActionButton = function(dialog, output)
             {
                 DialogGraphEditor.isDirty = true;
-
                 output.kind = 'Action';
             };
 

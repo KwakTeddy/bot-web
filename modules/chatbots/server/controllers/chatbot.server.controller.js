@@ -2,6 +2,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var fs = require('fs');
 var accepts = require('accepts');
+var async = require('async');
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
@@ -12,7 +13,9 @@ var Template = mongoose.model('Template');
 var User = mongoose.model('User');
 
 var Intent = mongoose.model('Intent');
+var IntentContent = mongoose.model('IntentContent');
 var Entity = mongoose.model('Entity');
+var EntityContent = mongoose.model('EntityContent');
 
 var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
 var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
@@ -308,6 +311,146 @@ exports.rename = function(req, res)
     });
 };
 
+var getCloneName = function(name, index, callback)
+{
+    ChatBot.findOne({ name: name + (index == 0 ? '' : index) }).exec(function(err, item)
+    {
+        if(err)
+        {
+            callback(err);
+        }
+        else if(item)
+        {
+            getCloneName(name, index+1, callback);
+        }
+        else
+        {
+            callback(null, index);
+        }
+    });
+};
+
+var duplicateIntent = function(srcBotId, destBotId, callback)
+{
+    Intent.find({ botId: srcBotId }).exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return callback();
+        }
+
+        async.eachSeries(list, function(intent, next)
+        {
+            var newIntent = new Intent();
+            newIntent.user = intent.user;
+            newIntent.name = intent.name;
+            newIntent.botId = destBotId;
+
+            newIntent.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return next();
+                }
+
+                IntentContent.find({ intentId: intent._id }).exec(function(err, list)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return next();
+                    }
+
+                    async.eachSeries(list, function(intentContent, next)
+                    {
+                        var newIntentContent = new IntentContent();
+                        newIntentContent.input = intentContent.input;
+                        newIntentContent.name = intentContent.name;
+                        newIntentContent.intentId = newIntent._id;
+                        newIntentContent.botId = destBotId;
+                        newIntentContent.user = intentContent.user;
+
+                        newIntentContent.save(function()
+                        {
+                            next();
+                        });
+                    },
+                    function()
+                    {
+                        next();
+                    });
+                });
+            });
+        },
+        function()
+        {
+            callback();
+        });
+    });
+};
+
+var duplicateEntity = function(srcBotId, destBotId, callback)
+{
+    Entity.find({ botId: srcBotId }).exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return callback();
+        }
+
+        async.eachSeries(list, function(entity, next)
+        {
+            var newEntity = new Entity();
+            newEntity.user = entity.user;
+            newEntity.name = entity.name;
+            newEntity.botId = destBotId;
+
+            newEntity.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return next();
+                }
+
+                EntityContent.find({ entityId: entity._id }).exec(function(err, list)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return next();
+                    }
+
+                    async.eachSeries(list, function(entityContent, next)
+                    {
+                        var newEntityContent = new EntityContent();
+                        newEntityContent.name = entityContent.name;
+                        newEntityContent.intentId = newEntity._id;
+                        newEntityContent.user = entityContent.user;
+                        newEntityContent.botId = destBotId;
+
+                        newEntityContent.save(function()
+                        {
+                            next();
+                        });
+                    },
+                    function()
+                    {
+                        next();
+                    });
+                });
+            });
+        },
+        function()
+        {
+            callback();
+        });
+    });
+};
+
 exports.duplicate = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
@@ -319,48 +462,31 @@ exports.duplicate = function(req, res)
         }
         else
         {
-            var clone = new ChatBot();
-            clone.id = item.id + '_Clone';
-            clone.name = item.name + 'Clone';
-            clone.description = item.description;
-            clone.user = req.user;
-
-            clone.save(function(err)
+            getCloneName(item.name + 'Clone', 0, function(err, index)
             {
                 if(err)
                 {
+                    console.error(err);
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                if(!item.templateId)
+                var clone = new ChatBot();
+                clone.id = item.id + '_Clone' + (index == 0 ? '' : index);
+                clone.name = item.name + 'Clone' + (index == 0 ? '' : index);
+                clone.description = item.description;
+                clone.user = req.user;
+
+                clone.save(function(err)
                 {
-                    var dest = path.resolve('./custom_modules/' + item.id + '_Clone');
-                    ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
+                    if(err)
                     {
-                        if (err)
-                        {
-                            console.error(err);
-                            return res.status(400).send({ message: err.stack || err });
-                        }
+                        return res.status(400).send({ message: err.stack || err });
+                    }
 
-                        var fileList = fs.readdirSync(dest);
-                        for(var i=0; i<fileList.length; i++)
-                        {
-                            var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
-                            content = content.toString();
-                            content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
-
-                            fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
-                        }
-                        
-                        var botAuth = new BotAuth();
-                        botAuth.giver = req.user;
-                        botAuth.user = req.user;
-                        botAuth.bot = clone._id;
-                        botAuth.read = true;
-                        botAuth.edit = true;
-
-                        botAuth.save(function(err)
+                    if(!item.templateId)
+                    {
+                        var dest = path.resolve('./custom_modules/' + item.id + '_Clone' + (index == 0 ? '' : index));
+                        ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
                         {
                             if (err)
                             {
@@ -368,14 +494,46 @@ exports.duplicate = function(req, res)
                                 return res.status(400).send({ message: err.stack || err });
                             }
 
-                            res.jsonp(clone);
+                            var fileList = fs.readdirSync(dest);
+                            for(var i=0; i<fileList.length; i++)
+                            {
+                                var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
+                                content = content.toString();
+                                content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
+
+                                fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
+                            }
+
+                            var botAuth = new BotAuth();
+                            botAuth.giver = req.user;
+                            botAuth.user = req.user;
+                            botAuth.bot = clone._id;
+                            botAuth.read = true;
+                            botAuth.edit = true;
+
+                            botAuth.save(function(err)
+                            {
+                                if (err)
+                                {
+                                    console.error(err);
+                                    return res.status(400).send({ message: err.stack || err });
+                                }
+
+                                duplicateIntent(item.id, clone.id, function()
+                                {
+                                    duplicateEntity(item.id, clone.id, function()
+                                    {
+                                        res.jsonp(clone);
+                                    });
+                                });
+                            });
                         });
-                    });
-                }
-                else
-                {
-                    res.jsonp(clone);
-                }
+                    }
+                    else
+                    {
+                        res.jsonp(clone);
+                    }
+                });
             });
         }
     });

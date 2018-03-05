@@ -253,29 +253,36 @@
 
         Menu.prototype.openMenu = function(e, dialog)
         {
-            this.isOpened = true;
-
-            var dialogCard = e.currentTarget.parentElement.parentElement;
-            var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
-            var top = dialogCard.offsetTop;
-
-            this.setCurrentDialog(dialog);
-
-            var graphbody = angular.element('.graph-body').get(0);
-
-            angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
-
-            var menuDialog = angular.element('.dialog-menu').get(0);
-
-            // -30은 스크롤바
-            if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+            if(this.isOpened)
             {
-                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+                this.closeMenu();
             }
-
-            if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+            else
             {
-                angular.element('.dialog-menu').css('top', top - 50 + 'px');
+                this.isOpened = true;
+
+                var dialogCard = e.currentTarget.parentElement.parentElement;
+                var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
+                var top = dialogCard.offsetTop;
+
+                this.setCurrentDialog(dialog);
+
+                var graphbody = angular.element('.graph-body').get(0);
+
+                angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
+
+                var menuDialog = angular.element('.dialog-menu').get(0);
+
+                // -30은 스크롤바
+                if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+                {
+                    angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+                }
+
+                if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+                {
+                    angular.element('.dialog-menu').css('top', top - 50 + 'px');
+                }
             }
 
             e.preventDefault();
@@ -402,8 +409,6 @@
             var canvas = this.canvas.get(0);
             var graphBody = canvas.parentElement;
 
-            var that = this;
-
             angular.element('.graph-body').on('click' ,function()
             {
                 // that.editor.close();
@@ -528,19 +533,19 @@
             this.deleteDialog(angular.element('#' + this.focusedDialog));
         };
 
-        DialogGraph.prototype.deleteDialogById = function(id)
+        DialogGraph.prototype.deleteDialogById = function(id, saveHistory)
         {
             if(id)
             {
                 var target = angular.element('#' + id);
                 if(target.length > 0)
                 {
-                    this.deleteDialog(angular.element('#' + id));
+                    this.deleteDialog(angular.element('#' + id), null, saveHistory);
                 }
             }
         };
 
-        DialogGraph.prototype.deleteDialog = function(target, withChildren)
+        DialogGraph.prototype.deleteDialog = function(target, withChildren, saveHistory)
         {
             var parentDialog = target.parent().prev().get(0).dialog;
             var dialog = target.get(0).children[0].dialog;
@@ -577,7 +582,7 @@
 
             instance.focusedDialog = null;
             instance.refresh();
-            instance.setDirty(true);
+            instance.setDirty(true, this.fileName, saveHistory);
             instance.focusById(afterFocusId);
 
             if(this.editor.focusId != dialog.id)
@@ -599,19 +604,7 @@
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
-                        //ESC
-                        if(that.editor.isDirty && confirm(that.$scope.lan('Update is not saved. Do you want to close without saving?')))
-                        {
-                            that.editor.close();
-                            if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
-                                e.target.blur();
-                        }
-                        else
-                        {
-                            that.editor.close();
-                            if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
-                                e.target.blur();
-                        }
+                        that.editor.close();
                     }
                     else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
                     {
@@ -830,6 +823,10 @@
 
                         e.preventDefault();
                         e.stopPropagation();
+                    }
+                    else if(e.keyCode == 9)
+                    {
+                        e.preventDefault();
                     }
                 }
             });
@@ -1095,6 +1092,8 @@
 
             var parent = undefined;
 
+            var startX = undefined;
+            var startY = undefined;
             var prevX = undefined;
             var prevY = undefined;
 
@@ -1127,6 +1126,9 @@
                 clone.style.left = e.pageX - left - 50 + scrollLeft + 'px';
                 clone.style.top = e.pageY - top - 63 - 30 + scrollTop + 'px';
 
+                startX = e.pageX;
+                startY = e.pageY;
+
                 e.stopPropagation();
             });
 
@@ -1135,18 +1137,13 @@
                 if(!dragStart)
                     return;
 
-                if(!clone.parentElement && prevX && prevY)
-                {
-                    if(Math.abs(prevX - e.clientX) < 10 && Math.abs(prevY - e.clientY) < 10)
-                    {
-                        prevX = e.clientX;
-                        prevY = e.clientY;
-                        return;
-                    }
-                }
-
                 prevX = e.clientX;
                 prevY = e.clientY;
+
+                if(Math.abs(startX - e.pageX) < 10 && Math.abs(startY - e.pageY) < 10)
+                {
+                    return;
+                }
 
                 if(!clone.parentElement)
                 {
@@ -2032,7 +2029,7 @@
             return data;
         };
 
-        DialogGraph.prototype.setDirty = function(dirty, saveFileName)
+        DialogGraph.prototype.setDirty = function(dirty, saveFileName, saveHistory)
         {
             this.dirty = (dirty === undefined ? true : dirty);
             if(this.dirtyCallback)
@@ -2040,7 +2037,7 @@
 
             if(this.dirty == true)
             {
-                this.$rootScope.$broadcast('saveDialogGraph', { saveFileName: saveFileName });
+                this.$rootScope.$broadcast('saveDialogGraph', { saveFileName: saveFileName, saveHistory: saveHistory });
             }
         };
 

@@ -18,7 +18,7 @@
                 <div class="dialog-editor-row">
                     <p class="dialog-editor-subject">{{lan('Card Name')}}</p>
                     <div class="dialog-editor-input-box">
-                        <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true" ng-change="onKeyDownForCardName();">
+                        <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true"">
                     </div>
                 </div>
 
@@ -157,12 +157,12 @@
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
 
-                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton(output);" ng-if="output.kind != 'Action'">
+                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton(dialog, output);" ng-if="output.kind != 'Action' && dialog.id != 'startDialog'">
                                 <span class="blue-label">{{lan('Add action') }}</span>
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
 
-                            <div class="dialog-editor-output-box-row" ng-if="output.kind == 'Action'">
+                            <div class="dialog-editor-output-box-row" ng-if="output.kind == 'Action' && dialog.id != 'startDialog'">
                                 <div style="font-size: 0; text-align: left;">
                                     <div class="select-wrapper">
                                         <select class="jumbo-select dialog-editor-action-type" style="width: 100%; display: block;" ng-model="output.type" ng-change="actionValueChanged(output);">

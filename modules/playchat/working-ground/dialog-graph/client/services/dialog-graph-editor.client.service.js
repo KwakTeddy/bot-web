@@ -80,17 +80,20 @@
 
         DialogGraphEditor.prototype.close = function()
         {
+            if(this.closeCallback)
+            {
+                if(!this.closeCallback())
+                {
+                    return false;
+                }
+            }
+
             angular.element('.graph-background').css('width', '');
             angular.element('.dialog-editor-creation-panel').css('right', this.rightStyle);
             angular.element('#graphDialogEditor').css('right', this.rightStyle);
             angular.element('.dialog-editor-input-list-modal').hide();
 
             angular.element('.dialog-graph-code-editor-controller').removeClass('edit');
-
-            if(this.closeCallback)
-            {
-                this.closeCallback();
-            }
 
             this.isOpen = false;
         };

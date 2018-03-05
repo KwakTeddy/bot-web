@@ -133,6 +133,12 @@
                 "jp": "ログイン",
                 "zh": "登录"
             },
+            "Your verification URL has expired.": {
+                "ko": "인증 URL이 만료되었습니다.",
+                "en": "Your verification URL has expired.",
+                "zh": "您的验证网址已过期。",
+                "jp": "確認URLの有効期限が切れています。"
+            },
             "We sent a verification e-mail to": {
                 "ko": "이메일로 인증 이메일이 전송되었습니다.",
                 "en": "We sent a verification e-mail to ",
@@ -3211,6 +3217,36 @@
                 "en": "Has been applied",
                 "zh": "已被应用。",
                 "jp": "適用された。"
+            },
+            "There was a temporary error. Please try again in a few minutes.": {
+                "ko": "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                "en": "There was a temporary error. Please try again in a few minutes.",
+                "zh": "有一个暂时的错误。 请在几分钟后再试一次。",
+                "jp": "一時的なエラーがありました。 数分後にもう一度お試しください。"
+            },
+            "Your email is not signed up.": {
+                "ko": "가입되지 않은 Email 입니다.",
+                "en": "Your email is not signed up.",
+                "zh": "您的电子邮件未注册。",
+                "jp": "あなたのメールアドレスはサインアップされていません。"
+            },
+            "Get started right away.": {
+                "ko": "바로시작하기",
+                "en": "Get started right away.",
+                "zh": "立即开始。",
+                "jp": "すぐに始めましょう。"
+            },
+            "Your email is verified.": {
+                "ko": "인증되었습니다.",
+                "en": "Your email is verified.",
+                "zh": "您的电子邮件已验证。",
+                "jp": "あなたの電子メールが確認されます。"
+            },
+            "There are already added images. Do you want to change it?": {
+                "ko": "이미 추가된 이미지가 있습니다. 변경하시겠습니까?",
+                "en": "There are already added images. Do you want to change it?",
+                "zh": "已经添加了图像。 你想改变它吗？",
+                "jp": "既に画像が追加されています。 あなたはそれを変更したいですか？"
             }
         };
 
