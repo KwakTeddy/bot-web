@@ -369,6 +369,13 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.toggleCommonMode = function()
         {
+            // to Detail
+            $scope.compactMode = 'Compact';
+
+            angular.element('.graph-dialog-input').show();
+            angular.element('.graph-dialog-output').show();
+            angular.element('.graph-dialog-buttons').show();
+
             if($scope.commonMode == 'Common')
             {
                 // to commonDialogs
