@@ -97,11 +97,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     DialogGraphEditorOutput.make($scope, DialogGraphEditor);
     DialogGraphEditorTask.make($scope, DialogGraphEditor);
 
-    $scope.onKeyDownForCardName = function()
-    {
-        DialogGraphEditor.isDirty = true;
-    };
-
     $scope.parseResult = function()
     {
         var result = {};
@@ -227,10 +222,26 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     DialogGraphEditor.setCloseCallback(function()
     {
+        if($scope.originalDialog)
+        {
+            var origin = JSON.stringify($scope.originalDialog);
+            var result = JSON.stringify($scope.parseResult());
+
+            if(origin != result)
+            {
+                if(!confirm(LanguageService('Update is not saved. Do you want to close without saving?')))
+                {
+                    return false;
+                }
+            }
+        }
+
         if($scope.isNew)
         {
             DialogGraph.deleteDialogById($scope.isNew, false);
         }
+
+        return true;
     });
 
     $scope.close = function()
@@ -351,11 +362,14 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 DialogGraphEditor.saveCallback(result);
                 DialogGraphEditor.saveCallback = undefined;
             }
+
+            $scope.originalDialog = undefined;
         }
         else if(dialog)
         {
             DialogGraphEditor.focusId = dialog.id;
             $scope.isNew = undefined;
+            $scope.originalDialog = JSON.parse(angular.toJson(dialog));
         }
 
         $scope.initialize(parent, dialog);

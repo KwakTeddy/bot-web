@@ -604,19 +604,7 @@
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
-                        //ESC
-                        if(that.editor.isDirty && confirm(that.$scope.lan('Update is not saved. Do you want to close without saving?')))
-                        {
-                            that.editor.close();
-                            if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
-                                e.target.blur();
-                        }
-                        else
-                        {
-                            that.editor.close();
-                            if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
-                                e.target.blur();
-                        }
+                        that.editor.close();
                     }
                     else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
                     {
