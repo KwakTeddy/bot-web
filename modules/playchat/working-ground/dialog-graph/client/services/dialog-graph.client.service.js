@@ -182,9 +182,30 @@
             this.closeMenu();
         };
 
-        var changeCloneInfo = function (dialog) {
-            dialog.name += ' Clone';
-            dialog.id += 'Clone';
+        var checkUniqueName = function(name, dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                if(dialogs[i].name == name)
+                {
+                    return false;
+                }
+                else if(dialogs[i].children)
+                {
+                    return checkUniqueName(name, dialogs[i].children);
+                }
+            }
+
+            return true;
+        };
+
+        var changeCloneInfo = function (dialog)
+        {
+            var postfix = 'Clone';
+            while(!checkUniqueName((dialog.name + (postfix += ' Clone')), instance.userDialogs));
+
+            dialog.name = dialog.name + postfix;
+            dialog.id += postfix;
             if(dialog.children)
             {
                 for(var i = 0; i < dialog.children.length; i++)
@@ -281,7 +302,7 @@
 
                 if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
                 {
-                    angular.element('.dialog-menu').css('top', top - 50 + 'px');
+                    angular.element('.dialog-menu').css('top', top + (graphbody.offsetHeight + graphbody.scrollTop - (top + menuDialog.offsetHeight)) + 'px');
                 }
             }
 
