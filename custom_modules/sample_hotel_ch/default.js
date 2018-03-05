@@ -372,7 +372,7 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("메뉴")!==-1){
+		    if(dialog.userInput.text.indexOf("1")!==-1 || dialog.userInput.text.indexOf("客房清单")!==-1){
 		        context.session.isorder=false;
             }
 			callback();
