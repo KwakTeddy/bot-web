@@ -585,7 +585,14 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
             }
 
-            DialogGraph.setDirty(true);
+            var data = DialogGraph.getCompleteData();
+            var fileName = $location.search().fileName || 'default.graph.js';
+            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
+            {
+            }, function(error)
+            {
+                alert($scope.lan('저장 실패 : ') + error.message);
+            });
         };
 
         $scope.redo = function()
@@ -602,15 +609,14 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
             }
 
-            if($scope.graphHistoryIndex == $scope.graphHistory.length-1)
+            var data = DialogGraph.getCompleteData();
+            var fileName = $location.search().fileName || 'default.graph.js';
+            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
-                //리두 하고 나서 history의 마지막 데이터가 되면 저장할 필요 없어짐. 왜냐 마지막 세이브 이후 다시 저장하지 않는한 history의 마지막 데이터가 최신이다.
-                DialogGraph.setDirty(false);
-            }
-            else
+            }, function(error)
             {
-                DialogGraph.setDirty(true);
-            }
+                alert($scope.lan('저장 실패 : ') + error.message);
+            });
         };
 
 

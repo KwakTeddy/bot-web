@@ -1152,7 +1152,7 @@
                 prevX = e.clientX;
                 prevY = e.clientY;
 
-                if(Math.abs(startX - e.pageX) < 10 || Math.abs(startY - e.pageY) < 10)
+                if(Math.abs(startX - e.pageX) < 10 && Math.abs(startY - e.pageY) < 10)
                 {
                     return;
                 }
