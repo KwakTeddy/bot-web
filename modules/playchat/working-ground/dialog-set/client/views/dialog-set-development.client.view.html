@@ -59,7 +59,8 @@
 
     <div class="tab01" style="margin-top: 10px;">
         <ul class="tabs1">
-            <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
+            <!--<li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>-->
+            <li ng-repeat="dialogset in dialogsetList" ng-class="dialogset._id == currentDialogsetId ? 'select_tab' : ''" ng-click="selectTab(dialogset);"><a href="#">{{ dialogset.title }}</a></li>
         </ul>
     </div>
 
@@ -202,37 +203,6 @@
                 <div class="tab-footer">
                     <button class="blue-button">{{lan('Save') }}</button>
                     <button type="button" class="default-button" ng-click="closeOpenModal();">{{lan('Close') }}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
-        <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
-                <div class="form-row">
-                    <label class="required" style="width: 100%;">
-                        <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label class="required" style="width: 100%;">
-                        <span>File</span>
-                        <div class="form-box">
-                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
-                        </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label style="width: 100%;">
-                        <span>{{lan('Content') }}</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
-                    </label>
-                </div>
-                <div class="tab-footer">
-                    <button class="blue-button">{{lan('Save') }}</button>
-                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
                 </div>
             </form>
         </div>

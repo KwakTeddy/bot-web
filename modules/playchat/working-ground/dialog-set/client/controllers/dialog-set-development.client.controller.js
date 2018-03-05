@@ -641,86 +641,52 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 angular.element('.slide').css('background', '');
             }
         });
-
-        $scope.selectTab = function(id, title)
+        
+        $scope.selectTab = function(dialogset)
         {
-            angular.element('.tabs1 .select_tab').removeClass('select_tab');
-            angular.element('.tabs1 li[data-id="' + id + '"]').addClass('select_tab');
-            $scope.getDialogs(id);
-            angular.element('.dialog-learning-development-content input:first').focus();
-
-            $scope.currentDialogsetId = id;
-
-            $location.search('dialogsetId', id);
-            $location.search('dialogsetTitle', title);
-        };
-
-        $scope.createTab = function(id, title)
-        {
-            var template = '<li ng-click="selectTab(\'' + id + '\', \'' + title + '\');" data-id="' + id + '"><a href="#">' + title + '</a></li>';
-            angular.element($compile(template)($scope)).insertBefore(angular.element('.tabs1 > li:last'));
-        };
-
-        $scope.loadTabs = function(list)
-        {
-            for(var key in list)
-            {
-                $scope.createTab(list[key], key);
-            }
+            $scope.currentDialogsetId = dialogset._id;
+            $scope.currentDialogsetTitle = dialogset.title;
+            $scope.getDialogs($scope.currentDialogsetId);
         };
 
         $scope.initialize = function()
         {
             //탭 불러오기.
-            $scope.loadTabs(openDialogsets[chatbot.id]);
+            // $scope.loadTabs(openDialogsets[chatbot.id]);
 
             $scope.currentDialogsetId = $location.search().dialogsetId || 'default';
             $scope.currentDialogsetTitle = $location.search().dialogsetTitle || 'default';
 
-            // 만약 다이얼로그셋 id가 default라면..
-            if($scope.currentDialogsetId == 'default')
-                $scope.currentDialogsetId = openDialogsets[chatbot.id]['default'];
-
-            // dialogsetId가 현재 열리지 않았다면.
-            if(!openDialogsets[chatbot.id].hasOwnProperty($scope.currentDialogsetTitle))
+            DialogSetsService.query({ botId: chatbot._id }, function(list)
             {
-                //저장하고
-                openDialogsets[chatbot.id][$scope.currentDialogsetTitle] = $scope.currentDialogsetId;
-                //쿠기는 string밖에 저장이 안되서 부득이하게
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+                console.log('리스트 : ', list);
+                $scope.dialogsetList = list;
 
-                //해당 다이얼로그셋 탭 생성.
-                $scope.createTab($scope.currentDialogsetId, $scope.currentDialogsetTitle);
-            }
+                $scope.$parent.loaded('working-ground');
 
-            var title = '';
-            for(var key in openDialogsets[chatbot.id])
-            {
-                if(openDialogsets[chatbot.id][key] == $scope.currentDialogsetId)
+                if($scope.currentDialogsetId == 'default')
                 {
-                    title = key;
-                    break;
+                    for(var i=0; i<list.length; i++)
+                    {
+                        if(list[i].title == 'default')
+                        {
+                            $scope.currentDialogsetId = list[i]._id;
+                            $scope.getDialogs($scope.currentDialogsetId);
+                            break;
+                        }
+                    }
                 }
-            }
-            // 탭 셀렉트
-            $scope.selectTab($scope.currentDialogsetId, title);
+                else
+                {
+                    $scope.getDialogs($scope.currentDialogsetId);
+                }
+            },
+            function(err)
+            {
+                alert(err);
+            });
         };
     })();
-
-    // 현재 사용자가 열어둔 다이얼로그셋을 가져온다.
-    if(!openDialogsets)
-    {
-        openDialogsets = {};
-    }
-    else
-    {
-        openDialogsets = JSON.parse(openDialogsets);
-    }
-
-    if(!openDialogsets[chatbot.id])
-    {
-        openDialogsets[chatbot.id] = {};
-    }
 
     DialogsetsFindService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
     {
@@ -729,20 +695,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             DialogSetsService.save({ botId: chatbot._id, title: 'default', language: chatbot.language, usable: true }, function(dialogset)
             {
                 $rootScope.$broadcast('simulator-build');
-                
-                if(!openDialogsets[chatbot.id].hasOwnProperty('default'))
-                {
-                    openDialogsets[chatbot.id]['default'] = dialogset._id;
-
-                    //쿠기는 string밖에 저장이 안되서 부득이하게
-                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                    $scope.initialize();
-                }
-                else
-                {
-                    $scope.initialize();
-                }
+                $scope.initialize();
             },
             function(err)
             {
@@ -758,110 +711,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         }
         else
         {
-            openDialogsets[chatbot.id]['default'] = dialogset._id;
-
-            //쿠기는 string밖에 저장이 안되서 부득이하게
-            $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
             $scope.initialize();
         }
     });
-
-
-    (function()
-    {
-        $scope.openModal.selectedDialogset = '';
-
-        $scope.openDialogset = function()
-        {
-            $scope.openModal.isOpened = true;
-
-            DialogSetsService.query({ botId: chatbot._id }, function(list)
-            {
-                $scope.openModal.dialogsetList = [];
-
-                for(var key in openDialogsets[chatbot.id])
-                {
-                    console.log(key);
-                    for(var i=0; i<list.length; i++)
-                    {
-                        if(list[i].title == key)
-                        {
-                            list[i].isOpened = true;
-                        }
-                    }
-                }
-
-                for(var i=0; i<list.length; i++)
-                {
-                    if(!list[i].isOpened)
-                    {
-                        $scope.openModal.dialogsetList.push(list[i]);
-                    }
-                }
-            },
-            function(err)
-            {
-                alert(err);
-            });
-        };
-
-        $scope.closeOpenModal = function()
-        {
-            $scope.openModal.isOpened = false;
-            $scope.openModal.isCreate = false;
-        };
-
-        $scope.createNewDialogset = function(e)
-        {
-            if($scope.openModal.selectedDialogset == 'create-new')
-            {
-                $scope.openModal.isCreate = true;
-            }
-            else
-            {
-                $scope.openModal.isCreate = false;
-
-                var text = angular.element('.open-modal option[value="' + $scope.openModal.selectedDialogset + '"]').text();
-                var selected = angular.element('li[data-id="' + $scope.openModal.selectedDialogset + '"]').get(0);
-
-                if(!selected)
-                {
-                    openDialogsets[chatbot.id][text] = $scope.openModal.selectedDialogset;
-                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                    $scope.createTab($scope.openModal.selectedDialogset, text);
-                }
-
-                $scope.selectTab($scope.openModal.selectedDialogset, text);
-
-                $scope.closeOpenModal();
-
-                $scope.openModal.selectedDialogset = '';
-            }
-        };
-
-        $scope.saveNewDialogset = function()
-        {
-
-            var params = {};
-            params.botId = chatbot._id;
-            params.title = $scope.openModal.data.title;
-            params.content = $scope.openModal.data.content;
-            params.language = chatbot.language;
-            DialogSetsService.save(params, function(result)
-            {
-                openDialogsets[chatbot.id][result.title] = result._id;
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                $scope.currentDialogsetId = result._id;
-
-                $scope.createTab(result._id, result.title);
-                $scope.selectTab(result._id, result.title);
-                $scope.closeOpenModal();
-            });
-        };
-    })();
 
     (function()
     {
@@ -873,55 +725,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 angular.element('.dialogset-title').focus();
             }, 100);
         });
-
-        $scope.saveImport = function(modal)
-        {
-            var params = {};
-            params.botId = chatbot._id;
-            params.title = modal.data.title;
-            params.content = modal.data.content;
-            params.type = modal.data.type;
-            params.path = modal.data.path;
-            params.filename = modal.data.filename;
-            params.user = user._id;
-            params.language = chatbot.language;
-
-            DialogSetsService.save(params, function(result)
-            {
-                openDialogsets[chatbot.id][result.title] = result._id;
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                $scope.createTab(result._id, result.title);
-                $scope.selectTab(result._id, result.title);
-                modal.close();
-            });
-        };
-
-        $scope.uploader = new FileUploader({
-            url: '/api/dialogsets/uploadfile',
-            alias: 'uploadFile',
-            autoUpload: true
-        });
-
-        $scope.uploader.onErrorItem = function(item, response, status, headers)
-        {
-            $scope.modalForm.fileUploadError = response.message;
-            console.log($scope.modalForm.fileUploadError);
-        };
-
-        $scope.uploader.onSuccessItem = function(item, response, status, headers)
-        {
-            importModal.data.path = response.path;
-            importModal.data.filename = response.filename;
-
-            console.log(importModal);
-        };
-
-        $scope.uploader.onProgressItem = function(fileItem, progress)
-        {
-            angular.element('.form-box-progress').css('width', progress + '%');
-        };
-
 
         $scope.openVideo = function(e)
         {
