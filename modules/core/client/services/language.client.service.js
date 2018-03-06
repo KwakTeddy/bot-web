@@ -2354,7 +2354,7 @@
 
 
             //channel
-            "Create a Kakao YellowID(https://center-pf.kakao.com/login)":{
+            "Create a Kakao YellowID":{
                 "ko": "카카오 플러스친구에 가입하세요.(https://center-pf.kakao.com/login)",
                 "en": "Create a Kakao Plusfriend account(https://center-pf.kakao.com/login)",
                 "zh": "创建一个Kakao Plusfriend帐户(https://center-pf.kakao.com/login)",

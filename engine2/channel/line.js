@@ -1,7 +1,10 @@
+var path = require('path');
+var LINEBot = require('line-messaging');
+var mongoose = require('mongoose');
+var Bot = mongoose.model('Bot');
+
 (function()
 {
-    var LINEBot = require('line-messaging');
-
     var Line = function()
     {
 
@@ -18,45 +21,44 @@
     {
         var Engine = require('../core.js');
 
-        var headers = req.headers;
-        var signature = headers['x-line-signature'];
-
-        var bot = LINEBot.Client({
-            channelID: '1566616426',
-            channelSecret: '2a569aeebebdf437319610e748ab72e7',
-            channelAccessToken: 'JelfAloyropKAdzeYTXl00NzZ+LDd9jx0eVzChBnuJeX+K521KUsKap4WEOPdoNFyQV5aaLM3VAIIvlYhxeugvRC2huTw79zl6vDWQY5+DNaTfFtW4KqIjgAIf33Z3B54d/fQli3DOBcEsfzXq2gtwdB04t89/1O/w1cDnyilFU='
-        });
-
-        bot.on(LINEBot.Events.MESSAGE, function(replyToken, message)
+        Bot.findOne({ id: req.params.bot }).exec(function(err, chatbot)
         {
-            var text = message.getText();
-            var userId = message.getUserId();
-
-            console.log(text);
-
-            Engine.process(req.params.bot, 'line', userId, text, {}, function(err, out)
+            if(chatbot)
             {
-                // var textMessageBuilder = new LINEBot.TextMessageBuilder(out.output.text);
-                // bot.replyMessage(replyToken, textMessageBuilder);
+                var bot = LINEBot.Client({
+                    channelID: chatbot.lineChannel.channelId,
+                    channelSecret: chatbot.lineChannel.secret,
+                    channelAccessToken: chatbot.lineChannel.accessToken
+                });
 
-                var buttons = new LINEBot.ButtonTemplateBuilder();
-                buttons.setTitle('Menu');
-                buttons.setMessage('Please select');
-                buttons.setThumbnail('https://example.com/bot/images/image.jpg');
+                bot.on(LINEBot.Events.MESSAGE, function(replyToken, message)
+                {
+                    var text = message.getText();
+                    var userId = message.getUserId();
 
-                var template = new LINEBot.TemplateMessageBuilder('this is a buttons template', buttons);
+                    console.log(text);
 
-                bot.replyMessage(replyToken, template);
-            }, function(err)
+                    Engine.process(req.params.bot, 'line', userId, text, {}, function(err, out)
+                    {
+                        var textMessageBuilder = new LINEBot.TextMessageBuilder(out.output.text);
+                        bot.replyMessage(replyToken, textMessageBuilder);
+                    }, function(err)
+                    {
+                        var textMessageBuilder = new LINEBot.TextMessageBuilder(JSON.stringify(err));
+                        bot.replyMessage(replyToken, textMessageBuilder);
+                    });
+                });
+
+                var headers = req.headers;
+                var signature = headers['x-line-signature'];
+
+                bot.handleEventRequest(req.body, signature);
+            }
+            else
             {
-
-            });
+                res.end();
+            }
         });
-
-        var headers = req.headers;
-        var signature = headers['x-line-signature'];
-
-        bot.handleEventRequest(req.body, signature);
     };
 
     module.exports = new Line();
