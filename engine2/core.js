@@ -1,4 +1,8 @@
 var chalk = require('chalk');
+var async = require('async');
+var fs = require('fs');
+var path = require('path');
+var rimraf = require('rimraf');
 
 var Error = require('./error.js');
 
@@ -17,6 +21,10 @@ var KnowledgeGraph = require('./km.js');
 var AnswerManager = require('./answer.js');
 
 var Transaction = require('./utils/transaction.js');
+
+var AWS = require('aws-sdk');
+AWS.config.update(require(path.resolve('./aws-s3-credentials.json')));
+var s3 = new AWS.S3();
 
 (function()
 {
@@ -62,6 +70,65 @@ var Transaction = require('./utils/transaction.js');
         });
     };
 
+    Core.prototype.downloadFromS3 = function(botId, callback)
+    {
+        if(process.env.NODE_ENV == 'production')
+        {
+            if(fs.existsSync(path.resolve('./custom_modules/' + botId)))
+            {
+                return callback();
+            }
+
+            var params = {
+                Bucket: 'playchat-custom-modules',
+                Delimiter: '',
+                Prefix: botId
+            }
+
+            s3.listObjects(params, function (err, data)
+            {
+                if(err)
+                {
+                    return callback(err);
+                }
+
+                fs.mkdirSync(path.resolve('./custom_modules/' + botId));
+
+                var list = data.Contents;
+                async.eachSeries(list, function(item, next)
+                {
+                    if(item.Key == botId + '/')
+                    {
+                        return next();
+                    }
+
+                    s3.getObject({ Bucket: "playchat-custom-modules", Key: item.Key }, function (err, data)
+                    {
+                        if(err != null)
+                        {
+                            rimraf(path.resolve('./custom_modules/' + botId), function () { console.log('done'); });
+                            callback(err);
+                        }
+                        else
+                        {
+                            var content = data.Body.toString('utf-8');
+                            fs.writeFileSync(path.resolve('./custom_modules/' + item.Key), content);
+                            next();
+                        }
+                    });
+                },
+                function()
+                {
+                    callback();
+                });
+            });
+        }
+        else
+        {
+            callback();
+        }
+    };
+
     Core.prototype.process = function(botId, channel, userKey, inputRaw, options, outCallback, errCallback)
     {
         var that = this;
@@ -75,129 +142,136 @@ var Transaction = require('./utils/transaction.js');
         Logger.logBotUser(botId, channel, userKey, {});
 
         var error = new Error(errCallback);
-
-        BotManager.load(botId, function(err, bot)
+        this.downloadFromS3(botId, function(err)
         {
             if(err)
             {
-                error.delegate(err);
+                return error.delegate(err);
             }
-            else
-            {
-                if(!bot.options.use)
-                {
-                    return outCallback(SystemMessages['You can\'t use this bot']);
-                }
 
-                var contextKey = channel + '_' + botId + '_' + userKey;
-                that.redis.get(contextKey, function(err, context)
+            BotManager.load(botId, function(err, bot)
+            {
+                if(err)
                 {
-                    if(err)
+                    error.delegate(err);
+                }
+                else
+                {
+                    if(!bot.options.use)
                     {
-                        error.delegate(err);
+                        return outCallback(SystemMessages['You can\'t use this bot']);
                     }
-                    else
+
+                    var contextKey = channel + '_' + botId + '_' + userKey;
+                    that.redis.get(contextKey, function(err, context)
                     {
-                        if(!context)
+                        if(err)
                         {
-                            context = Context.create();
+                            error.delegate(err);
                         }
                         else
                         {
-                            context = JSON.parse(context);
-                            Context.init(context);
-                        }
-
-                        context.globals = globals;
-                        context.user.userKey = userKey;
-                        context.bot = bot;
-                        context.channel.name = channel;
-
-                        if(inputRaw.startsWith(':'))
-                        {
-                            Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
-                            return;
-                        }
-
-                        if(!bot.options.version)
-                        {
-                            return errCallback('old-version');
-                        }
-
-                        if(context.session.history.length > 10)
-                        {
-                            context.session.history.splice(context.session.history.length-1, 1);
-                        }
-
-                        var userInput = { text: inputRaw };
-                        InputManager.analysis(bot, context, userInput, error, function()
-                        {
-                            var transaction = new Transaction.sync();
-
-                            if(bot.options.useKnowledgeMemory)
+                            if(!context)
                             {
-                                transaction.call(function(done)
-                                {
-                                    KnowledgeGraph.memory(bot, userInput, error, function(numAffected)
-                                    {
-                                        if(numAffected && numAffected.ok == 1 && numAffected.n > 0)
-                                        {
-                                            if (bot.language == "zh")
-                                            {
-                                                outCallback(context, '我学到了你说的话。');
-                                            }
-                                            else if (bot.language == "en")
-                                            {
-                                                outCallback(context, 'I understand.');
-                                            }
-                                            else
-                                            {
-                                                outCallback(context, '말씀하신 내용을 학습했어요.');
-                                            }
-                                        }
-                                        else
-                                        {
-                                            done();
-                                        }
-                                    });
-                                });
+                                context = Context.create();
                             }
                             else
                             {
-                                transaction.done(function()
-                                {
-                                    AnswerManager.answer(bot, context, userInput, error, function(dialog)
-                                    {
-                                        delete context.bot;
-                                        delete context.channel;
-                                        delete context.globals;
-                                        delete context.session.currentDialog;
+                                context = JSON.parse(context);
+                                Context.init(context);
+                            }
 
-                                        that.redis.set(contextKey, JSON.stringify(context), function(err)
+                            context.globals = globals;
+                            context.user.userKey = userKey;
+                            context.bot = bot;
+                            context.channel.name = channel;
+
+                            if(inputRaw.startsWith(':'))
+                            {
+                                Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
+                                return;
+                            }
+
+                            if(!bot.options.version)
+                            {
+                                return errCallback('old-version');
+                            }
+
+                            if(context.session.history.length > 10)
+                            {
+                                context.session.history.splice(context.session.history.length-1, 1);
+                            }
+
+                            var userInput = { text: inputRaw };
+                            InputManager.analysis(bot, context, userInput, error, function()
+                            {
+                                var transaction = new Transaction.sync();
+
+                                if(bot.options.useKnowledgeMemory)
+                                {
+                                    transaction.call(function(done)
+                                    {
+                                        KnowledgeGraph.memory(bot, userInput, error, function(numAffected)
                                         {
-                                            if(err)
+                                            if(numAffected && numAffected.ok == 1 && numAffected.n > 0)
                                             {
-                                                error.delegate(err);
+                                                if (bot.language == "zh")
+                                                {
+                                                    outCallback(context, '我学到了你说的话。');
+                                                }
+                                                else if (bot.language == "en")
+                                                {
+                                                    outCallback(context, 'I understand.');
+                                                }
+                                                else
+                                                {
+                                                    outCallback(context, '말씀하신 내용을 학습했어요.');
+                                                }
                                             }
                                             else
                                             {
-                                                //테스트 필요
-                                                that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
-
-                                                context.bot = bot;
-                                                outCallback(context, dialog);
-
-                                                console.log(chalk.green('================================================================'));
-                                                console.log();
+                                                done();
                                             }
                                         });
                                     });
-                                });
-                            }
-                        });
-                    }
-                });
-            }
+                                }
+                                else
+                                {
+                                    transaction.done(function()
+                                    {
+                                        AnswerManager.answer(bot, context, userInput, error, function(dialog)
+                                        {
+                                            delete context.bot;
+                                            delete context.channel;
+                                            delete context.globals;
+                                            delete context.session.currentDialog;
+
+                                            that.redis.set(contextKey, JSON.stringify(context), function(err)
+                                            {
+                                                if(err)
+                                                {
+                                                    error.delegate(err);
+                                                }
+                                                else
+                                                {
+                                                    //테스트 필요
+                                                    that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                                                    context.bot = bot;
+                                                    outCallback(context, dialog);
+
+                                                    console.log(chalk.green('================================================================'));
+                                                    console.log();
+                                                }
+                                            });
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
     };
 

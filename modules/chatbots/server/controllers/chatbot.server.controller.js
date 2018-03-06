@@ -103,32 +103,38 @@ AWS.config.update(require(path.resolve('./aws-s3-credentials.json')));
 var s3 = new AWS.S3();
 var uploadS3 = function(botId, fileName, fileData, callback)
 {
-    var base64data = new Buffer(fileData, 'binary');
-
-    s3.putObject({ Bucket: 'playchat-custom-modules',
-        Key: botId + '/' + fileName,
-        Body: base64data,
-        ACL: 'public-read'
-    },function (resp)
+    if(process.env.NODE_ENV == 'production')
     {
-        console.log(arguments);
-        if(callback)
+        var base64data = new Buffer(fileData, 'binary');
+
+        s3.putObject({ Bucket: 'playchat-custom-modules',
+            Key: botId + '/' + fileName,
+            Body: base64data,
+            ACL: 'public-read'
+        },function (resp)
         {
-            callback(arguments);
-        }
-    });
+            console.log(arguments);
+            if(callback)
+            {
+                callback(arguments);
+            }
+        });
+    }
 };
 
 var deleteBotObjectFromS3 = function(botId, callback)
 {
-    var params = {  Bucket: 'playchat-custom-modules', Key: botId };
-    s3.deleteObject(params, function(err, data)
+    if(process.env.NODE_ENV == 'production')
     {
-        if(callback)
+        var params = {  Bucket: 'playchat-custom-modules', Key: botId };
+        s3.deleteObject(params, function(err, data)
         {
-            callback(err, data);
-        }
-    });
+            if(callback)
+            {
+                callback(err, data);
+            }
+        });
+    }
 };
 
 exports.create = function(req, res)
