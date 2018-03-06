@@ -98,6 +98,39 @@ exports.findOne = function(req, res)
     });
 };
 
+var AWS = require('aws-sdk');
+AWS.config.update(require(path.resolve('./aws-s3-credentials.json')));
+var s3 = new AWS.S3();
+var uploadS3 = function(botId, fileName, fileData, callback)
+{
+    var base64data = new Buffer(fileData, 'binary');
+
+    s3.putObject({ Bucket: 'playchat-custom-modules',
+        Key: botId + '/' + fileName,
+        Body: base64data,
+        ACL: 'public-read'
+    },function (resp)
+    {
+        console.log(arguments);
+        if(callback)
+        {
+            callback(arguments);
+        }
+    });
+};
+
+var deleteBotObjectFromS3 = function(botId, callback)
+{
+    var params = {  Bucket: 'playchat-custom-modules', Key: botId };
+    s3.deleteObject(params, function(err, data)
+    {
+        if(callback)
+        {
+            callback(err, data);
+        }
+    });
+};
+
 exports.create = function(req, res)
 {
     ChatBot.findOne({ id: req.body.id }).exec(function(err, bot)
@@ -168,10 +201,17 @@ exports.create = function(req, res)
                         var botjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/bot.template');
                         var defaultjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/default.template');
                         var graphjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template');
-                        console.log(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template')
-                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+
+                        var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                        var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                        var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                        fs.writeFileSync(dir + '/default.graph.js', graphData);
+                        fs.writeFileSync(dir + '/default.js', defaultData);
+                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                        uploadS3(req.body.id, 'default.graph.js', graphData);
+                        uploadS3(req.body.id, 'default.js', defaultjs);
+                        uploadS3(req.body.id, 'bot.js', botjs);
 
                         var contents = IntentController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/intent.' + language + '.xlsx');
                         if(contents.length > 0)
@@ -230,19 +270,31 @@ exports.create = function(req, res)
                         var defaultjs = fs.readFileSync(__dirname + '/sample/blank/default.template');
                         var graphjs = fs.readFileSync(__dirname + '/sample/blank/graph.' + language + '.template');
 
-                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                        var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                        var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+                        fs.writeFileSync(dir + '/default.graph.js', graphData);
+                        fs.writeFileSync(dir + '/default.js', defaultData);
+                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                        uploadS3(req.body.id, 'default.graph.js', graphData);
+                        uploadS3(req.body.id, 'default.js', defaultData);
+                        uploadS3(req.body.id, 'bot.js', botData);
                     }
                     else
                     {
-                        var botjs = fs.readFileSync(path.resolve('./custom_modules/' + type + '/bot.js'));
-                        var defaultjs = fs.readFileSync(path.resolve('./custom_modules/' + type + '/default.js'));
-                        var graphjs = fs.readFileSync(path.resolve('./custom_modules/' + type + '/default.graph.js'));
+                        var botjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/bot.js'));
+                        var defaultjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.js'));
+                        var graphjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.graph.js'));
 
                         fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
                         fs.writeFileSync(dir + '/default.js', defaultjs.toString());
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString());
+                        fs.writeFileSync(dir + '/bot.js', botjs.toString());
+
+                        uploadS3(req.body.id, 'default.graph.js', graphjs.toString());
+                        uploadS3(req.body.id, 'default.js', defaultjs.toString());
+                        uploadS3(req.body.id, 'bot.js', botjs.toString());
                     }
 
                     var botAuth = new BotAuth();
@@ -502,6 +554,8 @@ exports.duplicate = function(req, res)
                                 content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
 
                                 fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
+
+                                uploadS3(clone.id, fileList[i], content);
                             }
 
                             var botAuth = new BotAuth();
@@ -552,6 +606,8 @@ exports.delete = function(req, res)
         {
             var rimraf = require('rimraf');
             rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
+
+            deleteBotObjectFromS3(req.params.botId);
         }
     });
 };
