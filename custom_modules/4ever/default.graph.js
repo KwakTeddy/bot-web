@@ -444,8 +444,11 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "kind": "Content",
-                        "text": "관련한 이벤트들은 아래와 같습니다."
+                        "kind": "Action",
+                        "text": "",
+                        "type": "call",
+                        "dialogName": "4.1.1대답",
+                        "dialogId": "default11"
                     }
                 ],
                 "id": "default8",
@@ -454,9 +457,7 @@ var dialogs = [
                         "name": "4.1.1대답",
                         "input": [
                             {
-                                "types": [
-                                    "eventlist"
-                                ]
+                                "if": "true"
                             }
                         ],
                         "output": [
@@ -554,7 +555,7 @@ var dialogs = [
                     }
                 ],
                 "task": {
-                    "name": "event2month1"
+                    "name": ""
                 }
             },
             {
