@@ -13,7 +13,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         this.exclude = ['하다', '이다']; // 다른 언어는???
     };
 
-    QA.prototype.findExactly = function(dialogsets, inputRaw, done, callback)
+    QA.prototype.findExactly = function(context, dialogsets, inputRaw, done, callback)
     {
         DialogsetDialog.find({ dialogset: { $in: dialogsets }, inputRaw: inputRaw }).limit(this.limit).populate('dialogset').populate('context').lean().exec(function(err, list)
         {
@@ -101,7 +101,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
             async.eachSeries(inputRawList, function(i, next)
             {
-                that.findExactly(dialogsets, i, next, callback);
+                that.findExactly(context, dialogsets, i, next, callback);
             },
             function()
             {
