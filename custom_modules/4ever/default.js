@@ -349,29 +349,38 @@ module.exports = function(bot) {
             if (dialog.userInput.text.indexOf("성형") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"2",
+                    month:"3",
                     year:"2018",
-                    category:"성형"
+                    category:"가슴 성형"
                 };
-                dialog.output[0].text = "성형 이벤트 아래와 같습니다.";
+               // dialog.output[0].text = "가슴 성형 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("다이어트") >= 0 || dialog.userInput.text.indexOf("몸무게") >= 0) {
+            else if (dialog.userInput.text.indexOf("지방 흡입") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"2",
+                    month:"3",
                     year:"2018",
-                    category:"감량제 다이어트"
+                    category:"지방 흡입"
                 };
-                dialog.output[0].text = "감량제 다이어트 이벤트 아래와 같습니다.";
+              // dialog.output[0].text = "지방 흡입 다이어트 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("피부") >= 0) {
+            else if (dialog.userInput.text.indexOf("애플힙") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"2",
+                    month:"3",
                     year:"2018",
-                    category:"피부"
+                    category:"애플힙"
                 };
-                dialog.output[0].text = "피부 이벤트 아래와 같습니다.";
+               // dialog.output[0].text = "애플힙 이벤트 아래와 같습니다.";
+            }
+            else if (dialog.userInput.text.indexOf("그 외") >= 0) {
+                options.qs = {
+                    company: "포에버성형외과",
+                    month:"3",
+                    year:"2018",
+                    category:"기타"
+                };
+              //  dialog.output[0].text = "그 외 3월 이벤트 아래와 같습니다.";
             }
 
             request.get(options, function (err, response, body) {
@@ -410,7 +419,7 @@ module.exports = function(bot) {
             options.url = SERVER_HOST + '/api/' + modelname;
             options.qs = {
                 company: "포에버성형외과",
-                month:"2",
+                month:"3",
                 year:"2018"
             };
 
@@ -437,23 +446,71 @@ module.exports = function(bot) {
     bot.setTask('showevent',
         {
             action: function (dialog, context, callback) {
-
-                if (context.session.event.image !== undefined || context.session.event.image !== "") {
-                    dialog.output[0].image = {url: context.session.event.image}
+                var modelname = 'dermatology_moneybrain_event';
+                var options = {};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                if (dialog.userInput.text.indexOf("성형") >= 0 || dialog.userInput.text.indexOf("1") >= 0) {
+                    options.qs = {
+                        company: "포에버성형외과",
+                        month:"3",
+                        year:"2018",
+                        name:"내추럴 가슴성형"
+                    };
                 }
-                dialog.output[0].buttons = [
-                    {
-                        text: "자세히 보기",
-                        url:context.session.event.image
-                    },
-                    {
-                        text: "이전으로 가기"
-                    },
-                    {
-                        text: "처음으로 돌아가기"
+                else if (dialog.userInput.text.indexOf("지방 흡입")>= 0  || dialog.userInput.text.indexOf("2") >= 0) {
+                    options.qs = {
+                        company: "포에버성형외과",
+                        month:"3",
+                        year:"2018",
+                        name:"프리미엄 지방흡입"
+                    };
+                }
+                else if (dialog.userInput.text.indexOf("애플힙") >= 0 ||  dialog.userInput.text=="3") {
+                    options.qs = {
+                        company: "포에버성형외과",
+                        month:"3",
+                        year:"2018",
+                        name:"애플힙 성형"
+                    };
+                }
+                else if (dialog.userInput.text.indexOf("그 외") >= 0 || dialog.userInput.text.indexOf("4") >= 0) {
+                    options.qs = {
+                        company: "포에버성형외과",
+                        month:"3",
+                        year:"2018",
+                        name:"그 외 3월 이벤트"
+                    };
+                }
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log('err:' + err);
+                        callback();
                     }
-                ];
-                callback();
+                    else {
+                        body = JSON.parse(body);
+                        console.log(response.statusCode);
+                        context.session.event=body[0];
+
+                        if (context.session.event.image !== undefined || context.session.event.image !== "") {
+                            dialog.output[0].image = {url: context.session.event.image}
+                        }
+                        dialog.output[0].buttons = [
+                            {
+                                text: "자세히 보기",
+                                url:context.session.event.imagebig
+                            },
+                            {
+                                text: "이전으로 가기"
+                            },
+                            {
+                                text: "처음으로 돌아가기"
+                            }
+                        ];
+                        callback();
+                    }
+                });
+
             }
         });
 
