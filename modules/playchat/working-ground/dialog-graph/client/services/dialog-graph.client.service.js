@@ -1452,12 +1452,15 @@
             parent.replaceChild(itemElement, parent.children[0]);
 
             var parentDialog = parent.parentElement.parentElement.children[0].dialog;
-            for(var i=0; i<parentDialog.children.length; i++)
+            if(parentDialog)
             {
-                if(parentDialog.children[i].id == dialog.id)
+                for(var i=0; i<parentDialog.children.length; i++)
                 {
-                    parentDialog.children[i] = dialog;
-                    break;
+                    if(parentDialog.children[i].id == dialog.id)
+                    {
+                        parentDialog.children[i] = dialog;
+                        break;
+                    }
                 }
             }
 
