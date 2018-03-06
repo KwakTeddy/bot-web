@@ -457,7 +457,7 @@ module.exports = function(bot) {
                         name:"내추럴 가슴성형"
                     };
                 }
-                else if (dialog.userInput.text.indexOf("지방 흡입" || dialog.userInput.text.indexOf("2") >= 0) >= 0) {
+                else if (dialog.userInput.text.indexOf("지방 흡입")>= 0  || dialog.userInput.text.indexOf("2") >= 0) {
                     options.qs = {
                         company: "포에버성형외과",
                         month:"3",
@@ -465,7 +465,7 @@ module.exports = function(bot) {
                         name:"프리미엄 지방흡입"
                     };
                 }
-                else if (dialog.userInput.text.indexOf("애플힙") >= 0 || dialog.userInput.text.indexOf("3") >= 0) {
+                else if (dialog.userInput.text.indexOf("애플힙") >= 0 ||  dialog.userInput.text=="3") {
                     options.qs = {
                         company: "포에버성형외과",
                         month:"3",
@@ -491,7 +491,6 @@ module.exports = function(bot) {
                         body = JSON.parse(body);
                         console.log(response.statusCode);
                         context.session.event=body[0];
-                        console.log("222222222222222222222222222222"+body);
 
                         if (context.session.event.image !== undefined || context.session.event.image !== "") {
                             dialog.output[0].image = {url: context.session.event.image}
