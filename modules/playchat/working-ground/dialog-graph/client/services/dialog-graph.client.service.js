@@ -906,6 +906,7 @@
 
                 startDialog.children = this.userDialogs = data.dialogs;
                 this.graphData = startDialog;
+                this.startDialog = startDialog;
 
                 this.removeInitialDialog(this.userDialogs);
 
@@ -1460,6 +1461,16 @@
                     {
                         parentDialog.children[i] = dialog;
                         break;
+                    }
+                }
+            }
+            else
+            {
+                for(var key in dialog)
+                {
+                    if(key != 'id' && key != 'children')
+                    {
+                        this.startDialog[key] = dialog[key];
                     }
                 }
             }
