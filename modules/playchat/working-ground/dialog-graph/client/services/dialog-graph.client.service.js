@@ -1459,7 +1459,11 @@
                 {
                     if(parentDialog.children[i].id == dialog.id)
                     {
-                        parentDialog.children[i] = dialog;
+                        for(var key in dialog)
+                        {
+                            parentDialog.children[i][key] = dialog[key];
+                        }
+
                         break;
                     }
                 }
