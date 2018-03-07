@@ -116,7 +116,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 {
                     if(text.buttons[i].url)
                     {
-                        t = '<a href="' + text.buttons[i].url + '" class="default-button" style="color: #038eda;" target="_blank">#' + text.buttons[i].text + '</a>' + t;
+                        t = '<a href="' + text.buttons[i].url + '" class="default-button" style="color: #038eda; border: 0;" target="_blank">' + text.buttons[i].text + '</a>' + t;
                     }
                     else
                     {
