@@ -1,4 +1,3 @@
-var path = require('path');
 var LINEBot = require('line-messaging');
 var mongoose = require('mongoose');
 var Bot = mongoose.model('Bot');
