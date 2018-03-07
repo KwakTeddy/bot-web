@@ -176,6 +176,8 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                             {
                                 clearInterval(intervalKey);
                                 result.importState = '';
+                                var file = document.getElementById('file');
+                                file.value = '';
                             }
                             else if(r.result == 'nothing')
                             {
@@ -261,16 +263,18 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
         };
 
         var inputs = document.querySelectorAll( '.inputfile' );
+
         Array.prototype.forEach.call( inputs, function( input ) {
             var label = input.nextElementSibling,
                 labelVal = LanguageService('Choose a file');
             label.innerHTML = labelVal;
             input.addEventListener( 'change', function( e ) {
                 var fileName = '';
-                if( this.files && this.files.length > 1 )
-                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-                else
+
+                if( this.files)
+                {
                     fileName = e.target.value.split( '\\' ).pop();
+                }
 
                 if( fileName )
                 {
@@ -297,7 +301,6 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
         {
             importModal.data.path = response.path;
             importModal.data.filename = response.filename;
-            
             console.log(importModal);
         };
 
