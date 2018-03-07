@@ -5,6 +5,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 {
     $scope.$parent.loaded('simulator');
 
+    var tempUserKey = 'socket-user-' + new Date().getTime();
 
     (function()
     {
@@ -54,21 +55,36 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
-        var getCurrentTime = function()
+        var getCurrentTime = function(time)
         {
-            var date = new Date();
+            var date = undefined;
+            if(time)
+                date = new Date(time);
+            else
+                date = new Date();
 
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            var day = date.getDay();
-            var month = date.getMonth() + 1;
+            var options = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
-            hour = hour < 10 ? '0' + hour : hour;
-            min = min < 10 ? '0' + min : min;
-            return month + "월 " + day + "일 " + hour + ':' + min;
+            var code = $cookies.get('language');
+            if(code == 'ko')
+            {
+                return date.toLocaleDateString('ko-KR', options);
+            }
+            else if(code == 'zh')
+            {
+                return date.toLocaleDateString('zh-CN', options);
+            }
+            else if(code == 'jp')
+            {
+                return date.toLocaleDateString('ja-JP', options);
+            }
+            else
+            {
+                return date.toLocaleDateString('en-US', options);
+            }
         };
 
-        var addBotBubble = function(text)
+        var addBotBubble = function(text, time)
         {
             try {
                 text = JSON.parse(text);
@@ -78,42 +94,39 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
             }
 
-            var template = undefined;
+            var template = angular.element('#botAnswerTemplate').html();
+            template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
-            if(typeof text != 'object')
+            template = angular.element(template);
+
+            if(text.image && text.image.url)
             {
-                template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                var t = '<div class="output-image">';
+                t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
+                t += '</div>';
+
+                template.find('.speech').append(t);
             }
-            else
+
+            if(text.buttons)
             {
-                template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text.replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+                var t = '';
 
-                template = angular.element(template);
-
-                if(text.image && text.image.url)
+                for(var i=0; i<text.buttons.length; i++)
                 {
-                    var t = '<div class="output-image">';
-                    t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
-                    t += '</div>';
-
-                    template.find('.speech').append(t);
-                }
-
-                if(text.buttons)
-                {
-                    var t = '<div class="output-buttons">';
-
-                    for(var i=0; i<text.buttons.length; i++)
+                    if(text.buttons[i].url)
                     {
-                        t += '<a href="' + (text.buttons[i].url || '#') + '" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
+                        t = '<a href="' + text.buttons[i].url + '" class="default-button" style="color: #038eda;" target="_blank">#' + text.buttons[i].text + '</a>' + t;
                     }
-
-                    t += '</div>';
-
-                    template.find('.speech').append(t);
+                    else
+                    {
+                        t += '<a style="cursor: pointer;" href="#" class="default-button" target="_blank">' + text.buttons[i].text + '</a>';
+                    }
                 }
+
+                t += '</div>';
+
+                template.find('.speech').append('<div class="output-buttons">' + t);
             }
 
             simulatorBody.append(template);
@@ -136,10 +149,10 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             body.scrollTop = body.scrollHeight;
         };
 
-        var addUserBubble = function(text)
+        var addUserBubble = function(text, time)
         {
             var template = angular.element('#userAnswerTemplate').html();
-            template = template.replace('{time}', getCurrentTime()).replace('{text}', text);
+            template = template.replace('{time}', getCurrentTime(time)).replace('{text}', text);
             simulatorBody.append(template);
 
             var body = angular.element('#simulatorBody').get(0);
@@ -169,17 +182,66 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         };
 
+        Socket.on('send_error_msg', function(data)
+        {
+            if(data == 'old-version')
+            {
+                addBotBubble({ text: '구 버전입니다. 구 버전 플레이챗으로 이동해서 테스트 해주세요.' });
+            }
+        });
+
+        Socket.on('analysis_log', function(data)
+        {
+            $rootScope.$broadcast('onlog', data);
+        });
+
         //event handling
         Socket.on('send_msg', function(data)
         {
-            if(data.indexOf(':log') != -1)
+            try
             {
-                $rootScope.$broadcast('onlog', { message: data });
+                if(data.type == 'command')
+                {
+                    clearBubble();
+                    setTimeout(function()
+                    {
+                        if(data.dialogId)
+                        {
+                            $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
+                        }
+
+                        addBotBubble(data.output);
+                        $rootScope.$broadcast('onmsg', { message: data.output });    
+                    }, 100);
+                }
+                else if(data.type == 'dialog')
+                {
+                    if(data.dialogId)
+                    {
+                        $rootScope.$broadcast('dialogGraphTestFocus', data.dialogId);
+                    }
+
+                    addBotBubble(data.output);
+                    $rootScope.$broadcast('onmsg', { message: data.output });
+                }
+                else if(data.type == 'qa')
+                {
+                    addBotBubble(data.output);
+                    $rootScope.$broadcast('onmsg', { message: data.output });
+                }
+                else if(data.type == 'log')
+                {
+                    $rootScope.$broadcast('onlog', { message: data });
+                }
+                else
+                {
+                    addBotBubble(data);
+                    $rootScope.$broadcast('onmsg', { message: data });
+                }
             }
-            else
+            catch(err)
             {
-                addBotBubble(data);
-                $rootScope.$broadcast('onmsg', { message: data });
+                console.error(err);
             }
         });
 
@@ -187,7 +249,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             if(e.keyCode == 13) //Enter
             {
-                var value = e.currentTarget.value;
+                var value = e.currentTarget.value.trim();
                 if(value)
                 {
                     emitMsg(value, true);
@@ -196,8 +258,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             else if(e.keyCode == 116) //F5
             {
-                clearBubble();
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':build', false);
+            }
+            else if(e.keyCode == 117) //F6
+            {
+                $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
+                emitMsg(':reset memory', false);
             }
             else if(e.keyCode == 27) // Esc
             {
@@ -241,15 +308,25 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                 }
 
                 $scope.chatbotName = data.name;
-                emitMsg(':reset user', false);
+
+                if(!simulatorBody.html())
+                {
+                    $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
+                    emitMsg(':reset user', false);
+                }
+
             }, Beagle.error);
         };
 
         $scope.$on('simulator-build', function()
         {
-            console.log('빌드');
-            clearBubble();
             emitMsg(':build', false);
+        });
+
+        $scope.$on('simulator-build-without-reset-focus', function()
+        {
+            console.log('빌드');
+            emitMsg(':reload-bot-files', false);
         });
 
         $scope.$on('set-simulator-content', function(context, data)
@@ -257,13 +334,9 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             for(var i=data.dialog.length-1; i>=0; i--)
             {
                 if(data.dialog[i].inOut)
-                {
-                    addUserBubble(data.dialog[i].dialog);
-                }
+                    addUserBubble(data.dialog[i].dialog, data.dialog[i].created);
                 else
-                {
-                    addBotBubble(data.dialog[i].dialog);
-                }
+                    addBotBubble({text : data.dialog[i].dialog}, data.dialog[i].created);
             }
 
             if(data.readonly)
@@ -276,9 +349,18 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        $scope.$on('focusToDialogGraph', function()
+        {
+            angular.element('#simulatorInput').blur();
+        });
+
+        $scope.onFocus = function(e)
+        {
+            $rootScope.$broadcast('releaseGraphFocus');
+        };
+
         $scope.refresh = function()
         {
-            clearBubble();
             emitMsg(':build', false);
         };
 
@@ -287,10 +369,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             $scope.shortCutHelp = false;
         };
 
-        $scope.focusToInput = function()
+        $('#simulatorBody').on('click', function(e)
         {
-            angular.element('#simulatorInput').focus();
-        };
+            if(e.target.className.indexOf('speech-text') != -1)
+                return;
+
+            // angular.element('#simulatorInput').focus();
+        });
 
         $scope.init();
     })();

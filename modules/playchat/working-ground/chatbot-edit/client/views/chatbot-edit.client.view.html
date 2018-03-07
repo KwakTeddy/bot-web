@@ -3,9 +3,10 @@
         <div class="dashboard-bot-profile" >
             <div class="dashboard-bot-profile-image">
                 <div class="dashboard-bot-profile-image-wrapper">
-                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <img src="{{ chatbot.imageFile }}">
                     <span></span>
                 </div>
+                <div style="text-align: center; padding: 5px;"><button type="button" class="default-button" ng-click="showUploadModal();">{{lan('Click to change image') }}</button></div>
             </div>
             <div class="dashboard-bot-profile-content">
                 <div style="display: inline-block;">
@@ -26,12 +27,9 @@
                 <div>
                     <p>Description</p>
                     <textarea ng-model="chatbot.description">{{ chatbot.description }}</textarea>
-
-                        <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;margin-bottom: 30px;margin-left: 62px;">Save</button>
-
+                    <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;margin-bottom: 30px;margin-left: 62px;">Save</button>
                 </div>
             </div>
-
         </div>
     </form>
     <form>
@@ -123,6 +121,34 @@
                 <div class="popbtnarea">
                     <button type="button" class="default-button" ng-click="closeShareModal();">{{ lan('Cancel') }}</button>
                     <button class="blue-button" style="margin-left: 20px;">{{ lan('Share') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="window_overlay" ng-show="openUploadModal" style="width: 100%; box-sizing: border-box;">
+        <div class="window" style="box-sizing: border-box; padding: 10px;">
+            <form style="width: 100%; box-sizing: border-box;">
+                <div class="window_header">
+                    <div>
+                        <h1 style="font-weight: 500; font-size: 17px;">{{ lan('Change chatbot image')}}</h1>
+                    </div>
+                </div>
+                <div style="text-align: center; padding: 10px 0;">
+                    <img src="{{ botImage }}" style="width: 100%; max-width: 500px;">
+                </div>
+                <div class="window_main_col" style="width: 100%; text-align: center; padding: 5px;">
+                    <input tabindex="-1" type="file" nv-file-select uploader="uploader" style="display: none;">
+                    <button type="button" class="default-button" style="width: 200px; margin-right: 5px;" ng-click="uploadImage($event);">{{lan('Upload bot image') }}</button>
+                    <button type="button" class="default-button" style="width: 200px; margin-left: 5px;" ng-click="addExternalImage();">{{lan('Insert external image') }}</button>
+                </div>
+                <!--<div class="list2 mt20 clear">-->
+                <!--<li class="card_detail_item_content4">-->
+                <!--{{ lan("Flow chatbots are tree-based. The user is driven down a specific path") }}-->
+                <!--</li>-->
+                <!--</div>-->
+                <div style="text-align: center; padding: 10px;">
+                    <button type="button" class="default-button" ng-click="saveUpload();">{{ lan('Save') }}</button>
                 </div>
             </form>
         </div>

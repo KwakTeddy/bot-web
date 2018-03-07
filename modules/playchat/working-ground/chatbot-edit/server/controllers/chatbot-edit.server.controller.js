@@ -5,12 +5,18 @@ var BotAuth = mongoose.model('BotAuth');
 
 module.exports.find = function(req, res)
 {
-    BotAuth.find({ bot: req.params.botId, user: { $ne: req.user } }).populate('user').exec(function(err, list)
+    BotAuth.find({ bot: req.params.botId}).populate('user').exec(function(err, list)
     {
         if(err)
         {
             console.error(err);
             return res.status(400).send({ error: err });
+        }
+
+        for(var i=0; i<list.length; i++)
+        {
+            delete list[i].password;
+            delete list[i].salt;
         }
 
         res.jsonp(list);
@@ -100,6 +106,7 @@ module.exports.updateBot = function(req, res)
             item.name = req.body.name;
             item.description = req.body.description;
             item.language = req.body.language;
+            item.imageFile = req.body.imageFile;
 
             console.log('머지 : ', item);
 

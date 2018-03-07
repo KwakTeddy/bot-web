@@ -1,5 +1,56 @@
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
+var Bot = mongoose.model('Bot');
+
+module.exports.getLineAccessToken = function(req, res)
+{
+    var botId = req.params.botId;
+    Bot.findOne({ id: botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ error: err });
+        }
+        else
+        {
+            if(bot)
+            {
+                res.send(bot.lineChannel);
+            }
+            else
+            {
+                res.send({ accessToken: '', channelId: '', secret: '' });
+            }
+        }
+    });
+};
+
+module.exports.saveLineAccessToken = function(req, res)
+{
+    var channelId = req.body.channelId;
+    var secret = req.body.secret;
+    var accessToken = req.body.accessToken;
+    var botId = req.params.botId;
+
+    Bot.findOne({ id: botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ error: err });
+        }
+        else
+        {
+            bot.lineChannel = { accessToken: accessToken, channelId: channelId, secret: secret };
+
+            bot.save(function(err)
+            {
+                res.end();
+            });
+        }
+    });
+};
 
 exports.facebookPage = function (req, res) {
     if (!req.body.list){ //change the information about facebook page connected

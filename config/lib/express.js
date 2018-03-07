@@ -263,7 +263,7 @@ module.exports.initModulesServerRoutes = function (app)
 
                     var query = {};
 
-                    if(ObjectId.isValid(botId))
+                    if(/^[0-9a-fA-F]{24}$/gi.test(botId))
                         query._id = botId;
                     else
                         query.id = botId;

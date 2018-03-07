@@ -21,9 +21,20 @@ module.exports =
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-                "LB_MASTER": true,
-                "LB_USE": true,
+                "REDIS": "13.125.126.30",
                 "NODE_ENV": "development"
+            },
+            env_remaster:
+            {
+                "PORT": 443,
+                "HOST": "https://remaster.moneybrain.ai",
+                "FACEBOOK_ID" : "299548697231251",
+                "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
+                "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
+                "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
+                "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
+                "REDIS": "52.79.198.109",
+                "NODE_ENV": "remaster"
             },
             env_development:
             {
@@ -34,8 +45,7 @@ module.exports =
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-                "LB_MASTER": true,
-                "LB_USE": true,
+                "REDIS": "172.31.5.26",
                 "NODE_ENV": "development"
             },
             env_production:
@@ -48,8 +58,6 @@ module.exports =
                 "HOST": "https://playchat.ai",
                 "MONGOLAB_URI": "mongodb://172.31.14.78:27017/bot",
                 "MONGO_RSNAME": "rs1",
-                "LB_MASTER": true,
-                "LB_USE": true,
                 "NODE_ENV": "production"
             }
         }

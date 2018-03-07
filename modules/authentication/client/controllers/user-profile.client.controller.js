@@ -3,7 +3,7 @@
     'use strict';
     angular.module('playchat').controller('UserProfileController', ['$window', '$scope', '$resource', '$cookies', '$rootScope', 'LanguageService', function ($window, $scope, $resource, $cookies, $rootScope, LanguageService)
     {
-        var UserLanguageService = $resource('/api/users/language');
+        var UserService = $resource('/api/users');
 
         $scope.$parent.loading = false;
 
@@ -11,19 +11,34 @@
         $scope.user = user;
         // $scope.language = user.language;
 
+        $scope.password = '';
+        $scope.passwordConfirm = '';
+
         (function()
         {
             $scope.save = function()
             {
                 user.language = $scope.user.language;
-                UserLanguageService.save({ language: $scope.user.language }, function(result)
+
+                if($scope.password && $scope.passwordConfirm)
+                {
+                    if($scope.password != $scope.passwordConfirm)
+                    {
+                        return alert(LanguageService('Password is disaccord'));
+                    }
+                }
+                else
+                {
+                    $scope.password = '';
+                }
+
+                UserService.save({ language: $scope.user.language, password: $scope.password }, function(result)
                 {
                     // user.language = $scope.language;
                     $cookies.putObject('user', user);
-
                     $rootScope.$broadcast('changeLanguage');
 
-                    $window.history.back();
+                    alert(LanguageService('Has been applied'));
                 },
                 function(err)
                 {

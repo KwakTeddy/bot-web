@@ -100,12 +100,6 @@ module.exports.signin = function(req, res, next)
                 user.password = undefined;
                 user.salt = undefined;
 
-                if(user.state === false)
-                {
-                    res.status(401).send('not registration');
-                    return;
-                }
-
                 req.login(user, function (err)
                 {
                     if (err)
@@ -176,7 +170,6 @@ module.exports.signup = function(req, res, next)
 
     // Add missing user fields
     user.provider = 'local';
-    user.state = false; // for closed beta
     // user.displayName = user.username;
 
     makeUsername(0, function(username)
@@ -218,6 +211,7 @@ module.exports.signup = function(req, res, next)
                             user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
                             if (!result)
                             {
+                                user.language = req.body.language;
                                 // Then save the user
                                 user.save(function (err)
                                 {
@@ -282,7 +276,7 @@ module.exports.signup = function(req, res, next)
                             httpTransport = 'https://';
                         }
 
-                        res.render(path.resolve('modules/authentication/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')),
+                        res.render(path.resolve('modules/authentication/server/templates/email-confirm' + '-' + req.body.language),
                         {
                             name: user.displayName,
                             appName: 'Play Chat',
@@ -338,44 +332,56 @@ module.exports.validateEmailConfirmToken = function(req, res)
     //Define email search query
     var emailConfirmQuery = {};
     emailConfirmQuery['localEmailConfirmToken'] = req.params.token;
-    emailConfirmQuery['localEmailConfirmExpires'] = {
-        $gt: Date.now()
-    };
 
     User.findOne(emailConfirmQuery, function (err, user)
     {
-        if (!user)
+        if(err)
         {
-            return res.redirect('/emailconfirm/invalid');
+            console.error(err);
+            return res.redirect('/signup?error=true&type=database');
         }
 
-        user.localEmailConfirmed = true;
-        user.localEmailConfirmToken = undefined;
-        user.localEmailConfirmExpires = undefined;
-
-        user.save(function (err)
+        if(user)
         {
-            if (err)
+            if(user.localEmailConfirmExpires >= Date.now())
             {
-                console.log(err);
-            }
-            else
-            {
-                req.login(user, function (err)
+                user.localEmailConfirmed = true;
+                user.localEmailConfirmToken = undefined;
+                user.localEmailConfirmExpires = undefined;
+
+                user.save(function (err)
                 {
                     if (err)
                     {
-                        res.status(400).send(err);
+                        console.log(err);
                     }
                     else
                     {
-                        //for closedbeta
-                        // res.cookie('login', true);
-                        res.redirect('/');
+                        req.login(user, function (err)
+                        {
+                            if (err)
+                            {
+                                res.status(400).send(err);
+                            }
+                            else
+                            {
+                                //for closedbeta
+                                // res.cookie('login', true);
+                                res.redirect('/signup?verified=true');
+                            }
+                        });
                     }
                 });
             }
-        });
+            else
+            {
+                res.redirect('/signup?invalid=true&email=' + user.email);
+            }
+        }
+        else
+        {
+            return res.redirect('/signup?error=true&type=email');
+        }
     });
 };
 

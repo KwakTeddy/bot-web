@@ -12,6 +12,8 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
 
     $scope.$parent.loaded('working-ground');
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     $scope.entities = [];
     $scope.entity = {};
 
@@ -123,14 +125,13 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
         if(chatbot.templateId)
             params.templateId = chatbot.templateId._id;
         params.name = $scope.name;
-        params.entityContents = JSON.parse(angular.toJson($scope.entities));
+        params.entityContents = [];
 
-        for(var i=0; i<params.entityContents.length; i++)
+        for(var i=0; i<$scope.entities.length; i++)
         {
-            for(var j=0; j<params.entityContents[i].synonyms.length; j++)
+            if($scope.entities[i].name)
             {
-                if(params.entityContents[i].synonyms[j].name)
-                    params.entityContents[i].synonyms[j] = params.entityContents[i].synonyms[j].name;
+                params.entityContents.push($scope.entities[i]);
             }
         }
 

@@ -2,7 +2,7 @@
 
 angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'LanguageService', 'ExcelDownloadService',function ($scope, $http, $cookies, $resource, DateRangePickerService, LanguageService, ExcelDownloadService)
 {
-    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Dialog Graph Usage'), '/modules/playchat/gnb/client/imgs/graphusage.png');
+    $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Dialog Scenario Usage'), '/modules/playchat/gnb/client/imgs/graphusage.png');
 
     //서비스 선언
     var DialogGraphUsageService = $resource('/api/:botId/analysis/dialog-graph-usage', { botId: '@botId' });
@@ -13,16 +13,18 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
 
     $scope.date = {};
 
+    $scope.list = undefined;
+
     var excelData = undefined;
 
     (function()
     {
-        var indexing = function (senario, depth, index) {
+        var indexing = function (scenario, depth, index) {
             var newDepth;
             newDepth = depth + "-" + index;
-            $scope.senarioIndex[senario.name] = newDepth;
-            if(senario.children){
-                senario.children.forEach(function (child, index) {
+            $scope.scenarioIndex[scenario.name] = newDepth;
+            if(scenario.children){
+                scenario.children.forEach(function (child, index) {
                     index++;
                     index = index.toString();
                     indexing(child, newDepth, index)
@@ -34,26 +36,28 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
         {
             DialogGraphUsageService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(doc)
             {
-                $scope.senarioIndex = {};
-                $scope.senarioUsageList = [];
+                console.log(doc)
+                $scope.scenarioIndex = {};
+                $scope.scenarioUsageList = [];
 
-                var botSenario = doc.botSenario;
+
+                var botScenario = doc.botScenario;
 
                 var depth = "1";
-                for(var i = 0; i < botSenario.length; i++)
+                for(var i = 0; i < botScenario.length; i++)
                 {
-                    if(!botSenario[i].name)
+                    if(!botScenario[i].name)
                     {
                         continue;
                     }
                     else
                     {
-                        $scope.senarioIndex[botSenario[i].name] = depth + "-0";
+                        $scope.scenarioIndex[botScenario[i].name] = depth + "-0";
                     }
 
-                    if(botSenario[i].children)
+                    if(botScenario[i].children)
                     {
-                        botSenario[i].children.forEach(function (child, index)
+                        botScenario[i].children.forEach(function (child, index)
                         {
                             index++;
                             index = index.toString();
@@ -65,63 +69,71 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
                     depth = depth.toString();
                 }
 
-                doc.senarioUsage.forEach(function (_doc)
+                doc.scenarioUsage.forEach(function (_doc)
                 {
-                    if($scope.senarioIndex[_doc._id.dialogName])
+                    if($scope.scenarioIndex[_doc._id.dialogName])
                     {
                         var prefix = "";
-                        for(var i = 0; i < $scope.senarioIndex[_doc._id.dialogName].split('-')[0].length-1; i++)
+                        for(var i = 0; i < $scope.scenarioIndex[_doc._id.dialogName].split('-')[0]; i++)
                         {
                             prefix = prefix + "a"
                         }
+                        _doc['index'] = $scope.scenarioIndex[_doc._id.dialogName];
+                        _doc['order'] = prefix + $scope.scenarioIndex[_doc._id.dialogName];
 
-                        _doc['index'] = $scope.senarioIndex[_doc._id.dialogName];
-                        _doc['order'] = prefix + $scope.senarioIndex[_doc._id.dialogName];
-
-                        delete $scope.senarioIndex[_doc._id.dialogName]
+                        delete $scope.scenarioIndex[_doc._id.dialogName]
+                    }
+                    else
+                    {
+                        _doc['index'] = '';
+                        _doc['order'] = 'z';
                     }
                 });
 
-                if($scope.senarioIndex)
+                if($scope.scenarioIndex)
                 {
-                    Object.keys($scope.senarioIndex).forEach(function (key)
+                    Object.keys($scope.scenarioIndex).forEach(function (key)
                     {
                         var prefix = "";
-                        for(var i = 0; i < $scope.senarioIndex[key].split('-')[0].length-1; i++)
+                        for(var i = 0; i < $scope.scenarioIndex[key].split('-')[0]; i++)
                         {
                             prefix = prefix + "a"
                         }
 
                         var obj = {_id: {dialogName: ""}, order:"", index: "", facebook: 0, kakao: 0, navertalk: 0, total: 0};
                         obj._id.dialogName = key;
-                        obj.order = $scope.senarioIndex[key];
-                        obj.index = prefix + $scope.senarioIndex[key];
-                        $scope.senarioUsageList.push(obj);
+                        obj.order = prefix + $scope.scenarioIndex[key];
+                        obj.index = $scope.scenarioIndex[key];
+                        $scope.scenarioUsageList.push(obj);
                     })
                 }
 
                 var result = [];
-                result.push.apply($scope.senarioUsageList, doc.senarioUsage);
+                result.push.apply($scope.scenarioUsageList, doc.scenarioUsage);
 
-                var max = 0;
-                for(var i=0; i<$scope.senarioUsageList.length; i++)
+                var sum = 0;
+                for(var i=0; i<$scope.scenarioUsageList.length; i++)
                 {
-                    if(max < $scope.senarioUsageList[i].total)
-                        max = $scope.senarioUsageList[i].total;
+                    sum += $scope.scenarioUsageList[i].total;
                 }
 
-                for(var i=0; i<$scope.senarioUsageList.length; i++)
+                for(var i=0; i<$scope.scenarioUsageList.length; i++)
                 {
-                    $scope.senarioUsageList[i].percent = Math.round(($scope.senarioUsageList[i].total / max) * 100);
+                    $scope.scenarioUsageList[i].percent = Math.round(($scope.scenarioUsageList[i].total / sum) * 100);
                 }
 
-                $scope.list = $scope.senarioUsageList;
+                $scope.list = $scope.scenarioUsageList;
 
 
                 excelData = [];
-                for(var i=0; i<$scope.senarioUsageList.length; i++)
+                for(var i=0; i<$scope.scenarioUsageList.length; i++)
                 {
-                    excelData.push({ name: $scope.senarioUsageList[i]._id.dialogName, index: $scope.senarioUsageList[i].index, count: $scope.senarioUsageList[i].total })
+                    excelData.push(
+                        {
+                            name: $scope.scenarioUsageList[i]._id.dialogName,
+                            index: $scope.scenarioUsageList[i].index,
+                            count: $scope.scenarioUsageList[i].total
+                        })
                 }
             },
             function(err)
@@ -132,13 +144,41 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
 
         $scope.exelDownload = function()
         {
+            excelData.sort(function (a, b) {
+
+                if(!a.index) return 1;
+                if(!b.index) return -1;
+
+                var diff = function (a, b, idx) {
+                    a = a.replace('-', '');
+                    b = b.replace('-', '');
+
+                    if(!a[idx]) return -1;
+                    if(!b[idx]) return 1;
+
+                    if(parseInt(a[idx]) - parseInt(b[idx]))
+                    {
+                        return parseInt(a[idx]) - parseInt(b[idx]);
+                    }
+                    else
+                    {
+                        return diff(a, b, idx + 1);
+                    }
+
+                };
+
+                return diff(a.index, b.index, 0);
+
+            });
+
             var template = {
-                sheetName: LanguageService('Dialog Graph Usage'),
+                sheetName: LanguageService('Dialog Scenario Usage'),
                 columnOrder: ['index', 'name', 'count'],
                 orderedData: excelData
             };
+            console.log(excelData)
 
-            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Usage'), $scope.date, template);
+            ExcelDownloadService.download(chatbot.name, LanguageService('Dialog Scenario Usage'), $scope.date, template);
         };
     })();
 

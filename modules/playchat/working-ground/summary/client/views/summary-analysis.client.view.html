@@ -5,8 +5,8 @@
             <p class="analysis-summary-card-count">{{ data.liveUserCount }}</p>
         </div>
         <div class="analysis-summary-card">
-            <p>{{lan('Cumulated number of Dialogs') }}</p>
-            <p class="analysis-summary-card-count">{{ data.totalDialogCount }}</p>
+            <p>{{lan('Recent(30 days) Users.') }}</p>
+            <p class="analysis-summary-card-count">{{ data.periodUserCount }}</p>
         </div>
         <div class="analysis-summary-card">
             <p>{{lan('Number of Dialogs(30days)') }}</p>
@@ -17,26 +17,30 @@
             <p class="analysis-summary-card-count">{{ data.totalUserCount }}</p>
         </div>
         <div class="analysis-summary-card">
-            <p>{{lan('Recent(30 days) Users.') }}</p>
-            <p class="analysis-summary-card-count">{{ data.periodUserCount }}</p>
+            <p>{{lan('Cumulated number of Dialogs') }}</p>
+            <p class="analysis-summary-card-count">{{ data.totalDialogCount }}</p>
         </div>
     </div>
+
     <div class="analysis-summary-row">
         <div style="flex: 1;">
             <div class="analysis-summary-title">{{lan('Number of daily Users') }}</div>
             <canvas id="dailyDialogUsage" width="400" height="200"></canvas>
         </div>
     </div>
+
     <div class="analysis-summary-row">
         <div style="flex: 1;">
             <div class="analysis-summary-title">{{lan('User distribution on channels') }}</div>
             <canvas id="botUserByChannel" width="300" height="250"></canvas>
         </div>
+
         <div style="flex: 1;">
             <div class="analysis-summary-title">{{lan('Rate of Successive Dialogs') }}</div>
             <canvas id="dialogSuccessRate" width="300" height="250"></canvas>
         </div>
     </div>
+
     <div class="analysis-summary-row">
         <div style="flex: 1; padding: 0 10px;">
             <div class="analysis-summary-title">{{lan('Most Frequently Used Input') }}</div>
@@ -59,6 +63,7 @@
                 </tbody>
             </table>
         </div>
+
         <div style="flex: 1; padding: 0 10px;">
             <div class="analysis-summary-title">{{lan('Top 10 Failed Dialog') }}</div>
             <table class="tb02">
@@ -80,6 +85,7 @@
                 </tbody>
             </table>
         </div>
+
         <div style="flex: 1; padding: 0 10px;">
             <div class="analysis-summary-title">{{lan('Top 10 scenario usage') }}</div>
             <table class="tb02">

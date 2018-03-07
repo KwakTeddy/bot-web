@@ -17,6 +17,7 @@ var BotSchema = new Schema(
     language: { type: String, default: 'ko' },
     kakao: { type: Boolean, default: false },
     line: { type: Boolean, default: false },
+    lineChannel: Object,
     facebook: { type: Boolean, default: false },
     using: { type: Boolean, default: false },
     public: { type: Boolean, default: true },

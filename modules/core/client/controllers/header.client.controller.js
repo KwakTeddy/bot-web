@@ -6,15 +6,17 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 {
     $scope.isLogin = $cookies.get('login') == 'true';
 
-    var UserLanguageService = $resource('/api/users/language');
+    var UserService = $resource('/api/users');
     var ReportingService = $resource('/api/reporting');
 
     var user = $scope.user = $cookies.getObject('user');
     
-    var userLang = navigator.language || navigator.userLanguage;
-    var code = user ? user.language : userLang || 'en';
+    // var userLang = navigator.language || navigator.userLanguage;
+    // var code = user ? user.language : userLang || 'en';
+    //
+    // code = code.split('-')[0];
 
-    code = code.split('-')[0];
+    var code = $cookies.get('language');
 
     $scope.language = code || 'en';
 
@@ -24,13 +26,14 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
     $scope.languageChange = function()
     {
-        UserLanguageService.save({ language: $scope.language }, function(result)
+        UserService.save({ language: $scope.language }, function(result)
         {
-            if(!user)
-                user = {};
+            if(!user) user = {};
 
-            user.language = $scope.language;
-            $cookies.putObject('user', user);
+            // user.language = $scope.language;
+            // $cookies.putObject('user', user);
+
+            $cookies.put('language', $scope.language);
 
             $rootScope.$broadcast('changeLanguage');
         },
@@ -41,6 +44,8 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
                 var user = {};
                 user.language = $scope.language;
                 $cookies.putObject('user', user);
+
+                $cookies.put('language', $scope.language);
 
                 $rootScope.$broadcast('changeLanguage');
             }
@@ -73,6 +78,9 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
     $scope.signout = function()
     {
+        angular.forEach($cookies.getAll(), function (v, k) {
+            if(k != 'language') $cookies.remove(k);
+        });
         $window.location.href = '/api/auth/signout';
     };
 

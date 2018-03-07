@@ -1,0 +1,14 @@
+{
+    "menus" : [
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard_1.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents_1.png", "childMenus" : [
+            { "name" : "기본정보", "url" : "/templates/contents/basicinformation", "icon" : "basic.png" },
+            { "name" : "주문관리", "url" : "/templates/contents/reservation", "icon" : "reservation.png" },
+            { "name" : "상품관리", "url" : "/templates/contents/menu", "icon" : "select_product.png" },
+            { "name" : "후기관리", "url" : "/templates/contents/service", "icon" : "menu.png" },
+            { "name" : "이벤트관리", "url" : "/templates/contents/event", "icon" : "event.png" }
+
+        ] },
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini_1.png" }
+    ]
+}

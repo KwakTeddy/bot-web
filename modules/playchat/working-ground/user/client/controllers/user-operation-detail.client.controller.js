@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('OperationUserDetailController', ['$window', '$scope', '$rootScope', '$resource', '$cookies', '$location', 'DateService', 'LanguageService',function ($window, $scope, $rootScope, $resource, $cookies, $location, DateService, LanguageService)
 {
-    $scope.$parent.changeWorkingGroundName(LanguageService('Operation') + ' > ' + LanguageService('User Detail'));
+    $scope.$parent.changeWorkingGroundName(LanguageService('Operation') + ' > ' + LanguageService('User Detail'), '/modules/playchat/gnb/client/imgs/user.png');
 
     var BotUserService = $resource('/api/:botId/operation/users/:id', { botId: '@botId', id: '@id' });
     var MemoService = $resource('/api/:botId/operation/users/:userKey/memo', { botId: '@botId', userKey: '@userKey' });
@@ -31,7 +31,19 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
 
             BotUserService.get(query, function(result)
             {
+                console.log(result)
                 var item = JSON.parse(JSON.stringify(result));
+
+                item.userDialog.sort(function (a, b) {
+                    if(a.created != b.created)
+                    {
+                        return -1*(Date.parse(a.created) - Date.parse(b.created));
+                    }
+                    else
+                    {
+                        return a.inOut - b.inOut ;
+                    }
+                });
 
                 $scope.data = item;
                 if(item.userDialog && item.userDialog.length > 0)
@@ -59,7 +71,7 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
             });
         };
 
-        $scope.saveUserMemo = function()
+        $scope.saveUserMemo = function(e)
         {
             MemoService.save({ botId: chatbot.id, userKey: $scope.data.userKey, memo: $scope.memo }, function(result)
             {
@@ -70,6 +82,8 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
             {
                 alert(err.data.error || err.data.message);
             });
+            e.preventDefault();
+            e.stopPropagation();
         };
 
         $scope.formatDate = function(date)

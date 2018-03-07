@@ -81,5 +81,5 @@ module.exports = function (app, db)
     // logger.systemInfo(config.files.server.sockets.toString().replace(/,/gi, '\n'));
     // logger.systemInfo('=====================================================================');
 
-    return { server: server, io: io };
+    return { server: server, app: app, io: io };
 };

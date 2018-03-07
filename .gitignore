@@ -28,6 +28,8 @@ modules/users/client/img/profile/uploads
 config/env/local.js
 *.pem
 
+aws-s3-credentials.json
+
 # Ignoring MEAN.JS's gh-pages branch for documenation
 _site/
 

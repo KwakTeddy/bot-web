@@ -7,7 +7,7 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var CustomContext = mongoose.model('CustomContext');
 
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 exports.findTotalPage = function(req, res)
 {
@@ -117,14 +117,14 @@ exports.create = function(req, res)
             inputRaw = inputRaw.trim();
 
             var language = 'ko'; //temporary
-            NLPManager.getNlpedText(inputRaw, language, function(err, result)
+            NLPManager.getNlpedText(language, inputRaw, function(err, lastChar, nlpText, nlp)
             {
                 if(err)
                 {
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                inputList.push(result);
+                inputList.push(nlpText);
                 done();
             });
         },
@@ -163,15 +163,15 @@ exports.update = function(req, res)
         async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
             inputRaw = inputRaw.trim();
-            var language = 'ko'; //temporary
-            NLPManager.getNlpedText(inputRaw, language, function(err, result)
+            var language = req.query.language;
+            NLPManager.getNlpedText(language, inputRaw, function(err, lastChar, nlpText, nlp)
             {
                 if(err)
                 {
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                inputList.push(result);
+                inputList.push(nlpText);
                 done();
             });
         },

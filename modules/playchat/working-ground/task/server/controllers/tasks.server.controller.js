@@ -309,7 +309,7 @@ exports.saveTaskToFile = function(req, res)
     else
     {
         content = "var path = require('path');\r\n";
-        content += "var bot = require(path.resolve('./engine/bot.js')).getBot('" + req.params.botId + "');\r\n\r\n";
+        content += "var bot = require(path.resolve('./engine2/bot.js')).getBot('" + req.params.botId + "');\r\n\r\n";
     }
 
     if(!req.body.editMode && content.indexOf('var ' + req.body.name) != -1)

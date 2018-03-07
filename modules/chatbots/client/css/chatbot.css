@@ -121,6 +121,7 @@
 }
 
 .bot_unselect ul .sub3 {
+    width: 60%;
     font-size: 15px;
     color: #a2a2a2;
     font-weight: 600;

@@ -1,20 +1,31 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var UserDialog = mongoose.model('UserDialog');
-var botLib = require(path.resolve('./engine/bot.js'));
+var bot_js = require(path.resolve('./engine2/bot.js'));
 
 exports.dialogGraphUsage = function (req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, inOut: true,  dialog: {$ne: ':reset user'}, dialogName: {$nin: ["답변없음", '시작', 'no_dialog']}, dialogId: {$ne: null} } },
+        { $match:
+                {
+                    botId: req.params.botId,
+                    created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
+                    inOut: true,
+                    nlpDialog: {$ne: ':reset user'},
+                    dialogName: {$nin: ["답변없음", '시작', 'no_dialog']},
+                    dialogId: {$ne: null},
+                    dialogType: 'dialog'
+                }
+        },
         { $project:
             {
                 _id: 0,
                 channel: 1,
                 dialogName:1,
-                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
             }
         },
         {$group:
@@ -23,13 +34,14 @@ exports.dialogGraphUsage = function (req, res)
                 total: {$sum: 1},
                 kakao: {$sum: "$kakao"},
                 facebook: {$sum: "$facebook"},
-                navertalk: {$sum: "$navertalk"}
+                navertalk: {$sum: "$navertalk"},
+                socket: {$sum: "socket"}
             }
         },
         { $sort: {total: -1} }
     ];
 
-    UserDialog.aggregate(query).exec(function (err, senarioUsage)
+    UserDialog.aggregate(query).exec(function (err, scenarioUsage)
     {
         if (err)
         {
@@ -38,21 +50,11 @@ exports.dialogGraphUsage = function (req, res)
         else
         {
             var result = {};
-            if(global._bot && global._bot[req.params.botId])
-            {
-                result["senarioUsage"] = senarioUsage;
-                result["botSenario"] = global._bot[req.params.botId];
+            bot_js.load(req.params.botId, function () {
+                result["scenarioUsage"] = scenarioUsage;
+                result["botScenario"] = bot_js.bots[req.params.botId].dialogs;
                 res.jsonp(result);
-            }
-            else
-            {
-                botLib.loadBot(req.params.botId, function (realbot)
-                {
-                    result["senarioUsage"] = senarioUsage;
-                    result["botSenario"] = realbot.dialogs;
-                    res.jsonp(result);
-                })
-            }
+            });
         }
     });
 };

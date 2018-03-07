@@ -27,18 +27,16 @@
                     //     }
                     // }
 
-                    for(var i=0; i<result.length; i++)
-                    {
-                        if(result[i].category)
-                        {
-                            if(!$scope.list[LanguageService('Template')])
-                                $scope.list[LanguageService('Template')] = [];
-
-                            $scope.list[LanguageService('Template')].push(result[i]);
-                        }
-                    }
-
-                    console.log($scope.list);
+                    // for(var i=0; i<result.length; i++)
+                    // {
+                    //     if(result[i].category)
+                    //     {
+                    //         if(!$scope.list[LanguageService('Template')])
+                    //             $scope.list[LanguageService('Template')] = [];
+                    //
+                    //         $scope.list[LanguageService('Template')].push(result[i]);
+                    //     }
+                    // }
 
                     $scope.$parent.loading = false;
                 },

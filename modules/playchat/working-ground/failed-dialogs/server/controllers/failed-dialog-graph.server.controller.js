@@ -4,7 +4,18 @@ var UserDialog = mongoose.model('UserDialog');
 module.exports.analysis = function(req, res)
 {
     var query = [
-        {$match: { botId: req.params.botId, dialogType: 'graph', clear: {$not: /graph/}, dialog: {$nin: [':reset user', ':build']}, inOut: true, fail: true, preDialogId: {$ne: null}, preDialogName: {$ne: null}}},
+        {$match:
+                {
+                    botId: req.params.botId,
+                    dialogType: 'dialog',
+                    clear: {$not: /dialog/},
+                    dialog: {$nin: [':reset user', ':build', null]},
+                    inOut: true,
+                    isFail: true,
+                    preDialogId: {$ne: null},
+                    preDialogName: {$ne: null}
+                }
+        },
         {$group: { _id: { dialog: '$dialog', preDialogId: '$preDialogId' }, preDialogName: {$first: '$preDialogName'}, id: {$first: '$_id'}, clear: {$first: '$clear'}, count: {$sum: 1}}},
         {$sort: {count: -1}},
         {$limit: 100}

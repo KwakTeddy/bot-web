@@ -10,33 +10,28 @@ var mongoose = require('mongoose');
 
 var frontLanguage = require(path.resolve('./modules/core/server/controllers/front.language.js'));
 
+var UserLog = mongoose.model('UserLog');
+
+
 /**
  * Render the main application page
  */
 exports.renderIndex = function (req, res, next)
 {
+    if(req.path.startsWith('/kakao') || req.path.startsWith('/line') || req.path.startsWith('/facebook') || req.path.startsWith('/navertalk') || req.path.startsWith('/wechat'))
+    {
+        return next();
+    }
+
     if(req.path == '/')
     {
-        var code = req.headers["accept-language"];
-        if(!code)
-            code = '';
+        var lanCategory = ['ko', 'en', 'zh', 'ja'];
+        var browserLan = req.headers["accept-language"].split('-')[0];
 
-        code = code.split('-')[0];
+        var queryLan = req.query.lan;
+        var code = queryLan || browserLan;
 
-        code = req.query.lan || code || 'en';
-
-        if(!req.query.lan)
-        {
-            res.redirect('/?lan=' + code);
-            return;
-        }
-
-        if(code.indexOf(',') != -1)
-        {
-            code = code.split(',')[0];
-            res.redirect('/?lan=' + code);
-            return;
-        }
+        if(lanCategory.indexOf(code) == -1) code = 'en';
 
         res.render('modules/front/index', frontLanguage(code));
         return;
@@ -95,6 +90,28 @@ exports.renderNotFound = function (req, res) {
   });
 };
 
+
+/**
+ * get config
+ */
+exports.logging = function (req, res) {
+    var userLog = new UserLog();
+    userLog.userId = req.body.userId;
+    userLog.url = req.body.url;
+    userLog.botId = req.body.botId;
+
+    userLog.save(function (err) {
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).send({error: err});
+        }
+        res.end();
+    })
+
+
+
+};
 
 /**
 * get config

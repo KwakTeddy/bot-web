@@ -13,7 +13,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
     var UserInputStatistics = $resource('/api/:botId/analysis/user-input-statistics', { botId: '@botId' });
     var FailDialogsService = $resource('/api/:botId/analysis/fail-dialogs', { botId: '@botId' });
     var ScenarioUsageService = $resource('/api/:botId/analysis/scenario-usage', { botId: '@botId' });
-
     var chatbot = $cookies.getObject('chatbot');
 
     var startDate = new Date();
@@ -82,14 +81,26 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             var kakao = 0;
             var naver = 0;
             var socket = 0;
-            var total = 0;
 
             result.list.forEach(function (data) {
-                facebook += data.facebook;
-                kakao += data.kakao ;
-                naver += data.navertalk;
-                socket += data.socket;
-                total += data.total;
+                switch (data.channel)
+                {
+                    case 'facebook':
+                        facebook++;
+                        break;
+                    case 'kakao':
+                        kakao++;
+                        break;
+                    case 'naver':
+                        naver++;
+                        break;
+                    case 'socket':
+                        socket++;
+                        break;
+                    default :
+                        break;
+
+                }
             });
 
             var context = document.getElementById("botUserByChannel").getContext('2d');
@@ -272,7 +283,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
             pieData.datasets[0].data.push(isSuccessDialogCount);
             pieData.datasets[0].data.push(isFailDialogCount);
-
             var myChart = new Chart(context, {
                 type: 'line',
                 data: data,
@@ -304,9 +314,9 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             alert(err.data.error || err.data.message);
         });
 
-
         UserInputStatistics.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
+            console.log(result)
             $scope.userInputStatistics = JSON.parse(JSON.stringify(result));
         },
         function(err)
@@ -316,6 +326,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         FailDialogsService.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
+            console.log('ㅁㄴㅇㄹ', result);
             $scope.failDialogs = JSON.parse(JSON.stringify(result));
         },
         function(err)
@@ -325,7 +336,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         ScenarioUsageService.get({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
-            console.log(result.scenarioUsage);
             $scope.scenarioUsageList = result.scenarioUsage;
         },
         function(err)

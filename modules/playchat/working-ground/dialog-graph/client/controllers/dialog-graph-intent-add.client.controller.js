@@ -62,7 +62,7 @@
             }, 100);
         };
 
-        $scope.save = function(e)
+        $scope.save = function()
         {
             var params = {};
             params.botId = chatbot.id;
@@ -71,7 +71,10 @@
 
             for(var i=0,l=$scope.intent.intentContents.length; i<l; i++)
             {
-                params.intentContents.push($scope.intent.intentContents[i].content);
+                if($scope.intent.intentContents[i].content)
+                {
+                    params.intentContents.push($scope.intent.intentContents[i].content);
+                }
             }
 
             IntentService.save(params, function()
@@ -102,13 +105,24 @@
 
         formElement.openCallback = function(name)
         {
-            $scope.$apply(function()
+
+            if($scope.$$phase == '$apply' || $scope.$$phase == '$digest')
             {
                 $scope.intent = {
                     name: name,
                     intentContents: [{ content: '' }]
                 };
-            });
+            }
+            else
+            {
+                $scope.$apply(function()
+                {
+                    $scope.intent = {
+                        name: name,
+                        intentContents: [{ content: '' }]
+                    };
+                });
+            }
         };
 
         $scope.lan=LanguageService;

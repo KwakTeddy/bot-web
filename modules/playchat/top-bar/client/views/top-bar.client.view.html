@@ -45,6 +45,26 @@
     background-color: #ebebeb;
     margin: 12px 0;
 }
+
+.topBarToggleButton
+{
+    display: inline-block;
+    border-radius : 6px;
+    background-color: white;
+    position: absolute;
+    top: 63px;
+    padding:4px;
+    cursor: pointer;
+    z-index: 1000;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    right: 368px;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: none;
+}
 </style>
 
 <div ng-controller="TopBarController">
@@ -58,6 +78,14 @@
             </span>
         </div>
     </div>
+
+    <div>
+        <a class="topBarToggleButton" style="background: url('/modules/playchat/top-bar/client/imgs/arrow_up.png') no-repeat center center;"  href="#" ng-if="isTopBarOpen" ng-click="toggleTopBar(false)">
+        </a>
+        <a class="topBarToggleButton" style="background: url('/modules/playchat/top-bar/client/imgs/arrow_down.png') no-repeat center center;" href="#" ng-if="!isTopBarOpen" ng-click="toggleTopBar(true)">
+        </a>
+    </div>
+
     <div class="system" >
         <!--<a class="store-btn" href="#">-->
             <!--<span>{{lan('Store') }}</span>-->
@@ -67,14 +95,14 @@
             <button type="button" class="blue-button" style="width: auto;padding:8px;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
         </span>
         <span style="margin: 0 15px;width:100px;">
-            <div class="select-wrapper">
+            <label class="select-label">
                 <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
                     <option value="ko">{{ lan('Korean') }}</option>
                     <option value="en">{{ lan('English') }}</option>
                     <option value="zh">{{ lan('Chinese') }}</option>
                     <option value="jp">{{ lan('Japanese') }}</option>
                 </select>
-            </div>
+            </label>
         </span>
         <a class="login" href="#" ng-click="openMenu($event);"></a>
         <ul class="popup-menu user-menu">

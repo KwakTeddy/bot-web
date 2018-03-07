@@ -158,7 +158,7 @@
     						</ul>
     					</div>
     				</div>
-    				<a href="/playchat/chatbots" class="startBtn">{{L015}}</a>
+    				<a href="#" class="startBtn" data-id="startBtn">{{L015}}</a>
     			</div>
     		</div>
     	</div>
@@ -178,7 +178,7 @@
                             {{L018}}
 						</p>
     					<div class="homeBtn">
-    						<a href="/playchat/chatbots" class="btnOne Btn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
+    						<a href="#" class="btnOne Btn" data-id="startBtn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
     						<!--<a href="#" class="btnTwo Btn">check pricing</a>-->
     					</div>
     				</div>
@@ -466,7 +466,7 @@
     		<div class="row">
     			<div class="col-md-12 animated">
     				<span class="ctaTxtTwo">{{L079}}</span>
-    				<div class="ctaBtn"><a href="/playchat/chatbots" class="btnOne Btn">{{L015}}</a></div>
+    				<div class="ctaBtn"><a href="#" class="btnOne Btn" data-id="startBtn">{{L015}}</a></div>
     			</div>
     		</div>
     	</div>
@@ -510,7 +510,7 @@
     			</div>
     			<div class="col-sm-3">
     				<div class="contactInfo">
-    					<div class="h4">{{L090}}</div>
+    					<div class="h4">Contact with us</div>
 						<span class="call"><a href="tel:+1-650-399-3013"><i class="icofont icofont-ui-call"></i>+82-2-858-5683</a></span>
 						<span class="email"><a href="mailto:info@moneybrain.ai"><i class="icofont icofont-ui-v-card"></i>info@playchat.ai</a></span>
    						</div>
@@ -534,36 +534,47 @@
     <script>
         $(document).ready(function()
         {
-            var user = $.cookie('user');
+            $('[data-id="startBtn"]').on('click', function () {
+                console.log($.cookie('login'));
 
-            user = user ? JSON.parse(user) : {};
+                if($.cookie('login') != 'true')
+                {
+                    return location.href = '/signin';
+                }else
+                {
+                    return location.href = '/playchat/chatbots';
+                }
+
+            });
+
+            var lanCategory = ['ko', 'en', 'zh', 'jp'];
+            var lan = {{ lan | json | safe }};
+            var query = window.location.search;
+            if(!query)
+            {
+                return location.href = '/?lan=' + $.cookie('language');
+            }else
+            {
+                $.cookie('language', lan);
+
+                query = query.replace("?", '').split('=')[1];
+
+                if(lanCategory.indexOf(query) == -1)
+                {
+                    return location.href = '/?lan=' + lan;
+                }
+
+            }
 
             $('.lang li').on('click', function()
             {
                 var code = $(this).attr('data-id');
 
-                user.language = code;
-
-                $.cookie('user', JSON.stringify(user));
+                $.cookie('language', code);
 
                 var href = $(this).find('a').attr('href');
                 location.href = href;
             });
-
-            var lan = location.href.split('lan=')[1] || '';
-            if(user.language)
-            {
-                if(lan != user.language)
-                {
-                    return location.href = '/?lan=' + user.language;
-                }
-
-                lan = user.language;
-            }
-            else
-            {
-                $.cookie('user', JSON.stringify({ language: lan }));
-            }
 
             var text = $('.lang li[data-id="' + lan + '"] a').text();
             $('.langCode').text(text);
