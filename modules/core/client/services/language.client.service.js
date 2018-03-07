@@ -1274,7 +1274,7 @@
                 "zh": "累计用户量"
             },
             "Recent(30 days) Users.": {
-                "ko": "최근 30일 이용자",
+                "ko": "이용자 (30일)",
                 "en": "Recent(30 days) Users.",
                 "jp": "最近、30日利用者",
                 "zh": "最近30天的用户"
@@ -1346,19 +1346,19 @@
                 "zh": "Excel下载"
             },
             "Historical amount of dialog(channel)": {
-                "ko": "기간별 대화량 (채널)",
+                "ko": "일별 대화량",
                 "en": "Historical amount of dialog(channel)",
                 "jp": "期間別デファリャン(チャネル)",
                 "zh": "不同时间段对话量（频道）"
             },
             "Historical amount of dialog(Success/Fail)": {
-                "ko": "기간별 대화량 (성공/실패)",
+                "ko": "일별 대화 성공/실패",
                 "en": "Historical amount of dialog(Success/Fail)",
                 "jp": "期間別デファリャン(成功/失敗)",
                 "zh": "不同时间段对话量（成功/失败）"
             },
             "Ratio of dialog on channels": {
-                "ko": "채널별 대화 비율",
+                "ko": "채널별 대화",
                 "en": "Ratio of dialog on channels",
                 "jp": "チャンネル別対話の割合",
                 "zh": "不同频道上的对话比率"
