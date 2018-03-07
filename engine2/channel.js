@@ -7,6 +7,7 @@ var rest = require('./channel/rest.js');
 var kakao = require('./channel/kakao.js');
 var facebook = require('./channel/facebook.js');
 var socketChannel = require('./channel/socket.js');
+var line = require('./channel/line.js');
 
 (function()
 {
@@ -32,8 +33,8 @@ var socketChannel = require('./channel/socket.js');
         app.route('/kakao/:bot/chat_room/:user_key').delete(kakao.deleteChatRoom);
         //
         // // 라인
-        // app.route('/line/:bot/receive').get(line.receiveGet);
-        // app.route('/line/:bot/receive').post(line.receiveNew);
+        app.route('/line/:bot/webhook').get(line.get);
+        app.route('/line/:bot/webhook').post(line.post);
         //
         // // 페이스북
         app.get('/facebook/webhook', facebook.get);

@@ -578,6 +578,13 @@
                 }
                 else if(!focusNode.parentElement.className)
                 {
+                    if(focusNode.parentElement.parentElement.nodeName == 'FONT')
+                    {
+                        var font = focusNode.parentElement.parentElement;
+                        focusNode.parentElement.parentElement.parentElement.insertBefore(focusNode.parentElement, font);
+                        font.parentElement.removeChild(font);
+                    }
+
                     focusNode.parentElement.className = 'text';
                 }
 
@@ -789,6 +796,14 @@
                 var selection = window.getSelection();
                 var focusNode = selection.focusNode;
 
+                // if(focusNode.parentElement.nodeName == 'SPAN' && focusNode.parentElement.parentElement.nodeName == 'FONT')
+                // {
+                //     focusNode.parentElement.removeAttribute('style');
+                //     var font = focusNode.parentElement.parentElement.parentElement;
+                //     focusNode.parentElement.parentElement.parentElement.insertBefore(focusNode.parentElement, focusNode.parentElement.parentElement);
+                //     font.parentElement.removeChild(font);
+                // }
+
                 if(e.keyCode == 8 || e.keyCode == 46)
                 {
                     if($scope.showInputList)
@@ -833,7 +848,6 @@
                     }
                     else if(focusNode.textContent.trim().startsWith('$'))
                     {
-                        var target = focusNode.parentElement;
                         showTypeInputList(focusNode.textContent.trim().substring(1), function(selected)
                         {
                             selectionListThenCreateBlankSpan(e, selected, focusNode);

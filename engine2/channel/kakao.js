@@ -51,7 +51,7 @@ exports.message = function (req, res)
                     }
                     else
                     {
-                        res.end(body);
+                        res.end(JSON.stringify(body));
                     }
                 });
             }

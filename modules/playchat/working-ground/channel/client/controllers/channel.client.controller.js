@@ -6,8 +6,8 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     $scope.$parent.loaded('working-ground');
 
-
     var FacebookPageService = $resource('/auth/facebook/page');
+    var LineAccessTokenService = $resource('/api/:botId/channel/line', { botId: '@botId' });
 
     $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
     if($location.host() == 'localhost')
@@ -32,6 +32,10 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
         facebook: false
     };
 
+    $scope.lineAccessToken = '';
+    $scope.lineChannelId = '';
+    $scope.lineChannelSecret = '';
+
     var user = $cookies.getObject('user');
 
     (function()
@@ -45,6 +49,21 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                 $scope.connectFacebook();
             }
         });
+
+        LineAccessTokenService.get({ botId: chatbot.id }, function(result)
+        {
+            $scope.lineAccessToken = result.accessToken;
+            $scope.lineChannelSecret = result.secret;
+            $scope.lineChannelId = result.channelId;
+        });
+
+        $scope.saveLineInfo = function()
+        {
+            LineAccessTokenService.save({ botId: chatbot.id, accessToken: $scope.lineAccessToken, channelId: $scope.lineChannelId, secret: $scope.lineChannelSecret }, function()
+            {
+                alert(LanguageService('Saved.'));
+            });
+        };
 
         $scope.getAccessToken = function(callback)
         {

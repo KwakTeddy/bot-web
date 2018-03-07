@@ -112,10 +112,8 @@ var BotSchema = new Schema({
     type: Boolean,
     default: false
   },
-  line: {
-    type: Boolean,
-    default: false
-  },
+    line: { type: Boolean, default: false },
+    lineChannel: Object,
   facebook: {
     type: Boolean,
     default: false

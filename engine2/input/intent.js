@@ -35,7 +35,22 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                     var matchedList = [];
                     for(var i=0; i<list.length; i++)
                     {
-                        matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: 1, added: 0 });
+                        matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: 1, added: 0, _id: list[i]._id });
+                    }
+
+                    if(matchedList.length > 0)
+                    {
+                        var matchedIntent = new MatchedIntent();
+                        matchedIntent.botId = context.bot.id;
+                        matchedIntent.intent = matchedList[0]._id;
+
+                        matchedIntent.save(function(err)
+                        {
+                            if(err)
+                            {
+                                return console.log(err);
+                            }
+                        });
                     }
 
                     callback(null, matchedList);
@@ -141,7 +156,7 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                     list[i].added += point;
                     if(matchRate >= (bot.options.intentMinMatchRate || 0.5))
                     {
-                        matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: matchRate, added: point })
+                        matchedList.push({ intentId: list[i].intentId, intentName: list[i].intentId.name, matchRate: matchRate, added: point, _id: list[i]._id })
                     }
                 }
 

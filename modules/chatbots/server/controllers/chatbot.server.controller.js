@@ -4,6 +4,9 @@ var fs = require('fs');
 var accepts = require('accepts');
 var async = require('async');
 
+
+var S3 = require(path.resolve('./modules/common/s3.js'));
+
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
 
@@ -96,30 +99,6 @@ exports.findOne = function(req, res)
             res.json(item);
         }
     });
-};
-
-var AWS = require('aws-sdk');
-AWS.config.update(require(path.resolve('./aws-s3-credentials.json')));
-var s3 = new AWS.S3();
-var uploadS3 = function(botId, fileName, fileData, callback)
-{
-    if(process.env.NODE_ENV == 'production')
-    {
-        var base64data = new Buffer(fileData, 'binary');
-
-        s3.putObject({ Bucket: 'playchat-custom-modules',
-            Key: botId + '/' + fileName,
-            Body: base64data,
-            ACL: 'public-read'
-        },function (resp)
-        {
-            console.log(arguments);
-            if(callback)
-            {
-                callback(arguments);
-            }
-        });
-    }
 };
 
 var deleteBotObjectFromS3 = function(botId, callback)
@@ -215,9 +194,12 @@ exports.create = function(req, res)
                         fs.writeFileSync(dir + '/default.js', defaultData);
                         fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
 
-                        uploadS3(req.body.id, 'default.graph.js', graphData);
-                        uploadS3(req.body.id, 'default.js', defaultjs);
-                        uploadS3(req.body.id, 'bot.js', botjs);
+                        if(process.env.NODE_ENV == 'production')
+                        {
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                        }
 
                         var contents = IntentController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/intent.' + language + '.xlsx');
                         if(contents.length > 0)
@@ -284,9 +266,12 @@ exports.create = function(req, res)
                         fs.writeFileSync(dir + '/default.js', defaultData);
                         fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
 
-                        uploadS3(req.body.id, 'default.graph.js', graphData);
-                        uploadS3(req.body.id, 'default.js', defaultData);
-                        uploadS3(req.body.id, 'bot.js', botData);
+                        if(process.env.NODE_ENV == 'production')
+                        {
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                        }
                     }
                     else
                     {
@@ -298,9 +283,12 @@ exports.create = function(req, res)
                         fs.writeFileSync(dir + '/default.js', defaultjs.toString());
                         fs.writeFileSync(dir + '/bot.js', botjs.toString());
 
-                        uploadS3(req.body.id, 'default.graph.js', graphjs.toString());
-                        uploadS3(req.body.id, 'default.js', defaultjs.toString());
-                        uploadS3(req.body.id, 'bot.js', botjs.toString());
+                        if(process.env.NODE_ENV == 'production')
+                        {
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                            S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                        }
                     }
 
                     var botAuth = new BotAuth();
@@ -561,7 +549,10 @@ exports.duplicate = function(req, res)
 
                                 fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
 
-                                uploadS3(clone.id, fileList[i], content);
+                                if(process.env.NODE_ENV == 'production')
+                                {
+                                    S3.uploadFile('playchat-custom-modules', clone.id, fileList[i], path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
+                                }
                             }
 
                             var botAuth = new BotAuth();

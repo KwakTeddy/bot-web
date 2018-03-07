@@ -7,6 +7,8 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 var utils = require(path.resolve('./engine2/utils/utils.js'));
 
+var S3 = require(path.resolve('./modules/common/s3.js'));
+
 var BotFile = mongoose.model('BotFile');
 
 exports.find = function (req, res)
@@ -141,15 +143,31 @@ exports.saveFile = function(req, res)
     }
     else
     {
-        fs.writeFile(filePath, req.body.data, function(err)
+        if(process.env.NODE_ENV == 'production')
         {
-            if(err)
+            S3.uploadFile('playchat-custom-modules', req.params.botId, req.body.fileName, filePath, function(err, url)
             {
-                console.error(err.stack || err); return res.status(400).send({ message: err.stack || err });
-            }
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ message: err });
+                }
 
-            res.jsonp({ fileName: req.params.fileName });
-        });
+                res.jsonp({ fileName: req.params.fileName });
+            });
+        }
+        else
+        {
+            fs.writeFile(filePath, req.body.data, function(err)
+            {
+                if(err)
+                {
+                    console.error(err.stack || err); return res.status(400).send({ message: err.stack || err });
+                }
+
+                res.jsonp({ fileName: req.params.fileName });
+            });
+        }
     }
 };
 
@@ -205,7 +223,8 @@ exports.uploadFile = function(req, res)
     {
         if (uploadError)
         {
-            console.error(uploadError); return res.status(400).send({ message: uploadError.message });
+            console.error(uploadError);
+            return res.status(400).send({ message: uploadError.message });
         }
         else
         {
@@ -255,7 +274,23 @@ exports.uploadImage = function(req, res)
         {
             var botId = req.params.botId;
 
-            res.jsonp({ url : '/files/' + botId + '-' + now + '-' + originalname});
+            if(process.env.NODE_ENV == 'production')
+            {
+                S3.uploadFile('playchat-files', req.user._id.toString(), botId + '-' + now + '-' + originalname, path.resolve('./public/files/' + botId + '-' + now + '-' + originalname), function(err, url)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return res.status(400).send({ message: err });
+                    }
+
+                    res.jsonp({ url : url });
+                });
+            }
+            else
+            {
+                res.jsonp({ url : '/files/' + botId + '-' + now + '-' + originalname });
+            }
         }
     });
 };

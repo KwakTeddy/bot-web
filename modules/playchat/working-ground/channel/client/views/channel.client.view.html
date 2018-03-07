@@ -67,7 +67,7 @@
             <div class="modal-title">{{lan('Kakaotalk')}}</div>
             <div class="modal-body">
                 <ul class="channel-description">
-                    <li>{{lan('Create a Kakao YellowID(https://yellowid.kakao.com/login)')}}</li>
+                    <li>{{lan('Create a Kakao YellowID')}}</li>
                     <li>{{lan('Make a Yellow ID profile.')}}</li>
                     <li>{{lan('Go to the Auto ID page.')}}</li>
                     <li>{{lan('Go to API auto-response setup page.')}}</li>
@@ -90,24 +90,52 @@
             <div class="modal-title">{{lan('Line')}}</div>
             <div class="modal-body">
                 <ul class="channel-description">
-                    <li>{{lan('You must be a member of Line. Please log in first with Lind application or Web.')}}</li>
-                    <li>{{lan('If you signed up, please register your email to be used in LINE Business Center')}}</li>
-                    <li>{{lan('On the Services tab, click the Start Messaging API button and enter the information.')}}</li>
-                    <li>{{lan('In LINE Manager, press the API ON button and allow the use of Webhook, then save.')}}</li>
-                    <li>{{lan('Go to Account List tab in LINE Business Center')}}</li>
-                    <li>{{lan('Press the LINE Developers button in the Messaging API.')}}</li>
-                    <li>{{lan('Press the ISSUE button to get a Channel access token.')}}</li>
-                    <li>{{lan('Press the EDIT button to copy the Webhook URL below, save it and verify it')}}</li>
-                    <li>{{lan("It's done!")}}</li>
+                    <li>1. 라인 모바일앱을 다운로드 받고 실행하세요.</li>
+                    <li>2. 설정메뉴 -> 계정 -> 이메일을 선택하세요.</li>
+                    <li>3. 이메일 주소와 비밀번호를 입력하고 등록하세요.</li>
+                    <li>4. <a href="https://developers.line.me/">https://developers.line.me/</a> 에 접속해서 Start using Messaging API 버튼을 클릭하세요.</li>
+                    <li>5. 3번에서 등록했던 이메일로 로그인하세요.</li>
+                    <li>6. 인증절차를 거친 후 나타나는 화면에서 Provider 이름과 이메일 주소를 입력하세요.</li>
+                    <li>7. 화면에 나타나는 절차를 거쳐서 채널을 생성하세요.</li>
+                    <li>8. 생성된 채널에 Configuration not yet complete 버튼을 클릭하세요.</li>
+                    <li>9. Messaging settings에서 Use webhooks을 enable로 설정하세요.</li>
+                    <li>10. Webhook URL에 아래의 Webhook URL을 입력하세요.</li>
+                    <li>11. Channel access token을 생성한 후 ChannelId, Channel Secret, Access Token을 아래에 입력하고 저장버튼을 클릭하세요</li>
+                    <!--<li>{{lan('You must be a member of Line. Please log in first with Lind application or Web.')}}</li>-->
+                    <!--<li>{{lan('If you signed up, please register your email to be used in LINE Business Center')}}</li>-->
+                    <!--<li>{{lan('On the Services tab, click the Start Messaging API button and enter the information.')}}</li>-->
+                    <!--<li>{{lan('In LINE Manager, press the API ON button and allow the use of Webhook, then save.')}}</li>-->
+                    <!--<li>{{lan('Go to Account List tab in LINE Business Center')}}</li>-->
+                    <!--<li>{{lan('Press the LINE Developers button in the Messaging API.')}}</li>-->
+                    <!--<li>{{lan('Press the ISSUE button to get a Channel access token.')}}</li>-->
+                    <!--<li>{{lan('Press the EDIT button to copy the Webhook URL below, save it and verify it')}}</li>-->
+                    <!--<li>{{lan("It's done!")}}</li>-->
                 </ul>
                 <div>
-                    <span>Webhook URL : </span>
+                    <span style="width: 100px; display: inline-block;">Webhook URL : </span>
                     <input type="text" class="webhook" value="{{ host }}/line/{{ chatbot.id }}/receive">
                     <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
                 </div>
-            </div>
-            <div class="tab-footer">
-                <button type="button" class="default-button" ng-click="closeHelp('line')">{{ lan('Close') }}</button>
+                <div>
+                    <form ng-submit="saveLineInfo();">
+                        <p>
+                            <span style="width: 100px; display: inline-block;">Channel Id</span>
+                            <input type="text" class="webhook" ng-model="lineChannelId" required="true">
+                        </p>
+                        <p>
+                            <span style="width: 100px; display: inline-block;">Channel Secret</span>
+                            <input type="text" class="webhook" ng-model="lineChannelSecret" required="true">
+                        </p>
+                        <p>
+                            <span style="width: 100px; display: inline-block;">AccessToken: </span>
+                            <input type="text" class="webhook" ng-model="lineAccessToken" required="true">
+                        </p>
+                        <div style="text-align: center;">
+                            <button class="blue-button">저장</button>
+                            <button type="button" class="default-button" ng-click="closeHelp('line')">{{ lan('Close') }}</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
