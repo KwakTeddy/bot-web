@@ -96,6 +96,7 @@ var ContextManager = require('../context.js');
                 {
                     if(intents.length > 0)
                     {
+                        console.log(input.intent, intents[0].intentName);
                         var check = input.intent == intents[0].intentName;
                         if(check)
                         {

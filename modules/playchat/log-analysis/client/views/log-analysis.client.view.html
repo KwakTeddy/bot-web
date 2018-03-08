@@ -84,7 +84,7 @@
                             <tbody>
                                 <tr ng-repeat="intent in userInput.intents">
                                     <td>{{ intent.intentName }}</td>
-                                    <td style="text-align: center;">{{ intent.matchRate }}</td>
+                                    <td style="text-align: center;">{{ intent.matchRate }}%</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -135,11 +135,11 @@
                                 </tr>
                                 <tr ng-show="target.matchRate">
                                     <th>MatchRate</th>
-                                    <td>{{ target.matchRate }}</td>
+                                    <td>{{ target.matchRate }}%</td>
                                 </tr>
                                 <tr ng-show="target.requiredMatchRate">
                                     <th>Minimum MatchRate</th>
-                                    <td>{{ target.requiredMatchRate }}</td>
+                                    <td>{{ target.requiredMatchRate }}%</td>
                                 </tr>
                                 <tr ng-if="output.kind == 'Action'">
                                     <th>Action 유형</th>
