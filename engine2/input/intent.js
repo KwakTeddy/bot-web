@@ -101,6 +101,7 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                 {
                     var point = 0;
                     var count = 0;
+                    var normalCount = 0;
                     var lastIndex = -1;
                     for(var j=0; j<nlp.length; j++)
                     {
@@ -124,6 +125,8 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                             {
                                 count += 1;
                             }
+
+                            normalCount++;
 
                             // if(lastIndex == -1 || lastIndex <= index)
                             // {
@@ -151,7 +154,7 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                         }
                     }
 
-                    var matchRate = count / nlpCount;
+                    var matchRate = ((count / nlpCount) + (normalCount / list[i].input.split(' ').length)) / 2;
                     list[i].matchRate = matchRate;
                     list[i].added += point;
                     if(matchRate >= (bot.options.intentMinMatchRate || 0.5))

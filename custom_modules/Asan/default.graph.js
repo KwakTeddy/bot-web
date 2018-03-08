@@ -78,27 +78,7 @@ var dialogs = [
                     }
                 ],
                 "id": "default227",
-                "children": [
-                    {
-                        "name": "New Dialog1",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "",
-                                    "nlp": ""
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "",
-                                "buttons": []
-                            }
-                        ],
-                        "id": "default286"
-                    }
-                ]
+                "children": []
             },
             {
                 "name": "예약일 확인",
@@ -9648,10 +9628,7 @@ var dialogs = [
                 "name": "서류",
                 "input": [
                     {
-                        "text": {
-                            "raw": "서류",
-                            "nlp": "서류"
-                        }
+                        "regexp": "/서류/"
                     }
                 ],
                 "output": [
@@ -9660,19 +9637,15 @@ var dialogs = [
                         "text": "어떤 서류에 대해 궁금하신가요?\n\n1. 증명서(진단서, 소견서 등 의사의 판단 및 의견이 필요한 서류)\n2. 의무기록 (요약지, 기록지 등 치료 기록이 포함된 서류)",
                         "buttons": [
                             {
-                                "url": "",
                                 "text": "증명서"
                             },
                             {
-                                "url": "",
                                 "text": "의무기록"
                             },
                             {
-                                "url": "",
                                 "text": "이전"
                             },
                             {
-                                "url": "",
                                 "text": "처음"
                             }
                         ]
