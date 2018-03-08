@@ -1,9 +1,14 @@
+var path = require('path');
+const line = require('@line/bot-sdk');
 var LINEBot = require('line-messaging');
 var mongoose = require('mongoose');
 var Bot = mongoose.model('Bot');
+var config = require(path.resolve('config/config'));
+
 
 (function()
 {
+
     var Line = function()
     {
 
@@ -18,47 +23,204 @@ var Bot = mongoose.model('Bot');
 
     Line.prototype.post = function(req, res)
     {
-        var Engine = require('../core.js');
 
-        Bot.findOne({ id: req.params.bot }).exec(function(err, chatbot)
+        var events = req.body.events;
+        var botId = req.params.bot;
+
+        switch (events[0].type)
+        {
+            case 'message':
+                return messageEvent(events, botId);
+            case 'postback' :
+                return postbackEvent(events, botId);
+            // case 'follow' :
+            //     return
+            // case 'unfollow' :
+            //     return
+            // case 'join' :
+            //     return
+            // case 'leave' :
+            //     return
+            // case 'beacon' :
+            //     return
+            default :
+                res.end();
+        }
+
+
+    };
+    var buildMessage = function (output) {
+        var message;
+        var text = output.text;
+
+        if(output.buttons)
+        {
+
+
+            if(output.image)
+            {
+                text = text.slice(0, 60);
+            }
+            else
+            {
+                text = text.slice(0, 160);
+            }
+
+            var buttons = output.buttons;
+            var length = buttons.length > 4 ? 4 : buttons.length;
+            message = {
+                "type": "template",
+                "altText": "This is a buttons template",
+                "template": {
+                    "type": "buttons",
+                    "text": "",
+                    "actions": []
+                }
+            };
+
+            message.template.text = text;
+
+            for(var i = 0; i < length; i++)
+            {
+                var actionTemplate = {
+                    "type": '',
+                    "label" : ''
+                };
+
+                if(buttons[i].url)
+                {
+                    actionTemplate.type = 'url';
+                    actionTemplate.label = buttons[i].text;
+                    actionTemplate.uri = buttons[i].url;
+                }
+                else
+                {
+                    actionTemplate.type = 'message';
+                    actionTemplate.label = buttons[i].text;
+                    actionTemplate.text = buttons[i].text;
+                }
+
+                message.template.actions.push(actionTemplate);
+            }
+
+            if(output.image)
+            {
+                var image = output.image;
+                message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
+                // message.template.thumbnailImageUrl = config.host + image.url;
+                message.template.imageAspectRatio = 'rectangle';
+                message.template.imageSize = 'cover';
+                message.template.imageBackgroundColor = '#FFFFFF';
+            }
+
+        }
+        else if(output.image)
+        {
+            message = {
+                "type": "image",
+                "originalContentUrl": "https://example.com/original.jpg",
+                "previewImageUrl": "https://example.com/preview.jpg"
+            };
+
+        }
+        else
+        {
+            message = {
+                type: 'text',
+                text: text
+            };
+        }
+        console.log(JSON.stringify(message, null, 4));
+        return message;
+    };
+
+    var messageEvent = function (events, botId) {
+
+        var text = events[0].message.text;
+        var replyToken = events[0].replyToken;
+
+
+        Bot.findOne({ id: botId }).exec(function(err, chatbot)
         {
             if(chatbot)
             {
-                var bot = LINEBot.Client({
-                    channelID: chatbot.lineChannel.channelId,
-                    channelSecret: chatbot.lineChannel.secret,
-                    channelAccessToken: chatbot.lineChannel.accessToken
-                });
-
-                bot.on(LINEBot.Events.MESSAGE, function(replyToken, message)
+                var Engine = require('../core.js');
+                Engine.process(botId, 'line', chatbot.userId, text, {}, function(err, out)
                 {
-                    var text = message.getText();
-                    var userId = message.getUserId();
-
-                    console.log(text);
-
-                    Engine.process(req.params.bot, 'line', userId, text, {}, function(err, out)
-                    {
-                        var textMessageBuilder = new LINEBot.TextMessageBuilder(out.output.text);
-                        bot.replyMessage(replyToken, textMessageBuilder);
-                    }, function(err)
-                    {
-                        var textMessageBuilder = new LINEBot.TextMessageBuilder(JSON.stringify(err));
-                        bot.replyMessage(replyToken, textMessageBuilder);
+                    var message = buildMessage(out.output);
+                    var client = new line.Client({
+                        channelAccessToken: chatbot.lineChannel.accessToken
                     });
+                    client.replyMessage(replyToken, message)
+                        .then(function (result)
+                        {
+                            console.log(JSON.stringify(result, null, 4))
+
+                        })
+                        .catch(function (err)
+                        {
+                            console.log(err);
+                        });
+
+                }, function(err)
+                {
+
                 });
 
-                var headers = req.headers;
-                var signature = headers['x-line-signature'];
-
-                bot.handleEventRequest(req.body, signature);
             }
             else
             {
                 res.end();
             }
         });
+
     };
+
+    var postbackEvent = function (events, botId) {
+        var text = events[0].postback.data;
+        var replyToken = events[0].replyToken;
+
+        Bot.findOne({ id: botId }).exec(function(err, chatbot)
+        {
+            if(chatbot)
+            {
+                var Engine = require('../core.js');
+
+                Engine.process(botId, 'line', chatbot.userId, text, {}, function(err, out)
+                {
+                    var message = buildMessage(out.output);
+                    var client = new line.Client({
+                        channelAccessToken: chatbot.lineChannel.accessToken
+                    });
+                    client.replyMessage(replyToken, message)
+                        .then(function (result)
+                        {
+                            console.log(JSON.stringify(result, null, 4))
+
+                        })
+                        .catch(function (err)
+                        {
+                            console.log(JSON.stringify(err, null, 4))
+
+                        });
+
+                }, function(err)
+                {
+
+                });
+
+            }
+            else
+            {
+                res.end();
+            }
+        });
+
+    };
+
+
+
+
 
     module.exports = new Line();
 })();
