@@ -55,6 +55,7 @@ exports.renderIndex = function (req, res, next)
 
     req.session.platform = platform;
 
+    console.log(req.subdomains);
     res.render('modules/core/server/views/layout', { user: req.user || null, platform: platform });
 };
 

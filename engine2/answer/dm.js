@@ -242,6 +242,8 @@ var ContextManager = require('../context.js');
                             }
 
                             userInput.regexp = list;
+
+                            dialog.matchRate = 1;
                         }
                         else
                         {

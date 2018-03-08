@@ -6,15 +6,17 @@
         $scope.$parent.loading = false;
 
         $scope.signupErrorMessage = '';
-        $scope.successSignup = false;
 
         $scope.credentials = {};
 
         $scope.completeMessageEmail = '';
 
+        $scope.successSignup = false;
         $scope.invalid = $location.search().invalid ? true : false;
         $scope.error = $location.search().error ? true : false;
         $scope.verified = $location.search().verified ? true : false;
+
+        console.log('머지 : ', $scope.successSignup, $scope.invalid, $scope.error, $scope.verified);
 
         if($scope.invalid)
         {

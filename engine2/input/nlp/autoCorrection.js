@@ -1,7 +1,5 @@
 var mongoose = require('mongoose');
-var async = require('async');
 var UserDialog = mongoose.model('UserDialog');
-
 var async = require('async');
 
 var Schema = mongoose.Schema;
@@ -19,22 +17,21 @@ var speller_ko = require('./auto-correction/speller_ko');
 
 (function()
 {
+    var COUNT_PER_PAGE = 100000;
     var AutoCorrection = function()
     {
         var that = this;
-        cron.schedule('* * * * *', function()
+        cron.schedule('0 0 * * *', function()
         {
             that.batchCorrectionDB();
         });
     };
 
-    AutoCorrection.prototype.batchCorrectionDB = function(callback)
+    AutoCorrection.prototype.batchTrain = function(query, page, callback)
     {
         var that = this;
         var speller = speller_ko;
-        var query = { fail: false };
-
-        UserDialog.find(query).lean().sort('+created').exec(function (err, docs)
+        UserDialog.find(query).lean().sort('+created').skip(COUNT_PER_PAGE*(page-1)).limit(COUNT_PER_PAGE).exec(function (err, docs)
         {
             if(docs)
             {
@@ -49,10 +46,12 @@ var speller_ko = require('./auto-correction/speller_ko');
                     that.saveWordCorrections(speller.getNWords(), function()
                     {
                         console.log('batchCorrectionDB: DONE');
-                        if(callback) callback();
+                        if(callback)
+                        {
+                            callback();
+                        }
                     });
                 });
-
             }
             else if (err)
             {
@@ -61,6 +60,38 @@ var speller_ko = require('./auto-correction/speller_ko');
                 {
                     callback();
                 }
+            }
+        });
+    };
+
+    AutoCorrection.prototype.batchCorrectionDB = function(callback)
+    {
+        var that = this;
+        var query = { fail: false };
+
+        UserDialog.find(query).count().exec(function(err, count)
+        {
+            if(count)
+            {
+                var totalPage = Math.ceil(count / COUNT_PER_PAGE);
+
+                var list = [];
+                for(var i=0; i<totalPage; i++)
+                {
+                    list.push(i+1);
+                }
+
+                async.eachSeries(list, function(page, next)
+                {
+                    that.batchTrain(query, page, next);
+                },
+                function()
+                {
+                    if(callback)
+                    {
+                        callback();
+                    }
+                });
             }
         });
     };
@@ -87,6 +118,10 @@ var speller_ko = require('./auto-correction/speller_ko');
                     {
                         next();
                     });
+                }
+                else
+                {
+                    next();
                 }
             });
         },
