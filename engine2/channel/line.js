@@ -1,7 +1,10 @@
 var path = require('path');
+const line = require('@line/bot-sdk');
 var LINEBot = require('line-messaging');
 var mongoose = require('mongoose');
 var Bot = mongoose.model('Bot');
+var config = require(path.resolve('config/config'));
+
 
 (function()
 {
@@ -19,47 +22,273 @@ var Bot = mongoose.model('Bot');
 
     Line.prototype.post = function(req, res)
     {
+
+        var events = req.body.events;
+        var botId = req.params.bot;
+
+        switch (events[0].type)
+        {
+            case 'message':
+                return messageEvent(events, botId);
+            case 'follow' :
+                return
+            case 'unfollow' :
+                return
+            case 'join' :
+                return
+            case 'leave' :
+                return
+            case 'postback' :
+                return postbackEvent(events, botId);
+            case 'beacon' :
+                return
+            default :
+                res.end();
+        }
+
+
+    };
+
+    var messageEvent = function (events, botId) {
+
+        var text = events[0].message.text;
+        var replyToken = events[0].replyToken;
+
         var Engine = require('../core.js');
 
-        Bot.findOne({ id: req.params.bot }).exec(function(err, chatbot)
+        Bot.findOne({ id: botId }).exec(function(err, chatbot)
         {
             if(chatbot)
             {
-                var bot = LINEBot.Client({
-                    channelID: chatbot.lineChannel.channelId,
-                    channelSecret: chatbot.lineChannel.secret,
+
+                var userId = chatbot.userId;
+                const client = new line.Client({
                     channelAccessToken: chatbot.lineChannel.accessToken
                 });
 
-                bot.on(LINEBot.Events.MESSAGE, function(replyToken, message)
+                Engine.process(botId, 'line', userId, text, {}, function(err, out)
                 {
-                    var text = message.getText();
-                    var userId = message.getUserId();
-
-                    console.log(text);
-
-                    Engine.process(req.params.bot, 'line', userId, text, {}, function(err, out)
+                    var message;
+                    if(out.output.buttons)
                     {
-                        var textMessageBuilder = new LINEBot.TextMessageBuilder(out.output.text);
-                        bot.replyMessage(replyToken, textMessageBuilder);
-                    }, function(err)
+
+                        console.log(JSON.stringify(out, null, 4))
+                        var text = out.output.text;
+
+                        if(out.output.image)
+                        {
+                            text = text.slice(0, 60);
+                        }
+                        else
+                        {
+                            text = text.slice(0, 160);
+                        }
+
+                        var buttons = out.output.buttons;
+                        var length = buttons.length > 4 ? 4 : buttons.length;
+                        message = {
+                            "type": "template",
+                            "altText": "This is a buttons template",
+                            "template": {
+                                "type": "buttons",
+                                "text": "",
+                                "actions": []
+                            }
+                        };
+
+                        message.template.text = out.output.text;
+
+                        for(var i = 0; i < length; i++)
+                        {
+                            var actionTemplate = {
+                                "type": "postback",
+                                "label" : 'test',
+                                "data": ''
+                            };
+                            actionTemplate.label = buttons[i].text;
+                            actionTemplate.data = buttons[i].text;
+                            message.template.actions.push(actionTemplate);
+                        }
+
+                        if(out.output.image)
+                        {
+                            var image = out.output.image;
+                            message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
+                            // message.template.thumbnailImageUrl = config.host + image.url;
+                            message.template.imageAspectRatio = 'rectangle';
+                            message.template.imageSize = 'cover';
+                            message.template.imageBackgroundColor = '#FFFFFF';
+                        }
+
+                    }
+                    else if(out.output.image)
                     {
-                        var textMessageBuilder = new LINEBot.TextMessageBuilder(JSON.stringify(err));
-                        bot.replyMessage(replyToken, textMessageBuilder);
-                    });
+                        message = {
+                            "type": "image",
+                            "originalContentUrl": "https://example.com/original.jpg",
+                            "previewImageUrl": "https://example.com/preview.jpg"
+                        };
+
+                    }
+                    else
+                    {
+                        message = {
+                            type: 'text',
+                            text: out.output.text
+                        };
+                    }
+
+                    console.log(JSON.stringify(message, null, 4))
+                    client.replyMessage(replyToken, message)
+                        .then(function (result)
+                        {
+                            console.log(JSON.stringify(result, null, 4))
+
+                        })
+                        .catch(function (err)
+                        {
+                            console.log(JSON.stringify(err, null, 4))
+
+                        });
+
+                }, function(err)
+                {
+
                 });
 
-                var headers = req.headers;
-                var signature = headers['x-line-signature'];
-
-                bot.handleEventRequest(req.body, signature);
             }
             else
             {
                 res.end();
             }
         });
+
     };
+
+    var postbackEvent = function (events, botId) {
+        var text = events[0].postback.data;
+        var replyToken = events[0].replyToken;
+
+        var Engine = require('../core.js');
+
+        Bot.findOne({ id: botId }).exec(function(err, chatbot)
+        {
+            if(chatbot)
+            {
+
+                var userId = chatbot.userId;
+                const client = new line.Client({
+                    channelAccessToken: chatbot.lineChannel.accessToken
+                });
+
+                Engine.process(botId, 'line', userId, text, {}, function(err, out)
+                {
+                    var message;
+                    if(out.output.buttons)
+                    {
+                        console.log(JSON.stringify(out, null, 4))
+                        var text = out.output.text;
+
+                        if(out.output.image)
+                        {
+                            text = text.slice(0, 60);
+                        }
+                        else
+                        {
+                            text = text.slice(0, 160);
+                        }
+
+                        var buttons = out.output.buttons;
+                        var length = buttons.length > 4 ? 4 : buttons.length;
+                        message = {
+                            "type": "template",
+                            "altText": "This is a buttons template",
+                            "template": {
+                                "type": "buttons",
+                                "text": "",
+                                "actions": []
+                            }
+                        };
+
+                        message.template.text = text;
+
+                        for(var i = 0; i < length; i++)
+                        {
+                            var actionTemplate = {
+                                "type": "postback",
+                                "label" : 'test',
+                                "data": ''
+                            };
+                            actionTemplate.label = buttons[i].text;
+                            actionTemplate.data = buttons[i].text;
+
+                            if(buttons[i].url)
+                            {
+                                actionTemplate.type = 'uri';
+                                actionTemplate.uri = buttons[i].url;
+                            }
+                            message.template.actions.push(actionTemplate);
+                        }
+
+                        if(out.output.image)
+                        {
+                            var image = out.output.image;
+                            message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
+                            message.template.imageAspectRatio = 'rectangle';
+                            message.template.imageSize = 'cover';
+                            message.template.imageBackgroundColor = '#FFFFFF';
+                        }
+
+
+                    }
+                    else if(out.output.image)
+                    {
+                        message = {
+                            "type": "image",
+                            "originalContentUrl": "https://example.com/original.jpg",
+                            "previewImageUrl": "https://example.com/preview.jpg"
+                        };
+
+                    }
+                    else
+                    {
+                        message = {
+                            type: 'text',
+                            text: out.output.text
+                        };
+                    }
+
+                    console.log(JSON.stringify(message, null, 4));
+                    console.log(message.template.text.length)
+                    client.replyMessage(replyToken, message)
+                        .then(function (result)
+                        {
+                            console.log(JSON.stringify(result, null, 4))
+
+                        })
+                        .catch(function (err)
+                        {
+                            console.log(JSON.stringify(err, null, 4))
+
+                        });
+
+                }, function(err)
+                {
+
+                });
+
+            }
+            else
+            {
+                res.end();
+            }
+        });
+
+    };
+
+
+
+
 
     module.exports = new Line();
 })();

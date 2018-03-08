@@ -84,9 +84,15 @@ exports.getGraphFile = function(req, res)
             this.commonDialogs = commonDialogs;
         };
 
-        utils.requireNoCache(filePath)(bot);
-
-        res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
+        try
+        {
+            utils.requireNoCache(filePath)(bot);
+            res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
+        }
+        catch(err)
+        {
+            res.json({ });
+        }
     });
 };
 

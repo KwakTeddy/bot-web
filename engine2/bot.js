@@ -39,8 +39,12 @@ var BotObject = require('./bot/bot.js');
                         return callback(err);
                     }
 
+                    if(!that.loadBotFiles(bot, botDir))
+                    {
+                        return callback();
+                    }
+
                     that.bots[botId] = bot;
-                    that.loadBotFiles(bot, botDir);
 
                     callback(null, bot);
                 })
@@ -68,11 +72,20 @@ var BotObject = require('./bot/bot.js');
             console.log('Loading : ', files[i]);
             if(files[i].endsWith('.js'))
             {
-                utils.requireNoCache(botDir + '/' + files[i], true)((files[i].endsWith('bot.js') ? bot.options : bot));
+                try
+                {
+                    utils.requireNoCache(botDir + '/' + files[i], true)((files[i].endsWith('bot.js') ? bot.options : bot));
+                }
+                catch(err)
+                {
+                    return false;
+                }
             }
         }
 
         console.log('options: ', bot.options);
+
+        return true;
     };
     
     BotManager.prototype.setOptions = function(botId, options)

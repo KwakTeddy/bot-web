@@ -8,6 +8,7 @@ var kakao = require('./channel/kakao.js');
 var facebook = require('./channel/facebook.js');
 var socketChannel = require('./channel/socket.js');
 var line = require('./channel/line.js');
+var lineTest = require('./channel/line-test');
 
 (function()
 {
@@ -35,6 +36,7 @@ var line = require('./channel/line.js');
         // // 라인
         app.route('/line/:bot/webhook').get(line.get);
         app.route('/line/:bot/webhook').post(line.post);
+        // app.route('/line/:bot/webhook').post(lineTest.post);
         //
         // // 페이스북
         app.get('/facebook/webhook', facebook.get);

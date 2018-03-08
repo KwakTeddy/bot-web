@@ -157,11 +157,6 @@ var s3 = new AWS.S3();
                 }
                 else
                 {
-                    if(!bot.options.use)
-                    {
-                        return outCallback(SystemMessages['You can\'t use this bot']);
-                    }
-
                     var contextKey = channel + '_' + botId + '_' + userKey;
                     that.redis.get(contextKey, function(err, context)
                     {
@@ -186,15 +181,19 @@ var s3 = new AWS.S3();
                             context.bot = bot;
                             context.channel.name = channel;
 
+                            if(!bot)
+                            {
+                                return  outCallback(context, { type: 'dialog', output: { kind: 'Content', text: SystemMessages['There is an unsupported version of the bot. if you are using previous version, then please move below.'].ko, buttons: [{ text: 'https://old.playchat.ai', url: 'https://old.playchat.ai' }] } });
+                            }
+                            else if(!bot.options.use)
+                            {
+                                return outCallback(context, SystemMessages['You can\'t use this bot']);
+                            }
+
                             if(inputRaw.startsWith(':'))
                             {
                                 Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
                                 return;
-                            }
-
-                            if(!bot.options.version)
-                            {
-                                return errCallback('old-version');
                             }
 
                             if(context.session.history.length > 10)
