@@ -8,6 +8,7 @@ var config = require(path.resolve('config/config'));
 
 (function()
 {
+
     var Line = function()
     {
 
@@ -30,23 +31,107 @@ var config = require(path.resolve('config/config'));
         {
             case 'message':
                 return messageEvent(events, botId);
-            case 'follow' :
-                return
-            case 'unfollow' :
-                return
-            case 'join' :
-                return
-            case 'leave' :
-                return
             case 'postback' :
                 return postbackEvent(events, botId);
-            case 'beacon' :
-                return
+            // case 'follow' :
+            //     return
+            // case 'unfollow' :
+            //     return
+            // case 'join' :
+            //     return
+            // case 'leave' :
+            //     return
+            // case 'beacon' :
+            //     return
             default :
                 res.end();
         }
 
 
+    };
+    var buildMessage = function (output) {
+        var message;
+        var text = output.text;
+
+        if(output.buttons)
+        {
+
+
+            if(output.image)
+            {
+                text = text.slice(0, 60);
+            }
+            else
+            {
+                text = text.slice(0, 160);
+            }
+
+            var buttons = output.buttons;
+            var length = buttons.length > 4 ? 4 : buttons.length;
+            message = {
+                "type": "template",
+                "altText": "This is a buttons template",
+                "template": {
+                    "type": "buttons",
+                    "text": "",
+                    "actions": []
+                }
+            };
+
+            message.template.text = text;
+
+            for(var i = 0; i < length; i++)
+            {
+                var actionTemplate = {
+                    "type": '',
+                    "label" : ''
+                };
+
+                if(buttons[i].url)
+                {
+                    actionTemplate.type = 'url';
+                    actionTemplate.label = buttons[i].text;
+                    actionTemplate.uri = buttons[i].url;
+                }
+                else
+                {
+                    actionTemplate.type = 'message';
+                    actionTemplate.label = buttons[i].text;
+                    actionTemplate.text = buttons[i].text;
+                }
+
+                message.template.actions.push(actionTemplate);
+            }
+
+            if(output.image)
+            {
+                var image = output.image;
+                message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
+                // message.template.thumbnailImageUrl = config.host + image.url;
+                message.template.imageAspectRatio = 'rectangle';
+                message.template.imageSize = 'cover';
+                message.template.imageBackgroundColor = '#FFFFFF';
+            }
+
+        }
+        else if(output.image)
+        {
+            message = {
+                "type": "image",
+                "originalContentUrl": "https://example.com/original.jpg",
+                "previewImageUrl": "https://example.com/preview.jpg"
+            };
+
+        }
+        else
+        {
+            message = {
+                type: 'text',
+                text: text
+            };
+        }
+        console.log(JSON.stringify(message, null, 4));
+        return message;
     };
 
     var messageEvent = function (events, botId) {
@@ -54,91 +139,18 @@ var config = require(path.resolve('config/config'));
         var text = events[0].message.text;
         var replyToken = events[0].replyToken;
 
-        var Engine = require('../core.js');
 
         Bot.findOne({ id: botId }).exec(function(err, chatbot)
         {
             if(chatbot)
             {
-
-                var userId = chatbot.userId;
-                const client = new line.Client({
-                    channelAccessToken: chatbot.lineChannel.accessToken
-                });
-
-                Engine.process(botId, 'line', userId, text, {}, function(err, out)
+                var Engine = require('../core.js');
+                Engine.process(botId, 'line', chatbot.userId, text, {}, function(err, out)
                 {
-                    var message;
-                    if(out.output.buttons)
-                    {
-
-                        console.log(JSON.stringify(out, null, 4))
-                        var text = out.output.text;
-
-                        if(out.output.image)
-                        {
-                            text = text.slice(0, 60);
-                        }
-                        else
-                        {
-                            text = text.slice(0, 160);
-                        }
-
-                        var buttons = out.output.buttons;
-                        var length = buttons.length > 4 ? 4 : buttons.length;
-                        message = {
-                            "type": "template",
-                            "altText": "This is a buttons template",
-                            "template": {
-                                "type": "buttons",
-                                "text": "",
-                                "actions": []
-                            }
-                        };
-
-                        message.template.text = out.output.text;
-
-                        for(var i = 0; i < length; i++)
-                        {
-                            var actionTemplate = {
-                                "type": "postback",
-                                "label" : 'test',
-                                "data": ''
-                            };
-                            actionTemplate.label = buttons[i].text;
-                            actionTemplate.data = buttons[i].text;
-                            message.template.actions.push(actionTemplate);
-                        }
-
-                        if(out.output.image)
-                        {
-                            var image = out.output.image;
-                            message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
-                            // message.template.thumbnailImageUrl = config.host + image.url;
-                            message.template.imageAspectRatio = 'rectangle';
-                            message.template.imageSize = 'cover';
-                            message.template.imageBackgroundColor = '#FFFFFF';
-                        }
-
-                    }
-                    else if(out.output.image)
-                    {
-                        message = {
-                            "type": "image",
-                            "originalContentUrl": "https://example.com/original.jpg",
-                            "previewImageUrl": "https://example.com/preview.jpg"
-                        };
-
-                    }
-                    else
-                    {
-                        message = {
-                            type: 'text',
-                            text: out.output.text
-                        };
-                    }
-
-                    console.log(JSON.stringify(message, null, 4))
+                    var message = buildMessage(out.output);
+                    var client = new line.Client({
+                        channelAccessToken: chatbot.lineChannel.accessToken
+                    });
                     client.replyMessage(replyToken, message)
                         .then(function (result)
                         {
@@ -147,8 +159,7 @@ var config = require(path.resolve('config/config'));
                         })
                         .catch(function (err)
                         {
-                            console.log(JSON.stringify(err, null, 4))
-
+                            console.log(err);
                         });
 
                 }, function(err)
@@ -169,97 +180,18 @@ var config = require(path.resolve('config/config'));
         var text = events[0].postback.data;
         var replyToken = events[0].replyToken;
 
-        var Engine = require('../core.js');
-
         Bot.findOne({ id: botId }).exec(function(err, chatbot)
         {
             if(chatbot)
             {
+                var Engine = require('../core.js');
 
-                var userId = chatbot.userId;
-                const client = new line.Client({
-                    channelAccessToken: chatbot.lineChannel.accessToken
-                });
-
-                Engine.process(botId, 'line', userId, text, {}, function(err, out)
+                Engine.process(botId, 'line', chatbot.userId, text, {}, function(err, out)
                 {
-                    var message;
-                    if(out.output.buttons)
-                    {
-                        console.log(JSON.stringify(out, null, 4))
-                        var text = out.output.text;
-
-                        if(out.output.image)
-                        {
-                            text = text.slice(0, 60);
-                        }
-                        else
-                        {
-                            text = text.slice(0, 160);
-                        }
-
-                        var buttons = out.output.buttons;
-                        var length = buttons.length > 4 ? 4 : buttons.length;
-                        message = {
-                            "type": "template",
-                            "altText": "This is a buttons template",
-                            "template": {
-                                "type": "buttons",
-                                "text": "",
-                                "actions": []
-                            }
-                        };
-
-                        message.template.text = text;
-
-                        for(var i = 0; i < length; i++)
-                        {
-                            var actionTemplate = {
-                                "type": "postback",
-                                "label" : 'test',
-                                "data": ''
-                            };
-                            actionTemplate.label = buttons[i].text;
-                            actionTemplate.data = buttons[i].text;
-
-                            if(buttons[i].url)
-                            {
-                                actionTemplate.type = 'uri';
-                                actionTemplate.uri = buttons[i].url;
-                            }
-                            message.template.actions.push(actionTemplate);
-                        }
-
-                        if(out.output.image)
-                        {
-                            var image = out.output.image;
-                            message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
-                            message.template.imageAspectRatio = 'rectangle';
-                            message.template.imageSize = 'cover';
-                            message.template.imageBackgroundColor = '#FFFFFF';
-                        }
-
-
-                    }
-                    else if(out.output.image)
-                    {
-                        message = {
-                            "type": "image",
-                            "originalContentUrl": "https://example.com/original.jpg",
-                            "previewImageUrl": "https://example.com/preview.jpg"
-                        };
-
-                    }
-                    else
-                    {
-                        message = {
-                            type: 'text',
-                            text: out.output.text
-                        };
-                    }
-
-                    console.log(JSON.stringify(message, null, 4));
-                    console.log(message.template.text.length)
+                    var message = buildMessage(out.output);
+                    var client = new line.Client({
+                        channelAccessToken: chatbot.lineChannel.accessToken
+                    });
                     client.replyMessage(replyToken, message)
                         .then(function (result)
                         {
