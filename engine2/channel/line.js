@@ -1,5 +1,6 @@
 var path = require('path');
 const line = require('@line/bot-sdk');
+var LINEBot = require('line-messaging');
 var mongoose = require('mongoose');
 var Bot = mongoose.model('Bot');
 var config = require(path.resolve('config/config'));

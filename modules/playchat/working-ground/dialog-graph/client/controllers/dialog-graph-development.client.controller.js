@@ -331,7 +331,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 }
                 else
                 {
-                    angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><div>' + JSON.stringify(result) + '</div></div></div>')($scope));
+                    angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1 style="line-height: 50px; margin-bottom: 20px;">' + $scope.lan('There is an unsupported version of the graph file. if you are using previous version, then please move below.') + '</h1><a style="font-size: 20px;" href="https://old.playchat.ai">https://old.playchat.ai</a></div></div>')($scope));
                 }
             },
             function(err)

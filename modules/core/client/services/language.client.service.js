@@ -1975,6 +1975,12 @@
                 "zh": "图形文件或图形文件的不受支持的版本中存在错误。",
                 "jp": "グラフファイルまたはサポートされていないバージョンのグラフファイルにエラーがあります。"
             },
+            "There is an unsupported version of the graph file. if you are using previous version, then please move below.": {
+                "ko": "더 이상 지원하지 않는 버전의 그래프 파일입니다.<br/>아래 주소로 이동해서 사용해주세요.",
+                "en": "There is an unsupported version of the graph file.<br/>if you are using previous version, then please move below.",
+                "zh": "有一个不受支持的图形文件版本。<br/>如果您使用的是以前的版本，请在下面移动。",
+                "jp": "サポートされていないバージョンのグラフファイルがあります。<br/>以前のバージョンを使用している場合は、下に移動してください。"
+            },
             "View Source": {
                 "ko": "소스보기",
                 "en": "View Source",
