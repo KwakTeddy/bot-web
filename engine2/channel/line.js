@@ -53,58 +53,52 @@ var config = require(path.resolve('config/config'));
         var message;
         var text = output.text;
 
-        if(output.buttons)
+        if(output.buttons || output.image)
         {
+
+            if(output.buttons)
+            {
+                var buttons = output.buttons;
+                var length = buttons.length > 4 ? 4 : buttons.length;
+                message = {
+                    "type": "template",
+                    "altText": "This is a buttons template",
+                    "template": {
+                        "type": "buttons",
+                        "text": "",
+                        "actions": []
+                    }
+                };
+
+                for(var i = 0; i < length; i++)
+                {
+                    var actionTemplate = {
+                        "type": '',
+                        "label" : ''
+                    };
+
+                    if(buttons[i].url)
+                    {
+                        actionTemplate.type = 'uri';
+                        actionTemplate.label = buttons[i].text;
+                        actionTemplate.uri = buttons[i].url;
+                    }
+                    else
+                    {
+                        actionTemplate.type = 'message';
+                        actionTemplate.label = buttons[i].text;
+                        actionTemplate.text = buttons[i].text;
+                    }
+
+                    message.template.actions.push(actionTemplate);
+                }
+            }
 
 
             if(output.image)
             {
                 text = text.slice(0, 60);
-            }
-            else
-            {
-                text = text.slice(0, 160);
-            }
 
-            var buttons = output.buttons;
-            var length = buttons.length > 4 ? 4 : buttons.length;
-            message = {
-                "type": "template",
-                "altText": "This is a buttons template",
-                "template": {
-                    "type": "buttons",
-                    "text": "",
-                    "actions": []
-                }
-            };
-
-            message.template.text = text;
-
-            for(var i = 0; i < length; i++)
-            {
-                var actionTemplate = {
-                    "type": '',
-                    "label" : ''
-                };
-
-                if(buttons[i].url)
-                {
-                    actionTemplate.type = 'url';
-                    actionTemplate.label = buttons[i].text;
-                    actionTemplate.uri = buttons[i].url;
-                }
-                else
-                {
-                    actionTemplate.type = 'message';
-                    actionTemplate.label = buttons[i].text;
-                    actionTemplate.text = buttons[i].text;
-                }
-
-                message.template.actions.push(actionTemplate);
-            }
-
-            if(output.image)
-            {
                 var image = output.image;
                 message.template.thumbnailImageUrl = 'https://70096bfb.ngrok.io' + image.url;
                 // message.template.thumbnailImageUrl = config.host + image.url;
@@ -112,15 +106,12 @@ var config = require(path.resolve('config/config'));
                 message.template.imageSize = 'cover';
                 message.template.imageBackgroundColor = '#FFFFFF';
             }
+            else
+            {
+                text = text.slice(0, 160);
+            }
 
-        }
-        else if(output.image)
-        {
-            message = {
-                "type": "image",
-                "originalContentUrl": "https://example.com/original.jpg",
-                "previewImageUrl": "https://example.com/preview.jpg"
-            };
+            message.template.text = text;
 
         }
         else
