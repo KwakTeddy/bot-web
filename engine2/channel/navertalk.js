@@ -1,80 +1,86 @@
-var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('engine2/bot/server/controllers/bot.server.controller'));
 var config = require(path.resolve('config/config'));
 var util = require('util');
 
-exports.message =  function(req, res) {
-  console.log("navertalk message");
+(function()
+{
+    var NaverTalk = function()
+    {
 
-    // default response
-    var response = {
-      success: true,
-      request: {
-        event: "send", /* send message */
-        sender: "partner", /* 파트너가 보내는 메시지 */
-        user : req.body.user, /* 유저 식별값 */
-        partner: req.body.partner /* 파트너 식별값 wc1234 */
-      }
     };
-    var from = req.body.user;
 
-    switch(req.body.event) {
-      // 메시지 전송 이벤트 처리
-      case 'send' :
-        if(req.body.sender == 'user' && req.body.textContent) {
-          chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
-            respondMessage(response, serverText, json, res);
-          });
-        } else {
-          // 그외의 경우는 무반응
-          res.json({ success: true });
+    NaverTalk.prototype.message = function(req, res)
+    {
+        var Engine = require('../core.js');
+        console.log("navertalk message");
+
+        // default response
+        var response = {
+            success: true,
+            request: {
+                event: "send", /* send message */
+                sender: "partner", /* 파트너가 보내는 메시지 */
+                user : req.body.user, /* 유저 식별값 */
+                partner: req.body.partner /* 파트너 식별값 wc1234 */
+            }
+        };
+
+        var userKey = req.body.user;
+        var inputRaw = req.body.textContent.text;
+
+        var event = req.body.event;
+        if(event == 'send')
+        {
+            // 메시지 전송 이벤트 처리
+            if(req.body.sender == 'user' && req.body.textContent)
+            {
+                Engine.process(req.params.botId, 'navertalk', userKey, inputRaw, {}, function(context, out)
+                {
+
+                },
+                function(err)
+                {
+                    //에러 처리
+                });
+            }
+            else
+            {
+                // 그외의 경우는 무반응
+                res.json({ success: true });
+            }
         }
-        break;
+        else if(event == 'open')
+        {
+            Engine.process(req.params.botId, 'navertalk', userKey, '시작', {}, function(context, out)
+            {
 
-      // 채팅창 오픈 이벤트 처리
-      case 'open' :
-        switch(req.body.options.inflow) {
-          // 채팅리스트로부터 인입되었을때
-          case 'list' :
-            chat.write('navertalk', from, req.params.bot, '시작', req.body, function (serverText, json) {
-              respondMessage(response, serverText, json, res);
-            });
-            break;
-
-          // 유입경로가 없거나 화면을 갱신하였을때
-          case 'none' :
-            chat.write('navertalk', from, req.params.bot, '시작', req.body, function (serverText, json) {
-              respondMessage(response, serverText, json, res);
-            });
-            break;
-
-          default:
-            chat.write('navertalk', from, req.params.bot, '시작', req.body, function (serverText, json) {
-              respondMessage(response, serverText, json, res);
+            },
+            function(err)
+            {
+                //에러 처리
             });
         }
-        break;
+        else if(event == 'friend')
+        {
+            if(req.body.options.set == 'on')
+            {
+                // 친구 추가시
+                response.request.textContent.text = '친구가 되어주셔서 감사합니다.';
+                res.json(response);
 
-      // 친구 이벤트 처리
-      case 'friend' :
-        if(req.body.options.set == 'on') {
-          // 친구 추가시
-          response.request.textContent.text = '친구가되어주셔서 감사합니다.';
-          res.json(response);
-
-        } else if(req.body.options.set == 'off') {
-          // 친구 쵤회시
-          response.request.textContent.text = '다음번에 꼭 친구추가 부탁드려요.';
-          res.json(response);
+            } else if(req.body.options.set == 'off') {
+                // 친구 쵤회시
+                response.request.textContent.text = '다음번에 꼭 친구추가 부탁드려요.';
+                res.json(response);
+            }
         }
-        break;
-
-      // 그외의 이벤트에 대해 무반응
-      default:
-        res.json({ success: true });
-    }
-};
+        else
+        {
+            res.json({ success: true });
+        }
+    };
+})();
 
 
 function respondMessage(response, text, task, res) {

@@ -8,7 +8,7 @@ var kakao = require('./channel/kakao.js');
 var facebook = require('./channel/facebook.js');
 var socketChannel = require('./channel/socket.js');
 var line = require('./channel/line.js');
-var lineTest = require('./channel/line-test');
+var navertalk = require('./channel/navertalk.js');
 
 (function()
 {
@@ -45,7 +45,7 @@ var lineTest = require('./channel/line-test');
         // app.route('/facebook/webhook/refresh').get(facebook.refresh);
         //
         // // 네이버 톡톡
-        // app.route('/navertalk/:bot/webhook').post(navertalk.message);
+        app.route('/navertalk/:botId/webhook').post(navertalk.message);
         //
         // // wechat
         // app.route('/wechat/:bot/webhook').get(wechat.messageGet);
