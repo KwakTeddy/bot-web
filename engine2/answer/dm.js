@@ -242,6 +242,8 @@ var ContextManager = require('../context.js');
                             }
 
                             userInput.regexp = list;
+
+                            dialog.matchRate = 1;
                         }
                         else
                         {
@@ -443,34 +445,6 @@ var ContextManager = require('../context.js');
             });
         });
 
-        if(bot.options.globalSearch && bot.options.globalSearch.use)
-        {
-            // 글로벌 서치 했는데 없으면 없는거다.
-            transaction.call(function(done)
-            {
-                if(!foundDialog)
-                {
-                    that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
-                    {
-                        selectedDialogs.sort(function(a, b)
-                        {
-                            return b.matchRate - a.matchRate;
-                        });
-
-                        transaction.selectedDialogs = selectedDialogs;
-
-                        done();
-                        // callback(null, foundDialog);
-                    });
-                }
-                else
-                {
-                    done();
-                    // callback(null, foundDialog);
-                }
-            });
-        }
-
         transaction.call(function(done)
         {
             if(context.session.dialogCursor && !foundDialog)
@@ -499,6 +473,34 @@ var ContextManager = require('../context.js');
                 done();
             }
         });
+
+        if(bot.options.globalSearch && bot.options.globalSearch.use)
+        {
+            // 글로벌 서치 했는데 없으면 없는거다.
+            transaction.call(function(done)
+            {
+                if(!foundDialog)
+                {
+                    that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
+                    {
+                        selectedDialogs.sort(function(a, b)
+                        {
+                            return b.matchRate - a.matchRate;
+                        });
+
+                        transaction.selectedDialogs = selectedDialogs;
+
+                        done();
+                        // callback(null, foundDialog);
+                    });
+                }
+                else
+                {
+                    done();
+                    // callback(null, foundDialog);
+                }
+            });
+        }
 
         transaction.call(function(done)
         {

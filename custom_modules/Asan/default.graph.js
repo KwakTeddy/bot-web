@@ -10222,6 +10222,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }
