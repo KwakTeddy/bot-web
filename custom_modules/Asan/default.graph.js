@@ -1098,40 +1098,25 @@ var dialogs = [
         "name": "병원 내 위치 찾기 / 편의시설 이용 안내",
         "input": [
             {
-                "text": {
-                    "raw": "2",
-                    "nlp": "2"
-                }
+                "regexp": "/^2/"
             },
             {
-                "text": {
-                    "raw": "위치",
-                    "nlp": "위치"
-                }
+                "regexp": "/^위치/"
             },
             {
-                "text": {
-                    "raw": "위치 찾기",
-                    "nlp": "위치 찾기"
-                }
+                "regexp": "/^위치 찾기/"
             },
             {
-                "text": {
-                    "raw": "위치찾기",
-                    "nlp": "위치 찾기"
-                }
+                "regexp": "/^위치찾기/"
             },
             {
-                "text": {
-                    "raw": "병원 내",
-                    "nlp": "병원 내"
-                }
+                "regexp": "/병원 내/"
             },
             {
-                "text": {
-                    "raw": "병원 내 위치 찾기",
-                    "nlp": "병원 내 위치 찾기"
-                }
+                "regexp": "/병원 내 위치 찾기/"
+            },
+            {
+                "regexp": "/^7/"
             }
         ],
         "output": [
@@ -1141,7 +1126,7 @@ var dialogs = [
             }
         ],
         "task": {
-            "name": ""
+            "name": "locationTask"
         },
         "id": "default23",
         "children": [
@@ -10222,6 +10207,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-    bot.setDialogs(dialogs);
-    bot.setCommonDialogs(commonDialogs);
+	bot.setDialogs(dialogs);
+	bot.setCommonDialogs(commonDialogs);
 }
