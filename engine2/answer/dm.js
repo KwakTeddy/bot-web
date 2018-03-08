@@ -96,7 +96,6 @@ var ContextManager = require('../context.js');
                 {
                     if(intents.length > 0)
                     {
-                        console.log(input.intent, intents[0].intentName);
                         var check = input.intent == intents[0].intentName;
                         if(check)
                         {
@@ -446,34 +445,6 @@ var ContextManager = require('../context.js');
             });
         });
 
-        if(bot.options.globalSearch && bot.options.globalSearch.use)
-        {
-            // 글로벌 서치 했는데 없으면 없는거다.
-            transaction.call(function(done)
-            {
-                if(!foundDialog)
-                {
-                    that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
-                    {
-                        selectedDialogs.sort(function(a, b)
-                        {
-                            return b.matchRate - a.matchRate;
-                        });
-
-                        transaction.selectedDialogs = selectedDialogs;
-
-                        done();
-                        // callback(null, foundDialog);
-                    });
-                }
-                else
-                {
-                    done();
-                    // callback(null, foundDialog);
-                }
-            });
-        }
-
         transaction.call(function(done)
         {
             if(context.session.dialogCursor && !foundDialog)
@@ -502,6 +473,34 @@ var ContextManager = require('../context.js');
                 done();
             }
         });
+
+        if(bot.options.globalSearch && bot.options.globalSearch.use)
+        {
+            // 글로벌 서치 했는데 없으면 없는거다.
+            transaction.call(function(done)
+            {
+                if(!foundDialog)
+                {
+                    that.findDialogGlobal(bot, context, userInput, intents, entities, bot.dialogs, function(selectedDialogs)
+                    {
+                        selectedDialogs.sort(function(a, b)
+                        {
+                            return b.matchRate - a.matchRate;
+                        });
+
+                        transaction.selectedDialogs = selectedDialogs;
+
+                        done();
+                        // callback(null, foundDialog);
+                    });
+                }
+                else
+                {
+                    done();
+                    // callback(null, foundDialog);
+                }
+            });
+        }
 
         transaction.call(function(done)
         {
