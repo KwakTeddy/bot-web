@@ -8063,6 +8063,9 @@ var dialogs = [
             },
             {
                 "regexp": "/^4/"
+            },
+            {
+                "regexp": "/^6/"
             }
         ],
         "output": [
@@ -9094,7 +9097,7 @@ var dialogs = [
                 "name": "서류",
                 "input": [
                     {
-                        "regexp": "/서류/"
+                        "intent": "서류"
                     }
                 ],
                 "output": [
@@ -9135,9 +9138,6 @@ var dialogs = [
                                 "text": "어떤 증명서에 관련하여 알려드릴까요?"
                             }
                         ],
-                        "task": {
-                            "name": "findBinso"
-                        },
                         "id": "default203",
                         "children": [
                             {
@@ -9699,6 +9699,12 @@ var dialogs = [
                 "input": [
                     {
                         "intent": "서류 발급 - 가능서류"
+                    },
+                    {
+                        "text": {
+                            "raw": "6",
+                            "nlp": "6"
+                        }
                     }
                 ],
                 "output": [
@@ -10132,6 +10138,12 @@ var commonDialogs = [
                     "raw": "처음",
                     "nlp": "처음"
                 }
+            },
+            {
+                "text": {
+                    "raw": "0",
+                    "nlp": "0"
+                }
             }
         ],
         "output": [
@@ -10155,6 +10167,12 @@ var commonDialogs = [
                 "text": {
                     "raw": "이전",
                     "nlp": "이전"
+                }
+            },
+            {
+                "text": {
+                    "raw": "9",
+                    "nlp": "9"
                 }
             }
         ],
@@ -10204,6 +10222,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }

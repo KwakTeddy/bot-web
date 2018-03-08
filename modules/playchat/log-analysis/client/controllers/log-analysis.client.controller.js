@@ -21,11 +21,31 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
 
         if(data.type == 'input')
         {
+            var intents = data.log.intents;
+
+            var check = {};
+            var result = [];
+            for(var i=0; i<intents.length; i++)
+            {
+                if(!check[intents[i].intentName])
+                {
+                    intents[i].matchRate = Math.round(intents[i].matchRate * 100);
+                    result.push(intents[i]);
+                    check[intents[i].intentName] = true;
+                }
+            }
+
+            data.log.intents = result;
+
             $scope.userInput = data.log;
         }
         else if(data.type == 'answer')
         {
             $scope.target = data.log.target;
+
+            $scope.target.matchRate = Math.round($scope.target.matchRate * 100);
+            $scope.target.requiredMatchRate = Math.round($scope.target.requiredMatchRate * 100);
+
             $scope.output = data.log.output;
         }
         else if(data.type == 'task')
