@@ -79,6 +79,8 @@ var util = require('util');
             res.json({ success: true });
         }
     };
+
+    module.exports = new NaverTalk();
 })();
 
 
