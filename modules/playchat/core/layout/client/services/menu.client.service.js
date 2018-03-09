@@ -26,7 +26,7 @@
 
             this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
                 { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },
-                { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
+                // { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
                 { name: LanguageService('Entity'), url: '/management/entity', icon: 'entity_select_mini.png' },
                 { name: LanguageService('Intent'), url: '/management/intent', icon: 'intent_select.png' },
                 { name: LanguageService('Task'), url: '/management/task', icon: 'task_select_mini.png' }

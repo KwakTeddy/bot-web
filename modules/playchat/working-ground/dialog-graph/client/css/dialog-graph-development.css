@@ -724,7 +724,7 @@
     border-bottom-color: transparent;
     color: #7e7e7e;
     position: relative;
-    top: -1px;
+    top: 2px;
     z-index: 10;
     cursor: pointer;
 }

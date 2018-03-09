@@ -3308,6 +3308,24 @@
                 "en": "Japanese",
                 "zh": "日本",
                 "jp": "日本語"
+            },
+            "default.js": {
+                "ko": "함수 작업공간",
+                "en": "Function workspace",
+                "zh": "功能工作区",
+                "jp": "関数ワークスペース"
+            },
+            "default.graph.js": {
+                "ko": "대화시나리오",
+                "en": "Dialog Scenario",
+                "zh": "对话方案",
+                "jp": "ダイアログシナリオ"
+            },
+            "bot.js": {
+                "ko": "챗봇 설정",
+                "en": "Chatbot Settings",
+                "zh": "Chatbot设置",
+                "jp": "チャットボットの設定"
             }
         };
 

@@ -61,7 +61,7 @@ caption
         <a class="prev-tab" ng-mousedown="prevTab($event);"><img src="/modules/playchat/gnb/client/imgs/left.png"></a>
             <ul class="tab-body">
                 <li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">
-                    <a>{{ file }}</a>
+                    <a>{{ lan(file.endsWith('bot.js') ? 'bot.js' : file); }}</a>
                 </li>
             </ul>
         <a class="next-tab" ng-mousedown="nextTab($event);"><img src="/modules/playchat/gnb/client/imgs/right.png"></a>
