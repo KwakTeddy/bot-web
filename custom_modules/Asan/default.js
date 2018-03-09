@@ -302,6 +302,13 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
+            if(dialog.userInput.text==="환자"){
+                context.user.kind='환자';
+            }
+            else{
+                context.user.kind='보호자';
+            }
+
           if(context.user.kind==='환자'){
                var newuser = {
                kind: context.user.kind,
@@ -324,7 +331,7 @@ module.exports = function(bot)
                 });
 			callback();
           }
-          else{
+          else {
               var newuser = {
                   kind: context.user.kind,
                   mobile: context.user.mobile,
@@ -423,4 +430,22 @@ module.exports = function(bot)
             callback(matched);
         }
     });
+
+	bot.setTask('saveage', 
+	{
+		action: function (dialog, context, callback)
+		{
+            regex=/^\d$/;
+            var matched=regex.test(dialog.userInput.text);
+		    if(matched) {
+                context.user.age = dialog.userInput.text;
+                callback();
+            }
+            else{
+
+
+                callback();
+            }
+		}
+	});
 };
