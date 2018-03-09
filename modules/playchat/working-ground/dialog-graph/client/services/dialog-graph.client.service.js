@@ -1461,7 +1461,10 @@
                     {
                         for(var key in dialog)
                         {
-                            parentDialog.children[i][key] = dialog[key];
+                            if(key != 'children')
+                            {
+                                parentDialog.children[i][key] = dialog[key];
+                            }
                         }
 
                         break;
