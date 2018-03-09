@@ -1,3 +1,7 @@
+var request=require('request');
+var path = require('path');
+var config = require(path.resolve('./config/config'));
+
 module.exports = function(bot)
 {
     bot.setTask("defaultTask",
@@ -13,27 +17,27 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-          	var text1 = ''
+          	var text1 = '';
             
             var userText = dialog.userInput.text;
-            if(userText == '2') text1 = '병원 내 위치 찾기'
-            if(userText == '7') text1 = '편의 시설 이용 안내'
-            if(userText == '위치찾기') text1 = '병원 내 위치 찾기'
-            if(userText == '편의시설') text1 = '편의 시설 이용 안내'
-            if(userText == '위치 찾기') text1 = '병원 내 위치 찾기'
-            if(userText == '편의 시설') text1 = '편의 시설 이용 안내'
-            if(userText == '위치') text1 = '병원 내 위치 찾기'
+            if(userText == '2') text1 = '병원 내 위치 찾기';
+            if(userText == '7') text1 = '편의 시설 이용 안내';
+            if(userText == '위치찾기') text1 = '병원 내 위치 찾기';
+            if(userText == '편의시설') text1 = '편의 시설 이용 안내';
+            if(userText == '위치 찾기') text1 = '병원 내 위치 찾기';
+            if(userText == '편의 시설') text1 = '편의 시설 이용 안내';
+            if(userText == '위치') text1 = '병원 내 위치 찾기';
 
-            var text2 = ''
-            if(userText == '2') text2 = '정형외과는 어디야?'
-            if(userText == '7') text2 = '샤워실은 어디죠?, 마트위치 알려줘요'
-            if(userText == '위치찾기') text2 = '정형외과는 어디야?'
-            if(userText == '편의시설') text2 = '샤워실은 어디죠?, 마트위치 알려줘요'
-            if(userText == '위치 찾기') text2 = '정형외과는 어디야?'
-            if(userText == '편의 시설') text2 = '샤워실은 어디죠?, 마트위치 알려줘요'
-            if(userText == '위치') text2 = '정형외과는 어디야?'
+            var text2 = '';
+            if(userText == '2') text2 = '정형외과는 어디야?';
+            if(userText == '7') text2 = '샤워실은 어디죠?, 마트위치 알려줘요';
+            if(userText == '위치찾기') text2 = '정형외과는 어디야?';
+            if(userText == '편의시설') text2 = '샤워실은 어디죠?, 마트위치 알려줘요';
+            if(userText == '위치 찾기') text2 = '정형외과는 어디야?';
+            if(userText == '편의 시설') text2 = '샤워실은 어디죠?, 마트위치 알려줘요';
+            if(userText == '위치') text2 = '정형외과는 어디야?';
 
-            dialog.output[0].text = text1 + '를 해드릴께요. \n어디를 찾으시나요? \n예)' + text2 + '\n\n* 처음으로 가시려면 처음 또는 0번, 이전단계로 가시러면 이전 또는 9번을 입력해주세요.'
+            dialog.output[0].text = text1 + '를 해드릴께요. \n어디를 찾으시나요? \n예)' + text2 + '\n\n* 처음으로 가시려면 처음 또는 0번, 이전단계로 가시러면 이전 또는 9번을 입력해주세요.';
 			callback();
 		}
 	});
@@ -58,8 +62,8 @@ module.exports = function(bot)
         32: "BG304.jpg",
         33: "BG303.jpg",
         34: "BG302.jpg",
-        35: "BG301.jpg",
-    }
+        35: "BG301.jpg"
+    };
 
     var BSfloor = {
         1: '지하 1층',
@@ -81,7 +85,7 @@ module.exports = function(bot)
         32: '3층',
         33: '3층',
         34: '3층',
-        35: '3층',
+        35: '3층'
 
     };
 
@@ -127,7 +131,7 @@ module.exports = function(bot)
         512: "f-403.jpg",
         513: "f-402.jpg",
         514: "f-401.jpg"
-    }
+    };
 
     bot.setTask('findRoom',
     {
@@ -209,8 +213,8 @@ module.exports = function(bot)
         145: "신관 14층",
         146: "신관 14층",
         155: "신관 15층",
-        156: "신관 15층",
-    }
+        156: "신관 15층"
+    };
 
     bot.setTask('DongTask',
     {
@@ -240,7 +244,7 @@ module.exports = function(bot)
         5: "EG615.jpg",
         6: "EG610.jpg",
         7: "EG608.jpg"
-    }
+    };
 
     bot.setTask('SeminarTask',
     {
@@ -275,23 +279,148 @@ module.exports = function(bot)
         action: function (dialog, context, callback)
         {
             var text3 = '';
-            if(dialog.userInput.text == '입원안내' || dialog.userInput.text == '4') text3 ='입원안내'
-            if(dialog.userInput.text == '서류발급') text3 = '서류발급'
-            if(dialog.userInput.text == '입원 안내' || dialog.userInput.text == '4') text3 = '입원안내'
-            if(dialog.userInput.text == '서류 발급') text3 = '서류발급'
-            if(dialog.userInput.text == '입원') text3 ='입원안내'
+            if(dialog.userInput.text == '입원안내' || dialog.userInput.text == '4') text3 ='입원안내';
+            if(dialog.userInput.text == '서류발급') text3 = '서류발급';
+            if(dialog.userInput.text == '입원 안내' || dialog.userInput.text == '4') text3 = '입원안내';
+            if(dialog.userInput.text == '서류 발급') text3 = '서류발급';
+            if(dialog.userInput.text == '입원') text3 ='입원안내';
 
             var text4 = '';
-            if(dialog.userInput.text == '입원안내' || dialog.userInput.text == '4') text4 ='입원예약변경, 입원비 무통장 입금'
-            if(dialog.userInput.text == '서류발급') text4 = '서류발급 준비물은 무엇인가요?'
-            if(dialog.userInput.text == '입원 안내' || dialog.userInput.text == '4') text4 ='입원예약변경, 입원비 무통장 입금'
-            if(dialog.userInput.text == '서류 발급') text4 =  '서류발급 준비물은 무엇인가요?'
-            if(dialog.userInput.text == '입원') text4 ='입원예약변경, 입원비 무통장 입금'
+            if(dialog.userInput.text == '입원안내' || dialog.userInput.text == '4') text4 ='입원예약변경, 입원비 무통장 입금';
+            if(dialog.userInput.text == '서류발급') text4 = '서류발급 준비물은 무엇인가요?';
+            if(dialog.userInput.text == '입원 안내' || dialog.userInput.text == '4') text4 ='입원예약변경, 입원비 무통장 입금';
+            if(dialog.userInput.text == '서류 발급') text4 =  '서류발급 준비물은 무엇인가요?';
+            if(dialog.userInput.text == '입원') text4 ='입원예약변경, 입원비 무통장 입금';
 
 
 
-            dialog.output[0].text = text3 + ' 관련하여 궁금하신 점이 무엇이든 알려드릴께요.\n 무엇을 도와드릴까요? \n예)서류발급 준비물은 무엇인가요?'+ text4 +'\n\n* 처음으로 가시려면 처음 또는 0번, 이전단계로 가시러면 이전 또는 9번을 입력해주세요.'
+            dialog.output[0].text = text3 + ' 관련하여 궁금하신 점이 무엇이든 알려드릴께요.\n 무엇을 도와드릴까요? \n예)서류발급 준비물은 무엇인가요?'+ text4 +'\n\n* 처음으로 가시려면 처음 또는 0번, 이전단계로 가시러면 이전 또는 9번을 입력해주세요.';
             callback();
+        }
+    });
+	bot.setTask('saveuser',
+	{
+		action: function (dialog, context, callback)
+		{
+          if(context.user.kind==='환자'){
+               var newuser = {
+               kind: context.user.kind,
+               mobile: context.user.mobile
+                };
+                var modelname = "Asan_user";
+                var options = {};
+
+                options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+                options.json = newuser;
+
+                request.post(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log("response.statusCode=" + response.statusCode);
+                        callback();
+                    }
+                });
+			callback();
+          }
+          else{
+              var newuser = {
+                  kind: context.user.kind,
+                  mobile: context.user.mobile,
+                  age: context.user.age,
+                  gender: context.user.gender
+              };
+              var modelname = "Asan_user";
+              var options = {};
+
+              options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+              options.json = newuser;
+
+              request.post(options, function (err, response, body) {
+                  if (err) {
+                      console.log(err);
+                  }
+                  else {
+                      console.log("response.statusCode=" + response.statusCode);
+                      callback();
+                  }
+              });
+              callback();
+          }
+          }
+		});
+
+	bot.setTask('identification', 
+	{
+		action: function (dialog, context, callback)
+		{
+		    regex=/^\d$/;
+		    var matched=regex.test(dialog.userInput.text);
+		    if(dialog.userInput.types.mobile) {
+                context.session.mobile = dialog.userInput.types.mobile;
+                var randomNum = '';
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                context.session.smsAuth = randomNum;
+                var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
+                request.post(
+                    'https://bot.moneybrain.ai/api/messages/sms/send',
+                    {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
+                    function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            console.log("response.statusCode:" + response.statusCode);
+                            console.log("context.session.smsAuth=" + context.session.smsAuth);
+                            return callback();
+                        } else {
+                            console.log("error:" + error);
+                        }
+                    }
+                );
+                callback();
+            }
+            else if(context.session.mobile && matched){
+                callback();
+            }
+            else{
+                var randomNum = '';
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                randomNum += '' + Math.floor(Math.random() * 10);
+                context.session.smsAuth = randomNum;
+                var message = '[' + context.bot.name + ']' + ' 인증번호 : ' + randomNum;
+                request.post(
+                    'https://bot.moneybrain.ai/api/messages/sms/send',
+                    {json: {callbackPhone: config.callcenter, phone: context.session.mobile, message: message}},
+                    function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            console.log("response.statusCode:" + response.statusCode);
+                            console.log("context.session.smsAuth=" + context.session.smsAuth);
+                            return callback();
+                        } else {
+                            console.log("error:" + error);
+                        }
+                    }
+                );
+                callback();
+            }
+            callback();
+		}
+	});
+    bot.setType('identificationNumber',
+    {
+        typeCheck: function (dialog, context, callback)
+        {
+            var matched = false;
+            if(dialog.userInput.text===context.session.smsAuth){
+                matched=true;
+                context.user.mobile=context.session.mobile;
+                callback(matched);
+            }
+            callback(matched);
         }
     });
 };
