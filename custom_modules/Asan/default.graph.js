@@ -9963,11 +9963,98 @@ var dialogs = [
                 ],
                 "output": [
                     {
-                        "kind": "Content",
-                        "text": "아산봇으로 환자분의 궁금증을 해결해드릴께요\n\n처음으로 돌아가셔서 아산봇과 대화를 시작해보세요~"
+                        "kind": "Action",
+                        "text": "아산봇으로 환자분의 궁금증을 해결해드릴께요\n\n처음으로 돌아가셔서 아산봇과 대화를 시작해보세요~",
+                        "type": "call",
+                        "dialogId": "startDialog",
+                        "dialogName": "시작"
                     }
                 ],
-                "id": "default287"
+                "id": "default287",
+                "task": {
+                    "name": "saveuser"
+                }
+            },
+            {
+                "name": "보호자 사용자",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "보호자",
+                            "nlp": "보호자"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "보호자님의 나이를 입력해주세요"
+                    }
+                ],
+                "task": {
+                    "name": ""
+                },
+                "id": "default292",
+                "children": [
+                    {
+                        "name": "보호자 사용자 나이저장 성별 물어보기",
+                        "input": [
+                            {
+                                "regexp": "/^\\d/"
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "성별을 알려주세요",
+                                "buttons": [
+                                    {
+                                        "text": "남자"
+                                    },
+                                    {
+                                        "text": "여자"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default293",
+                        "task": {
+                            "name": "saveage"
+                        },
+                        "children": [
+                            {
+                                "name": "보호자 사용자 성별저장",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "남자",
+                                            "nlp": "남자"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "여자",
+                                            "nlp": "여자"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "",
+                                        "type": "call",
+                                        "dialogId": "startDialog",
+                                        "dialogName": "시작"
+                                    }
+                                ],
+                                "id": "default294",
+                                "task": {
+                                    "name": "saveuser"
+                                }
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -10093,9 +10180,18 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요 아산봇입니다.\n아산봇은 전화, 홈페이지보다 메신저가 편한 고객님들을 위해 24시간 응답하는 챗봇입니다.\n\n아산병원 안내와 관련하여 궁금하신 점을 입력해주세요. \n\n무엇을 입력해야할지 모르시겠나요? 그렇다면,아래메뉴의 중 해당하는 번호를 입력하세요:)\n\n1. 교통 및 주차 안내\n2. 병원 내 위치 찾기 (예, 정형외과, 96병동, 편의점 등)\n3. 진료안내\n4. 입원안내\n5. 건강검진 안내\n6. 서류발급 안내\n7. 편의 시설 이용 안내"
+                "text": "안녕하세요 아산봇입니다.\n아산봇은 전화, 홈페이지보다 메신저가 편한 고객님들을 위해 24시간 응답하는 챗봇입니다.\n\n아산병원 안내와 관련하여 궁금하신 점을 입력해주세요. \n\n무엇을 입력해야할지 모르시겠나요? 그렇다면,아래메뉴의 중 해당하는 번호를 입력하세요:)\n\n1. 교통 및 주차 안내\n2. 병원 내 위치 찾기 (예, 정형외과, 96병동, 편의점 등)\n3. 진료안내\n4. 입원안내\n5. 건강검진 안내\n6. 서류발급 안내\n7. 편의 시설 이용 안내",
+                "if": "context.user.mobile"
+            },
+            {
+                "kind": "Content",
+                "text": "sss",
+                "if": "!context.user.mobile"
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     },
     {
         "id": "backDialog",
