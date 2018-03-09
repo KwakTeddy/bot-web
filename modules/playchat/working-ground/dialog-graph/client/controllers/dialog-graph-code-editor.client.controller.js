@@ -71,6 +71,8 @@
             editor = editors[fileName];
             if(options.refresh)
                 editor = undefined;
+
+            angular.element('#codeSaveButton').attr('disabled', true);
             
             if(!editor)
             {
@@ -129,6 +131,11 @@
                     editor.focus();
 
                     $scope.currentFileName = fileName;
+
+                    editors[fileName].on('change',function(cMirror)
+                    {
+                        angular.element('#codeSaveButton').removeAttr('disabled');
+                    });
                 },
                 function(err)
                 {
@@ -234,6 +241,8 @@
                         }, 1500);
                     }, 5);
                 // }
+
+                angular.element('#codeSaveButton').attr('disabled', true);
             },
             function()
             {

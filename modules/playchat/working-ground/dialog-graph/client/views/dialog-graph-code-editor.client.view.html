@@ -40,6 +40,14 @@
     width: 200px !important;
     background-position-x: 220px !important;
 }
+
+.dialog-graph-code-editor-controller > button[disabled]
+{
+    background-color: #ddd;
+    cursor: default;
+    user-select: none;
+    color: #aaa;
+}
 </style>
 <link rel="stylesheet" href="http://codemirror.net/addon/dialog/dialog.css">
 <link rel="stylesheet" href="http://codemirror.net/addon/search/matchesonscrollbar.css">
@@ -56,7 +64,7 @@
     </div>
     <div class="dialog-graph-code-editor-controller">
         <button type="button" class="default-button" ng-click="backToGraph();" ng-if="mode == 'graphsource'" style="width: 200px;">{{lan('Back to Graph edit mode') }}</button>
-        <button type="button" class="blue-button" ng-click="save();" ng-if="myBotAuth.edit">{{lan('Save') }}</button>
+        <button type="button" class="blue-button" id="codeSaveButton" ng-click="save();" ng-if="myBotAuth.edit">{{lan('Save') }}</button>
         <div class="alert-success" role="alert" style="top: 80px;"> <strong>{{lan('Saved.') }}</strong> </div>
         <div class="alert-error" role="alert" style="top: 80px; text-align: left; max-width: 800px;"> <strong>{{lan('JSON Format Error') }}</strong> <div>{{saveError}}</div> <span class="alert-error-close" ng-click="closeError();">X</span></div>
     </div>
