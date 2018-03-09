@@ -54,6 +54,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
             $scope.dialog.output = JSON.parse(angular.toJson(dialog.output));
             $scope.dialog.task = dialog.task;
+            if(dialog.children)
+            {
+                $scope.dialog.children = dialog.children;
+            }
 
             for(var i=0; i<$scope.dialog.input.length; i++)
             {
