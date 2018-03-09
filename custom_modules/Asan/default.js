@@ -318,6 +318,7 @@ module.exports = function(bot)
                 var options = {};
 
                 options.url = 'http://template-dev.moneybrain.ai:8443/api/' + modelname;
+
                 options.json = newuser;
 
                 request.post(options, function (err, response, body) {
@@ -448,4 +449,5 @@ module.exports = function(bot)
             }
 		}
 	});
+
 };
