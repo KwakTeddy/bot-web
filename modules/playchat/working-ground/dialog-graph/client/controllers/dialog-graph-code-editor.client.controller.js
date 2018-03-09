@@ -249,7 +249,7 @@
                 $rootScope.$broadcast('selectTab', $scope.sourceFileName);
             }
 
-            $rootScope.$broadcast('refreshGraph', { fileName: $scope.sourceFileName });
+            // $rootScope.$broadcast('refreshGraph', { fileName: $scope.sourceFileName });
 
             angular.element('.dialog-graph-code-editor').hide();
         };
