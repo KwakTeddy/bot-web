@@ -232,12 +232,12 @@ var ContextManager = require('../context.js');
                         {
                             var match = rawText.match(regexp);
 
-                            var list = [];
+                            var list = {};
                             for(var i=0; i<match.length; i++)
                             {
                                 if(match[i])
                                 {
-                                    list.push(match[i]);
+                                    list[i+1] = match[i];
                                 }
                             }
 
@@ -570,6 +570,22 @@ var ContextManager = require('../context.js');
         console.log();
         console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
         console.log(dialogInstance);
+
+        if(dialogInstance.userInput.types)
+        {
+            for(var key in dialogInstance.userInput.types)
+            {
+                dialogInstance.data[key] = dialogInstance.userInput.types[key];
+            }
+        }
+
+        if(dialogInstance.userInput.regexp)
+        {
+            for(var key in dialogInstance.userInput.regexp)
+            {
+                dialogInstance.data[key] = dialogInstance.userInput.regexp[key];
+            }
+        }
 
         var sync = new Transaction.sync();
         sync.dialogInstance = dialogInstance;

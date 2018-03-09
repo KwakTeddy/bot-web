@@ -56,6 +56,7 @@ var utils = require('./utils/utils.js');
         console.log();
         console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
         console.log(output.text);
+
         if(output && output.buttons)
         {
             console.log('-- buttons --');
@@ -98,6 +99,18 @@ var utils = require('./utils/utils.js');
 
             if(output && output.text)
             {
+                if(userInput.matchedEntity)
+                {
+                    var entityMatch = output.text.match(new RegExp('@' + userInput.matchedEntity.key, 'gi'));
+                    if(entityMatch)
+                    {
+                        for(var i=0; i<entityMatch.length; i++)
+                        {
+                            output.text = output.text.replace(entityMatch[i], userInput.matchedEntity.matchedName);
+                        }
+                    }
+                }
+
                 output.text = output.text.replace(/\\\+/gi, '@#@').replace(/\\#/gi, '#@#');
                 var result = output.text.replace(new RegExp(ARRAY_TAG + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG + "([^" + ARRAY_TAG + "]*)" + ARRAY_TAG, "g"), function replacer(match, key)
                 {
@@ -105,11 +118,6 @@ var utils = require('./utils/utils.js');
                     {
                         var template = match.replace(ARRAY_TAG + key + ARRAY_TAG, '').replace(ARRAY_TAG, '');
                         var values = { context: context, dialog: dialog, bot: bot };
-                        if(userInput.matchedEntity)
-                        {
-                            values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
-                        }
-
                         var list = getValue(values, key);
                         if(list)
                         {
@@ -184,11 +192,6 @@ var utils = require('./utils/utils.js');
                     if(key)
                     {
                         var values = { context: context, dialog: dialog, bot: bot };
-                        if(userInput.matchedEntity)
-                        {
-                            values['@' + userInput.matchedEntity.key] = userInput.matchedEntity.matchedName;
-                        }
-
                         var replaced = getValue(values, key);
                         if(replaced !== undefined && replaced !== null)
                         {
