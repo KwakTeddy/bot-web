@@ -11,6 +11,13 @@ var utils = require('./utils/utils.js');
         var replaced = undefined;
 
         var split = key.split('.');
+
+        if(split.length == 1)
+        {
+            split.splice(0, 0, 'data');
+            split.splice(0, 0, 'dialog');
+        }
+
         for(var i=0; i<split.length; i++)
         {
             if(i == 0)
