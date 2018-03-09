@@ -32,7 +32,7 @@ var DialogGraphManager = require('./answer/dm.js');
                     redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                     output = OutputManager.make(context, {}, {}, output);
-                    callback(null, { type: 'command', dialogId: bot.commonDialogs[0].id, output: output});
+                    callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
                     console.log(chalk.green('================================'));
                     console.log()
@@ -68,7 +68,7 @@ var DialogGraphManager = require('./answer/dm.js');
                             redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                             output = OutputManager.make(context, {}, {}, output);
-                            callback(null, { type: 'command', dialogId: bot.commonDialogs[0].id, output: output});
+                            callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
                             console.log(chalk.green('================================'));
                             console.log();
@@ -108,7 +108,7 @@ var DialogGraphManager = require('./answer/dm.js');
                             redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                             output = OutputManager.make(context, {}, {}, output);
-                            callback(null, { type: 'command', dialogId: bot.commonDialogs[0].id, output: output});
+                            callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
                             console.log(chalk.green('================================'));
                             console.log();
@@ -135,7 +135,7 @@ var DialogGraphManager = require('./answer/dm.js');
                 DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
                     output = OutputManager.make(context, {}, {}, output);
-                    callback(null, { type: 'command', dialogId: bot.commonDialogs[0].id, output: output});
+                    callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
                     console.log(chalk.green('================================'));
                     console.log();
