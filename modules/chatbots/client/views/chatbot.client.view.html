@@ -18,22 +18,32 @@
         </div>
 
         <div class="chatbots">
-            <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectChatbot(chatbot);">
-                <ul class="hei50">
-                    <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
-                    <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>
-                    <li>
-                        <div class="flR mt10">
-                            <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
-                        </div>
-                    </li>
-                </ul>
-
-                <ul>
-                    <li class="sub2">{{ chatbot.description }}</li>
-                </ul>
+            <div ng-repeat="chatbot in list" ng-click="selectChatbot(chatbot);" class="bot_unselect">
+                <div class="chatbot-language">{{ lan(chatbot.language) }}</div>
+                <div class="chatbots-name">
+                    <img src="/modules/chatbots/client/imgs/user2.png" style="border-radius: 50%;">
+                    <span data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</span>
+                </div>
+                <div class="chatbots-row">{{ chatbot.description }}</div>
+                <div>
+                    <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
+                </div>
             </div>
         </div>
+
+        <!--<div class="chatbots">-->
+            <!--<div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectChatbot(chatbot);">-->
+                <!--<ul class="hei50">-->
+                    <!--<li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>-->
+                    <!--<li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>-->
+                    <!--<li>-->
+                        <!--<div class="flR mt10">-->
+                            <!--<a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 
     <div id="sharedBotContent" style="display: none;">
