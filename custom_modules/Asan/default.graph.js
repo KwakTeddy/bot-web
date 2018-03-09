@@ -9956,7 +9956,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Action",
-                        "text": "아산봇으로 환자분의 궁금증을 해결해드릴께요\n\n처음으로 돌아가셔서 아산봇과 대화를 시작해보세요~",
+                        "text": "",
                         "type": "call",
                         "dialogId": "startDialog",
                         "dialogName": "시작"
