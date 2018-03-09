@@ -275,7 +275,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.$on('selectTab', function(context, fileName)
         {
-            console.log('파일네임 : ', fileName);
             angular.element('.tab-body .select_tab').removeClass('select_tab');
             angular.element('#' + fileName.replace(/\./gi, '\\.')).addClass('select_tab');
 
@@ -294,8 +293,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 angular.element('.dialog-graph-code-editor').hide();
 
-                if(!DialogGraph.isDirty())
-                    $scope.loadFile(fileName);
+                // if(!DialogGraph.isDirty())
+                //     $scope.loadFile(fileName);
             }
             else
             {

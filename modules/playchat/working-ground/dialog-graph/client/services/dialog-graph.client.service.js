@@ -402,7 +402,7 @@
             $scope.$on('focusToDialogGraph', function()
             {
                 console.dir(that.focusedTarget);
-                that.focusById(that.focusedTarget.dialog.id);
+                // that.focusById(that.focusedTarget.dialog.id);
             });
 
             $scope.$on('saveDialogGraph', function()
@@ -1461,7 +1461,10 @@
                     {
                         for(var key in dialog)
                         {
-                            parentDialog.children[i][key] = dialog[key];
+                            if(key != 'children')
+                            {
+                                parentDialog.children[i][key] = dialog[key];
+                            }
                         }
 
                         break;

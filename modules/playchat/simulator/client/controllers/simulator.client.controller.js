@@ -212,7 +212,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                         addBotBubble(data.output);
                         $rootScope.$broadcast('onmsg', { message: data.output });    
-                    }, 100);
+                    }, 1000);
                 }
                 else if(data.type == 'dialog')
                 {
