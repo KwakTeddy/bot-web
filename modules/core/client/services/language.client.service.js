@@ -1981,6 +1981,13 @@
                 "zh": "有一个不受支持的图形文件版本。<br/>如果您使用的是以前的版本，请在下面移动。",
                 "jp": "サポートされていないバージョンのグラフファイルがあります。<br/>以前のバージョンを使用している場合は、下に移動してください。"
             },
+            "It is a chatbot made in old version PlayChat. Go to old version PlayChat.":
+            {
+                "ko": "구 버전 플레이챗에서 제작된 챗봇입니다. 구 버전 플레이챗으로 이동합니다.",
+                "en": "It is a chatbot made in old version PlayChat. Go to old version PlayChat.",
+                "zh": "这是一个旧版PlayChat制作的聊天机器人。 转到旧版PlayChat。",
+                "jp": "古いバージョンのPlayChatで作られたチャットボットです。 古いバージョンのPlayChatに移動します。"
+            },
             "View Source": {
                 "ko": "소스보기",
                 "en": "View Source",

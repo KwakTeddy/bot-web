@@ -86,7 +86,7 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                     nlpCount += 1;
                 }
 
-                nlpList.push(new RegExp(nlp[i].text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi'));
+                nlpList.push(nlp[i].text);
             }
 
             IntentContent.find({ intentId: { $in: idList }, input: { $in: nlpList } }).populate('intentId').lean().exec(function(err, list)
