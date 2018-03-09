@@ -1,3 +1,6 @@
+var path = require('path');
+var fs = require('fs');
+
 var mongoose = require('mongoose');
 
 var Bot = mongoose.model('Bot');
@@ -5,7 +8,7 @@ var BotAuth = mongoose.model('BotAuth');
 
 module.exports.find = function(req, res)
 {
-    BotAuth.find({ bot: req.params.botId}).populate('user').exec(function(err, list)
+    Bot.findOne({ _id: req.params.botId }).exec(function(err, bot)
     {
         if(err)
         {
@@ -13,13 +16,42 @@ module.exports.find = function(req, res)
             return res.status(400).send({ error: err });
         }
 
-        for(var i=0; i<list.length; i++)
+        if(bot)
         {
-            delete list[i].password;
-            delete list[i].salt;
-        }
+            var dir = path.resolve('./custom_modules/' + bot.id);
 
-        res.jsonp(list);
+            var options = {};
+            var list = fs.readdirSync(dir);
+            for(var i=0; i<list.length; i++)
+            {
+                if(list[i].endsWith('bot.js'))
+                {
+                    require(dir + '/' + list[i])(options);
+                }
+            }
+
+            BotAuth.find({ bot: req.params.botId}).populate('user').exec(function(err, list)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ error: err });
+                }
+
+                for(var i=0; i<list.length; i++)
+                {
+                    delete list[i].password;
+                    delete list[i].salt;
+                }
+
+                res.jsonp({ version: options.version, list: list });
+            });
+        }
+        else
+        {
+            console.error(err);
+            return res.status(400).send({ message: 'bot not found' });
+        }
     });
 };
 

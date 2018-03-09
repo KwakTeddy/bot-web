@@ -229,10 +229,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     addBotBubble(data.output);
                     $rootScope.$broadcast('onmsg', { message: data.output });
                 }
-                else if(data.type == 'log')
-                {
-                    $rootScope.$broadcast('onlog', { message: data });
-                }
                 else
                 {
                     addBotBubble(data);

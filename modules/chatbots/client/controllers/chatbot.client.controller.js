@@ -66,13 +66,24 @@
         {
             LogService.botId = chatbot._id;
             delete chatbot.user;
-            ChatbotAuthService.query({ botId: chatbot._id }, function(result)
+            ChatbotAuthService.get({ botId: chatbot._id }, function(result)
             {
-                if(result.length > 0)
+                var version = result.version;
+                var list = result.list;
+                if(list.length > 0)
                 {
-                    chatbot.myBotAuth = { read : result[0].read, edit: result[0].edit };
+                    chatbot.myBotAuth = { read : list[0].read, edit: list[0].edit };
                     $cookies.putObject('chatbot', chatbot);
-                    $location.url('/playchat');
+
+                    if(!version)
+                    {
+                        alert(LanguageService('It is a chatbot made in old version PlayChat. Go to old version PlayChat.'));
+                        $location.url('https://old.playchat.ai/playchat');
+                    }
+                    else
+                    {
+                        $location.url('/playchat');
+                    }
                 }
                 else
                 {
