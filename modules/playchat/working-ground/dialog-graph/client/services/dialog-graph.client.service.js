@@ -1453,7 +1453,7 @@
             parent.replaceChild(itemElement, parent.children[0]);
 
             var parentDialog = parent.parentElement.parentElement.children[0].dialog;
-            if(parentDialog)
+            if(parentDialog && parentDialog.children)
             {
                 for(var i=0; i<parentDialog.children.length; i++)
                 {
@@ -1471,7 +1471,7 @@
                     }
                 }
             }
-            else
+            else if(dialog.id == 'startDialog')
             {
                 for(var key in dialog)
                 {
