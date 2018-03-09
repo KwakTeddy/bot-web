@@ -9988,7 +9988,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "보호자님의 나이를 입력해주세요"
+                        "text": "보호자님의 나이를 입력해주세요\nex) 25"
                     }
                 ],
                 "task": {
@@ -10093,11 +10093,6 @@ var dialogs = [
                         "type": "call",
                         "dialogName": "사용자 인증하기",
                         "dialogId": "default207"
-                    },
-                    {
-                        "kind": "Content",
-                        "text": "신축고객님이시네요^^\n반가워요.",
-                        "if": "!context.session.mobile"
                     }
                 ],
                 "task": {
@@ -10142,6 +10137,22 @@ var dialogs = [
                         "id": "default291"
                     }
                 ]
+            },
+            {
+                "name": "사용자 전화번호인증 틀린경우",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "text": "입력하신 전화번호가 틀렸습니다.\n확인하시고 다시 입력해주세요^^",
+                        "type": "repeat"
+                    }
+                ],
+                "id": "default295"
             }
         ]
     }
