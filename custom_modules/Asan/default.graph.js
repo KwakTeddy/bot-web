@@ -10068,7 +10068,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요, 사용하기전에 인증절차있습니다.\n전화번호 입력하시겠습니까?^^"
+                "text": "사용하기전에 핸드폰 인증을 해야 합니다.\n\n아래와 같이 핸드폰 번호를 입력해주세요.\n\nex)01012345678"
             }
         ],
         "task": {
@@ -10184,9 +10184,12 @@ var commonDialogs = [
                 "if": "context.user.mobile"
             },
             {
-                "kind": "Content",
-                "text": "sss",
-                "if": "!context.user.mobile"
+                "kind": "Action",
+                "text": "",
+                "if": "!context.user.mobile",
+                "type": "call",
+                "dialogName": "사용자 인증",
+                "dialogId": "default288"
             }
         ],
         "task": {
