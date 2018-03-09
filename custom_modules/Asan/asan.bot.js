@@ -8,4 +8,9 @@ module.exports = function(options)
   options.hybrid = {
         use: true
     };
+    options.kakao={
+        keyboard: {
+            type:"buttons",buttons:["대화 시작"]
+        }
+    };
 };
