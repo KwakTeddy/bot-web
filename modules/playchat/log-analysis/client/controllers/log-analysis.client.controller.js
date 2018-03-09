@@ -41,6 +41,8 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         }
         else if(data.type == 'answer')
         {
+            $scope.target = data.log.target;
+
             if(data.log.target)
             {
                 if(data.log.target.matchRate)
@@ -53,8 +55,6 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
                     $scope.target.requiredMatchRate = Math.round(data.log.target.requiredMatchRate * 100);
                 }
             }
-
-            $scope.target = data.log.target;
 
             $scope.output = data.log.output;
         }

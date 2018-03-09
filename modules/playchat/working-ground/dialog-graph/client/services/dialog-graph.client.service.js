@@ -131,6 +131,8 @@
 
             angular.element('#menuPaste').attr('data-using', 'false');
 
+            $rootScope.$broadcast('simulator-build');
+
             this.closeMenu();
         };
 
@@ -155,6 +157,8 @@
             //     instance.setDirty(true);
             // }
 
+            $rootScope.$broadcast('simulator-build');
+
             this.closeMenu();
         };
 
@@ -178,6 +182,8 @@
             //
             //     instance.setDirty(true);
             // }
+
+            $rootScope.$broadcast('simulator-build');
 
             this.closeMenu();
         };

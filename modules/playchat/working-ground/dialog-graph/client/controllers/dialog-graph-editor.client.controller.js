@@ -291,6 +291,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.isNew = undefined;
             $scope.close();
 
+            $rootScope.$broadcast('simulator-build');
+
             e.preventDefault();
         });
     };
