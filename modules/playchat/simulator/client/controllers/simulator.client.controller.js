@@ -212,7 +212,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
                         addBotBubble(data.output);
                         $rootScope.$broadcast('onmsg', { message: data.output });    
-                    }, 1000);
+                    }, 100);
                 }
                 else if(data.type == 'dialog')
                 {
@@ -258,11 +258,13 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             else if(e.keyCode == 116) //F5
             {
+                clearBubble();
                 $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':build', false);
             }
             else if(e.keyCode == 117) //F6
             {
+                clearBubble();
                 $rootScope.$broadcast('dialogGraphTestFocus', 'defaultcommon0');
                 emitMsg(':reset memory', false);
             }
@@ -282,6 +284,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
             else if(e.keyCode == 118) //F7
             {
+                clearBubble();
                 var dialoggraphElement = angular.element('.graph-body').get(0);
                 var codeEditor = angular.element('.dialog-graph-code-editor').is(':visible');
                 if(codeEditor)
