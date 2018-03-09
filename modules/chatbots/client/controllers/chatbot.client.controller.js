@@ -38,6 +38,15 @@
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
                 $scope.list = list;
+                
+                for(var i=0; i<list.length; i++)
+                {
+                    if(list[i].language == 'ko')
+                    {
+                        list[i].languageCode = ''
+                    }
+                }
+                
                 $scope.$parent.loading = false;
             });
 

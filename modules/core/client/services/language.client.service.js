@@ -3284,6 +3284,30 @@
                 "en": "Image address string length is big. please down sizing image adress string length.",
                 "zh": "图像地址字符串的长度很大。 请缩小图像地址字符串长度。",
                 "jp": "イメージアドレス文字列の長さが大きいです。 イメージアドレス文字列の長さを縮小してください。"
+            },
+            "ko": {
+                "ko": "한국어",
+                "en": "Korean",
+                "zh": "朝鲜的",
+                "jp": "韓国語"
+            },
+            "en": {
+                "ko": "영어",
+                "en": "English",
+                "zh": "英语",
+                "jp": "英語"
+            },
+            "zh": {
+                "ko": "중국어",
+                "en": "Chinese",
+                "zh": "中文",
+                "jp": "中国語"
+            },
+            "ja": {
+                "ko": "일본어",
+                "en": "Japanese",
+                "zh": "日本",
+                "jp": "日本語"
             }
         };
 
