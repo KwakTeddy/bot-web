@@ -288,7 +288,7 @@
         return this.type.declarative;
     };
 
-    SentenceInfo.prototype.analyzeZH = function (morphemes)
+    SentenceInfo.prototype.analyzeZH = function (sentence, morphemes)
     {
         if(morphemes === undefined)
         {
@@ -341,12 +341,12 @@
             }
         }
         // 체크2. 谁 (누가), 什么 (무엇), 当 (언제), 如何 (어떻게), 为什么 (왜), 哪里 (어디)
-        if (str.indexOf("谁") != -1 ||
-            str.indexOf("什么") != -1 ||
-            str.indexOf("当") != -1 ||
-            str.indexOf("如何") != -1 ||
-            str.indexOf("为什么") != -1 ||
-            str.indexOf("哪里") != -1) {
+        if (sentence.indexOf("谁") != -1 ||
+            sentence.indexOf("什么") != -1 ||
+            sentence.indexOf("当") != -1 ||
+            sentence.indexOf("如何") != -1 ||
+            sentence.indexOf("为什么") != -1 ||
+            sentence.indexOf("哪里") != -1) {
             return this.type.interrogative;
         }
 
@@ -388,11 +388,11 @@
 
         // 3. 감탄문
         // 체크1. 내용 자체가 감탄
-        if (str.indexOf("好极了")>-1 ||
-            str.indexOf("中华人民共和国万岁")>-1 ||
-            str.indexOf("祝您健康长寿")>-1 ||
-            str.indexOf("祝你生日快乐")>-1 ||
-            str.indexOf("旅行快乐")>-1) {
+        if (sentence.indexOf("好极了")>-1 ||
+            sentence.indexOf("中华人民共和国万岁")>-1 ||
+            sentence.indexOf("祝您健康长寿")>-1 ||
+            sentence.indexOf("祝你生日快乐")>-1 ||
+            sentence.indexOf("旅行快乐")>-1) {
             return this.type.exclamation;
         }
 
@@ -510,7 +510,7 @@
         }
         else if (language == "zh")
         {
-            return this.analyzeZH(morphemes);
+            return this.analyzeZH(sentence, morphemes);
         }
         else if (language == "ja")
         {

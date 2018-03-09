@@ -147,7 +147,9 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
             async.eachSeries(findWords, function(word, next)
             {
-                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: new RegExp('(?:^|\\s)' + word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i') }).limit(this.limit).populate('dialogset').populate('context').lean().exec(function(err, list)
+                // var regexp = new RegExp('(?:^|\\s)' + word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '(?:$|\\s)', 'i');
+                var regexp = new RegExp(word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'i');
+                DialogsetDialog.find({ dialogset: { $in: dialogsets }, input: regexp }).limit(this.limit).populate('dialogset').populate('context').lean().exec(function(err, list)
                 {
                     if(err)
                     {
