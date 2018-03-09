@@ -90,3 +90,5 @@ public/videos
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+quibble_test.js

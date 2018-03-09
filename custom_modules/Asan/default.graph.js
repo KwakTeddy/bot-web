@@ -10190,6 +10190,12 @@ var commonDialogs = [
             },
             {
                 "text": {
+                    "raw": "대화 시작",
+                    "nlp": "대화 시작"
+                }
+            },
+            {
+                "text": {
                     "raw": "0",
                     "nlp": "0"
                 }
