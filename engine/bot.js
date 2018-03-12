@@ -1,15 +1,20 @@
 (function()
 {
-    var bots = {};
-    module.exports.bots = bots;
-    module.exports.makeBot = function(name, obj)
+    var f = function()
     {
-        bots[name] = obj;
+        this.bots = {};
     };
 
-    module.exports.getBot = function(name)
+    f.prototype.makeBot = function(name, obj)
+    {
+        this.bots[name] = obj;
+    };
+
+    f.prototype.getBot = function(name)
     {
         console.log('흠 : ', bots.hasOwnProperty(name));
         return bots[name];
     };
+
+    module.exports = new f;
 })();
