@@ -585,7 +585,17 @@
 
         DialogGraph.prototype.deleteDialog = function(target, withChildren, saveHistory, isEditorClose)
         {
-            var parentDialog = target.parent().prev().get(0).dialog;
+            var parentDialog = target.parent().prev().get(0);
+            if(parentDialog)
+            {
+                parentDialog = target.parent().prev().get(0).dialog;
+            }
+            else
+            {
+                alert(this.$scope.lan('Start cards can not be deleted'));
+                return;
+            }
+
             var dialog = target.get(0).children[0].dialog;
 
             var prev = target.prev().get(0);

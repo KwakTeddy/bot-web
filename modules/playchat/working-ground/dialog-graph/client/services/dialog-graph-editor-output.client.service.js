@@ -306,9 +306,18 @@
                 output.kind = 'Content';
             };
 
-            $scope.actionValueChanged = function(dialog)
+            $scope.actionValueChanged = function(output)
             {
-                dialog.kind = 'Action';
+                output.kind = 'Action';
+
+                if(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall')
+                {
+
+                }
+                else
+                {
+                    delete output.dialogName;
+                }
             };
 
             $scope.findActionDialogs = function(e)

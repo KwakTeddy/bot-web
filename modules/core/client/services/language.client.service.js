@@ -3392,6 +3392,12 @@
                 "en": "Chatbot Sharing",
                 "zh": "聊天机器人共享",
                 "jp": "チャットボットの共有"
+            },
+            "Start cards can not be deleted": {
+                "ko": "시작카드는 삭제할 수 없습니다",
+                "en": "Start cards can not be deleted",
+                "zh": "启动卡不能被删除",
+                "jp": "スタートカードは削除できません"
             }
         };
 
