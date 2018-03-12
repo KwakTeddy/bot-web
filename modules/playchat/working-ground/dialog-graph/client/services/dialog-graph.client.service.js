@@ -1522,7 +1522,10 @@
 
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
-            this.createDialogId(dialog);
+            if(!dialog.id)
+            {
+                this.createDialogId(dialog);
+            }
 
             var prefix = this.fileName.split('.')[0];
             this.idList[dialog.id.replace(prefix, '')] = true;
