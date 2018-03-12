@@ -89,7 +89,7 @@ var BotObject = require('./bot/bot.js');
 
                     console.log('옵션스 : ', options);
 
-                    return true;
+                    return false;
                 }
             }
         }
