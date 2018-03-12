@@ -207,7 +207,10 @@
                 }
                 else if(dialogs[i].children)
                 {
-                    return checkUniqueName(name, dialogs[i].children);
+                    if(!checkUniqueName(name, dialogs[i].children))
+                    {
+                        return false;
+                    }
                 }
             }
 
