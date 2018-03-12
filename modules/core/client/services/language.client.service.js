@@ -3482,6 +3482,30 @@
                 "en": "Add Member",
                 "zh": "添加成员",
                 "jp": "メンバーを追加"
+            },
+            "User Key": {
+                "ko": "사용자 아이디",
+                "en": "User Key",
+                "zh": "用户密钥",
+                "jp": "ユーザー・キー"
+            },
+            "Last conversation date": {
+                "ko": "마지막 대화일자",
+                "en": "Last conversation date",
+                "zh": "上次会话日期",
+                "jp": "最後の会話日"
+            },
+            "Date of first conversation": {
+                "ko": "첫 대화 날짜",
+                "en": "Date of first conversation",
+                "zh": "第一次对话的日期",
+                "jp": "最初会話の日付"
+            },
+            "Mobile": {
+                "ko": "휴대폰 번호",
+                "en": "Mobile",
+                "zh": "移动",
+                "jp": "モバイル"
             }
         };
 

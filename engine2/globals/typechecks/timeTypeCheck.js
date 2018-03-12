@@ -5,24 +5,12 @@ module.exports = function(globals)
         var text = dialog.userInput.text;
 
         var name = 'time';
-        var re = /(오전|오후|새벽|아침|낮|저녁|밤|am|pm|a.m|p.m)?\s*(\d{1,2})\s*(?:시|:)\s*(?:(\d{1,2}|반)\s*분?)?/g;
         var matched = false;
 
-
-        text = text.replace(re, function(match, g1, g2, g3)
+        var result = text.replace(/(오전|오후|새벽|아침|낮|저녁|밤|am|pm|a.m|p.m)?\s*(\d{1,2})\s*(?:시|:)\s*(?:(\d{1,2}|반)\s*분?)?/g, function(match, g1, g2, g3)
         {
             matched = true;
             var time;
-            // var timeform = ':00';
-
-            var matchTime = function(_name, _task, _time) {
-                if(_task[_name]) {
-                    if(Array.isArray(_task[_name])) _task[_name].push(_time);
-                    else _task[_name] = [_task[_name], _time];
-                } else {
-                    _task[_name] = _time;
-                }
-            };
 
             var hour = parseInt(g2);
             var min = parseInt(g3) || g3 || 0;
@@ -51,10 +39,9 @@ module.exports = function(globals)
                 return g1 + ":" + g2;
             });
 
-
-            return matchTime(name, task, time);
+            return time;
         });
 
-        callback(matched, text);
+        callback(matched, result);
     });
 };

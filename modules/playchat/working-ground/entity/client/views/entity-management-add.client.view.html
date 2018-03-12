@@ -90,7 +90,7 @@
                             </thead>
                             <tbody id="entityList">
                                 <tr ng-if="entities.length == 0">
-                                    <td colspan="2">Empty</td>
+                                    <td colspan="2">{{ lan('empty') }}</td>
                                 </tr>
                                 <tr ng-repeat="item in entities">
                                     <td style="text-align: left;"> <textarea class="entity-content-name" ng-model="item.name" style="width: 100%;"></textarea></td>
