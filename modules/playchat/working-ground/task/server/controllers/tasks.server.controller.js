@@ -129,7 +129,7 @@ exports.findTasks = function(req, res)
         }
 
         var result = [];
-        for(var i=0, l=list.length; i<l; i++)
+        for(var i=0; i<list.length; i++)
         {
             if(list[i].endsWith('.graph.js') || list[i].endsWith('.bot.js') || list[i].endsWith('.test.js') || !list[i].endsWith('.js'))
             {
@@ -140,15 +140,23 @@ exports.findTasks = function(req, res)
         }
 
         var tasks = [];
-        for(var i=0, l=result.length; i<l; i++)
+        for(var i=0; i<result.length; i++)
         {
-            var bot = {};
-            bot.setTask = function(name)
+            (function(index)
             {
-                tasks.push({ fileName: result[i], name: name });
-            };
+                var bot = {};
+                bot.setTask = function(name)
+                {
+                    tasks.push({ fileName: result[index], name: name });
+                };
 
-            utils.requireNoCache(filePath + '/' + result[i], true)(bot);
+                bot.setType = function()
+                {
+
+                };
+
+                utils.requireNoCache(filePath + '/' + result[i], true)(bot);
+            })(i);
             // var content = fs.readFileSync(filePath + '/' + result[i]);
             // if(content)
             // {
