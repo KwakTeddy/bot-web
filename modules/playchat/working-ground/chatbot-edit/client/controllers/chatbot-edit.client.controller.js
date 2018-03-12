@@ -12,6 +12,8 @@
 
         var chatbot = $scope.chatbot = $cookies.getObject('chatbot');
 
+        $scope.user = $cookies.getObject('user');
+
         $scope.list = [];
         $scope.openShareModal = false;
         $scope.openUploadModal = false;
@@ -80,7 +82,14 @@
                 },
                 function(err)
                 {
-                    alert(err.data.message);
+                    if(err.status == 401)
+                    {
+                        alert(LanguageService('You do not have permission to edit this bot'));
+                    }
+                    else
+                    {
+                        alert(err.data.message);
+                    }
                 });
             };
 
@@ -181,7 +190,7 @@
                     $scope.share.read = true;
                 }
 
-                ChatBotShareService.save({ botId: chatbot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
+                ChatBotShareService.save({ botId: chatbot._id, data: JSON.parse(angular.toJson($scope.share)), language: $scope.user.language }, function(result)
                 {
                     $scope.share = {};
                     $scope.getList();

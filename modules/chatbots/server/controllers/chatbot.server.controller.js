@@ -611,8 +611,7 @@ exports.delete = function(req, res)
 
 exports.share = function(req, res)
 {
-    var accept = accepts(req);
-    var browserLan = accept.languages()[0];
+    var language = req.body.language;
 
     User.findOne({ $or: [{ email: req.body.data.email }, { username: req.body.data.email }] }).exec(function(err, item)
     {
@@ -643,7 +642,7 @@ exports.share = function(req, res)
         }
         else
         {
-            res.status(404).send({ message: req.body.data.email + ' ' + lanService(browserLan)['L091'] });
+            res.status(404).send({ message: req.body.data.email + ' ' + lanService(language)['L091'] });
         }
     });
 };

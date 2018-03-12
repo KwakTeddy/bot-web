@@ -142,8 +142,6 @@ module.exports.updateBot = function(req, res)
             item.language = req.body.language;
             item.imageFile = req.body.imageFile;
 
-            console.log('머지 : ', item);
-
             item.save(function(err)
             {
                 if(err)

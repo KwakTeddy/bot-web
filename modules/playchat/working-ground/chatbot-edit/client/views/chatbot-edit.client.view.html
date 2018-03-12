@@ -108,10 +108,10 @@
                     <td>{{ item.user.username }}</td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
-                        <label style="margin: 5px;">
+                        <label style="margin: 5px;" ng-if="user.email != item.user.email">
                             <input type="checkbox" ng-model="item.read" ng-change="saveAuth(item);"><span>Read</span>
                         </label>
-                        <label style="margin: 5px;">
+                        <label style="margin: 5px;" ng-if="user.email != item.user.email">
                             <input type="checkbox" ng-model="item.edit" ng-change="saveAuth(item);"><span>Edit</span>
                         </label>
                     </td>

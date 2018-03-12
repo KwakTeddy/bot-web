@@ -133,9 +133,9 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         angular.element('.log-analysis').css('height', expandMode + 'px');
         $scope.close();
 
-        angular.element('#logroom > table > thead th').on('click', function()
+        angular.element('#logroom > table > thead th').on('click', function(e)
         {
-            if(expandMode == -1)
+            if(e.originalEvent.srcElement.nodeName == 'th' && expandMode == -1)
             {
                 expandMode = 0;
                 angular.element('.working-ground').css('bottom', '211px');
