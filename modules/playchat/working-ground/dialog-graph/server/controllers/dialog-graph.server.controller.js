@@ -159,7 +159,15 @@ exports.saveFile = function(req, res)
                     return res.status(400).send({ message: err });
                 }
 
-                res.jsonp({ fileName: req.params.fileName });
+                fs.writeFile(filePath, req.body.data, function(err)
+                {
+                    if(err)
+                    {
+                        console.error(err.stack || err); return res.status(400).send({ message: err.stack || err });
+                    }
+
+                    res.jsonp({ fileName: req.params.fileName });
+                });
             });
         }
         else
