@@ -494,7 +494,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                         }
                     }
 
-                    DialogGraph.focus($scope.searchedDialogs[$scope.searchedDialogFocus]);
+                    if($scope.searchedDialogs.length > 0)
+                    {
+                        DialogGraph.focus($scope.searchedDialogs[$scope.searchedDialogFocus]);
+                    }
                 }
 
                 e.preventDefault();

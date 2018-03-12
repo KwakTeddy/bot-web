@@ -810,11 +810,14 @@
                     }
                     else if(e.keyCode == 13)
                     {
-                        //ENTER
-                        var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
-                        var dialog = that.focusedTarget.dialog;
+                        if(e.srcElement.id != 'search')
+                        {
+                            //ENTER
+                            var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                            var dialog = that.focusedTarget.dialog;
 
-                        that.editor.open(parent ? parent.dialog : undefined, dialog);
+                            that.editor.open(parent ? parent.dialog : undefined, dialog);
+                        }
                     }
                     else if(e.keyCode == 45)
                     {
