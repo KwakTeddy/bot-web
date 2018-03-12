@@ -16,5 +16,5 @@
         return bots[name];
     };
 
-    module.exports = new f;
+    module.exports = new f();
 })();
