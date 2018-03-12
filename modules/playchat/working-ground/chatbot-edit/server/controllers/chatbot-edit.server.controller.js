@@ -3,6 +3,8 @@ var fs = require('fs');
 
 var mongoose = require('mongoose');
 
+var utils = require(path.resolve('./engine2/utils/utils.js'));
+
 var Bot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
 
@@ -170,7 +172,7 @@ module.exports.getBotOptions = function(req, res)
             if(list[i].endsWith('bot.js'))
             {
                 var options = {};
-                require(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
 
                 return res.send(options);
             }
@@ -194,7 +196,7 @@ module.exports.updateBotOptions = function(req, res)
             if(list[i].endsWith('bot.js'))
             {
                 var options = {};
-                require(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
                 for(var key in req.body.options)
                 {
                     options[key] = req.body.options[key];

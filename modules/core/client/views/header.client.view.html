@@ -67,17 +67,11 @@
             <span ng-if="isLogin">
                 <button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
             </span>
-            <ul class="docs" style="display: none;">
+            <ul class="docs">
                 <li>
                     <a href="#" class="mr20">
                         <img src="/modules/core/client/imgs/docs.png" class="mr5">
                         <span>Docs</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="mr20">
-                        <img src="/modules/core/client/imgs/forum.png" class="mr5">
-                        <span>Forum</span>
                     </a>
                 </li>
                 <li>
@@ -101,9 +95,9 @@
             <a class="login_silver" href="#" ng-if="isLogin" ng-click="openMenu($event);"></a>
             <ul class="popup-menu user-menu">
                 <ul>
-                    <li class="popup-title"">{{ user.username }}</a></li>
-                    <li><a href="/playchat/user-profile">Profile</a></li>
-                    <li><a href="#" ng-click="signout();">Signout</a></li>
+                    <li class="popup-title">{{ user.email }}</a></li>
+                    <li><a href="/playchat/user-profile">{{lan('Profile') }}</a></li>
+                    <li><a href="#" ng-click="signout();">{{lan('Signout') }}</a></li>
                 </ul>
             </ul>
         </div>

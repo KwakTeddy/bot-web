@@ -67,7 +67,7 @@
                 <tr>
                     <td>{{ lan('Auto Correction Usable') }}</td>
                     <td>
-                        <select ng-model="botOptions.useAutoCorrection">
+                        <select ng-model="botOptions.useAutoCorrection" ng-change="changeBotOptions();">
                             <option value="true">true</option>
                             <option value="false">false</option>
                         </select>

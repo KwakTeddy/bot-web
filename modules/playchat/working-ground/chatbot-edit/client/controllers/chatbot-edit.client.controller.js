@@ -222,9 +222,13 @@
                 var options = {};
                 for(var key in $scope.botOptions)
                 {
-                    if($scope.botOptions[key] == 'true' || $scope.botOptions[key] == 'false')
+                    if($scope.botOptions[key] == 'true')
                     {
-                        options[key] = new Boolean($scope.botOptions[key]);
+                        options[key] = true;
+                    }
+                    else if($scope.botOptions[key] == 'false')
+                    {
+                        options[key] = false;
                     }
                 }
 
