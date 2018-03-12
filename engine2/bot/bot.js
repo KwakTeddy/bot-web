@@ -425,7 +425,7 @@ var Dialogset = mongoose.model('Dialogset');
 
             that.contexts = contexts;
 
-            findCustomContextItem(botId, contextList, function(err)
+            findCustomContextItem(that.id, contextList, function(err)
             {
                 if(err)
                 {
