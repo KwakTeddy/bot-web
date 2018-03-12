@@ -82,12 +82,8 @@ var BotObject = require('./bot/bot.js');
                 {
                     utils.requireNoCache(botDir + '/' + files[i], true);
                     var botModule = require(path.resolve('./engine/bot.js'));
-                    console.log('허허 : ', botModule.bots);
-                    console.log('dsdfs : ', files[i]);
                     var options = botModule.getBot(files[i].split('.')[0]);
                     bot.options = options;
-
-                    console.log('옵션스 : ', options);
 
                     return false;
                 }

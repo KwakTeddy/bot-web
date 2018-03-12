@@ -12,7 +12,6 @@
 
     f.prototype.getBot = function(name)
     {
-        console.log('흠 : ', this.bots.hasOwnProperty(name));
         return this.bots[name];
     };
 
