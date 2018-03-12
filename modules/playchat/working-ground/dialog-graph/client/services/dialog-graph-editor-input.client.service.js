@@ -826,8 +826,18 @@
                     else if(focusNode.textContent.trim().length == 0)
                     {
                         showNLPText(focusNode);
-                        $scope.isShowPlaceHolder = true;
-                        angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+
+                        var parent = focusNode.parentElement;
+                        while(parent.nodeName != 'DIV')
+                        {
+                            parent = parent.parentElement;
+                        }
+
+                        if(parent.innerText.length == 0)
+                        {
+                            $scope.isShowPlaceHolder = true;
+                            angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+                        }
                     }
                 }
                 else if(e.keyCode == 37 || e.keyCode == 39 || ($scope.showInputList && e.keyCode != 38 && e.keyCode != 40))

@@ -79,9 +79,9 @@
             this.closeCallback = callback;
         };
 
-        DialogGraphEditor.prototype.close = function()
+        DialogGraphEditor.prototype.close = function(withCallback)
         {
-            if(this.closeCallback)
+            if(this.closeCallback && withCallback !== false)
             {
                 if(!this.closeCallback())
                 {

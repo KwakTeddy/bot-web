@@ -240,6 +240,7 @@
 
             changeCloneInfo(clone);
 
+            instance.createDialogId(clone);
             instance.addChildDialog(parentDialog, clone, index + 1);
 
             instance.refresh();
@@ -261,6 +262,7 @@
             delete clone.children;
 
             var index = parentDialog.children.indexOf(dialog);
+            instance.createDialogId(clone);
             instance.addChildDialog(parentDialog, clone, index + 1);
 
             instance.refresh();
@@ -604,26 +606,31 @@
             }
 
             var index = parentDialog.children.indexOf(dialog);
-            parentDialog.children.splice(index, 1);
-
-            if(withChildren && dialog.children.length > 0)
+            if(index != -1)
             {
-                for(var i=0; i<dialog.children.length; i++)
+                parentDialog.children.splice(index, 1);
+
+                if(withChildren && dialog.children.length > 0)
                 {
-                    parentDialog.children.splice(index, 0, dialog.children[i]);
+                    for(var i=0; i<dialog.children.length; i++)
+                    {
+                        parentDialog.children.splice(index, 0, dialog.children[i]);
+                    }
+
+                    afterFocusId = dialog.children[0].id;
                 }
 
-                afterFocusId = dialog.children[0].id;
+                instance.setDirty(true, this.fileName, saveHistory);
             }
 
             instance.focusedDialog = null;
             instance.refresh();
-            instance.setDirty(true, this.fileName, saveHistory);
             instance.focusById(afterFocusId);
 
             if(this.editor.focusId != dialog.id && isEditorClose !== false)
             {
-                this.editor.close();
+                //수정창 열어논 상태에서 삭제 해버렸을경우 닫기 위함.
+                this.editor.close(false);
             }
         };
 
@@ -1444,8 +1451,6 @@
                 that.refreshLine();
             });
 
-            t.find('.graph-dialog-item').get(0).dialog = dialog;
-
             if(!dialog.children || dialog.children.length == 0)
             {
                 t.find('.graph-fold').hide();
@@ -1456,37 +1461,45 @@
             var itemElement = t.find('.graph-dialog-item').get(0);
 
             var parent = angular.element(this.canvas).find('#' + dialog.id).get(0);
+
+            for(var key in dialog)
+            {
+                parent.children[0].dialog[key] = dialog[key];
+            }
+
+            itemElement.dialog = parent.children[0].dialog;
+
             parent.replaceChild(itemElement, parent.children[0]);
 
-            var parentDialog = parent.parentElement.parentElement.children[0].dialog;
-            if(parentDialog && parentDialog.children)
-            {
-                for(var i=0; i<parentDialog.children.length; i++)
-                {
-                    if(parentDialog.children[i].id == dialog.id)
-                    {
-                        for(var key in dialog)
-                        {
-                            if(key != 'children')
-                            {
-                                parentDialog.children[i][key] = dialog[key];
-                            }
-                        }
-
-                        break;
-                    }
-                }
-            }
-            else if(dialog.id == 'startDialog')
-            {
-                for(var key in dialog)
-                {
-                    if(key != 'id' && key != 'children')
-                    {
-                        this.startDialog[key] = dialog[key];
-                    }
-                }
-            }
+            // var parentDialog = parent.parentElement.parentElement.children[0].dialog;
+            // if(parentDialog && parentDialog.children)
+            // {
+            //     for(var i=0; i<parentDialog.children.length; i++)
+            //     {
+            //         if(parentDialog.children[i].id == dialog.id)
+            //         {
+            //             for(var key in dialog)
+            //             {
+            //                 if(key != 'children')
+            //                 {
+            //                     parentDialog.children[i][key] = dialog[key];
+            //                 }
+            //             }
+            //
+            //             break;
+            //         }
+            //     }
+            // }
+            // else if(dialog.id == 'startDialog')
+            // {
+            //     for(var key in dialog)
+            //     {
+            //         if(key != 'id' && key != 'children')
+            //         {
+            //             this.startDialog[key] = dialog[key];
+            //         }
+            //     }
+            // }
 
             this.bindDialogFunctions(angular.element(parent));
 
@@ -1495,22 +1508,21 @@
             this.focusById(dialog.id);
         };
 
-        //아이디가 없으면 생성하게끔 하려고 임시로 넣음.
-        var tempIdCount = new Date().getTime();
+        DialogGraph.prototype.createDialogId = function(dialog)
+        {
+            var prefix = this.fileName.split('.')[0];
+            var number = 0;
+            while(this.idList[number])
+            {
+                number++;
+            }
+
+            dialog.id = prefix + number;
+        };
+
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
-            if(!dialog.id)
-            {
-                dialog.id = 'default' + tempIdCount;
-            }
-
-            if(!dialog.name)
-            {
-                console.log(dialog);
-                dialog.name = 'Created Name ' + tempIdCount;
-            }
-
-            tempIdCount++;
+            this.createDialogId(dialog);
 
             var prefix = this.fileName.split('.')[0];
             this.idList[dialog.id.replace(prefix, '')] = true;
@@ -2091,15 +2103,6 @@
 
         DialogGraph.prototype.addChildDialog = function(parent, dialog, index)
         {
-            var prefix = this.fileName.split('.')[0];
-            var number = 0;
-            while(this.idList[number])
-            {
-                number++;
-            }
-
-            dialog.id = prefix + number;
-
             if(!parent.children)
                 parent.children = [];
 

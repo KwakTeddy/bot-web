@@ -224,6 +224,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             }
         }
 
+        if(dialog.children)
+        {
+            result.children = dialog.children;
+        }
+
         return result;
     };
 
@@ -277,6 +282,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             $scope.originalDialog = undefined;
 
             // DialogGraph.refresh();
+            if($scope.isNew)
+            {
+                DialogGraph.addChildDialog($scope.parent, $scope.isNew);
+            }
+
             DialogGraph.reloadDialog(result);
             DialogGraph.setDirty(true, $scope.currentFileName);
             DialogGraph.refreshLine();
@@ -409,6 +419,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         if($scope.isNew)
         {
+            //기존에 추가했던애가 삭제된다는 알람 필요.
             DialogGraph.deleteDialogById($scope.isNew.id, false, false);
         }
 
@@ -429,9 +440,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
             dialog = result;
 
-            DialogGraph.addChildDialog(parent, dialog);
-
-            DialogGraphEditor.focusId = dialog.id;
+            // DialogGraph.addChildDialog(parent, dialog);
 
             DialogGraph.drawDialog(angular.element('#' + parent.id + ' .graph-dialog-children:first'), dialog);
             DialogGraph.refreshLine();
@@ -439,8 +448,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             // DialogGraph.setDirty(true);
             // DialogGraph.focusById(result.id);
 
-            $rootScope.$broadcast('saveDialogGraph', { saveFileName: DialogGraph.fileName, saveHistory: false });
+            // $rootScope.$broadcast('saveDialogGraph', { saveFileName: DialogGraph.fileName, saveHistory: false });
 
+            DialogGraphEditor.focusId = dialog.id;
             $scope.isNew = dialog;
 
             DialogGraph.focusById(dialog.id);
