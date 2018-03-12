@@ -892,7 +892,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                     }
-                    else if(e.keyCode == 9)
+                    else if(e.keyCode == 9 || e.keyCode == 36 || e.keyCode == 35)
                     {
                         e.preventDefault();
                     }
