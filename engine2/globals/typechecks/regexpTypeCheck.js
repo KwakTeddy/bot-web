@@ -20,7 +20,7 @@ module.exports = function(globals)
             matched = true;
             parsed = matchs[0];
 
-            dialog.userInput.text = inputRaw.replace(matchs[0], '+' + type.name + '+');
+            // dialog.userInput.text = inputRaw.replace(matchs[0], '+' + type.name + '+');
         }
 
         // dialog.userInput.text = inputRaw.replace(re, function(match, p1)
