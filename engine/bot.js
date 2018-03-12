@@ -1,6 +1,7 @@
 (function()
 {
     var bots = {};
+    module.exports.bots = bots;
     module.exports.makeBot = function(name, obj)
     {
         bots[name] = obj;
