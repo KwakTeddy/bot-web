@@ -52,7 +52,10 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
                 return;
         }
 
-        $scope.$parent.loading = false;
+        if($scope.$parent)
+        {
+            $scope.$parent.loading = false;
+        }
 
         angular.element('.working-ground').on('scroll', function(e)
         {
