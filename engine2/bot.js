@@ -41,12 +41,12 @@ var BotObject = require('./bot/bot.js');
                         return callback(err);
                     }
 
+                    that.bots[botId] = bot;
+
                     if(!that.loadBotFiles(bot, botDir))
                     {
-                        return callback();
+                        return callback(null, bot);
                     }
-
-                    that.bots[botId] = bot;
 
                     callback(null, bot);
                 })
