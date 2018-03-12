@@ -144,6 +144,14 @@
 
             $scope.taskFocus = function(e)
             {
+                TaskService.query({ botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : '') }, function(list)
+                {
+                    $scope.tasks = list;
+                },
+                function(err)
+                {
+                    alert(err.data.message);
+                });
                 $scope.taskKeyUp(e);
             };
 

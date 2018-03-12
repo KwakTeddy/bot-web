@@ -10,7 +10,7 @@ var _ = require('lodash');
 var Task = mongoose.model('Task');
 var TaskEntity = mongoose.model('TaskEntity');
 
-var util = require('util'); //temporary
+var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var fs = require('fs');
 
@@ -142,22 +142,29 @@ exports.findTasks = function(req, res)
         var tasks = [];
         for(var i=0, l=result.length; i<l; i++)
         {
-            var content = fs.readFileSync(filePath + '/' + result[i]);
-            if(content)
+            var bot = {};
+            bot.setTask = function(name)
             {
-                content = content.toString();
+                tasks.push({ fileName: result[i], name: name });
+            };
 
-                var match = content.match(/bot.setTask\([^,]*,/gi);
-                if(match)
-                {
-                    for(var j=0; j<match.length; j++)
-                    {
-                        var name = match[j].replace('bot.setTask(', '').replace(',', '').replace(/"/gi, '').replace(/'/gi, '');
-                        if(tasks.indexOf(name) == -1)
-                            tasks.push({ fileName: result[i], name: name });
-                    }
-                }
-            }
+            utils.requireNoCache(filePath + '/' + result[i])(bot);
+            // var content = fs.readFileSync(filePath + '/' + result[i]);
+            // if(content)
+            // {
+            //     content = content.toString();
+            //
+            //     var match = content.match(/bot.setTask\([^,]*,/gi);
+            //     if(match)
+            //     {
+            //         for(var j=0; j<match.length; j++)
+            //         {
+            //             var name = match[j].replace('bot.setTask(', '').replace(',', '').replace(/"/gi, '').replace(/'/gi, '');
+            //             if(tasks.indexOf(name) == -1)
+            //                 tasks.push({ fileName: result[i], name: name });
+            //         }
+            //     }
+            // }
         }
 
         res.jsonp(tasks);
@@ -369,8 +376,6 @@ exports.create = function(req, res)
  */
 exports.read = function(req, res) {
   console.log('---------------------====');
-  console.log(util.inspect(req.params));
-  console.log(util.inspect(req.body));
   var taskList = global._bots[req.params.botNameId].tasks;
   var task = taskList[req.params.name];
   res.jsonp(task);
@@ -418,7 +423,6 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
 
   // var task = req.task ;
-  console.log(util.inspect(req.body));
   console.log('=-=-===--.................');
   // task = _.extend(task , req.body);
   Task.findOne({name: req.body.name}, function (err, data) {
@@ -593,8 +597,6 @@ exports.openList = function(req, res) {
  */
 exports.openRead = function(req, res) {
   console.log('opencustest');
-  console.log(util.inspect(req.params));
-  console.log(util.inspect(req.body));
   Task.findOne({name: req.params.name}).exec(function (err, result) {
     if (err) {
       console.log(err);
