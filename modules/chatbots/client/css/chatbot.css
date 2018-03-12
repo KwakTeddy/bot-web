@@ -92,6 +92,11 @@
 .chatbots-row
 {
     padding: 15px 0;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
 }
 
 .chatbot-language
