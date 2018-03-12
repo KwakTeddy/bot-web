@@ -148,7 +148,7 @@ exports.findTasks = function(req, res)
                 tasks.push({ fileName: result[i], name: name });
             };
 
-            utils.requireNoCache(filePath + '/' + result[i])(bot);
+            utils.requireNoCache(filePath + '/' + result[i], true)(bot);
             // var content = fs.readFileSync(filePath + '/' + result[i]);
             // if(content)
             // {

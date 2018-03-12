@@ -176,7 +176,7 @@ module.exports.getBotOptions = function(req, res)
             if(list[i].endsWith('bot.js'))
             {
                 var options = {};
-                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]), true)(options);
 
                 return res.send(options);
             }
@@ -200,7 +200,7 @@ module.exports.updateBotOptions = function(req, res)
             if(list[i].endsWith('bot.js'))
             {
                 var options = {};
-                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]), true)(options);
                 for(var key in req.body.options)
                 {
                     options[key] = req.body.options[key];
