@@ -70,9 +70,16 @@
                     else
                     {
                         var ul = e.currentTarget.nextElementSibling;
-                        ul.children[0].className = 'selected';
 
-                        selectedTask = ul.children[0];
+                        for(var i=0; i<ul.children.length; i++)
+                        {
+                            if(ul.children[i].style.display != 'none')
+                            {
+                                ul.children[i].className = 'selected';
+                                selectedTask = ul.children[i];
+                                break;
+                            }
+                        }
                     }
                 }
                 else if(e.keyCode == 13) //Enter

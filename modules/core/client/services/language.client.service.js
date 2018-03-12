@@ -3338,6 +3338,60 @@
                 "en": "Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend?\n\nif select the 'Cancel', then you can send to our email.",
                 "zh": "与KakaoTalk Plus一起收到问题或错误报告以及改进建议。 移至PlayChat Plus朋友？\n\n如果选择“取消”，那么你可以发送到我们的电子邮件。",
                 "jp": "質問やエラー報告、改善の提案は、カカオトークプラスで友人として受け取ります。 PlayChat Plusの友達に移動しますか？\n\n'キャンセル'を選択した場合、私たちの電子メールに送信することができます。"
+            },
+            "Chatbot Basic Information": {
+                "ko": "챗봇 기본정보",
+                "en": "Chatbot Basic Information",
+                "zh": "Chatbot基本信息",
+                "jp": "チャットボットの基本情報"
+            },
+            "Chatbot Options": {
+                "ko": "챗봇 옵션",
+                "en": "Chatbot Options",
+                "zh": "Chatbot选项",
+                "jp": "チャットボットのオプション"
+            },
+            "Option Name": {
+                "ko": "옵션 명",
+                "en": "Option Name",
+                "zh": "选项名称",
+                "jp": "オプション名"
+            },
+            "Option Value": {
+                "ko": "옵션 값",
+                "en": "Option Value",
+                "zh": "期权价值",
+                "jp": "オプション値"
+            },
+            "Chatbot Usable": {
+                "ko": "챗봇 사용여부",
+                "en": "Chatbot Usable",
+                "zh": "Chatbot可用",
+                "jp": "Chatbot使用可能"
+            },
+            "Chatbot Usable Description": {
+                "ko": "(default: true) false일 경우 챗봇 사용이 중지됩니다.",
+                "en": "(default: true) If false, chatbots will be disabled.",
+                "zh": "（默认值：true）如果为false，chatbots将被禁用。",
+                "jp": "（デフォルト：true）falseの場合、チャットボットは無効になります。"
+            },
+            "Auto Correction Usable": {
+                "ko": "오타자동수정 기능 사용여부",
+                "en": "Auto Correction Usable",
+                "zh": "自动校正可用",
+                "jp": "使用可能な自動補正"
+            },
+            "Auto Correction Usable Description": {
+                "ko": "(default: false) true일경우 오타수정기능이 사용됩니다.",
+                "en": "(default: false) If true, typo correction will be used.",
+                "zh": "（默认值：false）如果为true，则会使用拼写错误更正。",
+                "jp": "（デフォルト：false）trueの場合は、誤植が使用されます。"
+            },
+            "Chatbot Sharing": {
+                "ko": "챗봇 공유",
+                "en": "Chatbot Sharing",
+                "zh": "聊天机器人共享",
+                "jp": "チャットボットの共有"
             }
         };
 
