@@ -87,6 +87,7 @@ exports.getGraphFile = function(req, res)
         try
         {
             utils.requireNoCache(filePath)(bot);
+            console.log('서버 : ', bot.dialogs);
             res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
         }
         catch(err)
