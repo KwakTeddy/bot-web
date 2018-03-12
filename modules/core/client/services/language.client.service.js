@@ -3332,6 +3332,12 @@
                 "en": "Changing information",
                 "zh": "信息修改",
                 "jp": "情報の変更"
+            },
+            "Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the 'Cancel', then you can send to our email.": {
+                "ko": "질문 또는 오류보고 및 개선제안은 카카오톡 플러스친구로 받고 있습니다. 플레이챗 플러스친구로 이동하시겠습니까?\n\n'취소'를 선택하시면 저희에게 직접 메일을 보내실 수 있습니다.",
+                "en": "Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend?\n\nif select the 'Cancel', then you can send to our email.",
+                "zh": "与KakaoTalk Plus一起收到问题或错误报告以及改进建议。 移至PlayChat Plus朋友？\n\n如果选择“取消”，那么你可以发送到我们的电子邮件。",
+                "jp": "質問やエラー報告、改善の提案は、カカオトークプラスで友人として受け取ります。 PlayChat Plusの友達に移動しますか？\n\n'キャンセル'を選択した場合、私たちの電子メールに送信することができます。"
             }
         };
 

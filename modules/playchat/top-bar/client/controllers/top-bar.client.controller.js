@@ -73,11 +73,21 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     $scope.reporting = function()
     {
-        $scope.openReporting = true;
-        setTimeout(function()
+        if(confirm(LanguageService('Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the \'Cancel\', then you can send to our email.')))
         {
-            angular.element('.reporting-content').focus();
-        }, 100);
+            window.open(
+                'http://pf.kakao.com/_xoWVbC',
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }
+        else
+        {
+            $scope.openReporting = true;
+            setTimeout(function()
+            {
+                angular.element('.reporting-content').focus();
+            }, 100);
+        }
     };
 
     $scope.sendReporting = function()
