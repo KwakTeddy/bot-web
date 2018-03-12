@@ -46,7 +46,7 @@
     color: #7e7e7e;
 }
 .fbbtn{
-    background: #3b589d url(../imgs/facebook.png) no-repeat 14px 8px;
+    background: #3b589d url(/modules/authentication/client/imgs/facebook.png) no-repeat 14px 8px;
     padding:10px;
     border-radius: 6px;
     /*width: 230px;*/
@@ -59,7 +59,7 @@
     margin-right: 10px;
 }
 .gbtn{
-    background: #d84d32 url(../imgs/google.png) no-repeat 16px 8px;
+    background: #d84d32 url(/modules/authentication/client/imgs/google.png) no-repeat 16px 8px;
     padding:10px;
     border-radius: 6px;
     /*width: 230px;*/
@@ -71,7 +71,7 @@
     margin-left: 45px;
 }
 .kbtn{
-    background: #ffeb00 url(../imgs/kakao.png) no-repeat 16px 8px;
+    background: #ffeb00 url(/modules/authentication/client/imgs/kakao.png) no-repeat 16px 8px;
     padding:10px;
     border-radius: 6px;
     /*width: 230px;*/
