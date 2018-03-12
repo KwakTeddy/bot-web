@@ -669,9 +669,11 @@
                     }
                     else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
                     {
-                        that.$rootScope.$broadcast('saveDialogGraphEditor');
-                        if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
+                        if(e.target && e.target.className == 'editable')
+                        {
                             e.target.blur();
+                            that.$rootScope.$broadcast('saveDialogGraphEditor');
+                        }
                     }
 
                     return;
@@ -835,6 +837,8 @@
                             var dialog = that.focusedTarget.dialog;
 
                             that.editor.open(parent ? parent.dialog : undefined, dialog);
+
+                            e.preventDefault();
                         }
                     }
                     else if(e.keyCode == 45)

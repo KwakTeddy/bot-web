@@ -426,7 +426,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.$on('saveDialogGraphEditor', function()
     {
-        angular.element('.dialog-editor form .blue-button').click();
+        // angular.element('.dialog-editor form .blue-button').click();
+        $scope.save();
     });
 
     DialogGraphEditor.setOpenCallback(function(parent, dialog, text)
