@@ -1,5 +1,15 @@
+<style>
+.chatbot-profile-title
+{
+    font-size: 17px;
+    font-weight: bold;
+    margin: 40px 0 20px 0;
+}
+</style>
+
 <div ng-controller="ChatbotEditController">
     <form ng-submit="save();">
+        <h3 class="chatbot-profile-title" style="margin: 0;">챗봇 기본정보</h3>
         <div class="dashboard-bot-profile" >
             <div class="dashboard-bot-profile-image">
                 <div class="dashboard-bot-profile-image-wrapper">
@@ -34,7 +44,43 @@
     </form>
 
     <form>
-        <table class="tb02" style="margin-top: 0px;">
+        <h3 class="chatbot-profile-title">챗봇 옵션</h3>
+        <table class="tb02">
+            <thead>
+                <tr>
+                    <th>옵션 명</th>
+                    <th>옵션 값</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>챗봇 사용여부</td>
+                    <td>
+                        <select ng-model="botOptions.use" ng-change="changeBotOptions();">
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </td>
+                    <td>(default: true) false일 경우 챗봇 사용이 중지됩니다.</td>
+                </tr>
+                <tr>
+                    <td>오타수정기능 사용여부</td>
+                    <td>
+                        <select ng-model="botOptions.useAutoCorrection">
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </td>
+                    <td>(default: false) true일경우 오타수정기능이 사용됩니다.</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <form>
+        <h3 class="chatbot-profile-title">챗봇 공유</h3>
+        <table class="tb02">
             <colgroup>
                 <col style="width: 25%;">
                 <col style="width: 20%;">

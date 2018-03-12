@@ -159,3 +159,84 @@ module.exports.updateBot = function(req, res)
         }
     });
 };
+
+module.exports.getBotOptions = function(req, res)
+{
+    try
+    {
+        var list = fs.readdirSync(path.resolve('./custom_modules/' + req.params.botId));
+        for(var i=0; i<list.length; i++)
+        {
+            if(list[i].endsWith('bot.js'))
+            {
+                var options = {};
+                require(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+
+                return res.send(options);
+            }
+        }
+
+        res.end();
+    }
+    catch(err)
+    {
+        res.status(400).send({ error: err });
+    }
+};
+
+module.exports.updateBotOptions = function(req, res)
+{
+    try
+    {
+        var list = fs.readdirSync(path.resolve('./custom_modules/' + req.params.botId));
+        for(var i=0; i<list.length; i++)
+        {
+            if(list[i].endsWith('bot.js'))
+            {
+                var options = {};
+                require(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                for(var key in req.body.options)
+                {
+                    options[key] = req.body.options[key];
+                }
+
+                var content = 'module.exports = function(options)\r\n';
+                content += '{';
+
+                for(var key in options)
+                {
+                    content += '\r\n\toptions.' + key + ' = ';
+                    if(typeof options[key] == 'object')
+                    {
+                        content += '\r\n' + JSON.stringify(options[key], null, 4);
+                    }
+                    else
+                    {
+                        if(typeof options[key] == 'string')
+                        {
+                            content += '\'' + options[key] + '\'';
+                        }
+                        else
+                        {
+                            content += options[key];
+                        }
+                    }
+
+                    content += ';';
+                }
+
+                content += '\r\n};';
+
+                fs.writeFileSync(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]), content);
+
+                break;
+            }
+        }
+
+        res.end();
+    }
+    catch(err)
+    {
+        res.status(400).send({ error: err });
+    }
+};

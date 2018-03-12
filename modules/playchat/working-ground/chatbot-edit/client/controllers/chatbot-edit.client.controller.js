@@ -7,6 +7,7 @@
 
         var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
         var ChatbotEditService = $resource('/api/:botId/chatbot-edit', { botId: '@botId' }, { update: { method: 'PUT' } });
+        var ChatbotEidtOptionService = $resource('/api/:botId/chatbot-edit/options', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotShareService = $resource('/api/chatbots/:botId/share', { botId: '@botId' });
 
         var chatbot = $scope.chatbot = $cookies.getObject('chatbot');
@@ -17,6 +18,11 @@
         $scope.share = {};
 
         $scope.botImage = '';
+
+        $scope.botOptions = {
+            use: 'true',
+            useAutoCorrection: 'false'
+        };
 
         (function()
         {
@@ -92,6 +98,26 @@
                 function(err)
                 {
                     alert(err);
+                });
+
+                ChatbotEidtOptionService.get({ botId: chatbot.id }, function(result)
+                {
+                    var options = JSON.parse(angular.toJson(result));
+                    for(var key in options)
+                    {
+                        if(options[key] === true || options[key] === false)
+                        {
+                            $scope.botOptions[key] = options[key] + '';
+                        }
+                        else
+                        {
+                            $scope.botOptions[key] = options[key];
+                        }
+                    }
+                },
+                function(err)
+                {
+                    console.log(err);
                 });
             };
 
@@ -174,8 +200,6 @@
                 {
                     ChatbotAuthService.delete({ botId: chatbot._id, _id: item._id }, function(result)
                     {
-                        console.log('결과 : ', result);
-
                         var index = list.indexOf(item);
                         list.splice(index, 1);
                     },
@@ -191,6 +215,27 @@
                 $scope.openUploadModal = false;
                 $scope.chatbot.imageFile = $scope.botImage;
                 $scope.botImage = '';
+            };
+
+            $scope.changeBotOptions = function()
+            {
+                var options = {};
+                for(var key in $scope.botOptions)
+                {
+                    if($scope.botOptions[key] == 'true' || $scope.botOptions[key] == 'false')
+                    {
+                        options[key] = new Boolean($scope.botOptions[key]);
+                    }
+                }
+
+                ChatbotEidtOptionService.update({ botId: chatbot.id, options: options }, function()
+                {
+                    alert($scope.lan('Saved.'));
+                },
+                function(err)
+                {
+
+                });
             };
         })();
 
