@@ -8,6 +8,7 @@ exports.keyboard = function (req, res)
     console.log("kakao keyboard");
     Engine.getBot(req.params.bot, function(bot)
     {
+        console.log("옵셔니 : ", bot.options);
         var sendMsg = bot.options.kakao.keyboard || { type: 'text' };
 
         res.write(JSON.stringify(sendMsg));
