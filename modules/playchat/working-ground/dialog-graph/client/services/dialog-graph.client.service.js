@@ -667,6 +667,7 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
                     return;
 
+                console.log('야 : ', that.editor.isOpen);
                 if(that.editor.isOpen)
                 {
                     //에디터로 포커스 이동되어있을때
@@ -685,7 +686,7 @@
 
                     return;
                 }
-                else if(that.isFocused)
+                else if(that.editor.isOpen === false && that.isFocused)
                 {
                     if(e.keyCode == 27)
                     {
