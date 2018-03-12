@@ -404,7 +404,7 @@
                 "zh": "说明"
             },
             "Create": {
-                "ko": "Create",
+                "ko": "생성",
                 "en": "Create",
                 "jp": "作り",
                 "zh": "创建"

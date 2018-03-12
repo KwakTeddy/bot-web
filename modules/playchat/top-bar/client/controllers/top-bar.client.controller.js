@@ -7,7 +7,6 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
     $scope.$parent.loaded('top-bar');
 
     var UserService = $resource('/api/users');
-    var ReportingService = $resource('/api/reporting');
 
     angular.element('.user-menu a').on('click', function()
     {
@@ -26,8 +25,6 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
 
     $scope.language = code || 'ko';
-
-    $scope.openReporting = false;
 
     $scope.reportContent = '';
 
@@ -69,44 +66,6 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
         });
 
         $window.location.href = '/api/auth/signout';
-    };
-
-    $scope.reporting = function()
-    {
-        if(confirm(LanguageService('Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the \'Cancel\', then you can send to our email.')))
-        {
-            window.open(
-                'http://pf.kakao.com/_xoWVbC',
-                '_blank' // <- This is what makes it open in a new window.
-            );
-        }
-        else
-        {
-            $scope.openReporting = true;
-            setTimeout(function()
-            {
-                angular.element('.reporting-content').focus();
-            }, 100);
-        }
-    };
-
-    $scope.sendReporting = function()
-    {
-        ReportingService.save({ content: $scope.reportContent }, function(result)
-        {
-            alert(LanguageService('Successfully transferred!'));
-            $scope.reportContent = '';
-            $scope.closeReporting();
-        },
-        function(err)
-        {
-            console.log('에러 : ', err);
-        });
-    };
-
-    $scope.closeReporting = function()
-    {
-        $scope.openReporting = false;
     };
 
     $scope.toggleTopBar = function (open) {

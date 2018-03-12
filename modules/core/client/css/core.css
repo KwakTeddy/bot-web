@@ -164,8 +164,8 @@ header .system .docs
     height: 100%;
     display: inline-block;
     vertical-align: top;
-    margin-top: 6px;
-    margin-right: 60px;
+    margin-top: 10px;
+    margin-right: 25px;
 }
 
 header .system .docs li

@@ -64,9 +64,6 @@
             </a>
         </div>
         <div class="system">
-            <span ng-if="isLogin">
-                <button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
-            </span>
             <ul class="docs">
                 <li>
                     <a href="#" class="mr20">
@@ -75,12 +72,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" ng-click="reporting();">
                         <img src="/modules/core/client/imgs/support.png" class="mr5">
                         <span>Support</span>
                     </a>
                 </li>
             </ul>
+            <!--<span ng-if="isLogin">-->
+                <!--<button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>-->
+            <!--</span>-->
             <span style="margin: 0 15px;">
                 <div class="select-wrapper">
                     <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">

@@ -194,6 +194,15 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         {
             DialogGraphsService.query({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '' }, function(fileList)
             {
+                for(var i=0; i<fileList.length; i++)
+                {
+                    if(fileList[i].endsWith('bot.js'))
+                    {
+                        fileList.splice(i, 1);
+                        break;
+                    }
+                }
+
                 $scope.fileList = fileList;
 
                 var fileName = $location.search().fileName;

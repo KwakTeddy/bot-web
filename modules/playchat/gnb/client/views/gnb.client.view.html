@@ -44,10 +44,25 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="#" ng-click="reporting();">
                 <img src="/modules/playchat/gnb/client/imgs/support.png">
                 <span>{{ lan('Support') }}</span>
             </a>
         </li>
     </ul>
+
+    <div class="modal-background import-modal" ng-show="openReporting">
+        <div class="modal">
+            <form ng-submit="sendReporting();">
+                <div class="modal-header">{{ lan('Error reporting and suggestions for improvement') }}</div>
+                <div>
+                    <textarea class="reporting-content" required="true" ng-model="reportContent"></textarea>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{ lan('Send') }}</button>
+                    <button type="button" class="default-button" ng-click="closeReporting();">{{ lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

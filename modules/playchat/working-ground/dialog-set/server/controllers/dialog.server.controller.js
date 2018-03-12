@@ -40,7 +40,14 @@ exports.find = function(req, res)
     var query = { dialogset: req.params.dialogsetId };
 
     if(req.query.rawText)
-        query.inputRaw = { "$regex": req.query.rawText, "$options": 'i' };
+    {
+        query.$or = [{
+            inputRaw: { "$regex": req.query.rawText, "$options": 'i' }
+        },
+        {
+            output: { "$regex": req.query.rawText, "$options": 'i' }
+        }];
+    }
 
     DialogsetDialog.find(query).sort('-id').lean().populate('context').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
     {

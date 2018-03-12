@@ -6,10 +6,15 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 {
     var chatbot = $cookies.getObject('chatbot');
 
+    var ReportingService = $resource('/api/reporting');
+
     $scope.menus = [];
     $scope.botName = chatbot.name;
     $scope.path = $location.path();
     $scope.botAuth = chatbot.myBotAuth;
+
+    $scope.openReporting = false;
+
     (function()
     {
 
@@ -162,6 +167,44 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         }
 
         return '';
+    };
+
+    $scope.reporting = function()
+    {
+        if(confirm(LanguageService('Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the \'Cancel\', then you can send to our email.')))
+        {
+            window.open(
+                'http://pf.kakao.com/_xoWVbC',
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }
+        else
+        {
+            $scope.openReporting = true;
+            setTimeout(function()
+            {
+                angular.element('.reporting-content').focus();
+            }, 100);
+        }
+    };
+
+    $scope.sendReporting = function()
+    {
+        ReportingService.save({ content: $scope.reportContent }, function(result)
+        {
+            alert(LanguageService('Successfully transferred!'));
+            $scope.reportContent = '';
+            $scope.closeReporting();
+        },
+        function(err)
+        {
+            console.log('에러 : ', err);
+        });
+    };
+
+    $scope.closeReporting = function()
+    {
+        $scope.openReporting = false;
     };
 
     $scope.lan=LanguageService;

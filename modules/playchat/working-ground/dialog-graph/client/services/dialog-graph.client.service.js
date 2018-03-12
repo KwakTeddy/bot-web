@@ -605,22 +605,25 @@
                 afterFocusId = parentDialog.id;
             }
 
-            var index = parentDialog.children.indexOf(dialog);
-            if(index != -1)
+            if(parentDialog.children)
             {
-                parentDialog.children.splice(index, 1);
-
-                if(withChildren && dialog.children.length > 0)
+                var index = parentDialog.children.indexOf(dialog);
+                if(index != -1)
                 {
-                    for(var i=0; i<dialog.children.length; i++)
+                    parentDialog.children.splice(index, 1);
+
+                    if(withChildren && dialog.children.length > 0)
                     {
-                        parentDialog.children.splice(index, 0, dialog.children[i]);
+                        for(var i=0; i<dialog.children.length; i++)
+                        {
+                            parentDialog.children.splice(index, 0, dialog.children[i]);
+                        }
+
+                        afterFocusId = dialog.children[0].id;
                     }
 
-                    afterFocusId = dialog.children[0].id;
+                    instance.setDirty(true, this.fileName, saveHistory);
                 }
-
-                instance.setDirty(true, this.fileName, saveHistory);
             }
 
             instance.focusedDialog = null;
