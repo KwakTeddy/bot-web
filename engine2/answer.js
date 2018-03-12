@@ -73,7 +73,7 @@ var Logger = require('./logger.js');
         }
     };
 
-    AnswerManager.prototype.paging = function(bot, context, userInput, callback)
+    AnswerManager.prototype.paging = function(transaction, bot, context, userInput, error, callback)
     {
         var that = this;
         var dialogId = context.session.dialogCursor;
@@ -105,12 +105,6 @@ var Logger = require('./logger.js');
         var tempDialogInstance = ContextManager.createDialogInstance(target, userInput);
         DialogGraphManager.exec(bot, context, tempDialogInstance, function(output, dialogInstance)
         {
-            output = OutputManager.make(context, userInput, dialogInstance, output);
-
-            var currentDialog = context.session.history[0];
-            if(!currentDialog.userInput)
-                currentDialog.userInput = userInput;
-
             var previousDialog = undefined;
             if(context.session.history.length > 1)
             {
@@ -123,18 +117,24 @@ var Logger = require('./logger.js');
 
             if(output)
             {
+                output = OutputManager.make(context, userInput, dialogInstance, output);
+
+                var currentDialog = context.session.history[0];
+                if(!currentDialog.userInput)
+                    currentDialog.userInput = userInput;
+
                 Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
                 callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
             }
             else
             {
-                that.noAnswer(bot, userInput, previousDialog, error, callback);
+                that.noAnswer(transaction, bot, context, userInput, previousDialog, error, callback);
             }
         });
     };
 
-    AnswerManager.prototype.retryQuestion = function(bot, context, userInput, callback)
+    AnswerManager.prototype.retryQuestion = function(transaction, bot, context, userInput, error, callback)
     {
         var that = this;
         // Task에서 파라미터 재질의 한 경우
@@ -171,12 +171,6 @@ var Logger = require('./logger.js');
         {
             DialogGraphManager.exec(bot, context, context.session.retryDialogInstance, function(output, dialogInstance)
             {
-                output = OutputManager.make(context, userInput, dialogInstance, output);
-
-                var currentDialog = context.session.history[0];
-                if(!currentDialog.userInput)
-                    currentDialog.userInput = userInput;
-
                 var previousDialog = undefined;
                 if(context.session.history.length >= 1)
                 {
@@ -189,19 +183,25 @@ var Logger = require('./logger.js');
 
                 if(output)
                 {
+                    output = OutputManager.make(context, userInput, dialogInstance, output);
+
+                    var currentDialog = context.session.history[0];
+                    if(!currentDialog.userInput)
+                        currentDialog.userInput = userInput;
+
                     Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
                     callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
                 }
                 else
                 {
-                    that.noAnswer(bot, userInput, previousDialog, error, callback);
+                    that.noAnswer(transaction, bot, context, userInput, previousDialog, error, callback);
                 }
             });
         });
     };
 
-    AnswerManager.prototype.qna = function(bot, context, userInput, transaction, callback)
+    AnswerManager.prototype.qna = function(transaction, bot, context, userInput, callback)
     {
         var text = transaction.qa.matchedDialog.output[utils.getRandomInt(0, transaction.qa.matchedDialog.output.length-1)];
 
@@ -221,7 +221,7 @@ var Logger = require('./logger.js');
         callback({ type: 'qa', output: { text: text }});
     };
 
-    AnswerManager.prototype.dm = function(bot, context, userInput, transaction, callback)
+    AnswerManager.prototype.dm = function(transaction, bot, context, userInput, error, callback)
     {
         var that = this;
         var dialogInstance = ContextManager.createDialogInstance(transaction.dm.matchedDialog, userInput);
@@ -232,11 +232,6 @@ var Logger = require('./logger.js');
                 dialogInstance = d;
             }
             // cloneDialog.output = output;
-            output = OutputManager.make(context, userInput, dialogInstance, output);
-
-            var currentDialog = context.session.history[0];
-            if(!currentDialog.userInput)
-                currentDialog.userInput = userInput;
 
             var previousDialog = undefined;
             if(context.session.history.length > 1)
@@ -250,6 +245,12 @@ var Logger = require('./logger.js');
 
             if(output)
             {
+                output = OutputManager.make(context, userInput, dialogInstance, output);
+
+                var currentDialog = context.session.history[0];
+                if(!currentDialog.userInput)
+                    currentDialog.userInput = userInput;
+
                 Logger.analysisLog('answer', { target: dialogInstance, output: output }, context.user.userKey);
                 Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
@@ -257,18 +258,20 @@ var Logger = require('./logger.js');
             }
             else
             {
-                that.noAnswer(bot, userInput, previousDialog, error, callback);
+                that.noAnswer(transaction, bot, context, userInput, previousDialog, error, callback);
             }
         });
     };
 
     AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
     {
+        var transaction = new Transaction.sync();
+
         var that = this;
         var text = userInput.text;
         if((text == '>' || text == '<') && context.session.isPaging)
         {
-            return this.paging(bot, context, userInput, callback);
+            return this.paging(transaction, bot, context, userInput, error, callback);
         }
         else
         {
@@ -279,12 +282,10 @@ var Logger = require('./logger.js');
 
         if(context.session.retryDialogInstance && context.session.retryInput)
         {
-            this.retryQuestion(bot, context, userInput, callback);
+            this.retryQuestion(transaction, bot, context, userInput, error, callback);
         }
         else
         {
-            var transaction = new Transaction.sync();
-
             var inputRaw = userInput.text;
             var nlp = userInput.nlp;
             var nlpText = userInput.nlpText;
@@ -337,17 +338,17 @@ var Logger = require('./logger.js');
 
                     if(((qaMatchedRate > dmMatchedRate) || (qaMatchedRate && !dmMatchedRate)) && qaMatchedRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                     {
-                        return that.qna(bot, context, userInput, transaction, callback);
+                        return that.qna(transaction, bot, context, userInput, callback);
                     }
                 }
 
                 if(transaction.dm && transaction.dm.matchedDialog)
                 {
-                    that.dm(bot, context, userInput, transaction, callback);
+                    that.dm(transaction, bot, context, userInput, error, callback);
                 }
                 else if(!bot.options.hybrid.use && transaction.qa && transaction.qa.matchedDialog && transaction.qa.matchedDialog.matchRate >= (bot.options.dialogsetMinMatchRate || 0.5))
                 {
-                    that.qna(bot, context, userInput, transaction, callback);
+                    that.qna(transaction, bot, context, userInput, callback);
                 }
                 else
                 {

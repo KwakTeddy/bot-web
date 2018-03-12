@@ -4,7 +4,7 @@ module.exports = function(globals)
     {
         name: 'account',
         typeCheck: globals.typeChecks.regexpTypeCheck,
-        regexp: /([\d,]+[십백천만억원]+)/g
+        regexp: /([\d,]?[십백천만억원]+)/g
     });
 
     globals.setTypes('mobile',
@@ -32,8 +32,7 @@ module.exports = function(globals)
     globals.setTypes('time',
     {
         name: 'time',
-        typeCheck: globals.typeChecks.regexpTypeCheck,
-        regexp: /((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g
+        typeCheck: globals.typeChecks.timeTypeCheck,
     });
 
     // globals.setTypes('account',

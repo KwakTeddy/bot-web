@@ -149,7 +149,7 @@ var s3 = new AWS.S3();
                 return error.delegate(err);
             }
 
-            BotManager.load(botId, function(err, bot)
+             BotManager.load(botId, function(err, bot)
             {
                 if(err)
                 {

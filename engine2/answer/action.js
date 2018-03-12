@@ -48,7 +48,7 @@ var ContextManager = require('../context.js');
             console.log(chalk.yellow('[[[ Action - repeat ]]]'));
             console.log('prev is undefined');
 
-            callback('[repeat] prev가 없습니다');
+            callback();
         }
     };
 
@@ -76,7 +76,7 @@ var ContextManager = require('../context.js');
             console.log(chalk.yellow('[[[ Action - up ]]]'));
             console.log('prev is undefined');
 
-            callback({ text: '[up] prev가 없습니다' });
+            callback();
         }
     };
 
@@ -101,7 +101,7 @@ var ContextManager = require('../context.js');
             console.log(chalk.yellow('[[[ Action - back ]]]'));
             console.log('prev is undefined');
 
-            callback({ text: '[back] prev가 없습니다' });
+            callback();
         }
     };
 
