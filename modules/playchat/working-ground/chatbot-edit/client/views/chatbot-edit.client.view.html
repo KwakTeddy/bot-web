@@ -19,6 +19,9 @@
                 <div style="text-align: center; padding: 5px;"><button type="button" class="default-button" ng-click="showUploadModal();">{{lan('Click to change image') }}</button></div>
             </div>
             <div class="dashboard-bot-profile-content">
+                <div style="margin: 10px 0;">
+                    <span>Bot Id : </span> <span style="font-weight: bold;">{{ chatbot.id }}</span>
+                </div>
                 <div style="display: inline-block;">
                     <span>Bot Name</span>
                     <input type="text" ng-model="chatbot.name">
