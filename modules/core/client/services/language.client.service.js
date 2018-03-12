@@ -3398,6 +3398,12 @@
                 "en": "Start cards can not be deleted",
                 "zh": "启动卡不能被删除",
                 "jp": "スタートカードは削除できません"
+            },
+            "The format does not match": {
+                "ko": "형식이 일치하지 않습니다.",
+                "en": "The format does not match",
+                "zh": "格式不匹配",
+                "jp": "フォーマットが一致しません"
             }
         };
 

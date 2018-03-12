@@ -159,7 +159,6 @@ exports.create = function(req, res)
 
                     bot.dialogsets = list;
 
-                    logger.systemLog('리스트 : ', JSON.stringify(bot.dialogsets));
                     bot.save(function(err)
                     {
                         if(err)
@@ -182,9 +181,9 @@ exports.create = function(req, res)
                     //     dialogset.save(function(){});
                     // });
 
-                    dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function()
+                    dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function(err)
                     {
-                        dialogset.importState = '';
+                        dialogset.importState = err || '';
                         dialogset.save(function()
                         {
 

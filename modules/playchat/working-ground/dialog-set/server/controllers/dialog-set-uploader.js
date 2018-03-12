@@ -92,6 +92,11 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
         var range = XLSX.utils.decode_range(ws['!ref']);
 
+        if(range.e.c <= 0)
+        {
+            return callback('The format does not match');
+        }
+
         var dialogsetList = [];
         var lastData = undefined;
         for(var r=1; r<range.e.r; r++)
