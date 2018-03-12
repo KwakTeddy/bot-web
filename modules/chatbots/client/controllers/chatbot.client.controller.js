@@ -87,7 +87,7 @@
                     if(!version)
                     {
                         alert(LanguageService('It is a chatbot made in old version PlayChat. Go to old version PlayChat.'));
-                        $location.url('https://old.playchat.ai/playchat');
+                        location.href = 'https://old.playchat.ai/playchat';
                     }
                     else
                     {
