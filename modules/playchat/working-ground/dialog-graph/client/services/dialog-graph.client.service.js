@@ -8,8 +8,6 @@
 
     angular.module('playchat').factory('DialogGraph', function($window, $rootScope)
     {
-        var PLUS_BUTTON_MARGIN_TOP = 22;
-
         var Menu = function()
         {
             this.tempDialog = undefined;
@@ -95,8 +93,10 @@
             this.tempDialogElement = angular.element(clone);
             this.tempDialog = dialog;
 
-            this.tempDialog.id += '-Clone';
-            this.tempDialog.name += '-Clone';
+            changeCloneInfo(this.tempDialog);
+
+            // this.tempDialog.id += '-Clone';
+            // this.tempDialog.name += '-Clone';
 
             if(this.tempDialog.children)
             {
@@ -120,7 +120,11 @@
                 var children = this.currentDialog.get(0).children[1].children;
                 this.tempDialogElement.insertBefore(children[children.length-1]);
 
+                this.tempDialogElement.get(0).children[0].dialog = this.tempDialog;
+
                 instance.focusById(this.tempDialog.id);
+
+                instance.bindDialogFunctions(this.tempDialogElement);
 
                 this.tempDialog = undefined;
                 this.tempDialogElement = undefined;
@@ -213,7 +217,7 @@
         var changeCloneInfo = function (dialog)
         {
             var postfix = '';
-            while(!checkUniqueName((dialog.name + (postfix += ' Clone')), instance.userDialogs));
+            while(!checkUniqueName((dialog.name + (postfix += '-Clone')), instance.userDialogs));
 
             dialog.name = dialog.name + postfix;
             dialog.id += postfix;
