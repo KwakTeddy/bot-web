@@ -1004,7 +1004,7 @@
                 "zh": "文件名称"
             },
             "empty": {
-                "ko": "비우기",
+                "ko": "데이터가 없습니다.",
                 "en": "empty",
                 "jp": "空にすること",
                 "zh": "无"
@@ -2350,11 +2350,17 @@
                 "zh": "请使用下面两种方式轻松地开发聊天机器人。",
                 "jp": "Use the template bots to make your own chatbot in a second."
             },
+            "Bot Id": {
+                "ko": "챗봇 아이디",
+                "en": "Bot Id",
+                "zh": "机器ID",
+                "jp": "ボットID"
+            },
             "Bot Name":{
                 "ko": "챗봇명",
                 "en": "Bot Name",
                 "zh": "机器人名",
-                "jp": "Bot Name"
+                "jp": "机器人名称"
             },
             "Use the template bots to make your own chatbot in a second":{
                 "ko": "아래 두가지 방식으로 챗봇을 쉽게 개발해 보세요.",
@@ -3458,6 +3464,24 @@
                 "en": "Matching Rate",
                 "zh": "匹配率",
                 "jp": "マッチング率"
+            },
+            "Email": {
+                "ko": "이메일주소",
+                "en": "Email",
+                "zh": "电子邮件",
+                "jp": "Eメール"
+            },
+            "Authority": {
+                "ko": "권한",
+                "en": "Authority",
+                "zh": "权威",
+                "jp": "権限"
+            },
+            "Add Member": {
+                "ko": "멤버 추가",
+                "en": "Add Member",
+                "zh": "添加成员",
+                "jp": "メンバーを追加"
             }
         };
 

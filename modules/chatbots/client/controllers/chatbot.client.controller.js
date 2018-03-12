@@ -20,7 +20,7 @@
         var page = 1;
         var countPerPage = $location.search().countPerPage || 50;
 
-        var chatbot = $cookies.getObject('chatbot');
+        var user = $cookies.getObject('user');
 
         $scope.selectedBot = undefined;
         $scope.openShareModal = false;
@@ -269,9 +269,7 @@
                 return false;
             }
 
-            console.log($scope.share)
-
-            ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
+            ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)), language: user.language }, function(result)
             {
                 $scope.openShareModal = false;
                 alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
