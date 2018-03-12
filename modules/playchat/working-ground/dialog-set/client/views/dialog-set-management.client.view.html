@@ -63,7 +63,7 @@
                         </div>
                     </td>
                     <td ng-if="item.importState == 'start'"><img style="vertical-align: middle;" src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif"></td>
-                    <td ng-if="item.importState != 'start'">
+                    <td ng-if="item.importState && item.importState != 'start'">
                         <span style="color: red; font-size: 11px;">{{ lan(item.importState) }}</span>
                     </td>
                 </tr>
