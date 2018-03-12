@@ -76,9 +76,8 @@ var dialogs = [
 
 var commonDialogs = [
     {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
-        "name": "시작",
+        "id": "startDialog",
+        "name": "start",
         "input": [
             {
                 "text": {
@@ -88,23 +87,43 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "시작",
-                    "nlp": "시작"
+                    "raw": "スタート",
+                    "nlp": "スタート"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "こんにちは、私は +bot.name+です。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
                 }
             },
             {
                 "text": {
-                    "raw": "처음",
-                    "nlp": "처음"
+                    "raw": "前",
+                    "nlp": "前"
                 }
             }
         ],
-        "output": "안녕하세요, 샘플봇_기능_다시질문하기 입니다.\n무엇을 도와드릴까요?"
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
     },
     {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
-        "name": "상위",
+        "id": "upDialog",
+        "name": "upper",
         "input": [
             {
                 "text": {
@@ -114,33 +133,34 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "back",
-                    "nlp": "back"
+                    "raw": "親",
+                    "nlp": "親"
                 }
             },
             {
                 "text": {
-                    "raw": "상위",
-                    "nlp": "상위"
-                }
-            },
-            {
-                "text": {
-                    "raw": "이전",
-                    "nlp": "이전"
+                    "raw": "アップ",
+                    "nlp": "アップ"
                 }
             }
         ],
-        "output": {
-            "up": 1
-        }
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
     },
     {
         "id": "noanswer",
-        "filename": "defaultcommon",
-        "name": "답변없음",
+        "name": "noanswer",
         "input": "",
-        "output": "알아듣지 못했습니다."
+        "output": [
+            {
+                text: "知らない",
+                kind: 'Content'
+            }
+        ]
     }
 ];
 

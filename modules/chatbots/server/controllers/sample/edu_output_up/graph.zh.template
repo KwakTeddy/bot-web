@@ -95,9 +95,8 @@ var dialogs = [
 
 var commonDialogs = [
     {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
-        "name": "시작",
+        "id": "startDialog",
+        "name": "开始",
         "input": [
             {
                 "text": {
@@ -107,23 +106,49 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "시작",
-                    "nlp": "시작"
+                    "raw": "开始",
+                    "nlp": "开始"
                 }
             },
             {
                 "text": {
-                    "raw": "처음",
-                    "nlp": "처음"
+                    "raw": "初始画面",
+                    "nlp": "初始画面"
                 }
             }
         ],
-        "output": "안녕하세요, 샘플봇_기능_이전대화이동 입니다.\n무엇을 도와드릴까요?"
+        "output": [{
+            "kind": "Content",
+            "text": "您好, 我是+bot.name+。"
+        }]
     },
     {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
-        "name": "상위",
+        "id": "backDialog",
+        "name": "返回",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "返回",
+                    "nlp": "返回"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "上一页",
         "input": [
             {
                 "text": {
@@ -133,33 +158,28 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "back",
-                    "nlp": "back"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상위",
-                    "nlp": "상위"
-                }
-            },
-            {
-                "text": {
-                    "raw": "이전",
-                    "nlp": "이전"
+                    "raw": "上一页",
+                    "nlp": "上一页"
                 }
             }
         ],
-        "output": {
-            "up": 1
-        }
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
     },
     {
         "id": "noanswer",
-        "filename": "defaultcommon",
-        "name": "답변없음",
+        "name": "没有回答",
         "input": "",
-        "output": "알아듣지 못했습니다."
+        "output": [
+            {
+                text: "我不是很明白您的意思。",
+                kind: 'Content'
+            }
+        ]
     }
 ];
 

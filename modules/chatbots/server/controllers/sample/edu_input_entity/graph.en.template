@@ -50,73 +50,87 @@ var dialogs = [
 ];
 
 var commonDialogs = [
-    {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
-        "name": "시작",
-        "input": [
-            {
-                "text": {
-                    "raw": "start",
-                    "nlp": "start"
-                }
-            },
-            {
-                "text": {
-                    "raw": "시작",
-                    "nlp": "시작"
-                }
-            },
-            {
-                "text": {
-                    "raw": "처음",
-                    "nlp": "처음"
-                }
-            }
-        ],
-        "output": "안녕하세요, 샘플봇_기능_엔터티 입니다.\n무엇을 도와드릴까요?"
-    },
-    {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
-        "name": "상위",
-        "input": [
-            {
-                "text": {
-                    "raw": "up",
-                    "nlp": "up"
-                }
-            },
-            {
-                "text": {
-                    "raw": "back",
-                    "nlp": "back"
-                }
-            },
-            {
-                "text": {
-                    "raw": "상위",
-                    "nlp": "상위"
-                }
-            },
-            {
-                "text": {
-                    "raw": "이전",
-                    "nlp": "이전"
-                }
-            }
-        ],
-        "output": {
-            "up": 1
-        }
-    },
-    {
-        "id": "noanswer",
-        "filename": "defaultcommon",
-        "name": "답변없음",
-        "input": "",
-        "output": "알아듣지 못했습니다."
-    }
+     {
+         "id": "startDialog",
+         "name": "start",
+         "input": [
+             {
+                 "text": {
+                     "raw": "start",
+                     "nlp": "start"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "first",
+                     "nlp": "first"
+                 }
+             }
+         ],
+         "output": [{
+             "kind": "Content",
+             "text": "Hello, my name is +bot.name+."
+         }]
+     },
+     {
+         "id": "backDialog",
+         "name": "back",
+         "input": [
+             {
+                 "text": {
+                     "raw": "back",
+                     "nlp": "back"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "previous",
+                     "nlp": "previous"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "back"
+             }
+         ]
+     },
+     {
+         "id": "upDialog",
+         "name": "upper",
+         "input": [
+             {
+                 "text": {
+                     "raw": "up",
+                     "nlp": "up"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "parent",
+                     "nlp": "parent"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "up"
+             }
+         ]
+     },
+     {
+         "id": "noanswer",
+         "name": "noanswer",
+         "input": "",
+         "output": [
+             {
+                 text: "I don't know.",
+                 kind: 'Content'
+             }
+         ]
+     }
 ];
 
 module.exports = function(bot)

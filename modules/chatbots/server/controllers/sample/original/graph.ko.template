@@ -286,7 +286,7 @@ var commonDialogs = [
         ],
         "output": [{
             "kind": "Content",
-            "text": "안녕하세요, 친구봇 입니다.\n무엇을 도와드릴까요?"
+            "text": "안녕하세요, +bot.name+ 입니다."
         }]
     },
     {

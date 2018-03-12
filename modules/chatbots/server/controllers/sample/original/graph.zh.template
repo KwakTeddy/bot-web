@@ -261,73 +261,93 @@ var dialogs = [
 ];
 
 var commonDialogs = [
-    {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
-        "name": "시작",
-        "input": [
-            {
-                "text": {
-                    "raw": "start",
-                    "nlp": "start"
-                }
-            },
-            {
-                "text": {
-                    "raw": "开始",
-                    "nlp": "开始"
-                }
-            },
-            {
-                "text": {
-                    "raw": "最开始",
-                    "nlp": "最开始"
-                }
-            }
-        ],
-        "output": "您好, 我是朋友聊天机器人.\n有什么需要帮助您的吗?"
-    },
-    {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
-        "name": "상위",
-        "input": [
-            {
-                "text": {
-                    "raw": "up",
-                    "nlp": "up"
-                }
-            },
-            {
-                "text": {
-                    "raw": "back",
-                    "nlp": "back"
-                }
-            },
-            {
-                "text": {
-                    "raw": "上一步",
-                    "nlp": "上一步"
-                }
-            },
-            {
-                "text": {
-                    "raw": "返回",
-                    "nlp": "返回"
-                }
-            }
-        ],
-        "output": {
-            "up": 1
-        }
-    },
-    {
-        "id": "noanswer",
-        "filename": "defaultcommon",
-        "name": "답변없음",
-        "input": "",
-        "output": "我听不懂您在说什么."
-    }
+     {
+         "id": "startDialog",
+         "name": "开始",
+         "input": [
+             {
+                 "text": {
+                     "raw": "start",
+                     "nlp": "start"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "开始",
+                     "nlp": "开始"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "初始画面",
+                     "nlp": "初始画面"
+                 }
+             }
+         ],
+         "output": [{
+             "kind": "Content",
+             "text": "您好, 我是+bot.name+。"
+         }]
+     },
+     {
+         "id": "backDialog",
+         "name": "返回",
+         "input": [
+             {
+                 "text": {
+                     "raw": "back",
+                     "nlp": "back"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "返回",
+                     "nlp": "返回"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "back"
+             }
+         ]
+     },
+     {
+         "id": "upDialog",
+         "name": "上一页",
+         "input": [
+             {
+                 "text": {
+                     "raw": "up",
+                     "nlp": "up"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "上一页",
+                     "nlp": "上一页"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "up"
+             }
+         ]
+     },
+     {
+         "id": "noanswer",
+         "name": "没有回答",
+         "input": "",
+         "output": [
+             {
+                 text: "我不是很明白您的意思。",
+                 kind: 'Content'
+             }
+         ]
+     }
 ];
 
 module.exports = function(bot)
