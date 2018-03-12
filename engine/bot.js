@@ -9,6 +9,7 @@
 
     module.exports.getBot = function(name)
     {
+        console.log('흠 : ', bots.hasOwnProperty(name));
         return bots[name];
     };
 })();
