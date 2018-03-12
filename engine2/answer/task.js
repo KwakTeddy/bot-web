@@ -37,7 +37,7 @@ var Transaction = require('../utils/transaction.js');
                     var origin = console.log;
                     console.log = function()
                     {
-                        origin(arguments);
+                        origin.apply(null, arguments);
                         Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
                     };
 
@@ -71,7 +71,7 @@ var Transaction = require('../utils/transaction.js');
                     var origin = console.log;
                     console.log = function()
                     {
-                        origin(arguments);
+                        origin.apply(null, arguments);
                         Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
                     };
 
@@ -105,7 +105,7 @@ var Transaction = require('../utils/transaction.js');
                     var origin = console.log;
                     console.log = function()
                     {
-                        origin(arguments);
+                        origin.apply(null, arguments);
                         Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
                     };
 
