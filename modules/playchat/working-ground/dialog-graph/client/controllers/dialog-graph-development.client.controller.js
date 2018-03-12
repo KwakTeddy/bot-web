@@ -329,8 +329,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
                     $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
-                    console.log('로딩 파일네임 : ', result);
-
                     var result = DialogGraph.loadFromFile(result, fileName);
                     if(!result)
                     {

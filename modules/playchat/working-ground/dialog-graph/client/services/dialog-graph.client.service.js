@@ -936,8 +936,6 @@
             {
                 this.commonDialogs = data.commonDialogs;
 
-                console.log('머야 : ', data.dialogs);
-
                 var startDialog = this.commonDialogs[0];
                 if(!startDialog)
                 {
