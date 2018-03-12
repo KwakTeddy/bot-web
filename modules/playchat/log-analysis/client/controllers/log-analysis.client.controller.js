@@ -29,7 +29,7 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
             {
                 if(!check[intents[i].intentName])
                 {
-                    intents[i].matchRate = Math.round(intents[i].matchRate * 100);
+                    intents[i].matchRateText = Math.round(intents[i].matchRate * 100);
                     result.push(intents[i]);
                     check[intents[i].intentName] = true;
                 }

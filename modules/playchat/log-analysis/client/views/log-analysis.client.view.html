@@ -34,11 +34,11 @@
         </colgroup>
         <thead>
             <tr>
-                <th>사용자입력 분석</th>
-                <th>인텐트 분석</th>
-                <th>엔티티 분석</th>
-                <th>태스크 로그</th>
-                <th>답변 분석</th>
+                <th>{{ lan('User input analysis') }}</th>
+                <th>{{ lan('Intent analysis') }}</th>
+                <th>{{ lan('Entity Analysis') }}</th>
+                <th>{{ lan('Task Log') }}</th>
+                <th>{{ lan('Answer Analysis') }}</th>
                 <th>
                     <div class="logsystem">
                         <a href="#" ng-click="toggleExpand();"><img src="modules/playchat/log-analysis/client/imgs/depart.png"></a>
@@ -52,17 +52,17 @@
             <tr>
                 <td>
                     <div ng-show="userInput">
-                        <div class="log-row">사용자 입력: {{ userInput.text }}</div>
-                        <div class="log-row">자연어처리: {{ userInput.nlpText }}</div>
+                        <div class="log-row">{{ lan('User input analysis') }}: {{ userInput.text }}</div>
+                        <div class="log-row">{{ lan('Natural language processing') }}: {{ userInput.nlpText }}</div>
                         <div class="log-row">
-                            <p>자연어 분석</p>
+                            <p>{{ lan('Natural language analysis') }}</p>
                             <ul>
-                                <li ng-repeat="n in userInput.nlp">{{ n.text }} [품사: {{ n.pos }}]</li>
+                                <li ng-repeat="n in userInput.nlp">{{ n.text }} [{{ lan('Word class') }}: {{ n.pos }}]</li>
                             </ul>
                         </div>
-                        <div class="log-row" ng-show="userInput.matchedIntent">일치 인텐트: {{ userInput.matchedIntent }}</div>
+                        <div class="log-row" ng-show="userInput.matchedIntent">{{ lan('Matching Intent') }}: {{ userInput.matchedIntent }}</div>
                         <div class="log-row" ng-show="userInput.matchedEntity">
-                            <div>엔터티 분석</div>
+                            <div>{{ lan('Entity Analysis') }}</div>
                             <ul>
                                 <li>@{{ userInput.matchedEntity.key }} - {{ userInput.matchedEntity.matchedName }}</li>
                             </ul>
@@ -78,14 +78,14 @@
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>이름</th>
-                                    <th>일치율</th>
+                                    <th>{{ lan('Name') }}</th>
+                                    <th>{{ lan('Matching Rate') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="intent in userInput.intents">
                                     <td>{{ intent.intentName }}</td>
-                                    <td style="text-align: center;">{{ intent.matchRate }}%</td>
+                                    <td style="text-align: center;">{{ intent.matchRateText }}%</td>
                                 </tr>
                             </tbody>
                         </table>

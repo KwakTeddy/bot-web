@@ -925,10 +925,10 @@
                 "jp": "最後のOutputは削除することはできません",
                 "zh": "最后的输出不能被删除。"
             },
-            "\"When editing output with complex structure": {
+            "When editing output with complex structure": {
                 "ko": "복잡한 Output 구조 편집중에는 Basic모드로 전환할 수 없습니다.",
-                "en": "\"When editing output with complex structure",
-                "jp": " it is not possible to switch to the basic mode.\"",
+                "en": "When editing output with complex structure",
+                "jp": " it is not possible to switch to the basic mode.",
                 "zh": "複雑なOutput構造、編集中にはBasicモードに転換できません。"
             },
             "Entity Add": {
@@ -1679,7 +1679,7 @@
             "Intent analysis": {
                 "ko": "인텐트 분석",
                 "en": "Intent analysis",
-                "jp": "Intent analysis",
+                "jp": "インテント分析",
                 "zh": "意图分析"
             },
             "KaKao Talk": {
@@ -1952,7 +1952,7 @@
                 "jp": "タスク名を入力してください"
             },
             "Ignore": {
-                "ko": "Ignore",
+                "ko": "무시하기",
                 "en": "Ignore",
                 "zh": "忽视",
                 "jp": "無視する"
@@ -3404,6 +3404,60 @@
                 "en": "The format does not match",
                 "zh": "格式不匹配",
                 "jp": "フォーマットが一致しません"
+            },
+            "User input analysis": {
+                "ko": "사용자입력 분석",
+                "en": "User input analysis",
+                "zh": "用户输入分析",
+                "jp": "ユーザー入力分析"
+            },
+            "Entity Analysis": {
+                "ko": "엔티티 분석",
+                "en": "Entity Analysis",
+                "zh": "实体分析",
+                "jp": "エンティティ分析"
+            },
+            "Task Log": {
+                "ko": "태스크 로그",
+                "en": "Task Log",
+                "zh": "任务日志",
+                "jp": "タスクログ"
+            },
+            "Answer Analysis": {
+                "ko": "답변 분석",
+                "en": "Answer Analysis",
+                "zh": "答案分析",
+                "jp": "回答の分析"
+            },
+            "Natural language processing": {
+                "ko": "자연어처리",
+                "en": "Natural language processing",
+                "zh": "自然语言处理",
+                "jp": "自然言語処理"
+            },
+            "Natural language analysis": {
+                "ko": "자연어 분석",
+                "en": "Natural language analysis",
+                "zh": "自然语言分析",
+                "jp": "自然言語解析"
+            },
+            "Word class": {
+                "ko": "품사",
+                "en": "Word class",
+                "zh": "词类",
+                "jp": "単語クラス"
+            },
+            "Matching Intent": {
+                "ko": "일치 인텐트",
+                "en": "Matching Intent",
+                "zh": "匹配意图",
+                "jp": "マッチングの意図"
+            },
+            "Matching Rate": {
+                "ko": "매치율",
+                "en": "Matching Rate",
+                "zh": "匹配率",
+                "jp": "マッチング率"
             }
         };
 

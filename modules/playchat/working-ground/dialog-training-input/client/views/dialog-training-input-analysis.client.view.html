@@ -21,6 +21,9 @@
             </tr>
         </thead>
         <tbody>
+            <tr ng-if="list.length == 0">
+                <td colspan="3">{{lan('empty') }}</td>
+            </tr>
             <tr ng-repeat="item in list">
                 <td>{{ item.input }}</td>
                 <td>
