@@ -3512,6 +3512,12 @@
                 "en": "Provider",
                 "zh": "提供商",
                 "jp": "プロバイダ"
+            },
+            "The newly added card is still being edited.": {
+                "ko": "새로 추가한 카드가 아직 편집중입니다.",
+                "en": "The newly added card is still being edited.",
+                "zh": "新添加的卡仍在编辑中。",
+                "jp": "新しく追加されたカードはまだ編集中です。"
             }
         };
 

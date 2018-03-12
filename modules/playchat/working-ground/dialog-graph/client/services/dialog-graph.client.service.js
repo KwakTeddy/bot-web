@@ -56,7 +56,11 @@
 
             parent.find('.graph-fold').get(0).style.display = 'none';
 
-            this.currentDialog.next().css('margin-top', '21.4px');
+            if(this.currentDialog.next().get(0).nodeName == 'BUTTON')
+            {
+                this.currentDialog.next().css('margin-top', '21.4px');
+            }
+
             this.currentDialog.parent().get(0).removeChild(this.currentDialog.get(0));
             
             this.tempDialogElement = this.currentDialog;

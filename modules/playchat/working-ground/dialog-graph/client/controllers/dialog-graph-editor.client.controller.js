@@ -346,6 +346,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             DialogGraph.deleteDialogById($scope.originalDialog.id, false);
         }
 
+        $scope.isNew = undefined;
+
         return true;
     });
 
@@ -431,8 +433,16 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         if($scope.isNew)
         {
+            if(!dialog || dialog.id != $scope.isNew.id)
+            {
+                return alert(LanguageService('The newly added card is still being edited.'));
+            }
+            else
+            {
+                return;
+            }
             //기존에 추가했던애가 삭제된다는 알람 필요.
-            DialogGraph.deleteDialogById($scope.isNew.id, false, false);
+            // DialogGraph.deleteDialogById($scope.isNew.id, false, false);
         }
 
         $scope.currentFileName = $location.search().fileName || 'default.graph.js';
