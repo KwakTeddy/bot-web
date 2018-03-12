@@ -47,7 +47,7 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
             {
                 if(data.log.target.matchRate)
                 {
-                    $scope.target.matchRate = Math.round(data.log.target.matchRate * 100);
+                    $scope.target.matchRateText = Math.round(data.log.target.matchRate * 100);
                 }
 
                 if(data.log.target.requiredMatchRate)

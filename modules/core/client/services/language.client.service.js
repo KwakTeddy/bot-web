@@ -698,7 +698,7 @@
                 "zh": "更"
             },
             "Add Child": {
-                "ko": "차일드 생성",
+                "ko": "자식카드 생성",
                 "en": "Add Child",
                 "jp": "チャイルド生成",
                 "zh": "添加子场景对话框"
@@ -3518,6 +3518,60 @@
                 "en": "The newly added card is still being edited.",
                 "zh": "新添加的卡仍在编辑中。",
                 "jp": "新しく追加されたカードはまだ編集中です。"
+            },
+            "Key": {
+                "ko": "키",
+                "en": "Key",
+                "zh": "键",
+                "jp": "キー"
+            },
+            "Value": {
+                "ko": "값",
+                "en": "Value",
+                "zh": "值",
+                "jp": "値"
+            },
+            "Dialog Card Id": {
+                "ko": "대화카드 아이디",
+                "en": "Dialog Card Id",
+                "zh": "对话卡ID",
+                "jp": "ダイアログカードID"
+            },
+            "Dialog Card Name": {
+                "ko": "대화카드 이름",
+                "en": "Dialog Card Name",
+                "zh": "对话卡名称",
+                "jp": "ダイアログ・カード名"
+            },
+            "Dialogset Name": {
+                "ko": "대화셋 이름",
+                "en": "Dialogset Name",
+                "zh": "对话框名称",
+                "jp": "ダイアログセット名"
+            },
+            "Matched Dialog Card": {
+                "ko": "매칭된 대화카드",
+                "en": "Matched Dialog Card",
+                "zh": "匹配的对话卡",
+                "jp": "一致したダイアログカード"
+            },
+            "Minimum": {
+                "ko": "최소",
+                "en": "Minimum",
+                "zh": "匹配的对话卡",
+                "jp": "一致したダイアログカード"
+            },
+            "Action Target": {
+                "ko": "액션 대상",
+                "en": "Action Target",
+                "zh": "行动目标",
+                "jp": "アクションターゲット"
+            },
+            "Options": {
+                "ko": "옵션",
+                "en": "Options",
+                "zh": "选项",
+                "jp": "オプション"
             }
         };
 

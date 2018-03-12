@@ -20,7 +20,8 @@
             angular.element('.dialog-editor-input-description').text('');
             angular.element('.dialog-editor-body').css('overflow', 'auto');
 
-            var input = $scope.tempInputList = JSON.parse(angular.toJson($scope.dialog.input));
+            var input = JSON.parse(angular.toJson($scope.dialog.input));
+            $scope.tempInputList = input;
             for(var i=0; i<input.length; i++)
             {
                 var target = angular.element('.dialog-editor-input-wrapper > div[data-index="' + i + '"]');

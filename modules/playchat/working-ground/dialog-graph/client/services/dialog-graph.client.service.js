@@ -117,7 +117,8 @@
             {
                 var parentDialog = this.currentDialog.get(0).children[0].dialog;
                 (parentDialog.children || (parentDialog.children = [])).push(this.tempDialog);
-                this.tempDialogElement.insertBefore(this.currentDialog.find('.plus'));
+                var children = this.currentDialog.get(0).children[1].children;
+                this.tempDialogElement.insertBefore(children[children.length-1]);
 
                 instance.focusById(this.tempDialog.id);
 
@@ -135,7 +136,7 @@
 
             angular.element('#menuPaste').attr('data-using', 'false');
 
-            $rootScope.$broadcast('simulator-build');
+            $rootScope.$broadcast('simulator-build-without-reset-focus');
 
             this.closeMenu();
         };
@@ -1927,12 +1928,17 @@
 
         DialogGraph.prototype.toggleChild = function(child)
         {
+            var children = child.parentElement.parentElement.children;
             if(child.style.display == 'none')
             {
                 child.style.display = 'inline-block';
+                children[children.length-1].style.top = children[children.length-1].previousTop;
+                delete children[children.length-1].previousTop;
             }
             else
             {
+                children[children.length-1].previousTop = children[children.length-1].style.top;
+                children[children.length-1].style.top = '';
                 child.style.display = 'none';
             }
 

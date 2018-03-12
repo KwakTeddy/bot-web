@@ -105,14 +105,14 @@ var deleteBotObjectFromS3 = function(botId, callback)
 {
     if(process.env.NODE_ENV == 'production')
     {
-        var params = {  Bucket: 'playchat-custom-modules', Key: botId };
-        s3.deleteObject(params, function(err, data)
-        {
-            if(callback)
-            {
-                callback(err, data);
-            }
-        });
+        // var params = {  Bucket: 'playchat-custom-modules', Key: botId };
+        // s3.deleteObject(params, function(err, data)
+        // {
+        //     if(callback)
+        //     {
+        //         callback(err, data);
+        //     }
+        // });
     }
 };
 

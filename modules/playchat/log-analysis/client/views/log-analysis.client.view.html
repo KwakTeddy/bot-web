@@ -104,7 +104,7 @@
                         <p ng-repeat="log in taskLogs track by $index">{{ log }}</p>
                     </div>
                 </td>
-                <td>
+                <td colspan="2">
                     <div ng-show="target && output">
                         <table style="width: 100%;">
                             <colgroup>
@@ -113,45 +113,45 @@
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>Key</th>
-                                    <th>Value</th>
+                                    <th>{{ lan('Key') }}</th>
+                                    <th>{{ lan('Value') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-if="target.card">
-                                    <th>Dialog Id</th>
+                                    <th>{{ lan('Dialog Card Id') }}</th>
                                     <td>{{ target.card.id }}</td>
                                 </tr>
                                 <tr ng-if="target.card">
-                                    <th>Dialog Name</th>
+                                    <th>{{ lan('Dialog Card Name')}}</th>
                                     <td>{{ target.card.name }}</td>
                                 </tr>
                                 <tr ng-if="!target.card && target.dialogset">
-                                    <th>Dialogset Name</th>
+                                    <th>{{ lan('Dialogset Name') }}</th>
                                     <td>{{ target.dialogset.title}}</td>
                                 </tr>
                                 <tr ng-if="!target.card && target.dialogset">
-                                    <th>Matched Dialog</th>
+                                    <th>{{ lan('Matched Dialog Card')}}</th>
                                     <td>{{ target.inputRaw[0] }}</td>
                                 </tr>
                                 <tr ng-show="target.matchRate">
-                                    <th>MatchRate</th>
-                                    <td>{{ target.matchRate }}%</td>
+                                    <th>{{ lan('Matching Rate') }}</th>
+                                    <td>{{ target.matchRateText }}%</td>
                                 </tr>
                                 <tr ng-show="target.requiredMatchRate">
-                                    <th>Minimum MatchRate</th>
+                                    <th>{{ lan('Minimum') }} {{ lan('Matching Rate') }}</th>
                                     <td>{{ target.requiredMatchRate }}%</td>
                                 </tr>
                                 <tr ng-if="output.kind == 'Action'">
-                                    <th>Action 유형</th>
+                                    <th>{{ lan('Action Type') }}</th>
                                     <td>{{ output.type }}</td>
                                 </tr>
                                 <tr ng-if="output.kind == 'Action' && output.dialogId">
-                                    <th>Action 대상</th>
+                                    <th>{{ lan('Action Target') }}</th>
                                     <td>[{{ output.dialogId }}] {{ output.dialogName }}</td>
                                 </tr>
                                 <tr ng-if="output.kind == 'Action' && output.options">
-                                    <th>Options</th>
+                                    <th>{{ lan('Options') }}</th>
                                     <td>{{ JSON.stringify(output.options) }}</td>
                                 </tr>
                             </tbody>
