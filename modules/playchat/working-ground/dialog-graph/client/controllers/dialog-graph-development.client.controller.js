@@ -363,7 +363,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
 
             var target = e.currentTarget.parentElement.nextElementSibling;
-            DialogGraph.toggleChild(target);
+            DialogGraph.toggleChiwld(target);
         };
 
         $scope.toggleCommonMode = function()
