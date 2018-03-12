@@ -203,7 +203,13 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         console.log(result.output);
 
-        result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
+        var input = angular.toJson(result.input);
+        if(input.startsWith('#') || input.startsWith('$'))
+        {
+            input = input.substring(1);
+        }
+
+        result.input = JSON.parse(input);
         result.output = JSON.parse(angular.toJson(result.output));
         if(result.task)
             result.task = JSON.parse(angular.toJson(result.task));
