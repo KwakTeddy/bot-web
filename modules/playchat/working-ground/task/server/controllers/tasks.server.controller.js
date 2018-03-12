@@ -15,6 +15,9 @@ var util = require('util'); //temporary
 var fs = require('fs');
 
 
+var Globals = require(path.resolve('./engine2/globals.js'));
+
+
 exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
@@ -163,6 +166,13 @@ exports.findTasks = function(req, res)
 
 exports.findTypes = function(req, res)
 {
+    var types = [];
+
+    for(var key in Globals.types)
+    {
+        types.push({ fileName: '', name: Globals.types[key].name });
+    }
+
     var filePath = path.resolve('./custom_modules/' + req.params.botId);
     if(req.query.templateId)
     {
@@ -187,7 +197,7 @@ exports.findTypes = function(req, res)
             result.push(list[i]);
         }
 
-        var types = [];
+        // var types = [];
         for(var i=0, l=result.length; i<l; i++)
         {
             var content = fs.readFileSync(filePath + '/' + result[i]);

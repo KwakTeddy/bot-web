@@ -295,19 +295,9 @@
 
                 $scope.showInputList = '$';
 
-                // 나중에는 실제로 봇엔진이 들고있는 공통 타입들을 가지고 와야함.
-                var commons = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
                 TypeService.query({ botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id: '') }, function(result)
                 {
                     var html = '';
-                    for(var i=0; i<commons.length; i++)
-                    {
-                        if(!name || commons[i].indexOf(name) != -1)
-                        {
-                            html += '<li>$' + commons[i] + '</li>';
-                        }
-                    }
-
                     for(var i=0; i<result.length; i++)
                     {
                         if(!name || result[i].name.indexOf(name) != -1)

@@ -69,4 +69,11 @@ module.exports = function(globals)
         name: 'number',
         typeCheck: globals.typeChecks.numberTypeCheck
     });
+
+    globals.setTypes('url',
+    {
+        name: 'url',
+        typeCheck: globals.typeChecks.regexpTypeCheck,
+        regexp: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gi
+    })
 };
