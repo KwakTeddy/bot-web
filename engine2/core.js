@@ -157,6 +157,11 @@ var s3 = new AWS.S3();
                 }
                 else
                 {
+                    if(!bot.options.version)
+                    {
+                        return errCallback('old-version');
+                    }
+
                     var contextKey = channel + '_' + botId + '_' + userKey;
                     that.redis.get(contextKey, function(err, context)
                     {
