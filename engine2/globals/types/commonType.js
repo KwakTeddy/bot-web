@@ -36,19 +36,19 @@ module.exports = function(globals)
         regexp: /((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g
     });
 
-    globals.setTypes('account',
-    {
-        name: 'account',
-        typeCheck: globals.typeChecks.regexpTypeCheck,
-        regexp: /(\b[\d-]+-[\d-]+\b)/g
-    });
+    // globals.setTypes('account',
+    // {
+    //     name: 'account',
+    //     typeCheck: globals.typeChecks.regexpTypeCheck,
+    //     regexp: /(\b[\d-]+-[\d-]+\b)/g
+    // });
 
-    globals.setTypes('count',
-    {
-        name: 'count',
-        typeCheck: globals.typeChecks.regexpTypeCheck,
-        regexp: /(\d)\s?(?:개)/g
-    });
+    // globals.setTypes('count',
+    // {
+    //     name: 'count',
+    //     typeCheck: globals.typeChecks.regexpTypeCheck,
+    //     regexp: /(\d)\s?(?:개)/g
+    // });
 
     globals.setTypes('address',
     {
@@ -58,11 +58,11 @@ module.exports = function(globals)
         context: true
     });
 
-    globals.setTypes('string',
-    {
-        name: 'string',
-        typeCheck: globals.typeChecks.stringTypeCheck
-    });
+    // globals.setTypes('string',
+    // {
+    //     name: 'string',
+    //     typeCheck: globals.typeChecks.stringTypeCheck
+    // });
 
     globals.setTypes('number',
     {

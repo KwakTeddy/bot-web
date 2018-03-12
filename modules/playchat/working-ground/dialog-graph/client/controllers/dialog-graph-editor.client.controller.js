@@ -320,6 +320,12 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             {
                 if(!confirm(LanguageService('Update is not saved. Do you want to close without saving?')))
                 {
+                    for(var i=0; i<$scope.dialog.output.length; i++)
+                    {
+                        $scope.setOutputButtons(i);
+                        $scope.setOutputImageUploader(i);
+                    }
+
                     return false;
                 }
             }
