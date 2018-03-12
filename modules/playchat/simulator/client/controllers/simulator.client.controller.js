@@ -319,6 +319,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.$on('simulator-build', function()
         {
+            clearBubble();
             emitMsg(':build', false);
         });
 

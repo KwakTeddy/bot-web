@@ -69,7 +69,7 @@
                     $cookies.putObject("chatbot", $scope.chatbot);
                     angular.element("#gnb-bot-name").html($scope.chatbot.name);
                     angular.element("#simulator-bot-name").html($scope.chatbot.name);
-                    $rootScope.$broadcast('editChatbotInfo');
+                    $rootScope.$broadcast('simulator-build');
                     alert($scope.lan('Saved.'));
                 },
                 function(err)
@@ -80,8 +80,11 @@
 
             $scope.getList = function()
             {
-                ChatbotAuthService.query({ botId: chatbot._id }, function(list)
+                ChatbotAuthService.get({ botId: chatbot._id }, function(result)
                 {
+                    var version = result.version;
+                    var list = result.list;
+
                     $scope.list = list;
 
                     $scope.$parent.loaded('working-ground');
@@ -154,6 +157,8 @@
 
                 ChatBotShareService.save({ botId: chatbot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
                 {
+                    $scope.share = {};
+                    $scope.getList();
                     $scope.openShareModal = false;
                     alert('Shared ' + chatbot.name + ' to ' + $scope.share.email);
                 },

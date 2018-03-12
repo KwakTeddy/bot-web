@@ -628,7 +628,7 @@ exports.share = function(req, res)
             botAuth.bot = req.params.botId;
             botAuth.user = item._id;
             botAuth.giver = req.user;
-            botAuth.edit = req.body.data.write ? true : false;
+            botAuth.edit = req.body.data.edit ? true : false;
 
             botAuth.save(function(err)
             {

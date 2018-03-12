@@ -71,7 +71,7 @@
             }
         });
 
-        $scope.selectChatbot = function(chatbot)
+        $scope.selectChatbot = function(chatbot, callback)
         {
             LogService.botId = chatbot._id;
             delete chatbot.user;
@@ -91,7 +91,14 @@
                     }
                     else
                     {
-                        $location.url('/playchat');
+                        if(!callback)
+                        {
+                            $location.url('/playchat');
+                        }
+                        else
+                        {
+                            callback();
+                        }
                     }
                 }
                 else
@@ -158,10 +165,14 @@
         {
             if(name == 'Rename')
             {
-                var target = angular.element('li[data-id="' + $scope.selectedBot.id + '"]').attr('contenteditable', 'true').get(0);
-                CaretService.placeCaretAtEnd(target);
-
-                target.style.cursor = 'text';
+                $scope.selectChatbot($scope.selectedBot, function()
+                {
+                    $location.url('/playchat/chatbot-edit');
+                });
+                // var target = angular.element('div[data-id="' + $scope.selectedBot.id + '"]').attr('contenteditable', 'true').get(0);
+                // CaretService.placeCaretAtEnd(target);
+                //
+                // target.style.cursor = 'text';
             }
             else if(name == 'Share')
             {

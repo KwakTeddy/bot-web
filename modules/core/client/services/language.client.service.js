@@ -3326,6 +3326,12 @@
                 "en": "Chatbot Settings",
                 "zh": "Chatbot设置",
                 "jp": "チャットボットの設定"
+            },
+            "Changing information": {
+                "ko": "정보수정",
+                "en": "Changing information",
+                "zh": "信息修改",
+                "jp": "情報の変更"
             }
         };
 

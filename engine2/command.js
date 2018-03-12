@@ -53,6 +53,7 @@ var DialogGraphManager = require('./answer/dm.js');
             }
             else
             {
+                context.bot = bot;
                 var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
                 DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
@@ -93,6 +94,7 @@ var DialogGraphManager = require('./answer/dm.js');
             }
             else
             {
+                context.bot = bot;
                 var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
                 DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
