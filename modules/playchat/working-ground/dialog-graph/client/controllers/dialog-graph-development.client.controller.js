@@ -586,6 +586,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var fileName = $location.search().fileName || 'default.graph.js';
             DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
+                $rootScope.$broadcast('simulator-build');
             }, function(error)
             {
                 alert($scope.lan('저장 실패 : ') + error.message);
@@ -610,6 +611,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var fileName = $location.search().fileName || 'default.graph.js';
             DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
+                $rootScope.$broadcast('simulator-build');
             }, function(error)
             {
                 alert($scope.lan('저장 실패 : ') + error.message);
