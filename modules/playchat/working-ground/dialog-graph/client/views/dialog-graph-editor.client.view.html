@@ -29,7 +29,7 @@
                     <div class="dialog-editor-input-box">
 
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input">
-                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder();}}" required="true" style="color: white;" tabindex="-1" ng-click="moveFocusToEditable($event);" ng-focus="moveFocusToEditable($event);">
+                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder($index);}}" required="true" style="color: white;" tabindex="-1" ng-click="moveFocusToEditable($event);" ng-focus="moveFocusToEditable($event);">
 
                             <div
                                 class="editable"

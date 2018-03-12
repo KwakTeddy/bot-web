@@ -108,12 +108,16 @@
 
         DialogGraphEditorInput.make = function($scope, $rootScope, DialogGraphEditor)
         {
-            $scope.isShowPlaceHolder = true;
-            $scope.getInputPlaceHolder = function()
+            $scope.getInputPlaceHolder = function(index)
             {
-                if(!$scope.isShowPlaceHolder)
+                if(index >= 0)
                 {
-                    return;
+                    var div = angular.element('.dialog-editor-input-box .dialog-editor-input-wrapper').get(index);
+                    div = div.querySelector('.editable');
+                    if(div.innerText.length > 0)
+                    {
+                        return;
+                    }
                 }
 
                 if($scope.isAdvancedMode)
@@ -643,14 +647,13 @@
                 {
                     if(e.currentTarget.innerText.length == 1)
                     {
-                        $scope.isShowPlaceHolder = true;
-                        angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+                        angular.element(e.currentTarget.previousElementSibling).attr('placeholder', $scope.getInputPlaceHolder());
+                        // angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
                     }
                 }
                 else if(e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 16 && e.keyCode != 17 && e.keyCode != 91 && e.keyCode != 18)
                 {
-                    $scope.isShowPlaceHolder = false;
-                    angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder', angular.element(e.currentTarget.previousElementSibling).attr('placeholder')).removeAttr('placeholder');
+                    angular.element(e.currentTarget.previousElementSibling).removeAttr('placeholder');
                 }
 
                 if($scope.showInputList)
@@ -825,8 +828,7 @@
 
                         if(parent.innerText.length == 0)
                         {
-                            $scope.isShowPlaceHolder = true;
-                            angular.element(e.currentTarget.previousElementSibling).attr('placeholder', angular.element(e.currentTarget.previousElementSibling).attr('data-placeholder')).removeAttr('data-placeholder');
+                            angular.element(e.currentTarget.previousElementSibling).attr('placeholder', $scope.getInputPlaceHolder());
                         }
                     }
                 }
