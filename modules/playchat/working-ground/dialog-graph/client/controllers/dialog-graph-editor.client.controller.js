@@ -496,5 +496,14 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         $scope.initialize(parent, dialog);
     });
 
+    $scope.saveKeydown = function(e)
+    {
+        console.log(e.keyCode);
+        if(e.keyCode == 9)
+        {
+            e.preventDefault();
+        }
+    };
+
     $scope.lan=LanguageService;
 }]);

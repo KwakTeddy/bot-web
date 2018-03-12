@@ -798,12 +798,14 @@
                         {
                             if(that.focusedTarget.className.indexOf('plus') != -1)
                             {
-
                                 // that.focus(that.focusedTarget.previousElementSibling.children[0]);
                             }
                             else if(that.focusedTarget.parentElement.previousElementSibling)
                             {
-                                that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                                if(that.focusedTarget.parentElement.previousElementSibling.nodeName == 'DIV')
+                                {
+                                    that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                                }
                             }
                             else
                             {
@@ -814,7 +816,7 @@
                                     do
                                     {
                                         parent = parent.previousElementSibling;
-                                        if(parent.children.length <= 1)
+                                        if(!parent || parent.children.length <= 1)
                                             return;
 
                                         target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
