@@ -1,6 +1,8 @@
 var fs = require('fs');
 var chalk = require('chalk');
 
+var path = require('path');
+
 var Config = require('./config.js');
 var utils = require('./utils/utils.js');
 
@@ -78,7 +80,15 @@ var BotObject = require('./bot/bot.js');
                 }
                 catch(err)
                 {
-                    return false;
+                    utils.requireNoCache(botDir + '/' + files[i], true);
+                    var botModule = path.resolve('./engine/bot.js');
+                    console.log('허허 : ', botModule);
+                    var options = botModule.getBot(files[i]);
+                    bot.options = options;
+
+                    console.log('옵션스 : ', options);
+
+                    return true;
                 }
             }
         }
