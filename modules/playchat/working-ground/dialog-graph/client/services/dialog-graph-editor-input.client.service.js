@@ -853,6 +853,16 @@
                             selectionListThenCreateBlankSpan(e, selected, focusNode);
                         });
                     }
+                    else if(focusNode.textContent.trim().startsWith('if('))
+                    {
+                        angular.element('.dialog-editor-input-description').text(LanguageService('Entering conditional statements.'));
+                        initInputList(true);
+                    }
+                    else if(focusNode.textContent.trim().startsWith('/') && focusNode.textContent.trim().endsWith('/'))
+                    {
+                        angular.element('.dialog-editor-input-description').text(LanguageService('Please enter a regular expression.'));
+                        initInputList(true);
+                    }
                     else if(!$scope.showInputList)
                     {
                         showNLPText(focusNode);
