@@ -81,7 +81,7 @@ var BotObject = require('./bot/bot.js');
                 catch(err)
                 {
                     utils.requireNoCache(botDir + '/' + files[i], true);
-                    var botModule = path.resolve('./engine/bot.js');
+                    var botModule = require(path.resolve('./engine/bot.js'));
                     console.log('허허 : ', botModule);
                     var options = botModule.getBot(files[i]);
                     bot.options = options;

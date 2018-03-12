@@ -9,5 +9,5 @@
     module.exports.getBot = function(name)
     {
         return bots[name];
-    }
+    };
 })();
