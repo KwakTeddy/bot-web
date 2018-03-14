@@ -71,8 +71,6 @@ exports.getGraphFile = function(req, res)
             return res.status(404).end();
         }
 
-        console.log('파일패스 : ', filePath);
-
         var bot = {};
         bot.setDialogs = function(dialogs)
         {
@@ -86,7 +84,7 @@ exports.getGraphFile = function(req, res)
 
         try
         {
-            utils.requireNoCache(filePath)(bot);
+            utils.requireNoCache(filePath, true)(bot);
             res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
         }
         catch(err)

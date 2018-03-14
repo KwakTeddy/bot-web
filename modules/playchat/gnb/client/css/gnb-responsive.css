@@ -36,7 +36,7 @@
 
 .playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify
 {
-    background:#424242 url(../imgs/modify_fold.png) no-repeat 46px;
+    background:#424242 url(/modules/playchat/gnb/client/imgs/modify_fold.png) no-repeat 46px;
     width: 72px;
     height: 32px;
     right: 21px;

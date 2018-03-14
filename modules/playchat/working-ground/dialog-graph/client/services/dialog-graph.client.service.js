@@ -8,8 +8,6 @@
 
     angular.module('playchat').factory('DialogGraph', function($window, $rootScope)
     {
-        var PLUS_BUTTON_MARGIN_TOP = 22;
-
         var Menu = function()
         {
             this.tempDialog = undefined;
@@ -95,8 +93,10 @@
             this.tempDialogElement = angular.element(clone);
             this.tempDialog = dialog;
 
-            this.tempDialog.id += '-Clone';
-            this.tempDialog.name += '-Clone';
+            changeCloneInfo(this.tempDialog);
+
+            // this.tempDialog.id += '-Clone';
+            // this.tempDialog.name += '-Clone';
 
             if(this.tempDialog.children)
             {
@@ -120,7 +120,11 @@
                 var children = this.currentDialog.get(0).children[1].children;
                 this.tempDialogElement.insertBefore(children[children.length-1]);
 
+                this.tempDialogElement.get(0).children[0].dialog = this.tempDialog;
+
                 instance.focusById(this.tempDialog.id);
+
+                instance.bindDialogFunctions(this.tempDialogElement);
 
                 this.tempDialog = undefined;
                 this.tempDialogElement = undefined;
@@ -203,7 +207,10 @@
                 }
                 else if(dialogs[i].children)
                 {
-                    return checkUniqueName(name, dialogs[i].children);
+                    if(!checkUniqueName(name, dialogs[i].children))
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -213,7 +220,7 @@
         var changeCloneInfo = function (dialog)
         {
             var postfix = '';
-            while(!checkUniqueName((dialog.name + (postfix += ' Clone')), instance.userDialogs));
+            while(!checkUniqueName((dialog.name + (postfix += '-Clone')), instance.userDialogs));
 
             dialog.name = dialog.name + postfix;
             dialog.id += postfix;
@@ -660,6 +667,7 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
                     return;
 
+                console.log('야 : ', that.editor.isOpen);
                 if(that.editor.isOpen)
                 {
                     //에디터로 포커스 이동되어있을때
@@ -678,7 +686,7 @@
 
                     return;
                 }
-                else if(that.isFocused)
+                else if(that.editor.isOpen === false && that.isFocused)
                 {
                     if(e.keyCode == 27)
                     {
@@ -798,12 +806,14 @@
                         {
                             if(that.focusedTarget.className.indexOf('plus') != -1)
                             {
-
                                 // that.focus(that.focusedTarget.previousElementSibling.children[0]);
                             }
                             else if(that.focusedTarget.parentElement.previousElementSibling)
                             {
-                                that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                                if(that.focusedTarget.parentElement.previousElementSibling.nodeName == 'DIV')
+                                {
+                                    that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                                }
                             }
                             else
                             {
@@ -814,7 +824,7 @@
                                     do
                                     {
                                         parent = parent.previousElementSibling;
-                                        if(parent.children.length <= 1)
+                                        if(!parent || parent.children.length <= 1)
                                             return;
 
                                         target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
@@ -892,7 +902,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                     }
-                    else if(e.keyCode == 9)
+                    else if(e.keyCode == 9 || e.keyCode == 36 || e.keyCode == 35)
                     {
                         e.preventDefault();
                     }

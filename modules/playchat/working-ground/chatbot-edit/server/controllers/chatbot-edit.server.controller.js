@@ -20,16 +20,22 @@ module.exports.find = function(req, res)
 
         if(bot)
         {
-            var dir = path.resolve('./custom_modules/' + bot.id);
-
             var options = {};
-            var list = fs.readdirSync(dir);
-            for(var i=0; i<list.length; i++)
+            try
             {
-                if(list[i].endsWith('bot.js'))
+                var dir = path.resolve('./custom_modules/' + bot.id);
+
+                var list = fs.readdirSync(dir);
+                for(var i=0; i<list.length; i++)
                 {
-                    require(dir + '/' + list[i])(options);
+                    if(list[i].endsWith('bot.js'))
+                    {
+                        require(dir + '/' + list[i])(options);
+                    }
                 }
+            }
+            catch(err)
+            {
             }
 
             BotAuth.find({ bot: req.params.botId}).populate('user').exec(function(err, list)
@@ -170,7 +176,7 @@ module.exports.getBotOptions = function(req, res)
             if(list[i].endsWith('bot.js'))
             {
                 var options = {};
-                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]), true)(options);
 
                 return res.send(options);
             }
@@ -194,7 +200,7 @@ module.exports.updateBotOptions = function(req, res)
             if(list[i].endsWith('bot.js'))
             {
                 var options = {};
-                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]))(options);
+                utils.requireNoCache(path.resolve('./custom_modules/' + req.params.botId + '/' + list[i]), true)(options);
                 for(var key in req.body.options)
                 {
                     options[key] = req.body.options[key];

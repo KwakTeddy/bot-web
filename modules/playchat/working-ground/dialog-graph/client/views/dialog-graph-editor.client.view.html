@@ -186,7 +186,7 @@
             </div>
             <div class="dialog-editor-footer">
                 <button class="blue-button">{{lan('Save') }}</button>
-                <button type="button" class="default-button" ng-click="close();">{{lan('Cancel') }}</button>
+                <button type="button" class="default-button" ng-click="close();" ng-keydown="saveKeydown($event);">{{lan('Cancel') }}</button>
             </div>
         </form>
     </div>

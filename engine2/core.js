@@ -149,7 +149,7 @@ var s3 = new AWS.S3();
                 return error.delegate(err);
             }
 
-             BotManager.load(botId, function(err, bot)
+            BotManager.load(botId, function(err, bot)
             {
                 if(err)
                 {
@@ -157,6 +157,11 @@ var s3 = new AWS.S3();
                 }
                 else
                 {
+                    if(!bot.options.version)
+                    {
+                        return errCallback('old-version');
+                    }
+
                     var contextKey = channel + '_' + botId + '_' + userKey;
                     that.redis.get(contextKey, function(err, context)
                     {
@@ -183,7 +188,7 @@ var s3 = new AWS.S3();
 
                             if(!bot)
                             {
-                                return  outCallback(context, { type: 'dialog', output: { kind: 'Content', text: SystemMessages['There is an unsupported version of the bot. if you are using previous version, then please move below.'].ko, buttons: [{ text: 'https://old.playchat.ai', url: 'https://old.playchat.ai' }] } });
+                                return outCallback(context, { type: 'dialog', output: { kind: 'Content', text: SystemMessages['There is an unsupported version of the bot. if you are using previous version, then please move below.'].ko, buttons: [{ text: 'https://old.playchat.ai', url: 'https://old.playchat.ai' }] } });
                             }
                             else if(!bot.options.use)
                             {

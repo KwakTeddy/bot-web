@@ -400,7 +400,7 @@
 
     width: 24px;
 
-    background-image: url(../imgs/more-black.png);
+    background-image: url(/modules/playchat/working-ground/dialog-graph/client/imgs/more-black.png);
     background-repeat: no-repeat;
     background-position: center center;
 
@@ -414,7 +414,7 @@
 
 .graph-dialog-item.selected .graph-dialog-header .dialog-more
 {
-    background-image: url(../imgs/more-blue.png);
+    background-image: url(/modules/playchat/working-ground/dialog-graph/client/imgs/more-blue.png);
 }
 
 .graph-dialog-input
@@ -531,7 +531,7 @@
     cursor: pointer;
     text-align: center;
     border-radius: 100%;
-    background: #d7d7d7 url(../imgs/fold.png) no-repeat 80% 50%;
+    background: #d7d7d7 url(/modules/playchat/working-ground/dialog-graph/client/imgs/fold.png) no-repeat 80% 50%;
 
     -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */

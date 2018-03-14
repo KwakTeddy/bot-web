@@ -1,6 +1,8 @@
 var fs = require('fs');
 var chalk = require('chalk');
 
+var path = require('path');
+
 var Config = require('./config.js');
 var utils = require('./utils/utils.js');
 
@@ -39,12 +41,12 @@ var BotObject = require('./bot/bot.js');
                         return callback(err);
                     }
 
+                    that.bots[botId] = bot;
+
                     if(!that.loadBotFiles(bot, botDir))
                     {
-                        return callback();
+                        return callback(null, bot);
                     }
-
-                    that.bots[botId] = bot;
 
                     callback(null, bot);
                 })
@@ -78,6 +80,11 @@ var BotObject = require('./bot/bot.js');
                 }
                 catch(err)
                 {
+                    utils.requireNoCache(botDir + '/' + files[i], true);
+                    var botModule = require(path.resolve('./engine/bot.js'));
+                    var options = botModule.getBot(files[i].split('.')[0]);
+                    bot.options = options;
+
                     return false;
                 }
             }

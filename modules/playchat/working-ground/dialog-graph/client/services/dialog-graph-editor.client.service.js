@@ -101,7 +101,13 @@
 
             angular.element('.dialog-graph-code-editor-controller').removeClass('edit');
 
-            this.isOpen = false;
+            var that = this;
+            setTimeout(function()
+            {
+                that.isOpen = false;
+            }, 500);
+
+            that.isOpen = undefined;
         };
 
         if(!instance)
