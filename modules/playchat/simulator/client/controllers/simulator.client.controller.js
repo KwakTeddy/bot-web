@@ -211,6 +211,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                         }
 
                         addBotBubble(data.output);
+
+                        $rootScope.$broadcast('simulator_command_end');
                         $rootScope.$broadcast('onmsg', { message: data.output });    
                     }, 100);
                 }
@@ -331,6 +333,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.$on('set-simulator-content', function(context, data)
         {
+            clearBubble();
             for(var i=data.dialog.length-1; i>=0; i--)
             {
                 if(data.dialog[i].inOut)
