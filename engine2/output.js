@@ -35,7 +35,7 @@ var utils = require('./utils/utils.js');
             }
         }
 
-        if(!replaced && split.length)
+        if(!replaced && split.length == 1)
         {
             key = 'data.dialog.' + key;
             return getValue(obj, key);
