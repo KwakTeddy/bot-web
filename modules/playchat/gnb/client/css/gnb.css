@@ -59,7 +59,7 @@
     top: 19px;
     width: 28px;
     height: 26px;
-    background: url('../imgs/hamburger.png') no-repeat center center;
+    background: url('/modules/playchat/gnb/client/imgs/hamburger.png') no-repeat center center;
     background-size: 23px 17px;
 }
 
@@ -160,14 +160,14 @@
     width: 14px;
     height: 24px;
 
-    background: url('../imgs/down.png') no-repeat center center;
+    background: url('/modules/playchat/gnb/client/imgs/down.png') no-repeat center center;
 }
 
 .playchat-background .gnb .menu-item-group .open .close
 {
     transition: opacity 0.5s;
     opacity: 1;
-    background: url('../imgs/up.png') no-repeat center center;
+    background: url('/modules/playchat/gnb/client/imgs/up.png') no-repeat center center;
 }
 
 .playchat-background .gnb .menu-item-list .sub-menu-item-group
