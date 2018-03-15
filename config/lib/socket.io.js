@@ -25,7 +25,7 @@ module.exports = function (app, db)
             key: privateKey,
             cert: certificate,
             ca: ca,
-            requestCert : true,
+            // requestCert : true,
             //rejectUnauthorized : true,
             // secureProtocol: 'TLSv1.2_method',
             secureProtocol: 'SSLv23_method',
