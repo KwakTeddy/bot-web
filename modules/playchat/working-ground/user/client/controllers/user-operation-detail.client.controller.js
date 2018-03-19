@@ -92,7 +92,10 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
         };
     })();
 
-    $scope.getDetail();
+    $scope.$on('simulator_command_end', function()
+    {
+        $scope.getDetail();
+    });
 
     $scope.$parent.loaded('working-ground');
     $scope.lan=LanguageService;

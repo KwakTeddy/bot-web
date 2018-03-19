@@ -39,7 +39,7 @@ var Logger = require('./logger.js');
             console.log(chalk.yellow('[[[ Quibble ]]]'));
 
             Logger.analysisLog('answer', { output: { text : quibble } }, context.user.userKey);
-            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, quibble, 'quibble', 'quibble', previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, quibble, 'quibble', 'quibble', previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: '', output: { text: quibble } });
         }
         else
@@ -68,7 +68,7 @@ var Logger = require('./logger.js');
             var dialog = bot.dialogMap['noanswer'];
             var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
             Logger.analysisLog('answer', { target: target, output: { text : output } }, context.user.userKey);
-            Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, output, dialog.id, dialog.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, output, dialog.id, dialog.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
         }
     };
@@ -123,7 +123,7 @@ var Logger = require('./logger.js');
                 if(!currentDialog.userInput)
                     currentDialog.userInput = userInput;
 
-                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
                 callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
             }
@@ -189,7 +189,7 @@ var Logger = require('./logger.js');
                     if(!currentDialog.userInput)
                         currentDialog.userInput = userInput;
 
-                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
+                    Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
                     callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
                 }
@@ -216,7 +216,7 @@ var Logger = require('./logger.js');
         console.log(text);
 
         Logger.analysisLog('answer', { target: transaction.qa.matchedDialog, output: { text : text } }, context.user.userKey);
-        Logger.logUserDialog(bot.id, context.user.userKey, context.channel, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
+        Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
 
         callback({ type: 'qa', output: { text: text }});
     };
@@ -252,7 +252,7 @@ var Logger = require('./logger.js');
                     currentDialog.userInput = userInput;
 
                 Logger.analysisLog('answer', { target: dialogInstance, output: output }, context.user.userKey);
-                Logger.logUserDialog(bot.id, context.user.userKey, context.channel, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
+                Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, currentDialog.userInput.text, currentDialog.userInput.nlpText, output.text, currentDialog.card.id, currentDialog.card.name, previousDialog.card.id, previousDialog.card.name, false, 'dialog');
 
                 callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
             }

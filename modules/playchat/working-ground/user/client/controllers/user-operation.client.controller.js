@@ -99,6 +99,11 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
             angular.element('.range-input span').html('');
         };
 
+        $scope.toPage = function(page)
+        {
+            $scope.getList(page);
+        };
+
         $scope.getList = function(page, searchValue)
         {
             page = page || $location.search().page || 1;

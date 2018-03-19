@@ -228,13 +228,13 @@
     height: 23px;
     display: inline-block;
 
-    background: url(../imgs/more_.png);
+    background: url(/modules/chatbots/client/imgs/more_.png);
     background-repeat: no-repeat;
 }
 
 .chatbot-menu-button:hover
 {
-    background: url(../imgs/more.png) no-repeat;
+    background: url(/modules/chatbots/client/imgs/more.png) no-repeat;
 }
 
 .chatbot-menu

@@ -120,7 +120,7 @@
                 <a href="/playchat/operation/user?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
-                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/operation/user?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
                 <a href="/playchat/operation/user?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>

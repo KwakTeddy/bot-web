@@ -75,7 +75,7 @@ input.search[type="search"] {
     -webkit-appearance: textfield;
     -webkit-box-sizing: content-box;
     font-size: 100%;
-    background: #e8ebf0 url(../images/search.png) no-repeat 180px center;
+    background: #e8ebf0 url(/modules/playchat/working-ground/common/client/imgs/search.png) no-repeat 180px center;
 	border: solid 1px #e8ebf0;
 	padding: 10px 38px 10px 12px;
 	width: 158px;	
@@ -109,7 +109,7 @@ input.search[type="submit"] {
   width: 16px;
   color:red;
   float: right;
-  background:url(../images/search.jpg) 0 no-repeat;
+  background:url(/modules/playchat/working-ground/common/client/imgs/search.png) 0 no-repeat;
   text-indent: -10000px;
   position: absolute;
   top: 0;

@@ -12,12 +12,6 @@ var utils = require('./utils/utils.js');
 
         var split = key.split('.');
 
-        if(split.length == 1)
-        {
-            split.splice(0, 0, 'data');
-            split.splice(0, 0, 'dialog');
-        }
-
         for(var i=0; i<split.length; i++)
         {
             if(i == 0)
@@ -39,6 +33,12 @@ var utils = require('./utils/utils.js');
             {
                 break;
             }
+        }
+
+        if(!replaced && split.length == 1)
+        {
+            key = 'data.dialog.' + key;
+            return getValue(obj, key);
         }
 
         return replaced;

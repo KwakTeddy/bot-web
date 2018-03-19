@@ -26,7 +26,6 @@ exports.renderIndex = function (req, res, next)
 
     if(req.path == '/')
     {
-
         var accept = accepts(req);
         var browserLan = accept.language()[0];
         var queryLan = req.query.lan;

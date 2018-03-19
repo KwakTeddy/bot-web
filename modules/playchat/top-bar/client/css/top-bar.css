@@ -149,7 +149,7 @@
 {
     .top-bar .store-btn
     {
-        background:#fff url(../imgs/cart.gif) no-repeat 0px;
+        background:#fff url(/modules/playchat/top-bar/client/imgs/cart.gif) no-repeat 0px;
         width: 20px;
         height: 29px;
         margin-right: 16px;

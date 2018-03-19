@@ -320,8 +320,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             var origin = JSON.stringify($scope.parseDialog($scope.originalDialog));
             var result = JSON.stringify($scope.parseDialog($scope.dialog));
 
-            console.log(origin, result);
-
             if(origin != result)
             {
                 if(!confirm(LanguageService('Update is not saved. Do you want to close without saving?')))
@@ -497,6 +495,15 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         $scope.initialize(parent, dialog);
     });
+
+    $scope.saveKeydown = function(e)
+    {
+        console.log(e.keyCode);
+        if(e.keyCode == 9)
+        {
+            e.preventDefault();
+        }
+    };
 
     $scope.lan=LanguageService;
 }]);
