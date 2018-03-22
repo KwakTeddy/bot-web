@@ -3,7 +3,7 @@
 var path = require('path');
 var multer = require('multer');
 var config = require(path.resolve('./config/config'));
-
+var accepts = require('accepts');
 var util = require('util');
 var mongoose = require('mongoose');
 // var OverTextLink = mongoose.model('OverTextLink');
@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 var frontLanguage = require(path.resolve('./modules/core/server/controllers/front.language.js'));
 
 var UserLog = mongoose.model('UserLog');
+var supportedLan = ["en", "ko", "zh", "jp"];
 
 
 /**
@@ -25,13 +26,21 @@ exports.renderIndex = function (req, res, next)
 
     if(req.path == '/')
     {
-        var lanCategory = ['ko', 'en', 'zh', 'ja'];
-        var browserLan = req.headers["accept-language"] ? req.headers["accept-language"].split('-')[0] : '';
-
+        var accept = accepts(req);
+        var browserLan = accept.language()[0];
         var queryLan = req.query.lan;
+
+        if(browserLan.indexOf('-') != -1)
+        {
+            browserLan = browserLan.split('-')[0];
+        }
+
         var code = queryLan || browserLan;
 
-        if(lanCategory.indexOf(code) == -1) code = 'en';
+        if(supportedLan.indexOf(code) == -1)
+        {
+            code = 'en';
+        }
 
         res.render('modules/front/index', frontLanguage(code));
         return;

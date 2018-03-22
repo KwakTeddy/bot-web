@@ -547,24 +547,8 @@
 
             });
 
-            var lanCategory = ['ko', 'en', 'zh', 'jp'];
             var lan = {{ lan | json | safe }};
-            var query = window.location.search;
-            if(!query)
-            {
-                return location.href = '/?lan=' + $.cookie('language');
-            }else
-            {
-                $.cookie('language', lan);
-
-                query = query.replace("?", '').split('=')[1];
-
-                if(lanCategory.indexOf(query) == -1)
-                {
-                    return location.href = '/?lan=' + lan;
-                }
-
-            }
+            $.cookie('language', lan);
 
             $('.lang li').on('click', function()
             {
