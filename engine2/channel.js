@@ -9,6 +9,7 @@ var facebook = require('./channel/facebook.js');
 var socketChannel = require('./channel/socket.js');
 var line = require('./channel/line.js');
 var navertalk = require('./channel/navertalk.js');
+var telegram = require('./channel/telegram.js');
 
 (function()
 {
@@ -46,6 +47,8 @@ var navertalk = require('./channel/navertalk.js');
         //
         // // 네이버 톡톡
         app.route('/navertalk/:botId/webhook').post(navertalk.message);
+
+        app.route('/telegram/:token').post(telegram.message);
         //
         // // wechat
         // app.route('/wechat/:bot/webhook').get(wechat.messageGet);

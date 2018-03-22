@@ -7,6 +7,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
     $scope.$parent.loaded('working-ground');
 
     var FacebookPageService = $resource('/auth/facebook/page');
+    var TelegramService = $resource('/api/:botId/channel/telegram', { botId: '@botId' });
     var LineAccessTokenService = $resource('/api/:botId/channel/line', { botId: '@botId' });
 
     $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
@@ -29,12 +30,14 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
         kakao: false,
         naver: false,
         line: false,
-        facebook: false
+        facebook: false,
+        telegram: false
     };
 
     $scope.lineAccessToken = '';
     $scope.lineChannelId = '';
     $scope.lineChannelSecret = '';
+    $scope.telegramToken = '';
 
     var user = $cookies.getObject('user');
 
@@ -55,6 +58,12 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
             $scope.lineAccessToken = result.accessToken;
             $scope.lineChannelSecret = result.secret;
             $scope.lineChannelId = result.channelId;
+        });
+
+        TelegramService.get({ botId: chatbot.id }, function(result)
+        {
+            console.log('ㅎㅎㅎ : ', result);
+            $scope.telegramToken = result.token || '';
         });
 
         $scope.saveLineInfo = function()
@@ -253,6 +262,23 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         }
                     }
                 });
+            });
+        };
+
+        $scope.connectTelegram = function(e)
+        {
+            var prev = e.currentTarget.previousElementSibling;
+            var token = prev.value;
+
+            TelegramService.save({ botId: chatbot.id, token: token }, function()
+            {
+                alert(LanguageService('Connected'));
+                $scope.help.telegram = false;
+            },
+            function(err)
+            {
+                console.error(err);
+                alert('Error');
             });
         };
 

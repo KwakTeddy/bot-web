@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var request = require('request');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 var Bot = mongoose.model('Bot');
 
@@ -109,4 +110,99 @@ exports.facebookPage = function (req, res) {
 
         })
     }
+};
+
+
+module.exports.saveTelegramToken = function(req, res)
+{
+    var botId = req.params.botId;
+    Bot.findOne({ id: botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            res.status(400).send({ error: err });
+        }
+        else if(bot)
+        {
+            bot.telegram = req.body.token;
+            bot.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ error: err });
+                }
+
+                var options = {};
+                if(process.env.NODE_ENV == 'production')
+                {
+                    options.qs = { url: 'https://www.playchat.ai/telegram/' + bot.telegram }
+                }
+                else if(process.env.HOST && process.env.HOST.startsWith('https://remaster'))
+                {
+                    options.qs = { url: 'https://remaster.moneybrain.ai/telegram/' + bot.telegram }
+                }
+                else
+                {
+                    //ngrok 로컬
+                    options.qs = { url: 'https://260ee1c6.ngrok.io/telegram/' + bot.telegram }
+                }
+
+                options.method = 'POST';
+                options.url = 'https://api.telegram.org/bot' + bot.telegram + '/deleteWebHook';
+                options.simple = false;
+                options.resolveWithFullResponse = true;
+                options.forever = true;
+
+                request(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return res.status(400).send({ error: err });
+                    }
+
+
+                    options.url = 'https://api.telegram.org/bot' + bot.telegram + '/setWebHook';
+
+                    request(options, function(err, response, body)
+                    {
+                        if(err)
+                        {
+                            console.error(err);
+                            return res.status(400).send({ error: err });
+                        }
+
+                        res.send({ token: bot.telegram });
+                    });
+                });
+            });
+        }
+        else
+        {
+            res.status(404).end();
+        }
+    });
+};
+
+module.exports.getTelegramToken = function(req, res)
+{
+    var botId = req.params.botId;
+    Bot.findOne({ id: botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            res.status(400).send({ error: err });
+        }
+        else if(bot)
+        {
+            res.send({ token: bot.telegram });
+        }
+        else
+        {
+            res.status(404).end();
+        }
+    });
 };
