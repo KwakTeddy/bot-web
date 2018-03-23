@@ -7,6 +7,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
     var tempUserKey = 'socket-user-' + new Date().getTime();
 
+    $scope.isAdvisorMode = false;
+
     (function()
     {
         var chatbot = $cookies.getObject('chatbot');
@@ -190,6 +192,16 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        Socket.on('chat_log', function(data)
+        {
+            if($scope.isAdvisorMode)
+            {
+                addUserBubble(data.inputRaw);
+                addBotBubble(data.output.output);
+            }
+            // $rootScope.$broadcast('o nchat', data);
+        });
+
         Socket.on('analysis_log', function(data)
         {
             $rootScope.$broadcast('onlog', data);
@@ -245,6 +257,28 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.sendMessage = function(e)
         {
+            if($scope.isAdvisorMode)
+            {
+                if(e.keyCode == 13) //Enter
+                {
+                    var value = e.currentTarget.value.trim();
+                    if(value)
+                    {
+                        var params = {};
+                        params.bot = chatbot.id;
+                        params.user = $scope.advisorModeUserKey;
+                        params.msg = value;
+                        params.options = {};
+
+                        Socket.emit('send_human_answer', params);
+
+                        e.currentTarget.value = '';
+                    }
+                }
+
+                return;
+            }
+
             if(e.keyCode == 13) //Enter
             {
                 var value = e.currentTarget.value.trim();
@@ -298,6 +332,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.init = function()
         {
+            $scope.isAdvisorMode = false;
             simulatorBody = angular.element('#simulatorBody');
             // init
             simulatorBody.html('');
@@ -319,6 +354,12 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }, Beagle.error);
         };
 
+        $scope.$on('setAdvisorMode', function(context, userKey)
+        {
+            $scope.isAdvisorMode = true;
+            $scope.advisorModeUserKey = userKey;
+        });
+
         $scope.$on('simulator-build', function()
         {
             clearBubble();
@@ -333,6 +374,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.$on('set-simulator-content', function(context, data)
         {
+            console.log(data.dialog);
             clearBubble();
             for(var i=data.dialog.length-1; i>=0; i--)
             {
