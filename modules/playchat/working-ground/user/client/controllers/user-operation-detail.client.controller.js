@@ -51,10 +51,12 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
                     $scope.data.lastUpdate = item.userDialog[0].created;
                     $scope.data.newMsg = item.userDialog[0].dialog;
 
-                    $rootScope.$broadcast('set-simulator-content', { dialog: $scope.data.userDialog, readonly: true });
+                    $rootScope.$broadcast('set-simulator-content', { dialog: $scope.data.userDialog, readonly: false });
 
                     $scope.data.lastUpdate = DateService.formatDate($scope.data.lastUpdate);
                 }
+
+                $rootScope.$broadcast('setAdvisorMode', $scope.data.userKey);
 
                 MemoService.query({ botId: chatbot.id, userKey: $scope.data.userKey }, function(memoList)
                 {

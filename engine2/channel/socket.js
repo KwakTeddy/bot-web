@@ -34,4 +34,17 @@ module.exports.init = function(socket)
             }
         });
     });
+
+    socket.on('send_human_answer', function(msg)
+    {
+        var bot = msg.bot;
+        var targetUser = msg.user;
+        var channel = '';
+
+        var socket = Logger.sockets[targetUser];
+        if(socket)
+        {
+            socket.emit('send_msg', { type: 'dialog', output: { text: msg.msg }});
+        }
+    });
 };

@@ -1900,7 +1900,7 @@
                 "ko": "Try now",
                 "en": "Try now",
                 "zh": "现在试试",
-                "jp": "今すぐやってみて下さい\n"
+                "jp": "今すぐやってみて下さい"
             },
             "Connect": {
                 "ko": "연결하기",
@@ -3578,6 +3578,18 @@
                 "en": "Edit",
                 "zh": "编辑",
                 "jp": "編集"
+            },
+            "Telegram": {
+                "ko": "텔레그램",
+                "en": "Telegram",
+                "zh": "Telegram",
+                "jp": "Telegram"
+            },
+            "Connected": {
+                "ko": "연결되었습니다",
+                "en": "Connected",
+                "zh": "连接的。",
+                "jp": "接続されました。"
             }
         };
 

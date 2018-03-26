@@ -68,7 +68,7 @@ var Logger = require('./logger.js');
             var dialog = bot.dialogMap['noanswer'];
             var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
             Logger.analysisLog('answer', { target: target, output: { text : output } }, context.user.userKey);
-            Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, output, dialog.id, dialog.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+            Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, output.text, dialog.id, dialog.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
             callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
         }
     };

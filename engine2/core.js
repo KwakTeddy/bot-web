@@ -162,7 +162,7 @@ var s3 = new AWS.S3();
                         return errCallback('old-version');
                     }
 
-                    var contextKey = channel + '_' + botId + '_' + userKey;
+                    var contextKey = botId + '_' + userKey;
                     that.redis.get(contextKey, function(err, context)
                     {
                         if(err)
@@ -263,6 +263,9 @@ var s3 = new AWS.S3();
 
                                                     context.bot = bot;
                                                     outCallback(context, dialog);
+
+                                                    //여기서 소켓으로 올려보내자 userkey로 구분해서
+                                                    Logger.chatLog(userKey, { userKey: userKey, inputRaw: inputRaw, output: dialog });
 
                                                     console.log(chalk.green('================================================================'));
                                                     console.log();

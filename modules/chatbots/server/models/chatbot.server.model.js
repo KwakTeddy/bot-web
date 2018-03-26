@@ -19,6 +19,7 @@ var BotSchema = new Schema(
     line: { type: Boolean, default: false },
     lineChannel: Object,
     facebook: { type: Boolean, default: false },
+    telegram: String,
     using: { type: Boolean, default: false },
     public: { type: Boolean, default: true },
     learn: { type: Boolean, default: false },
