@@ -35,7 +35,7 @@
                 "ko": "로그인해주세요.",
                 "en": "Please sign in with your account.",
                 "jp": "ログインしてください。",
-                "zh": "请使用账号密码登录。"
+                "zh": "请使用账号密码进行登录"
             },
             "Sign in with your social network account.": {
                 "ko": "SNS 계정으로 로그인해보세요.",
@@ -2969,13 +2969,13 @@
             "Sample Hotel": {
                 "ko": "샘플 호텔봇",
                 "en": "Sample Hotel Bot",
-                "zh": "酒店博特样本",
+                "zh": "酒店聊天机器人样本",
                 "jp": "サンプルホテルボット"
             },
             "Sample Restaurant": {
                 "ko": "샘플 레스토랑봇",
                 "en": "Sample Restaurant Bot",
-                "zh": "样本餐厅机器人",
+                "zh": "餐厅机器人样本",
                 "jp": "サンプルレストランボット"
             },
             "Sample Hospital": {
