@@ -25,6 +25,7 @@ var Transaction = require('../utils/transaction.js');
         const child = execFile('node', ['task-executor.js', type, bot.id, task.name, JSON.stringify(dialogInstance), JSON.stringify(this.makeTempContext(context))], function(error, stdout, stderr)
         {
             if (error) {
+                console.log('@@@@@@@@@@@@@@@@@@@@@');
                 console.error('stderr', stderr);
                 throw error;
             }
