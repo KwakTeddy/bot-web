@@ -62,9 +62,9 @@ module.exports = function (app, db)
         // HTTP to HTTPS redirect
         http.createServer(function (req, res)
         {
-            var host = req.header("host");
+            // var host = req.header("host");
 
-            return res.redirect(301, 'https://' + host + req.path);
+            return res.redirect(301, 'https://' + req.headers['host'] + req.url);
             // res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
             // res.end();
         }).listen(80);
