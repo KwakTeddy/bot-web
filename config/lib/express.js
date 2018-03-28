@@ -182,19 +182,19 @@ module.exports.initHelmetHeaders = function (app) {
  */
 module.exports.initModulesClientRoutes = function (app)
 {
-    app.use(function forceWWW(req, res, next)
-    {
-        var host = req.header("host");
-
-        if (host == 'playchat.ai')
-        {
-            return res.redirect(301, 'https://www.' + host + req.path);
-        }
-        else
-        {
-            return next();
-        }
-    });
+    // app.use(function forceWWW(req, res, next)
+    // {
+    //     var host = req.header("host");
+    //
+    //     if (host == 'playchat.ai')
+    //     {
+    //         return res.redirect(301, 'https://www.' + host + req.path);
+    //     }
+    //     else
+    //     {
+    //         return next();
+    //     }
+    // });
 
      // Setting the app router and static folder
     app.use('/front', express.static(path.resolve('./modules/front')));
