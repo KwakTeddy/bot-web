@@ -309,7 +309,7 @@ module.exports = function(code)
             "lan" : "zh"
 
         },
-        jp: {
+        ja: {
             "L001":"",
             "L002":"",
             "L003":"",
@@ -409,7 +409,7 @@ module.exports = function(code)
             "L089":"",
             "L090":"",
             "L091":"見つけることができません。",
-            "lan" : "jp"
+            "lan" : "ja"
 
         }
     };

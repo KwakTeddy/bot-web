@@ -12,6 +12,8 @@ var frontLanguage = require(path.resolve('./modules/core/server/controllers/fron
 
 var UserLog = mongoose.model('UserLog');
 
+var supportedLan = ["en", "ko", "zh", "ja"];
+var accepts = require('accepts');
 
 /**
  * Render the main application page
@@ -23,22 +25,27 @@ exports.renderIndex = function (req, res, next)
         return next();
     }
 
+
     if(req.path == '/')
     {
-        var lanCategory = ['ko', 'en', 'zh', 'ja'];
-        var browserLan = req.headers["accept-language"] ? req.headers["accept-language"].split('-')[0] : '';
+        var accept = accepts(req);
+        var browserLan = accept.language()[0];
+
+        if(browserLan.indexOf('-') != -1)
+        {
+            browserLan = browserLan.split('-')[0];
+        }
+
+        if(supportedLan.indexOf(browserLan) == -1)
+            browserLan = 'en';
+
 
         var queryLan = req.query.lan;
         var code = queryLan || browserLan;
 
-        if(lanCategory.indexOf(code) == -1) code = 'en';
-
         res.render('modules/front/index', frontLanguage(code));
         return;
     }
-
-    var path_uri = req.path;
-    var path = path_uri.split('/');
 
     var platform = 'web';
     if(req.headers['user-agent'])

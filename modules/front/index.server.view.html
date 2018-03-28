@@ -149,12 +149,15 @@
     				</div>
     				<div class="col-md-1 cartCol">
     					<div class="langOpt">
-    						<span class="langIcon" style="width: 110px;"><span class="langCode"></span><i class="icofont icofont-caret-down"></i> </span>
+    						<span class="langIcon" style="width: 110px;">
+                                <span class="langCode"></span>
+                                <i class="icofont icofont-caret-down"></i>
+                            </span>
     						<ul class="lang">
                                 <li data-id="ko"><a href="/?lan=ko">{{L011}}</a></li>
     							<li data-id="en"><a href="/?lan=en">{{L012}}</a></li>
     							<li data-id="zh"><a href="/?lan=zh">{{L013}}</a></li>
-                                <li data-id="jp"><a href="/?lan=jp">{{L014}}</a></li>
+                                <li data-id="ja"><a href="/?lan=ja">{{L014}}</a></li>
     						</ul>
     					</div>
     				</div>
@@ -534,6 +537,10 @@
     <script>
         $(document).ready(function()
         {
+
+            var lan = {{ lan | json | safe }};
+            $.cookie('language', lan);
+
             $('[data-id="startBtn"]').on('click', function () {
                 console.log($.cookie('login'));
 
@@ -546,25 +553,6 @@
                 }
 
             });
-
-            var lanCategory = ['ko', 'en', 'zh', 'jp'];
-            var lan = {{ lan | json | safe }};
-            var query = window.location.search;
-            if(!query)
-            {
-                return location.href = '/?lan=' + $.cookie('language');
-            }else
-            {
-                $.cookie('language', lan);
-
-                query = query.replace("?", '').split('=')[1];
-
-                if(lanCategory.indexOf(query) == -1)
-                {
-                    return location.href = '/?lan=' + lan;
-                }
-
-            }
 
             $('.lang li').on('click', function()
             {
