@@ -30,6 +30,8 @@ exports.renderIndex = function (req, res, next)
     {
         var accept = accepts(req);
         var browserLan = accept.language()[0];
+        console.log(browserLan);
+        console.log('@@@@@@@@@@@@@');
 
         if(browserLan.indexOf('-') != -1)
         {
