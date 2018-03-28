@@ -188,7 +188,7 @@ module.exports.initModulesClientRoutes = function (app)
 
         if (host == 'playchat.ai')
         {
-            return res.redirect(301, 'https://www.' + host + req.path);
+            return res.redirect(301, 'https://' + host + req.path);
         }
         else
         {
