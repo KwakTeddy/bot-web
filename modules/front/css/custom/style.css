@@ -4337,7 +4337,7 @@ header .topInfo li.clientAreaLi span,
 
 .mainArea .img {
 	max-width: 960px;
-	background-image: url(../../../front/img/home-dsk-3.png);
+	/*background-image: url(../../../front/img/home-dsk-3.png);*/
 	background-size: 100%;
 	background-repeat: no-repeat;
 	margin: auto;
