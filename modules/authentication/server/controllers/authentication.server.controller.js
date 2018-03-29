@@ -366,7 +366,7 @@ module.exports.validateEmailConfirmToken = function(req, res)
                             else
                             {
                                 //for closedbeta
-                                // res.cookie('login', true);
+                                res.cookie('login', true);
                                 res.redirect('/signup?verified=true');
                             }
                         });
