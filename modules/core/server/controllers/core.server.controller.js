@@ -30,6 +30,8 @@ exports.renderIndex = function (req, res, next)
     {
         var accept = accepts(req);
         var browserLan = accept.language()[0];
+        var queryLan = req.query.lan;
+
         console.log(browserLan);
 
         if(browserLan.indexOf('-') != -1)
@@ -38,10 +40,15 @@ exports.renderIndex = function (req, res, next)
         }
 
         if(supportedLan.indexOf(browserLan) == -1)
+        {
             browserLan = 'en';
+        }
 
+        if(supportedLan.indexOf(queryLan) == -1)
+        {
+            queryLan = undefined;
+        }
 
-        var queryLan = req.query.lan;
         var code = queryLan || browserLan;
 
         res.render('modules/front/index', frontLanguage(code));

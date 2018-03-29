@@ -40,7 +40,7 @@
             {
                 if(err == 'not registration' || err.message.startsWith('E-mail 확인절차를'))
                 {
-                    alert(LanguageService('This e-mail is under screening process. Please wait for results.'));
+                    alert(LanguageService('This e-mail is under confirm process. Please confirm your email.'));
                 }
                 else if(err.message.startsWith('가입되지 않은'))
                 {
