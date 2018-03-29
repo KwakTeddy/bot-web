@@ -13,7 +13,6 @@
                 location.href = $state.previous.href;
             else
                 location.href = '/playchat/chatbots';
-
             return;
         }
 
