@@ -131,8 +131,8 @@
     				<div class="col-md-2 col-sm-3 col-xs-9 logo-stable">
     					<a href="/" class="logo"><img src="/front/img/logo.png" alt=""></a>
     				</div>
-    				<div class="col-md-7 menuCol col-sm-9 col-xs-9">
-						<div class="navbar-header">
+    				<div class="col-md-5 menuCol col-sm-9 col-xs-9">
+						<div class="navbar-header hidden-xs">
 							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 								<span class="sr-only"></span>
 								<i class="fa fa-navicon"></i>
@@ -147,21 +147,25 @@
     						</ul>
     					</nav>
     				</div>
+
     				<div class="col-md-1 cartCol">
     					<div class="langOpt">
-    						<span class="langIcon" style="width: 110px;">
-                                <span class="langCode"></span>
-                                <i class="icofont icofont-caret-down"></i>
-                            </span>
+    						<span class="langIcon" style="width: 110px;"><span class="langCode"></span><i class="icofont icofont-caret-down"></i> </span>
     						<ul class="lang">
                                 <li data-id="ko"><a href="/?lan=ko">{{L011}}</a></li>
     							<li data-id="en"><a href="/?lan=en">{{L012}}</a></li>
     							<li data-id="zh"><a href="/?lan=zh">{{L013}}</a></li>
-                                <li data-id="ja"><a href="/?lan=ja">{{L014}}</a></li>
+                                <li data-id="jp"><a href="/?lan=jp">{{L014}}</a></li>
     						</ul>
     					</div>
-    				</div>
-    				<a href="#" class="startBtn" data-id="startBtn">{{L015}}</a>
+                    </div>
+                    <div class="col-lg-2 hidden-sm hidden-xs hidden-md" style="float: right;">
+                        <a href="#" class="btn-sm" >회원가입</a>
+                        <a href="#" class="btn-sm" style="border-left: 1px solid #288feb;">로그인</a>
+                    </div>
+
+                    <a href="#" class="startBtn" data-id="startBtn">챗봇 개발하기</a>
+
     			</div>
     		</div>
     	</div>
@@ -170,30 +174,26 @@
 
     <!-- ======= 1.02 Home Area ====== -->
 
-    <div class="homeArea animated">
-    	<div class="container">
+    <div class="homeArea animated" style="background-image: linear-gradient(to right,rgba(75,70,201,.7),rgba(5,222,162,.6));">
+    	<div class="mainArea container">
     		<div class="row">
-    			<div class="col-md-5">
-    				<div class="homeContent" id="home">
-    					<!--<span class="topTxt">Simple &nbsp; - &nbsp; Easy to use &nbsp; - &nbsp; 10x faster!</span>-->
-    					<span class="h2 homeTitle">{{L016}}</span>
-    					<p>{{L017}}<br>
-                            {{L018}}
-						</p>
-    					<div class="homeBtn">
-    						<a href="#" class="btnOne Btn" data-id="startBtn"><i class="icofont icofont-rocket-alt-2"></i>{{L015}}</a>
-    						<!--<a href="#" class="btnTwo Btn">check pricing</a>-->
-    					</div>
-    				</div>
-    			</div>
-    			<div class="col-md-7">
-    				<div class="homeImgTable">
-						<div class="homeImg">
-							<img src="/front/img/home-dsk-3.png" alt="">
-						</div>
-    				</div>
-    			</div>
-    		</div>
+    			<div class="col-md-12 main">
+                    <h1>내가 만드는 챗봇, 쉽고 빠르게 만드는 챗봇</h1>
+    				<p>세계 최고의 대화형 인공지능 기술</p>
+                    <!--
+                    <div class="homeBtn">
+                        <a href="#" class="btnOne Btn" data-id="startBtn"><i class="icofont icofont-rocket-alt-2"></i>챗봇 개발하기</a>
+                        <!--<a href="#" class="btnTwo Btn">check pricing</a>
+                    </div>-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="screenshot">
+                        <div class="img"></div>
+                    </div>
+                </div>
+            </div>
     		<!--
 			<div class="clouds">
 				<img src="img/clouds/cloud-1.png" alt="" class="cloud1">
@@ -203,27 +203,69 @@
 				<img src="img/clouds/cloud-5.png" alt="" class="cloud5">
 			</div>
    			-->
-    	</div>
-    </div>
 
+    	</div>
+        <!-- ======= 1.03 Domain Area ======-->
+        <div class="domainArea" style="text-align: center;position: absolute;bottom: 0;width: 100%;z-index: 100;" >
+            <div class="animated">
+                <div class="row">
+                    <div class="col-md-12 clearfix">
+                        <p class="regist-exp">지금 시작하세요.</p>
+                        <div class="regist-space">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input class="form-control input-lg input-regi" placeholder="email@example.com" ng-init="email = undefined" type="email">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control input-lg" type="password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-lg" type="submit">
+                                        <span>등록</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ======= /1.03 Domain Area ====== -->
+    </div>
     <!-- ======= /1.02 Home Area ====== -->
 
-    <!-- ======= 1.03 Domain Area ======
-    <div class="domainArea">
-    	<div class="container animated">
-    		<div class="row">
-    			<div class="col-md-12 clearfix">
-    				<div class="domainTxt">
-    					<p>세계 최고의 대화형 인공지능 기술<br>무료로 이용하세요.</p>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
+    <!-- ======= /logo Area ===== -->
+    <div class="company">
+        <div class="container">
+            <div class="row row-spaced-small">
+                <div class="small">
+                    자사의 개발 프로그램인 플레이챗을 사용하고 있는 회사입니다.
+                </div>
+                <div class="container-fluid" id="slides" style="overflow: hidden;">
+                    <div class="slidesjs-control">
+                        <div class="row row-spaced">
+                            <div class="col-xs-3">
+                                <img src="/front/img/client-1.png">
+                            </div>
+                            <div class="col-xs-3">
+                                <img src="/front/img/client-2.png">
+                            </div>
+                            <div class="col-xs-3">
+                                <img src="/front/img/client-3.png">
+                            </div>
+                            <div class="col-xs-3">
+                                <img src="/front/img/client-6.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- ======= /1.03 Domain Area ====== -->
+    <!-- ======= /End logo Area ===== -->
 
     <!-- ======= 1.04 Service Area ====== -->
-    <div class="serviceArea secPdng animated">
+    <div class="serviceArea secPdng animated pattern-container">
     	<div class="container">
     		<div class="row">
     			<div class="col-md-12">
@@ -233,7 +275,7 @@
     			</div>
     		</div>
     		<div class="row service">
-    			<div class="col-md-3 col-sm-4 effect">
+    			<div class="col-md-3 col-sm-4">
     				<div class="singleService">
     					<div class="serviceIcon">
     						<img src="/front/img/icon/serv-04.png" alt="">
@@ -244,7 +286,7 @@
     					</div>
     				</div>
     			</div>
-    			<div class="col-md-3 col-sm-4 effect">
+    			<div class="col-md-3 col-sm-4">
     				<div class="singleService">
     					<div class="serviceIcon">
     						<img src="/front/img/icon/serv-06.png" alt="">
@@ -255,7 +297,7 @@
     					</div>
     				</div>
     			</div>
-    			<div class="col-md-3 col-sm-4 effect">
+    			<div class="col-md-3 col-sm-4">
     				<div class="singleService">
     					<div class="serviceIcon">
     						<img src="/front/img/icon/scriptt.png" alt="">
@@ -266,7 +308,7 @@
     					</div>
     				</div>
     			</div>
-                <div class="col-md-3 col-sm-4 effect">
+                <div class="col-md-3 col-sm-4">
                     <div class="singleService">
                         <div class="serviceIcon">
                             <img src="/front/img/icon/gear.png" alt="">
@@ -285,7 +327,7 @@
 
     <div class="sectionBar"></div>-->
 	<!-- ======= 1.06 Cta Area ====== -->
-    <div class="ctaArea secPdng animated clientArea">
+    <div class="ctaArea secPdng animated">
         <div class="container">
             <div class="row ctaRow">
                 <div class="col-md-6">
@@ -327,7 +369,7 @@
     <!-- ======= /1.06 Cta Area ====== -->
 
     <!-- ======= 1.05 Pricing Area ====== -->
-    <div class="pricingArea secPdng animated">
+    <div class="pricingArea secPdng animated pattern-container">
     	<div class="container">
     		<div class="row">
     			<div class="col-md-12">
@@ -418,7 +460,7 @@
 
 
     <!-- ======= 1.07 client Area ====== -->
-    <div class="clientArea secPdng animated">
+    <div class="secPdng animated">
     	<div class="container">
     		<div class="row">
     			<div class="col-md-12">
@@ -450,7 +492,7 @@
     			</div>
     			<div class="col-md-2 col-sm-4 col-xs-6 clientwidth">
     				<div class="singleClient">
-    					<a href="#"><img src="/front/img/client-2.png" alt="" style="padding-top: 12px;"></a>
+    					<a href="#"><img src="/front/img/client-4.png" alt="" style="padding-top: 12px;"></a>
     					<p class="pt10">{{L070}}</p>
     					<p>{{L075}}</p>
     					<p>{{L076}}</p>
@@ -469,7 +511,7 @@
     		<div class="row">
     			<div class="col-md-12 animated">
     				<span class="ctaTxtTwo">{{L079}}</span>
-    				<div class="ctaBtn"><a href="#" class="btnOne Btn" data-id="startBtn">{{L015}}</a></div>
+    				<div class="ctaBtn"><a href="#" class="btnOne Btn" data-id="startBtn">챗봇 개발하기</a></div>
     			</div>
     		</div>
     	</div>
