@@ -197,7 +197,7 @@ module.exports.signup = function(req, res, next)
 
                 if (result && (result.provider !== 'local'))
                 {
-                    return res.status(400).send({ message: 'SNS', provider : result.provider });
+                    return res.status(400).send({ message: 'Email is already signed up with '+ result.provider, provider : result.provider });
                 }
 
                 async.waterfall([
