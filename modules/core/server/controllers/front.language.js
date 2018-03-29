@@ -109,7 +109,7 @@ module.exports = function(code)
             "L097" : "내가 만드는 챗봇, 쉽고 빠르게 만드는 챗봇",
             "L098" : "세계 최고의 대화형 인공지능 기술",
             "lan" : "ko",
-            "sigunup" : "가입 완료"
+            "sigunup" : "가입이 완료되었습니다. 입력하신 이메일로 인증 메일을 보냈습니다. 확인후 로그인해주세요."
 
         },
         en: {
@@ -220,7 +220,7 @@ module.exports = function(code)
             "L097" : "Chatbot I build, easy and fast",
             "L098" : "World best dialog Artificial Intelligence Technology",
             "lan" : "en",
-            "sigunup" : "Success!"
+            "sigunup" : "Success! Please, confirm your email."
 
         },
         zh: {
