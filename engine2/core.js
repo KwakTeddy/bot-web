@@ -206,6 +206,16 @@ var s3 = new AWS.S3();
                                 context.session.history.splice(context.session.history.length-1, 1);
                             }
 
+                            if(bot.options.isHuman)
+                            {
+                                if(Logger.userSockets[userKey])
+                                {
+                                    Logger.userSockets[userKey].emit('chat_log', { type: 'dialog', inputRaw: inputRaw });
+                                }
+
+                                return;
+                            }
+
                             var userInput = { text: inputRaw };
                             InputManager.analysis(bot, context, userInput, error, function()
                             {
@@ -265,7 +275,11 @@ var s3 = new AWS.S3();
                                                     outCallback(context, dialog);
 
                                                     //여기서 소켓으로 올려보내자 userkey로 구분해서
-                                                    Logger.chatLog(userKey, { userKey: userKey, inputRaw: inputRaw, output: dialog });
+                                                    // Logger.chatLog(userKey, { userKey: userKey, inputRaw: inputRaw, output: dialog });
+                                                    if(Logger.userSockets[userKey])
+                                                    {
+                                                        Logger.userSockets[userKey].emit('chat_log', { type: 'dialog', inputRaw: inputRaw, output: dialog.output });
+                                                    }
 
                                                     console.log(chalk.green('================================================================'));
                                                     console.log();

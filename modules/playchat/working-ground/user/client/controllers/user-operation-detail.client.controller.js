@@ -31,7 +31,6 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
 
             BotUserService.get(query, function(result)
             {
-                console.log(result)
                 var item = JSON.parse(JSON.stringify(result));
 
                 item.userDialog.sort(function (a, b) {
@@ -56,7 +55,7 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
                     $scope.data.lastUpdate = DateService.formatDate($scope.data.lastUpdate);
                 }
 
-                $rootScope.$broadcast('setAdvisorMode', $scope.data.userKey);
+                $rootScope.$broadcast('setAdvisorMode', { userKey: $scope.data.userKey });
 
                 MemoService.query({ botId: chatbot.id, userKey: $scope.data.userKey }, function(memoList)
                 {
@@ -92,10 +91,68 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
         {
             return DateService.formatDate(date);
         };
+
+        $scope.advisorModeText = '수동상담으로 전환하기';
+        $scope.mode = 'ai';
+        $scope.changeAdvisorMode = function()
+        {
+            if($scope.mode == 'ai')
+            {
+                if(confirm('자동상담중입니다. 수동상담으로 전환하시겠습니까?'))
+                {
+                    $scope.advisorModeText = '자동상담으로 전환하기';
+                    alert('수동상담으로 전환되었습니다');
+                    $scope.mode = 'human';
+                    $rootScope.$broadcast('setAdvisorMode', {userKey: $scope.data.userKey, mode: 'human'});
+                    angular.element('#simulatorInput').removeAttr('readonly').removeAttr('placeholder').off('click').focus();
+                }
+            }
+            else
+            {
+                alert('자동상담으로 전환되었습니다');
+                $scope.advisorModeText = '수동상담으로 전환하기';
+                $scope.mode = 'ai';
+                $rootScope.$broadcast('setAdvisorMode', { userKey: $scope.data.userKey, mode: 'ai' });
+                angular.element('#simulatorInput').attr('readonly', true).attr('placeholder', '자동상담중입니다.').blur().on('click', function()
+                {
+                    if(confirm('자동상담중입니다. 수동상담으로 전환하시겠습니까?'))
+                    {
+                        angular.element('#simulatorInput').removeAttr('readonly').removeAttr('placeholder').off('click').focus();
+                        $scope.changeAdvisorMode();
+                    }
+                });
+            }
+        };
+
+        $scope.$on('setMode', function(context, data)
+        {
+            $scope.mode = data.mode;
+            if(data.mode == 'human')
+            {
+                $scope.advisorModeText = '자동상담으로 전환하기';
+                angular.element('#simulatorInput').removeAttr('readonly').removeAttr('placeholder').off('click').focus();
+            }
+            else
+            {
+                $scope.advisorModeText = '수동상담으로 전환하기';
+                angular.element('#simulatorInput').attr('readonly', true).attr('placeholder', '자동상담중입니다.').on('click', function()
+                {
+                    if(confirm('자동상담중입니다. 수동상담으로 전환하시겠습니까?'))
+                    {
+                        angular.element('#simulatorInput').removeAttr('readonly').removeAttr('placeholder').off('click').focus();
+                        $scope.changeAdvisorMode();
+                    }
+                });
+            }
+        });
     })();
 
     $scope.$on('simulator_command_end', function()
     {
+        angular.element('#simulatorInput').attr('readonly', true).attr('placeholder', '자동상담중입니다.').on('click', function()
+        {
+            $scope.changeAdvisorMode();
+        });
         $scope.getDetail();
     });
 

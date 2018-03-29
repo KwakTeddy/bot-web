@@ -31,15 +31,15 @@ var ContextManager = require('../context.js');
                 var word = RegExp.escape(words[i]);
                 if(this.exclude.indexOf(word) == -1)
                 {
-                    if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) != -1)
+                    if(nlpText.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) == -1)
                     {
-                        count++;
+                        return false;
                     }
                 }
             }
         }
 
-        return count == nlpText.split(' ').length;
+        return true;
     };
 
     DialogGraphManager.prototype.checkEntities = function(src, dest)

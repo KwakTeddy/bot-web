@@ -22,6 +22,8 @@ var Transaction = require('../utils/transaction.js');
             Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
         };
 
+        console.log(dialogInstance);
+        console.log(this.makeTempContext(context));
         const child = execFile('node', ['task-executor.js', type, bot.id, task.name, JSON.stringify(dialogInstance), JSON.stringify(this.makeTempContext(context))], function(error, stdout, stderr)
         {
             if (error) {
@@ -67,11 +69,23 @@ var Transaction = require('../utils/transaction.js');
     TaskManager.prototype.makeTempContext = function(context)
     {
         var tempContext = {
-            bot: context.bot,
             user: context.user,
             channel: context.channel,
             session: JSON.parse(JSON.stringify(context.session))
         };
+
+        tempContext.bot = {};
+        for(var key in context.bot)
+        {
+            if(typeof context.bot[key] == 'string')
+            {
+                tempContext.bot[key] = context.bot[key];
+            }
+            else if(key == 'options')
+            {
+                tempContext.bot.options = context.bot.options;
+            }
+        }
 
         delete tempContext.session.history;
         delete tempContext.session.dialogCursor;

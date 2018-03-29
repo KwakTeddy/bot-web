@@ -18,6 +18,8 @@ var UserDialogLog = mongoose.model('UserDialogLog');
     var Logger = function()
     {
         this.sockets = {};
+        this.channels = {};
+        this.userSockets = {};
     };
 
     function updateCacheBotUser()
@@ -95,14 +97,14 @@ var UserDialogLog = mongoose.model('UserDialogLog');
         updateCacheUserDialog();
     });
 
-    Logger.prototype.chatLog = function(userKey, message)
-    {
-        if(this.sockets[userKey])
-        {
-            this.sockets[userKey].broadcast.emit('chat_log', message);
-            this.sockets[userKey].emit('chat_log', message);
-        }
-    };
+    // Logger.prototype.chatLog = function(userKey, message)
+    // {
+    //     if(this.sockets[userKey])
+    //     {
+    //         this.sockets[userKey].broadcast.emit('chat_log', message);
+    //         this.sockets[userKey].emit('chat_log', message);
+    //     }
+    // };
 
     Logger.prototype.analysisLog = function(type, log, userKey)
     {

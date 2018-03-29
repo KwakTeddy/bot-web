@@ -196,8 +196,16 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             if($scope.isAdvisorMode)
             {
-                addUserBubble(data.inputRaw);
-                addBotBubble(data.output.output);
+                if(data.inputRaw)
+                {
+                    addUserBubble(data.inputRaw);
+                }
+            }
+
+            console.log('챗로그', data);
+            if(data.output)
+            {
+                addBotBubble(data.output);
             }
             // $rootScope.$broadcast('o nchat', data);
         });
@@ -243,6 +251,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     addBotBubble(data.output);
                     $rootScope.$broadcast('onmsg', { message: data.output });
                 }
+                else if(data.type == 'setMode')
+                {
+                    console.log('모드 : ', data.mode);
+                    $rootScope.$broadcast('setMode', { mode: data.mode });
+                }
                 else
                 {
                     addBotBubble(data);
@@ -270,6 +283,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                         params.msg = value;
                         params.options = {};
 
+                        addBotBubble({ text: value });
                         Socket.emit('send_human_answer', params);
 
                         e.currentTarget.value = '';
@@ -354,10 +368,33 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }, Beagle.error);
         };
 
-        $scope.$on('setAdvisorMode', function(context, userKey)
+        $scope.$on('setAdvisorMode', function(context, data)
         {
             $scope.isAdvisorMode = true;
-            $scope.advisorModeUserKey = userKey;
+            $scope.advisorModeUserKey = data.userKey;
+
+            var params = {};
+            params.bot = chatbot.id;
+            params.user = data.userKey;
+
+            if(data.mode == 'human')
+            {
+                params.msg = ':humanWriteMode';
+            }
+            else if(data.mode == 'ai')
+            {
+                params.msg = ':aiWriteMode';
+            }
+            else
+            {
+                params.msg = ':humanViewMode';
+            }
+
+            params.options = {};
+
+            console.log('허이 : ', params);
+
+            Socket.emit('send_msg', params);
         });
 
         $scope.$on('simulator-build', function()

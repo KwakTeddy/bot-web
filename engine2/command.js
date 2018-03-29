@@ -175,6 +175,38 @@ var DialogGraphManager = require('./answer/dm.js');
             context.session.dialogCursor = undefined;
             this.reloadBotFiles(bot, context, error, callback);
         }
+        else if(inputRaw == ':humanWriteMode' || inputRaw == ':aiWriteMode')
+        {
+            bot.options.isHuman = (inputRaw == ':humanWriteMode' ? true : false);
+            redis.set(contextKey, JSON.stringify(context), function(err, reply)
+            {
+                if(err)
+                {
+                    error.delegate(err);
+                }
+                else
+                {
+                    //테스트 필요
+                    redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                    // callback(null, { type: 'dialog', output: { kind: 'Content', text: '상담원과 연결되었습니다.' }});
+
+                    console.log(chalk.green('================================'));
+                    console.log();
+                }
+            });
+        }
+        else if(inputRaw == ':humanViewMode')
+        {
+            if(bot.options.isHuman)
+            {
+                callback(null, { type: 'setMode', mode: 'human' });
+            }
+            else
+            {
+                callback(null, { type: 'setMode', mode: 'ai' });
+            }
+        }
         else
         {
             callback(context, inputRaw + ' is not command');
