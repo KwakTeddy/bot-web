@@ -101,7 +101,12 @@ module.exports = function(code)
             "L089":"",
             "L090":"",
             "L091":"찾을 수 없습니다.",
-            "lan" : "ko"
+            "L092" : "자사의 개발 프로그램인 플레이챗을 사용하고 있는 회사입니다.",
+            "lan" : "ko",
+            "Start Now" : '지금 시작하세요',
+            "Register" : '등록',
+            "Build Chatbot" : "챗봇 개발하기",
+            "Sign up" : "회원가입"
         },
         en: {
             "L001":"Playchat - Develop a Chatbot, Conversational AI platform, Moneybrain",
@@ -202,8 +207,14 @@ module.exports = function(code)
             "L088":"Blog",
             "L089":"Facebook",
             "L090":"Contact with us",
-            "L090":"is not found",
-            "lan" : "en"
+            "L091":"is not found",
+            "L092" : "Who Use Playchat?",
+            "lan" : "en",
+            "Start Now" : 'Start Now',
+            "Register" : "Register",
+            "Build Chatbot" : "Build Chatbot",
+            "Sign up" : "Sign up"
+
 
         },
         zh: {
