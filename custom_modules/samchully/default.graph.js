@@ -2540,29 +2540,23 @@ var commonDialogs = [
                 "text": "안녕하세요, 삼천리 고객센터 입니다.\n무엇을 도와드릴까요? \n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "1. 요금"
                     },
                     {
-                        "url": "",
                         "text": "2. 이사/AS"
                     },
                     {
-                        "url": "",
                         "text": "3. 안전점검"
                     },
                     {
-                        "url": "",
                         "text": "4. 카카오톡상담"
                     },
                     {
-                        "url": "",
                         "text": "5. 기타"
                     }
                 ],
                 "image": {
-                    "url": "/files/samchully-1518159068905-1.png",
-                    "displayname": "1.png"
+                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-samchully/samchully-1518159068905-1.png"
                 }
             }
         ],
