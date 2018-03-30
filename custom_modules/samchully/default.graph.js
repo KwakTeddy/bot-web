@@ -2581,7 +2581,7 @@ var commonDialogs = [
                     }
                 ],
                 "image": {
-                    "url": "/files/samchully-1518159068905-1.png",
+                    "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-samchully/samchully-1518159068905-1.png",
                     "displayname": "1.png"
                 }
             }
