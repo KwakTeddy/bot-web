@@ -78,7 +78,7 @@ module.exports = {
       // clientSecret: process.env.FACEBOOK_SECRET || '085c64a8566fefe3833ed3d983623a10',
       clientID: process.env.FACEBOOK_ID || '1557169960967403',
       clientSecret: process.env.FACEBOOK_SECRET || '282b2a30ec8115f364833a5d48b60cf6',
-      callbackURL: '/api/auth/facebook/callback'
+      callbackURL: '/auth/facebook/callback'
   },
   kakao: {
       clientID: process.env.KAKAO_KEY || '482579e97a7f46badd2c88a3a66ba862',
