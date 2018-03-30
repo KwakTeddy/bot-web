@@ -101,7 +101,16 @@ module.exports = function(code)
             "L089":"",
             "L090":"",
             "L091":"찾을 수 없습니다.",
-            "lan" : "ko"
+            "L092" : "자사의 개발 프로그램인 플레이챗을 사용하고 있는 회사입니다.",
+            "L093" : "챗봇 개발하기",
+            "L094" : '지금 시작하세요',
+            "L095" : '등록',
+            "L096" : "회원가입",
+            "L097" : "내가 만드는 챗봇, 쉽고 빠르게 만드는 챗봇",
+            "L098" : "세계 최고의 대화형 인공지능 기술",
+            "lan" : "ko",
+            "sigunup" : "가입이 완료되었습니다. 입력하신 이메일로 인증 메일을 보냈습니다. 확인후 로그인해주세요."
+
         },
         en: {
             "L001":"Playchat - Develop a Chatbot, Conversational AI platform, Moneybrain",
@@ -202,8 +211,16 @@ module.exports = function(code)
             "L088":"Blog",
             "L089":"Facebook",
             "L090":"Contact with us",
-            "L090":"is not found",
-            "lan" : "en"
+            "L091":"is not found",
+            "L092" : "Who Use Playchat?",
+            "L093" : "Build Chatbot",
+            "L094" : 'Start Now',
+            "L095" : "Register",
+            "L096" : "Sign up",
+            "L097" : "Chatbot I build, easy and fast",
+            "L098" : "World best dialog Artificial Intelligence Technology",
+            "lan" : "en",
+            "sigunup" : "Success! Please, confirm your email."
 
         },
         zh: {
@@ -306,6 +323,13 @@ module.exports = function(code)
             "L089":"Facebook",
             "L090":"联系我们",
             "L091":"找不到",
+            "L092" : "Who Use Playchat?",
+            "L093" : "Build Chatbot",
+            "L094" : 'Start Now',
+            "L095" : "Register",
+            "L096" : "Sign up",
+            "L097" : "Chatbot I build, easy and fast",
+            "L098" : "World best dialog Artificial Intelligence Technology",
             "lan" : "zh"
 
         },
@@ -409,6 +433,13 @@ module.exports = function(code)
             "L089":"",
             "L090":"",
             "L091":"見つけることができません。",
+            "L092" : "Who Use Playchat?",
+            "L093" : "Build Chatbot",
+            "L094" : 'Start Now',
+            "L095" : "Register",
+            "L096" : "Sign up",
+            "L097" : "Chatbot I build, easy and fast",
+            "L098" : "World best dialog Artificial Intelligence Technology",
             "lan" : "ja"
 
         }

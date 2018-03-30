@@ -155,16 +155,16 @@
                                 <li data-id="ko"><a href="/?lan=ko">{{L011}}</a></li>
     							<li data-id="en"><a href="/?lan=en">{{L012}}</a></li>
     							<li data-id="zh"><a href="/?lan=zh">{{L013}}</a></li>
-                                <li data-id="jp"><a href="/?lan=jp">{{L014}}</a></li>
+                                <li data-id="ja"><a href="/?lan=ja">{{L014}}</a></li>
     						</ul>
     					</div>
                     </div>
                     <div class="col-lg-2 hidden-sm hidden-xs hidden-md" style="float: right;">
-                        <a href="#" class="btn-sm" >회원가입</a>
-                        <a href="#" class="btn-sm" style="border-left: 1px solid #288feb;">로그인</a>
+                        <a href="/signup" class="btn-sm" >{{L096}}</a>
+                        <a href="/signin" class="btn-sm" style="border-left: 1px solid #288feb;">{{L002}}</a>
                     </div>
 
-                    <a href="#" class="startBtn" data-id="startBtn">챗봇 개발하기</a>
+                    <a href="#" class="startBtn" data-id="startBtn">{{L093}}</a>
 
     			</div>
     		</div>
@@ -178,8 +178,8 @@
     	<div class="mainArea container">
     		<div class="row">
     			<div class="col-md-12 main">
-                    <h1>내가 만드는 챗봇, 쉽고 빠르게 만드는 챗봇</h1>
-    				<p>세계 최고의 대화형 인공지능 기술</p>
+                    <h1>{{L097}}</h1>
+    				<p>{{L098}}</p>
                     <!--
                     <div class="homeBtn">
                         <a href="#" class="btnOne Btn" data-id="startBtn"><i class="icofont icofont-rocket-alt-2"></i>챗봇 개발하기</a>
@@ -190,7 +190,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="screenshot">
-                        <div class="img"></div>
+                        <div class="img" style="background-image: url(../../../front/img/home-dsk-{{lan}}.png);"></div>
                     </div>
                 </div>
             </div>
@@ -210,18 +210,18 @@
             <div class="animated">
                 <div class="row">
                     <div class="col-md-12 clearfix">
-                        <p class="regist-exp">지금 시작하세요.</p>
+                        <p class="regist-exp">{{L094}}</p>
                         <div class="regist-space">
-                            <form class="form-inline">
+                            <form class="form-inline" id="register">
                                 <div class="form-group">
-                                    <input class="form-control input-lg input-regi" placeholder="email@example.com" ng-init="email = undefined" type="email">
+                                    <input id="register-email" class="form-control input-lg input-regi" placeholder="email@example.com" type="email" required>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control input-lg" type="password" placeholder="password">
+                                    <input id="register-password" class="form-control input-lg" type="password" placeholder="password" required minlength="8">
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-lg" type="submit">
-                                        <span>등록</span>
+                                    <button class="btn btn-primary btn-lg" type="submit">{{L095}}
+                                    <!--<a href="/signup" class="btn btn-primary btn-lg"><span>{{L095}}</span></a>-->
                                     </button>
                                 </div>
                                 <div class="social-btn">
@@ -255,7 +255,7 @@
         <div class="container">
             <div class="row row-spaced-small">
                 <div class="small">
-                    자사의 개발 프로그램인 플레이챗을 사용하고 있는 회사입니다.
+                    {{L092}}
                 </div>
                 <div class="container-fluid" id="slides" style="overflow: hidden;">
                     <div class="slidesjs-control">
@@ -595,6 +595,35 @@
     <script>
         $(document).ready(function()
         {
+            document.querySelector('#register').addEventListener('submit', function(e)
+            {
+                var email = document.querySelector('#register-email').value;
+                var password = document.querySelector('#register-password').value;
+                var lan = $.cookie('language');
+                if(email && password)
+                {
+                    $.post('/api/auth/signup', {email : email, password: password, language:lan})
+                        .done(function (result) {
+                            var sigunup = {{ sigunup | json | safe }};
+                            alert(sigunup);
+
+                            return location.href = '/signin';
+                        })
+                        .fail(function (err) {
+                            var msg = err.responseJSON.message;
+                            alert(msg);
+                        })
+
+                }
+                else
+                {
+                    alert('오류가 발생했습니다.\nPlaychat 관리자에게 문의해주세요.');
+                }
+                e.preventDefault();
+                e.stopPropagation();
+
+            });
+
 
             var lan = {{ lan | json | safe }};
             $.cookie('language', lan);
