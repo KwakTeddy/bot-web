@@ -206,16 +206,6 @@ var s3 = new AWS.S3();
                                 context.session.history.splice(context.session.history.length-1, 1);
                             }
 
-                            if(bot.options.isHuman)
-                            {
-                                if(Logger.userSockets[userKey])
-                                {
-                                    Logger.userSockets[userKey].emit('chat_log', { type: 'dialog', inputRaw: inputRaw });
-                                }
-
-                                return;
-                            }
-
                             var userInput = { text: inputRaw };
                             InputManager.analysis(bot, context, userInput, error, function()
                             {

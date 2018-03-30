@@ -5,6 +5,8 @@ var Transaction = require('./utils/transaction.js');
 
 var Globals = require('./globals.js');
 
+var Logger = require('./logger.js');
+
 var utils = require('./utils/utils.js');
 
 var AutoCorrection = require('./input/nlp/autoCorrection.js');
@@ -265,6 +267,18 @@ var Logger = require('./logger.js');
 
     AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
     {
+        if(bot.options.isHuman)
+        {
+            if(Logger.userSockets[context.user.userKey])
+            {
+                // 어떻게 로깅을 하지
+                Logger.userSockets[context.user.userKey].emit('chat_log', { type: 'dialog', inputRaw: userInput.text });
+                // Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, '', '', '', previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+            }
+
+            return;
+        }
+
         var transaction = new Transaction.sync();
 
         var that = this;
