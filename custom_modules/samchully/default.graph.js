@@ -638,10 +638,6 @@ var dialogs = [
                                         "name": "납부연월 선택확인 신용카드",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                },
                                                 "types": [
                                                     "multiMonthType"
                                                 ]
@@ -714,10 +710,6 @@ var dialogs = [
                                         "name": "납부연월 선택 재질의",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                },
                                                 "if": "true"
                                             }
                                         ],
@@ -759,10 +751,6 @@ var dialogs = [
                                         "name": "납부연월 선택확인 QR",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                },
                                                 "types": [
                                                     "multiMonthType"
                                                 ]
@@ -829,10 +817,6 @@ var dialogs = [
                                         "name": "납부연월 선택 QR 재질의",
                                         "input": [
                                             {
-                                                "text": {
-                                                    "raw": "",
-                                                    "nlp": ""
-                                                },
                                                 "if": "true"
                                             }
                                         ],
@@ -2455,10 +2439,6 @@ var dialogs = [
                         "name": "동명 재질의",
                         "input": [
                             {
-                                "text": {
-                                    "raw": "",
-                                    "nlp": ""
-                                },
                                 "if": "true"
                             }
                         ],
