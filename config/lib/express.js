@@ -162,6 +162,7 @@ module.exports.initModulesConfiguration = function (app, db)
 /**
  * Configure Helmet headers configuration
  */
+
 module.exports.initHelmetHeaders = function (app) {
   // Use helmet to secure Express headers
   var SIX_MONTHS = 15778476000;

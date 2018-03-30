@@ -57,6 +57,7 @@
     "fast-csv": "^2.4.1",
     "file-stream-rotator": "~0.0.6",
     "forever": "~0.14.2",
+    "frameguard": "^3.0.0",
     "generate-password": "^1.1.1",
     "glob": "^5.0.13",
     "google-auth-library": "^0.10.0",

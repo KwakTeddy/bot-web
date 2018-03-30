@@ -13,7 +13,6 @@ var frontLanguage = require(path.resolve('./modules/core/server/controllers/fron
 var UserLog = mongoose.model('UserLog');
 var supportedLan = ["en", "ko", "zh", "jp"];
 
-
 /**
  * Render the main application page
  */
