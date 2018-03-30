@@ -225,14 +225,14 @@
                                 </div>
                                 <div class="social-btn">
                                     <div class="form-group inline-sm" style="margin-left:20px; ">
-                                        <span class="sns-btn">
+                                        <span id="login-google" class="sns-btn">
                                             <a href="#" target="_blank">
                                                 <img src="/front/img/sns2.png">
                                             </a>
                                         </span>
                                     </div>
                                     <div class="form-group inline-sm" style="margin-left:0px; ">
-                                        <span class="sns-btn">
+                                        <span id="login-facebook" class="sns-btn">
                                             <a href="#" target="_blank">
                                                 <img src="/front/img/sns4.png">
                                             </a>
@@ -594,6 +594,17 @@
     <script>
         $(document).ready(function()
         {
+            document.querySelector('#login-google').addEventListener('click', function(e)
+            {
+                return location.href = '/auth/google';
+            });
+
+            document.querySelector('#login-facebook').addEventListener('click', function(e)
+            {
+                return location.href = '/auth/facebook';
+            });
+
+
             document.querySelector('#register').addEventListener('submit', function(e)
             {
                 $("#registerBtn").hide();
@@ -607,6 +618,8 @@
                 {
                     $.post('/api/auth/signup', {email : email, password: password, language:lan, front: true})
                         .done(function (result) {
+                            $("#registerBtn").show();
+                            $("#ingIcon").css('display', 'none');
                             if(result._id)
                             {
                                 return location.href = '/playchat/chatbots';
@@ -620,6 +633,8 @@
                             }
                         })
                         .fail(function (err) {
+                            $("#registerBtn").show();
+                            $("#ingIcon").css('display', 'none');
                             var msg = err.responseJSON.message;
                             alert(msg);
                         })
@@ -627,6 +642,8 @@
                 }
                 else
                 {
+                    $("#registerBtn").show();
+                    $("#ingIcon").css('display', 'none');
                     alert('오류가 발생했습니다.\nPlaychat 관리자에게 문의해주세요.');
                 }
                 e.preventDefault();
