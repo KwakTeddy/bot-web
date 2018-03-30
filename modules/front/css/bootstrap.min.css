@@ -1631,6 +1631,10 @@ p {
     .lead {
         font-size: 21px
     }
+    .ctaRight.ctaTxt {
+        padding-bottom: 50px;
+        border-bottom: 1px solid #eaeaea;
+    }
 }
 
 .small,
@@ -3021,12 +3025,19 @@ table th[class*=col-] {
 }
 
 @media screen and (max-width:767px) {
+
     .table-responsive {
         width: 100%;
         margin-bottom: 15px;
         overflow-y: hidden;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         border: 1px solid #ddd
+    }
+    .social-btn{
+        display: block;
+    }
+    .inline-sm{
+        display: inline;
     }
     .table-responsive>.table {
         margin-bottom: 0
