@@ -1631,10 +1631,6 @@ p {
     .lead {
         font-size: 21px
     }
-    .ctaRight.ctaTxt {
-        padding-bottom: 50px;
-        border-bottom: 1px solid #eaeaea;
-    }
 }
 
 .small,
