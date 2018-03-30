@@ -20,13 +20,6 @@ module.exports = function (app)
     app.route('/facebookOvertext/:index').get(core.fbOvertext);
     app.route('/notice').get(core.notice);
 
-    app.get('/playchat/webchatting', function(req, res)
-    {
-        res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-
-        res.render('modules/core/server/views/layout', { user: req.user || null });
-    });
-
     // Define application route
     app.route('/*').get(core.renderIndex);
 };
