@@ -6,13 +6,13 @@ var utils = require('./utils/utils.js');
     var REPLACED_TAG = '\\+';
     var ARRAY_TAG = '#';
 
-    var getValue = function(obj, key)
+    var getValue = function(obj, key, fromList)
     {
         var replaced = undefined;
 
         var split = key.split('.');
 
-        if(split.length == 1)
+        if(split.length == 1 && !fromList)
         {
             split.splice(0, 0, 'data');
             split.splice(0, 0, 'dialog');
@@ -149,7 +149,7 @@ var utils = require('./utils/utils.js');
                                     }
                                     else
                                     {
-                                        t = t.replace(matchs[j], getValue(list[i], matchs[j].replace(/\+/gi, '')));
+                                        t = t.replace(matchs[j], getValue(list[i], matchs[j].replace(/\+/gi, ''), true));
                                     }
                                 }
 
