@@ -11,7 +11,7 @@
         var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
         var SharedChatBotService = $resource('/api/chatbots/shared');
 
-        if($cookies.get('login') === 'false')
+        if($cookies.get('login') !== 'true')
         {
             $location.url('/signin');
             return;
