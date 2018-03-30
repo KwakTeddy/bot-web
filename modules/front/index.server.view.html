@@ -220,9 +220,8 @@
                                     <input id="register-password" class="form-control input-lg" type="password" placeholder="Password" required minlength="8">
                                 </div>
                                 <div class="form-group">
-                                    <button id="registerBtn" class="btn btn-primary btn-lg" type="submit">{{L095}}
-                                    <!--<a href="/signup" class="btn btn-primary btn-lg"><span>{{L095}}</span></a>-->
-                                    </button>
+                                    <button id="registerBtn" class="btn btn-primary btn-lg" type="submit">{{L095}}</button>
+                                    <img id="ingIcon" src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" style="display: none;">
                                 </div>
                             </form>
                         </div>
@@ -581,7 +580,10 @@
         {
             document.querySelector('#register').addEventListener('submit', function(e)
             {
-                // document.querySelector('#registerBtn').css('display');
+                $("#registerBtn").hide();
+                $("#ingIcon").css('display', 'block');
+
+
                 var email = document.querySelector('#register-email').value;
                 var password = document.querySelector('#register-password').value;
                 var lan = $.cookie('language');
