@@ -9,10 +9,30 @@ const Bot = mongoose.model('Bot');
     {
     };
 
+    Telegram.prototype.makeText = function(options, chatId, result)
+    {
+        options.form =
+        {
+            chat_id: chatId,
+            text: result.output.text
+        };
+    };
+
+    Telegram.prototype.makePhoto = function(options, chatId, result)
+    {
+        options.form = {
+            chat_id: chatId,
+            photo: result.output.image.url,
+            caption: result.output.text,
+            text: ''
+        }
+    };
+
     Telegram.prototype.message = function(req, res)
     {
         const Engine = require(path.resolve('./engine2/core.js'));
 
+        var that = this;
         var token = req.params.token;
         Bot.findOne({ telegram: token }).exec(function(err, bot)
         {
@@ -24,42 +44,107 @@ const Bot = mongoose.model('Bot');
             else
             {
                 var data = req.body;
-                var chatId = data.message.chat.id;
-                var userId = data.message.from.id;
-                var text = data.message.text;
 
-                Engine.process(bot.id, 'telegram', userId, text, {}, function(context, result)
+                var chatId = undefined;
+                var userId = undefined;
+                var text = undefined;
+                var replyId = undefined;
+                if(data.message)
                 {
-                    var options = {};
-                    options.method = 'POST';
-                    options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
-                    options.simple = false;
-                    options.resolveWithFullResponse = true;
-                    options.forever = true;
-                    options.form = {
-                        chat_id: chatId,
-                        text: result.output.text
-                    };
+                    chatId = data.message.chat.id;
+                    userId = data.message.from.id;
+                    text = data.message.text;
+                }
+                else
+                {
+                    var callbackData = JSON.parse(data.callback_query.data);
+                    chatId = data.callback_query.message.chat.id;
+                    userId = data.callback_query.from.id;
+                    text = callbackData.text;
+                    // replyId = callbackData.replyId;
+                }
 
-                    request(options, function(err, response, body)
+                try
+                {
+                    Engine.process(bot.id, 'telegram', userId, text || '', {}, function(context, result)
                     {
-                        if(err)
+                        var options = {};
+                        options.method = 'POST';
+                        options.url = 'https://api.telegram.org/bot' + token + '/';
+                        options.simple = false;
+                        options.resolveWithFullResponse = true;
+                        options.forever = true;
+
+                        if(result.output.image)
                         {
-                            console.error(err);
+                            options.url += 'sendPhoto';
+                            that.makePhoto(options, chatId, result);
                         }
                         else
                         {
-                            console.log('바디 : ', body);
-
-                            res.end();
+                            options.url += 'sendMessage';
+                            that.makeText(options, chatId, result);
                         }
+
+                        if(result.output.buttons)
+                        {
+                            var inlineKeyboard = {
+                                inline_keyboard: []
+                            };
+
+                            var keyboard = [];
+                            for(var i=0; i<result.output.buttons.length; i++)
+                            {
+                                var callback_data = { text: result.output.buttons[i].text };
+                                if(data.message)
+                                {
+                                    callback_data.replyId = data.message.message_id;
+                                }
+
+                                keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
+
+                                if(i > 0 && i % 3 == 0)
+                                {
+                                    inlineKeyboard.inline_keyboard.push(keyboard);
+                                    keyboard = [];
+                                }
+                            }
+
+                            inlineKeyboard.inline_keyboard.push(keyboard);
+
+                            options.form.reply_markup = JSON.stringify(inlineKeyboard);
+                        }
+
+                        if(replyId)
+                        {
+                            options.form.reply_to_message_id = replyId;
+                        }
+
+                        console.log('옵션스 : ', options);
+                        request(options, function(err, response, body)
+                        {
+                            if(err)
+                            {
+                                console.error(err);
+                            }
+                            else
+                            {
+                                console.log('바디 : ', body);
+
+                                res.end();
+                            }
+                        });
+                    },
+                    function(err)
+                    {
+                        console.error();
+                        res.end();
                     });
-                },
-                function(err)
+                }
+                catch(err)
                 {
-                    console.error();
                     res.end();
-                });
+                }
             }
         });
     };

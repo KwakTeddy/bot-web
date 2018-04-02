@@ -48,7 +48,7 @@ var telegram = require('./channel/telegram.js');
         // // 네이버 톡톡
         app.route('/navertalk/:botId/webhook').post(navertalk.message);
 
-        app.route('/telegram/:token').post(telegram.message);
+        app.route('/telegram/:token').post(function(req, res){ telegram.message.call(telegram, req, res); });
         //
         // // wechat
         // app.route('/wechat/:bot/webhook').get(wechat.messageGet);
