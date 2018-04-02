@@ -551,7 +551,7 @@
                 "ko": "New Dialog",
                 "en": "New Dialog",
                 "jp": "新しい対話",
-                "zh": "新的对话场景卡片"
+                "zh": "新的对话"
             },
             "Topic": {
                 "ko": "Topic",
@@ -695,7 +695,7 @@
                 "ko": "더 보기",
                 "en": "More",
                 "jp": "もっと見る",
-                "zh": "更"
+                "zh": "更多"
             },
             "Add Child": {
                 "ko": "자식카드 생성",
@@ -725,7 +725,7 @@
                 "ko": "이 카드만 복제하기",
                 "en": "Duplicate only this card",
                 "jp": "このカードのみを複製する",
-                "zh": "仅复制此卡"
+                "zh": "仅复制此卡片"
             },
             "Delete": {
                 "ko": "삭제하기",
@@ -833,7 +833,7 @@
                 "ko": "외부 이미지 삽입",
                 "en": "Add image",
                 "jp": "外部画像を挿入",
-                "zh": "插入外部图片"
+                "zh": "插入图片链接"
             },
             "Click to change image": {
                 "ko": "이미지 변경",
@@ -1157,7 +1157,7 @@
                 "ko": "이 카드만 삭제하기",
                 "en": "Delete only this card",
                 "jp": "このカードのみを削除する。",
-                "zh": "只删除这张卡片。"
+                "zh": "仅删除此卡片"
             },
             "delete": {
                 "ko": "삭제",
@@ -1923,13 +1923,13 @@
             "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)": {
                 "ko": "키워드, #인텐트, @엔터티, $타입, /정규식/, if(조건식)",
                 "en": "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)",
-                "zh": "关键词, #意图, @实体, $类型, /正则表达式/, if(条件)",
+                "zh": "关键字, #意图, @实体, $类型, /正则表达式/, if(条件)",
                 "jp": "キーワード, #インテント, @エンティティ, $タイプ, /正規表現/, if(調子)"
             },
             "Keyword": {
                 "ko": "키워드",
                 "en": "Keyword",
-                "zh": "关键词",
+                "zh": "关键字",
                 "jp": "キーワード"
             },
             "Human Chat log": {
@@ -3216,7 +3216,7 @@
             "DM_Cut": {
                 "ko": "잘라내기",
                 "en": "Cut",
-                "zh": "切。",
+                "zh": "剪切",
                 "jp": "カット。"
             },
             "DM_Copy": {
@@ -3228,7 +3228,7 @@
             "DM_Paste": {
                 "ko": "붙여넣기",
                 "en": "Paste",
-                "zh": "糊",
+                "zh": "粘贴",
                 "jp": "ペースト"
             },
             "DialogGraphManagementCreateDescription": {
