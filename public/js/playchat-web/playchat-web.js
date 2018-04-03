@@ -5,8 +5,6 @@
         this.host = 'http://localhost:8443';
         this.botId = botId;
         this.botName = botName;
-
-        this.initElements();
     };
 
     (function()
@@ -51,21 +49,26 @@
 
         this.init = function()
         {
-            var body = this.iframe.contentDocument.body;
+            window.addEventListener('DOMContentLoaded', function()
+            {
+                this.initElements();
+                var body = this.iframe.contentDocument.body;
 
-            var style = document.createElement('link');
-            style.setAttribute('rel', 'stylesheet');
-            style.setAttribute('href', this.host + '/js/playchat-web/playchat-web.css');
+                var style = document.createElement('link');
+                style.setAttribute('rel', 'stylesheet');
+                style.setAttribute('href', this.host + '/js/playchat-web/playchat-web.css');
 
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = this.host + '/js/playchat-web/playchat-web-core.js';
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = this.host + '/js/playchat-web/playchat-web-core.js';
 
-            body.appendChild(style);
-            body.appendChild(this.container);
-            body.appendChild(script);
-            body.setAttribute('data-id', this.botId || '');
-            body.setAttribute('data-name', this.botName || '');
+                body.appendChild(style);
+                body.appendChild(this.container);
+                body.appendChild(script);
+                body.setAttribute('data-id', this.botId || '');
+                body.setAttribute('data-name', this.botName || '');
+
+            }.bind(this));
         };
 
     }).call(PlayChatWeb.prototype);
