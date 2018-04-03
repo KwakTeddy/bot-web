@@ -1,0 +1,233 @@
+.PlayChatWebContainer
+{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+
+    display: block !important;
+}
+
+.PlayChatWebHeader
+{
+    margin: 0;
+    background-color: #288feb;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    border-bottom: 1px solid #ddd;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+}
+
+.PlayChatBodyContainer
+{
+    position: absolute;
+    top: 51px;
+    bottom: 51px;
+    left: 0;
+    right: 0;
+
+    overflow: auto;
+
+    padding: 20px 0 10px 0;
+}
+
+.PlayChatMsgContainer
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    border-top: 1px solid #ddd;
+}
+
+.PlayChatMsgContainer > input
+{
+    padding: 10px 15px;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    border: 0;
+    outline: 0;
+}
+
+.PlayChatMsgContainer > input::placeholder
+{
+    color: #ddd;
+}
+
+
+
+.PlayChatBodyContainer .answer
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 10px;
+    font-size: 16px;
+
+}
+.PlayChatBodyContainer .answer > img
+{
+    position: absolute;
+    top: 16px;
+    left: 6px;
+}
+
+.PlayChatBodyContainer .answer .system-text
+{
+    font-size: 12px;
+    margin-left: 46px;
+}
+
+.PlayChatBodyContainer .answer span.name
+{
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.PlayChatBodyContainer .answer span.time
+{
+    font-size: 12px;
+}
+
+.PlayChatBodyContainer .answer .bubble
+{
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.PlayChatBodyContainer .answer .output-image img
+{
+    max-width: 100%;
+
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.PlayChatBodyContainer .answer .output-buttons a
+{
+    display: block;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.PlayChatBodyContainer .answer em.tail
+{
+    border-top: 10px solid #ececec;
+    position: absolute;
+    left: 45px;
+    top: 4px;
+    border-left: 10px solid transparent;
+}
+
+.PlayChatBodyContainer .answer .speech
+{
+    background: #ececec;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 17px;
+    white-space: normal;
+    position: relative;
+    margin: 4px 52px;
+}
+
+.PlayChatBodyContainer .answer .speech .speech-text
+{
+    line-height: 18px;
+}
+
+
+
+.PlayChatBodyContainer .question
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 10px;
+    font-size: 16px;
+
+}
+
+.PlayChatBodyContainer .question img
+{
+    position: absolute;
+    top: 16px;
+    right: 12px;
+}
+
+.PlayChatBodyContainer .question .system-text
+{
+    font-size: 12px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.PlayChatBodyContainer .question span.name
+{
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.PlayChatBodyContainer .question span.time
+{
+    font-size: 12px;
+}
+
+.PlayChatBodyContainer .question .bubble
+{
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.PlayChatBodyContainer .question em.tail
+{
+    border-top: 10px solid #dfdfdf;
+    position: absolute;
+    right: 7px;
+    top: 4px;
+    border-right: 10px solid transparent;
+}
+
+.PlayChatBodyContainer .question em.tail+div
+{
+    text-align: right;
+}
+
+.PlayChatBodyContainer .question .speech
+{
+    background: #dfdfdf;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 7px 10px 0px 10px;
+    font-size: 13px;
+    line-height: 17px;
+    white-space: normal;
+    position: relative;
+    margin-top: 4px;
+    margin-right: 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.PlayChatBodyContainer .question .speech .speech-text
+{
+    padding: 0px 0px 6px 0px;
+}
