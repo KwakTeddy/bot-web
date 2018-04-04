@@ -20,8 +20,6 @@
             this.iframe.style.maxHeight = '720px';
             this.iframe.style.minHeight = '480px';
             this.iframe.style.border = 'none';
-            this.iframe.style.borderRadius = '9px';
-            this.iframe.style.boxShadow = 'rgba(0, 0, 0, 0.15) 0px 3pt 12pt';
             this.iframe.style.animation = 'fXAEQw 0.25s ease-out !important';
             this.iframe.style.overflow = 'hidden';
             this.iframe.style.zIndex = 1000;
@@ -30,12 +28,10 @@
 
             this.container = document.createElement('div');
             this.container.className = 'PlayChatWebContainer';
-            this.container.style.display = 'none';
 
             this.header = document.createElement('div');
             this.header.className = 'PlayChatWebHeader';
-            this.header.innerHTML = '<div class="close"></div>' +
-                '<span>PlayChat</span>';
+            this.header.innerHTML = '<div class="close"></div> <span>PlayChat</span>';
 
             this.bodyContainer = document.createElement('div');
             this.bodyContainer.className = 'PlayChatBodyContainer';
@@ -52,6 +48,20 @@
             this.container.appendChild(this.bodyContainer);
             this.container.appendChild(this.messageContainer);
 
+            this.icon = document.createElement('div');
+            this.icon.className = 'PlayChatIcon';
+            this.icon.innerHTML = '<a></a>';
+
+            var that = this;
+            this.icon.addEventListener('click', function()
+            {
+                that.container.style.display = 'flex';
+            });
+
+            this.container.querySelector('.close').addEventListener('click', function()
+            {
+                that.container.style.display = '';
+            });
         };
 
         this.init = function()
@@ -71,6 +81,7 @@
 
                 body.appendChild(style);
                 body.appendChild(this.container);
+                body.appendChild(this.icon);
                 body.appendChild(script);
                 body.setAttribute('data-id', this.botId || '');
                 body.setAttribute('data-name', this.botName || '');
