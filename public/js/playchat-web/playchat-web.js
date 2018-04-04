@@ -34,8 +34,7 @@
 
             this.header = document.createElement('div');
             this.header.className = 'PlayChatWebHeader';
-            this.header.innerHTML = '<div class="close"></div>' +
-                '<span>PlayChat</span>';
+            this.header.innerHTML = '<div class="close"></div> <span>PlayChat</span>';
 
             this.bodyContainer = document.createElement('div');
             this.bodyContainer.className = 'PlayChatBodyContainer';
