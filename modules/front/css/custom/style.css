@@ -17,7 +17,23 @@
 >>> | Browser Reset & Common CSS|
 *****************************************
 */
-
+* ::-webkit-scrollbar-track {
+	background-color: rgba(0,0,0,.2);
+}
+* ::-webkit-scrollbar-thumb {
+	background-color: #AFAFB5;
+	border-radius: 1rem;
+}
+* ::-webkit-scrollbar-corner {
+	background-color: #4B4B55;
+}
+* ::-webkit-scrollbar-button {
+	background-color: #4B4B55;
+}
+* ::-webkit-scrollbar {
+	width: .7rem;
+	height: .7rem;
+}
 * {
 	margin: 0px;
 	padding: 0px;
@@ -1810,7 +1826,7 @@ form.domainForm {
 	border-radius: 50%;
 }
 .singleClient p{
-	text-align: left;
+	text-align: center;
 	font-size: 13px;
 	font-weight: 600;
 	margin-bottom: 7px;
@@ -4373,7 +4389,76 @@ header .topInfo li.clientAreaLi span,
 	-o-transition-duration: .3s;
 	transition-duration: .3s;
 }
-
 .social-btn{
 	display: inline;
+}
+.fa-spin:active {
+	margin-right: 8px;
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+}
+.fa:active {
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate(0, 0);
+}
+.fa-spinner:before {
+	content: "\f1ce";
+}
+.chat-icon-wrapper {
+	position: fixed;
+	z-index: 110;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	bottom: 30px;
+	right: 40px;
+	width: 70px;
+	height: 70px;
+	border: none;
+	border-radius: 50%;
+	background: #288feb;
+	cursor: pointer;
+	box-shadow: 0 0 0 0 rgba(90,153,212,0.5);
+	animation: pulse 1.5s infinite;
+	transition: 0.3s;
+}
+.chat-icon-wrapper:hover{animation:none}  @keyframes pulse{
+										 0%{transform:scale(0.93);}
+										 70%{transform: scale(1);box-shadow:0 0 0 15px rgba(90,153,212,0);}
+										 100%{transform: scale(0.93);box-shadow: 0 0 0 0 rgba(90,153,212,0);}
+}
+.chat-icon {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: url(../../../front/img/chat-btn.png) 50% 50% no-repeat;
+}
+#quick .quick_cts {
+	display: none;
+	position: fixed;
+	top: 211px;
+	right: 170px;
+	width: 400px;
+	background: rgba(46,44,43,0.95);
+	box-sizing: border-box;
+	padding: 40px;
+}
+#quick .quick_cts .title {
+	color: #fff;
+}
+#quick .quick_cts .title dt {
+	font-size: 24px;
+	line-height: 24px;
+	font-weight: 500;
+}
+#quick .quick_cts .title dd {
+	font-size: 15px;
+	line-height: 24px;
+	padding: 16px 0 26px;
+	border-bottom: 1px solid #f36f21;
 }

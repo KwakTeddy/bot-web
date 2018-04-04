@@ -220,7 +220,9 @@
                                     <input id="register-password" class="form-control input-lg" type="password" placeholder="password" required minlength="8">
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-lg" type="submit">{{L095}}
+                                    <button class="btn btn-primary btn-lg" type="submit">
+                                        <!-----<i class="fa fa-spin fa-spinner"></i>------>
+                                        {{L095}}
                                     <!--<a href="/signup" class="btn btn-primary btn-lg"><span>{{L095}}</span></a>-->
                                     </button>
                                 </div>
@@ -564,8 +566,8 @@
     					<div class="h4">Company</div>
 						<ul class="footerLink">
 							<li><a href="http://moneybrain.ai/" target="_blank">{{L086}}</a></li>
-							<li><a href="javascript:alert( '{{L087}}' );">{{L088}}</a></li>
-							<li><a href="https://business.facebook.com/Playchatai/?business_id=1772927272964426&ref=bookmarks">Facebook</a></li>
+							<li><a href="javascript:alert( '{{L087}}' );" target="_blank">{{L088}}</a></li>
+							<li><a href="https://business.facebook.com/Playchatai/?business_id=1772927272964426&ref=bookmarks" target="_blank">Facebook</a></li>
 						</ul>
     				</div>
     			</div>
@@ -797,5 +799,8 @@
         </div>
     </div>
 
+    <div class="chat-icon-wrapper">
+        <a class="chat-icon"></a>
+    </div>
     </body>
 </html>
