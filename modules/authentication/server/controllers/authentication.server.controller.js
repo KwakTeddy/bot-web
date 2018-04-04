@@ -192,7 +192,39 @@ module.exports.signup = function(req, res, next)
             {
                 if (result && (result.provider == 'local'))
                 {
-                    return res.status(400).send({ message: 'Email is already signed up.' });
+                    if(req.body.front)
+                    {
+                        passport.authenticate('local', function (err, user, info)
+                        {
+                            if (err || !user)
+                            {
+                                res.status(400).send(info);
+                            }
+                            else
+                            {
+                                // Remove sensitive data before login
+                                user.password = undefined;
+                                user.salt = undefined;
+
+                                req.login(user, function (err)
+                                {
+                                    if (err)
+                                    {
+                                        res.status(400).send(err);
+                                    }
+                                    else
+                                    {
+                                        res.cookie('login', true);
+                                        res.json(user);
+                                    }
+                                });
+                            }
+                        })(req, res, next);
+                    }
+                    else
+                    {
+                        return res.status(400).send({ message: 'Email is already signed up.' });
+                    }
                 }
 
                 if (result && (result.provider !== 'local'))

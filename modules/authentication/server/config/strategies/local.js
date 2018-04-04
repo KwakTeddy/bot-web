@@ -22,7 +22,8 @@ module.exports = function () {
       }
       if (!user || !user.authenticate(password)) {
         return done(null, false, {
-          message: '가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다 '
+          message: '비밀번호가 잘못되었습니다'
+          // message: '가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다'
         });
       }
       if (!user.localEmailConfirmed && (user.provider == 'local')){
