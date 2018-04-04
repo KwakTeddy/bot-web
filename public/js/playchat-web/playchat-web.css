@@ -1,41 +1,112 @@
+body{
+    margin: 0;
+    overflow: hidden;
+}
 .PlayChatWebContainer
 {
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     background-color: white;
-
-    display: block !important;
+    display: flex !important;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    font-family: 'Helvetica Neue', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    height: 100%;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    width: 100%;
 }
-
+/*
 .PlayChatWebHeader
 {
     margin: 0;
-    background-color: #288feb;
+    align-items: center;
+    border-bottom: 1pt solid rgba(0, 0, 0, .1);
+    display: flex;
+    flex-basis: 10%;
+    justify-content: space-between;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 46px;
+    height: 10%;
+    width: 100%;
+    max-height: 48pt;
+    min-height: 36pt;
+    text-align: center;
     border-bottom: 1px solid #ddd;
     color: white;
     text-align: center;
     line-height: 50px;
+}*/
+.PlayChatWebHeader{
+    position: relative;
+    display: block;
+    height: 9%;
+    overflow: hidden;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #288feb;
+    color: #fff;
+    font-weight: 500;
+    font-size: 18px;
+    -webkit-transition: height 0.4s cubic-bezier(0.5,0,0.08,1);
+    transition: height 0.4s cubic-bezier(0.5,0,0.08,1);
+    text-align: center;
+    line-height: 60px;
 }
-
-.PlayChatBodyContainer
-{
+.close {
+    width: 56px;
+    height: 60px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    cursor: pointer;
+    visibility: visible;
     position: absolute;
-    top: 46px;
+    top: 0;
+    left: 0;
+    visibility: visible;
+}
+.close::before{
+    transform: rotate(45deg);
+}
+.close::after{
+    transform: rotate(-45deg);
+}
+.close::before, .close::after {
+    content: '';
+    display: block;
+    content: ' ';
+    height: 16px;
+    width: 2px;
+    background-color: #b0d4f5;
+    border-radius: 10px;
+    position: absolute;
+    left: 26px;
+}
+.PlayChatBodyContainer {
+    position: absolute;
+    top: 60px;
     bottom: 51px;
     left: 0;
     right: 0;
-
     overflow: auto;
-
-    padding: 20px 0 10px 0;
+    padding-top: 16px;
 }
 
 .PlayChatMsgContainer
@@ -73,7 +144,7 @@
     position: relative;
     z-index: 2;
     display: block;
-    margin: 0 10px;
+    margin: 0 5px;
     font-size: 16px;
 
 }
@@ -161,14 +232,10 @@
     position: relative;
     margin: 4px 52px;
 }
-
 .PlayChatBodyContainer .answer .speech .speech-text
 {
     line-height: 18px;
 }
-
-
-
 .PlayChatBodyContainer .question
 {
     overflow: hidden;
@@ -177,42 +244,36 @@
     position: relative;
     z-index: 2;
     display: block;
-    margin: 10px;
+    margin: 1px 5px;
     font-size: 16px;
 
 }
-
 .PlayChatBodyContainer .question img
 {
     position: absolute;
     top: 16px;
     right: 12px;
 }
-
 .PlayChatBodyContainer .question .system-text
 {
     font-size: 12px;
     margin-right: 10px;
     text-align: right;
 }
-
 .PlayChatBodyContainer .question span.name
 {
     font-weight: 700;
     margin-right: 10px;
 }
-
 .PlayChatBodyContainer .question span.time
 {
     font-size: 12px;
 }
-
 .PlayChatBodyContainer .question .bubble
 {
     position: relative;
     margin-bottom: 8px;
 }
-
 .PlayChatBodyContainer .question em.tail
 {
     border-top: 10px solid #dfdfdf;
@@ -221,12 +282,10 @@
     top: 4px;
     border-right: 10px solid transparent;
 }
-
 .PlayChatBodyContainer .question em.tail+div
 {
     text-align: right;
 }
-
 .PlayChatBodyContainer .question .speech
 {
     background: #dfdfdf;
@@ -244,7 +303,6 @@
     box-sizing: border-box;
     text-align: left;
 }
-
 .PlayChatBodyContainer .question .speech .speech-text
 {
     padding: 0px 0px 6px 0px;

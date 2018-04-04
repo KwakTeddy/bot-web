@@ -13,12 +13,17 @@
         {
             this.iframe = document.createElement('iframe');
             this.iframe.style.position = 'fixed';
-            this.iframe.style.right = '20px';
-            this.iframe.style.bottom = '20px';
-            this.iframe.style.width = '300px';
-            this.iframe.style.height = '400px';
-            this.iframe.style.border = '1px solid #ddd';
-            this.iframe.style.boxShadow = '0px 4px 10px 0px rgba(0, 0, 0, 0.75)';
+            this.iframe.style.right = '25px';
+            this.iframe.style.bottom = '25px';
+            this.iframe.style.width = '280pt';
+            this.iframe.style.height = '70%';
+            this.iframe.style.maxHeight = '720px';
+            this.iframe.style.minHeight = '480px';
+            this.iframe.style.border = 'none';
+            this.iframe.style.borderRadius = '9px';
+            this.iframe.style.boxShadow = 'rgba(0, 0, 0, 0.15) 0px 3pt 12pt';
+            this.iframe.style.animation = 'fXAEQw 0.25s ease-out !important';
+            this.iframe.style.overflow = 'hidden';
             this.iframe.style.zIndex = 1000;
 
             document.body.appendChild(this.iframe);
@@ -29,10 +34,12 @@
 
             this.header = document.createElement('div');
             this.header.className = 'PlayChatWebHeader';
-            this.header.innerText = 'PlayChat';
+            this.header.innerHTML = '<div class="close"></div>' +
+                '<span>PlayChat</span>';
 
             this.bodyContainer = document.createElement('div');
             this.bodyContainer.className = 'PlayChatBodyContainer';
+            this.bodyContainer.innerHTML = '';
 
             this.messageContainer = document.createElement('div');
             this.messageContainer.className = 'PlayChatMsgContainer';
