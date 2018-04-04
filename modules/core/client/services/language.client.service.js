@@ -3590,6 +3590,24 @@
                 "en": "Connected",
                 "zh": "连接的。",
                 "jp": "接続されました。"
+            },
+            "MiniWebChat": {
+                "ko": "미니웹 채팅창",
+                "en": "Mini Web Chat",
+                "zh": "迷你网络聊天",
+                "jp": "ミニウェブチャット"
+            },
+            "Insert the code below into the head or body of the website where you want to attach the mini-web chat window": {
+                "ko": "미니 웹 채팅창을 붙일 웹사이트의 <head> 또는 <body>에 아래 코드를 삽입하세요.",
+                "en": "Insert the code below into the <head> or <body> of the website where you want to attach the mini-web chat window",
+                "zh": "将以下代码插入您想要附加迷你网络聊天窗口的网站的<head>或<body>中。",
+                "jp": "ミニウェブチャットウィンドウを付けるウェブサイトの<head>または<body>に次のコードを挿入します。"
+            },
+            "Mobile Web Url": {
+                "ko": "모바일 웹 주소",
+                "en": "Mobile Web Url",
+                "zh": "移动网址",
+                "jp": "モバイルウェブURL"
             }
         };
 

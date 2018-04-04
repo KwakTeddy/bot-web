@@ -62,7 +62,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
         TelegramService.get({ botId: chatbot.id }, function(result)
         {
-            console.log('ㅎㅎㅎ : ', result);
             $scope.telegramToken = result.token || '';
         });
 

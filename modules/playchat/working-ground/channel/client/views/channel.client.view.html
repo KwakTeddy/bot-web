@@ -59,6 +59,15 @@
         </div>
         <div class="channel-content-item">
             <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/wechat.png">
+                <p class="channel-content-item-name">{{ lan('MiniWebChat') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('miniwebchat');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
                 <img src="/modules/playchat/working-ground/channel/client/imgs/phone.png">
                 <p class="channel-content-item-name">{{lan('Phone')}}<span class="empha">alpha</span></p>
             </div>
@@ -218,6 +227,25 @@
             </div>
             <div class="tab-footer">
                 <button type="button" class="default-button" ng-click="closeHelp('wechat')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.miniwebchat">
+        <div class="modal">
+            <div class="modal-title">{{lan('WeChat')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>{{ lan('Insert the code below into the head or body of the website where you want to attach the mini-web chat window') }}</li>
+                </ul>
+                <pre style="margin: 0; padding: 15px 0; border: 1px solid #ddd; border-radius: 5px; line-height: 20px;">
+                    &lt;script src="{{ host }}/js/playchat-web/playchat-web.js"&gt;&lt;/script&gt;
+                    &lt;script&gt;
+                        new PlayChatWeb('{{ chatbot.id }}', '{{ chatbot.name }}').init();
+                    &lt;/script&gt;</pre>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('miniwebchat')">{{ lan('Close') }}</button>
             </div>
         </div>
     </div>
