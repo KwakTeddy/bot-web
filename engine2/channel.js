@@ -10,6 +10,7 @@ var socketChannel = require('./channel/socket.js');
 var line = require('./channel/line.js');
 var navertalk = require('./channel/navertalk.js');
 var telegram = require('./channel/telegram.js');
+var wechat = require('./channel/wechat.js');
 
 (function()
 {
@@ -51,8 +52,8 @@ var telegram = require('./channel/telegram.js');
         app.route('/telegram/:token').post(function(req, res){ telegram.message.call(telegram, req, res); });
         //
         // // wechat
-        // app.route('/wechat/:bot/webhook').get(wechat.messageGet);
-        // app.route('/wechat/:bot/webhook').post(wechat.message);
+        app.route('/wechat/:bot/webhook').get(function(req, res){ wechat.get.call(wechat, req, res); });
+        app.route('/wechat/:bot/webhook').post(function(req, res){ wechat.post.call(wechat, req, res); });
     };
 
     module.exports = new Channel();
