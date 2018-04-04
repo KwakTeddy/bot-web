@@ -68,32 +68,33 @@
 
         if(output.image && output.image.url)
         {
-            var t = '<div class="output-image">';
-            t += '<img src="' + output.image.url + '" alt="' + output.image.displayname + '">';
-            t += '</div>';
+            var t = document.createElement('div');
+            t.className = 'output-image';
+            t.innerHTML = '<img src="' + output.image.url + '" alt="' + output.image.displayname + '">';
 
-            template.querySelector('.speech').innerHTML = t;
+            template.querySelector('.speech').appendChild(t);
         }
 
         if(output.buttons)
         {
-            var t = '';
-
+            var html = '';
             for(var i=0; i<output.buttons.length; i++)
             {
                 if(output.buttons[i].url)
                 {
-                    t = '<a href="' + output.buttons[i].url + '" style="color: #038eda; border: 0;" target="_blank">' + output.buttons[i].text + '</a>' + t;
+                    html = '<a href="' + output.buttons[i].url + '" style="color: #038eda; border: 0;" target="_blank">' + output.buttons[i].text + '</a>' + html;
                 }
                 else
                 {
-                    t += '<a style="cursor: pointer;" href="#" target="_blank">' + output.buttons[i].text + '</a>';
+                    html += '<a style="cursor: pointer;" href="#" target="_blank">' + output.buttons[i].text + '</a>';
                 }
             }
 
-            t += '</div>';
+            var t = document.createElement('div');
+            t.className = 'output-buttons';
+            t.innerHTML = html;
 
-            template.querySelector('.speech').innerHTML = '<div class="output-buttons">' + t;
+            template.querySelector('.speech').appendChild(t);
         }
 
         this.container.appendChild(template);

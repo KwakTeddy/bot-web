@@ -118,8 +118,26 @@
 .PlayChatBodyContainer .answer .output-buttons a
 {
     display: block;
+    color: #363636;
+    text-decoration: none;
+
     margin: 5px 0;
+
+    outline: 0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 13px;
     width: 100%;
+    box-sizing: border-box;
+}
+
+.PlayChatBodyContainer .answer .output-buttons
+{
+    margin-top: 15px;
 }
 
 .PlayChatBodyContainer .answer em.tail
