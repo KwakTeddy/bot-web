@@ -4,6 +4,8 @@
     var js2xmlparser = require('js2xmlparser');
 
     var wechat = require('wechat');
+    var path = require('path');
+    var configs = require(path.resolve('config/config'));
 
     var WeChat = function()
     {
@@ -35,12 +37,12 @@
     WeChat.prototype.post = function(req, res)
     {
         var Engine = require('../core.js');
-        var botId = req.params.botId;
+        var botId = req.params.bot;
 
         var config = {
             token: 'moneybrain_token',
             appid: 'wx64144a43a06a77ce',
-            encodingAESKey: 'oMJWADd6TqwTXOLF6IMnQDfqfohdvPhEPwX5jBOprHd',
+            encodingAESKey: 'AV2i3wjVj24LFXn0Qj0Rq5RrjgY0zMJ6hIYzo9VkRKe',
             checkSignature: true // 可选，默认为true。由于微信公众平台接口调试工具在明文模式下不发送签名，所以如要使用该测试工具，请将其设置为false
         };
 
@@ -51,15 +53,97 @@
             var text = message.Content;
             Engine.process(botId, 'wechat', userId, text || '', {}, function(context, result)
             {
-                console.log(result);
-                res.reply([
+                console.log("-->"+JSON.stringify(result));
+                console.log("buttons"+result.output.buttons);
+                if(result.output.image && !result.output.buttons)
+                {
+                    console.log("[[image]]");
+
+                    var str=result.output.image.url.split("/");
+                    var imagurl="";
+
+                    for(var i=0;i<str.length;i++)
                     {
-                        title: '머니브레인',
-                        description: 'ㅎㅎㅎㅎ',
-                        picurl: 'https://nbamania.com/g2/data/cheditor5/1711/mania-done-20171114203140_gnvbdbwd.jpg',
-                        url: 'http://moneybrain.ai'
+                        if(i===0){
+                            console.log(encodeURIComponent(str[i]));
+                            imagurl= encodeURIComponent(str[i]);
+                        }
+                        else{
+                            imagurl= imagurl+"/"+encodeURIComponent(str[i]);
+                        }
                     }
-                ]);
+
+                    var t = {
+                                title: result.output.text,
+                                picurl: (result.output.image.url.startsWith('http') ? imagurl : "http://3ad29a82.ngrok.io" + imagurl)
+                            };
+
+                    console.log(t);
+                    res.reply(
+                      [t]
+                    );
+                }
+                else if(result.output.image && result.output.buttons)
+                {
+                    console.log("[[image+buttons]]");
+
+                    var str=result.output.image.url.split("/");
+                    var imagurl="";
+
+                    for(var i=0;i<str.length;i++)
+                    {
+                        if(i===0){
+                            imagurl= encodeURIComponent(str[i]);
+                        }
+                        else{
+                            imagurl= imagurl+"/"+encodeURIComponent(str[i]);
+                        }
+                    }
+
+                    var buttons="";
+                    for(var j=0;j<result.output.buttons.length;j++)
+                    {
+                        buttons=buttons+"\n"+result.output.buttons[j].text;
+                    }
+                    console.log(buttons);
+
+                    var t = {
+                               title: result.output.text+"\n",
+                               description: buttons,
+                               picurl: (result.output.image.url.startsWith('http') ? imagurl : configs.host + imagurl)
+                            };
+
+                    console.log(t);
+                    res.reply(
+                        [t]
+                    );
+                }
+                else if(!result.output.image && result.output.buttons){
+
+                    console.log("[[buttons]]");
+
+                    var buttons="";
+                    for(var j=0;j<result.output.buttons.length;j++)
+                    {
+                        buttons=buttons+"\n"+result.output.buttons[j].text;
+                    }
+
+                    var t = result.output.text+"\n"+buttons;
+
+                    console.log(t);
+                    res.reply(
+                        t
+                    );
+                }
+                else
+                {
+                    console.log("[[text]]");
+                    res.reply(
+                        {
+                            type: "text",
+                            content: result.output.text
+                        });
+                }
             });
         });
 
