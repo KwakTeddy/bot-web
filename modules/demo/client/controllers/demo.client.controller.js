@@ -152,19 +152,19 @@
                     {
                         $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
                     }
+                }
 
-                    if(context.nlu.dialog.intent)
+                if(context.intents)
+                {
+                    $scope.diagram.intent = context.intents[0];
+                    if(!isNaN($scope.diagram.intent.matchRate))
                     {
-                        $scope.diagram.intent = context.nlu.dialog.intent;
-                        if(!isNaN($scope.diagram.intent.matchRate))
-                        {
-                            $scope.diagram.intent.matchRate = parseInt($scope.diagram.intent.matchRate * 10) / 10;
-                        }
+                        $scope.diagram.intent.matchRate = parseInt($scope.diagram.intent.matchRate * 10) / 10;
                     }
-                    else
-                    {
-                        $scope.diagram.intent = undefined;
-                    }
+                }
+                else
+                {
+                    $scope.diagram.intent = undefined;
                 }
 
                 if(context.entities && Object.keys(context.entities).length > 0)

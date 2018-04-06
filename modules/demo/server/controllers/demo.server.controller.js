@@ -32,10 +32,11 @@ module.exports = function (io, socket)
             var suggestion = context.demo;
             var turnTaking = context.userInput.turnTaking;
             var entities = context.userInput.entities;
+            var intents = context.userInput.intents;
             var language = lngDetector.detect(msg.msg);
             var context = context.session.currentCategory;
 
-            socket.emit('response-analytics', { nlp: nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, language: language  });
+            socket.emit('response-analytics', { nlp: nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, intents: intents, language: language  });
 
         });
         // bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
