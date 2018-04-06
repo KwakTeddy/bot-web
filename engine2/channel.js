@@ -12,6 +12,8 @@ var navertalk = require('./channel/navertalk.js');
 var telegram = require('./channel/telegram.js');
 var wechat = require('./channel/wechat.js');
 
+var demo = require('../modules/demo/server/controllers/demo.server.controller.js');
+
 (function()
 {
     var Channel = function()
@@ -24,6 +26,7 @@ var wechat = require('./channel/wechat.js');
         io.on('connection', function (socket)
         {
             socketChannel.init(socket);
+            demo(io, socket);
         });
 
         app.route('/chat/:bot/message').post(rest.message);

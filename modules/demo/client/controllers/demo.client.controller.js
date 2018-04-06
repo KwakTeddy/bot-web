@@ -137,9 +137,9 @@
                 $scope.diagram.turnTaking = 0;
 
                 var context = data;
-                if(context.nlu.nlp)
+                if(context.nlp)
                 {
-                    $scope.diagram.nlp = context.nlu.nlp;
+                    $scope.diagram.nlp = context.nlp;
                 }
                 else
                 {
@@ -183,39 +183,46 @@
                     $scope.diagram.entity = undefined;
                 }
 
-                // if(context.turnTaking)
-                // {
-                //     $scope.diagram.turnTaking = context.turnTaking;
-                // }
-                // else
-                // {
-                //     $scope.diagram.turnTaking = undefined;
-                // }
-
-                if(Object.keys(context.nlu.contextInfo.contextHistory[0]).length > 0)
+                if(context.turnTaking)
                 {
-                    $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
+                    $scope.diagram.turnTaking = context.turnTaking;
+                }
+                else
+                {
+                    $scope.diagram.turnTaking = undefined;
+                }
+
+                if(context.context)
+                {
+                    $scope.diagram.context = context.context;
                 }
                 else
                 {
                     $scope.diagram.context = undefined;
                 }
 
-                if(context.nlu.matchInfo.qa.length > 0)
+                // if(Object.keys(context.nlu.contextInfo.contextHistory[0]).length > 0)
+                // {
+                //     $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
+                // }
+                // else
+                // {
+                //     $scope.diagram.context = undefined;
+                // }
+
+                if(context.suggestion && context.suggestion.qa.length > 0)
                 {
-                    // angular.element('#suggestionDiagram').css('height', '220px');
-                    // $scope.diagram.suggestion = [];
                     var temp = [];
-                    for(var i=0; i<context.nlu.matchInfo.qa.length && i < 5; i++)
+                    for(var i=0; i<context.suggestion.qa.length && i < 5; i++)
                     {
-                        var matchRate = parseInt((context.nlu.matchInfo.qa[i].matchRate || 0) * 10);
+                        var matchRate = parseInt((context.suggestion.qa[i].matchRate || 0) * 10);
 
                         // if(matchRate == 0)
                         //     continue;
 
-                        context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
+                        context.suggestion.qa[i].matchRate = matchRate / 10;
 
-                        temp.push(context.nlu.matchInfo.qa[i]);
+                        temp.push({ output: context.suggestion.qa[i].output[0], matchRate: context.suggestion.qa[i].matchRate });
                     }
 
                     if(temp.length == 0)
@@ -244,6 +251,51 @@
 
                     console.log('turnTaking: ', $scope.diagram.turnTaking);
                 }
+                //
+                //
+                // if(context.nlu.matchInfo.qa.length > 0)
+                // {
+                //     // angular.element('#suggestionDiagram').css('height', '220px');
+                //     // $scope.diagram.suggestion = [];
+                //     var temp = [];
+                //     for(var i=0; i<context.nlu.matchInfo.qa.length && i < 5; i++)
+                //     {
+                //         var matchRate = parseInt((context.nlu.matchInfo.qa[i].matchRate || 0) * 10);
+                //
+                //         // if(matchRate == 0)
+                //         //     continue;
+                //
+                //         context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
+                //
+                //         temp.push(context.nlu.matchInfo.qa[i]);
+                //     }
+                //
+                //     if(temp.length == 0)
+                //     {
+                //         // recognizeStart();
+                //         $scope.diagram.turnTaking = getRandomInt(1, 8) / 10;
+                //     }
+                //     else
+                //     {
+                //         temp.sort(function(a, b)
+                //         {
+                //             return b.matchRate - a.matchRate;
+                //         });
+                //
+                //         if(temp[0].matchRate < 1)
+                //             temp[0].matchRate += 0.05;
+                //         $scope.diagram.turnTaking = 1;
+                //         $scope.diagram.suggestion = temp;
+                //
+                //         setTimeout(function()
+                //         {
+                //             var height = angular.element('#suggestionDiagram table').css('height');
+                //             angular.element('#suggestionDiagram').css('height', height.replace('px', '')*1 + 40 + 'px');
+                //         }, 100);
+                //     }
+                //
+                //     console.log('turnTaking: ', $scope.diagram.turnTaking);
+                // }
                 else
                 {
                     // recognizeStart();
@@ -297,13 +349,13 @@
 
                     console.log($scope.diagram.suggestion);
 
-                }, 1000);
+                }, 5000);
             });
 
             var sendSocket = function(text)
             {
-                Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
-                Socket.emit('analytics', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
+                // Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
+                Socket.emit('analytics', { bot: 'blank_ray_1523003255250', user: 'demo-user', msg: text, options: { language: 'ko' } });
             };
 
             var makeRecognition = function()
@@ -485,7 +537,7 @@
 
             function recognizeStart() {
 
-                recognition.lang = 'ko-KR';
+                recognition.lang = 'zh-cn';
                 // console.log(recognition);
                 recognition.start();
 

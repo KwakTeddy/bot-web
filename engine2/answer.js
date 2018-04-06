@@ -312,6 +312,7 @@ var Logger = require('./logger.js');
                     if(matchedList.length > 0)
                     {
                         //만약 matchRate가 똑같은게 여러개 있다면 물어봐야함.
+                        context.demo = { qa: matchedList  };
                         transaction.qa = { type: 'qa', matchedDialog: matchedList[0] };
                     }
 

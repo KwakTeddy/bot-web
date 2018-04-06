@@ -255,6 +255,10 @@ var s3 = new AWS.S3();
                                             delete context.globals;
                                             delete context.session.currentDialog;
 
+                                            var demo = context.demo;
+
+                                            delete context.demo;
+
                                             that.redis.set(contextKey, JSON.stringify(context), function(err)
                                             {
                                                 if(err)
@@ -267,6 +271,8 @@ var s3 = new AWS.S3();
                                                     that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                                     context.bot = bot;
+                                                    context.userInput = userInput;
+                                                    context.demo = demo;
                                                     outCallback(context, dialog);
 
                                                     //여기서 소켓으로 올려보내자 userkey로 구분해서
