@@ -319,7 +319,6 @@
 	action: function (dialog, context, callback)
 			{
 			    var request = require('request');
-			    var cheerio = require('cheerio');
 
 			    var url = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-";
 			    url += context.session.bitcoinName
@@ -331,6 +330,7 @@
 					          }
 						      else
 					          {
+                                body = JSON.parse(body);
 								if(!body.success)
 								{
 									context.session.result = body.message;
