@@ -349,36 +349,36 @@ module.exports = function(bot) {
             if (dialog.userInput.text.indexOf("성형") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"가슴 성형"
+                    category:"성형"
                 };
                // dialog.output[0].text = "가슴 성형 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("지방 흡입") >= 0) {
+            else if (dialog.userInput.text.indexOf("피부") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"지방 흡입"
+                    category:"피부"
                 };
               // dialog.output[0].text = "지방 흡입 다이어트 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("애플힙") >= 0) {
+            else if (dialog.userInput.text.indexOf("한정") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"애플힙"
+                    category:"한정 이벤트"
                 };
                // dialog.output[0].text = "애플힙 이벤트 아래와 같습니다.";
             }
             else if (dialog.userInput.text.indexOf("그 외") >= 0) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"기타"
+                    category:"그 외 이벤트"
                 };
               //  dialog.output[0].text = "그 외 3월 이벤트 아래와 같습니다.";
             }

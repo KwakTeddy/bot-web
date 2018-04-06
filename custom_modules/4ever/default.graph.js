@@ -430,16 +430,19 @@ var dialogs = [
                         "regexp": "3"
                     },
                     {
-                        "regexp": "/가슴 성형/"
+                        "regexp": "4"
                     },
                     {
-                        "regexp": "/지방 흡입/"
+                        "regexp": "/성형/"
                     },
                     {
-                        "regexp": "/애플힙/"
+                        "regexp": "/피부/"
                     },
                     {
-                        "regexp": "/4/"
+                        "regexp": "/한정/"
+                    },
+                    {
+                        "regexp": "/그 외/"
                     }
                 ],
                 "output": [
