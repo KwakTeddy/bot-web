@@ -77,14 +77,14 @@ var BotObject = require('./bot/bot.js');
                 try
                 {
                     var f = utils.requireNoCache(botDir + '/' + files[i], true);
-
                     if(typeof f != 'function')
                     {
-                        i--;
-                        continue;
+                        console.log(chalk.red('오류 : ' + typeof f));
                     }
-
-                    f(files[i].endsWith('bot.js') ? bot.options : bot);
+                    else
+                    {
+                        f(files[i].endsWith('bot.js') ? bot.options : bot);
+                    }
                 }
                 catch(err)
                 {
