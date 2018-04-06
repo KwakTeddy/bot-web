@@ -316,40 +316,40 @@
                 }
 
                 console.log('실행');
-                analyticsTimer = setTimeout(function()
-                {
-                    $scope.diagram.nlp = undefined;
-                    $scope.diagram.context = undefined;
-                    $scope.diagram.intent = undefined;
-                    $scope.diagram.entity = undefined;
-                    $scope.diagram.turnTaking = undefined;
-                    $scope.diagram.emotion = undefined;
-
-                    $scope.diagram.profile = undefined;
-
-                    // if($scope.diagram.suggestion[0])
-                    // {
-                    //     var msg = new SpeechSynthesisUtterance();
-                    //     var voices = window.speechSynthesis.getVoices();
-                    //     msg.voice = voices[0];
-                    //     msg.rate = 1;
-                    //     msg.pitch = 1;
-                    //     msg.text = $scope.diagram.suggestion[0].output;
-                    //
-                    //     console.log('우와 : ', $scope.diagram.suggestion[0]);
-                    //
-                    //     msg.onend = function(e) {
-                    //         console.log('Finished in ' + event.elapsedTime + ' seconds.');
-                    //
-                    //         $scope.diagram.suggestion = [];
-                    //     };
-                    //
-                    //     speechSynthesis.speak(msg);
-                    // }
-
-                    console.log($scope.diagram.suggestion);
-
-                }, 5000);
+                // analyticsTimer = setTimeout(function()
+                // {
+                //     $scope.diagram.nlp = undefined;
+                //     $scope.diagram.context = undefined;
+                //     $scope.diagram.intent = undefined;
+                //     $scope.diagram.entity = undefined;
+                //     $scope.diagram.turnTaking = undefined;
+                //     $scope.diagram.emotion = undefined;
+                //
+                //     $scope.diagram.profile = undefined;
+                //
+                //     // if($scope.diagram.suggestion[0])
+                //     // {
+                //     //     var msg = new SpeechSynthesisUtterance();
+                //     //     var voices = window.speechSynthesis.getVoices();
+                //     //     msg.voice = voices[0];
+                //     //     msg.rate = 1;
+                //     //     msg.pitch = 1;
+                //     //     msg.text = $scope.diagram.suggestion[0].output;
+                //     //
+                //     //     console.log('우와 : ', $scope.diagram.suggestion[0]);
+                //     //
+                //     //     msg.onend = function(e) {
+                //     //         console.log('Finished in ' + event.elapsedTime + ' seconds.');
+                //     //
+                //     //         $scope.diagram.suggestion = [];
+                //     //     };
+                //     //
+                //     //     speechSynthesis.speak(msg);
+                //     // }
+                //
+                //     console.log($scope.diagram.suggestion);
+                //
+                // }, 5000);
             });
 
             var sendSocket = function(text)
