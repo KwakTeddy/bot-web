@@ -378,7 +378,7 @@ module.exports = function(bot) {
                     company: "포에버성형외과",
                     month:"4",
                     year:"2018",
-                    category:"그 외 이벤트"
+                    category:"그 외 4월 이벤트"
                 };
               //  dialog.output[0].text = "그 외 3월 이벤트 아래와 같습니다.";
             }
