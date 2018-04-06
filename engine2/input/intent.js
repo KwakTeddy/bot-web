@@ -89,7 +89,7 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                 nlpList.push(nlp[i].text);
             }
 
-            IntentContent.find({ intentId: { $in: idList }, input: { $in: nlpList } }).populate('intentId').lean().exec(function(err, list)
+            IntentContent.find({ intentId: { $in: idList } }).populate('intentId').lean().exec(function(err, list)
             {
                 if(err)
                 {
@@ -99,6 +99,20 @@ var MatchedIntent = mongoose.model('MatchedIntent');
                 var matchedList = [];
                 for(var i=0; i<list.length; i++)
                 {
+                    var check = false;
+                    for(var j=0; j<nlpList.length; j++)
+                    {
+                        if(list[i].input.indexOf(nlpList[j]) != -1)
+                        {
+                            check = true;
+                        }
+                    }
+
+                    if(!check)
+                    {
+                        break;
+                    }
+
                     var point = 0;
                     var count = 0;
                     var normalCount = 0;
