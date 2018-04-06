@@ -154,7 +154,7 @@
                     }
                 }
 
-                if(context.intents)
+                if(context.intents.length > 0)
                 {
                     $scope.diagram.intent = context.intents[0];
                     if(!isNaN($scope.diagram.intent.matchRate))
