@@ -449,36 +449,36 @@ module.exports = function(bot) {
                 var modelname = 'dermatology_moneybrain_event';
                 var options = {};
                 options.url = SERVER_HOST + '/api/' + modelname;
-                if (dialog.userInput.text.indexOf("성형") >= 0 || dialog.userInput.text.indexOf("1") >= 0) {
+                if (dialog.userInput.text.indexOf("1") >= 0) {
                     options.qs = {
                         company: "포에버성형외과",
-                        month:"3",
+                        month:"4",
                         year:"2018",
-                        name:"내추럴 가슴성형"
+                        name:"얼굴지방이식"
                     };
                 }
-                else if (dialog.userInput.text.indexOf("지방 흡입")>= 0  || dialog.userInput.text.indexOf("2") >= 0) {
+                else if (dialog.userInput.text.indexOf("2") >= 0) {
                     options.qs = {
                         company: "포에버성형외과",
-                        month:"3",
+                        month:"4",
                         year:"2018",
-                        name:"프리미엄 지방흡입"
+                        name:"지방흡입"
                     };
                 }
-                else if (dialog.userInput.text.indexOf("애플힙") >= 0 ||  dialog.userInput.text=="3") {
+                else if (dialog.userInput.text.indexOf("3") >= 0) {
                     options.qs = {
                         company: "포에버성형외과",
-                        month:"3",
+                        month:"4",
                         year:"2018",
-                        name:"애플힙 성형"
+                        name:"트윙클링 눈성형"
                     };
                 }
-                else if (dialog.userInput.text.indexOf("그 외") >= 0 || dialog.userInput.text.indexOf("4") >= 0) {
+                else if (dialog.userInput.text.indexOf("4") >= 0) {
                     options.qs = {
                         company: "포에버성형외과",
-                        month:"3",
+                        month:"4",
                         year:"2018",
-                        name:"그 외 3월 이벤트"
+                        name:"시크릿 가슴성형"
                     };
                 }
 
