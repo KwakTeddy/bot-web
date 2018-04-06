@@ -461,7 +461,8 @@ module.exports = function(bot) {
                 }
                 else
                 {
-                    name[1]=context.session.body[dialog.userInput.text-1].name;
+                    var number=Number(dialog.userInput.text);
+                    name[1]=context.session.body[0].name;
                 }
 
                     options.qs = {
