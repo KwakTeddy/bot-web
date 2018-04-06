@@ -33,6 +33,7 @@ var BotSchema = new Schema(
     public: { type: Boolean, default: true },
     learn: { type: Boolean, default: false },
     telegram: String,
+    wechat: Object,
     imageFile: { type: String },
     dialogFile: { type:String },
     dialogsets: [{ type: Schema.Types.ObjectId, ref: 'Dialogset'}],

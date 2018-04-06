@@ -8,6 +8,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     var FacebookPageService = $resource('/auth/facebook/page');
     var TelegramService = $resource('/api/:botId/channel/telegram', { botId: '@botId' });
+    var WeChatService = $resource('/api/:botId/channel/wechat', { botId: '@botId' });
     var LineAccessTokenService = $resource('/api/:botId/channel/line', { botId: '@botId' });
 
     $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
@@ -261,6 +262,28 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         }
                     }
                 });
+            });
+        };
+
+        $scope.saveWeChatToken = function(e)
+        {
+            var encodingAESKey = $('#encodingAESKey').val();
+            var appId = $('#wechatAppId').val();
+
+            if(!encodingAESKey || !appId)
+            {
+                return alert('AppId와 encodingAESKey를 입력해주세요');
+            }
+
+            WeChatService.save({ botId: chatbot.id, appId: appId, encodingAESKey: encodingAESKey }, function()
+            {
+                alert(LanguageService('Connected'));
+                $scope.help.wechat = false;
+            },
+            function(err)
+            {
+                console.error(err);
+                alert('Error');
             });
         };
 

@@ -221,19 +221,30 @@
                     <li>{{lan('wechatScription5')}}</li>
                     <li>{{lan('wechatScription6')}}</li>
                 </ul>
-                <span>Webhook URL : </span>
-                <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}/webhook">
-                <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
+                <div>
+                    <span style="display: inline-block; width: 110px; text-align: right;">Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}/webhook" style="width: 66.5%;">
+                    <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span style="display: inline-block; width: 110px; text-align: right;">AppId : </span>
+                    <input type="text" class="webhook"id="wechatAppId">
+                </div>
+                <div>
+                    <span style="display: inline-block; width: 110px; text-align: right;">EncodingAESKey : </span>
+                    <input type="text" class="webhook" id="encodingAESKey">
+
+                </div>
             </div>
             <div class="tab-footer">
-                <button type="button" class="default-button" ng-click="closeHelp('wechat')">{{ lan('Close') }}</button>
+                <button type="button" class="default-button" ng-click="saveWeChatToken($event);" style="width: auto;">{{ lan('Save') }}</button>
             </div>
         </div>
     </div>
 
     <div class="modal-background" ng-show="help.miniwebchat">
         <div class="modal">
-            <div class="modal-title">{{lan('WeChat')}}</div>
+            <div class="modal-title">{{lan('MiniWebChat')}}</div>
             <div class="modal-body">
                 <ul class="channel-description">
                     <li>{{ lan('Insert the code below into the head or body of the website where you want to attach the mini-web chat window') }}</li>

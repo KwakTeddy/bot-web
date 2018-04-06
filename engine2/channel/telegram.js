@@ -38,7 +38,7 @@ const Bot = mongoose.model('Bot');
         {
             if(err)
             {
-                console.error();
+                console.error(err);
                 res.end();
             }
             else

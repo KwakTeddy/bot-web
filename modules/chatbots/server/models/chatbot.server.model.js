@@ -20,6 +20,7 @@ var BotSchema = new Schema(
     lineChannel: Object,
     facebook: { type: Boolean, default: false },
     telegram: String,
+    wechat: Object,
     using: { type: Boolean, default: false },
     public: { type: Boolean, default: true },
     learn: { type: Boolean, default: false },

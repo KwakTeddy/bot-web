@@ -119,13 +119,13 @@ var s3 = new AWS.S3();
                 },
                 function()
                 {
-                    callback();
+                    callback(null, botId);
                 });
             });
         }
         else
         {
-            callback();
+            callback(null, botId);
         }
     };
 
@@ -147,6 +147,11 @@ var s3 = new AWS.S3();
             if(err)
             {
                 return error.delegate(err);
+            }
+
+            if(!botId)
+            {
+                return error.delegate('bot is not found');
             }
 
             BotManager.load(botId, function(err, bot)

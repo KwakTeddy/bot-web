@@ -180,6 +180,58 @@ exports.facebookPage = function (req, res) {
     });
 })();
 
+module.exports.getWechatToken = function(req, res)
+{
+    var botId = req.params.botId;
+    Bot.findOne({ id: botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            res.status(400).send({ error: err });
+        }
+        else if(bot)
+        {
+            res.send(bot.wechat);
+        }
+        else
+        {
+            res.status(404).end();
+        }
+    });
+};
+
+module.exports.saveWechatToken = function(req, res)
+{
+    var botId = req.params.botId;
+    Bot.findOne({ id: botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            res.status(400).send({ error: err });
+        }
+        else if(bot)
+        {
+            bot.wechat = { appId: req.body.appId, encodingAESKey: req.body.encodingAESKey };
+            bot.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ error: err });
+                }
+
+                res.send(bot.wechat);
+            });
+        }
+        else
+        {
+            res.status(404).end();
+        }
+    });
+};
+
 module.exports.saveTelegramToken = function(req, res)
 {
     var botId = req.params.botId;
