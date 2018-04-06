@@ -536,7 +536,7 @@ module.exports = function(bot) {
 
                         context.session.introduction = body;
                         if (body[0].image2 !== "" || body[0].image2 !== undefined) {
-                            dialog.output[0].image = {url: body[0].image2}
+                            dialog.output[0].image = {url: (body[0].image2.startsWith('http') ? body[0].image2 : config.host + body[0].image2)}
                         }
                         callback();
                     }
