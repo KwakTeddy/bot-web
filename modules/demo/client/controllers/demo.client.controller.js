@@ -356,7 +356,7 @@
             var sendSocket = function(text)
             {
                 // Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
-                Socket.emit('analytics', { bot: 'blank_ray_1523003255250', user: 'demo-user', msg: text, options: { language: 'ko' } });
+                Socket.emit('analytics', { bot: 'blank_com2best_1523004973626', user: 'demo-user', msg: text, options: { language: 'ko' } });
             };
 
             var makeRecognition = function()
