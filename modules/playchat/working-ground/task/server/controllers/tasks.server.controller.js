@@ -155,6 +155,11 @@ exports.findTasks = function(req, res)
 
                 };
 
+                bot.setQuibbles = function()
+                {
+
+                };
+
                 utils.requireNoCache(filePath + '/' + result[i], true)(bot);
             })(i);
             // var content = fs.readFileSync(filePath + '/' + result[i]);

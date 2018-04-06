@@ -76,7 +76,15 @@ var BotObject = require('./bot/bot.js');
             {
                 try
                 {
-                    utils.requireNoCache(botDir + '/' + files[i], true)((files[i].endsWith('bot.js') ? bot.options : bot));
+                    var f = utils.requireNoCache(botDir + '/' + files[i], true);
+
+                    if(typeof f != 'function')
+                    {
+                        i--;
+                        continue;
+                    }
+
+                    f(files[i].endsWith('bot.js') ? bot.options : bot);
                 }
                 catch(err)
                 {
