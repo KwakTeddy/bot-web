@@ -228,16 +228,17 @@
                 </div>
                 <div style="margin-bottom: 10px;">
                     <span style="display: inline-block; width: 110px; text-align: right;">AppId : </span>
-                    <input type="text" class="webhook"id="wechatAppId">
+                    <input type="text" class="webhook"id="wechatAppId" ng-model="wechatAppId">
                 </div>
                 <div>
                     <span style="display: inline-block; width: 110px; text-align: right;">EncodingAESKey : </span>
-                    <input type="text" class="webhook" id="encodingAESKey">
+                    <input type="text" class="webhook" id="encodingAESKey" ng-model="wechatKey">
 
                 </div>
             </div>
             <div class="tab-footer">
-                <button type="button" class="default-button" ng-click="saveWeChatToken($event);" style="width: auto;">{{ lan('Save') }}</button>
+                <button type="button" class="blue-button" ng-click="saveWeChatToken($event);" style="width: auto;">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('wechat')" style="width: auto;">{{ lan('Close') }}</button>
             </div>
         </div>
     </div>

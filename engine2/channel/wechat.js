@@ -38,15 +38,6 @@
 
     WeChat.prototype.post = function(req, res)
     {
-
-        var buffers = [];
-        stream.on('data', function (trunk) {
-            buffers.push(trunk);
-        });
-        stream.on('end', function () {
-            callback(null, Buffer.concat(buffers));
-        });
-        stream.once('error', callback);
         var Engine = require('../core.js');
         var botId = req.params.bot;
 

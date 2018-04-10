@@ -66,6 +66,14 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
             $scope.telegramToken = result.token || '';
         });
 
+        WeChatService.get({ botId: chatbot.id }, function(result)
+        {
+            console.log('리절트 : ', result);
+
+            $scope.wechatAppId = result.appId;
+            $scope.wechatKey = result.encodingAESKey;
+        });
+
         $scope.saveLineInfo = function()
         {
             LineAccessTokenService.save({ botId: chatbot.id, accessToken: $scope.lineAccessToken, channelId: $scope.lineChannelId, secret: $scope.lineChannelSecret }, function()
