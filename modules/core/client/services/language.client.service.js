@@ -2596,13 +2596,20 @@
                 "jp": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top."
             },
             "wechatScription3":{
-                "ko": "신청 후 \"Basic configuration“라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
+                "ko": "신청 후 \"Basic configuration\"라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
                 "en": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\".",
                 "zh": "申请以后点击“基本配置”按钮，然后在左边画面里点击“我同意”后，点击“成为开发者”按钮。",
                 "jp": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\"."
             },
+            "wechatScription3-1":
+            {
+                "ko": "AppId와 EncodingAESKey를 복사해서 아래에 입력하고 저장 버튼을 클릭합니다. EncodingAESKey는 Change Configuration 버튼 클릭 후 생성할 수 있습니다.",
+                "en": "Copy the AppId and EncodingAESKey below and click the Save button. EncodingAESKey can be created after clicking the \"Change Configuration\" button.",
+                "zh": "复制下面的AppId和EncodingAESKey并单击保存按钮。 EncodingAESKey可以在单击“更改配置”按钮后创建。",
+                "jp": "下のAppIdとEncodingAESKeyをコピーし、[保存]ボタンをクリックします。 EncodingAESKeyは、Change Configurationボタンをクリックした後に作成できます。"
+            },
             "wechatScription4":{
-                "ko": "“Change Configuration” 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
+                "ko": "\"Change Configuration\" 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
                 "en": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token.",
                 "zh": "然后点击左下方的“基本配置”按钮，输入URL（从playchat里面的频道里点击微信下方的链接获得），然后在Token中输入“moneybrain_token”。",
                 "jp": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token."
