@@ -15,6 +15,26 @@ var UserLog = mongoose.model('UserLog');
 var supportedLan = ["en", "ko", "zh", "ja"];
 var accepts = require('accepts');
 
+exports.renderMobileChatBot = function(req, res)
+{
+    if(!req.params.botId)
+    {
+        return res.status(404).end();
+    }
+
+    var Bot = mongoose.model('Bot');
+    Bot.findOne({ id: req.params.botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(500).send({ error: err });
+        }
+
+        res.render('modules/core/server/views/mobile-web-chat', { botId: bot.id, botName: bot.name });
+    });
+};
+
 /**
  * Render the main application page
  */
