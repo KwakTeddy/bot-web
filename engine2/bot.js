@@ -95,6 +95,10 @@ var BotObject = require('./bot/bot.js');
                     return callback(false);
                 }
             }
+            else
+            {
+                next();
+            }
         },
         function()
         {
