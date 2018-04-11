@@ -87,11 +87,11 @@ var BotObject = require('./bot/bot.js');
                 }
                 catch(err)
                 {
-                    utils.requireNoCache(botDir + '/' + file, true);
-                    var botModule = require(path.resolve('./engine/bot.js'));
-                    var options = botModule.getBot(file.split('.')[0]);
-                    bot.options = options;
-
+                    console.log(err);
+                    // utils.requireNoCache(botDir + '/' + file, true);
+                    // var botModule = require(path.resolve('./engine/bot.js'));
+                    // var options = botModule.getBot(file.split('.')[0]);
+                    // bot.options = options;
                     return callback(false);
                 }
             }
