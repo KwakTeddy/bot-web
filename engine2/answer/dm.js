@@ -156,27 +156,34 @@ var ContextManager = require('../context.js');
                         type = Globals.types[input[key]];
                     }
 
-                    if(typeof type.typeCheck == 'string')
+                    if(!type)
                     {
-                        type.typeCheck = Globals.typeChecks[type.typeCheck];
-                    }
-
-                    type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
-                    {
-                        if(matched)
+                        if(typeof type.typeCheck == 'string')
                         {
-                            if(parsed)
+                            type.typeCheck = Globals.typeChecks[type.typeCheck];
+                        }
+
+                        type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
+                        {
+                            if(matched)
                             {
-                                userInput.types[type.name] = parsed;
-                            }
+                                if(parsed)
+                                {
+                                    userInput.types[type.name] = parsed;
+                                }
 
-                            next();
-                        }
-                        else
-                        {
-                            return nextInput();
-                        }
-                    });
+                                next();
+                            }
+                            else
+                            {
+                                return nextInput();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        console.log(input[key] + ' type is not defined');
+                    }
 
                     return;
                 }
