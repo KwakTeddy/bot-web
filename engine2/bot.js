@@ -70,32 +70,36 @@ var BotObject = require('./bot/bot.js');
         //제일먼저 .bot.js 파일을 로딩하고나서 그래프 등의 로직파일을 로딩한다.
         var files = fs.readdirSync(botDir);
         async.eachSeries(files, function(file, next)
+        {
+            if(file.endsWith('.js'))
             {
-                if(file.endsWith('.js'))
+                try
                 {
-                    try
-                    {
-                        var name = botDir + '/' + file;
+                    var name = botDir + '/' + file;
 
-                        var f = utils.requireNoCache(name, true);
+                    var f = utils.requireNoCache(name, true);
+                    if(typeof f == 'function')
+                    {
                         f(file.endsWith('bot.js') ? bot.options : bot);
-                        next();
                     }
-                    catch(err)
-                    {
-                        utils.requireNoCache(botDir + '/' + file, true);
-                        var botModule = require(path.resolve('./engine/bot.js'));
-                        var options = botModule.getBot(file.split('.')[0]);
-                        bot.options = options;
 
-                        return callback(false);
-                    }
+                    next();
                 }
-            },
-            function()
-            {
-                callback(true);
-            });
+                catch(err)
+                {
+                    utils.requireNoCache(botDir + '/' + file, true);
+                    var botModule = require(path.resolve('./engine/bot.js'));
+                    var options = botModule.getBot(file.split('.')[0]);
+                    bot.options = options;
+
+                    return callback(false);
+                }
+            }
+        },
+        function()
+        {
+            callback(true);
+        });
     };
 
     BotManager.prototype.setOptions = function(botId, options)

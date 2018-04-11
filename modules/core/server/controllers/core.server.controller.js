@@ -45,7 +45,6 @@ exports.renderIndex = function (req, res, next)
         return next();
     }
 
-
     if(req.path == '/')
     {
         var accept = accepts(req);
