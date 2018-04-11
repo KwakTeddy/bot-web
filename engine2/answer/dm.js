@@ -156,7 +156,7 @@ var ContextManager = require('../context.js');
                         type = Globals.types[input[key]];
                     }
 
-                    if(!type)
+                    if(type)
                     {
                         if(typeof type.typeCheck == 'string')
                         {
