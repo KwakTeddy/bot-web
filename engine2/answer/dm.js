@@ -223,13 +223,14 @@ var ContextManager = require('../context.js');
                         if(regexp.startsWith('/'))
                         {
                             regexp = regexp.substring(1);
-                            var split = regexp.split('/');
-                            if(split[1])
+                            var index = regexp.lastIndexOf('/');
+                            var o = regexp.substring(index + 1);
+                            if(o)
                             {
-                                options = split[1];
+                                options = o;
                             }
 
-                            regexp = split[0];
+                            regexp = regexp.substring(0, index);
                         }
 
                         regexp = new RegExp(regexp, options);
