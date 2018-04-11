@@ -21,8 +21,6 @@ var ContextManager = require('../context.js');
 
     DialogGraphManager.prototype.checkInputText = function(nlpText, text)
     {
-        var count = 0;
-
         if(nlpText.trim())
         {
             var words = text.split(/\s/);

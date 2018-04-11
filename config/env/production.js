@@ -3,10 +3,10 @@
 module.exports = {
   secure: {
     ssl: true,
-    ca: './config/sslcerts/sub.class1.server.ca.pem',
+    ca: './config/sslcerts_update/ChainCA/rsa-dv.chain-bundle.pem',
     //ca: './config/sslcerts/ca.pem',
-    privateKey: './config/sslcerts/ssl.key',
-    certificate: './config/sslcerts/ssl.crt'
+    privateKey: './config/sslcerts_update/ssl.key',
+    certificate: './config/sslcerts_update/ssl.crt'
   },
   host: process.env.HOST || 'https://localhost',
   port: process.env.PORT || 443,
@@ -78,7 +78,7 @@ module.exports = {
       // clientSecret: process.env.FACEBOOK_SECRET || '085c64a8566fefe3833ed3d983623a10',
       clientID: process.env.FACEBOOK_ID || '1557169960967403',
       clientSecret: process.env.FACEBOOK_SECRET || '282b2a30ec8115f364833a5d48b60cf6',
-      callbackURL: '/api/auth/facebook/callback'
+      callbackURL: '/auth/facebook/callback'
   },
   kakao: {
       clientID: process.env.KAKAO_KEY || '482579e97a7f46badd2c88a3a66ba862',
@@ -88,7 +88,7 @@ module.exports = {
   google: {
       clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
       clientSecret: process.env.GOOGLE_SECRET || 'cM_Rcn6dxCNeipINWI8K2QG7',
-      callbackURL: '/api/auth/google/callback'
+      callbackURL: '/auth/google/callback'
   },
   twitter: {
     clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',

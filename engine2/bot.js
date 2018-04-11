@@ -3,8 +3,6 @@ var chalk = require('chalk');
 
 var path = require('path');
 
-var async = require('async');
-
 var Config = require('./config.js');
 var utils = require('./utils/utils.js');
 
@@ -45,10 +43,12 @@ var BotObject = require('./bot/bot.js');
 
                     that.bots[botId] = bot;
 
-                    that.loadBotFiles(bot, botDir, function()
+                    if(!that.loadBotFiles(bot, botDir))
                     {
-                        callback(null, bot);
-                    });
+                        return callback(null, bot);
+                    }
+
+                    callback(null, bot);
                 })
             }
         }
@@ -65,39 +65,36 @@ var BotObject = require('./bot/bot.js');
         this.loadBotFiles(bot, botDir);
     };
 
-    BotManager.prototype.loadBotFiles = function(bot, botDir, callback)
+    BotManager.prototype.loadBotFiles = function(bot, botDir)
     {
         //제일먼저 .bot.js 파일을 로딩하고나서 그래프 등의 로직파일을 로딩한다.
         var files = fs.readdirSync(botDir);
-        async.eachSeries(files, function(file, next)
+        for(var i=0; i<files.length; i++)
+        {
+            console.log('Loading : ', files[i]);
+            if(files[i].endsWith('.js'))
             {
-                if(file.endsWith('.js'))
+                try
                 {
-                    try
-                    {
-                        var name = botDir + '/' + file;
-
-                        var f = utils.requireNoCache(name, true);
-                        f(file.endsWith('bot.js') ? bot.options : bot);
-                        next();
-                    }
-                    catch(err)
-                    {
-                        utils.requireNoCache(botDir + '/' + file, true);
-                        var botModule = require(path.resolve('./engine/bot.js'));
-                        var options = botModule.getBot(file.split('.')[0]);
-                        bot.options = options;
-
-                        return callback(false);
-                    }
+                    utils.requireNoCache(botDir + '/' + files[i], true)((files[i].endsWith('bot.js') ? bot.options : bot));
                 }
-            },
-            function()
-            {
-                callback(true);
-            });
-    };
+                catch(err)
+                {
+                    utils.requireNoCache(botDir + '/' + files[i], true);
+                    var botModule = require(path.resolve('./engine/bot.js'));
+                    var options = botModule.getBot(files[i].split('.')[0]);
+                    bot.options = options;
 
+                    return false;
+                }
+            }
+        }
+
+        console.log('options: ', bot.options);
+
+        return true;
+    };
+    
     BotManager.prototype.setOptions = function(botId, options)
     {
         var bot = this.bots[botId];

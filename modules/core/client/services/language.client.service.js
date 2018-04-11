@@ -2766,11 +2766,11 @@
                 "zh": "12月",
                 "jp": "12月"
             },
-            "This e-mail is under screening process. Please wait for results.": {
-                "ko": "클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.",
-                "en": "This e-mail is under screening process. Please wait for results.",
-                "zh": "这个邮箱正在审查中，请等待结果",
-                "jp": "この電子メールは審査中です。 結果を待ってください。"
+            "This e-mail is under confirm process. Please confirm your email.": {
+                "ko": "E-mail이 아직 인증되지 않았습니다.",
+                "en": "This e-mail is under confirm process. Please confirm your email.",
+                "zh": "This e-mail is under confirm process. Please confirm your email.",
+                "jp": "This e-mail is under confirm process. Please confirm your email."
             },
             "This e-mail is not registered or the password is wrong.": {
                 "ko": "가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다",

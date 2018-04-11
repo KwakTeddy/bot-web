@@ -3,7 +3,7 @@
 var path = require('path');
 var multer = require('multer');
 var config = require(path.resolve('./config/config'));
-var accepts = require('accepts');
+
 var util = require('util');
 var mongoose = require('mongoose');
 // var OverTextLink = mongoose.model('OverTextLink');
@@ -11,27 +11,9 @@ var mongoose = require('mongoose');
 var frontLanguage = require(path.resolve('./modules/core/server/controllers/front.language.js'));
 
 var UserLog = mongoose.model('UserLog');
-var supportedLan = ["en", "ko", "zh", "jp"];
 
-exports.renderMobileChatBot = function(req, res)
-{
-    if(!req.params.botId)
-    {
-        return res.status(404).end();
-    }
-
-    var Bot = mongoose.model('Bot');
-    Bot.findOne({ id: req.params.botId }).exec(function(err, bot)
-    {
-        if(err)
-        {
-            console.error(err);
-            return res.status(500).send({ error: err });
-        }
-
-        res.render('modules/core/server/views/mobile-web-chat', { botId: bot.id, botName: bot.name });
-    });
-};
+var supportedLan = ["en", "ko", "zh", "ja"];
+var accepts = require('accepts');
 
 /**
  * Render the main application page
@@ -43,30 +25,35 @@ exports.renderIndex = function (req, res, next)
         return next();
     }
 
+
     if(req.path == '/')
     {
         var accept = accepts(req);
         var browserLan = accept.language()[0];
         var queryLan = req.query.lan;
 
+        console.log(browserLan);
+
         if(browserLan.indexOf('-') != -1)
         {
             browserLan = browserLan.split('-')[0];
         }
 
-        var code = queryLan || browserLan;
-
-        if(supportedLan.indexOf(code) == -1)
+        if(supportedLan.indexOf(browserLan) == -1)
         {
-            code = 'en';
+            browserLan = 'en';
         }
+
+        if(supportedLan.indexOf(queryLan) == -1)
+        {
+            queryLan = undefined;
+        }
+
+        var code = queryLan || browserLan;
 
         res.render('modules/front/index', frontLanguage(code));
         return;
     }
-
-    var path_uri = req.path;
-    var path = path_uri.split('/');
 
     var platform = 'web';
     if(req.headers['user-agent'])
