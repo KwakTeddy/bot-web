@@ -157,7 +157,7 @@ var s3 = new AWS.S3();
                 }
                 else
                 {
-                    if(!bot.options.version)
+                    if(!bot.options || !bot.options.version)
                     {
                         return errCallback('old-version');
                     }

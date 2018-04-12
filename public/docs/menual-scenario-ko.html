@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>대화 시나리오 - 메뉴얼</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+       <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+      <div id="nav"></div>
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+         <!--본문 내용-->
+        <div id="readme" class="readme blob instapaper_body">
+            <article class="markdown-body entry-content" itemprop="text">
+                <h2>
+                    <a id="user-content-대화-시나리오" class="anchor" aria-hidden="true" href="#대화-시나리오">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    대화 시나리오
+                </h2>
+                <p>트리 형식의 시나리오 그래프로, 사용자가 쉽게 챗봇을 개발하고 편집할 수 있는 도구입니다. 대화 시나리오, 함수 작업 공간 탭이 나눠져 있습니다. 대화 시나리오를 사용하기 위해서는 왼쪽 네비게이션 바의 "개발" -&gt; "대화 시나리오"를 클릭하세요.</p>
+                <h3>
+                    <a id="user-content-개발" class="anchor" aria-hidden="true" href="#개발">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    개발
+                </h3>
+                <h4>
+                    <a id="user-content-카드" class="anchor" aria-hidden="true" href="#카드">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    카드
+                </h4>
+                <p>대화 시나리오 화면을 보면 네모난 박스들이 연결되어 있는 것을 확인할 수 있습니다. 이 네모 박스 하나를 <strong>카드</strong>라고 지칭합니다. 하나의 <strong>카드</strong>는 기본적으로 카드 이름, 사용자 입력, 챗봇 답변로 이루어져 있습니다. 카드를 더블 클릭하면 오른쪽에 카드 수정창이 등장합니다.<br>
+                    <a href="https://youtu.be/DhFCZkb-zVM" rel="nofollow">예제 동영상 보기</a>
+                </p>
+                <p><a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/25.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/25.png" title="클릭" style="max-width:100%;"></a></p>
+                <ol>
+                    <li>
+                        <p>카드이름<br>
+                            <strong>카드이름</strong>은 해당 카드를 지칭하는 이름으로써 카드들에 대한 식별자 역할을 하기에 중복된 이름을 사용할 수 없습니다. 카드 이름은 대화흐름조절 기능에서 이용됩니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>사용자 입력<br>
+                            <strong>사용자 입력</strong>은 해당 카드를 실행시키기 위한 조건 정보(예상되는 챗봇 사용자의 입력값)를 지정하는 부분 입니다. 예를 들어 <strong>사용자 입력</strong>에 '안녕'이라고 입력했다면, 챗봇 사용자가 '안녕'이라고 입력하는 순간 해당 카드가 실행(챗봇 답변 출력)됩니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>챗봇 답변<br>
+                            <strong>챗봇 답변</strong>은 해당 카드가 실행됐을 때 챗봇이 출력할 답변을 지정하는 부분입니다. 예를 들어 <strong>챗봇 답변</strong>에 '반가워'라고 입력했다면, 해당 카드가 실행됐을 때 챗봇은 '반가워'라고 출력합니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>부모카드와, 자식카드 그리고 형제카드<br>
+                            <strong>부모카드</strong>와 <strong>자식카드</strong>는 직접적으로 연결된 카드 사이의 관계를 지칭하는 용어입니다. 카드는 하나의 부모 카드와 복수의 자식 카드를 가질 수 있습니다. 예를 들어, 시작 카드의 오른편에 직접적으로 연결된 카드들은 모두 시작 카드의 자식 카드이며, 시작카드를 부모카드로 가지고 있습니다.
+                            또한 동일한 부모를 갖고 있는 카드 사이의 관계를 <strong>형제 카드</strong>라고 말합니다. 기본적으로 카드의 관계는 가계도의 명칭을 따라갑니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>뎁스<br>
+                            <strong>뎁스</strong>는 카드의 세대를 의미합니다. 예를 들어 시작 카드의 경우, 세대 즉 뎁스는 0이며 시작 카드의 자식들은 뎁스가 1입니다.  자식 카드로 내려갈수록 뎁스는 1씩 증가합니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>커서<br>
+                            <strong>커서</strong>는 챗봇 사용자의 입력을 기다리는 카드(혹은 마지막으로 실행된 카드)를 지칭하는 용어입니다. 예를 들어 시작  카드가 실행된 후, 사용자의 입력을 기다리고 있다면 커서는 시작 카드에 놓여 있습니다.
+                        </p>
+                        <ul>
+                            <li>커서는 챗봇 사용자의 입력값이 있을 경우에 이동합니다.</li>
+                            <li>커서의 이동을 대화흐름이라고 말할 수 있습니다.</li>
+                            <li>대화 흐름(커서의 이동)은 기본적으로  부모 카드에서 자식 카드로 이동합니다. 하지만 챗봇 답변의 대화흐름 조절 기능을 이용할 경우 임의의 다른 카드로 이동할 수 있습니다.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/26.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/26.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>검색, 매칭 그리고 실행<br></p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <strong>검색</strong>은 챗봇 사용자의 입력값이 어떤 자식 카드의 '사용자 입력'과 일치하는지  찾는 행위를 말합니다.예를 들어 챗봇 사용자가 '안녕'이라고 입력했을 경우, '사용자 입력'에 '안녕'이라고 입력된 자식 카드를 찾는 것을 <strong>검색한다</strong>라고 말합니다.
+                        <ul>
+                            <li>검색은 순서를 가집니다. 상위의 자식 카드부터 하위의 자식 카드 순으로 검색이 진행됩니다. 다시 말해, 챗봇 사용자의 입력값에 대해 첫 번째 자식카드(자식들 중 가장 상위에 있는 카드)부터 매칭 여부를 판단하고, 매칭이 되지 않았을 경우 두 번째 자식카드와 매칭여부를 판단합니다.  따라서 동일한 사용자 입력을 갖고 있는 자식 카드들이 있다면 가장 상위에 있는 카드가 매칭됨을 기억해야 합니다.</li>
+                            <li>공통 카드는 일반 카드보다 먼저 검색됩니다. 커서의 위치에 상관없이, 공통 카드를 검색한 후 일반 카드를 검색합니다.</li>
+                        </ul>
+                    </li>
+                    <li><strong>매칭</strong>은 챗봇 사용자의 입력값과 부합하는 자식 카드를 발견한 것을 말합니다. 예를 들어 챗봇 사용자가 '안녕'이라고 입력했을 경우, '사용자 입력'에 '안녕'이라고 입력된 자식 카드를 찾았다면 해당 카드와 <strong>매칭되었다</strong>고 말합니다.</li>
+                    <li>
+                        <strong>실행</strong>은 챗봇 사용자의 입력값이 특정 카드의 사용자 입력과 매칭되어, 챗봇 답변을 출력하는 것을 말합니다.예를 들어 챗봇 사용자가 '안녕'이라고 입력하고 '사용자 입력'에 '안녕'이라고 입력된 카드와 매칭되었을 경우 해당 카드의 '챗봇 답변'을 출력하는데 ,이를 해당 카드가 <strong>실행되었다</strong>고 말합니다.
+                        <ul>
+                            <li>카드가 실행되고 나면 커서는 해당 카드로 이동하고 챗봇 사용자의 입력을 다시 기다립니다.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/27.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/27.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ol start="8">
+                    <li>대화 흐름<br>
+                        <strong>대화 흐름</strong>은 "챗봇 사용자의 입력" -&gt; "검색" -&gt; "실행"의 주기로 커서가 이동하는 것을 지칭합니다.
+                    </li>
+                </ol>
+                <blockquote>
+                    <p>챗봇 사용자의 입력 -&gt; 검색(자식카드와의 매칭 여부) -&gt; 실행(챗봇 답변 및 커서 이동) -&gt; 챗봇 사용자의 입력-&gt; ....</p>
+                </blockquote>
+                <ul>
+                    <li>챗봇 사용자의 입력</li>
+                    <li>검색 - 챗봇 사용자의 입력값이 어느 자식 카드의 사용자 입력과 일치하는지 검색합니다.</li>
+                    <li>실행 - 챗봇 사용자의 입력값이 자식 카드의 사용자 입력과 부합할 때(매칭) 자식 카드가 실행되고 커서가 해당 카드로 이동합니다.  챗봇 답변이 출력되면 챗봇 사용자의 입력을 기다립니다.
+                        (만약 챗봇 사용자의 입력값이 모든 자식 카드의 사용자 입력과도 매칭되지 않는다면 챗봇은 '알아듣지 못했습니다'라고 답변하고 커서는 시작카드로 이동합니다. 챗봇 사용자의 입력값에 부합하는 자식 카드가 없기 때문입니다.)
+                    </li>
+                </ul>
+                <ol start="9">
+                    <li>공통 카드<br>
+                        <strong>공통 카드</strong>는 모든 카드에 앞서 검색되는 카드들을 의미합니다. 대화 시나리오 화면의 공통 카드 버튼을 눌러 확인 할 수 있습니다. 예를 들어, 시작카드와 이전 카드의 경우 커서의 위치에 상관없이 챗봇 사용자의 입력값에 대해 제 1순위로 검색됩니다.
+                    </li>
+                </ol>
+                <ul>
+                    <li>시작카드
+                        사용자가 처음 챗봇과 대화를 시작할 때 실행되는 카드이자, 대화 시나리오의 처음으로 돌아가고자 할 때 실행되는 카드입니다.
+                    </li>
+                    <li>이전카드
+                        사용자가 이전에 실행된 대화 카드로 커서를 되돌릴 때 이용되는 카드로 '이전'이라고 입력했을 시에 실행됩니다. 챗봇 답변의 대화흐름조절 기능 중 하나인 '이전 대화로 이동'을 공통 카드로 구현해 놓은 카드입니다.
+                    </li>
+                    <li>상위카드
+                        대화 시나리오상 현재 커서가 있는 카드의 부모카드로 이동하고 싶을 때 이용되는 카드로 '상위'라고 입력했을 시에 실행됩니다. 챗봇 답변의 대화흐름조절 기능 중 하나인 '상위 대화로 이동'을 공통 카드로 구현해 놓은 카드입니다.
+                    </li>
+                    <li>답변없음 카드
+                        매칭된 카드가 존재하지 않을 때 실행되는 카드입니다. 챗봇 답변은 "알아듣지 못했습니다." 입니다.
+                    </li>
+                </ul>
+                <ol start="10">
+                    <li>메뉴<br>
+                        카드의 우상단에 해당 카드를 조작하는 메뉴가 있습니다.
+                    </li>
+                </ol>
+                <ul>
+                    <li>자식카드 생성
+                        해당 카드를 부모로 하는 자식 카드를 생성합니다. 생성된 자식 카드는 최하위 자식 카드로 추가됩니다. 또한 카드의 오른쪽에 추가하기 버튼을 클릭하면 자식카드를 생성할 수 있습니다.
+                    </li>
+                    <li>위로 가기 및 아래로 가기
+                        형제 카드들 사이의 순서를 변경합니다.
+                    </li>
+                    <li>잘라내기
+                        해당 카드를 삭제하고 삭제된 카드를 복사해 메모리에 저장해 둡니다.
+                    </li>
+                    <li>복사하기
+                        해당 카드를 복사해 메모리에 저장해 둡니다.
+                    </li>
+                    <li>붙여넣기
+                        메모리에 저장된 카드를 해당 카드의 자식카드로 생성합니다.
+                    </li>
+                    <li>복제하기
+                        해당 카드와 동일한 카드를 형제 카드로 생성합니다.
+                    </li>
+                    <li>삭제하기
+                        해당 카드를 삭제합니다.<br>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/28.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/28.png" style="max-width:100%;"></a>
+                    </li>
+                </ul>
+                <h4>
+                    <a id="user-content-사용자-입력" class="anchor" aria-hidden="true" href="#사용자-입력">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    사용자 입력
+                </h4>
+                <ol>
+                    <li>사용자 입력의 구성<br>
+                        사용자 입력의 기본 모드는 키워드입니다. 사용자 입력을 키워드, 인텐트, 엔터티, 정규식, 타입, 조건문을 조합하여 다양하게 구성할 수 있습니다.<br>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/29.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/29.png" title="클릭" style="max-width:100%;"></a>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>키워드(Keyword)</p>
+                        <ul>
+                            <li>사용자 입력의 기본 모드는 키워드 방식입니다.</li>
+                            <li><strong>키워드 방식</strong>이란 사용자 입력에 저장된 <strong>키워드</strong>를 챗봇 사용자가 입력했을 경우에 해당 카드가 실행되는 방식을 뜻합니다. 예를 들어, 사용자 입력에 "여름 상의 면"과 같은 키워드가 입력되었을 경우 사용자가 해당 키워드가 모두 포함된 문장(면으로 된 여름 상의 좀 찾아줄 수 있어? 등)을 입력했을 시에 해당 카드가 실행됩니다. 다른 예시로 사용자 입력에 "여름", "상의", "면"과 같은 키워드가 입력되었을 경우, 사용자가 해당 키워드 중 어느 하나라도 포함된 문장(면으로된 옷 좀 보여줘, 여름에 입을만한 옷좀 찾아줘, 상의 보여줘 등)을 입력하면 해당 카드가 실행됩니다.</li>
+                            <li>키워드 방식은 <strong>버튼형 챗봇</strong>과 같은 간단한 챗봇에는 적합할 수 있으나, 대화형 챗봇이나 고도화된 챗봇에는 적합하지 않을 수 있습니다. 예를 들어, 챗봇 사용자가 "면으로 된 여름 상의 찾아줘"라고 입력했을 경우 키워드 방식이 적합할 수 있으나,  "더울 때 입는 윗도리 찾아줘"와 같이 같은 의미의 다른 문장을 입력했을 경우 해당 카드는 실행되지 않습니다. 같은 의미지만 다른 키워드를 사용했기 때문에 해당 카드가 실행되지 않은 것입니다. 따라서 다양하게 표현되는 동일한 의미의 문장들을 함께 처리하고 싶을 경우에는 키워드 대신 <strong>인텐트</strong>를 이용해야 합니다.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/30.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/30.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                        <blockquote>
+                            <p>버튼형 챗봇은 키워드! 대화형 챗봇은 인텐트!</p>
+                        </blockquote>
+                    </li>
+                    <li>
+                        <p>인텐트(#Intent)</p>
+                        <ul>
+                            <li>인텐트는 <strong>의도</strong>를 뜻합니다.</li>
+                            <li>"상의 찾아줘"와 "상의 검색해줘"는 같은 뜻 혹은 의도를 가졌다고 볼 수 있습니다. 이럴 경우, 두 문장을 하나의 인텐트로 처리할 수 있습니다. 따라서 사용자 입력을 인텐트로 입력하면 <strong>하나의 의도를 가진 여러가지 표현의 문장</strong>을 함께 처리할 수 있습니다. 예를 들어, 검색 인텐트를 만들어 위의 두 문장을 포함시키면 두 가지 문장을 하나의 인텐트로 처리할 수 있습니다.</li>
+                            <li>화면 왼쪽 네비게이션 바의 관리 -&gt; 인텐트에 들어가면 인텐트를 만들 수 있습니다. 혹은 카드의 사용자 입력에 포커스하고 #키를 입력하면 인텐트를 선택하거나 새로 만들 수 있는 <strong>입력 가이드</strong>가 나타납니다.</li>
+                            <li>문장과 인텐트는 <strong>1:1대응이 아니라는 점</strong>을 기억하세요. 즉, 하나의 문장이 여러 인텐트에 속할 수도 있습니다. 예를 들어,  "점퍼 갖고 싶어"의 경우 맥락에 따라 검색 인텐트일 수 있고, 구매 인텐트일 수도 있습니다. 이렇듯 어떤 문장이 어느 인텐트에 속하는지는 대화의 맥락에 따라 변할 수 있습니다. 챗봇 개발자는 이 점을 염두해 일관성있게 인텐트 사용해야합니다.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/31.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/31.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                        <blockquote>
+                            <p>여러 문장을 하나의 인텐트로 처리하자!<br>
+                                <a href="https://youtu.be/h0ppnU_l7R4" rel="nofollow">예제 동영상 보기</a>
+                            </p>
+                        </blockquote>
+                    </li>
+                    <li>
+                        <p>엔터티(@Entity)</p>
+                        <ul>
+                            <li>엔터티는 <strong>개체명</strong>을 뜻합니다.</li>
+                            <li>반팔, 긴팔, 외투, 점퍼 등을 하나의 개체명(상의)으로 인식하고 싶을 때는 엔터티를 사용할 수 있습니다. 반팔, 긴팔, 외투 등을 '상의'라는 엔터티로 묶는다고 말할 수 있습니다. 다른 예시로, 말, 고양이, 호랑이 등을 '동물'이라는 엔터티로 묶을 수도 있습니다. 즉, <strong>다양한 각각의 개체들</strong>(말, 고양이, 호랑이)을 '개체명(동물)'으로 묶을 수 있습니다.</li>
+                            <li>화면 왼쪽 네비게이션 바의 관리 -&gt; 엔터티에 들어가면 엔터티를 만들 수 있습니다. 혹은 카드의 사용자 입력에 포커스하고 @키를 누르면 엔터티를 선택하거나 새로 만들 수 있는 <strong>입력 가이드</strong>가 나타납니다.</li>
+                            <li>명사와 엔터티는 <strong>1:1 대응이 아니라는 점</strong>을 기억하세요. 즉, 하나의 명사가 여러 엔터티에 속할 수도 있습니다. 예를 들어, 말은 '동물'이라는 엔터티에 속할 수도 있고, '십이지신'이라는 엔터티에 속할 수도 있습니다. 또한 고양이 자체가 엔터티가 되어 그 개체에 샴고양이, 뱅골 고양이 등이 속할 수 있습니다. 따라서 쓰임새에 따라 어떤 개체명으로 어떤 개체를 묶을지, 즉 어떤 엔터티를 사용할지 결정해야 합니다.
+                                예시)
+                            </li>
+                            <li>만약 사용자 입력에는 @상의 엔터티와 #검색 인텐트가 AND 조건으로 입력되어 있다면, 상의 엔터티에 포함된 개체들과 검색 인텐트의 문장을 동시에 입력했을 때 해당 카드가 실행됩니다. 그 결과, "반팔티 찾아줘", "긴팔 찾아줘", "긴팔 검색해줘" 등 다양한 표현을 하나의 카드에서 처리할 수 있습니다.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/32.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/32.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                        <blockquote>
+                            <p>여러 명사를 하나의 엔터티로 처리하자!<br>
+                                <a href="https://youtu.be/XMvfAE7GY3w" rel="nofollow">예제 동영상 보기</a>
+                            </p>
+                        </blockquote>
+                    </li>
+                    <li>
+                        <p>정규식(/RegExr/)</p>
+                        <ul>
+                            <li>정규식은 <strong>특정한 규칙을 가진 문자열</strong>을 표현하는 데 사용하는 형식을 뜻합니다.</li>
+                            <li>만약 사용자로부터 핸드폰 번호를 입력받고 싶을 땐 어떻게 해야할까요? 사용자 입력에 '010-1234-1234'을 입력한다면 특정 핸드폰 번호만 부합합니다. 그렇다고 모든 핸드폰 번호를 사용자 입력에 저장할 수도 없습니다. 따라서 <strong>특정한 패턴의 숫자</strong>를 입력 받는 방법이 필요한데요, 이 때 사용할 수 있는 방법이 정규식(Regular Expression)으로 입력 받는 것입니다.</li>
+                            <li>010-1234-1234와 같은 특정한 패턴을 가리키는 정규식을 사용자 입력에 저장하면 <strong>사용자가 해당 패턴을 입력할 때에만 대화 카드가 실행</strong>됩니다. 즉, 사용자 입력이 /^\d{3}-\d{3,4}-\d{4}$/로 되어있기 때문에 해당 대화 카드가 실행되기 위해서는 사용자가 핸드폰 번호 형식을 입력해야만 합니다.</li>
+                            <li>사용자 입력에서 정규식을 입력하고 싶다면 '/'를 입력하면 됩니다. 정규식에 익숙하지 않은 분들은 <a href="/moneybrain-ai/PlayChat-Docs/blob/master/regexr.com">regexr.com</a>을 참고하세요.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/33.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/33.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                        <blockquote>
+                            <p>핸드폰 번호, 웹 페이지 주소 등 특정 패턴을 입력 받으려면 정규식이나 타입으로!<br>
+                                <a href="https://youtu.be/TeujgUr6HK8" rel="nofollow">예제 동영상 보기</a>
+                            </p>
+                        </blockquote>
+                    </li>
+                    <li>
+                        <p>타입($Type)</p>
+                        <ul>
+                            <li>타입은 <strong>특정한 규칙을 가진 문자열</strong>을 표현하는 데 사용하는 형식을 뜻합니다.</li>
+                            <li>타입은 특정한 패턴을 읽는 정규식과 같은 기능을 제공합니다. 예를 들어 사용자 입력에서 '$'을 입력하면 미리 생성되어 있던 여러가지 타입들이 보입니다. 그 중 mobile을 선택하면 핸드폰 번호에 맞는 입력값만 받아들이게 됩니다. 이처럼 타입은 기본적으로 특정 패턴의 입력값을 받아들이는 기능을 합니다(즉, <strong>정규식과 같은 기능</strong>을 합니다.).</li>
+                            <li>하지만 타입은 <strong>함수 작업 공간에서 조작이 가능</strong>하기 때문에 정규식보다 더 많은 일을 할 수 있습니다. 예를 들어, 핸드폰으로 전송된 인증번호와 챗봇 사용자가 입력한 번호가 일치하는지 여부는 정규식만으로는 할 수 없습니다. 왜냐하면 정규식은 사용자 입력이 4자리라는 패턴은 읽을 수 있지만, 그 번호가 전송된 번호와 일치하는지는 알 수 없기 때문입니다. 따라서 전송된 번호와 사용자가 입력한 값이 일치하는지는 코드 차원에서 접근해야 합니다. 이럴 때 타입을 이용할 수 있습니다.<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/34.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/34.png" title="클릭" style="max-width:100%;"></a><br>
+                                <a href="https://youtu.be/4yQty-eVsT4" rel="nofollow">예제 동영상 보기</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>조건문(IF)</p>
+                        <ul>
+                            <li>조건문은 <strong>챗봇 사용자의 입력값 이외의 값</strong>으로 카드를 실행시키는 기능입니다.</li>
+                            <li>챗봇 사용자의 입력값과 무관하게 해당 카드가 실행되어야 하는 경우가 있습니다. 예를 들어, 사용자 이름을 사용자 입력으로 입력 받아야 하는 경우, 특정한 값이나 특정한 패턴으로 입력 받을 순 없습니다. 값이 정해져 있지 않을 뿐더러, 이름의 패턴은 전 세계적으로 다양하기 때문입니다(물론, 한국식 이름은 특정 패턴이 있으므로 정규식이나 타입을 이용할 수 있습니다). 따라서 <strong>사용자가 입력한 값에 상관없이 카드가 실행</strong>되어야 합니다. 이럴 때는 사용자 입력에 if를 이용할 수 있습니다.</li>
+                            <li>사용자 입력에서 조건문을 입력하고 싶다면 Advanced 모드에서 if를 입력하고 () 안에 조건식을 입력하면 됩니다. <strong>if(조건식)</strong></li>
+                            <li>조건식은 코드레벨로 작성해야 합니다. 조건식의 결과값은 true나 false 둘 중 하나입니다. 사용자 입력을 <strong>if</strong>(<strong>true</strong>)라고 설정하면 해당 카드는 검색시 항상 매칭 된다고 볼 수 있습니다.</li>
+                            <li>조건문은 if(true)처럼 단순한 방식으로 사용할 수도 있지만, <strong>함수 작업 공간의 변수를 활용</strong>할 수 있습니다. 예를 들어, 남자 사용자와 여자 사용자에 따라 매칭 여부를 다르게 하고 싶을 때에도 if(gender == 'male')과 같은 형식을 입력할 수 있습니다. 물론, gender와 같은 변수는 함수 작업 공간에 미리 정의되어 있어야 합니다.<br>
+                                <a href="https://youtu.be/gRxNkTODvSk" rel="nofollow">예제 동영상 보기</a><br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/35.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/35.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>
+                        <p>사용자 입력의 추가/삭제<br>
+                            +버튼을 눌러 사용자 입력을 추가하고, 휴지통 버튼을 눌러 사용자 입력을 삭제할 수 있습니다.<br>
+                            <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/36.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/36.png" title="클릭" style="max-width:100%;"></a>
+                        </p>
+                    </li>
+                    <li>
+                        <p>복수의 사용자 입력(OR 조건)<br>
+                            시작 카드의 사용자 입력에는 3개의 사용자 입력(시작, 처음, start)이 지정되어 있습니다. 사용자 입력이 복수일 경우, 챗봇 사용자가 복수의 사용자 입력 중 <strong>어느 하나의 값만 입력해도 시작 카드가 실행</strong>됩니다. 예를 들어, '시작', '처음' 또는 'start'  중 어느 하나를 사용자가 입력했을 경우 시작 카드가 실행됩니다(화면 오른쪽 테스트 대화창에서 확인해보세요).
+                        </p>
+                    </li>
+                    <li>
+                        <p>사용자 입력의 AND 조건<br>
+                            하나의 사용자 입력에 복수의 값을 입력했을 경우, 챗봇 사용자가 <strong>복수의 값을 모두 입력했을 경우에만 해당 카드가 실행</strong>됩니다. 예를들어, '시작', '처음', 'start'가 하나의 사용자 입력에 함께 입력되어 있을 경우 챗봇 사용자가 '시작 처음 start'라고 입력해야 해당 카드가 실행됩니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>사용자 입력의 NLU<br>
+                            사용자 입력에 새로운 값을 입력할 때 입력창 아래 작은 글씨로 nlu라는 안내글이 보입니다. nlu는 Natural Language Understanding(자연어 이해)의 약자로, 사용자 입력값을 실시간으로 챗봇이 이해할 수 있는 언어로 변환(<strong>자연어 처리</strong>)한 결과입니다. 예를 들어, 사용자 입력에 '처음으로 돌아가'라고 입력했을 경우, nlu 엔진에 의해 해당 값은 '처음 돌아가다'로 변환됩니다.
+                        </p>
+                    </li>
+                </ol>
+                <h4>
+                    <a id="user-content-답변-전-실행-함수" class="anchor" aria-hidden="true" href="#답변-전-실행-함수">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    답변 전 실행 함수
+                </h4>
+                <p>답변 전 실행 함수는 카드가 실행됐을 때, 챗봇 답변이 출력되기 전에 필요한 기능들을 처리하는 함수를 뜻합니다.<br>
+                    <a href="https://youtu.be/ivTtvxfNsd0" rel="nofollow">예제 동영상 보기</a><br>
+                    <a target="_blank" href="https://github.com/moneybrain-ai/PlayChat-Docs/blob/master/start_image/37.png"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/37.png" alt="image" style="max-width:100%;"></a><br>
+                    챗봇이 문자를 보내주거나, 음악을 틀어주거나, 집안의 조명기기를 조절하거나, 다른 기기와 소통하거나 데이터 베이스의 정보에 접근할 때 그 기능들을 수행하는 부분이 답변 전 실행 함수입니다. 따라서 답변 전 실행 함수는 코드레벨에서 할 수 있는 다양한 일들을 수행하는 자바스크립트 코드가 들어갑니다.
+                </p>
+                <div class="highlight highlight-source-js">
+         <pre><span class="pl-smi">bot</span>.<span class="pl-en">setTask</span>(<span class="pl-s"><span class="pl-pds">"</span>myTask<span class="pl-pds">"</span></span>,
+{
+    <span class="pl-en">action</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>)
+      {
+       <span class="pl-c"><span class="pl-c">//</span>기능 구현 영역</span>
+          <span class="pl-en">callback</span>();
+      }
+});</pre>
+                </div>
+                <p>위의 자바스크립트 코드는 답변 전 실행 함수를 이루는 기본 구조를 보여줍니다.</p>
+                <ul>
+                    <li>기본적으로 bot.setTask(arg1, arg2); 와 같은 형태로 setTask 함수를 통해 챗봇에 해당 함수를 등록합니다.</li>
+                    <li>첫번째 파라미터(arg1)로 해당 함수의 이름("myTask")을 문자열 형태로 넣습니다.</li>
+                    <li>
+                        두번째 파라미터(arg2)로 JSON 형태의 객체(Object)를 넣습니다. 기본 형태는 다음과 같습니다.
+                        <div class="highlight highlight-source-js">
+               <pre> {
+ 	<span class="pl-en">action</span> <span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>){}
+ }</pre>
+                        </div>
+                    </li>
+                    <li>기능 구현 영역에 원하는 기능을 자바스크립트 코드로 구현합니다. 따라서 Node.js library를 이용할 수 있습니다.</li>
+                </ul>
+                <ol>
+                    <li>action 함수<br>
+                        action 함수는 dialog, context, callback 3개의 매개 변수를 받습니다.
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>dialog
+                            dialog는 해당 카드의 실행과 관련된 정보들(카드 정보, 챗봇 사용자의 입력값, 출력될 챗봇 답변)을 JSON 형태로 담고 있습니다. 즉, dialog 파라미터(JSON 객체)는  4가지 key(card, userInput, output, data)를 갖고 있습니다.
+                        </p>
+                        <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                        </div>
+                        <hr>
+                        <ul>
+                            <li>dialog.card</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> {
+ 				    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>카드 이름<span class="pl-pds">"</span></span>,
+ 				    <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>default95<span class="pl-pds">"</span></span>,
+ 				    <span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				        {
+ 				            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 				                <span class="pl-s"><span class="pl-pds">"</span>raw<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				                <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>
+ 				            }
+ 				        }
+ 				    ],
+ 				    <span class="pl-s"><span class="pl-pds">"</span>task<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 				        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>defaultTask<span class="pl-pds">"</span></span>
+ 				    },
+ 				    <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				        {
+ 				            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 				            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 				            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				                {
+ 				                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 				                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 				                }
+ 				            ]
+ 				        }
+ 				    ]
+ 			   },
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>card는 해당 카드와 관련된 정보가 들어 있습니다.</li>
+                                <li>name은 해당 카드의 이름입니다.</li>
+                                <li>id는 해당 카드에 대한 식별자 값입니다.</li>
+                                <li>input은 해당 카드의 "사용자 입력"란에 저장된 값들(배열)입니다.</li>
+                                <li>task는 해당 카드에 등록된 답변 전 실행함수(객체)입니다.</li>
+                                <li>output은 해당 카드의 챗봇 답변에 저장된 값들(배열)입니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <ul>
+                            <li>dialog.userInput</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> {
+ 				        <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				        <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				            {
+ 				                <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				                <span class="pl-s"><span class="pl-pds">"</span>pos<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Number<span class="pl-pds">"</span></span>,
+ 				                <span class="pl-s"><span class="pl-pds">"</span>length<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">1</span>
+ 				            }
+ 				        ],
+ 				        <span class="pl-s"><span class="pl-pds">"</span>nlpText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				        <span class="pl-s"><span class="pl-pds">"</span>types<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 				        <span class="pl-s"><span class="pl-pds">"</span>entities<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 				        <span class="pl-s"><span class="pl-pds">"</span>intents<span class="pl-pds">"</span></span><span class="pl-k">:</span> []
+ 				   },
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>userInput에는 챗봇 사용자의 입력값과 관련된 정보가 들어있습니다.</li>
+                                <li>text는 챗봇 사용자의 입력값 그 자체입니다.</li>
+                                <li>nlp는 챗봇 사용자의 입력값을 자연어처리한 결과값(배열)입니다.</li>
+                                <li>nlpText는 챗봇 사용자의 입력값을 자연어처리한 결과를 텍스트화한 값(문자열)입니다.</li>
+                                <li>types는 챗봇 사용자의 입력값과 매칭된 타입들이 담겨 있습니다.</li>
+                                <li>entities는 챗봇 사용자의 입력값과 관련된 엔터티들이 담겨 있습니다.</li>
+                                <li>intents는 챗봇 사용자의 입력값과 관련된 인텐트들이 담겨 있습니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <ul>
+                            <li>dialog.output</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> [
+ 			        {
+ 			            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 			            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 			            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 			                {
+ 			                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 			                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 			                }
+ 			            ]
+ 			        }
+ 			   ],
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>output은 출력될 챗봇 답변들이 들어있습니다.</li>
+                                <li>따라서 output을 수정하면 챗봇 답변을 코드레벨에서 수정할 수 있습니다.</li>
+                                <li>kind는 해당 답변의 종류(Content와 Action)를 말합니다. Content는 일반적인 챗봇 답변(text, image, button)을 말하고, Action은 대화흐름조절을 사용한 챗봇 답변을 말합니다.</li>
+                                <li>text는 챗봇의 문자 답변을 말합니다.</li>
+                                <li>buttons는 챗봇 답변의 버튼을 말합니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <ul>
+                            <li>data</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> {}
+     }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>data는 비어있는 객체입니다.</li>
+                                <li>챗봇 개발자가 데이터를 저장하고 출력할 때 이용할 수 있는 키(Key)입니다.</li>
+                                <li>한 가지 주의할 점은 <code>dialog.data['key'] = 'value';</code>에 저장되는 값은 챗봇을 업데이트할 때 자동으로 사라진다는 점입니다. 따라서 챗봇을 업데이트해도 사라져서 안되는 정보는 <code>context.session['key'] = 'value';</code>에 저장해야 됩니다. 또한 	<code>context.session</code>에 있는 정보라 할지라도 서버를 재시작하거나 상호작용이 일정 시간동안 없을 경우(세션 만료) 사라집니다. 따라서 사라져서 안되는 정보는 데이터 베이스에 저장해 연동해야 됩니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <p>다음은 dialog 파라미터의 전체적인 모습입니다.</p>
+                        <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 			    <span class="pl-s"><span class="pl-pds">"</span>card<span class="pl-pds">"</span></span> <span class="pl-k">:</span> {
+ 						    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>카드 이름<span class="pl-pds">"</span></span>,
+ 						    <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>default95<span class="pl-pds">"</span></span>,
+ 						    <span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								        {
+ 								            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 								                <span class="pl-s"><span class="pl-pds">"</span>raw<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 								                <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>
+ 								            }
+ 								        }
+ 								    ],
+ 						    <span class="pl-s"><span class="pl-pds">"</span>task<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 								        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>defaultTask<span class="pl-pds">"</span></span>
+ 								    },
+ 						    <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								        {
+ 								            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 								            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 								            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								                {
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 								                }
+ 								            ]
+ 								        }
+ 								     ]
+ 					     },
+ 			    <span class="pl-s"><span class="pl-pds">"</span>userInput<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 						        <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 						        <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								            {
+ 								                <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 								                <span class="pl-s"><span class="pl-pds">"</span>pos<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Number<span class="pl-pds">"</span></span>,
+ 								                <span class="pl-s"><span class="pl-pds">"</span>length<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">1</span>
+ 								            }
+ 								       ],
+ 						        <span class="pl-s"><span class="pl-pds">"</span>nlpText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 						        <span class="pl-s"><span class="pl-pds">"</span>types<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 						        <span class="pl-s"><span class="pl-pds">"</span>entities<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 						        <span class="pl-s"><span class="pl-pds">"</span>intents<span class="pl-pds">"</span></span><span class="pl-k">:</span> []
+ 						     },
+ 		        <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 					        {
+ 					            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 					            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 					            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								                {
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 								                }
+ 								           ]
+ 					        }
+ 					     ],
+ 			    <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}
+ 		    }</pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p>context
+                            context는 해당 카드의 실행과 관련된 정보(dialog)를 넘어선, 챗봇과 사용자 간의 상호작용에 관한 맥락 정보를 JSON 형태로 담고 있습니다.
+                        </p>
+                        <p>context 파라미터(JSON 객체)는  3가지 key(bot, user, session)를 갖고 있습니다.</p>
+                        <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    user <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    session<span class="pl-k">:</span> <span class="pl-k">...</span>
+ 			  }</pre>
+                        </div>
+                        <hr>
+                        <ul>
+                            <li>context.bot</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span>	{
+ 					        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        created<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>2018-02-20T08:34:41.854Z<span class="pl-pds">'</span></span>,
+ 					        language<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ko<span class="pl-pds">'</span></span>,
+ 					        options<span class="pl-k">:</span> {
+ 								          use<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+ 								          kakao<span class="pl-k">:</span> {},
+ 								          globalSearch<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          hybrid<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          dialogsetMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          intentMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          useQuibble<span class="pl-k">:</span> <span class="pl-c1">false</span>
+ 							         },
+ 					       dialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       commonDialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       tasks<span class="pl-k">:</span> { defaultTask<span class="pl-k">:</span> [<span class="pl-c1">Object</span>]},
+ 					       types<span class="pl-k">:</span> { email<span class="pl-k">:</span> [<span class="pl-c1">Object</span>] },
+ 		     			   intents<span class="pl-k">:</span> [],
+ 		     			   entities<span class="pl-k">:</span> [],
+ 					       entityContents<span class="pl-k">:</span> [],
+ 					       dialogsets<span class="pl-k">:</span> []
+ 				        },
+ 			    user <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    session<span class="pl-k">:</span> <span class="pl-k">...</span>
+ 			 }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>bot은 해당 챗봇에 관한 정보를 담고 있습니다.</li>
+                                <li>name은 해당 챗봇의 이름입니다.</li>
+                                <li>description은 해당 챗봇에 관한 설명입니다.</li>
+                                <li>created는 해당 챗봇이 생성된 일자입니다.</li>
+                                <li>language는 해당 챗봇이 사용하는 언어입니다.</li>
+                                <li>options은 해당 챗봇에 관한 설정입니다.</li>
+                                <li>dialogs는 해당 챗봇의 대화 시나리오를 JSON 객체의 형태로 담고 있습니다.</li>
+                                <li>commonDialogs는 해당 챗봇의 공통 대화 시나리오를 JSON 객체의 형태로 담고 있습니다.</li>
+                                <li>tasks는 해당 챗봇에 등록된 모든 답변 전 실행함수들이 담겨 있습니다.</li>
+                                <li>types는 해당 챗봇에 등록된 모든 타입들이 담겨 있습니다.</li>
+                                <li>intents는 해당 챗봇에 등록된 모든 인텐트들이 담겨 있습니다.</li>
+                                <li>entities는 해당 챗봇에 등록된 모든 엔터티들이 담겨 있습니다.</li>
+                                <li>entityContents는 해당 챗봇에 등록된 모든 엔터티 내용들이 담겨 있습니다.</li>
+                                <li>dialogsets는 해당 챗봇에 등록된 대화셋들이 담겨 있습니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <ul>
+                            <li>context.user</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    user <span class="pl-k">:</span> {
+ 					      userKey<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>5a4d91842b7a1e41079c0d9a<span class="pl-pds">'</span></span>,
+ 					      channel<span class="pl-k">:</span> { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>socket<span class="pl-pds">'</span></span> }
+ 					   },
+ 			    session<span class="pl-k">:</span> <span class="pl-k">...</span>
+ 		      }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>user는 해당 챗봇 사용자에 관한 정보를 담고 있습니다.</li>
+                                <li>userKey는 해당 챗봇 사용자에 대한 식별값입니다.</li>
+                                <li>channel은 해당 챗봇 사용자가 챗봇과 대화하고 있는 채널에 관한 정보를 담고 있습니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <ul>
+                            <li>context.session</li>
+                        </ul>
+                        <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    user <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    session<span class="pl-k">:</span>  {
+ 						     history<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 						     dialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>default95<span class="pl-pds">'</span></span>,
+ 						     previousDialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>startDialog<span class="pl-pds">'</span></span>
+ 						  }
+ 		      }</pre>
+                        </div>
+                        <blockquote>
+                            <ul>
+                                <li>session은 챗봇과 사용자간의 상호작용에 관한 데이터를 담고 있으며, 일정 기간(세션) 동안 유지될 데이터를 저장하는 영역입니다. 세션 기간은 5분으로, 5분동안 사용자와 챗봇 간의 상호작용이 없을 경우 세션이 만료됩니다.</li>
+                                <li>history는 실행됐던 카드의 목록을 순서대로 담고 있습니다.</li>
+                                <li>dialogCursor는 현재 커서가 있는 카드의 id값입니다.</li>
+                                <li>previousDialogCursor는 현재 커서 이전에 커서가 놓여있던 카드의 id값입니다.</li>
+                                <li>일정 기간 동안 유지될 데이터를 저장하기 위해서는 <code>context.session['key'] = value;</code> 와 같이 사용합니다.</li>
+                            </ul>
+                        </blockquote>
+                        <hr>
+                        <p>다음은 context 파라미터의 전체적인 모습입니다.</p>
+                        <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span>	{
+ 					        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        created<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>2018-02-20T08:34:41.854Z<span class="pl-pds">'</span></span>,
+ 					        language<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ko<span class="pl-pds">'</span></span>,
+ 					        options<span class="pl-k">:</span> {
+ 								          use<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+ 								          kakao<span class="pl-k">:</span> {},
+ 								          globalSearch<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          hybrid<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          dialogsetMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          intentMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          useQuibble<span class="pl-k">:</span> <span class="pl-c1">false</span>
+ 							         },
+ 					       dialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       commonDialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       tasks<span class="pl-k">:</span> { defaultTask<span class="pl-k">:</span> [<span class="pl-c1">Object</span>]},
+ 					       types<span class="pl-k">:</span> { email<span class="pl-k">:</span> [<span class="pl-c1">Object</span>] },
+ 		     			   intents<span class="pl-k">:</span> [],
+ 		     			   entities<span class="pl-k">:</span> [],
+ 					       entityContents<span class="pl-k">:</span> [],
+ 					       dialogsets<span class="pl-k">:</span> []
+ 				        },
+ 			    user <span class="pl-k">:</span> {
+ 					      userKey<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>5a4d91842b7a1e41079c0d9a<span class="pl-pds">'</span></span>,
+ 					      channel<span class="pl-k">:</span> { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>socket<span class="pl-pds">'</span></span> }
+ 					   },
+ 			    session<span class="pl-k">:</span> {
+ 						     history<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 						     dialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>default95<span class="pl-pds">'</span></span>,
+ 						     previousDialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>startDialog<span class="pl-pds">'</span></span>
+ 						  }
+ 			 }</pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p>callback
+                            답변 전 실행함수는 비동기(Async)방식으로 구현되기에 반드시 기능 구현이 끝나면 callback을 호출해야 합니다. callback은 기능 구현이 끝났음을 선언하고 결과를 return하는 함수입니다. 따라서 기능 구현이 끝난 부분에 <code>callback()</code>을 실행시킵니다.
+                        </p>
+                        <ul>
+                            <li>callback(arg1, arg2)
+                                <code>callback()</code> 함수는 두 개의 파라미터를 받을 수 있습니다. 첫번째 파라미터(arg1)는 재질의 여부를 결정하는 값입니다. true 혹은 false를 받습니다. 두 번째 파라미터(arg2)는 첫번째 파라미터가 true일 경우, 재질의 문장을 입력받는 파라미터입니다. 예를 들어 <code>callback(true, '다시 말씀해주세요.');</code>라고 입력했을 경우, 답변 전 실행함수가 실행되면 커서는 이동하지 않고 챗봇은 '다시 말씀해주세요.'라고 출력합니다. 더 자세한 예시는 대화 시나리오 가이드를 참고하세요.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>
+                        복수의 action 함수<br>
+                        기존에 등록된 함수를 이용함과 동시에 추가적인 기능을 구현한 함수를 등록하고 싶을 경우, action함수에 복수의 함수를 설정할 수 있습니다.
+                        <div class="highlight highlight-source-js">
+               <pre><span class="pl-k">var</span> preTask <span class="pl-k">=</span>
+{
+	<span class="pl-en">action</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>)
+	{
+		<span class="pl-smi">dialog</span>.<span class="pl-smi">output</span>[<span class="pl-c1">0</span>].<span class="pl-c1">text</span> <span class="pl-k">+=</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-cce">\n</span>하하하2<span class="pl-pds">'</span></span>;
+		<span class="pl-en">callback</span>();
+  	}
+};
+
+<span class="pl-k">var</span> <span class="pl-en">postAction</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>)
+{
+	<span class="pl-en">callback</span>();
+}
+
+<span class="pl-smi">bot</span>.<span class="pl-en">setTask</span>(<span class="pl-s"><span class="pl-pds">'</span>newTask<span class="pl-pds">'</span></span>,
+{
+	action<span class="pl-k">:</span> [
+           		preTask,	<span class="pl-c"><span class="pl-c">//</span>답변 전 실행 함수 형태</span>
+           		<span class="pl-s"><span class="pl-pds">'</span>myTask<span class="pl-pds">'</span></span>,   <span class="pl-c"><span class="pl-c">//</span>기존에 등록된 답변 전 실행 함수. 즉, bot.setTask()된 함수.</span>
+           		postAction	<span class="pl-c"><span class="pl-c">//</span>action 함수 형태</span>
+           	]
+});</pre>
+                        </div>
+                    </li>
+                </ol>
+                <ul>
+                    <li>newTask의 경우, action함수로 배열을 받고 있습니다. 배열의 요소는 Task 객체(preTask)이거나 기존에 등록된 함수('myTask')이거나 action 함수(postAction)입니다.</li>
+                    <li>위와 같이 action함수를 배열로 지정할 경우에, 배열의 순서대로 각 함수가 실행됩니다. 즉, preTask의 action함수가 실행되고, 기존에 등록된 'myTask'의 action함수가 실행된 뒤 postAction가 실행됩니다.</li>
+                    <li>action함수를 배열로 지정하는 경우는 기존에 등록된 함수('myTask')를 이용함과 동시에 등록된 함수 이전에 실행될 함수(preTask) 혹은 등록된 함수가 이후에 실행할 함수(postAction)가 필요할 때 사용함을 기억하세요.</li>
+                </ul>
+                <blockquote>
+                    <p><strong>예시 1 - 이름 저장하기</strong></p>
+                </blockquote>
+                <p>saveCustomerName 이라는 답변 전 실행 함수(task)를 만듭니다.</p>
+                <pre><code>bot.setTask('saveCustomerName', {
+    action: function (dialog,context,callback) {
+
+	    context.session.customerName = dialog.userInput.text;
+
+	    callback();
+	}
+});
+</code></pre>
+                <ul>
+                    <li>
+                        <p>기능 구현 영역을 보면 자바스크립트 코드를 볼 수 있는데요. <code>context.session.customerName</code>에<code>dialog.userInput.text</code> 값을 저장합니다. 챗봇 사용자의 입력값(<code>dialog.userInput.text</code>)을 일정 기간 유지될 세션(<code>context.session.customerName</code>)에 저장합니다.</p>
+                    </li>
+                    <li>
+                        <p>해당 값(<code>context.session.customerName</code>)을 챗봇 답변에서 출력하기 위해서는 +변수이름+로 표현해줍니다. 예를 들어, +context.session.customerName+이라고 입력하면 해당 값을 챗봇 답변에서 출력합니다.</p>
+                    </li>
+                </ul>
+                <blockquote>
+                    <p><strong>예시 2 - 외부 서버에 요청하기 1(크롤링)</strong></p>
+                </blockquote>
+                <p>챗봇이 다양한 기능을 수행하기 위해서는 외부 서버의 정보를 이용해야 합니다. 외부 서버의 정보를 이용하기 위해  crawling이라는 이름의 함수를 만들겠습니다. 그 다음 외부 서버에 요청하기 위해서 request.js 와 cheerio(Node.js Module)을 이용하겠습니다.</p>
+                <p>그리고 crawling 실행 함수의 기능 구현 영역에 다음 코드를 추가 합니다.</p>
+                <pre><code>var request = require('request');
+var cheerio = require('cheerio');
+var url = 'http://finance.naver.com/item/main.nhn?code=035720';
+
+request(url, function (err, response, body)
+		     {
+			      if(err)
+			      {
+				      console.log(err);
+			      }
+	              var $ = cheerio.load(body);
+	              var selector = '#content &gt; div.section.invest_trend &gt; div:nth-child(2) &gt; table &gt; tbody &gt; tr:nth-child(2) &gt; td:nth-child(2) &gt; em';
+	              var result = $(selector).text();
+
+	              context.session.crawlingResult = result;
+	              callback();
+			 }
+);
+</code></pre>
+                <ul>
+                    <li>챗봇 답변에 +context.session.crawlingResult+ 를 입력하면 해당 값을 출력하게 됩니다.</li>
+                </ul>
+                <blockquote>
+                    <p><strong>예시 3 - 외부 서버에 요청하기 2 (API)</strong></p>
+                </blockquote>
+                <p>naverMovieSearch라는 실행 함수를 만들겠습니다. 그리고 기능 구현 영역에 다음 코드를 입력합니다.</p>
+                <div class="highlight highlight-source-js">
+         <pre>   <span class="pl-k">var</span> client_id <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>tXRaAWut2_2R5OkcLpLQ<span class="pl-pds">'</span></span>;
+   <span class="pl-k">var</span> client_secret <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>TaU4yqU4fI<span class="pl-pds">'</span></span>;
+   <span class="pl-k">var</span> api_url <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>https://openapi.naver.com/v1/search/movie.json<span class="pl-pds">'</span></span>;
+   <span class="pl-k">var</span> options <span class="pl-k">=</span> {
+       method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>GET<span class="pl-pds">"</span></span>,
+       url<span class="pl-k">:</span> api_url,
+       headers<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>X-Naver-Client-Id<span class="pl-pds">'</span></span><span class="pl-k">:</span>client_id, <span class="pl-s"><span class="pl-pds">'</span>X-Naver-Client-Secret<span class="pl-pds">'</span></span><span class="pl-k">:</span> client_secret},
+       qs<span class="pl-k">:</span>{ query<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>사건<span class="pl-pds">'</span></span>}
+   };
+   <span class="pl-k">var</span> request <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>request<span class="pl-pds">'</span></span>);
+   <span class="pl-en">request</span>(options, <span class="pl-k">function</span> (<span class="pl-smi">err</span>, <span class="pl-smi">response</span>, <span class="pl-smi">body</span>)
+				    {
+			           <span class="pl-k">if</span>(err)
+			           {
+			               <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+			           }
+			     	   body <span class="pl-k">=</span> <span class="pl-c1">JSON</span>.<span class="pl-c1">parse</span>(body);
+
+			           <span class="pl-smi">context</span>.<span class="pl-smi">session</span>.<span class="pl-smi">movieData</span> <span class="pl-k">=</span> body;
+			           <span class="pl-en">callback</span>();
+			        }
+   );</pre>
+                </div>
+                <ul>
+                    <li>네이버에서 영화 검색 하는 함수입니다. <a href="https://developers.naver.com%EC%97%90" rel="nofollow">https://developers.naver.com에</a> 접속해 어플리케이션을 등록하고 client_id와 client_secret 값을 받습니다. 그리고 API 설정에서 '검색'을 추가합니다. 그리고 Documents -&gt; 서비스 API -&gt; 검색 -&gt; 영화로 들어와 API 호출에 대한 정보를 참고 합니다.</li>
+                    <li>네이버에서 전달받은 정보의 형태는 JSON형태입니다. 10개 이상의 영화가 전달 받은 데이터에 배열 형태로 담겨 있습니다. 챗봇 답변에서 배열 형태를 표현하기 위해서는 ###과 같은 문법을 사용합니다. 더 자세한 이야기는 챗봇 답변 파트에서 설명하겠습니다.</li>
+                </ul>
+                <h4>
+                    <a id="user-content-챗봇-답변" class="anchor" aria-hidden="true" href="#챗봇-답변">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    챗봇 답변
+                </h4>
+                <ol>
+                    <li>
+                        <p>챗봇 답변의 구성<br>
+                            시작 카드의 챗봇 답변에는 챗봇의 인사말과 함께 자기소개가 입력되어 있습니다.
+                        </p>
+                        <ul>
+                            <li>챗봇이 텍스트로 답변하길 원할 경우, <strong>텍스트</strong>만 입력하고, 좀 더 생생한 브랜드 이미지를 전달하기 위해서는 <strong>이미지</strong>를 사용할 수 있습니다.</li>
+                            <li>챗봇 사용자들의 답변 입력을 편리화하기 위해 카드에 <strong>버튼</strong>을 달 수도 있습니다. 버튼의 경우, 단순한 답변을 위한 버튼일 수도 있지만 URL값을 입력하면 특정 URL로 연결되는 <strong>링크 버튼</strong>을 만들 수도 있습니다.</li>
+                            <li><strong>대화 흐름 조절</strong>은 커서의 이동을 설정하는 기능입니다. 기본적으로 커서는 부모 카드에서 자식 카드로 이동합니다. 커서를 임의의 다른 카드로 이동하고 싶을 때 <strong>대화 흐름 조절</strong>을 이용할 수 있습니다. (더 자세한 설명은 구체적인 예시와 함께 살펴보겠습니다.)<br>
+                                <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/38.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/38.png" title="클릭" style="max-width:100%;"></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>챗봇 답변의 추가/삭제<br>
+                            +버튼을 눌러 챗봇 답변을 추가하고, 휴지통 버튼을 눌러 챗봇 답변을 삭제할 수 있습니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>복수의 챗봇 답변(OR 조건)<br>
+                            복수의 챗봇 답변이 지정되어 있을 경우, <strong>복수의 챗봇 답변 중 하나가 랜덤하게 답변</strong>됩니다. 예를 들어, 챗봇 답변에 '반가워'와 '반갑습니다.'가 입력되어 있을 경우, 해당 카드가 실행되었을 때 '반가워', '반갑습니다.' 중 하나가 랜덤으로 답변됩니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>변수 접근<br>
+                            챗봇 답변은 고정된 답변을 해줄 수도 있지만, 많은 경우 고객이 누구냐에 따라 다양한 답변을 할 필요가 있습니다. 예를 들어, 사용자 이름을 입력 받았을 경우에도 해당 사용자의 이름을 언급할 필요가 있습니다. 이를 위해서 사용자이름 대화카드에서 사용자의 입력값을 <code>context.session.customerName</code>이라는 변수에 저장했습니다. 이렇게 저장된 변수값을 챗봇 답변에서 사용하고 싶을 경우 <code>+변수명+</code>이라고 입력하면 됩니다.  예를 들어, 사용자이름 카드의 챗봇 답변에 "안녕하세요. 반가워요. <code>+context.session.customerName+</code>님" 이라고 입력하겠습니다. 그리고 사용자이름 대화카드까지 대화를 이어나가 봅니다.
+                        </p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>객체(Object)
+                            변수가 객체일 경우, 자바스크립트와 동일하게 .key 의 형태로 해당 키(key)에 해당하는 값에 접근할 수 있습니다.
+                            예시) +context.session.movieDataObject.date+
+                        </p>
+                    </li>
+                    <li>
+                        <p>배열(Array)
+                            변수가 배열일 경우, ###와 같은 문법을 통해 배열을 for문처럼 접근할 수 있습니다.
+                            예를 들어, context.session.movieDataArray는 배열입니다. 이럴경우, #movieDataArray#와 같이 표현하면 movieDataArray 배열의 각 아이템에 접근합니다. #movieDataArray# 뒤부터는 각 아이템의 key를 통해 해당하는 값에 접근할 수 있습니다. 그리고 하나의 아이템에 대한 접근이 끝났을 경우 #을 붙여줘 끝을 명시해줍니다. 결론적으로 #배열#각 아이템# 형태의 문법입니다. 이 때, 각 아이템 내에서는 +key값+와 같은 형태로 각 아이템의 key와 해당하는 값에 접근할 수 있습니다. 또한 +index+는 각 아이템별로 해당 인덱스 값을 자동으로 반환해줍니다.
+                        </p>
+                    </li>
+                </ul>
+                <ol start="5">
+                    <li>
+                        <p>IF (조건에 따른 챗봇답변)<br>
+                            사용자 입력에서 if의 사용법을 알아봤습니다. <strong>챗봇 답변</strong>에도 동일한 if 기능을 이용할 수 있습니다. 하나의 대화카드에서 조건에 따라 다른 답변을 내놓을 수 있는 기능입니다. 챗봇 답변을 여러개 등록 했을 시에 무작위로 챗봇 답변이 출력됩니다. 만약 복수의 챗봇 답변을 등록하고 IF에 조건을 집어 넣으면 조건에 해당되는 챗봇 답변이 실행됩니다.
+                            이러한 구조는 차후 설명한 배포 채널과 관련 깊습니다. 카카오, 페이스북, 네이버 톡톡 등과 같이 다양한 채널을 하나의 챗봇으로 배포하기 위해서는 각각의 채널에 맞는 형식으로 배포해야 합니다. 따라서 <code>IF(context.user.channel.name == 'kakao')</code>일 때, <br>
+                            <code>IF(context.user.channel.name == 'facebook')</code>일 때, <br>
+                            <code>IF(context.user.channel.name == 'navertalk')</code>일 때, <br>
+                            등과 같이 해당 채널에 따라 챗봇 답변을 다르게 해야 합니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>대화흐름조절<br>
+                            대화 시나리오의 커서 이동은 기본적으로 부모 카드에서 자식 카드로 진행됩니다. 대화흐름조절은 특정 카드로 커서를 이동시키는 기능입니다.<br>
+                            <a href="https://youtu.be/enxCH9-RE4c" rel="nofollow">예제 동영상 보기</a><br>
+                            <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/40.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/40.png" title="클릭" style="max-width:100%;"></a><br>
+                            <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/39.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/39.png" title="클릭" style="max-width:100%;"></a>
+                        </p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>대화이동
+                            커서를 대상 카드로 이동시킵니다. 이동 후 대화 카드의 실행함수가 실행되고  이동 전 대화 카드의 텍스트가 출력됩니다. 그리고 커서는 이동 후 대화카드를 가리킵니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>다시 질문하기
+                            <strong>다시 질문하기</strong>는 챗봇 사용자의 입력값에 부합하는 자식 카드가 없을 경우, 커서가 이동하지 않고 챗봇 답변을  재실행하는 기능입니다. 예를 들어, 다시 질문하기 실행 카드에서 챗봇 답변으로 '번호를 입력하세요'라고 했습니다. 이 때 사용자가 핸드폰 번호 형식이 아닌 엉뚱한 답변을 할 경우, 사용자의 입력값에 부합하는 자식 대화 카드가 없습니다. 따라서 챗봇은 '알아듣지 못했습니다'를 출력합니다. 하지만 핸드폰 대화 카드의 막내 대화카드로 <strong>사용자 입력</strong>에는 if(true)를, <strong>챗봇 답변</strong>에는 <strong>다시 질문하기</strong>를 설정하면 사용자의 입력값에 부합하는 자식 대화 카드가 없을 때, 핸드폰 재질의 카드가 실행되면서 커서는 핸드폰 대화카드에 남아있습니다. 그리고 핸드폰 재질의 카드의 텍스트를 출력합니다. 핸드폰 재질의 카드의 챗봇 답변에 '핸드폰 번호 형식에 맞게 다시 한 번 입력해주세요.'라고 입력하면 결과적으로 재질의하는 효과를 가져옵니다. 이처럼 재질의 기능은 주로 사용자 입력에 if(true)와 같이 사용되어 막내 대화카드에 위치합니다. 결국 부모로 대화이동하는 기능이 재질의 기능입니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>이전 대화이동
+                            <strong>이전 대화이동</strong>은 주로 대화상에서 '이전'이라고 입력했을 때 이전에 실행된 카드로 커서가 이동하는 기능을 말합니다. '이전'이라고 말했을 때 기본적으로 이전 카드로 이동하는 것은 <em>공통 대화 시나리오</em> 기능으로 구현된 것입니다. 여기서 주의할 점은 '이전 대화이동' 기능이 있는 카드가 실행됐을 경우, 해당 카드를 기준으로 2단계 부모(조부모) 카드로 커서가 이동한다는 것입니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>대화이동 후 검색
+                            <strong>대화이동 후 검색</strong>은 대화이동 후 이동한 카드의 자식들을 대상으로 검색하는 기능입니다. 부합하는 사용자 입력이 있을 시 해당 자식 카드가 실행되고 없을 경우, '답변을 알아들을 수 없습니다'로 답변합니다.
+                        </p>
+                    </li>
+                    <li>
+                        <p>돌아가기용 대화이동 / 돌아가기
+                            <strong>돌아가기용 대화이동</strong>은 대화이동과 동일하게 작동합니다. 다만 대화이동한 후 특정 카드에서 돌아가기 기능을 실행했을 시, 돌아가기용 대화이동을 실행했던 카드의 부모 카드로 커서가 이동합니다.
+                        </p>
+                    </li>
+                </ul>
+                <h4>
+                    <a id="user-content-단축키" class="anchor" aria-hidden="true" href="#단축키">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    단축키
+                </h4>
+                <ol>
+                    <li>대화 시나리오</li>
+                </ol>
+                <ul>
+                    <li>← ↓ ↑ → : 카드 포커스 이동</li>
+                    <li>Ctrl + ↑ ↓ : 위/아래로 카드 이동</li>
+                    <li>Enter : 카드 수정창 열기</li>
+                    <li>Esc : 카드 수정창 닫기</li>
+                    <li>Insert : 자식 카드 추가</li>
+                    <li>Del : 카드 삭제</li>
+                    <li>Space : 자손카드 접기/펴기</li>
+                </ul>
+                <ol start="2">
+                    <li>카드 수정창</li>
+                </ol>
+                <ul>
+                    <li>Tab : 입력 전환 (사용자 입력, 답변 전 실행함수, 챗봇 답변 입력 전환, 사용자입력 등 여러 개인 경우 한 줄씩 이동)</li>
+                    <li>Ctrl+Enter : 카드 수정창 저장</li>
+                </ul>
+                <ol start="3">
+                    <li>함수 작업 공간</li>
+                </ol>
+                <ul>
+                    <li>Ctrl + F : 검색</li>
+                    <li>Ctrl + G : 다음으로 계속 검색</li>
+                    <li>Ctrl + S : 저장</li>
+                </ul>
+                <ol start="4">
+                    <li>공통</li>
+                </ol>
+                <ul>
+                    <li>? : keyboard shortcut help</li>
+                </ul>
+                <h3>
+                    <a id="user-content-관리" class="anchor" aria-hidden="true" href="#관리">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    관리
+                </h3>
+                <ol>
+                    <li>대화 시나리오<br>
+                        대화 시나리오 관련 파일은 기본적으로 2가지(*.graph.js 파일, *.js파일)입니다.
+                    </li>
+                </ol>
+                <ul>
+                    <li>*.graph.js 파일 - 대화 시나리오 그래프를 JSON 객체형태로 저장하고 있는 파일입니다. 대화 시나리오 관리 메뉴에서 복수의 대화 시나리오 그래프 파일을 만들 수 있습니다. 복수의 대화 시나리오 그래프 파일이 있을 경우, 각각의 대화 시나리오는 시작 카드의 자식 카드로 합쳐지고, 시나리오 사이의 우선순위를 설정할 수 있습니다.</li>
+                    <li>*.js 파일  - 답변 전 실행 함수를 설정하는 파일입니다. 대화 시나리오 관리 메뉴에서 복수의 답변 전 실행함수 파일을 만들 수 있습니다.</li>
+                </ul>
+                <ol start="2">
+                    <li>엔터티<br>
+                        엔터티를 생성, 수정, 삭제할 수 있는 메뉴입니다.
+                    </li>
+                </ol>
+                <ul>
+                    <li>불러오기를 클릭했을시 엑셀파일로 엔터티를 등록할 수 있습니다.</li>
+                    <li>엑셀파일로 엔터티 등록시 관련 양식을 주의하세요. 엔터티 등록 엑셀 양식은 "불러오기"버튼을 눌러 다운로드 할 수 있습니다.<br>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/41.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/41.png" style="max-width:100%;"></a><br>
+                        <a href="https://youtu.be/BKI03_jSNh0" rel="nofollow">예제 동영상 보기</a>
+                    </li>
+                </ul>
+                <ol start="3">
+                    <li>인텐트<br>
+                        인텐트를 생성, 수정, 삭제할 수 있는 메뉴입니다.
+                    </li>
+                </ol>
+                <ul>
+                    <li>불러오기를 클릭했을시 엑셀파일로 인텐트를 등록할 수 있습니다.</li>
+                    <li>엑셀파일로 인텐트 등록시 관련 양식을 주의하세요. 인텐트 등록 엑셀 양식은 "불러오기"버튼을 눌러 다운로드 할 수 있습니다.<br>
+                        <a href="https://youtu.be/4PLfTLtf92k" rel="nofollow">예제 동영상 보기</a>
+                    </li>
+                </ul>
+                <ol start="4">
+                    <li>테스크<br>
+                        테스크를 생성, 수정, 삭제할 수 있는 메뉴입니다.
+                    </li>
+                </ol>
+            </article>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation.html #menual", function () {
+
+        });
+
+        $("#topbar").load("topbar.html", function () {
+            $('#menual').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

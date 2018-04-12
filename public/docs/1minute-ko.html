@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1분만에 챗봇 만들기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+    <style>
+        strong{
+            font-size: 17px;
+            color: #0366d6;
+            /*background: #333;*/
+            /*border-bottom: 1px solid blue;*/
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+       <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+      <!--<div id="nav"></div>-->
+    </div>
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+        <!--본문 내용-->
+        <div id="readme" class="readme blob instapaper_body">
+            <article class="markdown-body entry-content" itemprop="text">
+                <h3>
+                    <a id="user-content-0-페이스북-회원가입" class="anchor" aria-hidden="true" href="#0-페이스북-회원가입"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>0. 페이스북 회원가입 10초!</h3>
+                <p>Playchat 메인 페이지에서 <a href="/auth/facebook" onClick="window.open(this.href, 'new', 'width=800, height=1200'); return false;"><strong style="color: #0366d6;background: white">페이스북 가입(링크)</strong></a>를 클릭하세요.</p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/playchat-main.png" title="클릭" style="max-width:100%;">
+
+
+                <h3>
+                    <a id="user-content-1-회사-소개-챗봇-생성" class="anchor" aria-hidden="true" href="#1-회사-소개-챗봇-생성"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>1. 회사 소개 챗봇 생성 20초!</h3>
+                <p class="bold-para">
+                    1. <strong><a href="/playchat/chatbots/create" target="_blank">새 봇 만들기</a></strong>를 클릭하고 -> <strong><a href="/playchat/chatbots/create/blank" target="_blank">빈 봇</a></strong> 클릭하세요.
+                </p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/playchat-chatbots2.png" title="클릭" style="max-width:100%;">
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/create-chatbot2.png" title="클릭" style="max-width:100%;">
+                <p class="bold-para">
+                    2. <strong>이름</strong>, <strong>설명</strong>을 입력한 후 <strong>생성</strong>을 클릭하세요! <br></p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/7.png" title="클릭" style="max-width:100%;">
+
+
+                <h3>
+                    <a id="user-content-2-소개-문구-입력" class="anchor" aria-hidden="true" href="#2-소개-문구-입력"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>2. 챗봇 학습 20초!
+                </h3>
+
+                <p class="bold-para">
+                    1. 화면의 <strong><a href="/playchat/development/dialog-set" target="_blank">학습 시작</a></strong>을 클릭하세요!
+                </p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/dashboard.png" title="클릭" style="max-width:100%;">
+
+                <p class="bold-para">2. </p>
+                <p>사용자 입력 : <strong>"회사 이름이 뭔가요?"</strong> , 챗봇 출력 : <strong>"플레이챗 입니다."</strong></p>
+                <p>사용자 입력 : <strong>"회사는 어디에 있나요?"</strong> , 챗봇 출력 : <strong>"강남역 6번 출구 홍우 빌딩입니다."</strong></p>
+                <p>사용자 입력 : <strong>"회사 전화번호가 어떻게 되나요?"</strong> , 챗봇 출력 : <strong>"070-858-5683입니다."</strong></p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/mult-dialog.png" title="클릭" style="max-width:100%;">
+                <p class="bold-para">3. <strong>추가하기</strong>를 클릭하세요.</p>
+
+                <h3>
+                    <a id="user-content-3-페이스북-페이지에-챗봇-연결" class="anchor" aria-hidden="true" href="#3-페이스북-페이지에-챗봇-연결"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>3. 챗봇 연결 10초!
+                </h3>
+                <p class="bold-para">
+                    1. 화면 왼쪽 네비게이션 바의 <strong><a href="/playchat/channel" target="_blank">채널</a></strong>을 클릭하세요.
+                </p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/gnb-channel.png" title="클릭" style="max-width:100%;">
+                <p class="bold-para">
+                    2. 페이스북 아이콘 <strong>연결하기</strong>를 클릭하세요.
+                </p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/channel-facebook.png" title="클릭" style="max-width:100%;">
+                <p class="bold-para">
+                    3. 연결할 페이지 우측 <strong>연결하기</strong>를 클릭하세요.
+                </p>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/facebook-connect.png" title="클릭" style="max-width:100%;">
+                <p class="bold-para">
+                    4. 해당 페이스북 페이지에서 확인!
+                </p>
+                <!--<img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/facebook-message-btn.png" title="클릭" style="max-width:100%;">-->
+
+                <h3><a id="user-content-4-끝" class="anchor" aria-hidden="true" href="#4-끝"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. 끝!</h3>
+                <p>더 자세한 설명을 원하면
+                    <strong><a href="/docs/5minutes-ko.html">여기</a></strong>로!</p>
+            </article>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        // $("#nav").load("navigation.html #1minute");
+
+        $("#topbar").load("topbar.html", function () {
+            $('#1minute').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

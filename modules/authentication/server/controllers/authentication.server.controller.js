@@ -573,7 +573,7 @@ exports.oauthCallback = function (strategy, scope) {
                 }
                 else
                 {
-                    return res.redirect('/');
+                    return res.redirect('/playchat/chatbots');
                 }
             });
         })(req, res, next);
