@@ -18,6 +18,14 @@ var Transaction = require('../utils/transaction.js');
         var origin = console.log;
         console.log = function()
         {
+            for(var key in arguments)
+            {
+                if(typeof arguments[key] == 'object')
+                {
+                    arguments[key] = JSON.stringify(arguments[key]);
+                }
+            }
+
             origin.apply(null, arguments);
             Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
         };
@@ -34,6 +42,12 @@ var Transaction = require('../utils/transaction.js');
 
             var start = stdout.indexOf('[result][start]');
             var end = stdout.indexOf('[result][end]');
+
+            if(start == -1 || end == -1)
+            {
+                console.log = origin;
+                return done();
+            }
 
             console.log(stdout.substring(0, start));
 
