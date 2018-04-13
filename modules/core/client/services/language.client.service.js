@@ -299,7 +299,7 @@
                 "ko": "새 봇 만들기",
                 "en": "New chatbot",
                 "jp": "新しいチェッボッ",
-                "zh": "新的聊天机器人"
+                "zh": "新建聊天机器人"
             },
             "Chatbot": {
                 "ko": "챗봇",
@@ -1349,13 +1349,13 @@
                 "ko": "일별 대화량",
                 "en": "Historical amount of dialog(channel)",
                 "jp": "期間別デファリャン(チャネル)",
-                "zh": "不同时间段对话量（频道）"
+                "zh": "日对话量（频道）"
             },
             "Historical amount of dialog(Success/Fail)": {
                 "ko": "일별 대화 성공/실패",
                 "en": "Historical amount of dialog(Success/Fail)",
                 "jp": "期間別デファリャン(成功/失敗)",
-                "zh": "不同时间段对话量（成功/失败）"
+                "zh": "日对话量（成功/失败）"
             },
             "Ratio of dialog on channels": {
                 "ko": "채널별 대화",
@@ -2617,7 +2617,7 @@
             "wechatScription5":{
                 "ko": "그리고 Encoding AESKey는  Encoding AESKey 뒤에 있는 “Random Generation“라는 버튼을 클릭하면 자동적으로 생성됩니다. 그 후, “Change Configuration” 라는 버튼 옆에 있는 “Enable“라는 버튼을 클릭하세요.",
                 "en": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\".",
-                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。",
+                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。然后把相对应的AppId和EncodingAESKey输入到playchat频道菜单中微信连接里面并提交。",
                 "jp": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\"."
             },
             "wechatScription6":{

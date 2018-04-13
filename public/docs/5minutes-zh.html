@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5分钟制作聊天机器人</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+       <div id="nav"></div>
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+
+        <div id="readme" class="readme blob instapaper_body">
+            <article class="markdown-body entry-content" itemprop="text">
+                <h2>
+                    <a id="user-content-어떤-챗봇을-원하세요" class="anchor" aria-hidden="true" href="#想做什么聊天机器人">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    想要制作什么样的聊天机器人?
+                </h2>
+                <img class="vertical-img" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/9.png" title="클릭" style="float: right">
+                <p>PlayChat对话的基本单位是一个用户的问题和一个聊天机器人的回答，通过这样的方式来进行连续性的对话。在PlayChat上制作聊天机器人主要可以通过2种方法。<br>
+                </p>
+                <h3 style="clear: none">
+                    <a id="user-content-대화-셋" class="anchor" aria-hidden="true" href="#对话集">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+                            </path>
+                        </svg>
+                    </a>
+                    对话集聊天机器人
+                </h3>
+                <p>这是一种让聊天机器人学习对话集的制作方式，学习的对话集将问题和答案作为一个数据单元(对话模块)。FAQ聊天机器人主要使用这种制作方法。<br>
+                    <a href="https://www.youtube.com/watch?v=nFIgNJeDH6s" target="_blank" rel="nofollow">
+                        点击查看制作范例视频
+                    </a>
+                </p>
+                <h3 style="clear: none">
+                    <a id="user-content-대화-시나리오" class="anchor" aria-hidden="true" href="#对话场景">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    对话场景聊天机器人
+                </h3>
+                <p>这是一种使用PlayChat提供的对话场景图来制作聊天机器人的方法。在使用对话场景时可以不仅仅局限于一对一的问答方式，而同时可以实现具有特定流程和特定功能的对话(爬虫，验证手机号码，连接外部服务器等)。<br>
+                    <a href="https://www.youtube.com/watch?v=44Q4L3NZg58" target="_blank" rel="nofollow">
+                        点击查看制作范例视频
+                    </a>
+                </p>
+                <blockquote>
+                    <em>Tip</em>
+                    <p>可以同时使用对话集和对话场景来制作聊天机器人，通过这样的方式能制作出表现更自然，实用性更强的聊天机器人。您最好是根据想要通过聊天机器人来达到什么样的目的来决定是基于对话集制作聊天机器人，还是基于对话场景来制作聊天机器人。</p>
+                    <!--<ul>-->
+                    <!--<li>对话集과 대화 시나리오를 연계하여 챗봇을 구축할 수 있으며, 이 경우 더욱 자연스럽고 실용적인 챗봇을 만들 수 있습니다.</li>-->
+                    <!--<li>만들고자하는 챗봇의 목적에 따라 对话集을 기반으로 챗봇을 구축할지, 아니면 대화 시나리오를 기반으로 챗봇을 구축할지 결정하는 것이 좋습니다.</li>-->
+                    <!--</ul>-->
+                </blockquote>
+
+
+                <h2>
+                    <a id="user-content-대화-셋을-이용한-챗봇-구축하기" class="anchor" aria-hidden="true" href="#制作对话集聊天机器人">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    制作对话集聊天机器人
+                </h2>
+
+                <iframe src="https://www.youtube.com/embed/nFIgNJeDH6s?autoplay=1" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+                <p>在这部分内容将使用 <strong>对话集</strong>来制作一个简单的 <strong>公司介绍聊天机器人</strong>，公司介绍聊天机器人能回答公司名称，电话号码，主要做什么，公司位置等问题。</p>
+                <p>使用对话集来制作聊天机器人需要让聊天机器人学习以问题和答案组成的数据单元(<strong>对话模块</strong>)，多个问题和答案组成的对话模块可集合成<strong>对话集</strong>，同时您也可以让聊天机器人学习多个对话集。</p>
+                <h3>
+                    <a id="user-content-챗봇-만들기" class="anchor" aria-hidden="true" href="#制作聊天机器人">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    制作聊天机器人
+                </h3>
+                <p>按照以下步骤创建聊天机器人。<br>
+                    <!--<a href="https://s3.ap-northeast-2.amazonaws.com/playchat-docs/playchat-%E1%84%8E%E1%85%A2%E1%86%BA%E1%84%87%E1%85%A9%E1%86%BA-%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%A5%E1%86%BC.mp4" target="_new" rel="nofollow">예제 동영상 보기</a>-->
+                </p>
+                <ol>
+                    <li>
+                        如果您还没有PlayChat账号，请先进行<a href="/signup" target="_new">注册</a>。如果您已经有了PlayChat账号，请进行<a href="/signin" target="_new">登录</a>。<br>
+                        <!--<a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/3.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/3.png" title="클릭" style="max-width:100%;"></a></li>-->
+                    <li>在<a href="/playchat/chatbots" target="_new">机器人管理画面</a>创建聊天机器人 -&gt; 选择空白机器人。<br>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/5.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/5.png" title="클릭" style="max-width:100%;"></a><br>
+                        <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/6.png" title="클릭" style="max-width:100%;">
+                    </li>
+                    <li>输入需要填写的项。<br>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/7.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/7.png" title="클릭" style="max-width:100%;"></a>
+                    </li>
+                    <li>点击"保存"按钮。创建完一个新的聊天机器人后，新的聊天机器人将会以卡片的形式显示在聊天机器人管理画面，然后单击选择创建好的聊天机器人。<br>
+                        <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/8.png" title="클릭" style="max-width:100%;">
+                    </li>
+                </ol>
+                <h3>
+                    <a id="user-content-대화-블록-학습시키기" class="anchor" aria-hidden="true" href="#学习对话模块">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    学习对话模块
+                </h3>
+                <p>对话模块默认是把一个问题和一个答案连接到一起，是一对一的连接方式。但对话模块同时也支持把多个问题和多个问题连接在一起的多对多连接方式。<br>
+                    <br>
+                    按照以下步骤让聊天机器人学习对话模块。
+                </p>
+                <ol>
+                    <li>在页面左侧菜单中选择"开发" -&gt; "对话集"。
+                    </li>
+                    <li>
+                        在问题栏中输入聊天机器人用户可能会问到的问题，在答案栏中输入您想让聊天机器人给出的回答。
+                        <ul>
+                            <li>用户问题 - "你们公司在哪里？"</li>
+                            <li>机器人回答 - "我们公司Playchat在江南地铁站6号出口的宏宇大楼。"</li>
+                        </ul>
+                        <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/12.png" title="클릭" style="max-width:100%;">
+                    </li>
+                    <li>点击"添加"按钮。</li>
+                    <li>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/10.png" title="클릭" style="max-width:100%;">
+                        <p>测试<br>现在聊天机器人已经理解了您输入的问题，并随时准备着回答用户的相关问题。您现在可以试着在页面右侧的测试对话框中输入您之前添加的问题，您也可以输入和这个问题比较类似的问题，因为PlayChat可以回答与添加过的问题类似的问题。</p>
+                    </li>
+                </ol>
+                <blockquote>
+                    <em>Tip</em>
+                    <p>页面底部是一个实时对话分析窗口，主要是对以用户输入和聊天机器人回答为基本单元的对话进行分析。
+                        <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/11.png" title="클릭" style="max-width:100%;">
+                    <ul>
+                        <li>用户输入分析 - 对聊天机器人用户的输入值进行自然语言处理并显示结果。</li>
+                        <li>聊天机器人回答分析 - 显示了聊天机器人用户的输入值和哪些数据能匹配，以及聊天机器人是否给出了回答。</li>
+                    </ul>
+                    </p>
+                </blockquote>
+                <h3>
+                    <a id="user-content-다대다-대화-블록-학습시키기" class="anchor" aria-hidden="true" href="#学习多对多对话模块">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    学习多对多对话模块
+                </h3>
+                <p>按照以下步骤让聊天机器人学习由多个问题和多个回答连接成的对话模块。<br></p>
+                <ol>
+                    <li>
+                        <p>在问题栏中输入聊天机器人用户可能会问到的问题，通过点击问题栏下方的"+"按钮来增加多个问题。</p>
+                        <ul>
+                            <li>用户问题 - "你们公司的电话号码是多少？", "我想知道你们的电话号码", "跟我说一下你们公司的电话号码"</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>在答案栏中输入聊天机器人应该给出的回答，通过点击答案栏下方的"+"按钮来增加多个答案。</p>
+                        <ul>
+                            <li>机器人回答 - "我们公司的电话号码是080-858-5683。", "有问题就向080-858-5683咨询哟"</li>
+                        </ul>
+                        <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1.png" title="클릭" style="max-width:100%;">
+                    </li>
+                    <li>
+                        <p> 点击"添加"按钮。</p>
+                    </li>
+                    <li>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/13.png" title="클릭" style="max-width:100%;">
+                        <p>测试 <br>您现在可以试着在页面右侧的测试对话框中输入您之前添加过的问题中的任何一个。当一个对话模块有多个问题时，这多个问题都通过一个对话模块来进行处理。 <br>当一个对话模块有多个回答时，聊天机器人用户的输入值和这个对话模块的问题相匹配的话，聊天机器人就会随机给出这多个回答中的一个。</p>
+                    </li>
+                </ol>
+                <h3>
+                    <a id="user-content-대화-셋-불러오기" class="anchor" aria-hidden="true" href="#上传对话集">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    上传对话集
+                </h3>
+                <p>虽然可以通过将对话模块一个一个输入让聊天机器人学习，但是为了方便也可以一次性通过上传对话集(对个对话模块)的方式来让聊天机器人学习。<br>
+                    <!--<a href="https://s3.ap-northeast-2.amazonaws.com/playchat-docs/playchat_%E1%84%80%E1%85%AA%E1%86%AB%E1%84%85%E1%85%B5_%E1%84%8E%E1%85%AE%E1%84%80%E1%85%A1%E1%84%83%E1%85%A2%E1%84%92%E1%85%AA%E1%84%89%E1%85%A6%E1%86%BA.mp4" rel="nofollow">예제 동영상 보기</a>-->
+                </p>
+                <blockquote>
+                    <em>注意!</em>
+                    <p>上传的对话集文件必须是Excel文件，并且有着要求的格式。</p>
+                </blockquote>
+                <p>按照以下步骤让聊天机器人学习对话集。</p>
+                <ol>
+                    <li>在页面左侧菜单中选择"管理" -&gt; 选择"对话集"。</li>
+                    <li>点击上传按钮后填需要填写的信息。
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/14.png" title="클릭" style="max-width:100%;">
+                    <li>下载表格样式后，按照样式填入数据(Question列 - 问题, Answer列 - 回答)。</li>
+                    <li>然后点击"选择文件"按钮来上传文件。</li>
+                </ol>
+                <blockquote >
+                    <em>Tip</em>
+                    <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/15.png" title="클릭" style="max-width:100%;">
+                    <p>上传的文件会以新的对话集保存起来，然后要将相应对话集后的"启用"打开才可以开始应用这个对话集。
+                    </p>
+                </blockquote>
+                <h3>
+                    <a id="user-content-마무리" class="anchor" aria-hidden="true" href="#完成">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    完成
+                </h3>
+                <p>到目前为止我们已经学习了<strong>用对话集来制作聊天机器人</strong>的方，使用对话集的聊天机器人可以用作有着大量问答功能的聊天机器人，使用高级功能时就能使对话更准确和详细。
+                    在下面的介绍(用对话场景来制作聊天机器人)中，我们将试着制作一个具有特定流程和特定功能对话的聊天机器人。
+                </p>
+            </article>
+        </div>
+
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation_zh.html #5minutes");
+        $("#topbar").load("topbar_zh.html", function () {
+            $('#5minutes').addClass('js-selected-navigation-item selected reponav-item')
+        });
+
+
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>
