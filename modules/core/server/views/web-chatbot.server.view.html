@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Playchat</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ botName }}" />
+    <meta property="og:url" content="https://www.playchat.ai/web/chatbot/{{ botId }}" />
+    <meta property="og:description" content="{{ botDescription }}" />
+    <!--<meta property="og:image" content="웹 페이지 대표 이미지" />-->
+
+    <link href="/modules/core/client/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+    <!-- Plugin CSS -->
+
+    <link href="/modules/core/client/css/style.css" rel="stylesheet">
+    <!-- Custom styles-->
+    <link href="/modules/core/client/css/new-age.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="/modules/core/client/imgs/favicon.png">
+    <link rel="apple-touch-icon" href="/modules/core/client/imgs/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/modules/core/client/imgs/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/modules/core/client/imgs/apple-touch-icon-114x114.png">
+
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#"><img src="/modules/core/client/imgs/logo.png"></a>
+      </div>
+    </nav>
+
+    <section class="masthead">
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-lg-7 my-auto info-container">
+            <div class="header-content mx-auto ">
+          		<div class="user-area">
+            		<h1 class="bot-name">{{ botName }}</h1>
+              		<p>{{ botDescription }}</p>
+            	</div>
+             	<div class="explain1">
+          			<h2><span><img src="/modules/core/client/imgs/playchat-eb.png"></span>대화형 인공지능 Play Chat!</h2>
+             		<p>Play Chat은 세계 최고의 대화형 인공지능 플랫폼으로 빠르고, 자연스러운 챗봇서비스를 제공합니다. 365일, 24시간 언제 어디서나 Play Chat과 함께하세요!</p>
+          		</div>
+			<ul class="list-inline list-social">
+				<li class="list-inline-item social-facebook">
+					<a href="http://www.facebook.com/sharer/sharer.php?u=https://www.playchat.ai/web/chatbot/{{ botId }}" class="icon-facebook" target="_blank"></a>
+				</li>
+				<li class="list-inline-item social-twitter">
+					<a href="https://twitter.com/intent/tweet?text={{ botName }}&url=https://www.playchat.ai/web/chatbot/{{ botId }}" class="icon-twitter" target="_blank"></a>
+				</li>
+				<li class="list-inline-item social-kakao">
+					<a href="#" class="icon-kakao" target="_blank" id="kakao-link-btn"></a>
+				</li>
+				<li class="list-inline-item social-link">
+					<a href="#" class="icon-Link" target="_blank"></a>
+				</li>
+				<li class="explain2">
+					<span>{{ botName }} 의 Play Chat을 공유 해주세요 !</span>
+				</li>
+			</ul>
+            </div>
+          </div>
+          <div class="col-lg-5 my-auto">
+            <div class="device-container">
+              <div class="device-mockup simple portrait white">
+                <div class="device">
+                  <div class="screen">
+                      <iframe src="/mobile/chatbot/{{ botId }}" style="border: 0; width: 100%; height: 100%;"></iframe>
+                  </div>
+                  <div class="button">
+                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="container">
+        <p>&copy; 2018 Play Chat all right reserved.</p>
+      </div>
+    </footer>
+
+
+    <script type='text/javascript'>
+        // ... some code ... //
+        Kakao.init('cafe3fc91b965d7e05caa9b11c848a5f');
+
+        var _title = '{{ botName }}';
+        var _description = ' {{ botDescription }} ';
+        var _button = '바로가기';
+
+        Kakao.Link.createDefaultButton({
+            container: '#kakao-link-btn',
+            objectType: 'feed',
+            content: {
+                title: _title,
+                description: _description,
+                imageUrl: 'https://www.playchat.ai/modules/core/client/imgs/logo.png',
+                link: {
+                    mobileWebUrl: 'https://www.playchat.ai/web/chatbot/{{ botId }}',
+                    webUrl: 'https://www.playchat.ai/web/chatbot/{{ botId }}'
+                }
+            },
+            buttons: [
+                {
+                    title: _button,
+                    link: {
+                        mobileWebUrl: 'https://www.playchat.ai/web/chatbot/{{ botId }}',
+                        webUrl: 'https://www.playchat.ai/web/chatbot/{{ botId }}'
+                    }
+                }
+            ]
+        });
+    </script>
+  </body>
+
+</html>

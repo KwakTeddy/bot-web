@@ -473,6 +473,17 @@
                     this.previousElementSibling.value = '';
                     that.send(text);
                 });
+
+                document.body.querySelector('#simulatorInput').addEventListener('keydown', function(e)
+                {
+                    if(e.keyCode == 13)
+                    {
+                        var text = this.value;
+                        that.addUserBubble(text);
+                        this.value = '';
+                        that.send(text);
+                    }
+                });
             });
 
             socket.on('send_msg', function(data)
