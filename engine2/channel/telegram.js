@@ -90,6 +90,11 @@ const Bot = mongoose.model('Bot');
                 {
                     Engine.process(bot.id, 'telegram', userId, text || '', {}, function(context, result)
                     {
+                        if(result.dialogId == 'noanswer')
+                        {
+                            return res.end();
+                        }
+
                         var options = {};
                         options.method = 'POST';
                         options.url = 'https://api.telegram.org/bot' + token + '/';
