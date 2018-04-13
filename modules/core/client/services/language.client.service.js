@@ -545,7 +545,7 @@
                 "ko": "Answer",
                 "en": "Answer",
                 "jp": "答弁",
-                "zh": "答案"
+                "zh": "回答"
             },
             "New Dialog": {
                 "ko": "New Dialog",
