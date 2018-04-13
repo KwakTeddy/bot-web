@@ -49,11 +49,28 @@ const Bot = mongoose.model('Bot');
                 var userId = undefined;
                 var text = undefined;
                 var replyId = undefined;
+
+                var welcomeName = undefined;
+
                 if(data.message)
                 {
                     chatId = data.message.chat.id;
                     userId = data.message.from.id;
                     text = data.message.text;
+
+                    if(data.message.new_chat_member)
+                    {
+                        if(data.message.new_chat_member.is_bot)
+                        {
+                            text = 'welcome_bot';
+                            welcomeName = data.message.new_chat_member.first_name;
+                        }
+                        else
+                        {
+                            text = 'welcome_user';
+                            welcomeName = data.message.new_chat_member.first_name + ' ' + data.message.new_chat_member.last_name;
+                        }
+                    }
                 }
                 else
                 {
@@ -62,6 +79,11 @@ const Bot = mongoose.model('Bot');
                     userId = data.callback_query.from.id;
                     text = callbackData.text;
                     // replyId = callbackData.replyId;
+                }
+
+                if(!text)
+                {
+                    return res.end();
                 }
 
                 try
@@ -74,6 +96,11 @@ const Bot = mongoose.model('Bot');
                         options.simple = false;
                         options.resolveWithFullResponse = true;
                         options.forever = true;
+
+                        if(welcomeName)
+                        {
+                            result.output.text = result.output.text.replace('{{ name }}', welcomeName);
+                        }
 
                         if(result.output.image)
                         {
