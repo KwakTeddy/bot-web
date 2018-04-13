@@ -122,14 +122,14 @@ exports.facebookPage = function (req, res) {
         {
             options.qs = { url: 'https://www.playchat.ai/telegram/' + bot.telegram }
         }
-        else if(process.env.HOST && process.env.HOST.startsWith('https://remaster'))
+        else if(process.env.HOST)
         {
-            options.qs = { url: 'https://remaster.moneybrain.ai/telegram/' + bot.telegram }
+            options.qs = { url: process.env.HOST + '/telegram/' + bot.telegram }
         }
         else
         {
             //ngrok 로컬
-            options.qs = { url: 'https://5fa38eab.ngrok.io/telegram/' + bot.telegram }
+            options.qs = { url: 'https://ec687325.ngrok.io/telegram/' + bot.telegram }
         }
 
         options.method = 'POST';
@@ -258,14 +258,14 @@ module.exports.saveTelegramToken = function(req, res)
                 {
                     options.qs = { url: 'https://www.playchat.ai/telegram/' + bot.telegram }
                 }
-                else if(process.env.HOST && process.env.HOST.startsWith('https://remaster'))
+                else if(process.env.HOST)
                 {
-                    options.qs = { url: 'https://remaster.moneybrain.ai/telegram/' + bot.telegram }
+                    options.qs = { url: process.env.HOST + '/telegram/' + bot.telegram }
                 }
                 else
                 {
                     //ngrok 로컬
-                    options.qs = { url: 'https://5fa38eab.ngrok.io/telegram/' + bot.telegram }
+                    options.qs = { url: 'https://ec687325.ngrok.io/telegram/' + bot.telegram }
                 }
 
                 options.method = 'POST';
