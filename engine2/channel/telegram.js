@@ -90,7 +90,7 @@ const Bot = mongoose.model('Bot');
                 {
                     Engine.process(bot.id, 'telegram', userId, text || '', {}, function(context, result)
                     {
-                        if(result.dialogId == 'noanswer')
+                        if(result.originalDialogId == 'noanswer')
                         {
                             return res.end();
                         }
