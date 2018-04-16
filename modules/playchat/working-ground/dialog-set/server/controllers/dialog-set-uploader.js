@@ -106,6 +106,8 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
             if(!a)
             {
+                lastData = { q: [], a: [] };
+                dialogsetList.push(lastData);
                 continue;
             }
 
