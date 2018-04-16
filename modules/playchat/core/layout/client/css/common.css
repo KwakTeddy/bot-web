@@ -420,7 +420,7 @@ label{
     background: white;
 	border: 1px solid #d7d7d7;
 	border-radius: 4px;
-	margin-right: 8px;
+	margin-right: 3px;
 }
 .styled-checkbox:checked + label:before{
 	background: #038eda;
@@ -1546,7 +1546,7 @@ input.line1{
 	vertical-align: middle;
 }
 /*placeholder*/
-input::-webkit-input-placeholder { color:#cacaca; font-size: 12px;}
-input::-moz-input-placeholder { color:#cacaca; font-size: 12px;}
+input::-webkit-input-placeholder { color:#cacaca; font-size: 15px;}
+input::-moz-input-placeholder { color:#cacaca; font-size: 15px;}
 
 textarea:disabled{background: #f2f2f2;border: 1px solid #f2f2f2;}
