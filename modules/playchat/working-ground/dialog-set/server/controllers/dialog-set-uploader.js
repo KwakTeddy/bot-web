@@ -163,6 +163,11 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
         async.eachSeries(dialogsetList, function(item, next)
         {
+            if(item.q.length == 0 || item.a.length == 0)
+            {
+                return next();
+            }
+
             var dialogsetDialog = new DialogsetDialog();
             dialogsetDialog.dialogset = dialogsetId;
             dialogsetDialog.inputRaw = item.q;
