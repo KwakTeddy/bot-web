@@ -31,6 +31,12 @@ var DialogGraphManager = require('./answer/dm.js');
                 {
                     redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
+                    if(!output)
+                    {
+                        var dialog = bot.dialogMap['noanswer'];
+                        output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                    }
+
                     output = OutputManager.make(context, {}, {}, output);
                     callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
@@ -67,6 +73,12 @@ var DialogGraphManager = require('./answer/dm.js');
                         {
                             //테스트 필요
                             redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                            if(!output)
+                            {
+                                var dialog = bot.dialogMap['noanswer'];
+                                output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                            }
 
                             output = OutputManager.make(context, {}, {}, output);
                             callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
@@ -109,6 +121,12 @@ var DialogGraphManager = require('./answer/dm.js');
                             //테스트 필요
                             redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
+                            if(!output)
+                            {
+                                var dialog = bot.dialogMap['noanswer'];
+                                output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                            }
+
                             output = OutputManager.make(context, {}, {}, output);
                             callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
@@ -136,6 +154,12 @@ var DialogGraphManager = require('./answer/dm.js');
                 var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
                 DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
+                    if(!output)
+                    {
+                        var dialog = bot.dialogMap['noanswer'];
+                        output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                    }
+
                     output = OutputManager.make(context, {}, {}, output);
                     callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
