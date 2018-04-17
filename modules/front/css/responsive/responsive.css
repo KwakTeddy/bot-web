@@ -1287,11 +1287,8 @@ px      68    160    252    344    436    528    620    712    */
 		display: block;
 		margin-left: 0
 	}
+
 }
-
-
-
-
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 	.container{

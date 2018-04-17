@@ -121,9 +121,9 @@
                 "jp": "暗証番号確認",
                 "zh": "密码确认"
             },
-            "Agree to Terms of Use and Privacy Policy": {
+            "Agree to Terms of Use and Privacy Policy.": {
                 "ko": "이용약관 및 개인정보 보호 정책에 동의합니다.",
-                "en": "Agree to Terms of Use and Privacy Policy",
+                "en": "Agree to Terms of Use and Privacy Policy.",
                 "jp": "利用約款および個人情報保護政策に同意します。",
                 "zh": "同意使用条款和隐私政策"
             },

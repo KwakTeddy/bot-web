@@ -129,12 +129,13 @@ header
     height: 64px;
     width: 100%;
     background: #363636;
+    min-width: 390px;
 }
 
 header .header
 {
     display: inline-block;
-    width: 204px;
+    width: 104px;
     height: 44px;
     background: #363636;
     padding: 10px 23px;
@@ -152,11 +153,12 @@ header .header .logo_min
 
 header .system
 {
-    position: absolute;
+    position: relative;
     top: 17px;
     right: 30px;
     font-weight: 600;
     white-space: nowrap;
+    float: right;
 }
 
 header .system .docs
@@ -164,14 +166,19 @@ header .system .docs
     height: 100%;
     display: inline-block;
     vertical-align: top;
-    margin-top: 10px;
-    margin-right: 25px;
+    margin-top: 6px;
 }
 
 header .system .docs li
 {
     display: inline-block;
+    margin-right: 6px;
+}
+header .system .docs li:last-child{
     margin-right: 10px;
+}
+header .system .docs a{
+    margin-right: 20px;
 }
 
 header .system .docs span
@@ -181,9 +188,24 @@ header .system .docs span
     font-size: 13px;
 }
 
+
+@media only screen and (min-width:0px) and (max-width: 520px){
+    header .system .docs a{
+        margin: 0;
+    }
+    .docs img{
+        margin: 0;
+    }
+    .docs span {
+        display: none;
+    }
+}
+
+
 header .system .docs img
 {
     vertical-align: middle;
+    margin-right: 5px;
 }
 
 header .system .notify_silver
@@ -204,5 +226,6 @@ header .system .login_silver
     width: 34px;
     height: 34px;
     margin-right: 10px;
+    margin-left: 5%;
     vertical-align: middle;
 }

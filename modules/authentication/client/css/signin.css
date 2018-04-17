@@ -85,9 +85,9 @@
 .input_type09{
     width: 240px;
     border: 1px solid #d7d7d7;
-    border-radius: 6px;
+    border-radius: 3px;
     background: #fff;
-    margin: 3px auto 0px;
+    margin: 5px auto 0px;
     position: relative;
     padding: 8px 18px 0px 8px;
 }
@@ -105,10 +105,10 @@
 }
 .loginbtn{
     background: #038eda;
-    padding:12px 0px;
-    border-radius: 6px;
+    padding:14px 0px;
+    border-radius: 3px;
     width: 268px;
-    margin: 7px auto;
+    margin: 10px auto;
     color: #fff;
 }
 .register{
@@ -130,7 +130,7 @@
 p.find{
     color: #038eda;
     text-align: right;
-    margin-top: 12px;
+    margin-top: 22px;
 }
 .agree{
     text-align: left;
@@ -174,23 +174,16 @@ a.policy{
 }
 
 
-.username
+.sign-input
 {
-    font-size: 13px;
-    height: 25px;
-}
-
-.password
-{
-    font-size: 12px;
+    font-size: 16px;
     height: 25px;
 }
 
 .signup-complete-message
 {
-    padding-top: 120px;
-    width: 60%;
-    margin: 0 auto;
+    text-align: center;
+    margin-top: 60px;
 }
 
 .signup-complete-message p
@@ -201,6 +194,46 @@ a.policy{
 .signup-complete-message div
 {
     margin-top: 20px;
+}
+.authentication-code-area{
+    background: #eaf5fc;
+    padding: 10px;
+    width: 80%;
+    border-radius: 3px;
+    margin: 4% auto;
+    text-align: center;
+}
+.authentication-code-area span{
+    padding: 0 2%;
+    font-weight: 800;
+    font-size: 15px;
+    vertical-align: middle;
+}
+.authentication-code-area input{
+    margin: 5px auto;
+}
+.authentication-code-area button{
+    padding: 13px 6%;
+    margin: 2%;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    outline: 0;
+    text-align: center;
+    background: #038eda;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+}
+.noti-email{
+    margin-top: 10px;
+}
+.noti-email a.link{
+    color: #038eda;
+    font-weight: 800;
+    font-size: 14px;
+    text-decoration: underline;
 }
 .noticebox{
     font-family: 'Noto Sans SC', sans-serif;
@@ -223,7 +256,17 @@ a.policy{
     width: 270px;
     margin: 0 auto;
 }
+.user-singup{
+    display: inline-block;
+}
+@media only screen and (max-width: 938px){
+
+}
 @media only screen and (max-width: 925px) {
+    .signup-complete-message{
+        margin-right: 4%;
+        margin-left: 4%;
+    }
     .leftbox{
         margin: 0 auto;
         display: block;
@@ -232,5 +275,38 @@ a.policy{
         width: 97%;
         margin: 0 auto;
         min-width: 230px;
+    }
+    .authentication-code-area{
+        margin: 30px auto;
+        padding: 16px 10px;
+    }
+}
+@media only screen and (min-width:0px) and (max-width: 520px){
+    .signin-body{
+        margin-top: 39px;
+    }
+    #bottoms{
+        width: 100%;
+    }
+    #logincontents
+    {
+        padding-top: 30px;
+    }
+    .user-singup{
+        display: none;
+    }
+    .signin-background{
+        width: 100%;
+    }
+    .p1 {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .signup-complete-message{
+        margin-left: 8%;
+        margin-right: 8%;
+    }
+    .authentication-code-area input{
+        width: 78%;
     }
 }
