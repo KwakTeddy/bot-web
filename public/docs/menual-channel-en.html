@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>10분만에 챗봇 만들기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+       <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+      <div id="nav"></div>
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+         <!--본문 내용-->
+        <div id="readme" class="readme blob instapaper_body">
+            <article class="markdown-body entry-content" itemprop="text">
+                <h2>
+                    <a id="user-content-channel" class="anchor" aria-hidden="true" href="#channel">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Channel
+                </h2>
+                <p>PlayChat currently supports channels such as Kakao, Facebook, Naver TalkTalk, Line, WeChat and etc. Users may connect the chatbots they have developed to these channels for personal services.</p>
+                <h2>
+                    <a id="user-content-kakao" class="anchor" aria-hidden="true" href="#kakao">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Kakao
+                </h2>
+                <p>To distribute chatbots to Kakao, follow these procedures.</p>
+                <ol>
+                    <li>
+                        <p>Sign-up “for Kakao Plus Friends” (<a href="https://center-pf.kakao.com/login" rel="nofollow">https://center-pf.kakao.com/login</a>)</p>
+                    </li>
+                    <li>
+                        <p>Create a new plus friend.</p>
+                    </li>
+                    <li>
+                        <p>Access through the plus friends management center.</p>
+                    </li>
+                    <li>
+                        <p>Move to the smart chatting menu and click on “setting type of API”.</p>
+                    </li>
+                    <li>
+                        <p>Enter the app name, URL, description, and phone number. Set the URL as the given Webhook URL.</p>
+                    </li>
+                </ol>
+                <h2>
+                    <a id="user-content-facebook" class="anchor" aria-hidden="true" href="#facebook">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Facebook
+                </h2>
+                <p>PlayChat provides an automatic facebook connection. Click on “Connect” under the facebook logo and connect it to your PlayChat page. (If you have no page, create a new one)</p>
+                <h2>
+                    <a id="user-content-naver-talktalk" class="anchor" aria-hidden="true" href="#naver-talktalk">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Naver TalkTalk
+                </h2>
+                <ol>
+                    <li>
+                        <p>Access Naver TalkTalk partner center. (partner.talk.naver.com)</p>
+                    </li>
+                    <li>
+                        <p>Log-in with a company group id or a representative personal id.</p>
+                    </li>
+                    <li>
+                        <p>Click on “My account management” -&gt; “Create new TalkTalk account”</p>
+                    </li>
+                    <li>
+                        <p>Choose “later/not now” at the service selection page.</p>
+                    </li>
+                    <li>
+                        <p>When creating a test account, select individual, when creating a service account select licensee or institution and then enter the profile picture, description and phone number to apply for usage.</p>
+                    </li>
+                    <li>
+                        <p>The created account will be under examination, and when that is over it will be switched over to “being used” and will notify you via SMS.</p>
+                    </li>
+                    <li>
+                        <p>In the registered account list of the account management page, click on “Home account by managing account”.</p>
+                    </li>
+                    <li>
+                        <p>Through the API set-up page of the left screen menu, set up the terms and conditions agreement, and the chatbot itself. (a usage application is needed in beta period)</p>
+                    </li>
+                    <li>
+                        <p>Once the API usage is approved by Naver, enter the URL provided by PlayChat and connect.</p>
+                    </li>
+                </ol>
+                <h2>
+                    <a id="user-content-line" class="anchor" aria-hidden="true" href="#line">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    LINE
+                </h2>
+                <p>To distribute chatbots to Line, follow these procedures.</p>
+                <ol>
+                    <li>
+                        <p>Download and open the Line mobile app.</p>
+                    </li>
+                    <li>
+                        <p>Settings menu -&gt; Account -&gt; E-mail</p>
+                    </li>
+                    <li>
+                        <p>Enter your email address and password to register.</p>
+                    </li>
+                    <li>
+                        <p>Access <a href="https://developers.line.me/" rel="nofollow">https://developers.line.me/</a> to click on the “Start using Messaging API” button.</p>
+                    </li>
+                    <li>
+                        <p>Log-in using the email you used in #3.</p>
+                    </li>
+                    <li>
+                        <p>In the screen that appears after the verification process, enter the provider’s name and email address.</p>
+                    </li>
+                    <li>
+                        <p>Create a channel following the procedures on the screen.</p>
+                    </li>
+                    <li>
+                        <p>In the created channel, click on the “Configuration not yet complete” button.</p>
+                    </li>
+                    <li>
+                        <p>In the messaging settings menu, set “Use webhooks” as “enable”.</p>
+                    </li>
+                    <li>
+                        <p>Enter the Webhook URL.</p>
+                    </li>
+                    <li>
+                        <p>Create a channel access token, and then enter it under  “ChannelId, Channel Secret, Access Token” and click save.</p>
+                    </li>
+                </ol>
+            </article>
+        </div>    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation.html #menual-en");
+
+        $("#topbar").load("topbar.html #en", function () {
+            $('#menual').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>
