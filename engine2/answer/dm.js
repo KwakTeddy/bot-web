@@ -689,18 +689,25 @@ var ContextManager = require('../context.js');
             console.log(chalk.yellow('[[[ Selected Output ]]]'));
             console.log(resultOutput);
 
-            if(resultOutput.kind == 'Action')
+            if(resultOutput)
             {
-                ActionManager.exec(bot, context, dialogInstance, resultOutput, callback);
+                if(resultOutput.kind == 'Action')
+                {
+                    ActionManager.exec(bot, context, dialogInstance, resultOutput, callback);
+                }
+                else
+                {
+                    if(dialogInstance.options.outputText)
+                    {
+                        resultOutput.text = dialogInstance.options.outputText;
+                    }
+
+                    callback(resultOutput, dialogInstance);
+                }
             }
             else
             {
-                if(dialogInstance.options.outputText)
-                {
-                    resultOutput.text = dialogInstance.options.outputText;
-                }
-
-                callback(resultOutput, dialogInstance);
+                callback();
             }
         });
     };
