@@ -68,7 +68,21 @@ const Bot = mongoose.model('Bot');
                         else
                         {
                             text = 'welcome_user';
-                            welcomeName = data.message.new_chat_member.first_name + ' ' + data.message.new_chat_member.last_name;
+                            // welcomeName = data.message.new_chat_member.first_name + ' ' + data.message.new_chat_member.last_name;
+                            if(data.message.new_chat_member.first_name)
+                            {
+                                welcomeName = data.message.new_chat_member.first_name;
+                            }
+
+                            if(welcomeName)
+                            {
+                                welcomeName += ' ';
+                            }
+
+                            if(data.message.new_chat_member.last_name)
+                            {
+                                welcomeName += data.message.new_chat_member.last_name;
+                            }
                         }
                     }
                 }
@@ -104,7 +118,7 @@ const Bot = mongoose.model('Bot');
 
                         if(welcomeName)
                         {
-                            result.output.text = result.output.text.replace('{{ name }}', welcomeName);
+                            result.output.text = result.output.text.replace(/{{ name }}/gi, welcomeName);
                         }
 
                         if(result.output.image)
