@@ -5,10 +5,6 @@
         this.host = host;
         this.botId = botId;
         this.botName = botName;
-
-
-
-        this.socket = new window.PlayChatSocket(host);
     };
 
     (function()
@@ -70,6 +66,7 @@
 
         this.init = function()
         {
+            var that = this;
             window.addEventListener('DOMContentLoaded', function()
             {
                 this.initElements();
@@ -81,6 +78,11 @@
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
+                script.onload = function()
+                {
+                    new window.PlayChatSocket(that.host);
+                };
+
                 script.src = this.host + '/js/playchat-web/playchat-web-core.js';
 
                 body.appendChild(style);
