@@ -1,0 +1,379 @@
+body
+{
+    margin: 0;
+    overflow: hidden;
+}
+
+@keyframes pulse {
+    0% {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+
+    50% {
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.PlayChatWebContainer
+{
+    background-color: white;
+    /*display: flex !important;*/
+    /*display: -webkit-box;*/
+    /*display: -webkit-flex;*/
+    /*display: -ms-flexbox;*/
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    font-family: 'Helvetica Neue', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    height: 97%;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    width: 99%;
+
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.15);
+    -moz-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.15);
+    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.15);
+
+    position: relative;
+    z-index: 111;
+
+    display: none;
+}
+/*
+.PlayChatWebHeader
+{
+    margin: 0;
+    align-items: center;
+    border-bottom: 1pt solid rgba(0, 0, 0, .1);
+    display: flex;
+    flex-basis: 10%;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10%;
+    width: 100%;
+    max-height: 48pt;
+    min-height: 36pt;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+}*/
+.PlayChatWebHeader
+{
+    position: relative;
+    display: block;
+    height: 9%;
+    overflow: hidden;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #288feb;
+    color: #fff;
+    font-weight: 500;
+    font-size: 18px;
+    -webkit-transition: height 0.4s cubic-bezier(0.5,0,0.08,1);
+    transition: height 0.4s cubic-bezier(0.5,0,0.08,1);
+    text-align: center;
+    line-height: 60px;
+}
+
+.PlayChatWebHeader .close
+{
+    width: 56px;
+    height: 60px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    cursor: pointer;
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: visible;
+}
+.PlayChatWebHeader .close::before
+{
+    transform: rotate(45deg);
+}
+
+.PlayChatWebHeader .close::after
+{
+    transform: rotate(-45deg);
+}
+
+.PlayChatWebHeader .close::before, .PlayChatWebHeader .close::after
+{
+    content: '';
+    display: block;
+    content: ' ';
+    height: 16px;
+    width: 2px;
+    background-color: #b0d4f5;
+    border-radius: 10px;
+    position: absolute;
+    left: 26px;
+}
+
+.PlayChatBodyContainer {
+    position: absolute;
+    top: 60px;
+    bottom: 51px;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    padding-top: 16px;
+}
+
+.PlayChatMsgContainer
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    border-top: 1px solid #ddd;
+}
+
+.PlayChatMsgContainer > input
+{
+    padding: 10px 15px;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    border: 0;
+    outline: 0;
+}
+
+.PlayChatMsgContainer > input::placeholder
+{
+    color: #ddd;
+}
+
+
+
+.PlayChatBodyContainer .answer
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 5px;
+    font-size: 16px;
+
+}
+.PlayChatBodyContainer .answer > img
+{
+    position: absolute;
+    top: 16px;
+    left: 6px;
+}
+
+.PlayChatBodyContainer .answer .system-text
+{
+    font-size: 12px;
+    margin-left: 46px;
+}
+
+.PlayChatBodyContainer .answer span.name
+{
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.PlayChatBodyContainer .answer span.time
+{
+    font-size: 12px;
+}
+
+.PlayChatBodyContainer .answer .bubble
+{
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.PlayChatBodyContainer .answer .output-image img
+{
+    max-width: 100%;
+
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.PlayChatBodyContainer .answer .output-buttons a
+{
+    display: block;
+    color: #363636;
+    text-decoration: none;
+
+    margin: 5px 0;
+
+    outline: 0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.PlayChatBodyContainer .answer .output-buttons
+{
+    margin-top: 15px;
+}
+
+.PlayChatBodyContainer .answer em.tail
+{
+    border-top: 10px solid #ececec;
+    position: absolute;
+    left: 45px;
+    top: 4px;
+    border-left: 10px solid transparent;
+}
+
+.PlayChatBodyContainer .answer .speech
+{
+    background: #ececec;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 17px;
+    white-space: normal;
+    position: relative;
+    margin: 4px 52px;
+}
+.PlayChatBodyContainer .answer .speech .speech-text
+{
+    line-height: 18px;
+}
+.PlayChatBodyContainer .question
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 1px 5px;
+    font-size: 16px;
+
+}
+.PlayChatBodyContainer .question img
+{
+    position: absolute;
+    top: 16px;
+    right: 12px;
+}
+.PlayChatBodyContainer .question .system-text
+{
+    font-size: 12px;
+    margin-right: 10px;
+    text-align: right;
+}
+.PlayChatBodyContainer .question span.name
+{
+    font-weight: 700;
+    margin-right: 10px;
+}
+.PlayChatBodyContainer .question span.time
+{
+    font-size: 12px;
+}
+.PlayChatBodyContainer .question .bubble
+{
+    position: relative;
+    margin-bottom: 8px;
+}
+.PlayChatBodyContainer .question em.tail
+{
+    border-top: 10px solid #dfdfdf;
+    position: absolute;
+    right: 7px;
+    top: 4px;
+    border-right: 10px solid transparent;
+}
+.PlayChatBodyContainer .question em.tail+div
+{
+    text-align: right;
+}
+.PlayChatBodyContainer .question .speech
+{
+    background: #dfdfdf;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 7px 10px 0px 10px;
+    font-size: 13px;
+    line-height: 17px;
+    white-space: normal;
+    position: relative;
+    margin-top: 4px;
+    margin-right: 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: left;
+}
+.PlayChatBodyContainer .question .speech .speech-text
+{
+    padding: 0px 0px 6px 0px;
+}
+
+.PlayChatIcon
+{
+    position: fixed;
+    z-index: 110;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 30px;
+    right: 40px;
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    background: #288feb;
+    cursor: pointer;
+    box-shadow: 0 0 0 0 rgba(90,153,212,0.5);
+    animation: pulse 1.5s infinite;
+    transition: 0.3s;
+}
+
+.PlayChatIcon > a
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(./chat-btn.png) 50% 50% no-repeat;
+}
