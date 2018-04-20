@@ -191,6 +191,14 @@ var s3 = new AWS.S3();
                             context.bot = bot;
                             context.channel.name = channel;
 
+                            if(options && options.user)
+                            {
+                                for(var key in options.user)
+                                {
+                                    context.user[key] = options.user[key];
+                                }
+                            }
+
                             if(!bot)
                             {
                                 return outCallback(context, { type: 'dialog', output: { kind: 'Content', text: SystemMessages['There is an unsupported version of the bot. if you are using previous version, then please move below.'].ko, buttons: [{ text: 'https://old.playchat.ai', url: 'https://old.playchat.ai' }] } });

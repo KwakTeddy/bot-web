@@ -50,39 +50,29 @@ const Bot = mongoose.model('Bot');
                 var text = undefined;
                 var replyId = undefined;
 
-                var welcomeName = undefined;
-
                 if(data.message)
                 {
                     chatId = data.message.chat.id;
                     userId = data.message.from.id;
                     text = data.message.text;
 
+                    var first_name = data.message.from.first_name;
+                    var last_name = data.message.from.last_name;
+
                     if(data.message.new_chat_member)
                     {
                         if(data.message.new_chat_member.is_bot)
                         {
                             text = 'welcome_bot';
-                            welcomeName = data.message.new_chat_member.first_name;
+                            first_name = data.message.new_chat_member.first_name;
                         }
                         else
                         {
                             text = 'welcome_user';
                             // welcomeName = data.message.new_chat_member.first_name + ' ' + data.message.new_chat_member.last_name;
-                            if(data.message.new_chat_member.first_name)
-                            {
-                                welcomeName = data.message.new_chat_member.first_name;
-                            }
 
-                            if(welcomeName)
-                            {
-                                welcomeName += ' ';
-                            }
-
-                            if(data.message.new_chat_member.last_name)
-                            {
-                                welcomeName += data.message.new_chat_member.last_name;
-                            }
+                            first_name = data.message.new_chat_member.first_name;
+                            last_name = data.message.new_chat_member.last_name;
                         }
                     }
                 }
@@ -103,7 +93,7 @@ const Bot = mongoose.model('Bot');
                 try
                 {
                     text = text.toLowerCase();
-                    Engine.process(bot.id, 'telegram', userId, text || '', {}, function(context, result)
+                    Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name } }, function(context, result)
                     {
                         if(result.originalDialogId == 'noanswer')
                         {
@@ -116,11 +106,6 @@ const Bot = mongoose.model('Bot');
                         options.simple = false;
                         options.resolveWithFullResponse = true;
                         options.forever = true;
-
-                        if(welcomeName)
-                        {
-                            result.output.text = result.output.text.replace(/{{ name }}/gi, welcomeName);
-                        }
 
                         if(result.output.image)
                         {
