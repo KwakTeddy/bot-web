@@ -10,7 +10,15 @@
 
     };
 
+    Message.prototype.sms = function(req, res)
+    {
 
+    };
+
+    Message.prototype.mms = function(req, res)
+    {
+
+    };
 
     module.exports = new Message();
 })();
