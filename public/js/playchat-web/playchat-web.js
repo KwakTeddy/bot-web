@@ -6,6 +6,8 @@
         this.botId = botId;
         this.botName = botName;
 
+
+
         this.socket = new window.PlayChatSocket(host);
     };
 
