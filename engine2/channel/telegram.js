@@ -58,6 +58,7 @@ const Bot = mongoose.model('Bot');
 
                     var first_name = data.message.from.first_name;
                     var last_name = data.message.from.last_name;
+                    var username = data.message.from.username;
 
                     if(data.message.new_chat_member)
                     {
@@ -93,11 +94,16 @@ const Bot = mongoose.model('Bot');
                 try
                 {
                     text = text.toLowerCase();
-                    Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name } }, function(context, result)
+                    Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name, username: username } }, function(context, result)
                     {
                         if(result.originalDialogId == 'noanswer')
                         {
                             return res.end();
+                        }
+
+                        if(text.indexOf('welcome') == -1)
+                        {
+                            result.output.text = '@' + username + ' ' + result.output.text;
                         }
 
                         var options = {};
