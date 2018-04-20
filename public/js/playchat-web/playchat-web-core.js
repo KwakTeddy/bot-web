@@ -2,7 +2,7 @@
 {
     var Socket = function()
     {
-        this.host = PlayChatWeb.host;
+        this.host = document.host;
         this.userId = new Date().getTime();
         this.botId = document.body.getAttribute('data-id');
         this.botName = document.body.getAttribute('data-name');

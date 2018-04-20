@@ -72,6 +72,8 @@
                 this.initElements();
                 var body = this.iframe.contentDocument.body;
 
+                this.iframe.contentDocument.host = that.host;
+
                 var style = document.createElement('link');
                 style.setAttribute('rel', 'stylesheet');
                 style.setAttribute('href', this.host + '/js/playchat-web/playchat-web.css');
