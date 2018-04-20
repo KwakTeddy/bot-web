@@ -546,6 +546,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                         DialogGraph.setDirty(false);
 
+                        $rootScope.$broadcast('simulator-build');
+
                         if($scope.fromFailedDialog && $scope.failedDialogSaved)
                         {
                             FailedDialogService.update({ botId: chatbot._id, _id: $location.search().userDialogId }, function()
