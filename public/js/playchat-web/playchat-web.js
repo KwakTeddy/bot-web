@@ -78,13 +78,6 @@
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
-                script.onload = function()
-                {
-                    setTimeout(function()
-                    {
-                        new window.PlayChatSocket(that.host);
-                    }, 1000);
-                };
 
                 script.src = this.host + '/js/playchat-web/playchat-web-core.js';
 
