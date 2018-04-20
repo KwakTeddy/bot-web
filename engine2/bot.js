@@ -82,6 +82,10 @@ var BotObject = require('./bot/bot.js');
                     {
                         f(file.endsWith('bot.js') ? bot.options : bot);
                     }
+                    else
+                    {
+                        console.log('여기야여기');
+                    }
 
                     next();
                 }
