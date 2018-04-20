@@ -1,6 +1,5 @@
 var chalk = require('chalk');
 var async = require('async');
-const execFile = require('child_process').execFile;
 
 var Logger = require('../logger.js');
 
@@ -13,108 +12,8 @@ var Transaction = require('../utils/transaction.js');
 
     };
 
-    TaskManager.prototype.delegateTask = function(type, bot, task, dialogInstance, context, done, callback)
-    {
-        var origin = console.log;
-        console.log = function()
-        {
-            for(var key in arguments)
-            {
-                if(typeof arguments[key] == 'object')
-                {
-                    arguments[key] = JSON.stringify(arguments[key]);
-                }
-            }
-
-            origin.apply(null, arguments);
-            Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
-        };
-
-        console.log(dialogInstance);
-        console.log(this.makeTempContext(context));
-        const child = execFile('node', ['task-executor.js', type, bot.id, task.name, JSON.stringify(dialogInstance), JSON.stringify(this.makeTempContext(context))], function(error, stdout, stderr)
-        {
-            if (error) {
-                console.log('@@@@@@@@@@@@@@@@@@@@@');
-                console.error('stderr', stderr);
-                throw error;
-            }
-
-            var start = stdout.indexOf('[result][start]');
-            var end = stdout.indexOf('[result][end]');
-
-            if(start == -1 || end == -1)
-            {
-                console.log = origin;
-                return done();
-            }
-
-            console.log(stdout.substring(0, start));
-
-            stdout = stdout.substring(start + '[result][start]'.length, end);
-            var split = stdout.split('\n');
-
-            var isRetry = split[0] === 'undefined' ? undefined : new Boolean(split[1]);
-            var retryMessage = split[1] === 'undefined' ? undefined : JSON.parse(split[2]);
-            var taskDialogInstance = JSON.parse(split[3]);
-            var taskContext = JSON.parse(split[4]);
-
-            for(var key in taskDialogInstance)
-            {
-                dialogInstance[key] = taskDialogInstance[key];
-            }
-
-            for(var key in taskContext.session)
-            {
-                context.session[key] = taskContext.session[key];
-            }
-
-            console.log = origin;
-
-            if(isRetry && retryMessage)
-            {
-                return callback(isRetry, retryMessage);
-            }
-
-            done();
-        });
-    };
-
-    TaskManager.prototype.makeTempContext = function(context)
-    {
-        var tempContext = {
-            user: context.user,
-            channel: context.channel,
-            session: JSON.parse(JSON.stringify(context.session))
-        };
-
-        tempContext.bot = {};
-        for(var key in context.bot)
-        {
-            if(typeof context.bot[key] == 'string')
-            {
-                tempContext.bot[key] = context.bot[key];
-            }
-            else if(key == 'options')
-            {
-                tempContext.bot.options = context.bot.options;
-            }
-        }
-
-        delete tempContext.session.history;
-        delete tempContext.session.dialogCursor;
-        delete tempContext.session.currentCategory;
-        delete tempContext.session.page;
-        delete tempContext.session.totalPage;
-        delete tempContext.session.isPaging;
-        delete tempContext.session.previousDialogCursor;
-
-        return tempContext;
-    };
-
     TaskManager.prototype.executeTask = function(bot, context, dialogInstance, task, callback)
     {
-        var that = this;
         if(task.extends)
         {
             task = this.getExtendsTask(bot, task);
@@ -134,7 +33,24 @@ var Transaction = require('../utils/transaction.js');
                 try
                 {
                     console.log(chalk.yellow('[[[ Task - preCallback ]]]'));
-                    that.delegateTask('preCallback', bot, task, dialogInstance, context, done, callback);
+
+                    var origin = console.log;
+                    console.log = function()
+                    {
+                        origin.apply(null, arguments);
+                        Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
+                    };
+
+                    task.preCallback.call(task, dialogInstance, context, function(retryMessage)
+                    {
+                        console.log = origin;
+                        if(retryMessage)
+                        {
+                            return callback(true, retryMessage);
+                        }
+
+                        done();
+                    });
                 }
                 catch(err)
                 {
@@ -151,7 +67,24 @@ var Transaction = require('../utils/transaction.js');
                 try
                 {
                     console.log(chalk.yellow('[[[ Task - action ]]]'));
-                    that.delegateTask('action', bot, task, dialogInstance, context, done, callback);
+
+                    var origin = console.log;
+                    console.log = function()
+                    {
+                        origin.apply(null, arguments);
+                        Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
+                    };
+
+                    task.action.call(task, dialogInstance, context, function(retryMessage)
+                    {
+                        console.log = origin;
+                        if(retryMessage)
+                        {
+                            return callback(true, retryMessage);
+                        }
+
+                        done();
+                    });
                 }
                 catch(err)
                 {
@@ -168,7 +101,25 @@ var Transaction = require('../utils/transaction.js');
                 try
                 {
                     console.log(chalk.yellow('[[[ Task - postCallback ]]]'));
-                    that.delegateTask('postCallback', bot, task, dialogInstance, context, done, callback);
+
+                    var origin = console.log;
+                    console.log = function()
+                    {
+                        origin.apply(null, arguments);
+                        Logger.analysisLog('task', { logs: arguments }, context.user.userKey);
+                    };
+
+                    task.postCallback.call(task, dialogInstance, context, function(retryMessage)
+                    {
+                        console.log = origin;
+
+                        if(retryMessage)
+                        {
+                            return callback(true, retryMessage);
+                        }
+
+                        done();
+                    });
                 }
                 catch(err)
                 {
@@ -255,41 +206,41 @@ var Transaction = require('../utils/transaction.js');
             if(Array.isArray(task.action))
             {
                 async.eachSeries(task.action, function(t, next)
-                {
-                    if(typeof t == 'function')
                     {
-                        try
+                        if(typeof t == 'function')
                         {
-                            t.call(t, dialogInstance, context, next);
+                            try
+                            {
+                                t.call(t, dialogInstance, context, next);
+                            }
+                            catch(err)
+                            {
+                                console.error(err);
+                                Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
+                            }
                         }
-                        catch(err)
+                        else if(typeof t == 'string')
                         {
-                            console.error(err);
-                            Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
+                            var target = bot.tasks[t];
+                            if(target)
+                            {
+                                that.executeTask(bot, context, dialogInstance, target, next);
+                            }
+                            else
+                            {
+                                console.log(t + ' is undefined');
+                                next();
+                            }
                         }
-                    }
-                    else if(typeof t == 'string')
+                        else if(typeof t == 'object')
+                        {
+                            that.executeTask(bot, context, dialogInstance, t, next);
+                        }
+                    },
+                    function()
                     {
-                        var target = bot.tasks[t];
-                        if(target)
-                        {
-                            that.executeTask(bot, context, dialogInstance, target, next);
-                        }
-                        else
-                        {
-                            console.log(t + ' is undefined');
-                            next();
-                        }
-                    }
-                    else if(typeof t == 'object')
-                    {
-                        that.executeTask(bot, context, dialogInstance, t, next);
-                    }
-                },
-                function()
-                {
-                    callback();
-                });
+                        callback();
+                    });
             }
             else
             {

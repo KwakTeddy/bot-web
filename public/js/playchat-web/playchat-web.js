@@ -1,8 +1,8 @@
 (function()
 {
-    var PlayChatWeb = function(botId, botName)
+    var PlayChatWeb = function(botId, botName, host)
     {
-        this.host = 'http://localhost:8443';
+        this.host = host;
         this.botId = botId;
         this.botName = botName;
     };
@@ -66,10 +66,13 @@
 
         this.init = function()
         {
+            var that = this;
             window.addEventListener('DOMContentLoaded', function()
             {
                 this.initElements();
                 var body = this.iframe.contentDocument.body;
+
+                this.iframe.contentDocument.host = that.host;
 
                 var style = document.createElement('link');
                 style.setAttribute('rel', 'stylesheet');
@@ -77,6 +80,7 @@
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
+
                 script.src = this.host + '/js/playchat-web/playchat-web-core.js';
 
                 body.appendChild(style);

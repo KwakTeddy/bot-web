@@ -220,7 +220,8 @@ var Logger = require('./logger.js');
         Logger.analysisLog('answer', { target: transaction.qa.matchedDialog, output: { text : text } }, context.user.userKey);
         Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
 
-        callback({ type: 'qa', output: { text: text }});
+        var output = OutputManager.make(context, userInput, {}, { text: text });
+        callback({ type: 'qa', output: output });
     };
 
     AnswerManager.prototype.dm = function(transaction, bot, context, userInput, error, callback)

@@ -2,7 +2,7 @@
 {
     var Socket = function()
     {
-        this.host = 'http://localhost:8443';
+        this.host = document.host;
         this.userId = new Date().getTime();
         this.botId = document.body.getAttribute('data-id');
         this.botName = document.body.getAttribute('data-name');
@@ -105,6 +105,9 @@
             buttons[i].addEventListener('click', function(e)
             {
                 var output = this.innerText;
+
+                that.addUserBubble(output);
+
                 that.send(output);
 
                 e.preventDefault();
@@ -147,13 +150,12 @@
     {
         var that = this;
 
-        var host = 'http://localhost:8443';
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = host + '/socket.io/socket.io.js';
+        script.src = this.host + '/socket.io/socket.io.js';
         script.onload = function()
         {
-            var socket = io(host);
+            var socket = io(that.host);
             socket.on('connect', function()
             {
                 that.socket = socket;

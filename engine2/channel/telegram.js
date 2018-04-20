@@ -49,8 +49,7 @@ const Bot = mongoose.model('Bot');
                 var userId = undefined;
                 var text = undefined;
                 var replyId = undefined;
-
-                var welcomeName = undefined;
+                var leaveUserId = undefined;
 
                 if(data.message)
                 {
@@ -58,18 +57,30 @@ const Bot = mongoose.model('Bot');
                     userId = data.message.from.id;
                     text = data.message.text;
 
+                    var first_name = data.message.from.first_name;
+                    var last_name = data.message.from.last_name;
+                    var username = data.message.from.username;
+
                     if(data.message.new_chat_member)
                     {
                         if(data.message.new_chat_member.is_bot)
                         {
                             text = 'welcome_bot';
-                            welcomeName = data.message.new_chat_member.first_name;
+                            first_name = data.message.new_chat_member.first_name;
                         }
                         else
                         {
                             text = 'welcome_user';
-                            welcomeName = data.message.new_chat_member.first_name + ' ' + data.message.new_chat_member.last_name;
+                            // welcomeName = data.message.new_chat_member.first_name + ' ' + data.message.new_chat_member.last_name;
+
+                            first_name = data.message.new_chat_member.first_name;
+                            last_name = data.message.new_chat_member.last_name;
                         }
+                    }
+                    else if(data.message.left_chat_member)
+                    {
+                        text = 'leave_user';
+                        leaveUserId = data.message.left_chat_member.id;
                     }
                 }
                 else
@@ -88,11 +99,22 @@ const Bot = mongoose.model('Bot');
 
                 try
                 {
-                    Engine.process(bot.id, 'telegram', userId, text || '', {}, function(context, result)
+                    text = text.toLowerCase();
+                    Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name, username: username }, session: { leaveUserId: leaveUserId } }, function(context, result)
                     {
                         if(result.originalDialogId == 'noanswer')
                         {
                             return res.end();
+                        }
+
+                        if(text == 'leave_user')
+                        {
+                            return res.end();
+                        }
+
+                        if(text.indexOf('welcome') == -1)
+                        {
+                            result.output.text = '@' + username + ' ' + result.output.text;
                         }
 
                         var options = {};
@@ -101,11 +123,6 @@ const Bot = mongoose.model('Bot');
                         options.simple = false;
                         options.resolveWithFullResponse = true;
                         options.forever = true;
-
-                        if(welcomeName)
-                        {
-                            result.output.text = result.output.text.replace('{{ name }}', welcomeName);
-                        }
 
                         if(result.output.image)
                         {
