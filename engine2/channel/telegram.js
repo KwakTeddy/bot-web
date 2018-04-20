@@ -76,6 +76,10 @@ const Bot = mongoose.model('Bot');
                             last_name = data.message.new_chat_member.last_name;
                         }
                     }
+                    else if(data.message.left_chat_member)
+                    {
+                        text = 'leave_user';
+                    }
                 }
                 else
                 {
