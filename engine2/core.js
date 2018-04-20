@@ -191,11 +191,21 @@ var s3 = new AWS.S3();
                             context.bot = bot;
                             context.channel.name = channel;
 
-                            if(options && options.user)
+                            if(options)
                             {
-                                for(var key in options.user)
+                                if(options.user)
                                 {
-                                    context.user[key] = options.user[key];
+                                    for(var key in options.user)
+                                    {
+                                        context.user[key] = options.user[key];
+                                    }
+                                }
+                                else if(options.session)
+                                {
+                                    for(var key in options.session)
+                                    {
+                                        context.session[key] = options.session[key];
+                                    }
                                 }
                             }
 

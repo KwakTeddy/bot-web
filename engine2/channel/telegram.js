@@ -49,6 +49,7 @@ const Bot = mongoose.model('Bot');
                 var userId = undefined;
                 var text = undefined;
                 var replyId = undefined;
+                var leaveUserId = undefined;
 
                 if(data.message)
                 {
@@ -79,6 +80,7 @@ const Bot = mongoose.model('Bot');
                     else if(data.message.left_chat_member)
                     {
                         text = 'leave_user';
+                        leaveUserId = data.message.left_chat_member.id;
                     }
                 }
                 else
@@ -98,9 +100,14 @@ const Bot = mongoose.model('Bot');
                 try
                 {
                     text = text.toLowerCase();
-                    Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name, username: username } }, function(context, result)
+                    Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name, username: username }, session: { leaveUserId: leaveUserId } }, function(context, result)
                     {
                         if(result.originalDialogId == 'noanswer')
+                        {
+                            return res.end();
+                        }
+
+                        if(text == 'leave_user')
                         {
                             return res.end();
                         }
