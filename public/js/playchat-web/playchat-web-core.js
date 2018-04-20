@@ -193,5 +193,5 @@
         document.body.appendChild(script);
     };
 
-    window.PlayChatSocket = Socket;
+    new Socket();
 })();
