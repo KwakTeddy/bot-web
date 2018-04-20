@@ -11,6 +11,7 @@ var line = require('./channel/line.js');
 var navertalk = require('./channel/navertalk.js');
 var telegram = require('./channel/telegram.js');
 var wechat = require('./channel/wechat.js');
+var message = require('./channel/message.js');
 
 var demo = require('../modules/demo/server/controllers/demo.server.controller.js');
 
@@ -31,7 +32,9 @@ var demo = require('../modules/demo/server/controllers/demo.server.controller.js
 
         app.route('/chat/:bot/message').post(rest.message);
 
-        app.post('/')
+        app.post('/message/:bot/result', message.result);
+        app.post('/message/:bot/sms', message.sms);
+        app.post('/message/:bot/mms', message.mms);
 
         //
         // // 카카오톡
