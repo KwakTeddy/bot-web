@@ -1,10 +1,12 @@
 (function()
 {
-    var PlayChatWeb = function(botId, botName)
+    var PlayChatWeb = function(botId, botName, host)
     {
-        this.host = 'http://localhost:8443';
+        this.host = host;
         this.botId = botId;
         this.botName = botName;
+
+        this.socket = new window.PlayChatSocket(host);
     };
 
     (function()
