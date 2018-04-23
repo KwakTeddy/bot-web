@@ -140,7 +140,7 @@
 
             angular.element('#menuPaste').attr('data-using', 'false');
 
-            $rootScope.$broadcast('simulator-build-without-reset-focus');
+            // $rootScope.$broadcast('simulator-build-without-reset-focus');
 
             this.closeMenu();
         };
@@ -166,7 +166,7 @@
             //     instance.setDirty(true);
             // }
 
-            $rootScope.$broadcast('simulator-build');
+            // $rootScope.$broadcast('simulator-build');
 
             this.closeMenu();
         };
@@ -192,7 +192,7 @@
             //     instance.setDirty(true);
             // }
 
-            $rootScope.$broadcast('simulator-build');
+            // $rootScope.$broadcast('simulator-build');
 
             this.closeMenu();
         };
