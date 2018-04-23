@@ -249,7 +249,7 @@ var Transaction = require('../utils/transaction.js');
         }
         else
         {
-            Logger.analysisLog('task', { logs: name + ' undefined' }, context.user.userKey);
+            // Logger.analysisLog('task', { logs: name + ' undefined' }, context.user.userKey);
             callback();
         }
     };
