@@ -112,7 +112,7 @@ const Bot = mongoose.model('Bot');
                             return res.end();
                         }
 
-                        if(text.indexOf('welcome') == -1)
+                        if(text.indexOf('welcome') == -1 && username)
                         {
                             result.output.text = '@' + username + ' ' + result.output.text;
                         }
