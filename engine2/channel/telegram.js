@@ -61,6 +61,11 @@ const Bot = mongoose.model('Bot');
                     var last_name = data.message.from.last_name;
                     var username = data.message.from.username;
 
+                    if(username == 'AIC_Heidi')
+                    {
+                        return res.end();
+                    }
+
                     if(data.message.new_chat_member)
                     {
                         if(data.message.new_chat_member.is_bot)
