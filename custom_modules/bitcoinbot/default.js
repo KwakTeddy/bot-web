@@ -1856,7 +1856,7 @@ else{
                         for (var i = 0; i < 15; i++) {
                             var name = "" + (i + 1) + ". " + body[i].name;
                             var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
+                            dialog.output[0].buttons.push({text: name + "[" + rate+']'});
                         }
                         dialog.output[0].buttons.push({text: 'MORE'});
                         dialog.output[0].buttons.push({text: 'Back'});
@@ -2028,7 +2028,7 @@ else{
                             for (var i = 15; i < body.length; i++) {
                                 var name = "" + (i + 1) + ". " + body[i].name;
                                 var rate = body[i].rate;
-                                dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
+                                dialog.output[0].buttons.push({text: name + "[" + rate+']'});
                             }
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
@@ -2199,7 +2199,7 @@ else{
                         for (var i = 0; i < 15; i++) {
                             var name = "" + (i + 1) + ". " + body[i].name;
                             var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
+                            dialog.output[0].buttons.push({text: name + "[" + rate+']'});
                         }
                         dialog.output[0].buttons.push({text: 'MORE'});
                         dialog.output[0].buttons.push({text: 'Back'});
@@ -2369,7 +2369,7 @@ var difference = 0;
                             for (var i = 15; i < 31; i++) {
                                 var name = "" + (i + 1) + ". " + body[i].name;
                                 var rate = body[i].rate;
-                                dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
+                                dialog.output[0].buttons.push({text: name + "[" + rate+']'});
                             }
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
