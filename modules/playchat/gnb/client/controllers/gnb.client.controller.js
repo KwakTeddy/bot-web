@@ -21,10 +21,12 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.drawMenu = function()
         {
             var savedMenu = [];
+            console.log(chatbot);
             if(chatbot.templateId)
             {
                 MenuService.get(chatbot.templateId.id, function(menus)
                 {
+                    console.log(menus);
                     $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
@@ -33,6 +35,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             {
                 MenuService.get(function(menus)
                 {
+                    console.log(menus)
                     $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });

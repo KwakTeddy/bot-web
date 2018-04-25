@@ -45,6 +45,11 @@ var BotObject = require('./bot/bot.js');
 
                     that.bots[botId] = bot;
 
+                    if(bot.templateId)
+                    {
+                        botDir = path.resolve('./templates/' + bot.template.id + '/bot');
+                    }
+
                     that.loadBotFiles(bot, botDir, function()
                     {
                         callback(null, bot);

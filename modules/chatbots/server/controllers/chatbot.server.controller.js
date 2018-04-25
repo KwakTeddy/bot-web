@@ -61,6 +61,7 @@ exports.find = function (req, res)
     {
         if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -143,6 +144,10 @@ exports.create = function(req, res)
             }
 
             var chatbot = new ChatBot(req.body);
+            if(req.body.type != 'sample' && req.body.type != 'blank')
+            {
+                chatbot.templateId = req.body.type;
+            }
             chatbot.user = req.user;
             chatbot.save(function(err)
             {
@@ -152,161 +157,162 @@ exports.create = function(req, res)
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
-                {
+                Template.populate(chatbot, {path:"templateId"}, function(err, chatbot) {
                     // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
-                    // if(chatbot.templateId)
-                    // {
-                    //     var templateDir = path.resolve('./templates/' + req.body.templateDir);
-                    //
-                    //     var files = fs.readdirSync(templateDir + '/bot');
-                    //     for(var i=0; i<files.length; i++)
-                    //     {
-                    //         if(files[i].endsWith('.js'))
-                    //         {
-                    //             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
-                    //             fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
-                    //         }
-                    //     }
-                    // }
-                    // else
-                    // {
-                    var type = req.body.type || 'blank';
-                    var dir = path.resolve('./custom_modules/' + req.body.id);
-                    if(!fs.existsSync(dir))
-                    {
-                        fs.mkdirSync(dir);
-                    }
-
-                    var language = req.body.language;
-                    if(language === undefined) language = 'en';
-
-                    if(type == 'sample')
-                    {
-                        var botjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/bot.template');
-                        var defaultjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/default.template');
-                        var graphjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template');
-
-                        var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-                        var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-                        var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-                        fs.writeFileSync(dir + '/default.graph.js', graphData);
-                        fs.writeFileSync(dir + '/default.js', defaultData);
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
-
-                        if(process.env.NODE_ENV == 'production')
-                        {
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                    if (chatbot.templateId) {
+                        var dir = path.resolve('./custom_modules/' + req.body.id);
+                        if (!fs.existsSync(dir)) {
+                            fs.mkdirSync(dir);
                         }
+                        var templateDir = path.resolve('./templates/election');
+                        // var templateDir = path.resolve('./templates/' + req.body.templateDir);
 
-                        var contents = IntentController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/intent.' + language + '.xlsx');
-                        if(contents.length > 0)
-                        {
-                            var intent = new Intent();
-                            intent.botId = req.body.id;
-                            intent.name = 'sample';
-                            intent.user = req.user;
-
-                            intent.save(function(err)
-                            {
-                                if(err)
-                                {
-                                    console.error(err);
-                                }
-                                else
-                                {
-                                    IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function()
-                                    {
-                                    },
-                                    function(err)
-                                    {
-                                        console.error(err);
-                                    });
-                                }
-                            });
+                        var files = fs.readdirSync(templateDir + '/bot');
+                        for (var i = 0; i < files.length; i++) {
+                            if (files[i].endsWith('.js')) {
+                                var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
+                                fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
+                            }
                         }
+                        var botAuth = new BotAuth();
+                        botAuth.bot = chatbot._id;
+                        botAuth.user = req.user;
+                        botAuth.giver = req.user;
+                        botAuth.edit = true;
 
-                        var entities = EntityController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/entity.' + language + '.xlsx');
-                        if(entities.length > 0)
-                        {
-                            var entity = new Entity();
-                            entity.botId = req.body.id;
-                            entity.name = 'sample';
-                            entity.user = req.user;
+                        botAuth.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).send({message: err.stack || err});
+                            }
 
-                            entity.save(function(err)
-                            {
-                                if(err)
-                                {
-                                    console.error(err);
-                                }
-                                else
-                                {
-                                    EntityController.saveEntityContents(req.body.id, '', req.user, entity._id, entities, function(){}, function(err)
-                                    {
-                                        console.error(err);
-                                    });
-                                }
-                            });
-                        }
-                    }
-                    else if(type == 'blank')
-                    {
-                        var botjs = fs.readFileSync(__dirname + '/sample/blank/bot.template');
-                        var defaultjs = fs.readFileSync(__dirname + '/sample/blank/default.template');
-                        var graphjs = fs.readFileSync(__dirname + '/sample/blank/graph.' + language + '.template');
-
-                        var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-                        var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-                        var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-
-                        fs.writeFileSync(dir + '/default.graph.js', graphData);
-                        fs.writeFileSync(dir + '/default.js', defaultData);
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
-
-                        if(process.env.NODE_ENV == 'production')
-                        {
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
-                        }
+                            res.jsonp(chatbot);
+                        });
                     }
                     else
                     {
-                        var botjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/bot.js'));
-                        var defaultjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.js'));
-                        var graphjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.graph.js'));
-
-                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
-                        fs.writeFileSync(dir + '/default.js', defaultjs.toString());
-                        fs.writeFileSync(dir + '/bot.js', botjs.toString());
-
-                        if(process.env.NODE_ENV == 'production')
-                        {
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
-                            S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                        var type = req.body.type || 'blank';
+                        var dir = path.resolve('./custom_modules/' + req.body.id);
+                        if (!fs.existsSync(dir)) {
+                            fs.mkdirSync(dir);
                         }
+
+                        var language = req.body.language;
+                        if (language === undefined) language = 'en';
+
+                        if (type == 'sample') {
+                            var botjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/bot.template');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/default.template');
+                            var graphjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template');
+
+                            var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            fs.writeFileSync(dir + '/default.graph.js', graphData);
+                            fs.writeFileSync(dir + '/default.js', defaultData);
+                            fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                            if (process.env.NODE_ENV == 'production') {
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                            }
+
+                            var contents = IntentController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/intent.' + language + '.xlsx');
+                            if (contents.length > 0) {
+                                var intent = new Intent();
+                                intent.botId = req.body.id;
+                                intent.name = 'sample';
+                                intent.user = req.user;
+
+                                intent.save(function (err) {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                    else {
+                                        IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function () {
+                                            },
+                                            function (err) {
+                                                console.error(err);
+                                            });
+                                    }
+                                });
+                            }
+
+                            var entities = EntityController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/entity.' + language + '.xlsx');
+                            if (entities.length > 0) {
+                                var entity = new Entity();
+                                entity.botId = req.body.id;
+                                entity.name = 'sample';
+                                entity.user = req.user;
+
+                                entity.save(function (err) {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                    else {
+                                        EntityController.saveEntityContents(req.body.id, '', req.user, entity._id, entities, function () {
+                                        }, function (err) {
+                                            console.error(err);
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                        else if (type == 'blank') {
+                            var botjs = fs.readFileSync(__dirname + '/sample/blank/bot.template');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/blank/default.template');
+                            var graphjs = fs.readFileSync(__dirname + '/sample/blank/graph.' + language + '.template');
+
+                            var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+                            fs.writeFileSync(dir + '/default.graph.js', graphData);
+                            fs.writeFileSync(dir + '/default.js', defaultData);
+                            fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                            if (process.env.NODE_ENV == 'production') {
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                            }
+                        }
+                        else {
+                            var botjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) +  + '/bot.js'));
+                            var defaultjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.js'));
+                            var graphjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.graph.js'));
+                            // var botjs = fs.readFileSync(path.resolve('./templates/election/bot/election.bot.js'));
+                            // var defaultjs = fs.readFileSync(path.resolve('./templates/election/bot/default.js'));
+                            // var graphjs = fs.readFileSync(path.resolve('./templates/election/bot/default.graph.js'));
+
+
+                            fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
+                            fs.writeFileSync(dir + '/default.js', defaultjs.toString());
+                            fs.writeFileSync(dir + '/bot.js', botjs.toString());
+
+                            if (process.env.NODE_ENV == 'production') {
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                            }
+                        }
+
+                        var botAuth = new BotAuth();
+                        botAuth.bot = chatbot._id;
+                        botAuth.user = req.user;
+                        botAuth.giver = req.user;
+                        botAuth.edit = true;
+
+                        botAuth.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).send({message: err.stack || err});
+                            }
+
+                            res.jsonp(chatbot);
+                        });
                     }
-
-                    var botAuth = new BotAuth();
-                    botAuth.bot = chatbot._id;
-                    botAuth.user = req.user;
-                    botAuth.giver = req.user;
-                    botAuth.edit = true;
-
-                    botAuth.save(function(err)
-                    {
-                        if(err)
-                        {
-                            console.error(err);
-                            return res.status(400).send({ message: err.stack || err });
-                        }
-
-                        res.jsonp(chatbot);
-                    });
                 });
             });
         });
