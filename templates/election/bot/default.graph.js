@@ -3748,8 +3748,7 @@ var dialogs = [
 
 var commonDialogs = [
     {
-        "id": "defaultcommon0",
-        "filename": "defaultcommon",
+        "id": "startDialog",
         "name": "시작",
         "input": [
             {
@@ -3774,16 +3773,36 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요 < +bot.name+ >입니다!\n꽃은 청렴한 사람이 받을수있는 선물입니다."
+                "text": "하이요"
             }
-        ],
-        "task": {
-            "name": "startbuttons"
-        }
+        ]
     },
     {
-        "id": "defaultcommon1",
-        "filename": "defaultcommon",
+        "id": "backDialog",
+        "name": "이전",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
         "name": "상위",
         "input": [
             {
@@ -3794,30 +3813,31 @@ var commonDialogs = [
             },
             {
                 "text": {
-                    "raw": "back",
-                    "nlp": "back"
-                }
-            },
-            {
-                "text": {
                     "raw": "상위",
                     "nlp": "상위"
                 }
-            },
-            {
-                "text": {
-                    "raw": "이전",
-                    "nlp": "이전"
-                }
             }
         ],
-        "output": {
-            "up": 1
-        }
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "filename": "defaultcommon",
+        "name": "답변없음",
+        "input": "",
+        "output": [
+            {
+                "text": "알아듣지 못했습니다.",
+                "kind": "Content"
+            }
+        ]
     }
 ];
-
-
 
 
 module.exports = function(bot)
@@ -3825,4 +3845,3 @@ module.exports = function(bot)
     bot.setDialogs(dialogs);
     bot.setCommonDialogs(commonDialogs);
 };
-
