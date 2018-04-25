@@ -1,10 +1,10 @@
 <div class="signin-background">
-
+<!--
     <div id="logincontents" ng-if="successSignup === false && invalid === false && error === false && verified === false">
         <div class="mt16" style="margin-bottom: 20px;">
             <span class="p1">{{ lan('Create your account') }}</span>
             <!--<span class="p1">{{ lan('Registration for closed beta') }}</span>-->
-            <!--<p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>-->
+            <!--<p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>--
         </div>
         <p class="exclamation pl5" ng-show="signupErrorMessage" style="margin-bottom: 20px;"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
         <!--<p class="noticebox">-->
@@ -14,7 +14,7 @@
             <!--{{lan('One, Apply now and use for free (for the first 50 applicants)')}}<br>-->
             <!--{{lan('Two, Apply now for Free Chatbot Development Training Course (for the first 20 applicants)')}}<br>-->
             <!--{{lan('Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!')}}</p>-->
-        <form class="register" ng-submit="signup();" style="width: 100%;margin: 32px auto;">
+      <!--  <form class="register" ng-submit="signup();" style="width: 100%;margin: 32px auto;">
             <div class="leftbox">
                 <div class="leftboxinput">
                     <p>{{ lan('Email ID') }}</p>
@@ -54,9 +54,9 @@
             <button class="loginbtn" id="signupButton">{{ lan('Sign up') }}</button>
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" style="display: none;">
         </form>
-    </div>
+    </div>-->
 
-<!--
+
     <div class="signup-complete-message" ng-if="successSignup === false">
         <span class="p1">회원가입 완료</span>
         <div style="margin-top: 20px;">
@@ -73,13 +73,13 @@
 
     <p class="exclamation pl5"><img src="/modules/authentication/client/imgs/exclamation_mark.png"> 유효하지 않은 인증 코드입니다. 다시 한번 확인해주세요!</p>
     <!--<p class="exclamation pl5" ng-show="signupErrorMessage" style="margin-bottom: 20px;"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>-->
-    <!--<div class="noti-email">
+    <div class="noti-email">
         <p class="p2">인증 메일이 확인 되지 않으면, <a href="#" class="link">재전송요청</a>을 클릭해주세요.</p>
         <p class="p2">등록하신 이메일로 인증메일을 발송하였습니다.</p>
         <p class="p2">정상적으로 이용하기 위해서 이메일 인증을 완료 바랍니다.</p>
     </div>
     <button type="button" class="default-big-button" style="margin-top: 3%">확인</button>
-    </div>-->
+    </div>
 
     <!--
     <div class="signup-complete-message" ng-if="successSignup === false">
