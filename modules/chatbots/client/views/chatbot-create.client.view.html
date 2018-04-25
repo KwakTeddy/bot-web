@@ -23,15 +23,15 @@
         </a>
     </div>
 
-    <!--<div ng-repeat="(key, value) in list">-->
-        <!--<p class="create-chatbot-row-title">{{ key }}</p>-->
-        <!--<div class="create-chatbot-row">-->
-            <!--<a class="create-chatbot-item" href="/playchat/chatbots/create/{{ item._id }}" ng-repeat="item in list[key]">-->
-                <!--<span class="create-chatbot-item-icon">-->
-                    <!--<img src="{{ item.icon }}">-->
-                <!--</span>-->
-                <!--<span class="create-chatbot-item-name">{{ item.name }}</span>-->
-            <!--</a>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div ng-repeat="(key, value) in list">
+        <p class="create-chatbot-row-title">{{ key }}</p>
+        <div class="create-chatbot-row">
+            <a class="create-chatbot-item" href="/playchat/chatbots/create/{{ item._id }}" ng-repeat="item in list[key]">
+                <span class="create-chatbot-item-icon">
+                    <img src="{{ item.icon }}">
+                </span>
+                <span class="create-chatbot-item-name">{{ item.name }}</span>
+            </a>
+        </div>
+    </div>
 </div>
