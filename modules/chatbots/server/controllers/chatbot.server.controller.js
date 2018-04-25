@@ -61,6 +61,7 @@ exports.find = function (req, res)
     {
         if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
