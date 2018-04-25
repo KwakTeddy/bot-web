@@ -110,7 +110,7 @@ var MatchedIntent = mongoose.model('MatchedIntent');
 
                     if(!check)
                     {
-                        break;
+                        continue;
                     }
 
                     var point = 0;
