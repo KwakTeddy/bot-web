@@ -7,4 +7,5 @@ module.exports = function(options)
             type:"buttons",buttons:["Start"]
         }
     };
+    options.entitiesMinMatchRate = 0.8;
 };
