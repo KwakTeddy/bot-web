@@ -20,6 +20,7 @@ module.exports = function(app)
     app.post('/api/auth/signup', authentication.signup);
     app.post('/api/auth/forgot', authentication.forgot);
     app.get('/api/auth/emailconfirm/:token', authentication.validateEmailConfirmToken);
+    app.post('/api/auth/emailconfirm/code', authentication.validateEmailConfirmCode);
     app.post('/api/users', UserController.updateUser);
 
     app.route('/auth/reset/:token/:from').get(UserController.validateResetToken);

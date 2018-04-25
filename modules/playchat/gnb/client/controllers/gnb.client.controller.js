@@ -8,6 +8,8 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     var ReportingService = $resource('/api/reporting');
 
+
+    $scope.language = $cookies.get('language');
     $scope.menus = [];
     $scope.botName = chatbot.name;
     $scope.path = $location.path();
