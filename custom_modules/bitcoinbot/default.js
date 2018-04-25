@@ -1437,7 +1437,7 @@ module.exports = function(bot)
             typeCheck: function (dialog, context, callback)
             {
                 var matched = false;
-                if(dialog.userInput.text==="1" || dialog.userInput.text==="2"){
+                if(dialog.userInput.text==="1" || dialog.userInput.text==="2" || dialog.userInput.text==="3"){
                     matched = false;
                     return callback(matched);
                 }
@@ -2749,7 +2749,7 @@ var difference = 0;
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            if(dialog.userInput.text==="1" || dialog.userInput.text==="2"){
+            if(dialog.userInput.text==="1" || dialog.userInput.text==="2" || dialog.userInput.text==="3"){
                 matched = false;
                 return callback(matched);
             }
@@ -2990,7 +2990,7 @@ var difference = 0;
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            if(dialog.userInput.text==="1" || dialog.userInput.text==="2"){
+            if(dialog.userInput.text==="1" || dialog.userInput.text==="2" || dialog.userInput.text==="3"){
                 matched = false;
                 return callback(matched);
             }
