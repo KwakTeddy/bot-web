@@ -1,0 +1,213 @@
+<style>
+    .template-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-body
+    {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .template-body input
+    {
+
+        border: 1px solid #ddd;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 80%;
+    }
+    /*==button=============================================*/
+    .button-red
+    {
+        padding: 5px 15px;
+        border: 1px solid #585858;
+        border-radius: 4px;
+        color: #FC4C4C !important;
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .flower-blue-button
+    {
+        outline: 0;
+        text-align: center;
+        background: #038eda;
+        cursor: pointer;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-weight: 600;
+        padding: 10px;
+        font-size: 13px;
+        color: white;
+        width: 110px;
+    }
+
+    .flower-red-button
+    {
+        outline: 0;
+        text-align: center;
+        background: #d9534f;
+        cursor: pointer;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-weight: 600;
+        padding: 10px;
+        font-size: 13px;
+        color: white;
+        width: 110px;
+    }
+    /*tb02----------------------------------*/
+    .tb02{
+        width: 100%;
+        margin-top: 1px;
+        border-bottom: #dbdbdb solid 1px;
+        border-top:#dbdbdb solid 1px;
+    }
+    .tb02 tr th{
+        width: 20%;
+        padding: 10px 0 10px 0;
+        font-size: 14px;
+        text-align: center;
+        font-weight: 600;
+        letter-spacing: 0.1px;
+        vertical-align: middle;
+        background: #f5f5f5;
+        border-right:#dbdbdb solid 1px;
+    }
+    .tb02 tr td input {
+        width: 60%;
+        text-align: center;
+        font-size: 13px;
+        letter-spacing: 0;
+        /*border-bottom: 1px solid #e9e9e9;*/
+        vertical-align: middle;
+        /*text-overflow: ellipsis;*/
+        white-space: nowrap;
+        height: 40px;
+        overflow:hidden;
+    }
+    .tb02td1 {
+        width: 20%;
+        text-align: center;
+        font-size: 13px;
+        letter-spacing: 0;
+        /*border-bottom: 1px solid #e9e9e9;*/
+        vertical-align: middle;
+        /*text-overflow: ellipsis;*/
+        white-space: nowrap;
+        height: 40px;
+        border-right:#dbdbdb solid 1px;
+    }
+    .tablePaging .tablePagingC a:link, .tablePagingC a:visited {
+        display: inline-block;
+        position: relative;
+        margin: 0 -2px;
+        padding: 2px 7px;
+        line-height: 1.0em;
+        text-decoration: none;
+        vertical-align: middle;
+    }
+    .tablePaging .direction {
+        font-weight: normal;
+        white-space: nowrap;
+    }
+    .tablePaging .tablePagingC strong{
+        display: inline-block;
+        position: relative;
+        margin: 0 -2px;
+        padding: 2px 7px;
+        font-weight: bold;
+        color: #038eda;
+        line-height: normal;
+        vertical-align: middle;
+    }
+    ul.subject li{
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 32px;
+        display: inline-block;
+    }
+    .tab-footer
+    {
+        padding-top: 15px;
+        text-align: right;
+    }
+</style>
+
+
+
+<div ng-controller="flowerReservationScheduleDetailCancelController">
+        <table class="tb02">
+            <tr>
+                <th class="tb02 tr th">구매자</th>
+                <td>
+                    <input type="text" ng-model="data.order_name" class="tb02 tr td input">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_mobile" class="tb02td1">
+                </td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">상품정보</th>
+                <td>
+                    <input type="text" ng-model="data.order_itemname" class="tb02 tr td input">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_itemcode" class="tb02td1">
+                </td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">주문시각</th>
+                <td>
+                    <input type="text" ng-model="data.order_date" class="tb02 tr td input">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_hour" class="tb02td1">
+                </td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">받는사람</th>
+                <td>
+                    <input type="text" ng-model="data.order_receivername" class="tb02 tr td input">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_receivermobile" class="tb02td1">
+                </td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">배송지</th>
+                <td><input type="text" ng-model="data.order_receiveraddress" class="tb02 tr td input"></td>
+                <td type="text" class="tb02td1"></td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">배송기각</th>
+                <td><input type="text" ng-model="data.order_deliverydate" class="tb02 tr td input"></td>
+                <td><input type="text" ng-model="data.order_deliveryhour" class="tb02td1"></td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">리본문구(좌/우)</th>
+                <td><input type="text" ng-model="data.order_greeting" class="tb02 tr td input"></td>
+                <td><input type="text" ng-model="data.order_sendername" class="tb02td1"></td>
+            </tr>
+            <tr>
+                <th class="tb02 tr th">상테</th>
+                <td><input type="text" ng-model="data.order_status" class="tb02 tr td input"></td>
+                <td type="text" class="tb02td1"></td>
+            </tr>
+        </table>
+        <div class="tab-footer" style="border-top: 0;">
+            <a data-href="/playchat/templates/contents/reservation" type="button" class="flower-red-button" ng-click="accept($event,data);">재등록</a>
+            <a class="flower-blue-button" type="button" ng-click="save($event,data);">저장</a>
+        </div>
+    </form>
+</div>
+

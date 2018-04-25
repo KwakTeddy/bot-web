@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var async = require('async');
+var fs = require('fs');
 
 var utils = require('../utils/utils.js');
 
@@ -498,7 +499,7 @@ var Dialogset = mongoose.model('Dialogset');
         var that = this;
         TemplateModel.findOne({ _id: this.templateId }).lean().exec(function(err, doc)
         {
-            if(err)
+            if(err)å
             {
                 return callback(err);
             }
