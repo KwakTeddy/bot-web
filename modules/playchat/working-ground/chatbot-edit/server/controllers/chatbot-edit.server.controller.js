@@ -30,7 +30,7 @@ module.exports.find = function(req, res)
                 {
                     if(list[i].endsWith('bot.js'))
                     {
-                        require(dir + '/' + list[i])(options);
+                        utils.requireNoCache(dir + '/' + list[i])(options);
                     }
                 }
             }
