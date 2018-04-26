@@ -49,7 +49,18 @@
 	font-weight: 100;
 	font-family: "Open Sans",sans-serif;
 }
-
+.main h2{
+	font-size: 4.75rem;
+	line-height: 6.25rem;
+	margin-bottom: 0;
+	margin-top: 25px;
+	text-shadow: 0 1px 3px rgba(0,0,0,.8);
+	text-align: center;
+	margin: 0 0 .57em;
+	font-weight: 100;
+	font-family: "Open Sans",sans-serif;
+	color: #fff;
+}
 h1,
 h2,
 h3,
@@ -1079,7 +1090,18 @@ header a.cart i {
 >>> | Home Area Css |
 *****************************************
 */
-
+.bg-main{
+	background-color: rgba(0, 0, 0, 0);
+	background-repeat: no-repeat;
+	background-image: url(../../../front/img/3.png) !important;
+	background-size: cover !important;
+	background-position: center 18% !important;
+	width: 100%;
+	height: 734px;
+	opacity: 1;
+	visibility: inherit;
+	color: #fff;
+}
 .homeArea .container {
 	position: relative;
 	z-index: 1;
