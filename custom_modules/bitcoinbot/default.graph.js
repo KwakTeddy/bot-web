@@ -540,7 +540,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'AI crypto ICO'",
+                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'xxx ICO'",
                                         "type": "call",
                                         "dialogId": "default1",
                                         "dialogName": "1 Start 2"
@@ -605,7 +605,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'AI crypto ICO'",
+                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'xxx ICO'",
                                         "type": "call",
                                         "dialogId": "default1",
                                         "dialogName": "1 Start 2"

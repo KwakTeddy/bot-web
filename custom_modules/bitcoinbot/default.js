@@ -8,6 +8,7 @@ var news = [];
 var ICO_active = [];
 var ICO_upcoming = [];
 var ICO = [];
+var craw = '';
 var coinurl = "https://coinmarketcap.com/";
 var activeICOurl = "https://icodrops.com/category/active-ico/";
 var upcomingICOurl = "https://icodrops.com/category/upcoming-ico/";
@@ -2037,6 +2038,431 @@ module.exports = function(bot)
 
 
 
+//----------------------------------------------------News-----------------------------------------------
+
+
+    bot.setTask('newsCategory',
+        {
+            action: function (dialog, context, callback) {
+                context.session.selecnews = [];
+                context.session.newsinfo = [];
+                COIN = dialog.userInput.text.split('.')[1].trim().toLowerCase();
+                options = {};
+                modelname = 'bitcoin_cointelegraph';
+                options.url = SERVER_HOST + '/api/' + modelname;
+
+                options.qs = {coin: COIN};
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log("get！   response.statusCode=" + response.statusCode);
+                        body = JSON.parse(body);
+
+                        body = body.sort(function (a, b) {
+                            return a.rate - b.rate;
+                        });
+
+                        var nowtime = new Date().getTime();
+
+                        console.log('body: ' + JSON.stringify(body));
+
+                        var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                        if (difference > 30) {
+                            crawling();
+                        }
+                        else {
+                            context.session.news = body;
+                            callback();
+                        }
+                    }
+                });
+
+
+                function crawling() {
+                    var NEWS = [];
+                    url = "https://cointelegraph.com/tags/" + COIN;
+                    superagent.get(url)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kinds = ['recent', 'top', 'commented'];
+                            var craw = '';
+
+                            kinds.forEach(crawling1);
+
+                            function crawling1(kind) {
+                                craw = $('#' + kind + ' div');
+                                description = $("#tag>div>div.col-md-8.description>p:nth-child(2)").text();
+                                for (var i = 1; i <= 15; i++) {
+                                    var s = i - 1;
+                                    news[s] = {};
+                                    news[s].title = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').text().replace(/\n/g, "").trim();
+                                    news[s].url = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').attr('href').trim();
+                                    news[s].image = craw.find('div:nth-child(' + i + ') > figure.col-sm-4 > div > a > div > img').attr('srcset').split('1x,')[0].trim();
+                                    news[s].time = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.date').text().replace(/\n/g, "").trim();
+                                    news[s].author = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.author > span > a').text().replace(/\n/g, "").trim();
+                                    news[s].text = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > p > a').text().replace(/\n/g, "").trim();
+                                    news[s].status = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div:nth-child(4) > div > span').text().trim();
+                                    news[s].rate = i;
+                                    news[s].kind = kind;
+                                    news[s].language = 'en';
+                                    news[s].coin = COIN;
+                                    news[s].created = new Date().toISOString();
+                                    news[s].updateTime = new Date().getTime();
+
+                                    NEWS.push(news[s]);
+                                    options = {};
+                                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                                    options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
+                                    options.json = {
+                                        updateTime: new Date().getTime(),
+                                        title: news[s].title,
+                                        url: news[s].url,
+                                        image: news[s].image,
+                                        time: news[s].time,
+                                        author: news[s].author,
+                                        text: news[s].text,
+                                        status: news[s].status
+                                    };
+                                    update(options, news[s], i, kind);
+                                }
+
+                                function update(options, newcoin, i, kind) {
+
+                                    request.put(options, function (err, response, body) {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else if (body.nModified === 0) {
+                                            save1(newcoin, i, kind);
+                                        }
+                                        else {
+                                            console.log("update！   response.statusCode=" + response.statusCode);
+                                            if (NEWS.length === 45) {
+                                                options = {};
+                                                options.url = SERVER_HOST + '/api/' + modelname;
+
+                                                options.qs = {coin: COIN};
+
+                                                request.get(options, function (err, response, body) {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    }
+                                                    else {
+                                                        console.log("get！   response.statusCode=" + response.statusCode);
+                                                        body = JSON.parse(body);
+                                                        context.session.news = body;
+                                                        callback();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                    function save1(NEWS, i, kind) {
+                                        options = {};
+                                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                                        options.json = NEWS;
+
+                                        request.post(options, function (err, response, body) {
+                                            if (err) {
+                                                console.log(err);
+                                            }
+                                            else {
+                                                console.log("new！   response.statusCode=" + response.statusCode);
+                                                if (NEWS.length === 45) {
+                                                    options = {};
+                                                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                                                    options.qs = {coin: COIN};
+
+                                                    request.get(options, function (err, response, body) {
+                                                        if (err) {
+                                                            console.log(err);
+                                                        }
+                                                        else {
+                                                            console.log("get！   response.statusCode=" + response.statusCode);
+                                                            body = JSON.parse(body);
+                                                            context.session.news = body;
+                                                            callback();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+
+                            }
+                        });
+                }
+
+            }
+        });
+
+
+    bot.setTask('shownewstitle',
+        {
+            action: function (dialog, context, callback)
+            {
+
+                if(dialog.userInput.text === 'Recent'){
+                    context.session.kind = 'recent';
+                }
+                else if(dialog.userInput.text === 'Top News'){
+                    context.session.kind = 'top';
+                }
+                else if(dialog.userInput.text === 'Commented'){
+                    context.session.kind = 'commented';
+                }
+                dialog.output[0].buttons = [];
+                var ss = 0;
+
+                for(var i = 0; i < context.session.news.length; i++){
+                    if(context.session.news[i].kind === context.session.kind) {
+                        context.session.selecnews[ss] = context.session.news[i];
+                        ss++;
+                        var newstitle = "" + ss + ". " + context.session.news[i].title;
+                        dialog.output[0].buttons.push({text:newstitle});
+                    }
+                }
+                callback();
+            }
+        });
+
+    bot.setType('news',
+        {
+            typeCheck: function (dialog, context, callback) {
+                var matched = false;
+                dialog.userInput.text = dialog.userInput.text.split('.')[1].trim();
+                for (var i = 0; i < context.session.selecnews.length; i++) {
+                    if (dialog.userInput.text === context.session.selecnews[i].title) {
+                        context.session.newsinfo = context.session.selecnews[i];
+                        matched = true;
+                        callback(matched);
+                    }
+                    else if (i === context.session.selecnews.length - 1) {
+                      matched = false;
+                        callback(matched);
+                    }
+                }
+            }
+        });
+
+    bot.setTask('shownews',
+        {
+            action: function (dialog, context, callback)
+            {
+                dialog.output[0].images = {url: context.session.newsinfo.image};
+                dialog.output[0].buttons = [
+                    {
+                        text: 'Specific content',
+                        url: context.session.newsinfo.url
+                    },
+                    {
+                        text: 'Back'
+                    },
+                    {
+                        text: 'Start'
+                    }
+                ];
+                callback();
+            }
+        });
+
+    bot.setType('news',
+        {
+            typeCheck:  function (dialog, context, callback) {
+                var matched = false;
+                var NEWS = [];
+                context.session.selecnews = [];
+                context.session.newsinfo = [];
+                COIN = ['bitcoin', 'ehtereum','altcoin','litecoin','ripple','monero'];
+                COIN.sort(function (a,b) {
+                   return b.length - a.length;
+                });
+
+                var coin = '';
+
+                for(var i = 0 ; i < COIN.length; i++){
+                    if(dialog.userInput.text.indexOf(COIN[i])!==1){
+                        coin = COIN[i];
+                        break;
+                    }
+                }
+                options = {};
+                modelname = 'bitcoin_cointelegraph';
+                options.url = SERVER_HOST + '/api/' + modelname;
+
+                options.qs = {coin: coin};
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log("get！   response.statusCode=" + response.statusCode);
+                        body = JSON.parse(body);
+
+                        if(body.length === 0){
+                            crawling();
+                        }
+                        else{
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
+
+                            var nowtime = new Date().getTime();
+
+                            console.log('body: ' + JSON.stringify(body));
+
+                            var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                            if (difference > 30) {
+                                crawling();
+                            }
+                            else {
+                                getnews();
+                            }
+                        }
+                    }
+                });
+
+
+                function crawling() {
+                    url = "https://cointelegraph.com/tags/" + COIN;
+                    superagent.get(url)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kinds = ['recent', 'top', 'commented'];
+                            var craw = '';
+                            kinds.forEach(crawling1);
+                        });
+                }
+
+                function crawling1(kind) {
+                    craw = "";
+                    craw = $('#' + kind + ' div');
+                    var description = $("#tag>div>div.col-md-8.description>p:nth-child(2)").text();
+                    for (var i = 1; i <= 15; i++) {
+                        var s = i - 1;
+                        news[s] = {};
+                        news[s].title = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').text().replace(/\n/g, "").trim();
+                        news[s].url = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').attr('href').trim();
+                        news[s].image = craw.find('div:nth-child(' + i + ') > figure.col-sm-4 > div > a > div > img').attr('srcset').split('1x,')[0].trim();
+                        news[s].time = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.date').text().replace(/\n/g, "").trim();
+                        news[s].author = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.author > span > a').text().replace(/\n/g, "").trim();
+                        news[s].text = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > p > a').text().replace(/\n/g, "").trim();
+                        news[s].status = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div:nth-child(4) > div > span').text().trim();
+                        news[s].rate = i;
+                        news[s].kind = kind;
+                        news[s].language = 'en';
+                        news[s].coin = COIN;
+                        news[s].created = new Date().toISOString();
+                        news[s].updateTime = new Date().getTime();
+
+                        NEWS.push(news[s]);
+                        options = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
+                        options.json = {
+                            updateTime: new Date().getTime(),
+                            title: news[s].title,
+                            url: news[s].url,
+                            image: news[s].image,
+                            time: news[s].time,
+                            author: news[s].author,
+                            text: news[s].text,
+                            status: news[s].status
+                        };
+                        update(options, news[s], i, kind);
+                    }
+                }
+
+
+                function update(options, newcoin, i, kind) {
+
+                    request.put(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else if (body.nModified === 0) {
+                            save1(newcoin, i, kind);
+                        }
+                        else {
+                            console.log("update！   response.statusCode=" + response.statusCode);
+                            if (NEWS.length === 45) {
+                                options = {};
+                                options.url = SERVER_HOST + '/api/' + modelname;
+
+                                options.qs = {coin: COIN};
+
+                                request.get(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        console.log("get！   response.statusCode=" + response.statusCode);
+                                        body = JSON.parse(body);
+                                        context.session.news = body;
+                                        callback();
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    function save1(NEWS, i, kind) {
+                        options = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        options.json = NEWS;
+
+                        request.post(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                console.log("new！   response.statusCode=" + response.statusCode);
+                                if (NEWS.length === 45) {
+                                    options = {};
+                                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                                    options.qs = {coin: COIN};
+
+                                    request.get(options, function (err, response, body) {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else {
+                                            console.log("get！   response.statusCode=" + response.statusCode);
+                                            body = JSON.parse(body);
+                                            context.session.news = body;
+                                            callback();
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                    }
+                    
+                    
+                    function getnews() {
+                        context.session.news = body;
+                        callback();
+                    }
+                }
+            }
+        });
+
+
+
     bot.setTask('coinprice_ch',
 	{
 		action: function (dialog, context, callback)
@@ -2115,239 +2541,5 @@ module.exports = function(bot)
     });
 
 
-    bot.setTask('newsCategory',
-        {
-            action: function (dialog, context, callback) {
-                context.session.selecnews = [];
-                context.session.newsinfo = [];
-                COIN = dialog.userInput.text.split('.')[1].trim().toLowerCase();
-                options = {};
-                modelname = 'bitcoin_cointelegraph';
-                options.url = SERVER_HOST + '/api/' + modelname;
 
-                console.log('COIN: ' + COIN);
-                options.qs = {coin: COIN};
-
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    else {
-                        console.log("get！   response.statusCode=" + response.statusCode);
-                        body = JSON.parse(body);
-
-                        body = body.sort(function (a, b) {
-                            return a.rate - b.rate;
-                        });
-
-                        var nowtime = new Date().getTime();
-
-                        console.log('body: ' + JSON.stringify(body));
-
-                        var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
-
-                        if (difference > 30) {
-                            crawling();
-                        }
-                        else {
-                            context.session.news = body;
-                            callback();
-                        }
-                    }
-                });
-
-
-                function crawling() {
-                    var NEWS = [];
-                    url = "https://cointelegraph.com/tags/" + COIN;
-                    superagent.get(url)
-                        .end(function (err, pres) {
-                            var $ = cheerio.load(pres.text);
-                            var kinds = ['recent', 'top', 'commented'];
-                            var craw = '';
-
-                            function crawling1(kind) {
-                                function save1(NEWS, i, kind) {
-                                    options = {};
-                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                                    options.json = NEWS;
-
-                                    request.post(options, function (err, response, body) {
-                                        if (err) {
-                                            console.log(err);
-                                        }
-                                        else {
-                                            console.log("new！   response.statusCode=" + response.statusCode);
-                                            if (NEWS.length === 45) {
-                                                options = {};
-                                                options.url = SERVER_HOST + '/api/' + modelname;
-
-                                                options.qs = {coin: COIN};
-
-                                                request.get(options, function (err, response, body) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                    }
-                                                    else {
-                                                        console.log("get！   response.statusCode=" + response.statusCode);
-                                                        body = JSON.parse(body);
-                                                        context.session.news = body;
-                                                        callback();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    })
-                                }
-
-                                function update(options, newcoin, i, kind) {
-
-                                    request.put(options, function (err, response, body) {
-                                        console.log('body.nModified: ' + JSON.stringify(body));
-                                        if (err) {
-                                            console.log(err);
-                                        }
-                                        else if (body.nModified === 0) {
-                                            save1(newcoin, i, kind);
-                                        }
-                                        else {
-                                            console.log("update！   response.statusCode=" + response.statusCode);
-                                            if (NEWS.length === 45) {
-                                                options = {};
-                                                options.url = SERVER_HOST + '/api/' + modelname;
-
-                                                options.qs = {coin: COIN};
-
-                                                request.get(options, function (err, response, body) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                    }
-                                                    else {
-                                                        console.log("get！   response.statusCode=" + response.statusCode);
-                                                        body = JSON.parse(body);
-                                                        context.session.news = body;
-                                                        callback();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    })
-                                }
-
-                                console.log('kind: ' + kind);
-                                craw = $('#' + kind + ' div');
-                                description = $("#tag>div>div.col-md-8.description>p:nth-child(2)").text();
-                                for (var i = 1; i <= 15; i++) {
-                                    var s = i - 1;
-                                    news[s] = {};
-                                    news[s].title = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').text().replace(/\n/g, "").trim();
-                                    news[s].url = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').attr('href').trim();
-                                    news[s].image = craw.find('div:nth-child(' + i + ') > figure.col-sm-4 > div > a > div > img').attr('srcset').split('1x,')[0].trim();
-                                    news[s].time = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.date').text().replace(/\n/g, "").trim();
-                                    news[s].author = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.author > span > a').text().replace(/\n/g, "").trim();
-                                    news[s].text = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > p > a').text().replace(/\n/g, "").trim();
-                                    news[s].status = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div:nth-child(4) > div > span').text().trim();
-                                    news[s].rate = i;
-                                    news[s].kind = kind;
-                                    news[s].language = 'en';
-                                    news[s].coin = COIN;
-                                    news[s].created = new Date().toISOString();
-                                    news[s].updateTime = new Date().getTime();
-
-                                    NEWS.push(news[s]);
-                                    options = {};
-                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                                    options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
-                                    options.json = {
-                                        updateTime: new Date().getTime(),
-                                        title: news[s].title,
-                                        url: news[s].url,
-                                        image: news[s].image,
-                                        time: news[s].time,
-                                        author: news[s].author,
-                                        text: news[s].text,
-                                        status: news[s].status
-                                    };
-                                    update(options, news[s], i, kind);
-                                }
-                            }
-
-                            kinds.forEach(crawling1);
-                        });
-                }
-
-            }
-        });
-
-
-	bot.setTask('shownewstitle',
-	{
-		action: function (dialog, context, callback)
-		{
-
-            if(dialog.userInput.text === 'Recent'){
-                context.session.kind = 'recent';
-            }
-            else if(dialog.userInput.text === 'Top News'){
-                context.session.kind = 'top';
-            }
-            else if(dialog.userInput.text === 'Commented'){
-                context.session.kind = 'commented';
-            }
-            dialog.output[0].buttons = [];
-            var ss = 0;
-
-            for(var i = 0; i < context.session.news.length; i++){
-                if(context.session.news[i].kind === context.session.kind) {
-                    context.session.selecnews[ss] = context.session.news[i];
-                    ss++;
-                    console.log('context.session.news[i].title' + context.session.news[i].title);
-                    var newstitle = "" + ss + ". " + context.session.news[i].title;
-                    dialog.output[0].buttons.push({text:newstitle});
-                }
-            }
-			callback();
-		}
-	});
-
-    bot.setType('news',
-        {
-            typeCheck: function (dialog, context, callback) {
-                dialog.userInput.text = dialog.userInput.text.split('.')[1].trim();
-                for (var i = 0; i < context.session.selecnews.length; i++) {
-                    if (dialog.userInput.text === context.session.selecnews[i].title) {
-                        context.session.newsinfo = context.session.selecnews[i];
-                        matched = true;
-                        callback(matched);
-                    }
-                    else if (i === context.session.selecnews.length - 1) {
-                        var matched = false;
-                        callback(matched);
-                    }
-                }
-            }
-        });
-
-    bot.setTask('shownews',
-        {
-            action: function (dialog, context, callback)
-            {
-                dialog.output[0].images = {url: context.session.newsinfo.image};
-                dialog.output[0].buttons = [
-                    {
-                        text: 'Specific content',
-                        url: context.session.newsinfo.url
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
-                    }
-                ];
-                callback();
-            }
-        });
 };
