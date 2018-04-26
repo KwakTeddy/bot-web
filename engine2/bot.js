@@ -45,6 +45,11 @@ var BotObject = require('./bot/bot.js');
 
                     that.bots[botId] = bot;
 
+                    if(bot.templateId)
+                    {
+                        botDir = path.resolve('./templates/' + bot.template.id + '/bot');
+                    }
+
                     that.loadBotFiles(bot, botDir, function()
                     {
                         callback(null, bot);
@@ -78,18 +83,30 @@ var BotObject = require('./bot/bot.js');
                     var name = botDir + '/' + file;
 
                     var f = utils.requireNoCache(name, true);
-                    f(file.endsWith('bot.js') ? bot.options : bot);
+                    if(typeof f == 'function')
+                    {
+                        f(file.endsWith('bot.js') ? bot.options : bot);
+                    }
+                    else
+                    {
+                        console.log('여기야여기');
+                    }
+
                     next();
                 }
                 catch(err)
                 {
-                    utils.requireNoCache(botDir + '/' + file, true);
-                    var botModule = require(path.resolve('./engine/bot.js'));
-                    var options = botModule.getBot(file.split('.')[0]);
-                    bot.options = options;
-
+                    console.log(err);
+                    // utils.requireNoCache(botDir + '/' + file, true);
+                    // var botModule = require(path.resolve('./engine/bot.js'));
+                    // var options = botModule.getBot(file.split('.')[0]);
+                    // bot.options = options;
                     return callback(false);
                 }
+            }
+            else
+            {
+                next();
             }
         },
         function()
@@ -97,7 +114,7 @@ var BotObject = require('./bot/bot.js');
             callback(true);
         });
     };
-    
+
     BotManager.prototype.setOptions = function(botId, options)
     {
         var bot = this.bots[botId];

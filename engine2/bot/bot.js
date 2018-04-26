@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var async = require('async');
+var fs = require('fs');
+var path = require('path');
 
 var utils = require('../utils/utils.js');
 
@@ -544,7 +546,7 @@ var Dialogset = mongoose.model('Dialogset');
                             else
                                 schema = mongoose.model(doc.id + '-' + schemaPostFix, schema);
 
-                            schema.find({ botId: bot.id }).lean().exec(function(err, doc1)
+                            schema.find({ botId: that.id }).lean().exec(function(err, doc1)
                             {
                                 if(schemaPostFix == 'data')
                                 {

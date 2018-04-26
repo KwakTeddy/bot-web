@@ -167,11 +167,11 @@ canvas {
     height: 100px;
 }
 
-    tr.bold td:first-child
-    {
-        font-size: 20px;
-        font-weight: bold;
-    }
+    /*tr.bold td:first-child*/
+    /*{*/
+        /*font-size: 20px;*/
+        /*font-weight: bold;*/
+    /*}*/
 </style>
 
 <div class="demo-screen">
@@ -246,7 +246,7 @@ canvas {
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td style="font-weight: bold; font-size: 20px; font-style: italic;">{{ diagram.intent.name }}</td>
+                    <td style="font-weight: bold; font-size: 20px; font-style: italic;">{{ diagram.intent.intentName }}</td>
                     <td>
                         <span class="progress-box" ng-class="diagram.intent.matchRate > 0 ? 'show' : 'hide'"></span>
                         <span class="progress-box" ng-class="diagram.intent.matchRate > 0.1 ? 'show' : 'hide'"></span>

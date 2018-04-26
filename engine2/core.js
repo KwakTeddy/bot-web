@@ -119,13 +119,13 @@ var s3 = new AWS.S3();
                 },
                 function()
                 {
-                    callback();
+                    callback(null, botId);
                 });
             });
         }
         else
         {
-            callback();
+            callback(null, botId);
         }
     };
 
@@ -149,6 +149,11 @@ var s3 = new AWS.S3();
                 return error.delegate(err);
             }
 
+            if(!botId)
+            {
+                return error.delegate('bot is not found');
+            }
+
             BotManager.load(botId, function(err, bot)
             {
                 if(err)
@@ -162,7 +167,7 @@ var s3 = new AWS.S3();
                         return errCallback('old-version');
                     }
 
-                    var contextKey = channel + '_' + botId + '_' + userKey;
+                    var contextKey = botId + '_' + userKey;
                     that.redis.get(contextKey, function(err, context)
                     {
                         if(err)
@@ -185,6 +190,24 @@ var s3 = new AWS.S3();
                             context.user.userKey = userKey;
                             context.bot = bot;
                             context.channel.name = channel;
+
+                            if(options)
+                            {
+                                if(options.user)
+                                {
+                                    for(var key in options.user)
+                                    {
+                                        context.user[key] = options.user[key];
+                                    }
+                                }
+                                else if(options.session)
+                                {
+                                    for(var key in options.session)
+                                    {
+                                        context.session[key] = options.session[key];
+                                    }
+                                }
+                            }
 
                             if(!bot)
                             {
@@ -250,6 +273,10 @@ var s3 = new AWS.S3();
                                             delete context.globals;
                                             delete context.session.currentDialog;
 
+                                            var demo = context.demo;
+
+                                            delete context.demo;
+
                                             that.redis.set(contextKey, JSON.stringify(context), function(err)
                                             {
                                                 if(err)
@@ -262,7 +289,16 @@ var s3 = new AWS.S3();
                                                     that.redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
                                                     context.bot = bot;
+                                                    context.userInput = userInput;
+                                                    context.demo = demo;
                                                     outCallback(context, dialog);
+
+                                                    //여기서 소켓으로 올려보내자 userkey로 구분해서
+                                                    // Logger.chatLog(userKey, { userKey: userKey, inputRaw: inputRaw, output: dialog });
+                                                    if(Logger.userSockets[userKey])
+                                                    {
+                                                        Logger.userSockets[userKey].emit('chat_log', { type: 'dialog', inputRaw: inputRaw, output: dialog.output });
+                                                    }
 
                                                     console.log(chalk.green('================================================================'));
                                                     console.log();

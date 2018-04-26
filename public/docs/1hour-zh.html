@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1小时制作聊天机器人</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+        <div id="nav">
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+
+        <div id="readme" class="readme blob instapaper_body">
+            <!--본문 내용-->
+            <article class="markdown-body entry-content" itemprop="text">
+
+
+                <h2><a id="user-content-어떤-챗봇을-원하세요" class="anchor" aria-hidden="true" href="#想制作什么聊天机器人"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>想要制作什么样的聊天机器人?</h2>
+                <img class="vertical-img" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/gnb-scenario.png" title="클릭" style="float: right">
+
+                <p>PlayChat对话的基本单位是一个用户的问题和一个聊天机器人的回答，通过这样的方式来进行连续性的对话。在PlayChat上制作聊天机器人主要可以通过2种方法。<br>
+                </p>
+
+                <h3 style="clear: none">
+                    <a id="user-content-대화-셋" class="anchor" aria-hidden="true" href="#对话集">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+                            </path>
+                        </svg>
+                    </a>对话集聊天机器人
+                </h3>
+                <p>下面我们一起来试着制作一个使用了**对话场景**的简单的**爬虫聊天机器人**，爬虫聊天机器人可以从特定的网页上将数据提取出来。<br>
+                    <a href="https://www.youtube.com/watch?v=nFIgNJeDH6s" target="_blank" rel="nofollow">
+                        点击查看制作范例视频
+                    </a>
+                </p>
+
+                <h3 style="clear: none">
+                    <a id="user-content-대화-시나리오" class="anchor" aria-hidden="true" href="#对话场景"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>对话场景聊天机器人
+                </h3>
+                <p>这是一种使用PlayChat提供的对话场景图来制作聊天机器人的方法。在使用对话场景时可以不仅仅局限于一对一的问答方式，而同时可以实现具有特定流程和特定功能的对话(爬虫，验证手机号码，连接外部服务器等)。<br>
+                    <a href="https://www.youtube.com/watch?v=44Q4L3NZg58" target="_blank" rel="nofollow">
+                        点击查看制作范例视频
+                    </a></p>
+
+                <blockquote>
+                    <em>Tip</em>
+                    <p>可以同时使用对话集和对话场景来制作聊天机器人，通过这样的方式能制作出表现更自然，实用性更强的聊天机器人。您最好是根据想要通过聊天机器人来达到什么样的目的来决定是基于对话集制作聊天机器人，还是基于对话场景来制作聊天机器人。</p>
+                    <!--<ul>-->
+                    <!--<li>대화 셋과 대화 시나리오를 연계하여 챗봇을 구축할 수 있으며, 이 경우 더욱 자연스럽고 실용적인 챗봇을 만들 수 있습니다.</li>-->
+                    <!--<li>만들고자하는 챗봇의 목적에 따라 대화 셋을 기반으로 챗봇을 구축할지, 아니면 대화 시나리오를 기반으로 챗봇을 구축할지 결정하는 것이 좋습니다.</li>-->
+                    <!--</ul>-->
+                </blockquote>
+
+
+                <h2>
+                    <a id="user-content-대화-시나리오를-이용한-챗봇-구축하기" class="anchor" aria-hidden="true" href="#制作对话场景聊天机器人"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>制作对话场景聊天机器人
+                </h2>
+
+                <iframe src="https://www.youtube.com/embed/44Q4L3NZg58?autoplay=1" autoplay frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                <p>这部分内容我们使用<strong>对话场景</strong>来制作一个基础的<strong>比特币聊天机器人</strong>，通过比特币聊天机器人可以查询和比特币相关的内容。</p>
+                <p>使用对话场景来制作聊天机器人时需要以用户输入和聊天机器人回答为一个基本单元，对话场景是卡片的集合，其中卡片将用户输入和聊天机器人回答连接到一起。可以让聊天机器人学习多个对话场景。</p>
+
+                <h3><a id="user-content-챗봇-만들기" class="anchor" aria-hidden="true" href="#制作聊天机器人"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>制作聊天机器人</h3>
+                <p>按照以下步骤制作聊天机器人。</p>
+                <ol>
+                    <li>如果您还没有PlayChat账号，请先进行<a href="/signup" target="_new">注册</a>，如果您已经有了PlayChat账号，请进行<a
+                        href="/signin" target="_new">登录</a>。</li>
+                    <li>在"聊天机器人管理"画面选择"创建聊天机器人" -&gt; "空白机器人"。 </li>
+                    <li>输入需要填写的项。</li>
+                    <li>点击"保存"按钮。</li>
+                </ol>
+                <p>创建完一个新的聊天机器人后，新的聊天机器人将会以卡片的形式显示在聊天机器人管理画面，然后单击选择创建好的聊天机器人进行开发。</p>
+
+                <h3>
+                    <a id="user-content-대화-카드-만들기" class="anchor" aria-hidden="true" href="#制作对话卡片"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>制作对话卡片
+                </h3>
+                <p>对话场景是由用户输入和聊天机器人回答组成的卡片组成。使用高级模式的时候，卡片可以添加回答前执行的函数。</p>
+                <p>按照以下步骤创建卡片。</p>
+                <!--<a href="https://s3.ap-northeast-2.amazonaws.com/playchat-docs/%E1%84%83%E1%85%A2%E1%84%92%E1%85%AA%E1%84%92%E1%85%A1%E1%84%80%E1%85%B5_1.%E1%84%83%E1%85%A2%E1%84%92%E1%85%AA%E1%84%8F%E1%85%A1%E1%84%83%E1%85%B3%E1%84%86%E1%85%A1%E1%86%AB%E1%84%83%E1%85%B3%E1%86%AF%E1%84%80%E1%85%B5.mp4" rel="nofollow">예제 동영상 보기</a>-->
+                <ol>
+                    <li>
+                        <p>从页面左侧菜单中选择"开发" -&gt; "对话场景"。</p>
+                    </li>
+                    <li>
+                        <p>点击开始卡片右边的添加按钮，在卡片名称中输入"爬虫开始卡片"。卡片名称是当前卡片的名称，用来识别卡片。</p>
+                    </li>
+                    <li>
+                        <p>用户输入栏中输入用户可能会问的问题，由于现在制作的是爬虫聊天机器人，所以我们在用户输入栏中输入针对爬虫的问题。输入越多的问题，聊天机器人就越能理解问题，也就能回答越多用户的提问。
+                            将下边的输入填写到用户输入中，在想输入多个用户输入时，可以点击用户输入栏右侧的"+"按钮。</p>
+                        <ul>
+                            <li>比特币</li>
+                            <li>虚拟币</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>聊天机器人回答栏中输入聊天机器人回答，通过聊天机器人回答来问想要爬的网页地址是什么。在想输入多个聊天机器人回答时可以点击聊天机器人回答栏下方的"+"按钮。</p>
+                        <ul>
+                            <li>您想知道关于比特币的什么内容？</li>
+                        </ul>
+                        <p>有多个聊天机器人回答的情况时，聊天机器人在回答的时候会随机回答其中之一。</p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/bitcoin-start.png" alt="bitcoin-start">
+
+                    <li>
+                        <p>点击"保存"按钮。</p>
+                    </li>
+                    <li>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/bitcoin-start-test.png" alt="bitcoin-start-test">
+                        <p>测试
+                            现在聊天机器人已经理解了您输入的问题，并随时准备回答用户的相关问题。您可以在试着在页面右侧的测试对话窗口输入之前保存的问题，聊天机器人会回答已经准备好的问题。</p>
+                    </li>
+                </ol>
+                <blockquote>
+                    <p><em>Tip</em>
+                        页面底部是一个实时对话分析窗口，主要是对以用户输入和聊天机器人回答为基本单元的卡片进行对话分析。.</p>
+                    <ul>
+                        <li>用户输入分析 - 对聊天机器人用户的输入值进行自然语言处理并显示结果。</li>
+                        <li>意图分析 - 显示和聊天机器人用户输入值相匹配的意图。</li>
+                        <li>实体分析 - 显示和聊天机器人用户输入值相匹配的实体。</li>
+                        <li>聊天机器人回答分析 - 显示和聊天机器人用户输入值相匹配的卡片的聊天机器人回答回复的情况。</li>
+                    </ul>
+                </blockquote>
+
+                <h3><a id="user-content-비트코인-검색-시나리오-만들기" class="anchor" aria-hidden="true" href="#创建一个查询比特币场景"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>创建一个查询比特币场景</h3>
+                <p>对话场景时卡片的集合。像在开始卡片添加比特币开始卡片一样，可以为特定的卡片添加子女卡片或兄弟卡片。当很多个卡片被连接在一起就形成了一个树状图，这样被连接在一起的卡片们被称为对话场景。<br>
+                    <!--<a href="https://youtu.be/lwenTu4GezA" rel="nofollow">예제 동영상 보기</a></p>-->
+                <blockquote>
+                    <p><em>Tip</em>
+                为什么需要使用对话场景?
+                        我们首先从比特币聊天机器人用户开始思考 1) 想要查询比特币和 2) 获取对应比特币的相关信息 3) 进行搜索。</p>
+                    <ol>
+                        <li>通过输入获取想要查询的比特币。</li>
+                        <li>通过输入获取想要获取的对应比特币的相关信息。</li>
+                        <li>搜索。
+                            <ul>
+                                <li>当搜索结果没有问题时，聊天机器人就会回复结果。</li>
+                                <li>当没有搜索结果时，转到让用户重新输入比特币的卡片（1号），或者转向重新输入想要或许的比特币的相关信息的卡片（2号）。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <p>只要按照上述步骤进行就可以实现爬虫功能。对于这个情况，实际上可以只通过一张卡片来实现所有的功能，但是对于初学者有些困难，不是太直观。因为因为<strong>一个卡片只实现一个功能</strong>时会比较简单和客观。 将分别有着获取比特币名称的功能和获取想要查找的信息的功能，以及搜索功能的三个卡片连接到一起来制作比特币搜索场景是非常方便和直观的。即，最好是为了达到什么样的功能而去制作什么样的流程。通过添加子女卡片可以创建对话场景。</p>
+                </blockquote>
+                <p>按照以下步骤创建比特币搜索场景。</p>
+                <ol>
+                    <li>
+                        <p>创建一个比特币开始卡片的子女卡片"输入比特币名称"卡片。</p>
+                        <ul>
+                            <li>卡片名称 - 输入比特币名称</li>
+                            <li>用户输入 - if(true)</li>
+                            <li>聊天机器人回答 - 请输入想要搜索的比特币信息.</li>
+                        </ul>
+                        <p>在用户输入中输入if()时，输入模式会发生改变，这里我们输入if(true)。当用户输入为if(条件)时表示此时卡片的执行和用户的输入值没有关系。当其中的条件为true时，表示此卡片无条件执行（在其他兄弟卡片不匹配的情况下）。</p>
+                    </li>
+                    <li>
+                        <p>创建一个输入比特币名称卡片的子女卡片"输入搜索信息"卡片。</p>
+                        <ul>
+                            <li>卡片名称 - 输入搜索信息</li>
+                            <li>用户输入 - if(true)</li>
+                            <li>聊天机器人回答 - 现在为您进行搜索吗?</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>创建一个输入搜索信息卡片的子女卡片"进行搜索"卡片。</p>
+                        <ul>
+                            <li>卡片名称 - 进行搜索</li>
+                            <li>用户输入 - 进行</li>
+                            <li>聊天机器人回答 - 为您搜索的有关比特币的信息结果如下显示。</li>
+                        </ul>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/bitcoin-scenario.png" title="클릭" style="max-width:100%;">
+                    <li>
+                        <p>测试</p>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/bitcoin-scenario-test.png" title="클릭" style="max-width:100%;">                        <ul>
+                            <li>开始比特币 -> 输入"开始比特币"时，聊天机器人会回复让用户输入想要搜做的比特币名称。</li>
+                            <li>输入比特币名称(eth) -> 聊天机器人会回复让用户输入想要搜索的信息。</li>
+                            <li>输入搜索信息(High) -> 聊天机器人会询问是否进行搜索。</li>
+                            <li>进行搜索 -> 当输入"进行"时，聊天机器人就会回复给用户搜索的结果。</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <p style="clear: both">现在基本上完成了能实现比特币搜索功能的对话场景，那么接下来让我们一起去看看当用户输入的比特币名称不正确时，让用户重新输入的方法。</p>
+                <h3>
+                    <a id="user-content-마무리" class="anchor" aria-hidden="true" href="#完成"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+                    </a>完成
+                </h3>
+                <p>到目前为止我们已经学习了<strong>用对话场景来制作聊天机器人</strong>，用对话场景制作的聊天机器人是将需要的对话卡片连接在一起，然后制作出需要的对话构造。但是，实际想要对网站进行爬虫需要使用到回答前执行的函数。
+                    在下面的介绍中我们将一起去看看实际爬虫功能(回答前执行的函数的应用)是怎么实现的。</p>
+
+
+
+                <h2><a id="user-content-답변-전-실행함수-적용하기" class="anchor" aria-hidden="true" href="#应用回答前执行的函数"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>应用回答前执行的函数</h2>
+                <p>回答前执行的函数是在需要用到外部服务器支援(网站信息，天气信息，电影信息等)时用到，或者是需要用到代码编程部分时会用到。例如，为了让聊天机器人可以进行比特币搜索，需要收集到比特币的名称和想要查询的信息。下面让我们试着去实现这个功能。
+                </p>
+                <!--<a href="https://youtu.be/os-xEqSxn9w" rel="nofollow">예제 동영상 보기</a>-->
+
+                <h3><a id="user-content-변수-저장하기" class="anchor" aria-hidden="true" href="#保存变量"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>保存变量</h3>
+                <p>如果要进行比特币搜索，必须要把比特币名称和相关的要搜索的信息保存起来。为了将用户输入的特定值保存起来，就需要用到回答前执行的函数。</p>
+                <p>按照以下步骤创建回答前执行的函数(saveBitcoinName)。<br>
+                <ol>
+                    <li>双击"输入比特币名称"卡片打开修改窗口。</li>
+                    <li>在回答前执行的函数中输入"saveBitcoinName"后点击添加。</li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/task-saveBitcoinName.png" title="클릭" style="max-width:100%;">
+
+                    <li>进入到<strong>函数功能实现区</strong>页面，在saveBitcoinName函数中添加<br>
+                        <code>context.session.bitcoinName = dialog.userInput.text;</code>
+                        即，输入下面的代码即可。
+                    <pre lang="javscript"><code>bot.setTask('saveBitcoinName',
+{
+    action: function (dialog, context, callback)
+    {
+        context.session.bitcoinName = dialog.userInput.text;
+        callback();
+    }
+});
+                    </code></pre>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/task-saveBitcoinName-code.png" title="클릭" style="max-width:100%;">
+
+                    <li>点击"保存"按钮。</li>
+                </ol>
+                <p>现在就可以将用户的输入值(<code>dialog.userInput.text</code>)保存到函数功能实现区的<code>context.session.bitcoinName</code>中了。如果要用到这里保存了的值时可以使用<code>context.session.bitcoinName</code>。</p>
+                <p>最后按照下面的步骤来创建能保存选择器的函数(saveInfo)。</p>
+                <ol>
+                    <li>双击"输入搜索信息"卡片来打开修改窗口。</li>
+                    <li>在回答前执行的函数中输入"saveInfo"后点击添加。</li>
+                     <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/task-saveInfo.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>进入到<strong>函数功能实现区</strong>页面，在"saveInfo的action"函数中添加<br>
+                        <code>context.session.info = dialog.userInput.text;</code>
+                        即，输入下面的代码即可。
+                        <pre lang="javscript"><code>bot.setTask('saveInfo',
+{
+	action: function (dialog, context, callback)
+	{
+		context.session.info = dialog.userInput.text;
+		callback();
+	}
+});
+</code></pre>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/task-saveInfo-code.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>点击"保存"按钮。</li>
+                </ol>
+                <p>现在就可以将用户的输入值(<code>dialog.userInput.text</code>)保存到函数功能实现区的<code>context.session.info</code>中了。如果要用到这里保存了的值时可以使用<code>context.session.info</code>。</p>
+
+
+
+                <h3><a id="user-content-저장된-변수-이용하기" class="anchor" aria-hidden="true" href="#使用保存过了的变量"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使用保存过了的变量</h3>
+                <p>现在我们将在聊天机器人回答中使用存储在<code>context.session.bitcoinName</code>和<code>context.session.info</code>中的变量。
+                </p>
+                <!--<a href="https://youtu.be/WX-4EMZ_61A" rel="nofollow">예제 동영상 보기</a>-->
+                <p>按照以下步骤来修改"卡片。</p>
+                <ol>
+                    <li>
+                        <p>双击"输入搜索信息"卡片来打开修改窗口。</p>
+                    </li>
+                    <li>
+                        <p>在聊天机器人回答中输入下面内容。<br>
+                            比特名名称 : +context.session.bitcoinName+ <br>
+                            要搜索的信息 : +context.session.info+ <br>
+                            现在为您进行搜索吗?</p>
+                        <p>+变量+是调用函数功能实现区中的变量的格式，在++之间加入要调用的变量名称。</p>
+
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/var-use.png" title="클릭" style="max-width:100%;">
+                    <li>
+                        <p>点击"保存"按钮。</p>
+                    </li>
+                    <li>
+                        <p>测试</p>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/var-use-test.png" title="클릭" style="max-width:100%;">
+                        <ul>
+                            <li>输入"比特币"。</li>
+                            <li>输入比特币名称。</li>
+                            <li>输入想要搜索的信息。</li>
+                            <li>聊天机器人会回复比特币的名称和要搜索的信息。</li>
+                        </ul>
+                    </li>
+
+                </ol>
+
+                </ol>
+                <p></p>
+                <h3><a id="user-content-검색-실행하기" class="anchor" aria-hidden="true" href="#进行搜索"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>进行搜索</h3>
+                <p>现在我们来创建一个执行前执行的函数，用获取到的比特币名称和要搜索的信息来进行搜索。<br>
+                    <!--<a href="https://youtu.be/QLcXH2Vn7Wg" rel="nofollow">예제 동영상</a></p>-->
+                <p>按照以下步骤修改"进行搜索"卡片。</p>
+                <ol>
+                    <li>双击"进行搜索"卡片来打开修改窗口。</li>
+                    <li>在回答前执行的函数中输入"searchBitcoin"后点击添加。</li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/task-searchBitcoin.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>进入到<strong>函数功能实现区</strong>页面，在"searchBitcoin"函数中输入以下内容。
+                        <pre lang="javscript"><code>bot.setTask('searchBitcoin',
+{
+	action: function (dialog, context, callback)
+			{
+			    var request = require('request');
+
+			    var url = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-";
+			    url += context.session.bitcoinName
+			    request(url, function (err, response, body)
+						  {
+						      if(err)
+						      {
+								context.session.result = err.message;
+					          }
+						      else
+					          {
+                                body = JSON.parse(body);
+								if(!body.success)
+								{
+									context.session.result = body.message;
+								}
+								else
+								{
+                                    var info = context.session.info;
+                                    info = info.charAt(0).toUpperCase() + info.slice(1);
+
+                                    context.session.result = body.result[0][info];
+                                }
+						      }
+					          callback();
+						  }
+			    );
+			}
+});
+</code></pre>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/task-searchBitcoin-code.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>在聊天机器人回答中输入下面内容。<br>
+                        为您搜索的有关比特币的信息结果如下显示。 <br>
+                        结果 : +context.session.result+ BTC
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/card-edit-result2.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>点击"保存"按钮。</li>
+                    <li>
+                        <p>테스트하기</p>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/searchBitcoin-test.png" title="클릭" style="max-width:100%;">
+                        <ul>
+                            <li>在测试对话窗口中输入"比特币"。</li>
+                            <li>输入比特币的名称。</li>
+                            <li>输入想要搜索的信息。</li>
+                            <li>输入"进行"。</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h3><a id="user-content-마무리-1" class="anchor" aria-hidden="true" href="#完成-1"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>完成</h3>
+                <p>目前我们已经学习了<strong>回答前执行的函数的应用</strong>，我们完成了能存储用户输入值的函数和调用外部API接口的函数。
+                    如果您想查看比这些内容更为详细的内容，请参考概要篇。</p>
+            </article>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation_zh.html #1hour");
+        $("#topbar").load("topbar_zh.html", function () {
+            $('#1hour').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

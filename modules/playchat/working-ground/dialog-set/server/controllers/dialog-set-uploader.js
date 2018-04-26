@@ -101,8 +101,18 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         var lastData = undefined;
         for(var r=1; r<=range.e.r; r++)
         {
-            var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })].v;
-            var a = ws[XLSX.utils.encode_cell({ c: range.e.c, r: r })].v;
+            var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })];
+            var a = ws[XLSX.utils.encode_cell({ c: range.e.c, r: r })];
+
+            if(!a)
+            {
+                lastData = { q: [], a: [] };
+                dialogsetList.push(lastData);
+                continue;
+            }
+
+            var q = q.v;
+            var a = a.v;
 
             var category = '';
             for(var c=0; c<range.e.c-1; c++)
@@ -153,6 +163,11 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
         async.eachSeries(dialogsetList, function(item, next)
         {
+            if(item.q.length == 0 || item.a.length == 0)
+            {
+                return next();
+            }
+
             var dialogsetDialog = new DialogsetDialog();
             dialogsetDialog.dialogset = dialogsetId;
             dialogsetDialog.inputRaw = item.q;

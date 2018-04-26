@@ -3206,6 +3206,9 @@ var commonDialogs = [
 		}
 	}
 ];
-var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('hotel');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

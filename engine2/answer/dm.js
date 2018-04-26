@@ -156,27 +156,34 @@ var ContextManager = require('../context.js');
                         type = Globals.types[input[key]];
                     }
 
-                    if(typeof type.typeCheck == 'string')
+                    if(type)
                     {
-                        type.typeCheck = Globals.typeChecks[type.typeCheck];
-                    }
-
-                    type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
-                    {
-                        if(matched)
+                        if(typeof type.typeCheck == 'string')
                         {
-                            if(parsed)
+                            type.typeCheck = Globals.typeChecks[type.typeCheck];
+                        }
+
+                        type.typeCheck.call(type, { userInput: userInput }, context, function(matched, parsed, retry)
+                        {
+                            if(matched)
                             {
-                                userInput.types[type.name] = parsed;
-                            }
+                                if(parsed)
+                                {
+                                    userInput.types[type.name] = parsed;
+                                }
 
-                            next();
-                        }
-                        else
-                        {
-                            return nextInput();
-                        }
-                    });
+                                next();
+                            }
+                            else
+                            {
+                                return nextInput();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        console.log(input[key] + ' type is not defined');
+                    }
 
                     return;
                 }
@@ -216,13 +223,14 @@ var ContextManager = require('../context.js');
                         if(regexp.startsWith('/'))
                         {
                             regexp = regexp.substring(1);
-                            var split = regexp.split('/');
-                            if(split[1])
+                            var index = regexp.lastIndexOf('/');
+                            var o = regexp.substring(index + 1);
+                            if(o)
                             {
-                                options = split[1];
+                                options = o;
                             }
 
-                            regexp = split[0];
+                            regexp = regexp.substring(0, index);
                         }
 
                         regexp = new RegExp(regexp, options);
@@ -681,18 +689,25 @@ var ContextManager = require('../context.js');
             console.log(chalk.yellow('[[[ Selected Output ]]]'));
             console.log(resultOutput);
 
-            if(resultOutput.kind == 'Action')
+            if(resultOutput)
             {
-                ActionManager.exec(bot, context, dialogInstance, resultOutput, callback);
+                if(resultOutput.kind == 'Action')
+                {
+                    ActionManager.exec(bot, context, dialogInstance, resultOutput, callback);
+                }
+                else
+                {
+                    if(dialogInstance.options.outputText)
+                    {
+                        resultOutput.text = dialogInstance.options.outputText;
+                    }
+
+                    callback(resultOutput, dialogInstance);
+                }
             }
             else
             {
-                if(dialogInstance.options.outputText)
-                {
-                    resultOutput.text = dialogInstance.options.outputText;
-                }
-
-                callback(resultOutput, dialogInstance);
+                callback();
             }
         });
     };

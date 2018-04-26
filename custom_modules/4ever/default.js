@@ -346,39 +346,39 @@ module.exports = function(bot) {
             var modelname = 'dermatology_moneybrain_event';
             var options = {};
             options.url = SERVER_HOST + '/api/' + modelname;
-            if (dialog.userInput.text.indexOf("성형") >= 0) {
+            if (dialog.userInput.text.indexOf("성형") >= 0 || dialog.userInput.text==="1" ) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"가슴 성형"
+                    category:"성형"
                 };
                // dialog.output[0].text = "가슴 성형 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("지방 흡입") >= 0) {
+            else if (dialog.userInput.text.indexOf("피부") >= 0 || dialog.userInput.text==="2" ) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"지방 흡입"
+                    category:"피부"
                 };
               // dialog.output[0].text = "지방 흡입 다이어트 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("애플힙") >= 0) {
+            else if (dialog.userInput.text.indexOf("한정") >= 0  || dialog.userInput.text==="3" ) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"애플힙"
+                    category:"한정 이벤트"
                 };
                // dialog.output[0].text = "애플힙 이벤트 아래와 같습니다.";
             }
-            else if (dialog.userInput.text.indexOf("그 외") >= 0) {
+            else if (dialog.userInput.text.indexOf("그 외") >= 0  || dialog.userInput.text==="4") {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"3",
+                    month:"4",
                     year:"2018",
-                    category:"기타"
+                    category:"그 외 4월 이벤트"
                 };
               //  dialog.output[0].text = "그 외 3월 이벤트 아래와 같습니다.";
             }
@@ -390,14 +390,18 @@ module.exports = function(bot) {
                 }
                 else {
                     body = JSON.parse(body);
+                    context.session.body=body;
                     console.log(response.statusCode);
 
-                    dialog.output[0].buttons = [];
-                    for (var i = 0; i < body.length; i++) {
-                        var ss = "" + (i + 1) + ". " + body[i].name;
-                        dialog.output[0].buttons.push({text: ss});
-                    }
-                    dialog.output[0].buttons.push(
+                    dialog.output[1].buttons = [];
+
+
+                        for (var i = 0; i < body.length; i++) {
+                            var ss = "" + (i + 1) + ". " + body[i].name;
+                            dialog.output[1].buttons.push({text: ss});
+                        }
+
+                    dialog.output[1].buttons.push(
                         {
                             text: "이전으로 가기"
                         },
@@ -449,38 +453,24 @@ module.exports = function(bot) {
                 var modelname = 'dermatology_moneybrain_event';
                 var options = {};
                 options.url = SERVER_HOST + '/api/' + modelname;
-                if (dialog.userInput.text.indexOf("성형") >= 0 || dialog.userInput.text.indexOf("1") >= 0) {
+
+                var name=dialog.userInput.text.split('.');
+                if( name[1])
+                {
+                    name[1] = name[1].trim();
+                }
+                else
+                {
+                    var number=Number(dialog.userInput.text);
+                    name[1]=context.session.body[0].name;
+                }
+
                     options.qs = {
                         company: "포에버성형외과",
-                        month:"3",
+                        month:"4",
                         year:"2018",
-                        name:"내추럴 가슴성형"
+                        name:name[1]
                     };
-                }
-                else if (dialog.userInput.text.indexOf("지방 흡입")>= 0  || dialog.userInput.text.indexOf("2") >= 0) {
-                    options.qs = {
-                        company: "포에버성형외과",
-                        month:"3",
-                        year:"2018",
-                        name:"프리미엄 지방흡입"
-                    };
-                }
-                else if (dialog.userInput.text.indexOf("애플힙") >= 0 ||  dialog.userInput.text=="3") {
-                    options.qs = {
-                        company: "포에버성형외과",
-                        month:"3",
-                        year:"2018",
-                        name:"애플힙 성형"
-                    };
-                }
-                else if (dialog.userInput.text.indexOf("그 외") >= 0 || dialog.userInput.text.indexOf("4") >= 0) {
-                    options.qs = {
-                        company: "포에버성형외과",
-                        month:"3",
-                        year:"2018",
-                        name:"그 외 3월 이벤트"
-                    };
-                }
 
                 request.get(options, function (err, response, body) {
                     if (err) {
@@ -491,23 +481,42 @@ module.exports = function(bot) {
                         body = JSON.parse(body);
                         console.log(response.statusCode);
                         context.session.event=body[0];
-
-                        if (context.session.event.image !== undefined || context.session.event.image !== "") {
-                            dialog.output[0].image = {url: context.session.event.image}
-                        }
-                        dialog.output[0].buttons = [
-                            {
-                                text: "자세히 보기",
-                                url:context.session.event.imagebig
-                            },
-                            {
-                                text: "이전으로 가기"
-                            },
-                            {
-                                text: "처음으로 돌아가기"
+                        if(context.session.event.price!=="") {
+                            if (context.session.event.image !== undefined || context.session.event.image !== "") {
+                                dialog.output[0].image = {url: context.session.event.image}
                             }
-                        ];
-                        callback();
+                            dialog.output[0].buttons = [
+                                {
+                                    text: "자세히 보기",
+                                    url: (context.session.event.imagebig? context.session.event.imagebig : context.session.event.image)
+                                },
+                                {
+                                    text: "이전으로 가기"
+                                },
+                                {
+                                    text: "처음으로 돌아가기"
+                                }
+                            ];
+                            callback();
+                        }
+                        else {
+                            if (context.session.event.image !== undefined || context.session.event.image !== "") {
+                                dialog.output[1].image = {url: context.session.event.image}
+                            }
+                            dialog.output[1].buttons = [
+                                {
+                                    text: "자세히 보기",
+                                    url: (context.session.event.imagebig? context.session.event.imagebig : context.session.event.image)
+                                },
+                                {
+                                    text: "이전으로 가기"
+                                },
+                                {
+                                    text: "처음으로 돌아가기"
+                                }
+                            ];
+                            callback();
+                        }
                     }
                 });
 
@@ -536,7 +545,7 @@ module.exports = function(bot) {
 
                         context.session.introduction = body;
                         if (body[0].image2 !== "" || body[0].image2 !== undefined) {
-                            dialog.output[0].image = {url: body[0].image2}
+                            dialog.output[0].image = {url: (body[0].image2.startsWith('http') ? body[0].image2 : config.host + body[0].image2)}
                         }
                         callback();
                     }

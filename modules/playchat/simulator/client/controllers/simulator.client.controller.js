@@ -7,6 +7,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
     var tempUserKey = 'socket-user-' + new Date().getTime();
 
+    $scope.isAdvisorMode = false;
+
     (function()
     {
         var chatbot = $cookies.getObject('chatbot');
@@ -190,6 +192,24 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
         });
 
+        Socket.on('chat_log', function(data)
+        {
+            if($scope.isAdvisorMode)
+            {
+                if(data.inputRaw)
+                {
+                    addUserBubble(data.inputRaw);
+                }
+            }
+
+            console.log('챗로그', data);
+            if(data.output)
+            {
+                addBotBubble(data.output);
+            }
+            // $rootScope.$broadcast('o nchat', data);
+        });
+
         Socket.on('analysis_log', function(data)
         {
             $rootScope.$broadcast('onlog', data);
@@ -211,6 +231,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                         }
 
                         addBotBubble(data.output);
+
+                        $rootScope.$broadcast('simulator_command_end');
                         $rootScope.$broadcast('onmsg', { message: data.output });    
                     }, 100);
                 }
@@ -229,6 +251,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     addBotBubble(data.output);
                     $rootScope.$broadcast('onmsg', { message: data.output });
                 }
+                else if(data.type == 'setMode')
+                {
+                    console.log('모드 : ', data.mode);
+                    $rootScope.$broadcast('setMode', { mode: data.mode });
+                }
                 else
                 {
                     addBotBubble(data);
@@ -243,6 +270,29 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.sendMessage = function(e)
         {
+            if($scope.isAdvisorMode)
+            {
+                if(e.keyCode == 13) //Enter
+                {
+                    var value = e.currentTarget.value.trim();
+                    if(value)
+                    {
+                        var params = {};
+                        params.bot = chatbot.id;
+                        params.user = $scope.advisorModeUserKey;
+                        params.msg = value;
+                        params.options = {};
+
+                        addBotBubble({ text: value });
+                        Socket.emit('send_human_answer', params);
+
+                        e.currentTarget.value = '';
+                    }
+                }
+
+                return;
+            }
+
             if(e.keyCode == 13) //Enter
             {
                 var value = e.currentTarget.value.trim();
@@ -296,6 +346,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.init = function()
         {
+            $scope.isAdvisorMode = false;
             simulatorBody = angular.element('#simulatorBody');
             // init
             simulatorBody.html('');
@@ -317,6 +368,35 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }, Beagle.error);
         };
 
+        $scope.$on('setAdvisorMode', function(context, data)
+        {
+            $scope.isAdvisorMode = true;
+            $scope.advisorModeUserKey = data.userKey;
+
+            var params = {};
+            params.bot = chatbot.id;
+            params.user = data.userKey;
+
+            if(data.mode == 'human')
+            {
+                params.msg = ':humanWriteMode';
+            }
+            else if(data.mode == 'ai')
+            {
+                params.msg = ':aiWriteMode';
+            }
+            else
+            {
+                params.msg = ':humanViewMode';
+            }
+
+            params.options = {};
+
+            console.log('허이 : ', params);
+
+            Socket.emit('send_msg', params);
+        });
+
         $scope.$on('simulator-build', function()
         {
             clearBubble();
@@ -331,6 +411,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.$on('set-simulator-content', function(context, data)
         {
+            console.log(data.dialog);
+            clearBubble();
             for(var i=data.dialog.length-1; i>=0; i--)
             {
                 if(data.dialog[i].inOut)

@@ -28,48 +28,7 @@ var dialogs = [
         "task": {
             "name": "introduction"
         },
-        "children": [
-            {
-                "name": "1.병원 소개 이전으로",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default10"
-            },
-            {
-                "name": "1.벙원 소개 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default12"
-            }
-        ]
+        "children": []
     },
     {
         "name": "2.교통편",
@@ -120,46 +79,6 @@ var dialogs = [
         },
         "children": [
             {
-                "name": "2.교통편 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default13"
-            },
-            {
-                "name": "2.교통편 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default18"
-            },
-            {
                 "name": "2.1 버스",
                 "input": [
                     {
@@ -176,51 +95,7 @@ var dialogs = [
                     "name": "transportationway"
                 },
                 "id": "default3",
-                "children": [
-                    {
-                        "name": "New Dialog",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "2.1버스 이전으로 가기",
-                                    "nlp": "2 . 1 버스 이전 으로 가기"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "back"
-                            }
-                        ],
-                        "task": {
-                            "name": "이전으로 가기"
-                        },
-                        "id": "default19"
-                    },
-                    {
-                        "name": "2.1버스 처음으로 돌아가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "처음으로 돌아가기",
-                                    "nlp": "처음 으로 돌아가다"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "call",
-                                "dialogId": "startDialog",
-                                "dialogName": "시작"
-                            }
-                        ],
-                        "id": "default20"
-                    }
-                ]
+                "children": []
             }
         ]
     },
@@ -285,93 +160,12 @@ var dialogs = [
                     "name": "showdean"
                 },
                 "id": "default4",
-                "children": [
-                    {
-                        "name": "3.의료진 소개 내용 이전으로 가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "이전으로 가기",
-                                    "nlp": "이전 으로 가기"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "back"
-                            }
-                        ],
-                        "id": "default23"
-                    },
-                    {
-                        "name": "3.의료진 소개 내용 처음으로 돌아가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "처음으로 돌아가기",
-                                    "nlp": "처음 으로 돌아가다"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "call",
-                                "dialogId": "startDialog",
-                                "dialogName": "시작"
-                            }
-                        ],
-                        "id": "default24"
-                    }
-                ]
-            },
-            {
-                "name": "3.의료진 소개 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default21"
-            },
-            {
-                "name": "3.의료진 소개 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default22"
+                "children": []
             }
         ]
     },
     {
-        "name": "4.2월 이벤트",
+        "name": "4.4월 이벤트",
         "input": [
             {
                 "regexp": "^4"
@@ -384,27 +178,27 @@ var dialogs = [
             },
             {
                 "text": {
-                    "raw": "3월 이벤트",
-                    "nlp": "3 월 이벤트"
+                    "raw": "4월 이벤트",
+                    "nlp": "4 월 이벤트"
                 }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "3월 이벤트들은 아래와 같습니다.",
+                "text": "4월 이벤트들은 아래와 같습니다.",
                 "buttons": [
                     {
-                        "text": "1. 가슴 성형 이벤트"
+                        "text": "1. 성형 이벤트"
                     },
                     {
-                        "text": "2. 지방 흡입 이벤트"
+                        "text": "2. 피부 이벤트"
                     },
                     {
-                        "text": "3. 애플힙 이벤트"
+                        "text": "3. 4월 한정 이벤트"
                     },
                     {
-                        "text": "4. 그 외 3월 이벤트"
+                        "text": "4. 그 외 4월 이벤트"
                     },
                     {
                         "text": "이전으로 가기"
@@ -418,7 +212,7 @@ var dialogs = [
         "id": "default7",
         "children": [
             {
-                "name": "4.1감량제",
+                "name": "4.1성형이벤트",
                 "input": [
                     {
                         "regexp": "1"
@@ -430,16 +224,19 @@ var dialogs = [
                         "regexp": "3"
                     },
                     {
-                        "regexp": "/가슴 성형/"
+                        "regexp": "4"
                     },
                     {
-                        "regexp": "/지방 흡입/"
+                        "regexp": "/성형/"
                     },
                     {
-                        "regexp": "/애플힙/"
+                        "regexp": "/피부/"
                     },
                     {
-                        "regexp": "/4/"
+                        "regexp": "/한정/"
+                    },
+                    {
+                        "regexp": "/그 외/"
                     }
                 ],
                 "output": [
@@ -448,7 +245,12 @@ var dialogs = [
                         "text": "",
                         "type": "call",
                         "dialogName": "4.1.1대답",
-                        "dialogId": "default11"
+                        "dialogId": "default11",
+                        "if": "context.session.body.length===1"
+                    },
+                    {
+                        "kind": "Content",
+                        "text": "성형 이벤트들은 아래와 같습니다."
                     }
                 ],
                 "id": "default8",
@@ -463,140 +265,25 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "**+context.session.event.name+**\n\n+context.session.event.description+\n\n가격: +context.session.event.price+원"
+                                "text": "**+context.session.event.name+**\n+context.session.event.description+\n가격: \n+context.session.event.price+원",
+                                "if": "context.session.event.price!==\"\""
+                            },
+                            {
+                                "kind": "Content",
+                                "text": "**+context.session.event.name+**\n+context.session.event.description+",
+                                "if": "context.session.event.price===\"\""
                             }
                         ],
                         "task": {
                             "name": "showevent"
                         },
                         "id": "default11",
-                        "children": [
-                            {
-                                "name": "4.1.1대답 이전으로 가기",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "이전으로 가기",
-                                            "nlp": "이전 으로 가기"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "text": "",
-                                        "type": "back"
-                                    }
-                                ],
-                                "id": "default29"
-                            },
-                            {
-                                "name": "4.1.1대답 처음으로 돌아가기",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "처음으로 돌아가기",
-                                            "nlp": "처음 으로 돌아가다"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "text": "",
-                                        "type": "call",
-                                        "dialogId": "startDialog",
-                                        "dialogName": "시작"
-                                    }
-                                ],
-                                "id": "default30"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "4.1감량제 이전으로 가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "이전으로 가기",
-                                    "nlp": "이전 으로 가기"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "back"
-                            }
-                        ],
-                        "id": "default27"
-                    },
-                    {
-                        "name": "4.1감량제 처음으로 돌아가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "처음으로 돌아가기",
-                                    "nlp": "처음 으로 돌아가다"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "call",
-                                "dialogId": "startDialog",
-                                "dialogName": "시작"
-                            }
-                        ],
-                        "id": "default28"
+                        "children": []
                     }
                 ],
                 "task": {
-                    "name": ""
+                    "name": "event2month1"
                 }
-            },
-            {
-                "name": "4.2월 이벤트 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default25"
-            },
-            {
-                "name": "4.2월 이벤트 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default26"
             }
         ]
     },
@@ -692,46 +379,6 @@ var dialogs = [
         "id": "default14",
         "children": [
             {
-                "name": "5.상담 신청 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default31"
-            },
-            {
-                "name": "5.상담 신청 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default32"
-            },
-            {
                 "name": "5.1상담 신청",
                 "input": [
                     {
@@ -759,48 +406,7 @@ var dialogs = [
                     }
                 ],
                 "id": "default15",
-                "children": [
-                    {
-                        "name": "5.1상담 신청 이전으로 가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "이전으로 가기",
-                                    "nlp": "이전 으로 가기"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "back"
-                            }
-                        ],
-                        "id": "default33"
-                    },
-                    {
-                        "name": "5.1상담 신청 처음으로 돌아가기",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "처음으로 돌아가기",
-                                    "nlp": "처음 으로 돌아가다"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "text": "",
-                                "type": "call",
-                                "dialogId": "startDialog",
-                                "dialogName": "시작"
-                            }
-                        ],
-                        "id": "default34"
-                    }
-                ]
+                "children": []
             }
         ]
     },
@@ -837,48 +443,7 @@ var dialogs = [
             "name": "nlp_transportation"
         },
         "id": "default5",
-        "children": [
-            {
-                "name": "4.교통편 자연어 처리 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default35"
-            },
-            {
-                "name": "4.교통편 자연어 처리 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default36"
-            }
-        ]
+        "children": []
     },
     {
         "name": "5.의료진 자연어 처리",
@@ -899,48 +464,7 @@ var dialogs = [
         "task": {
             "name": "showdean"
         },
-        "children": [
-            {
-                "name": "5.의료진 자연어 처리 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default37"
-            },
-            {
-                "name": "5.의료진 자연어 처리 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default38"
-            }
-        ]
+        "children": []
     },
     {
         "name": "6.성형 원장",
@@ -1004,48 +528,7 @@ var dialogs = [
             "name": "nlp_원장"
         },
         "id": "default16",
-        "children": [
-            {
-                "name": "6.성형 원장 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default39"
-            },
-            {
-                "name": "6.성형 원장 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default40"
-            }
-        ]
+        "children": []
     },
     {
         "name": "7.전화번호",
@@ -1078,48 +561,7 @@ var dialogs = [
             }
         ],
         "id": "default9",
-        "children": [
-            {
-                "name": "7.전화번호 이전으로 가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "이전으로 가기",
-                            "nlp": "이전 으로 가기"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "back"
-                    }
-                ],
-                "id": "default43"
-            },
-            {
-                "name": "7.전화번호 처음으로 돌아가기",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "처음으로 돌아가기",
-                            "nlp": "처음 으로 돌아가다"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "text": "",
-                        "type": "call",
-                        "dialogId": "startDialog",
-                        "dialogName": "시작"
-                    }
-                ],
-                "id": "default44"
-            }
-        ]
+        "children": []
     }
 ];
 
@@ -1151,12 +593,18 @@ var commonDialogs = [
                     "raw": "대화 시작",
                     "nlp": "대화 시작"
                 }
+            },
+            {
+                "text": {
+                    "raw": "처음으로 돌아가기",
+                    "nlp": "처음으로 돌아가기"
+                }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "영원한 아름다움을 드리는 포에버성형외과의 포에버봇입니다.\n인공지능 포에버봇은 간단한 병원소개부터, 시술소개까지 많은 걸 알려드려요!\n나날이 학습하면서 더욱 발전하는 포에버봇이 되겠습니다.\n아직 부족하지만 많은 정보 알려드릴께요!\n\n인공지능 포에버봇에게 궁금하신 걸 물어보세요. \n\n예를들면,\n- 여우필은 어떤 피부타입에 좋나요?\n- 상담비가 있나요?\n- 트윙클링쌍커풀이 뭔가요? \n\n아니면, 아래의 목록 중 번호를 입력하셔도 되요!\n\n1. 병원 소개\n2. 교통편 \n3. 의료진 소개\n4. 3월 이벤트\n5. 상담 신청\n\n* 대화중 처음으로 가시려면 '처음' , 이전단계로 가시러면 '이전'을 입력해주세요."
+                "text": "영원한 아름다움을 드리는 포에버성형외과의 포에버봇입니다.\n인공지능 포에버봇은 간단한 병원소개부터, 시술소개까지 많은 걸 알려드려요!\n나날이 학습하면서 더욱 발전하는 포에버봇이 되겠습니다.\n아직 부족하지만 많은 정보 알려드릴께요!\n\n인공지능 포에버봇에게 궁금하신 걸 물어보세요. \n\n예를들면,\n- 여우필은 어떤 피부타입에 좋나요?\n- 상담비가 있나요?\n- 트윙클링쌍커풀이 뭔가요? \n\n아니면, 아래의 목록 중 번호를 입력하셔도 되요!\n\n1. 병원 소개\n2. 교통편 \n3. 의료진 소개\n4. 4월 이벤트\n5. 상담 신청\n\n* 대화중 처음으로 가시려면 '처음' , 이전단계로 가시러면 '이전'을 입력해주세요."
             }
         ],
         "task": {
@@ -1177,6 +625,12 @@ var commonDialogs = [
                 "text": {
                     "raw": "이전",
                     "nlp": "이전"
+                }
+            },
+            {
+                "text": {
+                    "raw": "이전으로 가기",
+                    "nlp": "이전으로 가기"
                 }
             }
         ],

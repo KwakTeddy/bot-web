@@ -31,6 +31,12 @@ var DialogGraphManager = require('./answer/dm.js');
                 {
                     redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
+                    if(!output)
+                    {
+                        var dialog = bot.dialogMap['noanswer'];
+                        output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                    }
+
                     output = OutputManager.make(context, {}, {}, output);
                     callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
@@ -67,6 +73,12 @@ var DialogGraphManager = require('./answer/dm.js');
                         {
                             //테스트 필요
                             redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                            if(!output)
+                            {
+                                var dialog = bot.dialogMap['noanswer'];
+                                output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                            }
 
                             output = OutputManager.make(context, {}, {}, output);
                             callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
@@ -109,6 +121,12 @@ var DialogGraphManager = require('./answer/dm.js');
                             //테스트 필요
                             redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
 
+                            if(!output)
+                            {
+                                var dialog = bot.dialogMap['noanswer'];
+                                output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                            }
+
                             output = OutputManager.make(context, {}, {}, output);
                             callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
@@ -136,6 +154,12 @@ var DialogGraphManager = require('./answer/dm.js');
                 var dialogInstance = ContextManager.createDialogInstance(bot.commonDialogs[0], {});
                 DialogGraphManager.execWithRecord(bot, context, dialogInstance, function(output)
                 {
+                    if(!output)
+                    {
+                        var dialog = bot.dialogMap['noanswer'];
+                        output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+                    }
+
                     output = OutputManager.make(context, {}, {}, output);
                     callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
 
@@ -174,6 +198,38 @@ var DialogGraphManager = require('./answer/dm.js');
             bot.commonDialogs = [];
             context.session.dialogCursor = undefined;
             this.reloadBotFiles(bot, context, error, callback);
+        }
+        else if(inputRaw == ':humanWriteMode' || inputRaw == ':aiWriteMode')
+        {
+            bot.options.isHuman = (inputRaw == ':humanWriteMode' ? true : false);
+            redis.set(contextKey, JSON.stringify(context), function(err, reply)
+            {
+                if(err)
+                {
+                    error.delegate(err);
+                }
+                else
+                {
+                    //테스트 필요
+                    redis.expireat(contextKey, parseInt((+new Date)/1000) + (1000 * 60 * 5));
+
+                    // callback(null, { type: 'dialog', output: { kind: 'Content', text: '상담원과 연결되었습니다.' }});
+
+                    console.log(chalk.green('================================'));
+                    console.log();
+                }
+            });
+        }
+        else if(inputRaw == ':humanViewMode')
+        {
+            if(bot.options.isHuman)
+            {
+                callback(null, { type: 'setMode', mode: 'human' });
+            }
+            else
+            {
+                callback(null, { type: 'setMode', mode: 'ai' });
+            }
         }
         else
         {

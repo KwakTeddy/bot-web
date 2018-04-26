@@ -202,12 +202,14 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     }
                     else
                     {
-                        var normalCount = 0;
+                        var maxNormalCount = -1;
+                        var maxNormalIndex = -1;
                         var maxCount = -1;
                         var targetInput = undefined;
                         var maxPoint = -1;
                         for(var k=0; k<matchedList[i].input.length; k++) // 멀티 input인경우
                         {
+                            var normalCount = 0;
                             var count = 0;
                             var point = 0;
                             var lastIndex = -1;
@@ -243,15 +245,15 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                 {
                                     if(nlp[j].pos == 'Noun')
                                     {
-                                        count += 3;
+                                        count += 1.3;
                                     }
                                     else if(nlp[j].pos == 'Verb')
                                     {
-                                        count += 2;
+                                        count += 1.2;
                                     }
                                     else
                                     {
-                                        count += 1;
+                                        count += 1.1;
                                     }
 
                                     normalCount++;
@@ -292,10 +294,16 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                 maxCount = count;
                                 targetInput = input;
                             }
+
+                            if(maxNormalCount == -1 || maxNormalCount < normalCount)
+                            {
+                                maxNormalCount = normalCount;
+                                maxNormalIndex = matchedList[i].input[k];
+                            }
                         }
 
-                        var matchRate = ((count / nlpCount) + (normalCount / matchedList[i].input.length)) / 2;
-                        matchedList[i].matchRate = matchRate;
+                        var matchRate = (maxCount / targetInput.split(' ').length);
+                        matchedList[i].matchRate = (matchRate >= 100 ? 100 : matchRate);
                         matchedList[i].added += point;
 
                         // if(context.session.currentCategory && matchedList[i].category)

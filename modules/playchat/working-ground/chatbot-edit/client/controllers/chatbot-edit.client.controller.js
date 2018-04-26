@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', 'LanguageService', '$rootScope', 'FileUploader', function ($window, $scope, $resource, $cookies, LanguageService, $rootScope, FileUploader)
+    angular.module('playchat').controller('ChatbotEditController', ['$window', '$scope', '$resource', '$cookies', '$location', 'LanguageService', '$rootScope', 'FileUploader', function ($window, $scope, $resource, $cookies, $location, LanguageService, $rootScope, FileUploader)
     {
         $scope.$parent.changeWorkingGroundName(LanguageService('Bot Profile'), '/modules/playchat/working-ground/chatbot-edit/client/imgs/botsetting.png');
 
@@ -18,6 +18,12 @@
         $scope.openShareModal = false;
         $scope.openUploadModal = false;
         $scope.share = {};
+
+        $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
+        if($location.host() == 'localhost')
+            $scope.host = 'http://' + $scope.host;
+        else
+            $scope.host = 'https://' + $scope.host;
 
         $scope.botImage = '';
 

@@ -1553,7 +1553,87 @@ module.exports = function(bot)
     {
         action: function (dialog, context, callback)
         {
-            callback();
+            var curCustomer = context.session.curCustomer;
+
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_QR_PAYMENT';
+            // options.json.param = [
+            //     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+            //     { key: 'I_HPNUM', val: curCustomer.mobile },
+            //     { key : "I_BILLMON", val: context.session.totalSelectedMonth},
+            //     { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
+            // ];
+            // options.json.param = [
+            //     { key: 'I_VKONT', val: '106141397'},
+            //     { key: 'I_HPNUM', val: '01055948807' },
+            //     { key: "I_BILLMON", val: 201803},
+            //     { key: 'I_BETRWP', val: '83020'}
+            // ];
+
+            // options.json.param = [
+            //     { key: 'I_VKONT', val: '105616488'},
+            //     { key: 'I_HPNUM', val: '01036623810' },
+            //     { key: "I_BILLMON", val: 201804},
+            //     { key: 'I_BETRWP', val: '101020'}
+            // ];
+
+            // options.json.param = [
+            //     { key: 'I_VKONT', val: '303580417'},
+            //     { key: 'I_HPNUM', val: '01045044720' },
+            //     { key: "I_BILLMON", val: 201802},
+            //     { key: 'I_BETRWP', val: '0'}
+            // ];
+
+            ////options.timeout = timeout;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                }
+                else
+                {
+
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                        return callback();
+                    }
+
+                    if(body.E_RETCD == 'E')
+                    {
+                        errorHandler(dialog, body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        var url = body.E_URL;
+                        dialog.output[0].text = body.E_RETMG + '\n자세히 보기를 클릭해주세요.';
+                        dialog.output[0].buttons = [
+                            {
+                                text: '자세히 보기',
+                                url: url
+                            },
+                            {
+                                text: '이전'
+                            },
+                            {
+                                text: '처음'
+                            }
+                        ];
+                        console.log(body);
+                    }
+                    else
+                    {
+                        errorHandler(dialog, body);
+                    }
+
+                }
+                callback();
+
+            });
         }
     });
 

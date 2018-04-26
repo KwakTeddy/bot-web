@@ -160,7 +160,15 @@ exports.findTasks = function(req, res)
 
                 };
 
-                utils.requireNoCache(filePath + '/' + result[i], true)(bot);
+                var f = utils.requireNoCache(filePath + '/' + result[i], true);
+                if(typeof f == 'function')
+                {
+                    f(bot);
+                }
+                else
+                {
+                    console.log(result[i] + ' is not a function');
+                }
             })(i);
             // var content = fs.readFileSync(filePath + '/' + result[i]);
             // if(content)

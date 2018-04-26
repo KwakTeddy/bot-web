@@ -9,6 +9,10 @@ var facebook = require('./channel/facebook.js');
 var socketChannel = require('./channel/socket.js');
 var line = require('./channel/line.js');
 var navertalk = require('./channel/navertalk.js');
+var telegram = require('./channel/telegram.js');
+var wechat = require('./channel/wechat.js');
+
+var demo = require('../modules/demo/server/controllers/demo.server.controller.js');
 
 (function()
 {
@@ -22,9 +26,11 @@ var navertalk = require('./channel/navertalk.js');
         io.on('connection', function (socket)
         {
             socketChannel.init(socket);
+            demo(io, socket);
         });
 
         app.route('/chat/:bot/message').post(rest.message);
+
         //
         // // 카카오톡
         app.route('/kakao/:bot/keyboard').get(kakao.keyboard);
@@ -46,10 +52,12 @@ var navertalk = require('./channel/navertalk.js');
         //
         // // 네이버 톡톡
         app.route('/navertalk/:botId/webhook').post(navertalk.message);
+
+        app.route('/telegram/:token').post(function(req, res){ telegram.message.call(telegram, req, res); });
         //
         // // wechat
-        // app.route('/wechat/:bot/webhook').get(wechat.messageGet);
-        // app.route('/wechat/:bot/webhook').post(wechat.message);
+        app.route('/wechat/:bot/webhook').get(function(req, res){ wechat.get.call(wechat, req, res); });
+        app.route('/wechat/:bot/webhook').post(function(req, res){ wechat.post.call(wechat, req, res); });
     };
 
     module.exports = new Channel();

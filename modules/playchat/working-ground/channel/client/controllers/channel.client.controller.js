@@ -7,6 +7,8 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
     $scope.$parent.loaded('working-ground');
 
     var FacebookPageService = $resource('/auth/facebook/page');
+    var TelegramService = $resource('/api/:botId/channel/telegram', { botId: '@botId' });
+    var WeChatService = $resource('/api/:botId/channel/wechat', { botId: '@botId' });
     var LineAccessTokenService = $resource('/api/:botId/channel/line', { botId: '@botId' });
 
     $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
@@ -29,12 +31,14 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
         kakao: false,
         naver: false,
         line: false,
-        facebook: false
+        facebook: false,
+        telegram: false
     };
 
     $scope.lineAccessToken = '';
     $scope.lineChannelId = '';
     $scope.lineChannelSecret = '';
+    $scope.telegramToken = '';
 
     var user = $cookies.getObject('user');
 
@@ -55,6 +59,19 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
             $scope.lineAccessToken = result.accessToken;
             $scope.lineChannelSecret = result.secret;
             $scope.lineChannelId = result.channelId;
+        });
+
+        TelegramService.get({ botId: chatbot.id }, function(result)
+        {
+            $scope.telegramToken = result.token || '';
+        });
+
+        WeChatService.get({ botId: chatbot.id }, function(result)
+        {
+            console.log('리절트 : ', result);
+
+            $scope.wechatAppId = result.appId;
+            $scope.wechatKey = result.encodingAESKey;
         });
 
         $scope.saveLineInfo = function()
@@ -253,6 +270,45 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         }
                     }
                 });
+            });
+        };
+
+        $scope.saveWeChatToken = function(e)
+        {
+            var encodingAESKey = $('#encodingAESKey').val();
+            var appId = $('#wechatAppId').val();
+
+            if(!encodingAESKey || !appId)
+            {
+                return alert('AppId와 encodingAESKey를 입력해주세요');
+            }
+
+            WeChatService.save({ botId: chatbot.id, appId: appId, encodingAESKey: encodingAESKey }, function()
+            {
+                alert(LanguageService('Connected'));
+                $scope.help.wechat = false;
+            },
+            function(err)
+            {
+                console.error(err);
+                alert('Error');
+            });
+        };
+
+        $scope.connectTelegram = function(e)
+        {
+            var prev = e.currentTarget.previousElementSibling;
+            var token = prev.value;
+
+            TelegramService.save({ botId: chatbot.id, token: token }, function()
+            {
+                alert(LanguageService('Connected'));
+                $scope.help.telegram = false;
+            },
+            function(err)
+            {
+                console.error(err);
+                alert('Error');
             });
         };
 

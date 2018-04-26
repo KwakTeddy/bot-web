@@ -206,41 +206,41 @@ var Transaction = require('../utils/transaction.js');
             if(Array.isArray(task.action))
             {
                 async.eachSeries(task.action, function(t, next)
-                {
-                    if(typeof t == 'function')
                     {
-                        try
+                        if(typeof t == 'function')
                         {
-                            t.call(t, dialogInstance, context, next);
+                            try
+                            {
+                                t.call(t, dialogInstance, context, next);
+                            }
+                            catch(err)
+                            {
+                                console.error(err);
+                                Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
+                            }
                         }
-                        catch(err)
+                        else if(typeof t == 'string')
                         {
-                            console.error(err);
-                            Logger.analysisLog('task', { logs: JSON.stringify(err) }, context.user.userKey);
+                            var target = bot.tasks[t];
+                            if(target)
+                            {
+                                that.executeTask(bot, context, dialogInstance, target, next);
+                            }
+                            else
+                            {
+                                console.log(t + ' is undefined');
+                                next();
+                            }
                         }
-                    }
-                    else if(typeof t == 'string')
+                        else if(typeof t == 'object')
+                        {
+                            that.executeTask(bot, context, dialogInstance, t, next);
+                        }
+                    },
+                    function()
                     {
-                        var target = bot.tasks[t];
-                        if(target)
-                        {
-                            that.executeTask(bot, context, dialogInstance, target, next);
-                        }
-                        else
-                        {
-                            console.log(t + ' is undefined');
-                            next();
-                        }
-                    }
-                    else if(typeof t == 'object')
-                    {
-                        that.executeTask(bot, context, dialogInstance, t, next);
-                    }
-                },
-                function()
-                {
-                    callback();
-                });
+                        callback();
+                    });
             }
             else
             {
@@ -249,7 +249,7 @@ var Transaction = require('../utils/transaction.js');
         }
         else
         {
-            Logger.analysisLog('task', { logs: name + ' undefined' }, context.user.userKey);
+            // Logger.analysisLog('task', { logs: name + ' undefined' }, context.user.userKey);
             callback();
         }
     };

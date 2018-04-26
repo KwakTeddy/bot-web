@@ -137,9 +137,9 @@
                 $scope.diagram.turnTaking = 0;
 
                 var context = data;
-                if(context.nlu.nlp)
+                if(context.nlp)
                 {
-                    $scope.diagram.nlp = context.nlu.nlp;
+                    $scope.diagram.nlp = context.nlp;
                 }
                 else
                 {
@@ -152,19 +152,20 @@
                     {
                         $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
                     }
+                }
 
-                    if(context.nlu.dialog.intent)
+                console.log('인텐트 : ', context.intents);
+                if(context.intents.length > 0)
+                {
+                    $scope.diagram.intent = context.intents[0];
+                    if(!isNaN($scope.diagram.intent.matchRate))
                     {
-                        $scope.diagram.intent = context.nlu.dialog.intent;
-                        if(!isNaN($scope.diagram.intent.matchRate))
-                        {
-                            $scope.diagram.intent.matchRate = parseInt($scope.diagram.intent.matchRate * 10) / 10;
-                        }
+                        $scope.diagram.intent.matchRate = parseInt($scope.diagram.intent.matchRate * 10) / 10;
                     }
-                    else
-                    {
-                        $scope.diagram.intent = undefined;
-                    }
+                }
+                else
+                {
+                    $scope.diagram.intent = undefined;
                 }
 
                 if(context.entities && Object.keys(context.entities).length > 0)
@@ -183,39 +184,46 @@
                     $scope.diagram.entity = undefined;
                 }
 
-                // if(context.turnTaking)
-                // {
-                //     $scope.diagram.turnTaking = context.turnTaking;
-                // }
-                // else
-                // {
-                //     $scope.diagram.turnTaking = undefined;
-                // }
-
-                if(Object.keys(context.nlu.contextInfo.contextHistory[0]).length > 0)
+                if(context.turnTaking)
                 {
-                    $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
+                    $scope.diagram.turnTaking = context.turnTaking;
+                }
+                else
+                {
+                    $scope.diagram.turnTaking = undefined;
+                }
+
+                if(context.context)
+                {
+                    $scope.diagram.context = context.context;
                 }
                 else
                 {
                     $scope.diagram.context = undefined;
                 }
 
-                if(context.nlu.matchInfo.qa.length > 0)
+                // if(Object.keys(context.nlu.contextInfo.contextHistory[0]).length > 0)
+                // {
+                //     $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
+                // }
+                // else
+                // {
+                //     $scope.diagram.context = undefined;
+                // }
+
+                if(context.suggestion && context.suggestion.qa.length > 0)
                 {
-                    // angular.element('#suggestionDiagram').css('height', '220px');
-                    // $scope.diagram.suggestion = [];
                     var temp = [];
-                    for(var i=0; i<context.nlu.matchInfo.qa.length && i < 5; i++)
+                    for(var i=0; i<context.suggestion.qa.length && i < 5; i++)
                     {
-                        var matchRate = parseInt((context.nlu.matchInfo.qa[i].matchRate || 0) * 10);
+                        var matchRate = parseInt((context.suggestion.qa[i].matchRate || 0) * 10);
 
                         // if(matchRate == 0)
                         //     continue;
 
-                        context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
+                        context.suggestion.qa[i].matchRate = matchRate / 10;
 
-                        temp.push(context.nlu.matchInfo.qa[i]);
+                        temp.push({ output: context.suggestion.qa[i].output[0], matchRate: context.suggestion.qa[i].matchRate });
                     }
 
                     if(temp.length == 0)
@@ -244,6 +252,51 @@
 
                     console.log('turnTaking: ', $scope.diagram.turnTaking);
                 }
+                //
+                //
+                // if(context.nlu.matchInfo.qa.length > 0)
+                // {
+                //     // angular.element('#suggestionDiagram').css('height', '220px');
+                //     // $scope.diagram.suggestion = [];
+                //     var temp = [];
+                //     for(var i=0; i<context.nlu.matchInfo.qa.length && i < 5; i++)
+                //     {
+                //         var matchRate = parseInt((context.nlu.matchInfo.qa[i].matchRate || 0) * 10);
+                //
+                //         // if(matchRate == 0)
+                //         //     continue;
+                //
+                //         context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
+                //
+                //         temp.push(context.nlu.matchInfo.qa[i]);
+                //     }
+                //
+                //     if(temp.length == 0)
+                //     {
+                //         // recognizeStart();
+                //         $scope.diagram.turnTaking = getRandomInt(1, 8) / 10;
+                //     }
+                //     else
+                //     {
+                //         temp.sort(function(a, b)
+                //         {
+                //             return b.matchRate - a.matchRate;
+                //         });
+                //
+                //         if(temp[0].matchRate < 1)
+                //             temp[0].matchRate += 0.05;
+                //         $scope.diagram.turnTaking = 1;
+                //         $scope.diagram.suggestion = temp;
+                //
+                //         setTimeout(function()
+                //         {
+                //             var height = angular.element('#suggestionDiagram table').css('height');
+                //             angular.element('#suggestionDiagram').css('height', height.replace('px', '')*1 + 40 + 'px');
+                //         }, 100);
+                //     }
+                //
+                //     console.log('turnTaking: ', $scope.diagram.turnTaking);
+                // }
                 else
                 {
                     // recognizeStart();
@@ -264,46 +317,46 @@
                 }
 
                 console.log('실행');
-                analyticsTimer = setTimeout(function()
-                {
-                    $scope.diagram.nlp = undefined;
-                    $scope.diagram.context = undefined;
-                    $scope.diagram.intent = undefined;
-                    $scope.diagram.entity = undefined;
-                    $scope.diagram.turnTaking = undefined;
-                    $scope.diagram.emotion = undefined;
-
-                    $scope.diagram.profile = undefined;
-
-                    if($scope.diagram.suggestion[0])
-                    {
-                        var msg = new SpeechSynthesisUtterance();
-                        var voices = window.speechSynthesis.getVoices();
-                        msg.voice = voices[0];
-                        msg.rate = 1;
-                        msg.pitch = 1;
-                        msg.text = $scope.diagram.suggestion[0].output;
-
-                        console.log('우와 : ', $scope.diagram.suggestion[0]);
-
-                        msg.onend = function(e) {
-                            console.log('Finished in ' + event.elapsedTime + ' seconds.');
-
-                            $scope.diagram.suggestion = [];
-                        };
-
-                        speechSynthesis.speak(msg);
-                    }
-
-                    console.log($scope.diagram.suggestion);
-
-                }, 1000);
+                // analyticsTimer = setTimeout(function()
+                // {
+                //     $scope.diagram.nlp = undefined;
+                //     $scope.diagram.context = undefined;
+                //     $scope.diagram.intent = undefined;
+                //     $scope.diagram.entity = undefined;
+                //     $scope.diagram.turnTaking = undefined;
+                //     $scope.diagram.emotion = undefined;
+                //
+                //     $scope.diagram.profile = undefined;
+                //
+                //     // if($scope.diagram.suggestion[0])
+                //     // {
+                //     //     var msg = new SpeechSynthesisUtterance();
+                //     //     var voices = window.speechSynthesis.getVoices();
+                //     //     msg.voice = voices[0];
+                //     //     msg.rate = 1;
+                //     //     msg.pitch = 1;
+                //     //     msg.text = $scope.diagram.suggestion[0].output;
+                //     //
+                //     //     console.log('우와 : ', $scope.diagram.suggestion[0]);
+                //     //
+                //     //     msg.onend = function(e) {
+                //     //         console.log('Finished in ' + event.elapsedTime + ' seconds.');
+                //     //
+                //     //         $scope.diagram.suggestion = [];
+                //     //     };
+                //     //
+                //     //     speechSynthesis.speak(msg);
+                //     // }
+                //
+                //     console.log($scope.diagram.suggestion);
+                //
+                // }, 5000);
             });
 
             var sendSocket = function(text)
             {
-                Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
-                Socket.emit('analytics', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
+                // Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'ko' } });
+                Socket.emit('analytics', { bot: 'blank_com2best_1523004973626', user: 'demo-user', msg: text, options: { language: 'ko' } });
             };
 
             var makeRecognition = function()
@@ -485,7 +538,7 @@
 
             function recognizeStart() {
 
-                recognition.lang = 'ko-KR';
+                recognition.lang = 'zh-cn';
                 // console.log(recognition);
                 recognition.start();
 

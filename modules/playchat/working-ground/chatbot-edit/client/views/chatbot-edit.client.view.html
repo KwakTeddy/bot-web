@@ -22,6 +22,9 @@
                 <div style="margin: 10px 0;">
                     <span>{{ lan('Bot Id') }} : </span> <span style="font-weight: bold;">{{ chatbot.id }}</span>
                 </div>
+                <div style="margin: 10px 0;">
+                    <span>{{ lan('Mobile Web Url') }} : </span> <span style="font-weight: bold;">{{ host }}/mobile/chatbot/{{ chatbot.id }}</span>
+                </div>
                 <div style="display: inline-block;">
                     <span>{{ lan('Bot Name') }}</span>
                     <input type="text" ng-model="chatbot.name">

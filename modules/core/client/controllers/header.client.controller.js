@@ -26,6 +26,7 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
     $scope.languageChange = function()
     {
+
         UserService.save({ language: $scope.language }, function(result)
         {
             if(!user) user = {};
