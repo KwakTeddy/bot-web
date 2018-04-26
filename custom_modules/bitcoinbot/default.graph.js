@@ -364,10 +364,10 @@ var dialogs = [
                 "name": "ico",
                 "input": [
                     {
+                        "intent": "ICO",
                         "types": [
-                            "ico"
-                        ],
-                        "intent": "ICO"
+                            "icos"
+                        ]
                     }
                 ],
                 "output": [
@@ -377,9 +377,31 @@ var dialogs = [
                     }
                 ],
                 "task": {
-                    "name": "showico"
+                    "name": "showICO2"
                 },
-                "id": "default34"
+                "id": "default34",
+                "children": [
+                    {
+                        "name": "4 Upcoming ICO info-Clone",
+                        "input": [
+                            {
+                                "types": [
+                                    "ICO"
+                                ]
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+"
+                            }
+                        ],
+                        "id": "default26-Clone",
+                        "task": {
+                            "name": "showICO1"
+                        }
+                    }
+                ]
             },
             {
                 "name": "3 Coins price",
@@ -517,36 +539,18 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Content",
-                                        "text": "Select the ICO if you want to see the specify information."
+                                        "kind": "Action",
+                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'AI crypto ICO'",
+                                        "type": "call",
+                                        "dialogId": "default1",
+                                        "dialogName": "1 Start 2"
                                     }
                                 ],
                                 "task": {
-                                    "name": "activeICO1"
+                                    "name": ""
                                 },
                                 "id": "default27",
-                                "children": [
-                                    {
-                                        "name": "4 Active ICO info1",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "activeICO"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nReceived: +context.session.ICOinfo.now+ /  +context.session.ICOinfo.now_percent+\nGoal: +context.session.ICOinfo.goal+\nEnd Date: +context.session.ICOinfo.date+"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "showICO"
-                                        },
-                                        "id": "default28"
-                                    }
-                                ]
+                                "children": []
                             },
                             {
                                 "name": "4 Active ICO info",
@@ -600,78 +604,17 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Content",
-                                        "text": "Select the ICO if you want to see the specify information."
+                                        "kind": "Action",
+                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'AI crypto ICO'",
+                                        "type": "call",
+                                        "dialogId": "default1",
+                                        "dialogName": "1 Start 2"
                                     }
                                 ],
                                 "id": "default29",
-                                "children": [
-                                    {
-                                        "name": "4 Upcoming ICO2",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "MORE",
-                                                    "nlp": "MORE"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Select the ICO if you want to see the specify information."
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "upcomingICO2"
-                                        },
-                                        "id": "default30",
-                                        "children": [
-                                            {
-                                                "name": "4 Upcoming ICO3",
-                                                "input": [
-                                                    {
-                                                        "types": [
-                                                            "upcomingICO"
-                                                        ]
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "Project: +context.session.ICOinfo1.name+\nInterest: +context.session.ICOinfo1.rate+\nCategory: +context.session.ICOinfo1.category+\nGoal: +context.session.ICOinfo1.goal+\nStart Date: +context.session.ICOinfo1.date+"
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "showICO1"
-                                                },
-                                                "id": "default32"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "4 Upcoming ICO info1",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "upcomingICO"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Project: +context.session.ICOinfo1.name+\nInterest: +context.session.ICOinfo1.rate+\nCategory: +context.session.ICOinfo1.category+\nGoal: +context.session.ICOinfo1.goal+\nStart Date: +context.session.ICOinfo1.date+"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "showICO1"
-                                        },
-                                        "id": "default31"
-                                    }
-                                ],
+                                "children": [],
                                 "task": {
-                                    "name": "upcomingICO1"
+                                    "name": ""
                                 }
                             },
                             {
@@ -686,12 +629,12 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Project: +context.session.ICOinfo1.name+\nInterest: +context.session.ICOinfo1.rate+\nCategory: +context.session.ICOinfo1.category+\nGoal: +context.session.ICOinfo1.goal+\nStart Date: +context.session.ICOinfo1.date+"
+                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+"
                                     }
                                 ],
                                 "id": "default26",
                                 "task": {
-                                    "name": "showICO1"
+                                    "name": "showICO"
                                 }
                             }
                         ]
