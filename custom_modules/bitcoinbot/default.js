@@ -54,8 +54,6 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback) {
 
-            // context.session.IsNew === undefined;
-            // callback();
             context.session.coinsprice = [];
 
             if(context.session.IsNew==='not') {
