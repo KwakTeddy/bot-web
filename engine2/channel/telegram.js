@@ -145,8 +145,6 @@ const Bot = mongoose.model('Bot');
                                 else
                                 {
                                     console.log('바디 : ', body);
-
-                                    res.end();
                                 }
                             });
                         }
