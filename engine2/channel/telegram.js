@@ -148,7 +148,7 @@ const Bot = mongoose.model('Bot');
                             });
                         }
 
-                        options.url = 'sendMessage';
+                        options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
                         that.makeText(options, chatId, result);
 
                         if(result.output.buttons)
