@@ -2615,7 +2615,7 @@ module.exports = function(bot)
 
                                 var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
 
-                                if (difference > 0) {
+                                if (difference > 30) {
                                     crawling(options);
                                 }
                                 else {
