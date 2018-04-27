@@ -17,10 +17,7 @@ const Bot = mongoose.model('Bot');
             text: result.output.text
         };
 
-        if(result.output.text.indexOf('http://') != -1 || result.output.text.indexOf('https://') != -1)
-        {
-            options.form.parse_mode = 'Markdown';
-        }
+        options.form.parse_mode = 'Markdown';
     };
 
     Telegram.prototype.makePhoto = function(options, chatId, result)
@@ -30,6 +27,8 @@ const Bot = mongoose.model('Bot');
             photo: result.output.image.url,
             caption: result.output.text
         }
+
+        options.form.parse_mode = 'Markdown';
     };
 
     Telegram.prototype.message = function(req, res)
@@ -133,118 +132,8 @@ const Bot = mongoose.model('Bot');
 
                         if(result.output.image)
                         {
-                            options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
-                            that.makeText(options, chatId, result);
-
-                            console.log('옵션스 : ', options);
-                            request(options, function(err, response, body)
-                            {
-                                if(err)
-                                {
-                                    console.error(err);
-                                }
-                                else
-                                {
-                                    options.url = 'https://api.telegram.org/bot' + token + '/sendPhoto';
-                                    that.makePhoto(options, chatId, result);
-
-                                    if(result.output.buttons)
-                                    {
-                                        var inlineKeyboard = {
-                                            inline_keyboard: []
-                                        };
-
-                                        var keyboard = [];
-                                        for(var i=0; i<result.output.buttons.length; i++)
-                                        {
-                                            if(result.output.buttons[i].url)
-                                            {
-
-                                            }
-                                            else
-                                            {
-                                                var callback_data = { text: result.output.buttons[i].text };
-                                                if(data.message)
-                                                {
-                                                    callback_data.replyId = data.message.message_id;
-                                                }
-
-                                                keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
-
-                                                inlineKeyboard.inline_keyboard.push(keyboard);
-                                                keyboard = [];
-                                            }
-                                        }
-
-                                        inlineKeyboard.inline_keyboard.push(keyboard);
-
-                                        options.form.reply_markup = JSON.stringify(inlineKeyboard);
-                                    }
-
-                                    if(replyId)
-                                    {
-                                        options.form.reply_to_message_id = replyId;
-                                    }
-
-                                    console.log('옵션스 : ', options);
-                                    request(options, function(err, response, body)
-                                    {
-                                        if(err)
-                                        {
-                                            console.error(err);
-                                        }
-                                        else
-                                        {
-                                            console.log('바디 : ', body);
-                                            res.end();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        else
-                        {
-                            options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
-                            that.makeText(options, chatId, result);
-
-                            if(result.output.buttons)
-                            {
-                                var inlineKeyboard = {
-                                    inline_keyboard: []
-                                };
-
-                                var keyboard = [];
-                                for(var i=0; i<result.output.buttons.length; i++)
-                                {
-                                    if(result.output.buttons[i].url)
-                                    {
-
-                                    }
-                                    else
-                                    {
-                                        var callback_data = { text: result.output.buttons[i].text };
-                                        if(data.message)
-                                        {
-                                            callback_data.replyId = data.message.message_id;
-                                        }
-
-                                        keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
-
-                                        inlineKeyboard.inline_keyboard.push(keyboard);
-                                        keyboard = [];
-                                    }
-                                }
-
-                                inlineKeyboard.inline_keyboard.push(keyboard);
-
-                                options.form.reply_markup = JSON.stringify(inlineKeyboard);
-                            }
-
-                            if(replyId)
-                            {
-                                options.form.reply_to_message_id = replyId;
-                            }
-
+                            options.url = 'https://api.telegram.org/bot' + token + '/sendPhoto';
+                            that.makePhoto(options, chatId, result);
                             console.log('옵션스 : ', options);
                             request(options, function(err, response, body)
                             {
@@ -255,11 +144,65 @@ const Bot = mongoose.model('Bot');
                                 else
                                 {
                                     console.log('바디 : ', body);
-
-                                    res.end();
                                 }
                             });
                         }
+
+                        options.url = 'sendMessage';
+                        that.makeText(options, chatId, result);
+
+                        if(result.output.buttons)
+                        {
+                            var inlineKeyboard = {
+                                inline_keyboard: []
+                            };
+
+                            var keyboard = [];
+                            for(var i=0; i<result.output.buttons.length; i++)
+                            {
+                                if(result.output.buttons[i].url)
+                                {
+
+                                }
+                                else
+                                {
+                                    var callback_data = { text: result.output.buttons[i].text };
+                                    if(data.message)
+                                    {
+                                        callback_data.replyId = data.message.message_id;
+                                    }
+
+                                    keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
+
+                                    inlineKeyboard.inline_keyboard.push(keyboard);
+                                    keyboard = [];
+                                }
+                            }
+
+                            inlineKeyboard.inline_keyboard.push(keyboard);
+
+                            options.form.reply_markup = JSON.stringify(inlineKeyboard);
+                        }
+
+                        if(replyId)
+                        {
+                            options.form.reply_to_message_id = replyId;
+                        }
+
+                        console.log('옵션스 : ', options);
+                        request(options, function(err, response, body)
+                        {
+                            if(err)
+                            {
+                                console.error(err);
+                            }
+                            else
+                            {
+                                console.log('바디 : ', body);
+
+                                res.end();
+                            }
+                        });
                     },
                     function(err)
                     {
