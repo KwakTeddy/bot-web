@@ -275,16 +275,147 @@ var dialogs = [
                 "id": "default9"
             },
             {
+                "name": "coin price or information",
+                "input": [
+                    {
+                        "types": [
+                            "coins2"
+                        ],
+                        "intent": "price"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "Coin: +context.session.coinsinfo[0].name+\nShortname: +context.session.coinsinfo[0].shortname+\nPrice: +context.session.coinsinfo[0].price+\nVolume(24h):  +context.session.coinsinfo[0].volume+\nChange(24h): +context.session.coinsinfo[0].change+\nPrice Graph:"
+                    }
+                ],
+                "task": {
+                    "name": "showcoins2"
+                },
+                "id": "default22",
+                "children": [
+                    {
+                        "name": "3 Coins price info2",
+                        "input": [
+                            {
+                                "types": [
+                                    "coins"
+                                ]
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
+                            }
+                        ],
+                        "id": "default16-Clone",
+                        "task": {
+                            "name": "showcoins"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "coin chart",
+                "input": [
+                    {
+                        "intent": "coinchart",
+                        "types": [
+                            "chart2"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "Coin: +context.session.coinsinfo[0].name+\nShortname: +context.session.coinsinfo[0].shortname+\n\nPrice Graph:"
+                    }
+                ],
+                "task": {
+                    "name": "showchart2"
+                },
+                "id": "default33",
+                "children": [
+                    {
+                        "name": "3 Coins char info2",
+                        "input": [
+                            {
+                                "types": [
+                                    "chart"
+                                ]
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\n\nPrice Graph:"
+                            }
+                        ],
+                        "id": "default16-Clone-Clone",
+                        "task": {
+                            "name": "showchart"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "ico",
+                "input": [
+                    {
+                        "intent": "ICO",
+                        "types": [
+                            "icos"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "Project: +context.session.ICOinfo2.name+\nInterest: +context.session.ICOinfo2.rate+\nCategory: +context.session.ICOinfo2.category+\nGoal: +context.session.ICOinfo2.goal+\nStart Date: +context.session.ICOinfo2.date+"
+                    }
+                ],
+                "task": {
+                    "name": "showICO2"
+                },
+                "id": "default34",
+                "children": [
+                    {
+                        "name": "4 Upcoming ICO info-Clone",
+                        "input": [
+                            {
+                                "types": [
+                                    "ICO"
+                                ]
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+"
+                            }
+                        ],
+                        "id": "default26-Clone",
+                        "task": {
+                            "name": "showICO1"
+                        }
+                    }
+                ]
+            },
+            {
                 "name": "3 Coins price",
                 "input": [
                     {
                         "regexp": "/^1$/"
                     },
                     {
-                        "intent": "coininfor"
+                        "intent": "coininfor",
+                        "entities": "coins"
                     },
                     {
-                        "intent": "price"
+                        "intent": "price",
+                        "entities": "coins"
                     },
                     {
                         "regexp": "/^coins$/"
@@ -313,165 +444,18 @@ var dialogs = [
                         ],
                         "output": [
                             {
-                                "kind": "Content",
-                                "text": "Select the coin you want to see the specify information."
+                                "kind": "Action",
+                                "text": "What kind of coin do you want to know the price?\n\nTell me like 'bitcoin price' or 'bct price'",
+                                "type": "call",
+                                "dialogId": "default1",
+                                "dialogName": "1 Start 2"
                             }
                         ],
                         "task": {
-                            "name": "coinprice1"
+                            "name": ""
                         },
                         "id": "default12",
-                        "children": [
-                            {
-                                "name": "3 Coins More2",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "MORE",
-                                            "nlp": "MORE"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "Select the coin you want to see the specify information."
-                                    }
-                                ],
-                                "task": {
-                                    "name": "coinprice2"
-                                },
-                                "id": "default13",
-                                "children": [
-                                    {
-                                        "name": "3 Coins More3",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "MORE",
-                                                    "nlp": "MORE"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Select the coin you want to see the specify information."
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "coinprice3"
-                                        },
-                                        "id": "default14",
-                                        "children": [
-                                            {
-                                                "name": "4 Coins More4",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "MORE",
-                                                            "nlp": "MORE"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "Select the coin you want to see the specify information."
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "coinprice4"
-                                                },
-                                                "id": "default15",
-                                                "children": [
-                                                    {
-                                                        "name": "3 Coins price info4",
-                                                        "input": [
-                                                            {
-                                                                "types": [
-                                                                    "coins"
-                                                                ]
-                                                            }
-                                                        ],
-                                                        "output": [
-                                                            {
-                                                                "kind": "Content",
-                                                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
-                                                            }
-                                                        ],
-                                                        "task": {
-                                                            "name": "showcoins"
-                                                        },
-                                                        "id": "default20"
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "name": "3 Coins price info3",
-                                                "input": [
-                                                    {
-                                                        "types": [
-                                                            "coins"
-                                                        ]
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "showcoins"
-                                                },
-                                                "id": "default19"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "3 Coins price info2",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "coins"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "showcoins"
-                                        },
-                                        "id": "default18"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "3 Coins price info1",
-                                "input": [
-                                    {
-                                        "types": [
-                                            "coins"
-                                        ]
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
-                                    }
-                                ],
-                                "task": {
-                                    "name": "showcoins"
-                                },
-                                "id": "default17"
-                            }
-                        ]
+                        "children": []
                     },
                     {
                         "name": "3 Coins price info",
@@ -499,7 +483,8 @@ var dialogs = [
                 "name": "4 ICO Information",
                 "input": [
                     {
-                        "intent": "ICO"
+                        "intent": "ICO",
+                        "entities": "ICO"
                     },
                     {
                         "regexp": "/^2$/"
@@ -554,36 +539,18 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Content",
-                                        "text": "Select the ICO if you want to see the specify information."
+                                        "kind": "Action",
+                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'xxx ICO'",
+                                        "type": "call",
+                                        "dialogId": "default1",
+                                        "dialogName": "1 Start 2"
                                     }
                                 ],
                                 "task": {
-                                    "name": "activeICO1"
+                                    "name": ""
                                 },
                                 "id": "default27",
-                                "children": [
-                                    {
-                                        "name": "4 Active ICO info1",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "activeICO"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nReceived: +context.session.ICOinfo.now+ /  +context.session.ICOinfo.now_percent+\nGoal: +context.session.ICOinfo.goal+\nEnd Date: +context.session.ICOinfo.date+"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "showICO"
-                                        },
-                                        "id": "default28"
-                                    }
-                                ]
+                                "children": []
                             },
                             {
                                 "name": "4 Active ICO info",
@@ -637,78 +604,17 @@ var dialogs = [
                                 ],
                                 "output": [
                                     {
-                                        "kind": "Content",
-                                        "text": "Select the ICO if you want to see the specify information."
+                                        "kind": "Action",
+                                        "text": "What kind of ICO do you want to know further?\n\nTell me like 'xxx ICO'",
+                                        "type": "call",
+                                        "dialogId": "default1",
+                                        "dialogName": "1 Start 2"
                                     }
                                 ],
                                 "id": "default29",
-                                "children": [
-                                    {
-                                        "name": "4 Upcoming ICO2",
-                                        "input": [
-                                            {
-                                                "text": {
-                                                    "raw": "MORE",
-                                                    "nlp": "MORE"
-                                                }
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Select the ICO if you want to see the specify information."
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "upcomingICO2"
-                                        },
-                                        "id": "default30",
-                                        "children": [
-                                            {
-                                                "name": "4 Upcoming ICO3",
-                                                "input": [
-                                                    {
-                                                        "types": [
-                                                            "upcomingICO"
-                                                        ]
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "Project: +context.session.ICOinfo1.name+\nInterest: +context.session.ICOinfo1.rate+\nCategory: +context.session.ICOinfo1.category+\nGoal: +context.session.ICOinfo1.goal+\nStart Date: +context.session.ICOinfo1.date+"
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "showICO1"
-                                                },
-                                                "id": "default32"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "4 Upcoming ICO info1",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "upcomingICO"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "Project: +context.session.ICOinfo1.name+\nInterest: +context.session.ICOinfo1.rate+\nCategory: +context.session.ICOinfo1.category+\nGoal: +context.session.ICOinfo1.goal+\nStart Date: +context.session.ICOinfo1.date+"
-                                            }
-                                        ],
-                                        "task": {
-                                            "name": "showICO1"
-                                        },
-                                        "id": "default31"
-                                    }
-                                ],
+                                "children": [],
                                 "task": {
-                                    "name": "upcomingICO1"
+                                    "name": ""
                                 }
                             },
                             {
@@ -723,12 +629,12 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Project: +context.session.ICOinfo1.name+\nInterest: +context.session.ICOinfo1.rate+\nCategory: +context.session.ICOinfo1.category+\nGoal: +context.session.ICOinfo1.goal+\nStart Date: +context.session.ICOinfo1.date+"
+                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+"
                                     }
                                 ],
                                 "id": "default26",
                                 "task": {
-                                    "name": "showICO1"
+                                    "name": "showICO"
                                 }
                             }
                         ]
@@ -781,7 +687,40 @@ var dialogs = [
                         "name": "5 News category",
                         "input": [
                             {
-                                "entities": "NewsCoin"
+                                "text": {
+                                    "raw": "1. Bitcoin",
+                                    "nlp": "1. Bitcoin"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2. Ethereum",
+                                    "nlp": "2. Ethereum"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "3. Altcoin",
+                                    "nlp": "3. Altcoin"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "4. Litecoin",
+                                    "nlp": "4. Litecoin"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "5. Ripple",
+                                    "nlp": "5. Ripple"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "6. Monero",
+                                    "nlp": "6. Monero"
+                                }
                             }
                         ],
                         "output": [
@@ -864,75 +803,6 @@ var dialogs = [
                         ]
                     }
                 ]
-            },
-            {
-                "name": "coin price or information",
-                "input": [
-                    {
-                        "types": [
-                            "coins2"
-                        ]
-                    },
-                    {
-                        "intent": "price"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
-                    }
-                ],
-                "task": {
-                    "name": "showcoins"
-                },
-                "id": "default22"
-            },
-            {
-                "name": "coin chart",
-                "input": [
-                    {
-                        "types": [
-                            "chart"
-                        ]
-                    },
-                    {
-                        "intent": "coinchart"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "Coin: +context.session.coinsinfo3.name+\nShortname: +context.session.coinsinfo3.shortname+\n\nPrice Graph:"
-                    }
-                ],
-                "task": {
-                    "name": "showchart"
-                },
-                "id": "default33"
-            },
-            {
-                "name": "ico",
-                "input": [
-                    {
-                        "types": [
-                            "ico"
-                        ]
-                    },
-                    {
-                        "intent": "ICO"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "Project: +context.session.ICOinfo2.name+\nInterest: +context.session.ICOinfo2.rate+\nCategory: +context.session.ICOinfo2.category+\nGoal: +context.session.ICOinfo2.goal+\nStart Date: +context.session.ICOinfo2.date+"
-                    }
-                ],
-                "task": {
-                    "name": "showico"
-                },
-                "id": "default34"
             }
         ],
         "task": {

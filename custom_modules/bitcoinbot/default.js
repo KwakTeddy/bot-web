@@ -7,17 +7,23 @@ var coin = [];
 var news = [];
 var ICO_active = [];
 var ICO_upcoming = [];
-var Url = "https://coinmarketcap.com/";
-var Url1 = "https://icodrops.com/category/active-ico/";
-var Url2 = "https://icodrops.com/category/upcoming-ico/";
+var ICO = [];
+var craw = '';
+var coinurl = "https://coinmarketcap.com/";
+var activeICOurl = "https://icodrops.com/category/active-ico/";
+var upcomingICOurl = "https://icodrops.com/category/upcoming-ico/";
+
 var SERVER_HOST = 'http://template-dev.moneybrain.ai:8443';
+
 var COIN = [];
 var url = '';
-
 var modelname = '';
 var options = {};
+
 module.exports = function(bot)
 {
+
+
     bot.setTask("defaultTask",
     {
         action: function(dialog, context, callback)
@@ -25,6 +31,7 @@ module.exports = function(bot)
             callback();
         }
     });
+//----------------------------------------------------User-----------------------------------------------
 
 	bot.setTask('ChangeLanguage', 
 	{
@@ -34,7 +41,7 @@ module.exports = function(bot)
             context.session.language='ko';
           }
           else if(dialog.userInput.text==='中文'){
-             context.session.language='ch';
+             context.session.language='zh';
           }
           else{
              context.session.language='en';
@@ -46,6 +53,7 @@ module.exports = function(bot)
 	bot.setTask('UpdateUser',
 	{
 		action: function (dialog, context, callback) {
+            context.session.coinsprice = [];
 		    console.log("context.session.IsNew:==="+context.session.IsNew);
             if(context.session.IsNew==='not') {
                 modelname = 'bitcoinbot_user';
@@ -140,63 +148,64 @@ module.exports = function(bot)
 
 	});
 
+//----------------------------------------------------Coin_Price && Information-----------------------------------------------
+	bot.setTask('coinprice',
+        {
+            action: function (dialog, context, callback) {
+                modelname = 'bitcoin_coinmarketcap';
+                options = {};
 
-	bot.setTask('coinprice', 
-	{
-		action: function (dialog, context, callback)
-		{
-            modelname = 'bitcoin_coinmarketcap';
-            options = {};
+                options.qs = {};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                        callback();
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        if (body.length === 0) {
+                            coincrawling();
+                        }
+                        else {
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
 
-            options.qs = {};
-            options.url = SERVER_HOST + '/api/' + modelname;
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    callback();
-                }
-                else {
-                    // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                    dialog.output[0].buttons = [];
-                    body = JSON.parse(body);
-                    var index = [];
-                    for (var j = 0; j < body.length; j++) {
-                        // 
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if (!body[j].rate) {
-                            index.push(j);
+                            var nowtime = new Date().getTime();
+                            var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                            if (difference >= 1) {
+                                coincrawling();
+                            }
+                            else {
+                                context.session.coinsprice = body;
+                                dialog.output[0].buttons = [];
+                                for (var i = 0; i < 15; i++) {
+                                    var name = "" + (i + 1) + ". " + body[i].name;
+                                    var price = body[i].price;
+                                    dialog.output[0].buttons.push({text: name + " " + price});
+                                }
+                                dialog.output[0].buttons.push({text: 'MORE'});
+                                dialog.output[0].buttons.push({text: 'Back'});
+                                dialog.output[0].buttons.push({text: 'Start'});
+                                callback();
+                            }
                         }
                     }
 
-                    for (var s = 0; s < index.length; s++) {
-                        delete body[index[s]];
-                    }
-
-                    body = body.sort(function (a, b) {
-                        return a.rate - b.rate;
-                    });
-
-                    var nowtime = new Date().getTime();
-                    var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                    crawling(difference,body);
-                }
-
                 });
 
-            var crawling = function(difference,body){
-
-                if(difference >= 1) {
-
-                    superagent.get(Url)
+                function coincrawling() {
+                    superagent.get(coinurl)
                         .end(function (err, pres) {
                             var $ = cheerio.load(pres.text);
                             var kind = $('tbody tr');
-                            // console.log('kind=======' + kind);
+
                             for (var i = 0; i < kind.length; i++) {
                                 coin[i] = {};
                                 coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
+                                coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text();
                                 coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
                                 coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
                                 if (!coin[i].image) {
@@ -209,147 +218,76 @@ module.exports = function(bot)
                                 coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
                                 coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
                                 coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
                             }
-                            // console.log('coin=======' + JSON.stringify(coin));
-                            // console.log('coin.length=======' + coin.length);
-
-                            for (var j = 0; j < coin.length; j++) {
-                                update(j)
-                            }
+                            request.delete(options, function (err, response, body) {
+                                if (err) {
+                                    console.log(err);
+                                    callback();
+                                }
+                                else {
+                                    console.log("delete！   response.statusCode=" + response.statusCode);
+                                    coin.forEach(newcoin);
+                                }
+                            })
                         });
                 }
-                else {
-                    context.session.coinsprice = body;
-                    dialog.output[0].buttons = [];
-                    for (var i = 0; i < 15; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].shortname;
-                        var price = body[i].price;
-                        dialog.output[0].buttons.push({text: name + " " + price});
-                    }
-                    dialog.output[0].buttons.push({text: 'MORE'});
-                    dialog.output[0].buttons.push({text: 'Back'});
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
+
+                function  newcoin(coin,coindex) {
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                    options.json = {
+                        name: coin.name,
+                        url: coin.url,
+                        shortname: coin.shortname,
+                        image: coin.image,
+                        price: coin.price,
+                        volume: coin.volume,
+                        change: coin.change,
+                        graph: coin.graph,
+                        graphimage: coin.graphimage,
+                        created: new Date().toISOString(),
+                        updateTime: new Date().getTime(),
+                        rate: coin.rate,
+                        language: 'en'
+                    };
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            callback();
+                        }
+                        else {
+                            console.log("new！  response.statusCode=" + response.statusCode);
+                            if(coindex === 99){
+                                showcoin()
+                            }
+                        }
+                    })
                 }
-            };
 
-                        var update = function (index) {
+                function showcoin() {
+                    modelname = 'bitcoin_coinmarketcap';
+                    options = {};
 
-                            options = {};
-                            options.url = SERVER_HOST + '/api/' + modelname;
-
-                            options.qs = {name: coin[index].name};
-                            options.json = {
-                                url: coin[index].url,
-                                shortname: coin[index].shortname,
-                                image: coin[index].image,
-                                price: coin[index].price,
-                                volume: coin[index].volume,
-                                change: coin[index].change,
-                                graph: coin[index].graph,
-                                graphimage: coin[index].graphimage,
-                                updateTime: new Date().getTime(),
-                                rate: coin[index].rate
-                            };
-
-                            request.put(options, function (err, response, body) {
-
-                                if (err) {
-
-                                    console.log(err);
-                                    callback();
-                                }
-                                else if (body.nModified === '0') {
-
-                                    save1(index);
-                                }
-                                else {
-                                    // console.log("update！   response.statusCode=" + response.statusCode);
-                                    if(index===coin.length-1){
-                                        show();
-                                    }
-                                }
-                            })
-                        };
-
-                        var save1 = function (index) {
-                            options = {};
-                            options.url = SERVER_HOST + '/api/' + modelname;
-
-                            options.json = {
-                                name: coin[index].name,
-                                url: coin[index].url,
-                                shortname: coin[index].shortname,
-                                image: coin[index].image,
-                                price: coin[index].price,
-                                volume: coin[index].volume,
-                                change: coin[index].change,
-                                graph: coin[index].graph,
-                                graphimage: coin[index].graphimage,
-                                created: new Date().toISOString(),
-                                updateTime: new Date().getTime(),
-                                rate: coin[index].rate
-                            };
-
-                            request.post(options, function (err, response, body) {
-                                if (err) {
-                                    console.log(err);
-                                    callback();
-                                }
-                                else {
-                                    // console.log("new！   response.statusCode=" + response.statusCode);
-                                    if(index===coin.length-1){
-                                        show();
-                                    }
-                                }
-                            })
-                        };
-
-                        var show = function () {
-
-                            modelname = 'bitcoin_coinmarketcap';
-                            options = {};
-
-                            options.qs = {};
-                            options.url = SERVER_HOST + '/api/' + modelname;
-                            request.get(options, function (err, response, body) {
-                                if (err) {
-                                    console.log(err);
-                                    callback();
-                                }
-                                else {
-
-                                    // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                                    show2(body);
-                                }
-                            });
-
-                        };
-
-                        var show2 = function (body) {
-
+                    options.qs = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            callback();
+                        }
+                        else {
                             body = JSON.parse(body);
-                            context.session.coinsprice = body;
-                            var index = [];
-                            for (var j = 0; j < body.length; j++) {
-                                // 
-                                body[j].updateTime = Number(body[j].updateTime);
-                                if (!body[j].rate) {
-                                    index.push(j);
-                                }
-                            }
-
-                            for (var s = 0; s < index.length; s++) {
-                                delete body[index[s]];
-                            }
 
                             body = body.sort(function (a, b) {
                                 return a.rate - b.rate;
                             });
+
+                            context.session.coinsprice = body;
                             dialog.output[0].buttons = [];
                             for (var i = 0; i < 15; i++) {
-                                var name = "" + (i + 1) + ". " + body[i].shortname;
+                                var name = "" + (i + 1) + ". " + body[i].name;
                                 var price = body[i].price;
                                 dialog.output[0].buttons.push({text: name + " " + price});
                             }
@@ -357,1333 +295,188 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
                             callback();
-                        };
-
-		}
-	});
-
-
-    bot.setTask('coinprice1',
-        {
-            action: function (dialog, context, callback)
-            {
-                modelname = 'bitcoin_coinmarketcap';
-                options = {};
-
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        var index = [];
-                        for (var j = 0; j < body.length; j++) {
-                            
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if (!body[j].rate) {
-                                index.push(j);
-                            }
-                        }
-
-                        for (var s = 0; s < index.length; s++) {
-                            delete body[index[s]];
-                        }
-
-                        body = body.sort(function (a, b) {
-                            return a.rate - b.rate;
-                        });
-
-                        var nowtime = new Date().getTime();
-                        var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                        crawling(difference,body);
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-                    if(difference >= 1) {
-                        superagent.get(Url)
-                            .end(function (err, pres) {
-                                var $ = cheerio.load(pres.text);
-                                var kind = $('tbody tr');
-                                // console.log('kind=======' + kind);
-                                for (var i = 0; i < kind.length; i++) {
-                                    coin[i] = {};
-                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                                    if (!coin[i].image) {
-                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                                    }
-                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                                    coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
-                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
-                                }
-                                // console.log('coin=======' + JSON.stringify(coin));
-                                // console.log('coin.length=======' + coin.length);
-
-                                for (var j = 0; j < coin.length; j++) {
-                                    update(j)
-                                }
-                            });
-                    }
-                    else {
-                        context.session.coinsprice1 = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 15; i < 31; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].shortname;
-                            var price = body[i].price;
-                            dialog.output[0].buttons.push({text: name + " " + price});
-                        }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-                var update = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.qs = {name: coin[index].name};
-                    options.json = {
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.put(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else if (body.nModified === '0') {
-                            save1(index);
-                        }
-                        else {
-                            // console.log("update！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var save1 = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        name: coin[index].name,
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("new！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function () {
-                    modelname = 'bitcoin_coinmarketcap';
-                    options = {};
-
-                    options.qs = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            show2(body);
                         }
                     });
-
-                };
-
-                var show2 = function (body) {
-                    body = JSON.parse(body);
-                    context.session.coinsprice1 = body;
-                    var index = [];
-                    for (var j = 0; j < body.length; j++) {
-                        
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if (!body[j].rate) {
-                            index.push(j);
-                        }
-                    }
-
-                    for (var s = 0; s < index.length; s++) {
-                        delete body[index[s]];
-                    }
-
-                    body = body.sort(function (a, b) {
-                        return a.rate - b.rate;
-                    });
-                    dialog.output[0].buttons = [];
-                    for (var i = 15; i < 31; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].shortname;
-                        var price = body[i].price;
-                        dialog.output[0].buttons.push({text: name + " " + price});
-                    }
-                    dialog.output[0].buttons.push({text: 'MORE'});
-                    dialog.output[0].buttons.push({text: 'Back'});
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                };
-
+                }
             }
         });
-
-    bot.setTask('coinprice2',
-        {
-            action: function (dialog, context, callback)
-            {
-                modelname = 'bitcoin_coinmarketcap';
-                options = {};
-
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        var index = [];
-                        for (var j = 0; j < body.length; j++) {
-                            
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if (!body[j].rate) {
-                                index.push(j);
-                            }
-                        }
-
-                        for (var s = 0; s < index.length; s++) {
-                            delete body[index[s]];
-                        }
-
-                        body = body.sort(function (a, b) {
-                            return a.rate - b.rate;
-                        });
-
-                        var nowtime = new Date().getTime();
-                        var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                        crawling(difference,body);
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-                    if(difference >= 1) {
-                        superagent.get(Url)
-                            .end(function (err, pres) {
-                                var $ = cheerio.load(pres.text);
-                                var kind = $('tbody tr');
-                                // console.log('kind=======' + kind);
-                                for (var i = 0; i < kind.length; i++) {
-                                    coin[i] = {};
-                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                                    if (!coin[i].image) {
-                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                                    }
-                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                                    coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
-                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
-                                }
-                                // console.log('coin=======' + JSON.stringify(coin));
-                                // console.log('coin.length=======' + coin.length);
-
-                                for (var j = 0; j < coin.length; j++) {
-                                    update(j)
-                                }
-                            });
-                    }
-                    else {
-                        context.session.coinsprice2 = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 31; i < 47; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].shortname;
-                            var price = body[i].price;
-                            dialog.output[0].buttons.push({text: name + " " + price});
-                        }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-                var update = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.qs = {name: coin[index].name};
-                    options.json = {
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.put(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else if (body.nModified === '0') {
-                            save1(index);
-                        }
-                        else {
-                            // console.log("update！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var save1 = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        name: coin[index].name,
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("new！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function () {
-                    modelname = 'bitcoin_coinmarketcap';
-                    options = {};
-
-                    options.qs = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            show2(body);
-                        }
-                    });
-
-                };
-
-                var show2 = function (body) {
-                    body = JSON.parse(body);
-                    context.session.coinsprice2 = body;
-                    var index = [];
-                    for (var j = 0; j < body.length; j++) {
-                        
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if (!body[j].rate) {
-                            index.push(j);
-                        }
-                    }
-
-                    for (var s = 0; s < index.length; s++) {
-                        delete body[index[s]];
-                    }
-
-                    body = body.sort(function (a, b) {
-                        return a.rate - b.rate;
-                    });
-                    dialog.output[0].buttons = [];
-                    for (var i = 31; i < 47; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].shortname;
-                        var price = body[i].price;
-                        dialog.output[0].buttons.push({text: name + " " + price});
-                    }
-                    dialog.output[0].buttons.push({text: 'MORE'});
-                    dialog.output[0].buttons.push({text: 'Back'});
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                };
-
-            }
-        });
-
-    bot.setTask('coinprice3',
-        {
-            action: function (dialog, context, callback)
-            {
-                modelname = 'bitcoin_coinmarketcap';
-                options = {};
-
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        var index = [];
-                        for (var j = 0; j < body.length; j++) {
-                            
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if (!body[j].rate) {
-                                index.push(j);
-                            }
-                        }
-
-                        for (var s = 0; s < index.length; s++) {
-                            delete body[index[s]];
-                        }
-
-                        body = body.sort(function (a, b) {
-                            return a.rate - b.rate;
-                        });
-
-                        var nowtime = new Date().getTime();
-                        var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                        crawling(difference,body);
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-                    if(difference >= 1) {
-                        superagent.get(Url)
-                            .end(function (err, pres) {
-                                var $ = cheerio.load(pres.text);
-                                var kind = $('tbody tr');
-                                // console.log('kind=======' + kind);
-                                for (var i = 0; i < kind.length; i++) {
-                                    coin[i] = {};
-                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                                    if (!coin[i].image) {
-                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                                    }
-                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                                    coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
-                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
-                                }
-                                // console.log('coin=======' + JSON.stringify(coin));
-                                // console.log('coin.length=======' + coin.length);
-
-                                for (var j = 0; j < coin.length; j++) {
-                                    update(j)
-                                }
-                            });
-                    }
-                    else {
-                        context.session.coinsprice3 = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 47; i < 63; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].shortname;
-                            var price = body[i].price;
-                            dialog.output[0].buttons.push({text: name + " " + price});
-                        }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-                var update = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.qs = {name: coin[index].name};
-                    options.json = {
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.put(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else if (body.nModified === '0') {
-                            save1(index);
-                        }
-                        else {
-                            // console.log("update！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var save1 = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        name: coin[index].name,
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("new！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function () {
-                    modelname = 'bitcoin_coinmarketcap';
-                    options = {};
-
-                    options.qs = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            show2(body);
-                        }
-                    });
-
-                };
-
-                var show2 = function (body) {
-                    body = JSON.parse(body);
-                    context.session.coinsprice3 = body;
-                    var index = [];
-                    for (var j = 0; j < body.length; j++) {
-                        
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if (!body[j].rate) {
-                            index.push(j);
-                        }
-                    }
-
-                    for (var s = 0; s < index.length; s++) {
-                        delete body[index[s]];
-                    }
-
-                    body = body.sort(function (a, b) {
-                        return a.rate - b.rate;
-                    });
-                    dialog.output[0].buttons = [];
-                    for (var i = 47; i < 63; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].shortname;
-                        var price = body[i].price;
-                        dialog.output[0].buttons.push({text: name + " " + price});
-                    }
-                    dialog.output[0].buttons.push({text: 'MORE'});
-                    dialog.output[0].buttons.push({text: 'Back'});
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                };
-
-            }
-        });
-
-    bot.setTask('coinprice4',
-        {
-            action: function (dialog, context, callback)
-            {
-                modelname = 'bitcoin_coinmarketcap';
-                options = {};
-
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        var index = [];
-                        for (var j = 0; j < body.length; j++) {
-                            
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if (!body[j].rate) {
-                                index.push(j);
-                            }
-                        }
-
-                        for (var s = 0; s < index.length; s++) {
-                            delete body[index[s]];
-                        }
-
-                        body = body.sort(function (a, b) {
-                            return a.rate - b.rate;
-                        });
-
-                        var nowtime = new Date().getTime();
-                        var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                        crawling(difference,body);
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-                    if(difference >= 1) {
-                        superagent.get(Url)
-                            .end(function (err, pres) {
-                                var $ = cheerio.load(pres.text);
-                                var kind = $('tbody tr');
-                                // console.log('kind=======' + kind);
-                                for (var i = 0; i < kind.length; i++) {
-                                    coin[i] = {};
-                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                                    if (!coin[i].image) {
-                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                                    }
-                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                                    coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
-                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
-                                }
-                                // console.log('coin=======' + JSON.stringify(coin));
-                                // console.log('coin.length=======' + coin.length);
-
-                                for (var j = 0; j < coin.length; j++) {
-                                    update(j)
-                                }
-                            });
-                    }
-                    else {
-                        context.session.coinsprice4 = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 63; i < 100; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].shortname;
-                            var price = body[i].price;
-                            dialog.output[0].buttons.push({text: name + " " + price});
-                        }
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-                var update = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.qs = {name: coin[index].name};
-                    options.json = {
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.put(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else if (body.nModified === '0') {
-                            save1(index);
-                        }
-                        else {
-                            // console.log("update！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var save1 = function (index) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        name: coin[index].name,
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("new！   response.statusCode=" + response.statusCode);
-                            if(index===coin.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function () {
-                    modelname = 'bitcoin_coinmarketcap';
-                    options = {};
-
-                    options.qs = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            show2(body);
-                        }
-                    });
-
-                };
-
-                var show2 = function (body) {
-                    body = JSON.parse(body);
-                    context.session.coinsprice4 = body;
-                    var index = [];
-                    for (var j = 0; j < body.length; j++) {
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if (!body[j].rate) {
-                            index.push(j);
-                        }
-                    }
-
-                    for (var s = 0; s < index.length; s++) {
-                        delete body[index[s]];
-                    }
-
-                    body = body.sort(function (a, b) {
-                        return a.rate - b.rate;
-                    });
-
-                    dialog.output[0].buttons = [];
-                    for (var i = 63; i < 100; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].shortname;
-                        var price = body[i].price;
-                        dialog.output[0].buttons.push({text: name + " " + price});
-                    }
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                };
-
-            }
-        });
-
 
     bot.setType('coins',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            if(dialog.userInput.text.indexOf('.')===-1){
-                matched = false;
-                callback(matched);
-            }
-            else {
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('.')[1].split('$')[0].trim();
+            typeCheck: function (dialog, context, callback) {
                 var matched = false;
-                var matchedcoin = "";
-                var matchedindex = 0;
-                modelname = 'bitcoin_coinmarketcap';
-                options = {};
+                if (dialog.userInput.text.indexOf('.') === -1) {
+                    matched = false;
+                    callback(matched);
+                }
+                else {
+                    dialog.userInput.text = dialog.userInput.text.split('.')[1].split('$')[0].trim();
 
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback(matched);
-                    }
-                    else {
-                        body = JSON.parse(body);
+                    modelname = 'bitcoin_coinmarketcap';
+                    options = {};
 
-                        for (var j = 0; j < body.length; j++) {
-
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if (dialog.userInput.text === body[j].shortname) {
-                                matchedcoin = body[j].name;
-                                matchedindex = j;
-                            }
-                        }
-
-                        var nowtime = new Date().getTime();
-                        var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                        crawling(difference, body, matchedcoin, matchedindex);
-                    }
-
-                });
-
-                var crawling = function (difference, body, matchedcoin, matchedindex) {
-
-                    if (difference >= 0.5) {
-                        superagent.get(Url)
-                            .end(function (err, pres) {
-                                var $ = cheerio.load(pres.text);
-                                var kind = $('tbody tr');
-                                for (var i = 0; i < kind.length; i++) {
-                                    coin[i] = {};
-                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                                    if (!coin[i].image) {
-                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                                    }
-                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                                    coin[i].graph = 'https://coinmarketcap.com/currencies/' + coin[i].name + '/#charts';
-                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
-                                }
-
-                                for (var j = 0; j < coin.length; j++) {
-                                    update(j, matchedcoin)
-                                }
-                            });
-                    }
-                    else {
-                        if (!matchedcoin) {
+                    options.qs = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
                             matched = false;
                             callback(matched);
                         }
                         else {
-                            if (body[matchedindex].rate) {
-                                context.session.coinsinfo = body[matchedindex];
-                                console.log('SHOW!');
-                                matched = true;
-                                callback(matched);
+                            body = JSON.parse(body);
+                            if (body.length === 0) {
+                                coincrawling();
                             }
                             else {
-                                matched = false;
-                                callback(matched);
-                            }
-                        }
-                    }
-                };
+                                body = body.sort(function (a, b) {
+                                    return a.rate - b.rate;
+                                });
 
-                var update = function (index, matchedcoin) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
+                                var nowtime = new Date().getTime();
+                                var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
 
-                    options.qs = {name: coin[index].name};
-                    options.json = {
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.put(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback(matched);
-                        }
-                        else if (body.nModified === '0') {
-                            save1(index, matchedcoin);
-                        }
-                        else {
-                            if (index === coin.length - 1) {
-                                show(matchedcoin);
-                            }
-                        }
-                    })
-                };
-
-                var save1 = function (index, matchedcoin) {
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        name: coin[index].name,
-                        url: coin[index].url,
-                        shortname: coin[index].shortname,
-                        image: coin[index].image,
-                        price: coin[index].price,
-                        volume: coin[index].volume,
-                        change: coin[index].change,
-                        graph: coin[index].graph,
-                        graphimage: coin[index].graphimage,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime(),
-                        rate: coin[index].rate
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback(matched);
-                        }
-                        else {
-                            if (index === coin.length - 1) {
-                                show(matchedcoin);
-                            }
-                        }
-                    })
-                };
-
-                var show = function (matchedcoin) {
-                    modelname = 'bitcoin_coinmarketcap';
-                    options = {name: matchedcoin};
-
-                    options.qs = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback(matched);
-                        }
-                        else {
-                            matchedcoin = "";
-                            matchedindex = 0;
-                            body = JSON.parse(body);
-
-                            for (var j = 0; j < body.length; j++) {
-                                if (body[j].rate) {
-                                    body[j].updateTime = Number(body[j].updateTime);
-                                    if (dialog.userInput.text === body[j].shortname) {
-                                        matchedcoin = body[j].name;
-                                        matchedindex = j;
-                                        j = body.length;
-                                        show2(body, matchedcoin, matchedindex);
-
-                                    }
-                                    else {
-                                        if (j === body.length - 1) {
+                                if (difference >= 1) {
+                                    coincrawling();
+                                }
+                                else {
+                                    context.session.coinsprice = body;
+                                    context.session.coinsinfo = {};
+                                    for(var i = 0; i < context.session.coinsprice.length; i++ )
+                                    {
+                                        if(dialog.userInput.text === context.session.coinsprice[i].name)
+                                        {
+                                            context.session.coinsinfo = context.session.coinsprice[i];
+                                            matched = true;
+                                            callback(matched);
+                                        }
+                                        else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
                                             callback(matched);
                                         }
                                     }
                                 }
-                                else {
-                                    if (j === body.length - 1) {
+                            }
+                        }
+
+                    });
+
+                    function coincrawling() {
+                        superagent.get(coinurl)
+                            .end(function (err, pres) {
+                                var $ = cheerio.load(pres.text);
+                                var kind = $('tbody tr');
+
+                                for (var i = 0; i < kind.length; i++) {
+                                    coin[i] = {};
+                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
+                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text();
+                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
+                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
+                                    if (!coin[i].image) {
+                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
+                                    }
+                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
+                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
+                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
+                                    // coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
+                                    coin[i].graph = 'https://coinmarketcap.com/currencies/' + coin[i].name + '/#charts';
+                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
+                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
+                                }
+                                request.delete(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                        matched = false;
+                                        callback(matched);
+                                    }
+                                    else {
+                                        console.log("delete！   response.statusCode=" + response.statusCode);
+                                        coin.forEach(newcoin);
+                                    }
+                                })
+                            });
+                    }
+
+                    function newcoin(coin, coindex) {
+                        options = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        options.json = {
+                            name: coin.name,
+                            url: coin.url,
+                            shortname: coin.shortname,
+                            image: coin.image,
+                            price: coin.price,
+                            volume: coin.volume,
+                            change: coin.change,
+                            graph: coin.graph,
+                            graphimage: coin.graphimage,
+                            created: new Date().toISOString(),
+                            updateTime: new Date().getTime(),
+                            rate: coin.rate,
+                            language: 'en'
+                        };
+
+                        request.post(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                matched = false;
+                                callback(matched);
+                            }
+                            else {
+                                console.log("new！  response.statusCode=" + response.statusCode);
+                                if (coindex === 99) {
+                                    showcoin()
+                                }
+                            }
+                        })
+                    }
+
+                    function showcoin() {
+                        modelname = 'bitcoin_coinmarketcap';
+                        options = {};
+
+                        options.qs = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+                        request.get(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                matched = false;
+                                callback(matched);
+                            }
+                            else {
+                                body = JSON.parse(body);
+                                body = body.sort(function (a, b) {
+                                    return a.rate - b.rate;
+                                });
+                                context.session.coinsprice = body;
+                                context.session.coinsinfo = {};
+                                for(var i = 0; i < context.session.coinsprice.length; i++ )
+                                {
+                                    if(dialog.userInput.text === context.session.coinsprice[i].name)
+                                    {
+                                        context.session.coinsinfo = context.session.coinsprice[i];
+                                        matched = true;
+                                        callback(matched);
+                                    }
+                                    else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
                                         callback(matched);
                                     }
                                 }
                             }
-                        }
-                    });
-
-                };
-
-                var show2 = function (body, matchedcoin, matchedindex) {
-
-                    if (!matchedcoin) {
-                        matched = false;
-                        callback(matched);
-                    }
-                    else {
-                        if (body[matchedindex].rate) {
-                            context.session.coinsinfo = body[matchedindex];
-                            console.log('Update!');
-                            matched = true;
-                            callback(matched);
-                        }
-                        else {
-                            matched = false;
-                            callback(matched);
-                        }
+                        });
                     }
                 }
             }
-        }
-    });
-
-
-    bot.setType('coins2',
-        {
-            typeCheck: function (dialog, context, callback)
-            {
-                var matched = false;
-                if(dialog.userInput.text==="1" || dialog.userInput.text==="2" || dialog.userInput.text==="3"){
-                    matched = false;
-                    return callback(matched);
-                }
-                else if(dialog.userInput.text.toUpperCase().indexOf('PRICE OF')>=0) {
-                    dialog.userInput.text = dialog.userInput.text.toUpperCase().split('PRICE OF')[1].trim();
-                }
-                else if(dialog.userInput.text.toUpperCase().indexOf('PRICE')>=0){
-                    dialog.userInput.text = dialog.userInput.text.toUpperCase().split('PRICE')[0].trim();
-                }
-                else if(dialog.userInput.text.toUpperCase().indexOf('RATE OF')>=0){
-                    dialog.userInput.text = dialog.userInput.text.toUpperCase().split('RATE OF')[1].trim();
-                }
-                else if(dialog.userInput.text.toUpperCase().indexOf('RATE')>=0){
-                    dialog.userInput.text = dialog.userInput.text.toUpperCase().split('RATE')[0].trim();
-                }
-                else{
-                    matched = false;
-                    callback(matched);
-                }
-
-        var matchedcoin = "";
-        var matchedindex = 0;
-        modelname = 'bitcoin_coinmarketcap';
-        options = {};
-
-        options.qs = {};
-        options.url = SERVER_HOST + '/api/' + modelname;
-        request.get(options, function (err, response, body) {
-            if (err) {
-                console.log(err);
-                callback();
-            }
-            else {
-                body = JSON.parse(body);
-
-                for (var j = 0; j < body.length; j++) {
-
-                    body[j].updateTime = Number(body[j].updateTime);
-                    if(dialog.userInput.text===body[j].name || dialog.userInput.text===body[j].shortname){
-                        matchedcoin = body[j].name;
-                        matchedindex = j;
-                    }
-                }
-
-                var nowtime = new Date().getTime();
-                var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                crawling(difference,body,matchedcoin,matchedindex);
-            }
-
         });
-
-        var crawling = function(difference,body,matchedcoin,matchedindex){
-
-            if (difference >= 0) {
-                superagent.get(Url)
-                    .end(function (err, pres) {
-                        var $ = cheerio.load(pres.text);
-                        var kind = $('tbody tr');
-                        for (var i = 0; i < kind.length; i++) {
-                            coin[i] = {};
-                            coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                            coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                            coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                            coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                            if (!coin[i].image) {
-                                coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                            }
-                            coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                            coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                            coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                            coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
-                            coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                            coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
-                        }
-
-                        for (var j = 0; j < coin.length; j++) {
-                            update(j, matchedcoin)
-                        }
-                    });
-            }
-            else {
-                if(!matchedcoin){
-                    matched = false;
-                    callback(matched);
-                }
-                else {
-                    if (body[matchedindex].rate) {
-                        context.session.coinsinfo = body[matchedindex];
-                        console.log('SHOW!');
-                        matched = true;
-                       return callback(matched);
-                    }
-                    else {
-                        matched = false;
-                        callback(matched);
-                    }
-                }
-            }
-        };
-
-        var update = function (index,matchedcoin) {
-            options = {};
-            options.url = SERVER_HOST + '/api/' + modelname;
-
-            options.qs = {name: coin[index].name};
-            options.json = {
-                url: coin[index].url,
-                shortname: coin[index].shortname,
-                image: coin[index].image,
-                price: coin[index].price,
-                volume: coin[index].volume,
-                change: coin[index].change,
-                graph: coin[index].graph,
-                graphimage: coin[index].graphimage,
-                updateTime: new Date().getTime(),
-                rate: coin[index].rate
-            };
-
-            request.put(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    callback();
-                }
-                else if (body.nModified === '0') {
-                    save1(index,matchedcoin);
-                }
-                else {
-                    if(index===coin.length-1){
-                        show(matchedcoin);
-                    }
-                }
-            })
-        };
-
-        var save1 = function (index,matchedcoin) {
-            options = {};
-            options.url = SERVER_HOST + '/api/' + modelname;
-
-            options.json = {
-                name: coin[index].name,
-                url: coin[index].url,
-                shortname: coin[index].shortname,
-                image: coin[index].image,
-                price: coin[index].price,
-                volume: coin[index].volume,
-                change: coin[index].change,
-                graph: coin[index].graph,
-                graphimage: coin[index].graphimage,
-                created: new Date().toISOString(),
-                updateTime: new Date().getTime(),
-                rate: coin[index].rate
-            };
-
-            request.post(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    callback();
-                }
-                else {
-                    if(index=== coin.length-1){
-                        show(matchedcoin);
-                    }
-                }
-            })
-        };
-
-        var show = function (matchedcoin) {
-            modelname = 'bitcoin_coinmarketcap';
-            options = {name: matchedcoin};
-
-            options.qs = {};
-            options.url = SERVER_HOST + '/api/' + modelname;
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    callback();
-                }
-                else {
-                    matchedcoin = "";
-                    matchedindex = 0;
-                    body = JSON.parse(body);
-
-                    for (var j = 0; j < body.length; j++) {
-                        if(body[j].rate) {
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if(dialog.userInput.text === body[j].name || dialog.userInput.text===body[j].shortname){
-                                matchedcoin = body[j].name;
-                                matchedindex = j;
-                                j = body.length;
-                                show2(body,matchedcoin,matchedindex);
-                            }
-                            else{
-                                if(j === body.length-1){
-                                    matched = false;
-                                  return  callback(matched);
-                                }
-                            }
-                        }
-                        else{
-                            if(j === body.length-1) {
-                                matched = false;
-                              callback(matched);
-                            }
-                        }
-                    }
-                }
-            });
-
-        };
-
-        var show2 = function (body,matchedcoin,matchedindex) {
-
-            if (!matchedcoin) {
-                matched = false;
-                callback(matched);
-            }
-            else {
-                if (body[matchedindex].rate) {
-                    context.session.coinsinfo = body[matchedindex];
-                    console.log('Update!');
-                    matched = true;
-                   callback(matched);
-                }
-                else {
-                    matched = false;
-                    callback(matched);
-                }
-            }
-        }
-    // }
-
-}
-
-
-        });
-
 
     bot.setTask('showcoins',
 	{
 		action: function (dialog, context, callback)
 		{
-            context.session.coinsinfo.name = context.session.coinsinfo.name.toLowerCase();
-            context.session.coinsinfo.name = context.session.coinsinfo.name.charAt(0).toUpperCase()+context.session.coinsinfo.name.slice(1);
-		    if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
+            if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
                 dialog.output[0].image = {url: context.session.coinsinfo.graphimage};
                 dialog.output[0].buttons = [
                     {
@@ -1733,16 +526,779 @@ module.exports = function(bot)
 	});
 
 
-	bot.setTask('activeICO', 
+    bot.setType('coins2',
+        {
+            typeCheck: function (dialog, context, callback) {
+                var matched = false;
+                var coinname = [];
+                context.session.seleccoin = [];
+
+                dialog.userInput.text = dialog.userInput.text.toLowerCase();
+
+                dialog.userInput.text = dialog.userInput.text.replace(/price/g, '').replace(/rate/g, '');
+
+                console.log('dialog.userInput.text: ' + dialog.userInput.text);
+
+                modelname = 'bitcoin_coinmarketcap';
+                options = {};
+
+                options.qs = {};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                        matched = false;
+                        callback(matched);
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        if (body.length === 0) {
+                            coincrawling();
+                        }
+                        else {
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
+
+                            var nowtime = new Date().getTime();
+                            var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                            if (difference >= 1) {
+                                coincrawling();
+                            }
+                            else {
+                                getcoin(body);
+                            }
+                        }
+                    }
+
+                });
+
+                function coincrawling() {
+                    superagent.get(coinurl)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kind = $('tbody tr');
+
+                            for (var i = 0; i < kind.length; i++) {
+                                coin[i] = {};
+                                coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
+                                coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text();
+                                coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
+                                coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
+                                if (!coin[i].image) {
+                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
+                                }
+                                coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
+                                coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
+                                coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
+                                // coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
+                                coin[i].graph = 'https://coinmarketcap.com/currencies/' + coin[i].name + '/#charts';
+                                coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
+                                coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
+                            }
+                            request.delete(options, function (err, response, body) {
+                                if (err) {
+                                    console.log(err);
+                                    matched = false;
+                                    callback(matched);
+                                }
+                                else {
+                                    console.log("delete！   response.statusCode=" + response.statusCode);
+                                    coin.forEach(newcoin);
+                                }
+                            })
+                        });
+                }
+
+                function newcoin(coin, coindex,coins) {
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                    options.json = {
+                        name: coin.name,
+                        url: coin.url,
+                        shortname: coin.shortname,
+                        image: coin.image,
+                        price: coin.price,
+                        volume: coin.volume,
+                        change: coin.change,
+                        graph: coin.graph,
+                        graphimage: coin.graphimage,
+                        created: new Date().toISOString(),
+                        updateTime: new Date().getTime(),
+                        rate: coin.rate,
+                        language: 'en'
+                    };
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            callback(matched);
+                        }
+                        else {
+                            console.log("new！  response.statusCode=" + response.statusCode);
+                            if (coindex === coins.length - 1) {
+                                showcoin()
+                            }
+                        }
+                    })
+                }
+
+                function showcoin() {
+                    modelname = 'bitcoin_coinmarketcap';
+                    options = {};
+
+                    options.qs = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            callback(matched);
+                        }
+                        else {
+                            body = JSON.parse(body);
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
+                            getcoin(body);
+                        }
+                    });
+                }
+
+                function getcoin(body){
+                    context.session.coinsprice = body;
+                    for (var i = 0; i < body.length; i++) {
+                        coinname.push(body[i].name.toLowerCase());
+                        coinname.push(body[i].shortname.toLowerCase());
+                    }
+
+                    coinname = coinname.sort(function (a, b) {
+                        return b.length - a.length;
+                    });
+
+                    var mm = coinname.length;
+                    for (var j = 0; j < mm; j++) {
+                        if (dialog.userInput.text.indexOf(' '+coinname[j]+' ') !== -1 || dialog.userInput.text.indexOf(coinname[j]+' ') !== -1 || dialog.userInput.text.indexOf(' '+coinname[j]) !== -1) {
+                            context.session.seleccoin.push(coinname[j]);
+                            coinname.splice(j,1);
+                            j--;
+                            mm = coinname.length;
+
+                            if(j === coinname.length-1 && context.session.seleccoin.length >=1){
+                                matched = true;
+                                callback(matched);
+                            }
+                            else if(j === coinname.length-1 && context.session.seleccoin.length === 0){
+                                matched = false;
+                                callback(matched);
+                            }
+                        }
+                        else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
+                            matched = true;
+                            callback(matched);
+                        }
+                        else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
+                            matched = false;
+                            callback(matched);
+                        }
+                    }
+
+                }
+
+            }
+        });
+
+    bot.setTask('showcoins2',
+        {
+            action: function (dialog, context, callback) {
+                context.session.coinsinfo = [];
+
+                context.session.seleccoin.forEach(getcoins);
+
+                function getcoins(coinname,index) {
+                    for (var i = 0; i < context.session.coinsprice.length; i++) {
+
+                        if (coinname === context.session.coinsprice[i].name.toLowerCase() || coinname === context.session.coinsprice[i].shortname.toLowerCase()) {
+                            context.session.coinsinfo.push(context.session.coinsprice[i]);
+                        }
+                        else if (i === context.session.coinsprice.length - 1 && index === context.session.seleccoin.length -1) {
+                            if (context.session.coinsinfo.length === 1) {
+                                showcoin();
+                            }
+                            else {
+                                showcoin2();
+                            }
+                        }
+                    }
+                }
+
+                function showcoin() {
+                    if (context.session.coinsinfo[0].graphimage.indexOf('.svg') === -1) {
+                        dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
+                            'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
+                            'Price: ' + context.session.coinsinfo[0].price + '\n' +
+                            'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
+                            'Change(24h): ' + context.session.coinsinfo[0].change + '\n' +
+                            'Price Graph: ';
+                        dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
+                        dialog.output[0].buttons = [
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
+                            {
+                                text: 'Back'
+                            },
+                            {
+                                text: 'Start'
+                            }
+                        ];
+                        callback();
+                    }
+                    else {
+                        dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
+                            'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
+                            'Price: ' + context.session.coinsinfo[0].price + '\n' +
+                            'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
+                            'Change(24h): ' + context.session.coinsinfo[0].change + '\n';
+                        dialog.output[0].buttons = [
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
+                            {
+                                text: 'Back'
+                            },
+                            {
+                                text: 'Start'
+                            }
+                        ];
+                        callback();
+                    }
+                }
+
+                function showcoin2() {
+                    dialog.output[0].text = 'Select the coin you want to see the specify information.';
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.coinsinfo.length; i++) {
+                        var ss = (i+1) + '. ' + context.session.coinsinfo[i].name + ' ' + context.session.coinsinfo[i].price;
+                        dialog.output[0].buttons.push({text: ss})
+                    }
+                        dialog.output[0].buttons.push({text: 'Back'});
+                        dialog.output[0].buttons.push({text: 'Start'});
+                    callback();
+                }
+            }
+        });
+//----------------------------------------------------Coin_Chart-----------------------------------------------
+
+    bot.setType('chart',
+        {
+            typeCheck: function (dialog, context, callback) {
+                var matched = false;
+                if (dialog.userInput.text.indexOf('.') === -1) {
+                    matched = false;
+                    callback(matched);
+                }
+                else {
+                    dialog.userInput.text = dialog.userInput.text.split('.')[1].split('$')[0].trim();
+
+                    modelname = 'bitcoin_coinmarketcap';
+                    options = {};
+
+                    options.qs = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            callback(matched);
+                        }
+                        else {
+                            body = JSON.parse(body);
+                            if (body.length === 0) {
+                                coincrawling();
+                            }
+                            else {
+                                body = body.sort(function (a, b) {
+                                    return a.rate - b.rate;
+                                });
+
+                                var nowtime = new Date().getTime();
+                                var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                                if (difference >= 1) {
+                                    coincrawling();
+                                }
+                                else {
+                                    context.session.coinsprice = body;
+                                    context.session.coinsinfo = {};
+                                    for(var i = 0; i < context.session.coinsprice.length; i++ )
+                                    {
+                                        if(dialog.userInput.text === context.session.coinsprice[i].name)
+                                        {
+                                            context.session.coinsinfo = context.session.coinsprice[i];
+                                            matched = true;
+                                            callback(matched);
+                                        }
+                                        else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
+                                            matched = false;
+                                            callback(matched);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    });
+
+                    function coincrawling() {
+                        superagent.get(coinurl)
+                            .end(function (err, pres) {
+                                var $ = cheerio.load(pres.text);
+                                var kind = $('tbody tr');
+
+                                for (var i = 0; i < kind.length; i++) {
+                                    coin[i] = {};
+                                    coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
+                                    coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text();
+                                    coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
+                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
+                                    if (!coin[i].image) {
+                                        coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
+                                    }
+                                    coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
+                                    coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
+                                    coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
+                                    // coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
+                                    coin[i].graph = 'https://coinmarketcap.com/currencies/' + coin[i].name + '/#charts';
+                                    coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
+                                    coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
+                                }
+                                request.delete(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                        matched = false;
+                                        callback(matched);
+                                    }
+                                    else {
+                                        console.log("delete！   response.statusCode=" + response.statusCode);
+                                        coin.forEach(newcoin);
+                                    }
+                                })
+                            });
+                    }
+
+                    function newcoin(coin, coindex) {
+                        options = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        options.json = {
+                            name: coin.name,
+                            url: coin.url,
+                            shortname: coin.shortname,
+                            image: coin.image,
+                            price: coin.price,
+                            volume: coin.volume,
+                            change: coin.change,
+                            graph: coin.graph,
+                            graphimage: coin.graphimage,
+                            created: new Date().toISOString(),
+                            updateTime: new Date().getTime(),
+                            rate: coin.rate,
+                            language: 'en'
+                        };
+
+                        request.post(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                matched = false;
+                                callback(matched);
+                            }
+                            else {
+                                console.log("new！  response.statusCode=" + response.statusCode);
+                                if (coindex === 99) {
+                                    showcoin()
+                                }
+                            }
+                        })
+                    }
+
+                    function showcoin() {
+                        modelname = 'bitcoin_coinmarketcap';
+                        options = {};
+
+                        options.qs = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+                        request.get(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                matched = false;
+                                callback(matched);
+                            }
+                            else {
+                                body = JSON.parse(body);
+                                body = body.sort(function (a, b) {
+                                    return a.rate - b.rate;
+                                });
+                                context.session.coinsprice = body;
+                                context.session.coinsinfo = {};
+                                for(var i = 0; i < context.session.coinsprice.length; i++ )
+                                {
+                                    if(dialog.userInput.text === context.session.coinsprice[i].name)
+                                    {
+                                        context.session.coinsinfo = context.session.coinsprice[i];
+                                        matched = true;
+                                        callback(matched);
+                                    }
+                                    else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
+                                        matched = false;
+                                        callback(matched);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+    bot.setTask('showchart',
+        {
+            action: function (dialog, context, callback)
+            {
+                if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
+                    dialog.output[0].image = {url: context.session.coinsinfo.graphimage};
+                    dialog.output[0].buttons = [
+                        {
+                            text: 'See price graph',
+                            url: context.session.coinsinfo.graph
+                        },
+                        {
+                            text: 'Back'
+                        },
+                        {
+                            text: 'Start'
+                        }
+
+                    ];
+                    callback();
+                }
+                else {
+                    dialog.output[0].text = ' Coin: '+context.session.coinsinfo.name+'\n'+
+                        'Shortname: '+context.session.coinsinfo.shortname;
+                    dialog.output[0].buttons = [
+                        {
+                            text: 'See price graph',
+                            url: context.session.coinsinfo.graph
+                        },
+                        {
+                            text: 'Back'
+                        },
+                        {
+                            text: 'Start'
+                        }
+
+                    ];
+                    callback();
+                }
+            }
+        });
+
+
+
+    bot.setType('chart2',
+        {
+            typeCheck: function (dialog, context, callback) {
+                var matched = false;
+                var coinname = [];
+                context.session.seleccoin = [];
+
+                dialog.userInput.text = dialog.userInput.text.toLowerCase();
+
+                dialog.userInput.text = dialog.userInput.text.replace(/chart/g, '').replace(/graph/g, '');
+
+                console.log('dialog.userInput.text: ' + dialog.userInput.text);
+
+                modelname = 'bitcoin_coinmarketcap';
+                options = {};
+
+                options.qs = {};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                        matched = false;
+                        callback(matched);
+                    }
+                    else {
+                        body = JSON.parse(body);
+                        if (body.length === 0) {
+                            coincrawling();
+                        }
+                        else {
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
+
+                            var nowtime = new Date().getTime();
+                            var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                            if (difference >= 1) {
+                                coincrawling();
+                            }
+                            else {
+                                getcoin(body);
+                            }
+                        }
+                    }
+
+                });
+
+                function coincrawling() {
+                    superagent.get(coinurl)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kind = $('tbody tr');
+
+                            for (var i = 0; i < kind.length; i++) {
+                                coin[i] = {};
+                                coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
+                                coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text();
+                                coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
+                                coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
+                                if (!coin[i].image) {
+                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
+                                }
+                                coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
+                                coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
+                                coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
+                                // coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
+                                coin[i].graph = 'https://coinmarketcap.com/currencies/' + coin[i].name + '/#charts';
+                                coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
+                                coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
+                            }
+                            request.delete(options, function (err, response, body) {
+                                if (err) {
+                                    console.log(err);
+                                    matched = false;
+                                    callback(matched);
+                                }
+                                else {
+                                    console.log("delete！   response.statusCode=" + response.statusCode);
+                                    coin.forEach(newcoin);
+                                }
+                            })
+                        });
+                }
+
+                function newcoin(coin, coindex,coins) {
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                    options.json = {
+                        name: coin.name,
+                        url: coin.url,
+                        shortname: coin.shortname,
+                        image: coin.image,
+                        price: coin.price,
+                        volume: coin.volume,
+                        change: coin.change,
+                        graph: coin.graph,
+                        graphimage: coin.graphimage,
+                        created: new Date().toISOString(),
+                        updateTime: new Date().getTime(),
+                        rate: coin.rate,
+                        language: 'en'
+                    };
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            callback(matched);
+                        }
+                        else {
+                            console.log("new！  response.statusCode=" + response.statusCode);
+                            if (coindex === coins.length - 1) {
+                                showcoin()
+                            }
+                        }
+                    })
+                }
+
+                function showcoin() {
+                    modelname = 'bitcoin_coinmarketcap';
+                    options = {};
+
+                    options.qs = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            callback(matched);
+                        }
+                        else {
+                            body = JSON.parse(body);
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
+                            getcoin(body);
+                        }
+                    });
+                }
+
+                function getcoin(body){
+                    context.session.coinsprice = body;
+                    for (var i = 0; i < body.length; i++) {
+                        coinname.push(body[i].name.toLowerCase());
+                        coinname.push(body[i].shortname.toLowerCase());
+                    }
+
+                    coinname = coinname.sort(function (a, b) {
+                        return b.length - a.length;
+                    });
+
+                    var mm = coinname.length;
+                    for (var j = 0; j < mm; j++) {
+                        if (dialog.userInput.text.indexOf(' '+coinname[j]+' ') !== -1 || dialog.userInput.text.indexOf(coinname[j]+' ') !== -1 || dialog.userInput.text.indexOf(' '+coinname[j]) !== -1) {
+                            context.session.seleccoin.push(coinname[j]);
+                            coinname.splice(j,1);
+                            j--;
+                            mm = coinname.length;
+
+                            if(j === coinname.length-1 && context.session.seleccoin.length >=1){
+                                matched = true;
+                                callback(matched);
+                            }
+                            else if(j === coinname.length-1 && context.session.seleccoin.length === 0){
+                                matched = false;
+                                callback(matched);
+                            }
+                        }
+                        else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
+                            matched = true;
+                            callback(matched);
+                        }
+                        else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
+                            matched = false;
+                            callback(matched);
+                        }
+                    }
+                }
+            }
+        });
+
+
+    bot.setTask('showchart2',
+        {
+            action: function (dialog, context, callback)
+            {
+                context.session.coinsinfo = [];
+
+                context.session.seleccoin.forEach(getcoins);
+
+                function getcoins(coinname,index) {
+                    for (var i = 0; i < context.session.coinsprice.length; i++) {
+
+                        if (coinname === context.session.coinsprice[i].name.toLowerCase() || coinname === context.session.coinsprice[i].shortname.toLowerCase()) {
+                            context.session.coinsinfo.push(context.session.coinsprice[i]);
+                        }
+                        else if (i === context.session.coinsprice.length - 1 && index === context.session.seleccoin.length -1) {
+                            if (context.session.coinsinfo.length === 1) {
+                                showcoin();
+                            }
+                            else {
+                                showcoin2();
+                            }
+                        }
+                    }
+                }
+
+                function showcoin() {
+                    if (context.session.coinsinfo[0].graphimage.indexOf('.svg') === -1) {
+                        dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
+                            'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
+                            'Price Graph: ';
+                        dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
+                        dialog.output[0].buttons = [
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
+                            {
+                                text: 'Back'
+                            },
+                            {
+                                text: 'Start'
+                            }
+                        ];
+                        callback();
+                    }
+                    else {
+                        dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
+                            'Shortname: ' + context.session.coinsinfo[0].shortname;
+                        dialog.output[0].buttons = [
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
+                            {
+                                text: 'Back'
+                            },
+                            {
+                                text: 'Start'
+                            }
+                        ];
+                        callback();
+                    }
+                }
+
+                function showcoin2() {
+                    dialog.output[0].text = 'Select the coin you want to see the specify information.';
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.coinsinfo.length; i++) {
+                        var ss = (i+1) + '. ' + context.session.coinsinfo[i].name;
+                        dialog.output[0].buttons.push({text: ss})
+                    }
+                    dialog.output[0].buttons.push({text: 'Back'});
+                    dialog.output[0].buttons.push({text: 'Start'});
+                    callback();
+                }
+            }
+        });
+//----------------------------------------------------ICO-----------------------------------------------
+
+     bot.setTask('activeICO',
 	{
         action: function (dialog, context, callback)
         {
-
             modelname = 'bitcoin_icodrops';
             options = {};
             var difference = 0;
 
-                options.qs = {kind: 'active'};
+            options.qs = {kind: 'active'};
             options.url = SERVER_HOST + '/api/' + modelname;
             request.get(options, function (err, response, body) {
                 if (err) {
@@ -1750,113 +1306,93 @@ module.exports = function(bot)
                     callback();
                 }
                 else {
-                    // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                    dialog.output[0].buttons = [];
                     body = JSON.parse(body);
 
-if(body.length!==0){
-    body[0].updateTime = Number(body[0].updateTime);
+                    if (body.length === 0) {
+                        ICOcrawling();
+                    }
+                    else {
+                        var nowtime = new Date().getTime();
+                        difference = (nowtime - Number(body[0].updateTime))/ (60 * 60 * 1000);
 
-    var nowtime = new Date().getTime();
-    difference = (nowtime - body[0].updateTime) / (60 * 60 * 1000);
-
-    crawling(difference,body);
-}
-else{
-    difference = 5;
-    crawling(difference,body);
-}
+                        if(difference >= 3){
+                            ICOcrawling();
+                        }
+                        else{
+                            showICO();
+                        }
+                    }
                 }
-
             });
 
-            var crawling = function(difference,body){
+            function ICOcrawling() {
+                superagent.get(activeICOurl)
+                    .end(function (err, pres) {
+                        var $ = cheerio.load(pres.text);
+                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
 
-                if(difference >= 3) {
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-
-                    options.qs = {kind: 'active'};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.delete(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
+                        for (var i = 0; i < kind.length; i++) {
+                            ICO_active[i] = {};
+                            ICO_active[i].url = kind.eq(i).find('h3 a').attr('href');
+                            ICO_active[i].name = kind.eq(i).find('h3 a').text();
+                            ICO_active[i].category = kind.eq(i).find('.ico-category-name').text();
+                            ICO_active[i].now_percent = kind.eq(i).find('#new_column_categ_invisted span.prec').text();
+                            if (ICO_active[i].now_percent === "") {
+                                ICO_active[i].now_percent = "0%";
+                                ICO_active[i].now = "0";
+                            }
+                            else {
+                                ICO_active[i].now = kind.eq(i).find('#new_column_categ_invisted>span').text().split(ICO_active[i].now_percent)[0].replace(/[,]/g, "");
+                            }
+                            var goal = "$" + kind.eq(i).find('#categ_desctop').text().split("$")[1];
+                            ICO_active[i].goal = goal.replace(/[\t\n,]/g, "");
+                            ICO_active[i].date = kind.eq(i).find('div.date').attr('data-date');
+                            if (ICO_active[i].date === "") {
+                                ICO_active[i].date = 'TBA';
+                            }
+                            ICO_active[i].rate = kind.eq(i).find('div.interest span.spspan').text();
+                            if (ICO_active[i].rate === "") {
+                                ICO_active[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
+                                if (ICO_active[i].rate === "") {
+                                    ICO_active[i].rate = kind.eq(i).find('div.interest div.nr').text();
+                                }
+                            }
                         }
-                        else {
-                            console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            console.log("delete!");
-                            superagent.get(Url1)
-                                .end(function (err, pres) {
-                                    var $ = cheerio.load(pres.text);
-                                    var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-                                    // console.log('kind=======' + kind);
-                                    for (var i = 0; i < kind.length; i++) {
-                                        ICO_active[i] = {};
-                                        ICO_active[i].url = kind.eq(i).find('h3 a').attr('href');
-                                        ICO_active[i].name = kind.eq(i).find('h3 a').text();
-                                        ICO_active[i].category = kind.eq(i).find('.ico-category-name').text();
-                                        ICO_active[i].now_percent = kind.eq(i).find('#new_column_categ_invisted span.prec').text();
-                                        if (ICO_active[i].now_percent === "") {
-                                            ICO_active[i].now_percent = "0";
-                                            ICO_active[i].now = "0";
-                                        }
-                                        else {
-                                            ICO_active[i].now = kind.eq(i).find('#new_column_categ_invisted>span').text().split(ICO_active[i].now_percent)[0].replace(/[,]/g, "");
-                                        }
-                                        var goal = "$" + kind.eq(i).find('#categ_desctop').text().split("$")[1];
-                                        ICO_active[i].goal = goal.replace(/[\t\n,]/g, "");
-                                        ICO_active[i].date = kind.eq(i).find('div.date').attr('data-date');
-                                        if (ICO_active[i].date === "") {
-                                            ICO_active[i].date = 'TBA';
-                                        }
-                                        ICO_active[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                                        if (ICO_active[i].rate === "") {
-                                            ICO_active[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
-                                            if (ICO_active[i].rate === "") {
-                                                ICO_active[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                            }
-                                        }
-                                    }
+                        modelname = 'bitcoin_icodrops';
+                        options = {};
 
-                                    for(var j = 0; j < ICO_active.length; j++) {
-                                        save1(j);
-                                    }
-                                });
-                        }
+                        options.qs = {kind: 'active'};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        request.delete(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                matched = false;
+                                callback(matched);
+                            }
+                            else {
+                                console.log("delete！   response.statusCode=" + response.statusCode);
+                                ICO_active.forEach(newICO);
+                            }
+                        });
                     });
-                }
-                else {
-                    context.session.activeICO = body;
-                    dialog.output[0].buttons = [];
-                    for (var i = 0; i < 15; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].name;
-                        var rate = body[i].rate;
-                        dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
-                    }
-                    dialog.output[0].buttons.push({text: 'MORE'});
-                    dialog.output[0].buttons.push({text: 'Back'});
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                }
-            };
+            }
 
-
-            var save1 = function (index) {
+            function newICO(ICO,index,ICOs) {
                 modelname = 'bitcoin_icodrops';
                 options = {};
                 options.url = SERVER_HOST + '/api/' + modelname;
 
                 options.json = {
                     kind: 'active',
-                    url: ICO_active[index].url,
-                    name: ICO_active[index].name.toUpperCase(),
-                    category: ICO_active[index].category,
-                    now_percent: ICO_active[index].now_percent,
-                    now: ICO_active[index].now,
-                    goal: ICO_active[index].goal,
-                    date: ICO_active[index].date,
-                    rate: ICO_active[index].rate,
+                    url: ICO.url,
+                    name: ICO.name,
+                    category: ICO.category,
+                    now_percent: ICO.now_percent,
+                    now: ICO.now,
+                    goal: ICO.goal,
+                    date: ICO.date,
+                    rate: ICO.rate,
                     created: new Date().toISOString(),
                     updateTime: new Date().getTime()
                 };
@@ -1867,16 +1403,16 @@ else{
                         callback();
                     }
                     else {
-                        console.log("new！");
-                        if(index === ICO_active.length-1){
-                            show();
+                        console.log("new！   response.statusCode=" + response.statusCode);
+                        if(index === ICOs.length-1){
+                            showICO();
                         }
                     }
                 })
-            };
 
-            var show = function(){
+            }
 
+            function showICO() {
                 modelname = 'bitcoin_icodrops';
                 options = {};
 
@@ -1888,7 +1424,7 @@ else{
                         callback();
                     }
                     else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
+                        console.log("getICO！   response.statusCode=" + response.statusCode);
                         body = JSON.parse(body);
 
                         context.session.activeICO = body;
@@ -1897,7 +1433,7 @@ else{
                         for (var i = 0; i < 15; i++) {
                             var name = "" + (i + 1) + ". " + body[i].name;
                             var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "[" + rate+']'});
+                            dialog.output[0].buttons.push({text: name + " [" + rate + ']'});
                         }
                         dialog.output[0].buttons.push({text: 'MORE'});
                         dialog.output[0].buttons.push({text: 'Back'});
@@ -1905,745 +1441,216 @@ else{
                         callback();
                     }
                 });
-            };
+            }
         }
 	});
 
-    bot.setTask('activeICO1',
-        {
-            action: function (dialog, context, callback)
-            {
-
-                modelname = 'bitcoin_icodrops';
-                options = {};
-                var difference = 0;
-                options.qs = {kind: 'active'};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        if(body.length!==0){
-                            body[0].updateTime = Number(body[0].updateTime);
-
-                            var nowtime = new Date().getTime();
-                            difference = (nowtime - body[0].updateTime) / (60 * 60 * 1000);
-
-                            crawling(difference,body);
-                        }
-                        else{
-                            difference = 5;
-                            crawling(difference,body);
-                        }
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-
-                    if(difference >= 3) {
-                        modelname = 'bitcoin_icodrops';
-                        options = {};
-
-                        options.qs = {kind: 'active'};
-                        options.url = SERVER_HOST + '/api/' + modelname;
-                        request.delete(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                callback();
-                            }
-                            else {
-                                console.log("updatuser！   response.statusCode=" + response.statusCode);
-                                console.log("delete!");
-                                superagent.get(Url1)
-                                    .end(function (err, pres) {
-                                        var $ = cheerio.load(pres.text);
-                                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-                                        // console.log('kind=======' + kind);
-                                        for (var i = 0; i < kind.length; i++) {
-                                            ICO_active[i] = {};
-                                            ICO_active[i].url = kind.eq(i).find('h3 a').attr('href');
-                                            ICO_active[i].name = kind.eq(i).find('h3 a').text();
-                                            ICO_active[i].category = kind.eq(i).find('.ico-category-name').text();
-                                            ICO_active[i].now_percent = kind.eq(i).find('#new_column_categ_invisted span.prec').text();
-                                            if (ICO_active[i].now_percent === "") {
-                                                ICO_active[i].now_percent = "0";
-                                                ICO_active[i].now = "0";
-                                            }
-                                            else {
-                                                ICO_active[i].now = kind.eq(i).find('#new_column_categ_invisted>span').text().split(ICO_active[i].now_percent)[0].replace(/[,]/g, "");
-                                            }
-                                            var goal = "$" + kind.eq(i).find('#categ_desctop').text().split("$")[1];
-                                            ICO_active[i].goal = goal.replace(/[\t\n,]/g, "");
-                                            ICO_active[i].date = kind.eq(i).find('div.date').attr('data-date');
-                                            if (ICO_active[i].date === "") {
-                                                ICO_active[i].date = 'TBA';
-                                            }
-                                            ICO_active[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                                            if (ICO_active[i].rate === "") {
-                                                ICO_active[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
-                                                if (ICO_active[i].rate === "") {
-                                                    ICO_active[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                                }
-                                            }
-                                        }
-
-                                        for(var j = 0; j < ICO_active.length; j++) {
-                                            save1(j);
-                                        }
-                                    });
-                            }
-                        });
-                    }
-                    else {
-                        context.session.activeICO = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 15; i < body.length; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].name;
-                            var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
-                        }
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-                var save1 = function (index) {
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        kind: 'active',
-                        url: ICO_active[index].url,
-                        name: ICO_active[index].name.toUpperCase(),
-                        category: ICO_active[index].category,
-                        now_percent: ICO_active[index].now_percent,
-                        now: ICO_active[index].now,
-                        goal: ICO_active[index].goal,
-                        date: ICO_active[index].date,
-                        rate: ICO_active[index].rate,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime()
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            console.log("new！");
-                            if(index === ICO_active.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function(){
-
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-
-                    options.qs = {kind: 'active'};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            body = JSON.parse(body);
-
-                            context.session.activeICO = body;
-
-                            dialog.output[0].buttons = [];
-                            for (var i = 15; i < body.length; i++) {
-                                var name = "" + (i + 1) + ". " + body[i].name;
-                                var rate = body[i].rate;
-                                dialog.output[0].buttons.push({text: name + "[" + rate+']'});
-                            }
-                            dialog.output[0].buttons.push({text: 'MORE'});
-                            dialog.output[0].buttons.push({text: 'Back'});
-                            dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
-                        }
-                    });
-                };
-            }
-        });
-
-
-	bot.setTask('upcomingICO', 
-	{
-		action: function (dialog, context, callback)
-		{
-            modelname = 'bitcoin_icodrops';
-            options = {};
-            var difference = 0;
-
-            options.qs = {kind: 'upcoming'};
-            options.url = SERVER_HOST + '/api/' + modelname;
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    callback();
-                }
-                else {
-                    // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                    dialog.output[0].buttons = [];
-                    body = JSON.parse(body);
-                    if(body.length!==0){
-                        body[0].updateTime = Number(body[0].updateTime);
-
-                        var nowtime = new Date().getTime();
-                        difference = (nowtime - body[0].updateTime) / (60 * 60 * 1000);
-
-                        crawling(difference,body);
-                    }
-                    else{
-                        difference = 5;
-                        crawling(difference,body);
-                    }
-                }
-
-            });
-
-            var crawling = function(difference,body){
-
-                if(difference >= 3) {
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-
-                    options.qs = {kind: 'upcoming'};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.delete(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            console.log("delete!");
-                            superagent.get(Url2)
-                                .end(function (err, pres) {
-                                    var $ = cheerio.load(pres.text);
-                                    var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-                                    // console.log('kind=======' + kind);
-                                    for (var i = 0; i < kind.length; i++) {
-                                        ICO_upcoming[i] = {};
-                                        ICO_upcoming[i].url = kind.eq(i).find('h3 a').attr('href');
-                                        ICO_upcoming[i].name = kind.eq(i).find('h3 a').text();
-                                        ICO_upcoming[i].category = kind.eq(i).find('.categ_type').text();
-                                        ICO_upcoming[i].now_percent = "0";
-                                        ICO_upcoming[i].now = "0";
-                                        var goal = kind.eq(i).find('#categ_desctop').text();
-                                        if(goal.indexOf('$')>=0){
-                                            ICO_upcoming[i].goal = goal.replace(/[\t\n,]/g, "");
-                                        }
-                                        else{
-                                            ICO_upcoming[i].goal = "TBA";
-                                        }
-                                        ICO_upcoming[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g,"").replace(/DATE: /,"");
-                                        ICO_upcoming[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                                        if(ICO_upcoming[i].rate === ""){
-                                            ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g,"");
-                                            if(ICO_upcoming[i].rate === ""){
-                                                ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                            }
-                                        }
-                                    }
-
-                                    for(var j = 0; j < ICO_upcoming.length; j++) {
-                                        save1(j);
-                                    }
-                                });
-                        }
-                    });
-                }
-                else {
-                    context.session.upcomingICO = body;
-                    dialog.output[0].buttons = [];
-                    for (var i = 0; i < 15; i++) {
-                        var name = "" + (i + 1) + ". " + body[i].name;
-                        var rate = body[i].rate;
-                        dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
-                    }
-                    dialog.output[0].buttons.push({text: 'MORE'});
-                    dialog.output[0].buttons.push({text: 'Back'});
-                    dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                }
-            };
-
-
-            var save1 = function (index) {
-                modelname = 'bitcoin_icodrops';
-                options = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-
-                options.json = {
-                    kind: 'upcoming',
-                    url: ICO_upcoming[index].url,
-                    name: ICO_upcoming[index].name.toUpperCase(),
-                    category: ICO_upcoming[index].category,
-                    now_percent: ICO_upcoming[index].now_percent,
-                    now: ICO_upcoming[index].now,
-                    goal: ICO_upcoming[index].goal,
-                    date: ICO_upcoming[index].date,
-                    rate: ICO_upcoming[index].rate,
-                    created: new Date().toISOString(),
-                    updateTime: new Date().getTime()
-                };
-
-                request.post(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        console.log("new！");
-                        if(index === ICO_upcoming.length-1){
-                            show();
-                        }
-                    }
-                })
-            };
-
-            var show = function(){
-
-                modelname = 'bitcoin_icodrops';
-                options = {};
-
-                options.qs = {kind: 'upcoming'};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        body = JSON.parse(body);
-
-                        context.session.upcomingICO = body;
-
-                        dialog.output[0].buttons = [];
-                        for (var i = 0; i < 15; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].name;
-                            var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "[" + rate+']'});
-                        }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                });
-            };
-
-		}
-	});
-
-    bot.setTask('upcomingICO1',
-        {
-            action: function (dialog, context, callback)
-            {
-                modelname = 'bitcoin_icodrops';
-                options = {};
-var difference = 0;
-                options.qs = {kind: 'upcoming'};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        if(body.length!==0){
-                            body[0].updateTime = Number(body[0].updateTime);
-
-                            var nowtime = new Date().getTime();
-                            difference = (nowtime - body[0].updateTime) / (60 * 60 * 1000);
-
-                            crawling(difference,body);
-                        }
-                        else{
-                            difference = 5;
-                            crawling(difference,body);
-                        }
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-
-                    if(difference >= 3) {
-                        modelname = 'bitcoin_icodrops';
-                        options = {};
-
-                        options.qs = {kind: 'upcoming'};
-                        options.url = SERVER_HOST + '/api/' + modelname;
-                        request.delete(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                callback();
-                            }
-                            else {
-                                console.log("updatuser！   response.statusCode=" + response.statusCode);
-                                console.log("delete!");
-                                superagent.get(Url2)
-                                    .end(function (err, pres) {
-                                        var $ = cheerio.load(pres.text);
-                                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-                                        // console.log('kind=======' + kind);
-                                        for (var i = 0; i < kind.length; i++) {
-                                            ICO_upcoming[i] = {};
-                                            ICO_upcoming[i].url = kind.eq(i).find('h3 a').attr('href');
-                                            ICO_upcoming[i].name = kind.eq(i).find('h3 a').text();
-                                            ICO_upcoming[i].category = kind.eq(i).find('.categ_type').text();
-                                            ICO_upcoming[i].now_percent = "0";
-                                            ICO_upcoming[i].now = "0";
-                                            var goal = kind.eq(i).find('#categ_desctop').text();
-                                            if(goal.indexOf('$')>=0){
-                                                ICO_upcoming[i].goal = goal.replace(/[\t\n,]/g, "");
-                                            }
-                                            else{
-                                                ICO_upcoming[i].goal = "TBA";
-                                            }
-                                            ICO_upcoming[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g,"").replace(/DATE: /,"");
-                                            ICO_upcoming[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                                            if(ICO_upcoming[i].rate === ""){
-                                                ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g,"");
-                                                if(ICO_upcoming[i].rate === ""){
-                                                    ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                                }
-                                            }
-                                        }
-
-                                        for(var j = 0; j < ICO_upcoming.length; j++) {
-                                            save1(j);
-                                        }
-                                    });
-                            }
-                        });
-                    }
-                    else {
-                        context.session.upcomingICO = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 15; i < 31; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].name;
-                            var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
-                        }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-
-                var save1 = function (index) {
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        kind: 'upcoming',
-                        url: ICO_upcoming[index].url,
-                        name: ICO_upcoming[index].name.toUpperCase(),
-                        category: ICO_upcoming[index].category,
-                        now_percent: ICO_upcoming[index].now_percent,
-                        now: ICO_upcoming[index].now,
-                        goal: ICO_upcoming[index].goal,
-                        date: ICO_upcoming[index].date,
-                        rate: ICO_upcoming[index].rate,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime()
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            console.log("new！");
-                            if(index === ICO_upcoming.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function(){
-
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-
-                    options.qs = {kind: 'upcoming'};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            body = JSON.parse(body);
-
-                            context.session.upcomingICO = body;
-
-                            dialog.output[0].buttons = [];
-                            for (var i = 15; i < 31; i++) {
-                                var name = "" + (i + 1) + ". " + body[i].name;
-                                var rate = body[i].rate;
-                                dialog.output[0].buttons.push({text: name + "[" + rate+']'});
-                            }
-                            dialog.output[0].buttons.push({text: 'MORE'});
-                            dialog.output[0].buttons.push({text: 'Back'});
-                            dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
-                        }
-                    });
-                };
-
-            }
-        });
-
-    bot.setTask('upcomingICO2',
-        {
-            action: function (dialog, context, callback)
-            {
-                modelname = 'bitcoin_icodrops';
-                options = {};
-                 var difference = 0;
-                options.qs = {kind: 'upcoming'};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        dialog.output[0].buttons = [];
-                        body = JSON.parse(body);
-                        if(body.length!==0){
-                            body[0].updateTime = Number(body[0].updateTime);
-
-                            var nowtime = new Date().getTime();
-                            difference = (nowtime - body[0].updateTime) / (60 * 60 * 1000);
-
-                            crawling(difference,body);
-                        }
-                        else{
-                            difference = 5;
-                            crawling(difference,body);
-                        }
-                    }
-
-                });
-
-                var crawling = function(difference,body){
-
-                    if(difference >= 3) {
-                        modelname = 'bitcoin_icodrops';
-                        options = {};
-
-                        options.qs = {kind: 'upcoming'};
-                        options.url = SERVER_HOST + '/api/' + modelname;
-                        request.delete(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                callback();
-                            }
-                            else {
-                                console.log("updatuser！   response.statusCode=" + response.statusCode);
-                                console.log("delete!");
-                                superagent.get(Url2)
-                                    .end(function (err, pres) {
-                                        var $ = cheerio.load(pres.text);
-                                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-                                        // console.log('kind=======' + kind);
-                                        for (var i = 0; i < kind.length; i++) {
-                                            ICO_upcoming[i] = {};
-                                            ICO_upcoming[i].url = kind.eq(i).find('h3 a').attr('href');
-                                            ICO_upcoming[i].name = kind.eq(i).find('h3 a').text();
-                                            ICO_upcoming[i].category = kind.eq(i).find('.categ_type').text();
-                                            ICO_upcoming[i].now_percent = "0";
-                                            ICO_upcoming[i].now = "0";
-                                            var goal = kind.eq(i).find('#categ_desctop').text();
-                                            if(goal.indexOf('$')>=0){
-                                                ICO_upcoming[i].goal = goal.replace(/[\t\n,]/g, "");
-                                            }
-                                            else{
-                                                ICO_upcoming[i].goal = "TBA";
-                                            }
-                                            ICO_upcoming[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g,"").replace(/DATE: /,"");
-                                            ICO_upcoming[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                                            if(ICO_upcoming[i].rate === ""){
-                                                ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g,"");
-                                                if(ICO_upcoming[i].rate === ""){
-                                                    ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                                }
-                                            }
-                                        }
-
-                                        for(var j = 0; j < ICO_upcoming.length; j++) {
-                                            save1(j);
-                                        }
-                                    });
-                            }
-                        });
-                    }
-                    else {
-                        context.session.upcomingICO = body;
-                        dialog.output[0].buttons = [];
-                        for (var i = 31; i < body.length; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].name;
-                            var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
-                        }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
-                    }
-                };
-
-
-                var save1 = function (index) {
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                    options.json = {
-                        kind: 'upcoming',
-                        url: ICO_upcoming[index].url,
-                        name: ICO_upcoming[index].name.toUpperCase(),
-                        category: ICO_upcoming[index].category,
-                        now_percent: ICO_upcoming[index].now_percent,
-                        now: ICO_upcoming[index].now,
-                        goal: ICO_upcoming[index].goal,
-                        date: ICO_upcoming[index].date,
-                        rate: ICO_upcoming[index].rate,
-                        created: new Date().toISOString(),
-                        updateTime: new Date().getTime()
-                    };
-
-                    request.post(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            console.log("new！");
-                            if(index === ICO_upcoming.length-1){
-                                show();
-                            }
-                        }
-                    })
-                };
-
-                var show = function(){
-
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-
-                    options.qs = {kind: 'upcoming'};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.get(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            callback();
-                        }
-                        else {
-                            // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            body = JSON.parse(body);
-
-                            context.session.upcomingICO = body;
-
-                            dialog.output[0].buttons = [];
-                            for (var i = 31; i < body.length; i++) {
-                                var name = "" + (i + 1) + ". " + body[i].name;
-                                var rate = body[i].rate;
-                                dialog.output[0].buttons.push({text: name + "\n[" + rate+']'});
-                            }
-                            dialog.output[0].buttons.push({text: 'Back'});
-                            dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
-                        }
-                    });
-                };
-
-            }
-        });
-
     bot.setType('activeICO',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            if(dialog.userInput.text.indexOf('.')===-1){
-                matched = false;
-                callback(matched);
-            }
-            else {
-                var matched = false;
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('.')[1].split('[')[0].trim();
-                for (var i = 0; i < context.session.activeICO.length; i++) {
-                    if (dialog.userInput.text === context.session.activeICO[i].name) {
-                        context.session.ICOinfo = context.session.activeICO[i];
-                        if (context.session.ICOinfo.now === '0') {
-                            context.session.ICOinfo.now_percent = '0%';
-                        }
-                        matched = true;
-                       return callback(matched);
+            typeCheck: function (dialog, context, callback)
+            {
+                if(dialog.userInput.text.indexOf('.')===-1){
+                    matched = false;
+                    callback(matched);
+                }
+                else {
+                    var matched = false;
+
+                    if(dialog.userInput.text.toLowerCase().split('.')[2]){
+                        dialog.userInput.text = dialog.userInput.text.toLowerCase().split('.')[1].trim()+'.'+dialog.userInput.text.toLowerCase().split('.')[2].split('[')[0].trim();
                     }
-                    else if(i === context.session.activeICO.length - 1){
+                    else {
+                        dialog.userInput.text = dialog.userInput.text.toLowerCase().split('.')[1].split('[')[0].trim();
+                    }
+                    for (var i = 0; i < context.session.activeICO.length; i++) {
+                        if (dialog.userInput.text === context.session.activeICO[i].name.toLowerCase()) {
+                            context.session.ICOinfo = context.session.activeICO[i];
+                            matched = true;
+                            return callback(matched);
+                        }
+                        else if(i === context.session.activeICO.length - 1){
                             matched = false;
                             callback(matched);
                         }
+                    }
                 }
             }
+        });
+
+    bot.setTask('showICO',
+    {
+        action: function (dialog, context, callback)
+        {
+
+            dialog.output[0].buttons = [
+
+                {
+                    text: 'Specific Information',
+                    url: context.session.ICOinfo.url
+                },
+                {
+                    text: 'Back'
+                },
+                {
+                    text: 'Start'
+                }
+
+            ];
+            callback();
+
         }
     });
 
-	bot.setTask('showICO', 
-	{
-		action: function (dialog, context, callback)
-		{
+    bot.setTask('upcomingICO',
+        {
+            action: function (dialog, context, callback) {
+                modelname = 'bitcoin_icodrops';
+                options = {};
+                var difference = 0;
 
-                dialog.output[0].buttons = [
-
-                    {
-                        text: 'Specific Information',
-                        url: context.session.ICOinfo.url
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
+                options.qs = {kind: 'upcoming'};
+                options.url = SERVER_HOST + '/api/' + modelname;
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                        callback();
                     }
+                    else {
+                        body = JSON.parse(body);
 
-                ];
-                callback();
+                        if (body.length === 0) {
+                            ICOcrawling();
+                        }
+                        else {
+                            var nowtime = new Date().getTime();
+                            difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-		}
-	});
+                            if (difference >= 3) {
+                                ICOcrawling();
+                            }
+                            else {
+                                showICO();
+                            }
+                        }
+                    }
+                });
+
+                function ICOcrawling() {
+                    superagent.get(upcomingICOurl)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
+
+                            for (var i = 0; i < kind.length; i++) {
+                                ICO_upcoming[i] = {};
+                                ICO_upcoming[i].url = kind.eq(i).find('h3 a').attr('href');
+                                ICO_upcoming[i].name = kind.eq(i).find('h3 a').text();
+                                ICO_upcoming[i].category = kind.eq(i).find('.categ_type').text();
+                                ICO_upcoming[i].now_percent = "0%";
+                                ICO_upcoming[i].now = "0";
+                                var goal = kind.eq(i).find('#categ_desctop').text();
+                                if (goal.indexOf('$') >= 0) {
+                                    ICO_upcoming[i].goal = goal.replace(/[\t\n,]/g, "");
+                                }
+                                else {
+                                    ICO_upcoming[i].goal = "TBA";
+                                }
+                                ICO_upcoming[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g, "").replace(/DATE: /, "");
+                                ICO_upcoming[i].rate = kind.eq(i).find('div.interest span.spspan').text();
+                                if (ICO_upcoming[i].rate === "") {
+                                    ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
+                                    if (ICO_upcoming[i].rate === "") {
+                                        ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.nr').text();
+                                    }
+                                }
+                            }
+                            modelname = 'bitcoin_icodrops';
+                            options = {};
+
+                            options.qs = {kind: 'upcoming'};
+                            options.url = SERVER_HOST + '/api/' + modelname;
+
+                            request.delete(options, function (err, response, body) {
+                                if (err) {
+                                    console.log(err);
+                                    matched = false;
+                                    callback(matched);
+                                }
+                                else {
+                                    console.log("delete！   response.statusCode=" + response.statusCode);
+                                    ICO_upcoming.forEach(newICO);
+                                }
+                            });
+                        });
+                }
+
+                function newICO(ICO, index, ICOs) {
+                    modelname = 'bitcoin_icodrops';
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                    options.json = {
+                        kind: 'upcoming',
+                        url: ICO.url,
+                        name: ICO.name,
+                        category: ICO.category,
+                        now_percent: ICO.now_percent,
+                        now: ICO.now,
+                        goal: ICO.goal,
+                        date: ICO.date,
+                        rate: ICO.rate,
+                        created: new Date().toISOString(),
+                        updateTime: new Date().getTime()
+                    };
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            callback();
+                        }
+                        else {
+                            console.log("new！   response.statusCode=" + response.statusCode);
+                            if (index === ICOs.length - 1) {
+                                showICO();
+                            }
+                        }
+                    })
+
+                }
+
+                function showICO() {
+                    modelname = 'bitcoin_icodrops';
+                    options = {};
+
+                    options.qs = {kind: 'upcoming'};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            callback();
+                        }
+                        else {
+                            console.log("getICO！   response.statusCode=" + response.statusCode);
+                            body = JSON.parse(body);
+
+                            context.session.upcomingICO = body;
+
+                            dialog.output[0].buttons = [];
+                            for (var i = 0; i < 15; i++) {
+                                var name = "" + (i + 1) + ". " + body[i].name;
+                                var rate = body[i].rate;
+                                dialog.output[0].buttons.push({text: name + " [" + rate + ']'});
+                            }
+                            dialog.output[0].buttons.push({text: 'MORE'});
+                            dialog.output[0].buttons.push({text: 'Back'});
+                            dialog.output[0].buttons.push({text: 'Start'});
+                            callback();
+                        }
+                    });
+                }
+            }
+        });
+
 
     bot.setType('upcomingICO',
         {
@@ -2655,124 +1662,42 @@ var difference = 0;
                 }
                 else {
                     var matched = false;
-                    dialog.userInput.text = dialog.userInput.text.toUpperCase().split('.')[1].split('[')[0].trim();
-                    for (var i = 0; i < context.session.upcomingICO.length; i++) {
-                        if (dialog.userInput.text === context.session.upcomingICO[i].name) {
-                            context.session.ICOinfo1 = context.session.upcomingICO[i];
 
+                    if(dialog.userInput.text.toLowerCase().split('.')[2]){
+                        dialog.userInput.text = dialog.userInput.text.toLowerCase().split('.')[1].trim()+'.'+dialog.userInput.text.toLowerCase().split('.')[2].split('[')[0].trim();
+                    }
+                    else {
+                        dialog.userInput.text = dialog.userInput.text.toLowerCase().split('.')[1].split('[')[0].trim();
+                    }
+                    for (var i = 0; i < context.session.upcomingICO.length; i++) {
+                        if (dialog.userInput.text === context.session.upcomingICO[i].name.toLowerCase()) {
+                            context.session.ICOinfo = context.session.upcomingICO[i];
                             matched = true;
                             return callback(matched);
                         }
-                        else {
-                            if (i === context.session.upcomingICO.length-1) {
-                                matched = false;
-                                callback(matched);
-                            }
+                        else if(i === context.session.upcomingICO.length - 1){
+                            matched = false;
+                            callback(matched);
                         }
                     }
                 }
             }
         });
 
-    bot.setTask('showICO1',
-        {
-            action: function (dialog, context, callback)
-            {
 
-                dialog.output[0].buttons = [
-
-                    {
-                        text: 'Specific Information',
-                        url: context.session.ICOinfo1.url
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
-                    }
-
-                ];
-                callback();
-
-            }
-        });
-
-	bot.setTask('showchart', 
-	{
-		action: function (dialog, context, callback)
-		{
-            context.session.coinsinfo3.name = context.session.coinsinfo3.name.toLowerCase();
-            context.session.coinsinfo3.name = context.session.coinsinfo3.name.charAt(0).toUpperCase()+context.session.coinsinfo3.name.slice(1);
-            if(context.session.coinsinfo3.graphimage.indexOf('.svg')=== -1) {
-                dialog.output[0].image = {url: context.session.coinsinfo3.graphimage};
-                dialog.output[0].buttons = [
-                    {
-                        text: 'See price graph',
-                        url: context.session.coinsinfo3.graph
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
-                    }
-
-                ];
-                callback();
-            }
-            else {
-                dialog.output[0].text = ' Coin: '+context.session.coinsinfo3.name+'\n'+
-                    'Shortname: '+context.session.coinsinfo3.shortname+'\n'+
-                    'Price: '+context.session.coinsinfo3.price+'\n'+
-                    'Volume(24h):  '+context.session.coinsinfo3.volume+'\n'+
-                    'Change(24h): '+context.session.coinsinfo3.change+'\n';
-                dialog.output[0].buttons = [
-                    {
-                        text: 'See price graph',
-                        url: context.session.coinsinfo3.graph
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
-                    }
-
-                ];
-                callback();
-            }
-		}
-	});
-    bot.setType('chart',
+    bot.setType('icos',
     {
-        typeCheck: function (dialog, context, callback)
-        {
+        typeCheck: function (dialog, context, callback) {
             var matched = false;
-            if(dialog.userInput.text==="1" || dialog.userInput.text==="2" || dialog.userInput.text==="3"){
-                matched = false;
-                return callback(matched);
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('PRICE CHART')>=0) {
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('PRICE CHART')[0].trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('CHART')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('CHART')[0].trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('PRICE GRAPH')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('PRICE GRAPH')[0].trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('GRAPH')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('GRAPH')[0].trim();
-            }
-            else{
-                matched = false;
-                callback(matched);
-            }
+            var difference = 0;
+            var iconame = [];
+            var ICOkind = ['active', 'upcoming'];
+            var ICOurl = "";
+            context.session.selecico = [];
 
-            var matchedcoin = "";
-            var matchedindex = 0;
-            modelname = 'bitcoin_coinmarketcap';
+            dialog.userInput.text = dialog.userInput.text.toLowerCase();
+
+            modelname = 'bitcoin_icodrops';
             options = {};
 
             options.qs = {};
@@ -2780,350 +1705,94 @@ var difference = 0;
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log(err);
-                    callback();
+                    matched = false;
+                    callback(matched);
                 }
                 else {
                     body = JSON.parse(body);
 
-                    for (var j = 0; j < body.length; j++) {
+                    if (body.length === 0) {
+                        ICOkind.forEach(ICOcrawling);
+                    }
+                    else {
+                        var nowtime = new Date().getTime();
+                        difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if(dialog.userInput.text===body[j].name || dialog.userInput.text===body[j].shortname){
-                            matchedcoin = body[j].name;
-                            matchedindex = j;
+                        if (difference >= 3) {
+                            ICOkind.forEach(ICOcrawling);
+                        }
+                        else {
+                            getICO(body);
                         }
                     }
-
-                    var nowtime = new Date().getTime();
-                    var difference = (nowtime - body[0].updateTime) / (60 * 1000);
-
-                    crawling(difference,body,matchedcoin,matchedindex);
                 }
-
             });
 
-            var crawling = function(difference,body,matchedcoin,matchedindex){
+            function ICOcrawling(ICOkind) {
+                ICOurl = "https://icodrops.com/category/" + ICOkind + "-ico/";
+                superagent.get(ICOurl)
+                    .end(function (err, pres) {
+                        var $ = cheerio.load(pres.text);
+                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
 
-                if (difference >= 0) {
-                    superagent.get(Url)
-                        .end(function (err, pres) {
-                            var $ = cheerio.load(pres.text);
-                            var kind = $('tbody tr');
-                            for (var i = 0; i < kind.length; i++) {
-                                coin[i] = {};
-                                coin[i].shortname = kind.eq(i).find('td.no-wrap.currency-name span a').text().toUpperCase();
-                                coin[i].name = kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').text().toUpperCase();
-                                coin[i].url = "https://coinmarketcap.com" + kind.eq(i).find('td.no-wrap.currency-name a.currency-name-container').attr('href');
-                                coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('data-src');
-                                if (!coin[i].image) {
-                                    coin[i].image = kind.eq(i).find('td.no-wrap.currency-name img').attr('src');
-                                }
-                                coin[i].price = kind.eq(i).find('td.no-wrap.text-right a.price').text().replace(/[,]/g, "");
-                                coin[i].volume = kind.eq(i).find('td.no-wrap.text-right a.volume').text().replace(/[,]/g, "");
-                                coin[i].change = kind.eq(i).find('td.no-wrap.percent-change.text-right').text();
-                                coin[i].graph ='https://coinmarketcap.com/currencies/'+coin[i].name+'/#charts';
-                                coin[i].graphimage = kind.eq(i).find('td a img.sparkline').attr('src');
-                                coin[i].rate = kind.eq(i).find('td.text-center').text().trim();
-
+                        for (var i = 0; i < kind.length; i++) {
+                            ICO[i] = {};
+                            ICO[i].url = kind.eq(i).find('h3 a').attr('href');
+                            ICO[i].name = kind.eq(i).find('h3 a').text();
+                            ICO[i].category = kind.eq(i).find('.categ_type').text();
+                            ICO[i].now_percent = "0%";
+                            ICO[i].now = "0";
+                            var goal = kind.eq(i).find('#categ_desctop').text();
+                            if (goal.indexOf('$') >= 0) {
+                                ICO[i].goal = goal.replace(/[\t\n,]/g, "");
                             }
+                            else {
+                                ICO[i].goal = "TBA";
+                            }
+                            ICO[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g, "").replace(/DATE: /, "");
+                            ICO[i].rate = kind.eq(i).find('div.interest span.spspan').text();
+                            if (ICO[i].rate === "") {
+                                ICO[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
+                                if (ICO[i].rate === "") {
+                                    ICO[i].rate = kind.eq(i).find('div.interest div.nr').text();
+                                }
+                            }
+                        }
+                        modelname = 'bitcoin_icodrops';
+                        options = {};
 
-                            for (var j = 0; j < coin.length; j++) {
-                                update(j, matchedcoin)
+                        options.qs = {kind: ICOkind};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        request.delete(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                matched = false;
+                                callback(matched);
+                            }
+                            else {
+                                console.log("delete！   response.statusCode=" + response.statusCode);
+                                ICO.forEach(newICO);
                             }
                         });
-                }
-                else {
-                    if(!matchedcoin){
-                        matched = false;
-                        callback(matched);
-                    }
-                    else {
-                        if (body[matchedindex].rate) {
-                            context.session.coinsinfo3 = body[matchedindex];
-                            console.log('SHOW!');
-                            matched = true;
-                            return callback(matched);
-                        }
-                        else {
-                            matched = false;
-                            callback(matched);
-                        }
-                    }
-                }
-            };
-
-            var update = function (index,matchedcoin) {
-                options = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-
-                options.qs = {name: coin[index].name};
-                options.json = {
-                    url: coin[index].url,
-                    shortname: coin[index].shortname,
-                    image: coin[index].image,
-                    price: coin[index].price,
-                    volume: coin[index].volume,
-                    change: coin[index].change,
-                    graph: coin[index].graph,
-                    graphimage: coin[index].graphimage,
-                    updateTime: new Date().getTime(),
-                    rate: coin[index].rate
-                };
-
-                request.put(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else if (body.nModified === '0') {
-                        save1(index,matchedcoin);
-                    }
-                    else {
-                        if(index===coin.length-1){
-                            show(matchedcoin);
-                        }
-                    }
-                })
-            };
-
-            var save1 = function (index,matchedcoin) {
-                options = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-
-                options.json = {
-                    name: coin[index].name,
-                    url: coin[index].url,
-                    shortname: coin[index].shortname,
-                    image: coin[index].image,
-                    price: coin[index].price,
-                    volume: coin[index].volume,
-                    change: coin[index].change,
-                    graph: coin[index].graph,
-                    graphimage: coin[index].graphimage,
-                    created: new Date().toISOString(),
-                    updateTime: new Date().getTime(),
-                    rate: coin[index].rate
-                };
-
-                request.post(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        if(index=== coin.length-1){
-                            show(matchedcoin);
-                        }
-                    }
-                })
-            };
-
-            var show = function (matchedcoin) {
-                modelname = 'bitcoin_coinmarketcap';
-                options = {name: matchedcoin};
-
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        matchedcoin = "";
-                        matchedindex = 0;
-                        body = JSON.parse(body);
-
-                        for (var j = 0; j < body.length; j++) {
-                            if(body[j].rate) {
-                                body[j].updateTime = Number(body[j].updateTime);
-                                if(dialog.userInput.text === body[j].name || dialog.userInput.text===body[j].shortname){
-                                    matchedcoin = body[j].name;
-                                    matchedindex = j;
-                                    console.log("code: "+ j);
-                                    j = body.length;
-                                    show2(body,matchedcoin,matchedindex);
-                                }
-                                else{
-                                    if(j === body.length-1){
-                                        matched = false;
-                                        return  callback(matched);
-                                    }
-                                }
-                            }
-                            else{
-                                if(j === body.length-1) {
-                                    matched = false;
-                                    callback(matched);
-                                }
-                            }
-                        }
-                    }
-                });
-
-            };
-
-            var show2 = function (body,matchedcoin,matchedindex) {
-
-                if (!matchedcoin) {
-                    matched = false;
-                    callback(matched);
-                }
-                else {
-                    if (body[matchedindex].rate) {
-                        context.session.coinsinfo3 = body[matchedindex];
-                        console.log('Update!');
-                        matched = true;
-                        callback(matched);
-                    }
-                    else {
-                        matched = false;
-                        callback(matched);
-                    }
-                }
-            }
-        }
-    });
-
-    bot.setType('ico',
-    {
-        typeCheck: function (dialog, context, callback)
-        {
-            var matched = false;
-            if(dialog.userInput.text==="1" || dialog.userInput.text==="2" || dialog.userInput.text==="3"){
-                matched = false;
-                return callback(matched);
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('ICO')>=0) {
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().replace(/ICO/g,"").trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('ICO INFORMATION')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('ICO INFORMATION')[0].trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('ICO INFO')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('ICO INFO')[0].trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('ICO TIME')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('ICO TIME')[0].trim();
-            }
-            else if(dialog.userInput.text.toUpperCase().indexOf('WHEN IS THE')>=0 && dialog.userInput.text.toUpperCase().indexOf('ICO')>=0){
-                dialog.userInput.text = dialog.userInput.text.toUpperCase().split('WHEN IS THE')[1].split('ICO')[0].trim();
-            }
-            else{
-                matched = false;
-                callback(matched);
-            }
-
-            modelname = 'bitcoin_icodrops';
-            options = {};
-            var matchedcoin = '';
-            var matchedindex = 0;
-
-            options.qs = {kind: {$ne:'ended'}};
-            options.url = SERVER_HOST + '/api/' + modelname;
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    matched = false;
-                    callback(matched);
-                }
-                else {
-                    // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                    body = JSON.parse(body);
-
-                    for (var j = 0; j < body.length; j++) {
-
-                        body[j].updateTime = Number(body[j].updateTime);
-                        if(body[j].name===dialog.userInput.text){
-                            matchedcoin = body[j].name;
-                            matchedindex = j;
-                        }
-                    }
-
-                    var nowtime = new Date().getTime();
-                    var difference = (nowtime - body[0].updateTime) / (60 * 60 * 1000);
-
-                  crawling(difference,body,matchedcoin,matchedindex);
-                }
-
-            });
-
-            var crawling = function(difference,body,matchedcoin,matchedindex){
-
-                if(difference >= 3) {
-                    modelname = 'bitcoin_icodrops';
-                    options = {};
-
-                    options.qs = {kind: 'upcoming'};
-                    options.url = SERVER_HOST + '/api/' + modelname;
-                    request.delete(options, function (err, response, body) {
-                        if (err) {
-                            console.log(err);
-                            matched = false;
-                            callback(matched);
-                        }
-                        else {
-                            console.log("updatuser！   response.statusCode=" + response.statusCode);
-                            console.log("delete!");
-                            superagent.get(Url2)
-                                .end(function (err, pres) {
-                                    var $ = cheerio.load(pres.text);
-                                    var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-                                    // console.log('kind=======' + kind);
-                                    for (var i = 0; i < kind.length; i++) {
-                                        ICO_upcoming[i] = {};
-                                        ICO_upcoming[i].url = kind.eq(i).find('h3 a').attr('href');
-                                        ICO_upcoming[i].name = kind.eq(i).find('h3 a').text();
-                                        ICO_upcoming[i].category = kind.eq(i).find('.categ_type').text();
-                                        ICO_upcoming[i].now_percent = "0";
-                                        ICO_upcoming[i].now = "0";
-                                        var goal = kind.eq(i).find('#categ_desctop').text();
-                                        if(goal.indexOf('$')>=0){
-                                            ICO_upcoming[i].goal = goal.replace(/[\t\n,]/g, "");
-                                        }
-                                        else{
-                                            ICO_upcoming[i].goal = "TBA";
-                                        }
-                                        ICO_upcoming[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g,"").replace(/DATE: /,"");
-                                        ICO_upcoming[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                                        if(ICO_upcoming[i].rate === ""){
-                                            ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g,"");
-                                            if(ICO_upcoming[i].rate === ""){
-                                                ICO_upcoming[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                            }
-                                        }
-                                    }
-
-                                    for(var j = 0; j < ICO_upcoming.length; j++) {
-                                        save1(j);
-                                    }
-                                });
-                        }
                     });
-                }
-                else {
-                    context.session.ICOinfo2 = body[matchedindex];
-                    matched = true;
-                    callback(matched);
-                }
-            };
+            }
 
-
-            var save1 = function (index) {
+            function newICO(ICO, index, ICOs) {
                 modelname = 'bitcoin_icodrops';
                 options = {};
                 options.url = SERVER_HOST + '/api/' + modelname;
 
                 options.json = {
-                    kind: 'upcoming',
-                    url: ICO_upcoming[index].url,
-                    name: ICO_upcoming[index].name.toUpperCase(),
-                    category: ICO_upcoming[index].category,
-                    now_percent: ICO_upcoming[index].now_percent,
-                    now: ICO_upcoming[index].now,
-                    goal: ICO_upcoming[index].goal,
-                    date: ICO_upcoming[index].date,
-                    rate: ICO_upcoming[index].rate,
+                    kind: ICOkind,
+                    url: ICO.url,
+                    name: ICO.name,
+                    category: ICO.category,
+                    now_percent: ICO.now_percent,
+                    now: ICO.now,
+                    goal: ICO.goal,
+                    date: ICO.date,
+                    rate: ICO.rate,
                     created: new Date().toISOString(),
                     updateTime: new Date().getTime()
                 };
@@ -3135,59 +1804,465 @@ var difference = 0;
                         callback(matched);
                     }
                     else {
-                        console.log("new！");
-                        if(index === ICO_upcoming.length-1){
-                            show();
+                        console.log("new！   response.statusCode=" + response.statusCode);
+                        if (index === ICOs.length - 1 && ICO.kind === 'upcoming') {
+                            modelname = 'bitcoin_icodrops';
+                            options = {};
+
+                            options.qs = {};
+                            options.url = SERVER_HOST + '/api/' + modelname;
+                            request.get(options, function (err, response, body) {
+                                if (err) {
+                                    console.log(err);
+                                    matched = false;
+                                    callback(matched);
+                                }
+                                else {
+                                    body = JSON.parse(body);
+                                    getICO(body);
+                                }
+                            })
                         }
                     }
                 })
-            };
 
-            var show = function(){
+            }
 
-                modelname = 'bitcoin_icodrops';
-                options = {};
+            function getICO(body) {
+                context.session.ICOs = body;
+                for (var i = 0; i < body.length; i++) {
+                    iconame.push(body[i].name.toLowerCase());
+                }
+                iconame = iconame.sort(function (a, b) {
+                    return b.length - a.length;
+                });
 
-                options.qs = {kind: 'upcoming'};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        matched = false;
-                        callback(matched);
-                    }
-                    else {
-                        // console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        body = JSON.parse(body);
+                var mm = iconame.length;
+                for (var j = 0; j < mm; j++) {
 
-                        for (var j = 0; j < body.length; j++) {
-
-                            body[j].updateTime = Number(body[j].updateTime);
-                            if(body[j].name===dialog.userInput.text){
-                                context.session.upcomingICO = body[j];
-                            }
+                    if (dialog.userInput.text.indexOf(' ' + iconame[j] + ' ') !== -1 || dialog.userInput.text.indexOf(iconame[j] + ' ') !== -1 || dialog.userInput.text.indexOf(' ' + iconame[j]) !== -1) {
+                        context.session.selecico.push(iconame[j]);
+                        iconame.splice(j, 1);
+                        j--;
+                        mm = iconame.length;
+                        if (j === iconame.length-1 && context.session.selecico.length >= 1) {
+                            matched = true;
+                            callback(matched);
                         }
-
+                        else if (j === iconame.length-1 && context.session.selecico.length === 0) {
+                            matched = false;
+                            callback(matched);
+                        }
+                    }
+                    else if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
                         matched = true;
                         callback(matched);
                     }
-                });
-            };
+                    else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
+                        matched = false;
+                        callback(matched);
+                    }
+                }
+            }
         }
     });
-	bot.setTask('showico', 
-	{
-		action: function (dialog, context, callback)
-		{
-            if (context.session.ICOinfo2.now === '0') {
-                context.session.ICOinfo2.now_percent = '0%';
-            }
-		    if(context.session.ICOinfo2.url==='upcoming') {
-                dialog.output[0].buttons = [
 
+    bot.setTask('showICO2',
+        {
+            action: function (dialog, context, callback) {
+
+                context.session.ICOsinfo = [];
+
+                context.session.selecico.forEach(getICO);
+
+                function getICO(iconame,index) {
+                    for (var i = 0; i < context.session.ICOs.length; i++) {
+
+                        if (iconame === context.session.ICOs[i].name.toLowerCase()) {
+                            context.session.ICOsinfo.push(context.session.ICOs[i]);
+                        }
+                        else if (i === context.session.ICOs.length - 1 && index === context.session.selecico.length -1) {
+                            if (context.session.ICOsinfo.length === 1) {
+                                showICO();
+                            }
+                            else {
+                                showICO2();
+                            }
+                        }
+                    }
+                }
+
+                function showICO() {
+                    if(context.session.ICOsinfo.kind === 'upcoming') {
+                        dialog.output[0].text = ' Project: ' + context.session.ICOsinfo[0].name + '\n' +
+                            'Kind: ' + context.session.ICOsinfo[0].kind + '\n' +
+                            'Interest: ' + context.session.ICOsinfo[0].rate + '\n' +
+                            'Category: ' + context.session.ICOsinfo[0].category + '\n' +
+                            'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
+                            'Start Date: ' + context.session.ICOsinfo[0].date + '\n';
+                        dialog.output[0].buttons = [
+                            {
+                                text: 'Specific Information',
+                                url: context.session.ICOsinfo[0].url
+                            },
+                            {
+                                text: 'Back'
+                            },
+                            {
+                                text: 'Start'
+                            }
+                        ];
+                        callback();
+                    }
+                    else{
+                        dialog.output[0].text = ' Project: ' + context.session.ICOsinfo[0].name + '\n' +
+                            'Kind: ' + context.session.ICOsinfo[0].kind + '\n' +
+                            'Interest: ' + context.session.ICOsinfo[0].rate + '\n' +
+                            'Category: ' + context.session.ICOsinfo[0].category + '\n' +
+                            'Received: ' + context.session.ICOsinfo[0].now + ' / '+ context.session.ICOsinfo[0].now_percent + '\n' +
+                            'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
+                            'End Date: ' + context.session.ICOsinfo[0].date + '\n';
+                        dialog.output[0].buttons = [
+                            {
+                                text: 'Specific Information',
+                                url: context.session.ICOsinfo[0].url
+                            },
+                            {
+                                text: 'Back'
+                            },
+                            {
+                                text: 'Start'
+                            }
+                        ];
+                        callback();
+                    }
+                }
+
+                function showICO2() {
+                    dialog.output[0].text = 'Select the ICO you want to see the specify information.';
+                    dialog.output[0].buttons = [];
+                    for (var i = 0; i < context.session.ICOsinfo.length; i++) {
+                        var ss = (i+1) + '. ' + context.session.ICOsinfo[i].name + ' [' + context.session.ICOsinfo[i].rate + ']';
+                        dialog.output[0].buttons.push({text: ss})
+                    }
+                    dialog.output[0].buttons.push({text: 'Back'});
+                    dialog.output[0].buttons.push({text: 'Start'});
+                    callback();
+                }
+            }
+        });
+
+
+    bot.setType('ICO',
+        {
+            typeCheck: function (dialog, context, callback)
+            {
+                if(dialog.userInput.text.indexOf('.')===-1){
+                    matched = false;
+                    callback(matched);
+                }
+                else {
+                    var matched = false;
+
+                    if(dialog.userInput.text.toLowerCase().split('.')[2]){
+                        dialog.userInput.text = dialog.userInput.text.toLowerCase().split('.')[1].trim()+'.'+dialog.userInput.text.toLowerCase().split('.')[2].split('[')[0].trim();
+                    }
+                    else {
+                        dialog.userInput.text = dialog.userInput.text.toLowerCase().split('.')[1].split('[')[0].trim();
+                    }
+                    for (var i = 0; i < context.session.ICOsinfo.length; i++) {
+                        if (dialog.userInput.text === context.session.ICOsinfo[i].name.toLowerCase()) {
+                            context.session.ICOinfo = context.session.ICOsinfo[i];
+                            matched = true;
+                            return callback(matched);
+                        }
+                        else if(i === context.session.ICOsinfo.length - 1){
+                            matched = false;
+                            callback(matched);
+                        }
+                    }
+                }
+            }
+        });
+
+    bot.setTask('showICO1',
+        {
+            action: function (dialog, context, callback)
+            {
+
+                if(context.session.ICOinfo.kind === 'upcoming') {
+                    dialog.output[0].text = ' Project: ' + context.session.ICOinfo.name + '\n' +
+                        'Kind: ' + context.session.ICOinfo.kind + '\n' +
+                        'Interest: ' + context.session.ICOinfo.rate + '\n' +
+                        'Category: ' + context.session.ICOinfo.category + '\n' +
+                        'Goal:  ' + context.session.ICOinfo.goal + '\n' +
+                        'Start Date: ' + context.session.ICOinfo.date + '\n';
+                    dialog.output[0].buttons = [
+                        {
+                            text: 'Specific Information',
+                            url: context.session.ICOinfo[0].url
+                        },
+                        {
+                            text: 'Back'
+                        },
+                        {
+                            text: 'Start'
+                        }
+                    ];
+                    callback();
+                }
+                else{
+                    dialog.output[0].text = ' Project: ' + context.session.ICOinfo.name + '\n' +
+                        'Kind: ' + context.session.ICOinfo.kind + '\n' +
+                        'Interest: ' + context.session.ICOinfo.rate + '\n' +
+                        'Category: ' + context.session.ICOinfo.category + '\n' +
+                        'Received: ' + context.session.ICOinfo.now + ' / '+ context.session.ICOinfo.now_percent + '\n' +
+                        'Goal:  ' + context.session.ICOinfo.goal + '\n' +
+                        'End Date: ' + context.session.ICOinfo.date + '\n';
+                    dialog.output[0].buttons = [
+                        {
+                            text: 'Specific Information',
+                            url: context.session.ICOinfo.url
+                        },
+                        {
+                            text: 'Back'
+                        },
+                        {
+                            text: 'Start'
+                        }
+                    ];
+                    callback();
+                }
+            }
+        });
+
+
+
+//----------------------------------------------------News-----------------------------------------------
+
+
+    bot.setTask('newsCategory',
+        {
+            action: function (dialog, context, callback) {
+                context.session.selecnews = [];
+                context.session.newsinfo = [];
+                COIN = dialog.userInput.text.split('.')[1].trim().toLowerCase();
+                options = {};
+                modelname = 'bitcoin_cointelegraph';
+                options.url = SERVER_HOST + '/api/' + modelname;
+
+                options.qs = {coin: COIN};
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log("get！   response.statusCode=" + response.statusCode);
+                        body = JSON.parse(body);
+
+                        body = body.sort(function (a, b) {
+                            return a.rate - b.rate;
+                        });
+
+                        var nowtime = new Date().getTime();
+
+                        console.log('body: ' + JSON.stringify(body));
+
+                        var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                        if (difference > 30) {
+                            crawling();
+                        }
+                        else {
+                            context.session.news = body;
+                            callback();
+                        }
+                    }
+                });
+
+
+                function crawling() {
+                    var NEWS = [];
+                    url = "https://cointelegraph.com/tags/" + COIN;
+                    superagent.get(url)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kinds = ['recent', 'top', 'commented'];
+                            var craw = '';
+
+                            kinds.forEach(crawling1);
+
+                            function crawling1(kind) {
+                                craw = $('#' + kind + ' div');
+                                description = $("#tag>div>div.col-md-8.description>p:nth-child(2)").text();
+                                for (var i = 1; i <= 15; i++) {
+                                    var s = i - 1;
+                                    news[s] = {};
+                                    news[s].title = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').text().replace(/\n/g, "").trim();
+                                    news[s].url = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').attr('href').trim();
+                                    news[s].image = craw.find('div:nth-child(' + i + ') > figure.col-sm-4 > div > a > div > img').attr('srcset').split('1x,')[0].trim();
+                                    news[s].time = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.date').text().replace(/\n/g, "").trim();
+                                    news[s].author = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.author > span > a').text().replace(/\n/g, "").trim();
+                                    news[s].text = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > p > a').text().replace(/\n/g, "").trim();
+                                    news[s].status = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div:nth-child(4) > div > span').text().trim();
+                                    news[s].rate = i;
+                                    news[s].kind = kind;
+                                    news[s].language = 'en';
+                                    news[s].coin = COIN;
+                                    news[s].created = new Date().toISOString();
+                                    news[s].updateTime = new Date().getTime();
+
+                                    NEWS.push(news[s]);
+                                    options = {};
+                                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                                    options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
+                                    options.json = {
+                                        updateTime: new Date().getTime(),
+                                        title: news[s].title,
+                                        url: news[s].url,
+                                        image: news[s].image,
+                                        time: news[s].time,
+                                        author: news[s].author,
+                                        text: news[s].text,
+                                        status: news[s].status
+                                    };
+                                    update(options, news[s], i, kind);
+                                }
+
+                                function update(options, newcoin, i, kind) {
+
+                                    request.put(options, function (err, response, body) {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else if (body.nModified === 0) {
+                                            save1(newcoin, i, kind);
+                                        }
+                                        else {
+                                            console.log("update！   response.statusCode=" + response.statusCode);
+                                            if (NEWS.length === 45) {
+                                                options = {};
+                                                options.url = SERVER_HOST + '/api/' + modelname;
+
+                                                options.qs = {coin: COIN};
+
+                                                request.get(options, function (err, response, body) {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    }
+                                                    else {
+                                                        console.log("get！   response.statusCode=" + response.statusCode);
+                                                        body = JSON.parse(body);
+                                                        context.session.news = body;
+                                                        callback();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                    function save1(NEWS, i, kind) {
+                                        options = {};
+                                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                                        options.json = NEWS;
+
+                                        request.post(options, function (err, response, body) {
+                                            if (err) {
+                                                console.log(err);
+                                            }
+                                            else {
+                                                console.log("new！   response.statusCode=" + response.statusCode);
+                                                if (NEWS.length === 45) {
+                                                    options = {};
+                                                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                                                    options.qs = {coin: COIN};
+
+                                                    request.get(options, function (err, response, body) {
+                                                        if (err) {
+                                                            console.log(err);
+                                                        }
+                                                        else {
+                                                            console.log("get！   response.statusCode=" + response.statusCode);
+                                                            body = JSON.parse(body);
+                                                            context.session.news = body;
+                                                            callback();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+
+                            }
+                        });
+                }
+
+            }
+        });
+
+
+    bot.setTask('shownewstitle',
+        {
+            action: function (dialog, context, callback)
+            {
+
+                if(dialog.userInput.text === 'Recent'){
+                    context.session.kind = 'recent';
+                }
+                else if(dialog.userInput.text === 'Top News'){
+                    context.session.kind = 'top';
+                }
+                else if(dialog.userInput.text === 'Commented'){
+                    context.session.kind = 'commented';
+                }
+                dialog.output[0].buttons = [];
+                var ss = 0;
+
+                for(var i = 0; i < context.session.news.length; i++){
+                    if(context.session.news[i].kind === context.session.kind) {
+                        context.session.selecnews[ss] = context.session.news[i];
+                        ss++;
+                        var newstitle = "" + ss + ". " + context.session.news[i].title;
+                        dialog.output[0].buttons.push({text:newstitle});
+                    }
+                }
+                callback();
+            }
+        });
+
+    bot.setType('news',
+        {
+            typeCheck: function (dialog, context, callback) {
+                var matched = false;
+                dialog.userInput.text = dialog.userInput.text.split('.')[1].trim();
+                for (var i = 0; i < context.session.selecnews.length; i++) {
+                    if (dialog.userInput.text === context.session.selecnews[i].title) {
+                        context.session.newsinfo = context.session.selecnews[i];
+                        matched = true;
+                        callback(matched);
+                    }
+                    else if (i === context.session.selecnews.length - 1) {
+                      matched = false;
+                        callback(matched);
+                    }
+                }
+            }
+        });
+
+    bot.setTask('shownews',
+        {
+            action: function (dialog, context, callback)
+            {
+                dialog.output[0].images = {url: context.session.newsinfo.image};
+                dialog.output[0].buttons = [
                     {
-                        text: 'Specific Information',
-                        url: context.session.ICOinfo2.url
+                        text: 'Specific content',
+                        url: context.session.newsinfo.url
                     },
                     {
                         text: 'Back'
@@ -3195,36 +2270,200 @@ var difference = 0;
                     {
                         text: 'Start'
                     }
-
                 ];
                 callback();
             }
-            else{
-                dialog.output[0].text = 'Project: '+context.session.ICOinfo2.name+'\n'+
-                'Interest: '+context.session.ICOinfo2.rate+'\n'+
-                'Category: '+context.session.ICOinfo2.category+'\n'+
-                'Goal: '+context.session.ICOinfo2.goal+'\n'+
-                'End Date: '+context.session.ICOinfo2.date+'\n'+
-                    'Received: '+context.session.ICOinfo2.now+ ' / '+context.session.ICOinfo2.now_percent;
-                dialog.output[0].buttons = [
+        });
 
-                    {
-                        text: 'Specific Information',
-                        url: context.session.ICOinfo2.url
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
+    bot.setType('news',
+        {
+            typeCheck:  function (dialog, context, callback) {
+                var matched = false;
+                var NEWS = [];
+                context.session.selecnews = [];
+                context.session.newsinfo = [];
+                COIN = ['bitcoin', 'ehtereum','altcoin','litecoin','ripple','monero'];
+                COIN.sort(function (a,b) {
+                   return b.length - a.length;
+                });
+
+                var coin = '';
+
+                for(var i = 0 ; i < COIN.length; i++){
+                    if(dialog.userInput.text.indexOf(COIN[i])!==1){
+                        coin = COIN[i];
+                        break;
                     }
+                }
+                options = {};
+                modelname = 'bitcoin_cointelegraph';
+                options.url = SERVER_HOST + '/api/' + modelname;
 
-                ];
-                callback();
+                options.qs = {coin: coin};
+
+                request.get(options, function (err, response, body) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log("get！   response.statusCode=" + response.statusCode);
+                        body = JSON.parse(body);
+
+                        if(body.length === 0){
+                            crawling();
+                        }
+                        else{
+                            body = body.sort(function (a, b) {
+                                return a.rate - b.rate;
+                            });
+
+                            var nowtime = new Date().getTime();
+
+                            console.log('body: ' + JSON.stringify(body));
+
+                            var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
+
+                            if (difference > 30) {
+                                crawling();
+                            }
+                            else {
+                                getnews();
+                            }
+                        }
+                    }
+                });
+
+
+                function crawling() {
+                    url = "https://cointelegraph.com/tags/" + COIN;
+                    superagent.get(url)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kinds = ['recent', 'top', 'commented'];
+                            var craw = '';
+                            kinds.forEach(crawling1);
+                        });
+                }
+
+                function crawling1(kind) {
+                    craw = "";
+                    craw = $('#' + kind + ' div');
+                    var description = $("#tag>div>div.col-md-8.description>p:nth-child(2)").text();
+                    for (var i = 1; i <= 15; i++) {
+                        var s = i - 1;
+                        news[s] = {};
+                        news[s].title = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').text().replace(/\n/g, "").trim();
+                        news[s].url = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').attr('href').trim();
+                        news[s].image = craw.find('div:nth-child(' + i + ') > figure.col-sm-4 > div > a > div > img').attr('srcset').split('1x,')[0].trim();
+                        news[s].time = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.date').text().replace(/\n/g, "").trim();
+                        news[s].author = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.author > span > a').text().replace(/\n/g, "").trim();
+                        news[s].text = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > p > a').text().replace(/\n/g, "").trim();
+                        news[s].status = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div:nth-child(4) > div > span').text().trim();
+                        news[s].rate = i;
+                        news[s].kind = kind;
+                        news[s].language = 'en';
+                        news[s].coin = COIN;
+                        news[s].created = new Date().toISOString();
+                        news[s].updateTime = new Date().getTime();
+
+                        NEWS.push(news[s]);
+                        options = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
+                        options.json = {
+                            updateTime: new Date().getTime(),
+                            title: news[s].title,
+                            url: news[s].url,
+                            image: news[s].image,
+                            time: news[s].time,
+                            author: news[s].author,
+                            text: news[s].text,
+                            status: news[s].status
+                        };
+                        update(options, news[s], i, kind);
+                    }
+                }
+
+
+                function update(options, newcoin, i, kind) {
+
+                    request.put(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else if (body.nModified === 0) {
+                            save1(newcoin, i, kind);
+                        }
+                        else {
+                            console.log("update！   response.statusCode=" + response.statusCode);
+                            if (NEWS.length === 45) {
+                                options = {};
+                                options.url = SERVER_HOST + '/api/' + modelname;
+
+                                options.qs = {coin: COIN};
+
+                                request.get(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        console.log("get！   response.statusCode=" + response.statusCode);
+                                        body = JSON.parse(body);
+                                        context.session.news = body;
+                                        callback();
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    function save1(NEWS, i, kind) {
+                        options = {};
+                        options.url = SERVER_HOST + '/api/' + modelname;
+
+                        options.json = NEWS;
+
+                        request.post(options, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                console.log("new！   response.statusCode=" + response.statusCode);
+                                if (NEWS.length === 45) {
+                                    options = {};
+                                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                                    options.qs = {coin: COIN};
+
+                                    request.get(options, function (err, response, body) {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else {
+                                            console.log("get！   response.statusCode=" + response.statusCode);
+                                            body = JSON.parse(body);
+                                            context.session.news = body;
+                                            callback();
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                    }
+                    
+                    
+                    function getnews() {
+                        context.session.news = body;
+                        callback();
+                    }
+                }
             }
-		}
-	});
-	bot.setTask('coinprice_ch', 
+        });
+
+
+
+    bot.setTask('coinprice_ch',
 	{
 		action: function (dialog, context, callback)
 		{
@@ -3302,239 +2541,5 @@ var difference = 0;
     });
 
 
-    bot.setTask('newsCategory',
-        {
-            action: function (dialog, context, callback) {
-                context.session.selecnews = [];
-                context.session.newsinfo = [];
-                COIN = dialog.userInput.text.split('.')[1].trim().toLowerCase();
-                options = {};
-                modelname = 'bitcoin_cointelegraph';
-                options.url = SERVER_HOST + '/api/' + modelname;
 
-                console.log('COIN: ' + COIN);
-                options.qs = {coin: COIN};
-
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    else {
-                        console.log("get！   response.statusCode=" + response.statusCode);
-                        body = JSON.parse(body);
-
-                        body = body.sort(function (a, b) {
-                            return a.rate - b.rate;
-                        });
-
-                        var nowtime = new Date().getTime();
-
-                        console.log('body: ' + JSON.stringify(body));
-
-                        var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
-
-                        if (difference > 30) {
-                            crawling();
-                        }
-                        else {
-                            context.session.news = body;
-                            callback();
-                        }
-                    }
-                });
-
-
-                function crawling() {
-                    var NEWS = [];
-                    url = "https://cointelegraph.com/tags/" + COIN;
-                    superagent.get(url)
-                        .end(function (err, pres) {
-                            var $ = cheerio.load(pres.text);
-                            var kinds = ['recent', 'top', 'commented'];
-                            var craw = '';
-
-                            function crawling1(kind) {
-                                function save1(NEWS, i, kind) {
-                                    options = {};
-                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                                    options.json = NEWS;
-
-                                    request.post(options, function (err, response, body) {
-                                        if (err) {
-                                            console.log(err);
-                                        }
-                                        else {
-                                            console.log("new！   response.statusCode=" + response.statusCode);
-                                            if (NEWS.length === 45) {
-                                                options = {};
-                                                options.url = SERVER_HOST + '/api/' + modelname;
-
-                                                options.qs = {coin: COIN};
-
-                                                request.get(options, function (err, response, body) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                    }
-                                                    else {
-                                                        console.log("get！   response.statusCode=" + response.statusCode);
-                                                        body = JSON.parse(body);
-                                                        context.session.news = body;
-                                                        callback();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    })
-                                }
-
-                                function update(options, newcoin, i, kind) {
-
-                                    request.put(options, function (err, response, body) {
-                                        console.log('body.nModified: ' + JSON.stringify(body));
-                                        if (err) {
-                                            console.log(err);
-                                        }
-                                        else if (body.nModified === 0) {
-                                            save1(newcoin, i, kind);
-                                        }
-                                        else {
-                                            console.log("update！   response.statusCode=" + response.statusCode);
-                                            if (NEWS.length === 45) {
-                                                options = {};
-                                                options.url = SERVER_HOST + '/api/' + modelname;
-
-                                                options.qs = {coin: COIN};
-
-                                                request.get(options, function (err, response, body) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                    }
-                                                    else {
-                                                        console.log("get！   response.statusCode=" + response.statusCode);
-                                                        body = JSON.parse(body);
-                                                        context.session.news = body;
-                                                        callback();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    })
-                                }
-
-                                console.log('kind: ' + kind);
-                                craw = $('#' + kind + ' div');
-                                description = $("#tag>div>div.col-md-8.description>p:nth-child(2)").text();
-                                for (var i = 1; i <= 15; i++) {
-                                    var s = i - 1;
-                                    news[s] = {};
-                                    news[s].title = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').text().replace(/\n/g, "").trim();
-                                    news[s].url = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > h2 > a').attr('href').trim();
-                                    news[s].image = craw.find('div:nth-child(' + i + ') > figure.col-sm-4 > div > a > div > img').attr('srcset').split('1x,')[0].trim();
-                                    news[s].time = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.date').text().replace(/\n/g, "").trim();
-                                    news[s].author = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div.info > span.author > span > a').text().replace(/\n/g, "").trim();
-                                    news[s].text = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > p > a').text().replace(/\n/g, "").trim();
-                                    news[s].status = craw.find('div:nth-child(' + i + ') > figure.col-sm-8 > div:nth-child(4) > div > span').text().trim();
-                                    news[s].rate = i;
-                                    news[s].kind = kind;
-                                    news[s].language = 'en';
-                                    news[s].coin = COIN;
-                                    news[s].created = new Date().toISOString();
-                                    news[s].updateTime = new Date().getTime();
-
-                                    NEWS.push(news[s]);
-                                    options = {};
-                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                                    options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
-                                    options.json = {
-                                        updateTime: new Date().getTime(),
-                                        title: news[s].title,
-                                        url: news[s].url,
-                                        image: news[s].image,
-                                        time: news[s].time,
-                                        author: news[s].author,
-                                        text: news[s].text,
-                                        status: news[s].status
-                                    };
-                                    update(options, news[s], i, kind);
-                                }
-                            }
-
-                            kinds.forEach(crawling1);
-                        });
-                }
-
-            }
-        });
-
-
-	bot.setTask('shownewstitle',
-	{
-		action: function (dialog, context, callback)
-		{
-
-            if(dialog.userInput.text === 'Recent'){
-                context.session.kind = 'recent';
-            }
-            else if(dialog.userInput.text === 'Top News'){
-                context.session.kind = 'top';
-            }
-            else if(dialog.userInput.text === 'Commented'){
-                context.session.kind = 'commented';
-            }
-            dialog.output[0].buttons = [];
-            var ss = 0;
-
-            for(var i = 0; i < context.session.news.length; i++){
-                if(context.session.news[i].kind === context.session.kind) {
-                    context.session.selecnews[ss] = context.session.news[i];
-                    ss++;
-                    console.log('context.session.news[i].title' + context.session.news[i].title);
-                    var newstitle = "" + ss + ". " + context.session.news[i].title;
-                    dialog.output[0].buttons.push({text:newstitle});
-                }
-            }
-			callback();
-		}
-	});
-
-    bot.setType('news',
-        {
-            typeCheck: function (dialog, context, callback) {
-                dialog.userInput.text = dialog.userInput.text.split('.')[1].trim();
-                for (var i = 0; i < context.session.selecnews.length; i++) {
-                    if (dialog.userInput.text === context.session.selecnews[i].title) {
-                        context.session.newsinfo = context.session.selecnews[i];
-                        matched = true;
-                        callback(matched);
-                    }
-                    else if (i === context.session.selecnews.length - 1) {
-                        var matched = false;
-                        callback(matched);
-                    }
-                }
-            }
-        });
-
-    bot.setTask('shownews',
-        {
-            action: function (dialog, context, callback)
-            {
-                dialog.output[0].images = {url: context.session.newsinfo.image};
-                dialog.output[0].buttons = [
-                    {
-                        text: 'Specific content',
-                        url: context.session.newsinfo.url
-                    },
-                    {
-                        text: 'Back'
-                    },
-                    {
-                        text: 'Start'
-                    }
-                ];
-                callback();
-            }
-        });
 };
