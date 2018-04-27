@@ -132,8 +132,9 @@ const Bot = mongoose.model('Bot');
 
                         if(result.output.image)
                         {
-                            options.url = 'https://api.telegram.org/bot' + token + '/sendPhoto';
-                            that.makePhoto(options, chatId, result);
+                            options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
+                            that.makeText(options, chatId, result);
+
                             console.log('옵션스 : ', options);
                             request(options, function(err, response, body)
                             {
@@ -143,9 +144,8 @@ const Bot = mongoose.model('Bot');
                                 }
                                 else
                                 {
-                                    console.log('바디 : ', body);
-                                    options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
-                                    that.makeText(options, chatId, result);
+                                    options.url = 'https://api.telegram.org/bot' + token + '/sendPhoto';
+                                    that.makePhoto(options, chatId, result);
 
                                     if(result.output.buttons)
                                     {
@@ -195,7 +195,6 @@ const Bot = mongoose.model('Bot');
                                         else
                                         {
                                             console.log('바디 : ', body);
-
                                             res.end();
                                         }
                                     });
