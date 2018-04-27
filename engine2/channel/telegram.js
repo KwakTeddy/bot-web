@@ -104,7 +104,6 @@ const Bot = mongoose.model('Bot');
 
                 try
                 {
-                    text = text.toLowerCase();
                     Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name, username: username }, session: { leaveUserId: leaveUserId } }, function(context, result)
                     {
                         if(result.originalDialogId == 'noanswer')

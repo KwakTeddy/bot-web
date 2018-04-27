@@ -229,6 +229,11 @@ var s3 = new AWS.S3();
                                 context.session.history.splice(context.session.history.length-1, 1);
                             }
 
+                            if(bot.options.toLowerCase)
+                            {
+                                inputRaw = inputRaw.toLowerCase();
+                            }
+
                             var userInput = { text: inputRaw };
                             InputManager.analysis(bot, context, userInput, error, function()
                             {
