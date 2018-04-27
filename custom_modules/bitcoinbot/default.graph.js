@@ -553,7 +553,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n+context.session.coinsinfo.graph+\nSpecific Information:\n+context.session.coinsinfo.url+\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n[inline URL](https://coinmarketcap.com/currencies/NEO/#charts)\nSpecific Information:\n[inline URL](https://coinmarketcap.com/currencies/neo/)\nPrice Graph:"
                             }
                         ],
                         "id": "default16",
