@@ -69,11 +69,17 @@ module.exports = function(bot)
                 request.put(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 });
             }
@@ -91,7 +97,10 @@ module.exports = function(bot)
                     console.log('body: ' + JSON.stringify(body));
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else if(body.nModified === 0)  {
                         if(dialog.userInput.text==="Talk now!") {
@@ -110,16 +119,25 @@ module.exports = function(bot)
                             request.post(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("newuser！   response.statusCode=" + response.statusCode);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                             });
                         }
                         else{
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     }
                     else {
@@ -132,13 +150,19 @@ module.exports = function(bot)
                         request.get(options, function (err, response, body) {
                             if (err) {
                                 console.log(err);
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("updatuser！   response.statusCode=" + response.statusCode);
                                 body = JSON.parse(body);
                                 context.session.language = body[0].Language;
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         });
 
@@ -161,7 +185,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -190,7 +217,10 @@ module.exports = function(bot)
                                 dialog.output[0].buttons.push({text: 'MORE'});
                                 dialog.output[0].buttons.push({text: 'Back'});
                                 dialog.output[0].buttons.push({text: 'Start'});
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         }
                     }
@@ -223,7 +253,10 @@ module.exports = function(bot)
                             request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -256,7 +289,10 @@ module.exports = function(bot)
                     request.post(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -276,7 +312,10 @@ module.exports = function(bot)
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -295,7 +334,10 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     });
                 }
@@ -323,7 +365,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -350,11 +395,17 @@ module.exports = function(bot)
                                         {
                                             context.session.coinsinfo = context.session.coinsprice[i];
                                             matched = true;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                     }
                                 }
@@ -390,7 +441,10 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("delete！   response.statusCode=" + response.statusCode);
@@ -424,7 +478,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("new！  response.statusCode=" + response.statusCode);
@@ -445,7 +502,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 body = JSON.parse(body);
@@ -460,11 +520,17 @@ module.exports = function(bot)
                                     {
                                         context.session.coinsinfo = context.session.coinsprice[i];
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 }
                             }
@@ -477,7 +543,8 @@ module.exports = function(bot)
     bot.setTask('showcoins',
 	{
 		action: function (dialog, context, callback)
-		{
+		{context.session.coinsinfo.graph.replace(/http:/g,"").replace(/https:/g,"").replace(/\//g,"");
+          context.session.coinsinfo.url.replace(/http:/g,"").replace(/https:/g,"").replace(/\//g,"");
             if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
                 dialog.output[0].image = {url: context.session.coinsinfo.graphimage};
                 dialog.output[0].buttons = [
@@ -505,8 +572,8 @@ module.exports = function(bot)
                 'Price: '+context.session.coinsinfo.price+'\n'+
                 'Volume(24h):  '+context.session.coinsinfo.volume+'\n'+
                 'Change(24h): '+context.session.coinsinfo.change+'\n' +
-                    'See price graph:\n' + context.session.coinsinfo.graph +'\n' +
-                    'Specific Information:\n' + context.session.coinsinfo.url;
+                    'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo.graph+')' +'\n' +
+                    'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo.url+')';
                 dialog.output[0].buttons = [
                     // {
                     //     text: 'See price graph',
@@ -541,10 +608,9 @@ module.exports = function(bot)
                 var userInput = dialog.userInput.text;
 
                 userInput = userInput.toLowerCase();
-
                 if(dialog.userInput.matchedIntent !== 'price'){
-                    matched = false;
-                    callback(matched);
+                        matched = false;
+                        callback(matched);
                 }
                 else {
 
@@ -559,7 +625,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -613,7 +682,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -647,7 +719,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -668,7 +743,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -700,20 +778,32 @@ module.exports = function(bot)
                             userInput = userInput.replace(regexp,"");
                             if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                                 matched = true;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
 
@@ -753,9 +843,8 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n' +
-                            'See price graph: \n' +context.session.coinsinfo.graph + '\n' +
-                            'Specific Information: \n' +context.session.coinsinfo.url+ '\n' +
-                            'Price Graph: ';
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')' +'\n' +
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo[0].url+')';;
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
                             // {
@@ -773,7 +862,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
@@ -781,8 +873,8 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n'+
-                        'See price graph: \n' +context.session.coinsinfo.graph + '\n' +
-                        'Specific Information: \n' +context.session.coinsinfo.url+ '\n';
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')' +'\n' +
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo[0].url+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'See price graph',
@@ -799,7 +891,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 }
 
@@ -812,7 +907,10 @@ module.exports = function(bot)
                     }
                         dialog.output[0].buttons.push({text: 'Back'});
                         dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
                 }
             }
         });
@@ -838,7 +936,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -865,11 +966,17 @@ module.exports = function(bot)
                                         {
                                             context.session.coinsinfo = context.session.coinsprice[i];
                                             matched = true;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                     }
                                 }
@@ -905,7 +1012,10 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("delete！   response.statusCode=" + response.statusCode);
@@ -939,7 +1049,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("new！  response.statusCode=" + response.statusCode);
@@ -960,7 +1073,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 body = JSON.parse(body);
@@ -975,11 +1091,17 @@ module.exports = function(bot)
                                     {
                                         context.session.coinsinfo = context.session.coinsprice[i];
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 }
                             }
@@ -1014,7 +1136,7 @@ module.exports = function(bot)
                 else {
                     dialog.output[0].text = ' Coin: '+context.session.coinsinfo.name+'\n'+
                         'Shortname: '+context.session.coinsinfo.shortname + '\n' +
-                        'See price graph: \n' + context.session.coinsinfo.graph ;
+                        'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo.graph+')';
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'See price graph',
@@ -1063,7 +1185,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -1117,7 +1242,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1151,7 +1279,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -1172,7 +1303,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -1204,20 +1338,32 @@ module.exports = function(bot)
                             userInput = userInput.replace(regexp,"");
                             if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                                 matched = true;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1254,9 +1400,7 @@ module.exports = function(bot)
                     if (context.session.coinsinfo[0].graphimage.indexOf('.svg') === -1) {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph: \n' + context.session.coinsinfo[0].graph+ '\n' +
-                            'Specific Information: \n' + context.session.coinsinfo[0].url+ '\n' +
-                            'Price Graph: ';
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')';
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
                             // {
@@ -1274,13 +1418,15 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph: \n' + context.session.coinsinfo[0].graph+ '\n' +
-                            'Specific Information: \n' + context.session.coinsinfo[0].url;
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'See price graph',
@@ -1297,7 +1443,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 }
 
@@ -1310,7 +1459,10 @@ module.exports = function(bot)
                     }
                     dialog.output[0].buttons.push({text: 'Back'});
                     dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
                 }
             }
         });
@@ -1329,7 +1481,10 @@ module.exports = function(bot)
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log(err);
-                    callback();
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
                 }
                 else {
                     body = JSON.parse(body);
@@ -1393,8 +1548,10 @@ module.exports = function(bot)
                         request.delete(options, function (err, response, body) {
                             if (err) {
                                 console.log(err);
-                                matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1426,7 +1583,10 @@ module.exports = function(bot)
                 request.post(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("new！   response.statusCode=" + response.statusCode);
@@ -1447,7 +1607,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("getICO！   response.statusCode=" + response.statusCode);
@@ -1464,7 +1627,10 @@ module.exports = function(bot)
                         dialog.output[0].buttons.push({text: 'MORE'});
                         dialog.output[0].buttons.push({text: 'Back'});
                         dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 });
             }
@@ -1492,11 +1658,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.activeICO[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.activeICO[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.activeICO.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1539,7 +1711,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -1599,8 +1774,10 @@ module.exports = function(bot)
                             request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1632,7 +1809,10 @@ module.exports = function(bot)
                     request.post(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！   response.statusCode=" + response.statusCode);
@@ -1653,7 +1833,10 @@ module.exports = function(bot)
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("getICO！   response.statusCode=" + response.statusCode);
@@ -1670,7 +1853,10 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     });
                 }
@@ -1699,11 +1885,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.upcomingICO[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.upcomingICO[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.upcomingICO.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1740,7 +1932,10 @@ module.exports = function(bot)
                     if (err) {
                         console.log(err);
                         matched = false;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -1803,7 +1998,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1836,7 +2034,10 @@ module.exports = function(bot)
                     if (err) {
                         console.log(err);
                         matched = false;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("new！   response.statusCode=" + response.statusCode);
@@ -1850,7 +2051,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     body = JSON.parse(body);
@@ -1882,20 +2086,32 @@ module.exports = function(bot)
                         userInput = userInput.replace(regexp,"");
                         if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                     else if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
                         matched = true;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                     else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
                         matched = false;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                 }
             }
@@ -1935,7 +2151,7 @@ module.exports = function(bot)
                             'Category: ' + context.session.ICOsinfo[0].category + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
                             'Start Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOsinfo[0].url+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'Specific Information',
@@ -1948,7 +2164,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else{
                         dialog.output[0].text = ' Project: ' + context.session.ICOsinfo[0].name + '\n' +
@@ -1958,7 +2177,7 @@ module.exports = function(bot)
                             'Received: ' + context.session.ICOsinfo[0].now + ' / '+ context.session.ICOsinfo[0].now_percent + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
                             'End Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOsinfo[0].url+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'Specific Information',
@@ -1971,7 +2190,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 }
 
@@ -1984,8 +2206,11 @@ module.exports = function(bot)
                     }
                     dialog.output[0].buttons.push({text: 'Back'});
                     dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                }
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
+            }
             }
         });
 
@@ -2011,11 +2236,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.ICOsinfo[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.ICOsinfo[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.ICOsinfo.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -2034,11 +2265,11 @@ module.exports = function(bot)
                         'Category: ' + context.session.ICOinfo.category + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
                         'Start Date: ' + context.session.ICOinfo.date + '\n' +
-                        'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                        'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOinfo.url+')';
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'Specific Information',
-                        //     url: context.session.ICOinfo[0].url
+                        //     url: context.session.ICOinfo.url
                         // },
                         {
                             text: 'Back'
@@ -2057,7 +2288,7 @@ module.exports = function(bot)
                         'Received: ' + context.session.ICOinfo.now + ' / '+ context.session.ICOinfo.now_percent + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
                         'End Date: ' + context.session.ICOinfo.date + '\n'+
-                        'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                        'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOinfo.url+')';
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'Specific Information',
@@ -2117,7 +2348,10 @@ module.exports = function(bot)
                             }
                             else {
                                 context.session.news = body;
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         }
                     }
@@ -2198,7 +2432,10 @@ module.exports = function(bot)
                                         console.log("get！   response.statusCode=" + response.statusCode);
                                         body = JSON.parse(body);
                                         context.session.news = body;
-                                        callback();
+                                        if(callback) {
+                                            callback();
+                                        }
+                                        callback = undefined;
                                     }
                                 });
                             }
@@ -2226,16 +2463,22 @@ module.exports = function(bot)
                     context.session.kind = 'commented';
                 }
                 dialog.output[0].buttons = [];
+                dialog.output[0].text  = "*************************************************\nIf you want to see the specific content please type in number^^\n*************************************************\n\n";
                 var ss = 0;
-
+                // context.session.newsinfoname = [];
                 for(var i = 0; i < context.session.news.length; i++){
                     if(context.session.news[i].kind === context.session.kind) {
                         context.session.selecnews[ss] = context.session.news[i];
                         ss++;
                         var newstitle = "" + ss + ". " + context.session.news[i].title;
-                        dialog.output[0].buttons.push({text:newstitle});
+
+                        dialog.output[0].text = dialog.output[0].text + newstitle + '\n\n';
+                        // context.session.newsinfoname.push(context.session.news[i].title);
+                        // dialog.output[0].buttons.push({text:newstitle});
                     }
                 }
+                dialog.output[0].buttons.push({text: 'Back'});
+                dialog.output[0].buttons.push({text: 'Start'});
                 callback();
             }
         });
@@ -2248,27 +2491,36 @@ module.exports = function(bot)
                 
                 var userInput = dialog.userInput.text;
 
-                if(userInput.indexOf('.')===-1){
+                var reg = new RegExp("^[0-9]$");
+
+                if(!reg.test(userInput) && Number(userInput) > 15){
                     matched = false;
                     callback(matched);
                 }
                 else {
-                    if(userInput.split('.')[2]){
-                        userInput = (userInput.split('.')[1]+'.'+userInput.split('.')[2]).trim();
-                    }
-                    else {
-                        userInput = userInput.split('.')[1].trim();
-                    }
+                    // if(userInput.split('.')[2]){
+                    //     userInput = (userInput.split('.')[1]+'.'+userInput.split('.')[2]).trim();
+                    // }
+                    // else {
+                    //     userInput = userInput.split('.')[1].trim();
+                    // }
 
                     for (var i = 0; i < context.session.selecnews.length; i++) {
-                        if (userInput === context.session.selecnews[i].title) {
+
+                        if (userInput === ""+(i+1) ) {
                             context.session.newsinfo = context.session.selecnews[i];
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;;
                         }
                         else if (i === context.session.selecnews.length - 1 && context.session.newsinfo === {}) {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;;
                         }
                     }
                 }
@@ -2303,7 +2555,7 @@ module.exports = function(bot)
 
                 if (dialog.userInput.matchedIntent !== 'News') {
                     matched = false;
-                    callback(matched);
+                    return callback(matched);
                 }
                 else {
 
@@ -2325,7 +2577,10 @@ module.exports = function(bot)
                         }
                         else if (i === COIN.length - 1 && coin === "") {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
 
@@ -2339,7 +2594,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("get！   response.statusCode=" + response.statusCode);
@@ -2357,13 +2615,16 @@ module.exports = function(bot)
 
                                 var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
 
-                                if (difference > 0) {
+                                if (difference > 30) {
                                     crawling(options);
                                 }
                                 else {
                                     context.session.news = body;
                                     matched = true;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                             }
                         }
@@ -2408,7 +2669,10 @@ module.exports = function(bot)
                                         if (err) {
                                             console.log(err);
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else {
                                             console.log("delete！   response.statusCode=" + response.statusCode);
@@ -2431,7 +2695,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！   response.statusCode=" + response.statusCode);
@@ -2445,14 +2712,20 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("get！   response.statusCode=" + response.statusCode);
                                         body = JSON.parse(body);
                                         context.session.news = body;
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 });
                             }
