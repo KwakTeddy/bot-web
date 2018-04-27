@@ -17,7 +17,7 @@ const Bot = mongoose.model('Bot');
             text: result.output.text
         };
 
-        if(result.output.text.indexOf('[inline URL]') != -1)
+        if(result.output.text.indexOf('http://') != -1 || result.output.text.indexOf('https://') != -1)
         {
             options.form.parse_mode = 'Markdown';
         }
