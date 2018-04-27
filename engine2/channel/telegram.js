@@ -126,14 +126,13 @@ const Bot = mongoose.model('Bot');
 
                         var options = {};
                         options.method = 'POST';
-                        options.url = 'https://api.telegram.org/bot' + token + '/';
                         options.simple = false;
                         options.resolveWithFullResponse = true;
                         options.forever = true;
 
                         if(result.output.image)
                         {
-                            options.url += 'sendPhoto';
+                            options.url = 'https://api.telegram.org/bot' + token + '/sendPhoto';
                             that.makePhoto(options, chatId, result);
                             console.log('옵션스 : ', options);
                             request(options, function(err, response, body)
@@ -149,7 +148,7 @@ const Bot = mongoose.model('Bot');
                             });
                         }
 
-                        options.url += 'sendMessage';
+                        options.url = 'https://api.telegram.org/bot' + token + '/sendMessage';
                         that.makeText(options, chatId, result);
 
                         if(result.output.buttons)
