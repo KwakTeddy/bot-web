@@ -8,4 +8,5 @@ module.exports = function(options)
         }
     };
     options.entitiesMinMatchRate = 0.8;
+    options.globalSearch = { use: true };
 };
