@@ -307,7 +307,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n+context.session.coinsinfo.graph+\nSpecific Information:\n+context.session.coinsinfo.url+\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
                             }
                         ],
                         "id": "default16-Clone",
@@ -350,7 +350,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nSee price graph:\n+context.session.coinsinfo.graph+\n\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\n\nPrice Graph:"
                             }
                         ],
                         "id": "default16-Clone-Clone",
@@ -477,7 +477,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+\nSpecific content:\n+context.session.newsinfo.url+"
+                                        "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+"
                                     }
                                 ],
                                 "id": "default37-Clone-Clone",
@@ -553,7 +553,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n+context.session.coinsinfo.graph+\nSpecific Information:\n+context.session.coinsinfo.url+\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nPrice Graph:"
                             }
                         ],
                         "id": "default16",
@@ -647,7 +647,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nReceived: +context.session.ICOinfo.now+ /  +context.session.ICOinfo.now_percent+\nGoal: +context.session.ICOinfo.goal+\nEnd Date: +context.session.ICOinfo.date+\nSpecific Information: \n+context.session.ICOinfo.url+"
+                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nReceived: +context.session.ICOinfo.now+ /  +context.session.ICOinfo.now_percent+\nGoal: +context.session.ICOinfo.goal+\nEnd Date: +context.session.ICOinfo.date+"
                                     }
                                 ],
                                 "id": "default25",
@@ -712,7 +712,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+\nSpecific Information:\n+context.session.ICOinfo.url+"
+                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+"
                                     }
                                 ],
                                 "id": "default26",
@@ -872,7 +872,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+\nSpecific content:\n+context.session.newsinfo.url+"
+                                                "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+"
                                             }
                                         ],
                                         "id": "default37",
