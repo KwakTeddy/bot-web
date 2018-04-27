@@ -54,7 +54,7 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback) {
             context.session.coinsprice = [];
-		    console.log("context.session.IsNew:==="+context.session.IsNew);
+
             if(context.session.IsNew==='not') {
                 modelname = 'bitcoinbot_user';
                 options = {};
@@ -538,20 +538,14 @@ module.exports = function(bot)
                 var userInput = dialog.userInput.text;
 
                 userInput = userInput.toLowerCase();
-                console.log('dialog.userInput.matchedIntent: ' + dialog.userInput.matchedIntent);
 
-                // if(dialog.userInput.matchedIntent !== 'price' || dialog.userInput.matchedIntent !== 'coininfo'){
                 if(dialog.userInput.matchedIntent !== 'price'){
                     matched = false;
                     callback(matched);
                 }
                 else {
 
-                    console.log("****************************************************");
-
                     userInput = userInput.replace(/price/g, '').replace(/rate/g, '');
-
-                    console.log('userInput: ' + userInput);
 
                     modelname = 'bitcoin_coinmarketcap';
                     options = {};
@@ -1051,8 +1045,6 @@ module.exports = function(bot)
                 else {
 
                     userInput = userInput.replace(/chart/g, '').replace(/graph/g, '');
-
-                    console.log('userInput: ' + userInput);
 
                     modelname = 'bitcoin_coinmarketcap';
                     options = {};
@@ -2092,17 +2084,15 @@ module.exports = function(bot)
                         console.log("get！   response.statusCode=" + response.statusCode);
                         body = JSON.parse(body);
 
-                        if(body.length === 0){
+                        if (body.length === 0) {
                             crawling(options);
                         }
-                        else{
+                        else {
                             body = body.sort(function (a, b) {
                                 return a.rate - b.rate;
                             });
 
                             var nowtime = new Date().getTime();
-
-                            console.log('body: ' + JSON.stringify(body));
 
                             var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
 
@@ -2118,7 +2108,7 @@ module.exports = function(bot)
                 });
 
 
-                function crawling() {
+                function crawling(options) {
                     var NEWS = [];
                     url = "https://cointelegraph.com/tags/" + COIN;
                     superagent.get(url)
@@ -2150,98 +2140,59 @@ module.exports = function(bot)
                                     news[s].updateTime = new Date().getTime();
 
                                     NEWS.push(news[s]);
-                                    options = {};
-                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-
-
-                                    options.qs = {rate: news[s].rate, kind: news[s].kind, coin: news[s].coin};
-                                    options.json = {
-                                        updateTime: new Date().getTime(),
-                                        title: news[s].title,
-                                        url: news[s].url,
-                                        image: news[s].image,
-                                        time: news[s].time,
-                                        author: news[s].author,
-                                        text: news[s].text,
-                                        status: news[s].status
-                                    };
-                                    update(options, news[s], i, kind);
                                 }
+                                if(NEWS.length === 45) {
 
-                                function update(options, newcoin, i, kind) {
-
-                                    request.put(options, function (err, response, body) {
+                                    request.delete(options, function (err, response, body) {
                                         if (err) {
                                             console.log(err);
                                         }
-                                        else if (body.nModified === 0) {
-                                            save1(newcoin, i, kind);
-                                        }
                                         else {
-                                            console.log("update！   response.statusCode=" + response.statusCode);
-                                            if (NEWS.length === 45) {
-                                                options = {};
-                                                options.url = SERVER_HOST + '/api/' + modelname;
-
-                                                options.qs = {coin: COIN};
-
-                                                request.get(options, function (err, response, body) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                    }
-                                                    else {
-                                                        console.log("get！   response.statusCode=" + response.statusCode);
-                                                        body = JSON.parse(body);
-                                                        context.session.news = body;
-                                                        callback();
-                                                    }
-                                                });
-                                            }
+                                            console.log("delete！   response.statusCode=" + response.statusCode);
+                                            NEWS.forEach(save);
                                         }
                                     });
-
-                                    function save1(NEWS, i, kind) {
-                                        options = {};
-                                        options.url = SERVER_HOST + '/api/' + modelname;
-
-                                        options.json = NEWS;
-
-                                        request.post(options, function (err, response, body) {
-                                            if (err) {
-                                                console.log(err);
-                                            }
-                                            else {
-                                                console.log("new！   response.statusCode=" + response.statusCode);
-                                                if (NEWS.length === 45) {
-                                                    options = {};
-                                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                                                    options.qs = {coin: COIN};
-
-                                                    request.get(options, function (err, response, body) {
-                                                        if (err) {
-                                                            console.log(err);
-                                                        }
-                                                        else {
-                                                            console.log("get！   response.statusCode=" + response.statusCode);
-                                                            body = JSON.parse(body);
-                                                            context.session.news = body;
-                                                            callback();
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        })
-                                    }
                                 }
-
                             }
                         });
                 }
+                function save(NEWS, i) {
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
 
+                    options.json = NEWS;
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            console.log("new！   response.statusCode=" + response.statusCode);
+                            if (i === 44) {
+                                options = {};
+                                options.url = SERVER_HOST + '/api/' + modelname;
+
+                                options.qs = {coin: COIN};
+
+                                request.get(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        console.log("get！   response.statusCode=" + response.statusCode);
+                                        body = JSON.parse(body);
+                                        context.session.news = body;
+                                        callback();
+                                    }
+                                });
+                            }
+                        }
+                    })
+
+                }
             }
         });
+
 
 
     bot.setTask('shownewstitle',
@@ -2325,10 +2276,10 @@ module.exports = function(bot)
 
     bot.setType('news2',
         {
-            typeCheck:  function (dialog, context, callback) {
+            typeCheck: function (dialog, context, callback) {
                 var matched = false;
 
-                if(dialog.userInput.matchedIntent !== 'News'){
+                if (dialog.userInput.matchedIntent !== 'News') {
                     matched = false;
                     callback(matched);
                 }
@@ -2346,7 +2297,6 @@ module.exports = function(bot)
 
 
                     for (var i = 0; i < COIN.length; i++) {
-                        console.log("COIN: " + COIN[i]);
                         if (dialog.userInput.text.toLowerCase().indexOf(COIN[i]) !== -1) {
                             coin = COIN[i];
                             break;
@@ -2357,7 +2307,6 @@ module.exports = function(bot)
                         }
                     }
 
-                    console.log("coin: " + coin);
                     options = {};
                     modelname = 'bitcoin_cointelegraph';
                     options.url = SERVER_HOST + '/api/' + modelname;
@@ -2384,11 +2333,9 @@ module.exports = function(bot)
 
                                 var nowtime = new Date().getTime();
 
-                                console.log('body: ' + JSON.stringify(body));
-
                                 var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
 
-                                if (difference > 30) {
+                                if (difference > 0) {
                                     crawling(options);
                                 }
                                 else {
@@ -2428,12 +2375,13 @@ module.exports = function(bot)
                                     news[s].rate = i;
                                     news[s].kind = kind;
                                     news[s].language = 'en';
-                                    news[s].coin = COIN;
+                                    news[s].coin = coin;
                                     news[s].created = new Date().toISOString();
                                     news[s].updateTime = new Date().getTime();
 
                                     NEWS.push(news[s]);
-
+                                }
+                                if (NEWS.length === 45) {
                                     request.delete(options, function (err, response, body) {
                                         if (err) {
                                             console.log(err);
@@ -2448,169 +2396,128 @@ module.exports = function(bot)
                                     });
                                 }
                             }
-
                         });
                 }
 
+                function newnews(NEWs, index, NEWS) {
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
 
-                // function update(options, newcoin, i, kind) {
-                //
-                //     request.put(options, function (err, response, body) {
-                //         if (err) {
-                //             console.log(err);
-                //             matched = false;
-                //             callback(matched);
-                //         }
-                //         else if (body.nModified === 0) {
-                //             newnews(newcoin, i, kind);
-                //         }
-                //         else {
-                //             console.log("update！   response.statusCode=" + response.statusCode);
-                //             if (NEWS.length === 15) {
-                //                 options = {};
-                //                 options.url = SERVER_HOST + '/api/' + modelname;
-                //
-                //                 options.qs = {coin: COIN};
-                //
-                //                 request.get(options, function (err, response, body) {
-                //                     if (err) {
-                //                         console.log(err);
-                //                         matched = false;
-                //                         callback(matched);
-                //                     }
-                //                     else {
-                //                         console.log("get！   response.statusCode=" + response.statusCode);
-                //                         body = JSON.parse(body);
-                //                         context.session.news = body;
-                //                         matched = true;
-                //                         callback(matched);
-                //                     }
-                //                 });
-                //             }
-                //             consoloe.log("333333333333333333333");
-                //         }
-                //     });
+                    options.json = NEWs;
 
-                    function newnews(NEWs,index,NEWS) {
-                        options = {};
-                        options.url = SERVER_HOST + '/api/' + modelname;
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            callback(matched);
+                        }
+                        else {
+                            console.log("new！   response.statusCode=" + response.statusCode);
+                            if (index === 44) {
+                                options = {};
+                                options.url = SERVER_HOST + '/api/' + modelname;
 
-                        options.json = NEWs;
+                                options.qs = {coin: coin};
 
-                        request.post(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                matched = false;
-                                callback(matched);
+                                request.get(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                        matched = false;
+                                        callback(matched);
+                                    }
+                                    else {
+                                        console.log("get！   response.statusCode=" + response.statusCode);
+                                        body = JSON.parse(body);
+                                        context.session.news = body;
+                                        matched = true;
+                                        callback(matched);
+                                    }
+                                });
                             }
-                            else {
-                                console.log("new！   response.statusCode=" + response.statusCode);
-                                if (index ===  14 && NEWs.kind === "commented") {
-                                    options = {};
-                                    options.url = SERVER_HOST + '/api/' + modelname;
-
-                                    options.qs = {coin: coin};
-
-                                    request.get(options, function (err, response, body) {
-                                        if (err) {
-                                            console.log(err);
-                                            matched = false;
-                                            callback(matched);
-                                        }
-                                        else {
-                                            console.log("get！   response.statusCode=" + response.statusCode);
-                                            body = JSON.parse(body);
-                                            context.session.news = body;
-                                            matched = true;
-                                            callback(matched);
-                                        }
-                                    });
-                                }
-                            }
-                        })
-                    }
-                // }
+                        }
+                    })
+                }
             }
         });
 
 
-
-    bot.setTask('coinprice_ch',
-	{
-		action: function (dialog, context, callback)
-		{
-			callback();
-		}
-	});
-
-	bot.setTask('coinprice1_ch', 
-	{
-		action: function (dialog, context, callback)
-		{
-          
-			callback();
-		}
-	});
-	bot.setTask('coinprice3_ch', 
-	{
-		action: function (dialog, context, callback)
-		{
-			callback();
-		}
-	});
-	bot.setTask('coinprice4_ch', 
-	{
-		action: function (dialog, context, callback)
-		{
-			callback();
-		}
-	});
-    bot.setType('coins_ch',
-    {
-        typeCheck: function (dialog, context, callback)
-        {
-            var matched = false;
-            callback(matched);
-        }
-    });
-	bot.setTask('showcoins_ch', 
-	{
-		action: function (dialog, context, callback)
-		{
-			callback();
-		}
-	});
-	bot.setTask('activeICO_ch', 
-	{
-		action: function (dialog, context, callback)
-		{
-			callback();
-		}
-	});
-    bot.setType('coins2_ch',
-    {
-        typeCheck: function (dialog, context, callback)
-        {
-            var matched = false;
-            callback(matched);
-        }
-    });
-    bot.setType('chart_ch',
-    {
-        typeCheck: function (dialog, context, callback)
-        {
-            var matched = false;
-            callback(matched);
-        }
-    });
-    bot.setType('ico_ch',
-    {
-        typeCheck: function (dialog, context, callback)
-        {
-            var matched = false;
-            callback(matched);
-        }
-    });
+    //
+    // bot.setTask('coinprice_ch',
+    // {
+		// action: function (dialog, context, callback)
+		// {
+		// 	callback();
+		// }
+    // });
+    //
+    // bot.setTask('coinprice1_ch',
+    // {
+		// action: function (dialog, context, callback)
+		// {
+    //
+		// 	callback();
+		// }
+    // });
+    // bot.setTask('coinprice3_ch',
+    // {
+		// action: function (dialog, context, callback)
+		// {
+		// 	callback();
+		// }
+    // });
+    // bot.setTask('coinprice4_ch',
+    // {
+		// action: function (dialog, context, callback)
+		// {
+		// 	callback();
+		// }
+    // });
+    // bot.setType('coins_ch',
+    // {
+    //     typeCheck: function (dialog, context, callback)
+    //     {
+    //         var matched = false;
+    //         callback(matched);
+    //     }
+    // });
+    // bot.setTask('showcoins_ch',
+    // {
+		// action: function (dialog, context, callback)
+		// {
+		// 	callback();
+		// }
+    // });
+    // bot.setTask('activeICO_ch',
+    // {
+		// action: function (dialog, context, callback)
+		// {
+		// 	callback();
+		// }
+    // });
+    // bot.setType('coins2_ch',
+    // {
+    //     typeCheck: function (dialog, context, callback)
+    //     {
+    //         var matched = false;
+    //         callback(matched);
+    //     }
+    // });
+    // bot.setType('chart_ch',
+    // {
+    //     typeCheck: function (dialog, context, callback)
+    //     {
+    //         var matched = false;
+    //         callback(matched);
+    //     }
+    // });
+    // bot.setType('ico_ch',
+    // {
+    //     typeCheck: function (dialog, context, callback)
+    //     {
+    //         var matched = false;
+    //         callback(matched);
+    //     }
+    // });
 
 
 
