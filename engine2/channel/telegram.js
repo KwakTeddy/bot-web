@@ -19,7 +19,7 @@ const Bot = mongoose.model('Bot');
 
         if(options.form.text.indexOf('(https://') != -1 || options.form.text.indexOf('(http://') != -1)
         {
-            options.form.parse_mode = 'HTML';
+            options.form.parse_mode = 'Html';
         }
     };
 
