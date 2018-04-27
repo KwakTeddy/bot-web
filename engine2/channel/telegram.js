@@ -156,11 +156,8 @@ const Bot = mongoose.model('Bot');
 
                                 keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
 
-                                if(i > 0 && i % 3 == 0)
-                                {
-                                    inlineKeyboard.inline_keyboard.push(keyboard);
-                                    keyboard = [];
-                                }
+                                inlineKeyboard.inline_keyboard.push(keyboard);
+                                keyboard = [];
                             }
 
                             inlineKeyboard.inline_keyboard.push(keyboard);
