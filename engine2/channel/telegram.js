@@ -17,7 +17,10 @@ const Bot = mongoose.model('Bot');
             text: result.output.text
         };
 
-        options.form.parse_mode = 'Markdown';
+        if(options.form.text.indexOf('(https://') != -1 || options.form.text.indexOf('(http://') != -1)
+        {
+            options.form.parse_mode = 'Markdown';
+        }
     };
 
     Telegram.prototype.makePhoto = function(options, chatId, result)
@@ -27,8 +30,6 @@ const Bot = mongoose.model('Bot');
             photo: result.output.image.url,
             caption: result.output.text
         }
-
-        options.form.parse_mode = 'Markdown';
     };
 
     Telegram.prototype.message = function(req, res)
