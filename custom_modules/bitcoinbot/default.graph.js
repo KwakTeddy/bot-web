@@ -287,7 +287,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "Coin: +context.session.coinsinfo[0].name+\nShortname: +context.session.coinsinfo[0].shortname+\nPrice: +context.session.coinsinfo[0].price+\nVolume(24h):  +context.session.coinsinfo[0].volume+\nChange(24h): +context.session.coinsinfo[0].change+\nPrice Graph:"
+                        "text": "Coin: +context.session.coinsinfo[0].name+\nShortname: +context.session.coinsinfo[0].shortname+\nPrice: +context.session.coinsinfo[0].price+\nVolume(24h):  +context.session.coinsinfo[0].volume+\nChange(24h): +context.session.coinsinfo[0].change+"
                     }
                 ],
                 "task": {
@@ -307,7 +307,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n+context.session.coinsinfo.graph+\nSpecific Information:\n+context.session.coinsinfo.url+\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n[Click see price graph](+context.session.coinsinfo.graph+)\nSpecific Information:\n[Click see specific information](+context.session.coinsinfo.url+)"
                             }
                         ],
                         "id": "default16-Clone",
@@ -330,7 +330,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "Coin: +context.session.coinsinfo[0].name+\nShortname: +context.session.coinsinfo[0].shortname+\n\nPrice Graph:"
+                        "text": "Coin: +context.session.coinsinfo[0].name+\nShortname: +context.session.coinsinfo[0].shortname+\nSee price graph:\n[Click see price graph](+context.session.coinsinfo[0].graph+)"
                     }
                 ],
                 "task": {
@@ -350,7 +350,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nSee price graph:\n+context.session.coinsinfo.graph+\n\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nSee price graph:\n[Click see price graph](+context.session.coinsinfo.graph+)"
                             }
                         ],
                         "id": "default16-Clone-Clone",
@@ -373,7 +373,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "Project: +context.session.ICOinfo2.name+\nInterest: +context.session.ICOinfo2.rate+\nCategory: +context.session.ICOinfo2.category+\nGoal: +context.session.ICOinfo2.goal+\nStart Date: +context.session.ICOinfo2.date+"
+                        "text": "Project: +context.session.ICOinfo[0].name+\nInterest: +context.session.ICOinfo[0].rate+\nCategory: +context.session.ICOinfo[0].category+\nGoal: +context.session.ICOinfo[0].goal+\nStart Date: +context.session.ICOinfo[0].date+\nSpecific Information:\n[Click see specific information](+context.session.ICOinfo[0].url+)"
                     }
                 ],
                 "task": {
@@ -393,7 +393,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+"
+                                "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+\nSpecific Information:\n[Click see specific information](+context.session.ICOinfo.url+)"
                             }
                         ],
                         "id": "default26-Clone",
@@ -466,7 +466,7 @@ var dialogs = [
                         "id": "default36-Clone",
                         "children": [
                             {
-                                "name": "5 News info-Clone-Clone",
+                                "name": "5 News info2",
                                 "input": [
                                     {
                                         "types": [
@@ -477,7 +477,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+\nSpecific content:\n+context.session.newsinfo.url+"
+                                        "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+\nSpecific content:\n[Click see specific content](+context.session.newsinfo.url+)"
                                     }
                                 ],
                                 "id": "default37-Clone-Clone",
@@ -553,7 +553,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n[inline URL](https://coinmarketcap.com/currencies/NEO/#charts)\nSpecific Information:\n[inline URL](https://coinmarketcap.com/currencies/neo/)\nPrice Graph:"
+                                "text": "Coin: +context.session.coinsinfo.name+\nShortname: +context.session.coinsinfo.shortname+\nPrice: +context.session.coinsinfo.price+\nVolume(24h):  +context.session.coinsinfo.volume+\nChange(24h): +context.session.coinsinfo.change+\nSee price graph:\n[Click see price graph](+context.session.coinsinfo.graph+)\nSpecific Information:\n[Click see specific information](+context.session.coinsinfo.url+)"
                             }
                         ],
                         "id": "default16",
@@ -647,7 +647,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nReceived: +context.session.ICOinfo.now+ /  +context.session.ICOinfo.now_percent+\nGoal: +context.session.ICOinfo.goal+\nEnd Date: +context.session.ICOinfo.date+\nSpecific Information: \n+context.session.ICOinfo.url+"
+                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nReceived: +context.session.ICOinfo.now+ /  +context.session.ICOinfo.now_percent+\nGoal: +context.session.ICOinfo.goal+\nEnd Date: +context.session.ICOinfo.date+\nSpecific Information:\n[Click see specific information](+context.session.ICOinfo.url+)"
                                     }
                                 ],
                                 "id": "default25",
@@ -712,7 +712,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+\nSpecific Information:\n+context.session.ICOinfo.url+"
+                                        "text": "Project: +context.session.ICOinfo.name+\nInterest: +context.session.ICOinfo.rate+\nCategory: +context.session.ICOinfo.category+\nGoal: +context.session.ICOinfo.goal+\nStart Date: +context.session.ICOinfo.date+\nSpecific Information:\n[Click see specific information](+context.session.ICOinfo.url+)"
                                     }
                                 ],
                                 "id": "default26",
@@ -872,7 +872,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+\nSpecific content:\n+context.session.newsinfo.url+"
+                                                "text": "Title: +context.session.newsinfo.title+\nTime: +context.session.newsinfo.time+\nAuthor: +context.session.newsinfo.author+\nHists: +context.session.newsinfo.status+\nDescription: +context.session.newsinfo.text+\nSpecific content:\n[Click see specific content](+context.session.newsinfo.url+)"
                                             }
                                         ],
                                         "id": "default37",

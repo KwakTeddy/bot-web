@@ -2024,7 +2024,7 @@ module.exports = function(bot)
                     dialog.output[0].buttons = [
                         {
                             text: 'Specific Information',
-                            url: context.session.ICOinfo[0].url
+                            url: context.session.ICOinfo.url
                         },
                         {
                             text: 'Back'

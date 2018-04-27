@@ -477,7 +477,8 @@ module.exports = function(bot)
     bot.setTask('showcoins',
 	{
 		action: function (dialog, context, callback)
-		{
+		{context.session.coinsinfo.graph.replace(/http:/g,"").replace(/https:/g,"").replace(/\//g,"");
+          context.session.coinsinfo.url.replace(/http:/g,"").replace(/https:/g,"").replace(/\//g,"");
             if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
                 dialog.output[0].image = {url: context.session.coinsinfo.graphimage};
                 dialog.output[0].buttons = [
@@ -505,8 +506,8 @@ module.exports = function(bot)
                 'Price: '+context.session.coinsinfo.price+'\n'+
                 'Volume(24h):  '+context.session.coinsinfo.volume+'\n'+
                 'Change(24h): '+context.session.coinsinfo.change+'\n' +
-                    'See price graph:\n' + context.session.coinsinfo.graph +'\n' +
-                    'Specific Information:\n' + context.session.coinsinfo.url;
+                    'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo.graph+')' +'\n' +
+                    'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo.url+')';
                 dialog.output[0].buttons = [
                     // {
                     //     text: 'See price graph',
@@ -753,9 +754,8 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n' +
-                            'See price graph: \n' +context.session.coinsinfo.graph + '\n' +
-                            'Specific Information: \n' +context.session.coinsinfo.url+ '\n' +
-                            'Price Graph: ';
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')' +'\n' +
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo[0].url+')';;
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
                             // {
@@ -781,8 +781,8 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n'+
-                        'See price graph: \n' +context.session.coinsinfo.graph + '\n' +
-                        'Specific Information: \n' +context.session.coinsinfo.url+ '\n';
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')' +'\n' +
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo[0].url+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'See price graph',
@@ -1014,7 +1014,7 @@ module.exports = function(bot)
                 else {
                     dialog.output[0].text = ' Coin: '+context.session.coinsinfo.name+'\n'+
                         'Shortname: '+context.session.coinsinfo.shortname + '\n' +
-                        'See price graph: \n' + context.session.coinsinfo.graph ;
+                        'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo.graph+')';
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'See price graph',
@@ -1254,9 +1254,7 @@ module.exports = function(bot)
                     if (context.session.coinsinfo[0].graphimage.indexOf('.svg') === -1) {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph: \n' + context.session.coinsinfo[0].graph+ '\n' +
-                            'Specific Information: \n' + context.session.coinsinfo[0].url+ '\n' +
-                            'Price Graph: ';
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')';
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
                             // {
@@ -1279,8 +1277,7 @@ module.exports = function(bot)
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph: \n' + context.session.coinsinfo[0].graph+ '\n' +
-                            'Specific Information: \n' + context.session.coinsinfo[0].url;
+                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'See price graph',
@@ -1935,7 +1932,7 @@ module.exports = function(bot)
                             'Category: ' + context.session.ICOsinfo[0].category + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
                             'Start Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOsinfo[0].url+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'Specific Information',
@@ -1958,7 +1955,7 @@ module.exports = function(bot)
                             'Received: ' + context.session.ICOsinfo[0].now + ' / '+ context.session.ICOsinfo[0].now_percent + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
                             'End Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                            'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOsinfo[0].url+')';
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'Specific Information',
@@ -2034,11 +2031,11 @@ module.exports = function(bot)
                         'Category: ' + context.session.ICOinfo.category + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
                         'Start Date: ' + context.session.ICOinfo.date + '\n' +
-                        'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                        'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOinfo.url+')';
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'Specific Information',
-                        //     url: context.session.ICOinfo[0].url
+                        //     url: context.session.ICOinfo.url
                         // },
                         {
                             text: 'Back'
@@ -2057,7 +2054,7 @@ module.exports = function(bot)
                         'Received: ' + context.session.ICOinfo.now + ' / '+ context.session.ICOinfo.now_percent + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
                         'End Date: ' + context.session.ICOinfo.date + '\n'+
-                        'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                        'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOinfo.url+')';
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'Specific Information',
