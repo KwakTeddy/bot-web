@@ -2222,7 +2222,7 @@ module.exports = function(bot)
                     context.session.kind = 'commented';
                 }
                 dialog.output[0].buttons = [];
-                dialog.output[0].text  = "**********************\nIf you want to see the specific content please type in number^^\n**********************\n\n";
+                dialog.output[0].text  = "*************************************************\nIf you want to see the specific content please type in number^^\n*************************************************\n\n";
                 var ss = 0;
                 // context.session.newsinfoname = [];
                 for(var i = 0; i < context.session.news.length; i++){
