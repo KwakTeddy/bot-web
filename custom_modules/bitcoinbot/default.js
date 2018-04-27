@@ -2232,6 +2232,8 @@ module.exports = function(bot)
                         dialog.output[0].buttons.push({text:newstitle});
                     }
                 }
+                dialog.output[0].buttons.push({text: 'Back'});
+                dialog.output[0].buttons.push({text: 'Start'});
                 callback();
             }
         });

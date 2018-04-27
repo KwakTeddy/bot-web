@@ -756,6 +756,12 @@ var dialogs = [
                             },
                             {
                                 "text": "6. Monero"
+                            },
+                            {
+                                "text": "Back"
+                            },
+                            {
+                                "text": "Start"
                             }
                         ]
                     }
@@ -818,6 +824,12 @@ var dialogs = [
                                     },
                                     {
                                         "text": "Commented"
+                                    },
+                                    {
+                                        "text": "Back"
+                                    },
+                                    {
+                                        "text": "Start"
                                     }
                                 ]
                             }
