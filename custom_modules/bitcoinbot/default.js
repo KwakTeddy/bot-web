@@ -2237,7 +2237,13 @@ module.exports = function(bot)
                     callback(matched);
                 }
                 else {
-                    userInput = userInput.split('.')[1].trim();
+                    if(userInput.split('.')[2]){
+                        userInput = (userInput.split('.')[1]+'.'+userInput.split('.')[2]).trim();
+                    }
+                    else {
+                        userInput = userInput.split('.')[1].trim();
+                    }
+
                     for (var i = 0; i < context.session.selecnews.length; i++) {
                         if (userInput === context.session.selecnews[i].title) {
                             context.session.newsinfo = context.session.selecnews[i];
