@@ -278,10 +278,10 @@ var dialogs = [
                 "name": "coin price or information",
                 "input": [
                     {
+                        "intent": "price",
                         "types": [
                             "coins2"
-                        ],
-                        "intent": "price"
+                        ]
                     }
                 ],
                 "output": [

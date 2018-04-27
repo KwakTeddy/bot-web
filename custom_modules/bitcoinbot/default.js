@@ -542,10 +542,9 @@ module.exports = function(bot)
                 var userInput = dialog.userInput.text;
 
                 userInput = userInput.toLowerCase();
-
                 if(dialog.userInput.matchedIntent !== 'price'){
-                    matched = false;
-                    callback(matched);
+                        matched = false;
+                        callback(matched);
                 }
                 else {
 
