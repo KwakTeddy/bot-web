@@ -2555,7 +2555,7 @@ module.exports = function(bot)
 
                 if (dialog.userInput.matchedIntent !== 'News') {
                     matched = false;
-                    callback(matched);
+                    return callback(matched);
                 }
                 else {
 
