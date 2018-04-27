@@ -2222,14 +2222,18 @@ module.exports = function(bot)
                     context.session.kind = 'commented';
                 }
                 dialog.output[0].buttons = [];
+                dialog.output[0].text  = "***If you want to see the specific content please type in number^^***\n\n";
                 var ss = 0;
-
+                // context.session.newsinfoname = [];
                 for(var i = 0; i < context.session.news.length; i++){
                     if(context.session.news[i].kind === context.session.kind) {
                         context.session.selecnews[ss] = context.session.news[i];
                         ss++;
                         var newstitle = "" + ss + ". " + context.session.news[i].title;
-                        dialog.output[0].buttons.push({text:newstitle});
+
+                        dialog.output[0].text = dialog.output[0].text + newstitle + '\n\n';
+                        // context.session.newsinfoname.push(context.session.news[i].title);
+                        // dialog.output[0].buttons.push({text:newstitle});
                     }
                 }
                 dialog.output[0].buttons.push({text: 'Back'});
@@ -2246,20 +2250,23 @@ module.exports = function(bot)
                 
                 var userInput = dialog.userInput.text;
 
-                if(userInput.indexOf('.')===-1){
+                var reg = new RegExp("^[0-9]$");
+
+                if(!reg.test(userInput) && Number(userInput) > 15){
                     matched = false;
                     callback(matched);
                 }
                 else {
-                    if(userInput.split('.')[2]){
-                        userInput = (userInput.split('.')[1]+'.'+userInput.split('.')[2]).trim();
-                    }
-                    else {
-                        userInput = userInput.split('.')[1].trim();
-                    }
+                    // if(userInput.split('.')[2]){
+                    //     userInput = (userInput.split('.')[1]+'.'+userInput.split('.')[2]).trim();
+                    // }
+                    // else {
+                    //     userInput = userInput.split('.')[1].trim();
+                    // }
 
                     for (var i = 0; i < context.session.selecnews.length; i++) {
-                        if (userInput === context.session.selecnews[i].title) {
+
+                        if (userInput === ""+(i+1) ) {
                             context.session.newsinfo = context.session.selecnews[i];
                             matched = true;
                             callback(matched);
