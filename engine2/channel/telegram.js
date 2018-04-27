@@ -16,6 +16,11 @@ const Bot = mongoose.model('Bot');
             chat_id: chatId,
             text: result.output.text
         };
+
+        if(result.output.text.indexOf('[inline URL]') != -1)
+        {
+            options.form.parse_mode = 'Markdown';
+        }
     };
 
     Telegram.prototype.makePhoto = function(options, chatId, result)
@@ -148,16 +153,23 @@ const Bot = mongoose.model('Bot');
                             var keyboard = [];
                             for(var i=0; i<result.output.buttons.length; i++)
                             {
-                                var callback_data = { text: result.output.buttons[i].text };
-                                if(data.message)
+                                if(result.output.buttons[i].url)
                                 {
-                                    callback_data.replyId = data.message.message_id;
+
                                 }
+                                else
+                                {
+                                    var callback_data = { text: result.output.buttons[i].text };
+                                    if(data.message)
+                                    {
+                                        callback_data.replyId = data.message.message_id;
+                                    }
 
-                                keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
+                                    keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
 
-                                inlineKeyboard.inline_keyboard.push(keyboard);
-                                keyboard = [];
+                                    inlineKeyboard.inline_keyboard.push(keyboard);
+                                    keyboard = [];
+                                }
                             }
 
                             inlineKeyboard.inline_keyboard.push(keyboard);
