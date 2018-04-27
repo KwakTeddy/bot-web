@@ -27,13 +27,7 @@ const Bot = mongoose.model('Bot');
     {
         options.form = {
             chat_id: chatId,
-            photo: result.output.image.url,
-            text: result.output.text
-        }
-
-        if(result.output.text.indexOf('[inline URL]') != -1)
-        {
-            options.form.parse_mode = 'Markdown';
+            photo: result.output.image.url
         }
     };
 
@@ -141,12 +135,24 @@ const Bot = mongoose.model('Bot');
                         {
                             options.url += 'sendPhoto';
                             that.makePhoto(options, chatId, result);
+                            console.log('옵션스 : ', options);
+                            request(options, function(err, response, body)
+                            {
+                                if(err)
+                                {
+                                    console.error(err);
+                                }
+                                else
+                                {
+                                    console.log('바디 : ', body);
+
+                                    res.end();
+                                }
+                            });
                         }
-                        else
-                        {
-                            options.url += 'sendMessage';
-                            that.makeText(options, chatId, result);
-                        }
+
+                        options.url += 'sendMessage';
+                        that.makeText(options, chatId, result);
 
                         if(result.output.buttons)
                         {
