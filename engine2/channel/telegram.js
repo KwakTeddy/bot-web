@@ -104,7 +104,6 @@ const Bot = mongoose.model('Bot');
 
                 try
                 {
-                    text = text.toLowerCase();
                     Engine.process(bot.id, 'telegram', userId, text || '', { user: { first_name: first_name, last_name: last_name, username: username }, session: { leaveUserId: leaveUserId } }, function(context, result)
                     {
                         if(result.originalDialogId == 'noanswer')
@@ -157,11 +156,8 @@ const Bot = mongoose.model('Bot');
 
                                 keyboard.push({ text: result.output.buttons[i].text, callback_data: JSON.stringify(callback_data) });
 
-                                if(i > 0 && i % 3 == 0)
-                                {
-                                    inlineKeyboard.inline_keyboard.push(keyboard);
-                                    keyboard = [];
-                                }
+                                inlineKeyboard.inline_keyboard.push(keyboard);
+                                keyboard = [];
                             }
 
                             inlineKeyboard.inline_keyboard.push(keyboard);

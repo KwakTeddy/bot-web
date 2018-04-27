@@ -129,7 +129,7 @@ exports.facebookPage = function (req, res) {
         else
         {
             //ngrok 로컬
-            options.qs = { url: 'https://cbfb83b5.ngrok.io/telegram/' + bot.telegram }
+            options.qs = { url: 'https://d812b9c9.ngrok.io/telegram/' + bot.telegram }
         }
 
         options.method = 'POST';
@@ -265,7 +265,7 @@ module.exports.saveTelegramToken = function(req, res)
                 else
                 {
                     //ngrok 로컬
-                    options.qs = { url: 'https://cbfb83b5.ngrok.io/telegram/' + bot.telegram }
+                    options.qs = { url: 'https://d812b9c9.ngrok.io/telegram/' + bot.telegram }
                 }
 
                 options.method = 'POST';
