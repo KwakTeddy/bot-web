@@ -53,6 +53,9 @@ module.exports = function(bot)
 	bot.setTask('UpdateUser',
 	{
 		action: function (dialog, context, callback) {
+
+            // context.session.IsNew === undefined;
+            // callback();
             context.session.coinsprice = [];
 
             if(context.session.IsNew==='not') {
