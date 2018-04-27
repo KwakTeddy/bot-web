@@ -69,11 +69,17 @@ module.exports = function(bot)
                 request.put(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 });
             }
@@ -91,7 +97,10 @@ module.exports = function(bot)
                     console.log('body: ' + JSON.stringify(body));
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else if(body.nModified === 0)  {
                         if(dialog.userInput.text==="Talk now!") {
@@ -110,16 +119,25 @@ module.exports = function(bot)
                             request.post(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("newuser！   response.statusCode=" + response.statusCode);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                             });
                         }
                         else{
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     }
                     else {
@@ -132,13 +150,19 @@ module.exports = function(bot)
                         request.get(options, function (err, response, body) {
                             if (err) {
                                 console.log(err);
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("updatuser！   response.statusCode=" + response.statusCode);
                                 body = JSON.parse(body);
                                 context.session.language = body[0].Language;
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         });
 
@@ -161,7 +185,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -190,7 +217,10 @@ module.exports = function(bot)
                                 dialog.output[0].buttons.push({text: 'MORE'});
                                 dialog.output[0].buttons.push({text: 'Back'});
                                 dialog.output[0].buttons.push({text: 'Start'});
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         }
                     }
@@ -223,7 +253,10 @@ module.exports = function(bot)
                             request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -256,7 +289,10 @@ module.exports = function(bot)
                     request.post(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -276,7 +312,10 @@ module.exports = function(bot)
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -295,7 +334,10 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     });
                 }
@@ -323,7 +365,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -350,11 +395,17 @@ module.exports = function(bot)
                                         {
                                             context.session.coinsinfo = context.session.coinsprice[i];
                                             matched = true;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                     }
                                 }
@@ -390,7 +441,10 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("delete！   response.statusCode=" + response.statusCode);
@@ -424,7 +478,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("new！  response.statusCode=" + response.statusCode);
@@ -445,7 +502,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 body = JSON.parse(body);
@@ -460,11 +520,17 @@ module.exports = function(bot)
                                     {
                                         context.session.coinsinfo = context.session.coinsprice[i];
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 }
                             }
@@ -559,7 +625,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -613,7 +682,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -647,7 +719,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -668,7 +743,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -700,20 +778,32 @@ module.exports = function(bot)
                             userInput = userInput.replace(regexp,"");
                             if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                                 matched = true;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
 
@@ -772,7 +862,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
@@ -798,7 +891,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 }
 
@@ -811,7 +907,10 @@ module.exports = function(bot)
                     }
                         dialog.output[0].buttons.push({text: 'Back'});
                         dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
                 }
             }
         });
@@ -837,7 +936,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -864,11 +966,17 @@ module.exports = function(bot)
                                         {
                                             context.session.coinsinfo = context.session.coinsprice[i];
                                             matched = true;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                     }
                                 }
@@ -904,7 +1012,10 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("delete！   response.statusCode=" + response.statusCode);
@@ -938,7 +1049,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("new！  response.statusCode=" + response.statusCode);
@@ -959,7 +1073,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 body = JSON.parse(body);
@@ -974,11 +1091,17 @@ module.exports = function(bot)
                                     {
                                         context.session.coinsinfo = context.session.coinsprice[i];
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 }
                             }
@@ -1062,7 +1185,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -1116,7 +1242,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1150,7 +1279,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -1171,7 +1303,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -1203,20 +1338,32 @@ module.exports = function(bot)
                             userInput = userInput.replace(regexp,"");
                             if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                                 matched = true;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1271,7 +1418,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
@@ -1293,7 +1443,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 }
 
@@ -1306,7 +1459,10 @@ module.exports = function(bot)
                     }
                     dialog.output[0].buttons.push({text: 'Back'});
                     dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
                 }
             }
         });
@@ -1325,7 +1481,10 @@ module.exports = function(bot)
             request.get(options, function (err, response, body) {
                 if (err) {
                     console.log(err);
-                    callback();
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
                 }
                 else {
                     body = JSON.parse(body);
@@ -1389,8 +1548,10 @@ module.exports = function(bot)
                         request.delete(options, function (err, response, body) {
                             if (err) {
                                 console.log(err);
-                                matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1422,7 +1583,10 @@ module.exports = function(bot)
                 request.post(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("new！   response.statusCode=" + response.statusCode);
@@ -1443,7 +1607,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("getICO！   response.statusCode=" + response.statusCode);
@@ -1460,7 +1627,10 @@ module.exports = function(bot)
                         dialog.output[0].buttons.push({text: 'MORE'});
                         dialog.output[0].buttons.push({text: 'Back'});
                         dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 });
             }
@@ -1488,11 +1658,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.activeICO[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.activeICO[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.activeICO.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1535,7 +1711,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -1595,8 +1774,10 @@ module.exports = function(bot)
                             request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1628,7 +1809,10 @@ module.exports = function(bot)
                     request.post(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！   response.statusCode=" + response.statusCode);
@@ -1649,7 +1833,10 @@ module.exports = function(bot)
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("getICO！   response.statusCode=" + response.statusCode);
@@ -1666,7 +1853,10 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     });
                 }
@@ -1695,11 +1885,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.upcomingICO[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.upcomingICO[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.upcomingICO.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1736,7 +1932,10 @@ module.exports = function(bot)
                     if (err) {
                         console.log(err);
                         matched = false;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -1799,7 +1998,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1832,7 +2034,10 @@ module.exports = function(bot)
                     if (err) {
                         console.log(err);
                         matched = false;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                     else {
                         console.log("new！   response.statusCode=" + response.statusCode);
@@ -1846,7 +2051,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     body = JSON.parse(body);
@@ -1878,20 +2086,32 @@ module.exports = function(bot)
                         userInput = userInput.replace(regexp,"");
                         if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                     else if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
                         matched = true;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                     else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
                         matched = false;
-                        callback(matched);
+                        if(callback) {
+                            callback(matched);
+                        }
+                        callback = undefined;
                     }
                 }
             }
@@ -1944,7 +2164,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else{
                         dialog.output[0].text = ' Project: ' + context.session.ICOsinfo[0].name + '\n' +
@@ -1967,7 +2190,10 @@ module.exports = function(bot)
                                 text: 'Start'
                             }
                         ];
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                 }
 
@@ -1980,8 +2206,11 @@ module.exports = function(bot)
                     }
                     dialog.output[0].buttons.push({text: 'Back'});
                     dialog.output[0].buttons.push({text: 'Start'});
-                    callback();
-                }
+                    if(callback) {
+                        callback();
+                    }
+                    callback = undefined;
+            }
             }
         });
 
@@ -2007,11 +2236,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.ICOsinfo[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.ICOsinfo[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.ICOsinfo.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -2113,7 +2348,10 @@ module.exports = function(bot)
                             }
                             else {
                                 context.session.news = body;
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         }
                     }
@@ -2194,7 +2432,10 @@ module.exports = function(bot)
                                         console.log("get！   response.statusCode=" + response.statusCode);
                                         body = JSON.parse(body);
                                         context.session.news = body;
-                                        callback();
+                                        if(callback) {
+                                            callback();
+                                        }
+                                        callback = undefined;
                                     }
                                 });
                             }
@@ -2269,11 +2510,17 @@ module.exports = function(bot)
                         if (userInput === ""+(i+1) ) {
                             context.session.newsinfo = context.session.selecnews[i];
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;;
                         }
                         else if (i === context.session.selecnews.length - 1 && context.session.newsinfo === {}) {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;;
                         }
                     }
                 }
@@ -2330,7 +2577,10 @@ module.exports = function(bot)
                         }
                         else if (i === COIN.length - 1 && coin === "") {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
 
@@ -2344,7 +2594,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("get！   response.statusCode=" + response.statusCode);
@@ -2368,7 +2621,10 @@ module.exports = function(bot)
                                 else {
                                     context.session.news = body;
                                     matched = true;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                             }
                         }
@@ -2413,7 +2669,10 @@ module.exports = function(bot)
                                         if (err) {
                                             console.log(err);
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else {
                                             console.log("delete！   response.statusCode=" + response.statusCode);
@@ -2436,7 +2695,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！   response.statusCode=" + response.statusCode);
@@ -2450,14 +2712,20 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("get！   response.statusCode=" + response.statusCode);
                                         body = JSON.parse(body);
                                         context.session.news = body;
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 });
                             }
