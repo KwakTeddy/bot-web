@@ -88,6 +88,8 @@ var ContextManager = require('../context.js');
                 result = false;
             }
 
+            keyList.sort();
+
             async.eachSeries(keyList, function(key, next)
             {
                 if(key == 'intent')
