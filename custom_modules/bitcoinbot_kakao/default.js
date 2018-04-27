@@ -481,14 +481,14 @@ module.exports = function(bot)
             if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
                 dialog.output[0].image = {url: context.session.coinsinfo.graphimage};
                 dialog.output[0].buttons = [
-                    // {
-                    //     text: 'See price graph',
-                    //     url: context.session.coinsinfo.graph
-                    // },
-                    // {
-                    //     text: 'Specific Information',
-                    //     url: context.session.coinsinfo.url
-                    // },
+                    {
+                        text: 'See price graph',
+                        url: context.session.coinsinfo.graph
+                    },
+                    {
+                        text: 'Specific Information',
+                        url: context.session.coinsinfo.url
+                    },
                     {
                         text: 'Back'
                     },
@@ -504,18 +504,16 @@ module.exports = function(bot)
                 'Shortname: '+context.session.coinsinfo.shortname+'\n'+
                 'Price: '+context.session.coinsinfo.price+'\n'+
                 'Volume(24h):  '+context.session.coinsinfo.volume+'\n'+
-                'Change(24h): '+context.session.coinsinfo.change+'\n' +
-                    'See price graph:\n' + context.session.coinsinfo.graph +'\n' +
-                    'Specific Information:\n' + context.session.coinsinfo.url;
+                'Change(24h): '+context.session.coinsinfo.change+'\n';
                 dialog.output[0].buttons = [
-                    // {
-                    //     text: 'See price graph',
-                    //     url: context.session.coinsinfo.graph
-                    // },
-                    // {
-                    //     text: 'Specific Information',
-                    //     url: context.session.coinsinfo.url
-                    // },
+                    {
+                        text: 'See price graph',
+                        url: context.session.coinsinfo.graph
+                    },
+                    {
+                        text: 'Specific Information',
+                        url: context.session.coinsinfo.url
+                    },
                     {
                         text: 'Back'
                     },
@@ -753,19 +751,17 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n' +
-                            'See price graph: \n' +context.session.coinsinfo.graph + '\n' +
-                            'Specific Information: \n' +context.session.coinsinfo.url+ '\n' +
                             'Price Graph: ';
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
-                            // {
-                            //     text: 'See price graph',
-                            //     url: context.session.coinsinfo[0].graph
-                            // },
-                            // {
-                            //     text: 'Specific Information',
-                            //     url: context.session.coinsinfo[0].url
-                            // },
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
                             {
                                 text: 'Back'
                             },
@@ -780,18 +776,16 @@ module.exports = function(bot)
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
-                            'Change(24h): ' + context.session.coinsinfo[0].change + '\n'+
-                        'See price graph: \n' +context.session.coinsinfo.graph + '\n' +
-                        'Specific Information: \n' +context.session.coinsinfo.url+ '\n';
+                            'Change(24h): ' + context.session.coinsinfo[0].change + '\n';
                         dialog.output[0].buttons = [
-                            // {
-                            //     text: 'See price graph',
-                            //     url: context.session.coinsinfo[0].graph
-                            // },
-                            // {
-                            //     text: 'Specific Information',
-                            //     url: context.session.coinsinfo[0].url
-                            // },
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
                             {
                                 text: 'Back'
                             },
@@ -997,10 +991,10 @@ module.exports = function(bot)
                 if(context.session.coinsinfo.graphimage.indexOf('.svg')=== -1) {
                     dialog.output[0].image = {url: context.session.coinsinfo.graphimage};
                     dialog.output[0].buttons = [
-                        // {
-                        //     text: 'See price graph',
-                        //     url: context.session.coinsinfo.graph
-                        // },
+                        {
+                            text: 'See price graph',
+                            url: context.session.coinsinfo.graph
+                        },
                         {
                             text: 'Back'
                         },
@@ -1013,13 +1007,12 @@ module.exports = function(bot)
                 }
                 else {
                     dialog.output[0].text = ' Coin: '+context.session.coinsinfo.name+'\n'+
-                        'Shortname: '+context.session.coinsinfo.shortname + '\n' +
-                        'See price graph: \n' + context.session.coinsinfo.graph ;
+                        'Shortname: '+context.session.coinsinfo.shortname;
                     dialog.output[0].buttons = [
-                        // {
-                        //     text: 'See price graph',
-                        //     url: context.session.coinsinfo.graph
-                        // },
+                        {
+                            text: 'See price graph',
+                            url: context.session.coinsinfo.graph
+                        },
                         {
                             text: 'Back'
                         },
@@ -1254,19 +1247,17 @@ module.exports = function(bot)
                     if (context.session.coinsinfo[0].graphimage.indexOf('.svg') === -1) {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph: \n' + context.session.coinsinfo[0].graph+ '\n' +
-                            'Specific Information: \n' + context.session.coinsinfo[0].url+ '\n' +
                             'Price Graph: ';
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
-                            // {
-                            //     text: 'See price graph',
-                            //     url: context.session.coinsinfo[0].graph
-                            // },
-                            // {
-                            //     text: 'Specific Information',
-                            //     url: context.session.coinsinfo[0].url
-                            // },
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
                             {
                                 text: 'Back'
                             },
@@ -1278,18 +1269,16 @@ module.exports = function(bot)
                     }
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
-                            'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph: \n' + context.session.coinsinfo[0].graph+ '\n' +
-                            'Specific Information: \n' + context.session.coinsinfo[0].url;
+                            'Shortname: ' + context.session.coinsinfo[0].shortname;
                         dialog.output[0].buttons = [
-                            // {
-                            //     text: 'See price graph',
-                            //     url: context.session.coinsinfo[0].graph
-                            // },
-                            // {
-                            //     text: 'Specific Information',
-                            //     url: context.session.coinsinfo[0].url
-                            // },
+                            {
+                                text: 'See price graph',
+                                url: context.session.coinsinfo[0].graph
+                            },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.coinsinfo[0].url
+                            },
                             {
                                 text: 'Back'
                             },
@@ -1510,10 +1499,10 @@ module.exports = function(bot)
 
             dialog.output[0].buttons = [
 
-                // {
-                //     text: 'Specific Information',
-                //     url: context.session.ICOinfo.url
-                // },
+                {
+                    text: 'Specific Information',
+                    url: context.session.ICOinfo.url
+                },
                 {
                     text: 'Back'
                 },
@@ -1934,13 +1923,12 @@ module.exports = function(bot)
                             'Interest: ' + context.session.ICOsinfo[0].rate + '\n' +
                             'Category: ' + context.session.ICOsinfo[0].category + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
-                            'Start Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                            'Start Date: ' + context.session.ICOsinfo[0].date + '\n';
                         dialog.output[0].buttons = [
-                            // {
-                            //     text: 'Specific Information',
-                            //     url: context.session.ICOsinfo[0].url
-                            // },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.ICOsinfo[0].url
+                            },
                             {
                                 text: 'Back'
                             },
@@ -1957,13 +1945,12 @@ module.exports = function(bot)
                             'Category: ' + context.session.ICOsinfo[0].category + '\n' +
                             'Received: ' + context.session.ICOsinfo[0].now + ' / '+ context.session.ICOsinfo[0].now_percent + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
-                            'End Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                            'End Date: ' + context.session.ICOsinfo[0].date + '\n';
                         dialog.output[0].buttons = [
-                            // {
-                            //     text: 'Specific Information',
-                            //     url: context.session.ICOsinfo[0].url
-                            // },
+                            {
+                                text: 'Specific Information',
+                                url: context.session.ICOsinfo[0].url
+                            },
                             {
                                 text: 'Back'
                             },
@@ -2033,13 +2020,12 @@ module.exports = function(bot)
                         'Interest: ' + context.session.ICOinfo.rate + '\n' +
                         'Category: ' + context.session.ICOinfo.category + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
-                        'Start Date: ' + context.session.ICOinfo.date + '\n' +
-                        'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                        'Start Date: ' + context.session.ICOinfo.date + '\n';
                     dialog.output[0].buttons = [
-                        // {
-                        //     text: 'Specific Information',
-                        //     url: context.session.ICOinfo[0].url
-                        // },
+                        {
+                            text: 'Specific Information',
+                            url: context.session.ICOinfo[0].url
+                        },
                         {
                             text: 'Back'
                         },
@@ -2056,13 +2042,12 @@ module.exports = function(bot)
                         'Category: ' + context.session.ICOinfo.category + '\n' +
                         'Received: ' + context.session.ICOinfo.now + ' / '+ context.session.ICOinfo.now_percent + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
-                        'End Date: ' + context.session.ICOinfo.date + '\n'+
-                        'Specific Information: \n' + context.session.ICOsinfo[0].url;
+                        'End Date: ' + context.session.ICOinfo.date + '\n';
                     dialog.output[0].buttons = [
-                        // {
-                        //     text: 'Specific Information',
-                        //     url: context.session.ICOinfo.url
-                        // },
+                        {
+                            text: 'Specific Information',
+                            url: context.session.ICOinfo.url
+                        },
                         {
                             text: 'Back'
                         },
@@ -2281,10 +2266,10 @@ module.exports = function(bot)
             {
                 dialog.output[0].images = {url: context.session.newsinfo.image};
                 dialog.output[0].buttons = [
-                    // {
-                    //     text: 'Specific content',
-                    //     url: context.session.newsinfo.url
-                    // },
+                    {
+                        text: 'Specific content',
+                        url: context.session.newsinfo.url
+                    },
                     {
                         text: 'Back'
                     },
