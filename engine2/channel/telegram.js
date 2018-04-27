@@ -28,8 +28,12 @@ const Bot = mongoose.model('Bot');
         options.form = {
             chat_id: chatId,
             photo: result.output.image.url,
-            caption: result.output.text,
-            text: ''
+            text: result.output.text
+        }
+
+        if(result.output.text.indexOf('[inline URL]') != -1)
+        {
+            options.form.parse_mode = 'Markdown';
         }
     };
 
