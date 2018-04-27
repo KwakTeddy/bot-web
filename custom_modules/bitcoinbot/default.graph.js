@@ -932,7 +932,7 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "Hello! my name is +bot.name+. Nice to meet you. \n\nBefore talk, I recommend you check a brief introduction of Bitcoin.\n\n If you are ready we can start our talk right now! :)",
+                "text": "Hello! My name is +bot.name+. Nice to meet you. \n\nBefore talk, I recommend you check a brief introduction of Bitcoin.\n\n If you are ready we can start our talk right now! :)",
                 "if": "context.session.IsNew!=='not'",
                 "type": "call",
                 "dialogId": "default1",
