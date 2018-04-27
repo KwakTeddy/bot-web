@@ -27,8 +27,7 @@ const Bot = mongoose.model('Bot');
     {
         options.form = {
             chat_id: chatId,
-            photo: result.output.image.url,
-            caption: result.output.text
+            photo: result.output.image.url
         }
     };
 
