@@ -611,7 +611,7 @@ module.exports = function(bot)
                 }
                 else {
 
-                    userInput = userInput.replace(/price/g, '').replace(/rate/g, '');
+                    userInput = userInput.replace(/price/g, '').replace(/rate/g, '').replace(/want/g, '');
 
                     modelname = 'bitcoin_coinmarketcap';
                     options = {};
@@ -1159,7 +1159,7 @@ module.exports = function(bot)
                 }
                 else {
 
-                    userInput = userInput.replace(/chart/g, '').replace(/graph/g, '');
+                    userInput = userInput.replace(/chart/g, '').replace(/graph/g, '').replace(/want/g, '');
 
                     modelname = 'bitcoin_coinmarketcap';
                     options = {};
@@ -1896,7 +1896,7 @@ module.exports = function(bot)
                 }
                 else {
 
-                    userInput = userInput.toLowerCase();
+                    userInput = userInput.toLowerCase().replace(/want/g, '');
 
                     modelname = 'bitcoin_icodrops';
                     options = {};

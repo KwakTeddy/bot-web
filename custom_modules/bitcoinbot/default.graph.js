@@ -897,6 +897,21 @@ var dialogs = [
                         ]
                     }
                 ]
+            },
+            {
+                "name": "greeting",
+                "input": [
+                    {
+                        "intent": "greeting"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "Hi ! \nI am bitcoin-bot~\n\nTell me what kind of coin do you want to know the price or chart or news, or the ICO.\n\nex) bitcoin price\n       btc chart\n       xx ico\n       Ripple news"
+                    }
+                ],
+                "id": "default14"
             }
         ],
         "task": {
