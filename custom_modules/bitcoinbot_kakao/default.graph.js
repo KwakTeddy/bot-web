@@ -426,6 +426,12 @@ var dialogs = [
                             },
                             {
                                 "text": "Commented"
+                            },
+                            {
+                                "text": "Back"
+                            },
+                            {
+                                "text": "Start"
                             }
                         ]
                     }
