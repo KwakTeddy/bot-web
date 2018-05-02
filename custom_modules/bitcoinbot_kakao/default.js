@@ -2437,10 +2437,11 @@ module.exports = function(bot)
                         ss++;
                         var newstitle = "" + ss + ". " + context.session.news[i].title;
                         dialog.output[0].buttons.push({text:newstitle});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
                     }
                 }
+
+                dialog.output[0].buttons.push({text: 'Back'});
+                dialog.output[0].buttons.push({text: 'Start'});
                 callback();
             }
         });
