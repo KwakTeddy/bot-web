@@ -1471,7 +1471,7 @@ module.exports = function(bot)
                             var nowtime = new Date().getTime();
                             difference = (nowtime - Number(body[0].updateTime))/ (60 * 60 * 1000);
 
-                            if(difference >= 3){
+                            if(difference >= 1){
                                 ICOcrawling();
                             }
                             else{
@@ -1701,7 +1701,7 @@ module.exports = function(bot)
                             var nowtime = new Date().getTime();
                             difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-                            if (difference >= 3) {
+                            if (difference >= 1) {
                                 ICOcrawling();
                             }
                             else {
@@ -1922,7 +1922,7 @@ module.exports = function(bot)
                                 var nowtime = new Date().getTime();
                                 difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-                                if (difference >= 3) {
+                                if (difference >= 1) {
                                     ICOkind.forEach(ICOcrawling);
                                 }
                                 else {
@@ -1962,6 +1962,7 @@ module.exports = function(bot)
                                         ICO[i].rate = kind.eq(i).find('div.interest div.nr').text();
                                     }
                                 }
+                                ICO[i].kind = ICOkind;
                             }
                             modelname = 'bitcoin_icodrops';
                             options = {};
