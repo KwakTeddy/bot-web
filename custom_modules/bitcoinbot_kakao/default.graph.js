@@ -756,6 +756,12 @@ var dialogs = [
                             },
                             {
                                 "text": "6. Monero"
+                            },
+                            {
+                                "text": "Back"
+                            },
+                            {
+                                "text": "Start"
                             }
                         ]
                     }
@@ -771,37 +777,37 @@ var dialogs = [
                             {
                                 "text": {
                                     "raw": "1. Bitcoin",
-                                    "nlp": "1. Bitcoin"
+                                    "nlp": "1 . Bitcoin"
                                 }
                             },
                             {
                                 "text": {
                                     "raw": "2. Ethereum",
-                                    "nlp": "2. Ethereum"
+                                    "nlp": "2 . Ethereum"
                                 }
                             },
                             {
                                 "text": {
                                     "raw": "3. Altcoin",
-                                    "nlp": "3. Altcoin"
+                                    "nlp": "3 . Altcoin"
                                 }
                             },
                             {
                                 "text": {
                                     "raw": "4. Litecoin",
-                                    "nlp": "4. Litecoin"
+                                    "nlp": "4 . Litecoin"
                                 }
                             },
                             {
                                 "text": {
                                     "raw": "5. Ripple",
-                                    "nlp": "5. Ripple"
+                                    "nlp": "5 . Ripple"
                                 }
                             },
                             {
                                 "text": {
                                     "raw": "6. Monero",
-                                    "nlp": "6. Monero"
+                                    "nlp": "6 . Monero"
                                 }
                             }
                         ],
@@ -818,6 +824,12 @@ var dialogs = [
                                     },
                                     {
                                         "text": "Commented"
+                                    },
+                                    {
+                                        "text": "Back"
+                                    },
+                                    {
+                                        "text": "Start"
                                     }
                                 ]
                             }
