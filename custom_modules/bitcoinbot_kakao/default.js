@@ -50,107 +50,131 @@ module.exports = function(bot)
 		}
 	});
 
-	bot.setTask('UpdateUser',
-	{
-		action: function (dialog, context, callback) {
+    bot.setTask('UpdateUser',
+        {
+            action: function (dialog, context, callback) {
 
-            context.session.coinsprice = [];
+                context.session.coinsprice = [];
 
-            if(context.session.IsNew==='not') {
-                modelname = 'bitcoinbot_user';
-                options = {};
+                if(context.session.IsNew==='not') {
+                    modelname = 'bitcoinbot_user';
+                    options = {};
 
-                options.qs = {userKey: context.user.userKey};
-                options.json = {
-                    updateTime: new Date().toISOString(),
-                    Language: context.session.language ?  context.session.language:"en"
-            };
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.put(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        console.log("updatuser！   response.statusCode=" + response.statusCode);
-                        callback();
-                    }
-                });
-            }
-            else{
-                modelname = 'bitcoinbot_user';
-                options = {};
+                    options.qs = {userKey: context.user.userKey};
+                    options.json = {
+                        updateTime: new Date().toISOString(),
+                        Language: context.session.language ?  context.session.language:"en"
+                    };
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.put(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
+                        }
+                        else {
+                            console.log("updatuser！   response.statusCode=" + response.statusCode);
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
+                        }
+                    });
+                }
+                else{
+                    modelname = 'bitcoinbot_user';
+                    options = {};
 
-                options.qs = {userKey: context.user.userKey};
-                options.json = {
-                    updateTime: new Date().toISOString(),
-                    Language: context.session.language ?  context.session.language:"en"
-                };
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.put(options, function (err, response, body) {
-                    console.log('body: ' + JSON.stringify(body));
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else if(body.nModified === 0)  {
-                        if(dialog.userInput.text==="Talk now!") {
+                    options.qs = {userKey: context.user.userKey};
+                    options.json = {
+                        updateTime: new Date().toISOString(),
+                        Language: context.session.language ?  context.session.language:"en"
+                    };
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.put(options, function (err, response, body) {
+                        console.log('body: ' + JSON.stringify(body));
+                        if (err) {
+                            console.log(err);
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
+                        }
+                        else if(body.nModified === 0)  {
+                            if(dialog.userInput.text==="Talk now!") {
+                                context.session.IsNew = 'not';
+                                modelname = 'bitcoinbot_user';
+                                options = {};
+                                context.session.language = context.session.language ?  context.session.language:"en";
+                                options.json = {
+                                    Language: context.session.language ?  context.session.language:"en",
+                                    Created: new Date().toISOString(),
+                                    updateTime: new Date().toISOString(),
+                                    userKey: context.user.userKey,
+                                    LoginDays: '0'
+                                };
+                                options.url = SERVER_HOST + '/api/' + modelname;
+                                request.post(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                        if(callback) {
+                                            callback();
+                                        }
+                                        callback = undefined;
+                                    }
+                                    else {
+                                        console.log("newuser！   response.statusCode=" + response.statusCode);
+                                        if(callback) {
+                                            callback();
+                                        }
+                                        callback = undefined;
+                                    }
+                                });
+                            }
+                            else{
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
+                            }
+                        }
+                        else {
                             context.session.IsNew = 'not';
                             modelname = 'bitcoinbot_user';
                             options = {};
-                            context.session.language = context.session.language ?  context.session.language:"en";
-                            options.json = {
-                                Language: context.session.language ?  context.session.language:"en",
-                                Created: new Date().toISOString(),
-                                updateTime: new Date().toISOString(),
-                                userKey: context.user.userKey,
-                                LoginDays: '0'
-                            };
+
+                            options.qs = {userKey: context.user.userKey};
                             options.url = SERVER_HOST + '/api/' + modelname;
-                            request.post(options, function (err, response, body) {
+                            request.get(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
-                                    console.log("newuser！   response.statusCode=" + response.statusCode);
-                                    callback();
+                                    console.log("updatuser！   response.statusCode=" + response.statusCode);
+                                    body = JSON.parse(body);
+                                    context.session.language = body[0].Language;
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                             });
-                        }
-                        else{
-                            callback();
-                        }
-                    }
-                    else {
-                        context.session.IsNew = 'not';
-                        modelname = 'bitcoinbot_user';
-                        options = {};
 
-                        options.qs = {userKey: context.user.userKey};
-                        options.url = SERVER_HOST + '/api/' + modelname;
-                        request.get(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                callback();
-                            }
-                            else {
-                                console.log("updatuser！   response.statusCode=" + response.statusCode);
-                                body = JSON.parse(body);
-                                context.session.language = body[0].Language;
-                                callback();
-                            }
-                        });
-
-                    }
-                });
+                        }
+                    });
+                }
             }
-        }
 
-	});
+        });
 
 //----------------------------------------------------Coin_Price && Information-----------------------------------------------
-	bot.setTask('coinprice',
+    bot.setTask('coinprice',
         {
             action: function (dialog, context, callback) {
                 modelname = 'bitcoin_coinmarketcap';
@@ -161,7 +185,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -190,7 +217,10 @@ module.exports = function(bot)
                                 dialog.output[0].buttons.push({text: 'MORE'});
                                 dialog.output[0].buttons.push({text: 'Back'});
                                 dialog.output[0].buttons.push({text: 'Start'});
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         }
                     }
@@ -223,7 +253,10 @@ module.exports = function(bot)
                             request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    callback();
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -256,7 +289,10 @@ module.exports = function(bot)
                     request.post(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -276,7 +312,10 @@ module.exports = function(bot)
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -295,7 +334,10 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     });
                 }
@@ -323,7 +365,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -350,11 +395,17 @@ module.exports = function(bot)
                                         {
                                             context.session.coinsinfo = context.session.coinsprice[i];
                                             matched = true;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                     }
                                 }
@@ -390,7 +441,10 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("delete！   response.statusCode=" + response.statusCode);
@@ -424,7 +478,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("new！  response.statusCode=" + response.statusCode);
@@ -445,7 +502,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 body = JSON.parse(body);
@@ -460,11 +520,17 @@ module.exports = function(bot)
                                     {
                                         context.session.coinsinfo = context.session.coinsprice[i];
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 }
                             }
@@ -535,11 +601,10 @@ module.exports = function(bot)
                 var coinname = [];
                 context.session.seleccoin = [];
 
-                
+
                 var userInput = dialog.userInput.text;
 
                 userInput = userInput.toLowerCase();
-
                 if(dialog.userInput.matchedIntent !== 'price'){
                     matched = false;
                     callback(matched);
@@ -557,7 +622,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -611,7 +679,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -645,7 +716,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -666,7 +740,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -698,20 +775,32 @@ module.exports = function(bot)
                             userInput = userInput.replace(regexp,"");
                             if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                                 matched = true;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
 
@@ -832,7 +921,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -859,11 +951,17 @@ module.exports = function(bot)
                                         {
                                             context.session.coinsinfo = context.session.coinsprice[i];
                                             matched = true;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                     }
                                 }
@@ -899,7 +997,10 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("delete！   response.statusCode=" + response.statusCode);
@@ -933,7 +1034,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 console.log("new！  response.statusCode=" + response.statusCode);
@@ -954,7 +1058,10 @@ module.exports = function(bot)
                             if (err) {
                                 console.log(err);
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else {
                                 body = JSON.parse(body);
@@ -969,11 +1076,17 @@ module.exports = function(bot)
                                     {
                                         context.session.coinsinfo = context.session.coinsprice[i];
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else if(i === context.session.coinsprice.length -1 && !context.session.coinsinfo){
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 }
                             }
@@ -982,6 +1095,7 @@ module.exports = function(bot)
                 }
             }
         });
+
 
 
     bot.setTask('showchart',
@@ -1034,7 +1148,7 @@ module.exports = function(bot)
                 var matched = false;
                 var coinname = [];
                 context.session.seleccoin = [];
-                
+
                 var userInput = dialog.userInput.text;
 
                 userInput = userInput.toLowerCase();
@@ -1056,7 +1170,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -1110,7 +1227,10 @@ module.exports = function(bot)
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1144,7 +1264,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！  response.statusCode=" + response.statusCode);
@@ -1165,7 +1288,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             body = JSON.parse(body);
@@ -1197,20 +1323,32 @@ module.exports = function(bot)
                             userInput = userInput.replace(regexp,"");
                             if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                                 matched = true;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                             else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                                 matched = false;
-                                callback(matched);
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
                             }
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length >=1){
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(j === coinname.length - 1 && context.session.seleccoin.length === 0){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1305,160 +1443,174 @@ module.exports = function(bot)
         });
 //----------------------------------------------------ICO-----------------------------------------------
 
-     bot.setTask('activeICO',
-	{
-        action: function (dialog, context, callback)
+    bot.setTask('activeICO',
         {
-            modelname = 'bitcoin_icodrops';
-            options = {};
-            var difference = 0;
-
-            options.qs = {kind: 'active'};
-            options.url = SERVER_HOST + '/api/' + modelname;
-            request.get(options, function (err, response, body) {
-                if (err) {
-                    console.log(err);
-                    callback();
-                }
-                else {
-                    body = JSON.parse(body);
-
-                    if (body.length === 0) {
-                        ICOcrawling();
-                    }
-                    else {
-                        var nowtime = new Date().getTime();
-                        difference = (nowtime - Number(body[0].updateTime))/ (60 * 60 * 1000);
-
-                        if(difference >= 3){
-                            ICOcrawling();
-                        }
-                        else{
-                            showICO();
-                        }
-                    }
-                }
-            });
-
-            function ICOcrawling() {
-                superagent.get(activeICOurl)
-                    .end(function (err, pres) {
-                        var $ = cheerio.load(pres.text);
-                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-
-                        for (var i = 0; i < kind.length; i++) {
-                            ICO_active[i] = {};
-                            ICO_active[i].url = kind.eq(i).find('h3 a').attr('href');
-                            ICO_active[i].name = kind.eq(i).find('h3 a').text();
-                            ICO_active[i].category = kind.eq(i).find('.ico-category-name').text();
-                            ICO_active[i].now_percent = kind.eq(i).find('#new_column_categ_invisted span.prec').text();
-                            if (ICO_active[i].now_percent === "") {
-                                ICO_active[i].now_percent = "0%";
-                                ICO_active[i].now = "0";
-                            }
-                            else {
-                                ICO_active[i].now = kind.eq(i).find('#new_column_categ_invisted>span').text().split(ICO_active[i].now_percent)[0].replace(/[,]/g, "");
-                            }
-                            var goal = "$" + kind.eq(i).find('#categ_desctop').text().split("$")[1];
-                            ICO_active[i].goal = goal.replace(/[\t\n,]/g, "");
-                            ICO_active[i].date = kind.eq(i).find('div.date').attr('data-date');
-                            if (ICO_active[i].date === "") {
-                                ICO_active[i].date = 'TBA';
-                            }
-                            ICO_active[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                            if (ICO_active[i].rate === "") {
-                                ICO_active[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
-                                if (ICO_active[i].rate === "") {
-                                    ICO_active[i].rate = kind.eq(i).find('div.interest div.nr').text();
-                                }
-                            }
-                        }
-                        modelname = 'bitcoin_icodrops';
-                        options = {};
-
-                        options.qs = {kind: 'active'};
-                        options.url = SERVER_HOST + '/api/' + modelname;
-
-                        request.delete(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                matched = false;
-                                callback(matched);
-                            }
-                            else {
-                                console.log("delete！   response.statusCode=" + response.statusCode);
-                                ICO_active.forEach(newICO);
-                            }
-                        });
-                    });
-            }
-
-            function newICO(ICO,index,ICOs) {
+            action: function (dialog, context, callback)
+            {
                 modelname = 'bitcoin_icodrops';
                 options = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-
-                options.json = {
-                    kind: 'active',
-                    url: ICO.url,
-                    name: ICO.name,
-                    category: ICO.category,
-                    now_percent: ICO.now_percent,
-                    now: ICO.now,
-                    goal: ICO.goal,
-                    date: ICO.date,
-                    rate: ICO.rate,
-                    created: new Date().toISOString(),
-                    updateTime: new Date().getTime()
-                };
-
-                request.post(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        callback();
-                    }
-                    else {
-                        console.log("new！   response.statusCode=" + response.statusCode);
-                        if(index === ICOs.length-1){
-                            showICO();
-                        }
-                    }
-                })
-
-            }
-
-            function showICO() {
-                modelname = 'bitcoin_icodrops';
-                options = {};
+                var difference = 0;
 
                 options.qs = {kind: 'active'};
                 options.url = SERVER_HOST + '/api/' + modelname;
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
-                        console.log("getICO！   response.statusCode=" + response.statusCode);
                         body = JSON.parse(body);
 
-                        context.session.activeICO = body;
-
-                        dialog.output[0].buttons = [];
-                        for (var i = 0; i < 15; i++) {
-                            var name = "" + (i + 1) + ". " + body[i].name;
-                            var rate = body[i].rate;
-                            dialog.output[0].buttons.push({text: name + " [" + rate + ']'});
+                        if (body.length === 0) {
+                            ICOcrawling();
                         }
-                        dialog.output[0].buttons.push({text: 'MORE'});
-                        dialog.output[0].buttons.push({text: 'Back'});
-                        dialog.output[0].buttons.push({text: 'Start'});
-                        callback();
+                        else {
+                            var nowtime = new Date().getTime();
+                            difference = (nowtime - Number(body[0].updateTime))/ (60 * 60 * 1000);
+
+                            if(difference >= 3){
+                                ICOcrawling();
+                            }
+                            else{
+                                showICO();
+                            }
+                        }
                     }
                 });
+
+                function ICOcrawling() {
+                    superagent.get(activeICOurl)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
+
+                            for (var i = 0; i < kind.length; i++) {
+                                ICO_active[i] = {};
+                                ICO_active[i].url = kind.eq(i).find('h3 a').attr('href');
+                                ICO_active[i].name = kind.eq(i).find('h3 a').text();
+                                ICO_active[i].category = kind.eq(i).find('.ico-category-name').text();
+                                ICO_active[i].now_percent = kind.eq(i).find('#new_column_categ_invisted span.prec').text();
+                                if (ICO_active[i].now_percent === "") {
+                                    ICO_active[i].now_percent = "0%";
+                                    ICO_active[i].now = "0";
+                                }
+                                else {
+                                    ICO_active[i].now = kind.eq(i).find('#new_column_categ_invisted>span').text().split(ICO_active[i].now_percent)[0].replace(/[,]/g, "");
+                                }
+                                var goal = "$" + kind.eq(i).find('#categ_desctop').text().split("$")[1];
+                                ICO_active[i].goal = goal.replace(/[\t\n,]/g, "");
+                                ICO_active[i].date = kind.eq(i).find('div.date').attr('data-date');
+                                if (ICO_active[i].date === "") {
+                                    ICO_active[i].date = 'TBA';
+                                }
+                                ICO_active[i].rate = kind.eq(i).find('div.interest span.spspan').text();
+                                if (ICO_active[i].rate === "") {
+                                    ICO_active[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
+                                    if (ICO_active[i].rate === "") {
+                                        ICO_active[i].rate = kind.eq(i).find('div.interest div.nr').text();
+                                    }
+                                }
+                            }
+                            modelname = 'bitcoin_icodrops';
+                            options = {};
+
+                            options.qs = {kind: 'active'};
+                            options.url = SERVER_HOST + '/api/' + modelname;
+
+                            request.delete(options, function (err, response, body) {
+                                if (err) {
+                                    console.log(err);
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
+                                }
+                                else {
+                                    console.log("delete！   response.statusCode=" + response.statusCode);
+                                    ICO_active.forEach(newICO);
+                                }
+                            });
+                        });
+                }
+
+                function newICO(ICO,index,ICOs) {
+                    modelname = 'bitcoin_icodrops';
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+
+                    options.json = {
+                        kind: 'active',
+                        url: ICO.url,
+                        name: ICO.name,
+                        category: ICO.category,
+                        now_percent: ICO.now_percent,
+                        now: ICO.now,
+                        goal: ICO.goal,
+                        date: ICO.date,
+                        rate: ICO.rate,
+                        created: new Date().toISOString(),
+                        updateTime: new Date().getTime()
+                    };
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
+                        }
+                        else {
+                            console.log("new！   response.statusCode=" + response.statusCode);
+                            if(index === ICOs.length-1){
+                                showICO();
+                            }
+                        }
+                    })
+
+                }
+
+                function showICO() {
+                    modelname = 'bitcoin_icodrops';
+                    options = {};
+
+                    options.qs = {kind: 'active'};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
+                        }
+                        else {
+                            console.log("getICO！   response.statusCode=" + response.statusCode);
+                            body = JSON.parse(body);
+
+                            context.session.activeICO = body;
+
+                            dialog.output[0].buttons = [];
+                            for (var i = 0; i < 15; i++) {
+                                var name = "" + (i + 1) + ". " + body[i].name;
+                                var rate = body[i].rate;
+                                dialog.output[0].buttons.push({text: name + " [" + rate + ']'});
+                            }
+                            dialog.output[0].buttons.push({text: 'MORE'});
+                            dialog.output[0].buttons.push({text: 'Back'});
+                            dialog.output[0].buttons.push({text: 'Start'});
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
+                        }
+                    });
+                }
             }
-        }
-	});
+        });
 
     bot.setType('activeICO',
         {
@@ -1481,11 +1633,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.activeICO[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.activeICO[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.activeICO.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1528,7 +1686,10 @@ module.exports = function(bot)
                 request.get(options, function (err, response, body) {
                     if (err) {
                         console.log(err);
-                        callback();
+                        if(callback) {
+                            callback();
+                        }
+                        callback = undefined;
                     }
                     else {
                         body = JSON.parse(body);
@@ -1588,8 +1749,10 @@ module.exports = function(bot)
                             request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
-                                    matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback();
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
                                     console.log("delete！   response.statusCode=" + response.statusCode);
@@ -1621,7 +1784,10 @@ module.exports = function(bot)
                     request.post(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！   response.statusCode=" + response.statusCode);
@@ -1642,7 +1808,10 @@ module.exports = function(bot)
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log(err);
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("getICO！   response.statusCode=" + response.statusCode);
@@ -1659,7 +1828,10 @@ module.exports = function(bot)
                             dialog.output[0].buttons.push({text: 'MORE'});
                             dialog.output[0].buttons.push({text: 'Back'});
                             dialog.output[0].buttons.push({text: 'Start'});
-                            callback();
+                            if(callback) {
+                                callback();
+                            }
+                            callback = undefined;
                         }
                     });
                 }
@@ -1688,11 +1860,17 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.upcomingICO[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.upcomingICO[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.upcomingICO.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
@@ -1701,195 +1879,219 @@ module.exports = function(bot)
 
 
     bot.setType('icos',
-    {
-        typeCheck: function (dialog, context, callback) {
-            var matched = false;
-            var difference = 0;
-            var iconame = [];
-            var ICOkind = ['active', 'upcoming'];
-            var ICOurl = "";
-            context.session.selecico = [];
-            
-            var userInput = dialog.userInput.text;
+        {
+            typeCheck: function (dialog, context, callback) {
+                var matched = false;
+                var difference = 0;
+                var iconame = [];
+                var ICOkind = ['active', 'upcoming'];
+                var ICOurl = "";
+                context.session.selecico = [];
 
-            if(dialog.userInput.matchedIntent !== 'ICO'){
-                matched = false;
-                callback(matched);
-            }
-            else {
+                var userInput = dialog.userInput.text;
 
-                userInput = userInput.toLowerCase();
+                if(dialog.userInput.matchedIntent !== 'ICO'){
+                    matched = false;
+                    callback(matched);
+                }
+                else {
 
-                modelname = 'bitcoin_icodrops';
-                options = {};
+                    userInput = userInput.toLowerCase();
 
-                options.qs = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
-                request.get(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        matched = false;
-                        callback(matched);
-                    }
-                    else {
-                        body = JSON.parse(body);
+                    modelname = 'bitcoin_icodrops';
+                    options = {};
 
-                        if (body.length === 0) {
-                            ICOkind.forEach(ICOcrawling);
+                    options.qs = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
-                            var nowtime = new Date().getTime();
-                            difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
+                            body = JSON.parse(body);
 
-                            if (difference >= 3) {
+                            if (body.length === 0) {
                                 ICOkind.forEach(ICOcrawling);
                             }
                             else {
-                                getICO(body);
-                            }
-                        }
-                    }
-                });
-            }
+                                var nowtime = new Date().getTime();
+                                difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-            function ICOcrawling(ICOkind) {
-                ICOurl = "https://icodrops.com/category/" + ICOkind + "-ico/";
-                superagent.get(ICOurl)
-                    .end(function (err, pres) {
-                        var $ = cheerio.load(pres.text);
-                        var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
-
-                        for (var i = 0; i < kind.length; i++) {
-                            ICO[i] = {};
-                            ICO[i].url = kind.eq(i).find('h3 a').attr('href');
-                            ICO[i].name = kind.eq(i).find('h3 a').text();
-                            ICO[i].category = kind.eq(i).find('.categ_type').text();
-                            ICO[i].now_percent = "0%";
-                            ICO[i].now = "0";
-                            var goal = kind.eq(i).find('#categ_desctop').text();
-                            if (goal.indexOf('$') >= 0) {
-                                ICO[i].goal = goal.replace(/[\t\n,]/g, "");
-                            }
-                            else {
-                                ICO[i].goal = "TBA";
-                            }
-                            ICO[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g, "").replace(/DATE: /, "");
-                            ICO[i].rate = kind.eq(i).find('div.interest span.spspan').text();
-                            if (ICO[i].rate === "") {
-                                ICO[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
-                                if (ICO[i].rate === "") {
-                                    ICO[i].rate = kind.eq(i).find('div.interest div.nr').text();
+                                if (difference >= 3) {
+                                    ICOkind.forEach(ICOcrawling);
+                                }
+                                else {
+                                    getICO(body);
                                 }
                             }
                         }
-                        modelname = 'bitcoin_icodrops';
-                        options = {};
-
-                        options.qs = {kind: ICOkind};
-                        options.url = SERVER_HOST + '/api/' + modelname;
-
-                        request.delete(options, function (err, response, body) {
-                            if (err) {
-                                console.log(err);
-                                matched = false;
-                                callback(matched);
-                            }
-                            else {
-                                console.log("delete！   response.statusCode=" + response.statusCode);
-                                ICO.forEach(newICO);
-                            }
-                        });
                     });
-            }
+                }
 
-            function newICO(ICO, index, ICOs) {
-                modelname = 'bitcoin_icodrops';
-                options = {};
-                options.url = SERVER_HOST + '/api/' + modelname;
+                function ICOcrawling(ICOkind) {
+                    ICOurl = "https://icodrops.com/category/" + ICOkind + "-ico/";
+                    superagent.get(ICOurl)
+                        .end(function (err, pres) {
+                            var $ = cheerio.load(pres.text);
+                            var kind = $('.col-lg-6.col-md-12.col-12.all>div>div.category-desk>div.col-md-12.col-12.a_ico');
 
-                options.json = {
-                    kind: ICO.kind,
-                    url: ICO.url,
-                    name: ICO.name,
-                    category: ICO.category,
-                    now_percent: ICO.now_percent,
-                    now: ICO.now,
-                    goal: ICO.goal,
-                    date: ICO.date,
-                    rate: ICO.rate,
-                    created: new Date().toISOString(),
-                    updateTime: new Date().getTime()
-                };
-
-                request.post(options, function (err, response, body) {
-                    if (err) {
-                        console.log(err);
-                        matched = false;
-                        callback(matched);
-                    }
-                    else {
-                        console.log("new！   response.statusCode=" + response.statusCode);
-                        if (index === ICOs.length - 1 && ICO.kind === 'upcoming') {
+                            for (var i = 0; i < kind.length; i++) {
+                                ICO[i] = {};
+                                ICO[i].url = kind.eq(i).find('h3 a').attr('href');
+                                ICO[i].name = kind.eq(i).find('h3 a').text();
+                                ICO[i].category = kind.eq(i).find('.categ_type').text();
+                                ICO[i].now_percent = "0%";
+                                ICO[i].now = "0";
+                                var goal = kind.eq(i).find('#categ_desctop').text();
+                                if (goal.indexOf('$') >= 0) {
+                                    ICO[i].goal = goal.replace(/[\t\n,]/g, "");
+                                }
+                                else {
+                                    ICO[i].goal = "TBA";
+                                }
+                                ICO[i].date = kind.eq(i).find('div.date').text().replace(/[\n\t]/g, "").replace(/DATE: /, "");
+                                ICO[i].rate = kind.eq(i).find('div.interest span.spspan').text();
+                                if (ICO[i].rate === "") {
+                                    ICO[i].rate = kind.eq(i).find('div.interest div.all_site_val').text().replace(/[\t\n]/g, "");
+                                    if (ICO[i].rate === "") {
+                                        ICO[i].rate = kind.eq(i).find('div.interest div.nr').text();
+                                    }
+                                }
+                            }
                             modelname = 'bitcoin_icodrops';
                             options = {};
 
-                            options.qs = {};
+                            options.qs = {kind: ICOkind};
                             options.url = SERVER_HOST + '/api/' + modelname;
-                            request.get(options, function (err, response, body) {
+
+                            request.delete(options, function (err, response, body) {
                                 if (err) {
                                     console.log(err);
                                     matched = false;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                                 else {
-                                    body = JSON.parse(body);
-                                    getICO(body);
+                                    console.log("delete！   response.statusCode=" + response.statusCode);
+                                    ICO.forEach(newICO);
                                 }
-                            })
-                        }
-                    }
-                })
-
-            }
-
-            function getICO(body) {
-                context.session.ICOs = body;
-                for (var i = 0; i < body.length; i++) {
-                    iconame.push(body[i].name.toLowerCase());
+                            });
+                        });
                 }
-                iconame = iconame.sort(function (a, b) {
-                    return b.length - a.length;
-                });
 
-                var mm = iconame.length;
-                for (var j = 0; j < mm; j++) {
+                function newICO(ICO, index, ICOs) {
+                    modelname = 'bitcoin_icodrops';
+                    options = {};
+                    options.url = SERVER_HOST + '/api/' + modelname;
 
-                    if (userInput.indexOf(' ' + iconame[j] + ' ') !== -1 || userInput.indexOf(iconame[j] + ' ') !== -1 || userInput.indexOf(' ' + iconame[j]) !== -1) {
-                        context.session.selecico.push(iconame[j]);
-                        var name = iconame[j];
-                        var regexp = new RegExp(name,"g");
-                        userInput = userInput.replace(regexp,"");
-                        if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
+                    options.json = {
+                        kind: ICO.kind,
+                        url: ICO.url,
+                        name: ICO.name,
+                        category: ICO.category,
+                        now_percent: ICO.now_percent,
+                        now: ICO.now,
+                        goal: ICO.goal,
+                        date: ICO.date,
+                        rate: ICO.rate,
+                        created: new Date().toISOString(),
+                        updateTime: new Date().getTime()
+                    };
+
+                    request.post(options, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                            matched = false;
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
+                        }
+                        else {
+                            console.log("new！   response.statusCode=" + response.statusCode);
+                            if (index === ICOs.length - 1 && ICO.kind === 'upcoming') {
+                                modelname = 'bitcoin_icodrops';
+                                options = {};
+
+                                options.qs = {};
+                                options.url = SERVER_HOST + '/api/' + modelname;
+                                request.get(options, function (err, response, body) {
+                                    if (err) {
+                                        console.log(err);
+                                        matched = false;
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
+                                    }
+                                    else {
+                                        body = JSON.parse(body);
+                                        getICO(body);
+                                    }
+                                })
+                            }
+                        }
+                    })
+
+                }
+
+                function getICO(body) {
+                    context.session.ICOs = body;
+                    for (var i = 0; i < body.length; i++) {
+                        iconame.push(body[i].name.toLowerCase());
+                    }
+                    iconame = iconame.sort(function (a, b) {
+                        return b.length - a.length;
+                    });
+
+                    var mm = iconame.length;
+                    for (var j = 0; j < mm; j++) {
+
+                        if (userInput.indexOf(' ' + iconame[j] + ' ') !== -1 || userInput.indexOf(iconame[j] + ' ') !== -1 || userInput.indexOf(' ' + iconame[j]) !== -1) {
+                            context.session.selecico.push(iconame[j]);
+                            var name = iconame[j];
+                            var regexp = new RegExp(name,"g");
+                            userInput = userInput.replace(regexp,"");
+                            if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
+                                matched = true;
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
+                            }
+                            else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
+                                matched = false;
+                                if(callback) {
+                                    callback(matched);
+                                }
+                                callback = undefined;
+                            }
+                        }
+                        else if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
                             matched = true;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
-                    }
-                    else if (j === iconame.length - 1 && context.session.selecico.length >= 1) {
-                        matched = true;
-                        callback(matched);
-                    }
-                    else if (j === iconame.length - 1 && context.session.selecico.length === 0) {
-                        matched = false;
-                        callback(matched);
                     }
                 }
             }
-        }
-    });
+        });
 
     bot.setTask('showICO2',
         {
@@ -1998,16 +2200,23 @@ module.exports = function(bot)
                         if (dialog.userInput.text === context.session.ICOsinfo[i].name.toLowerCase()) {
                             context.session.ICOinfo = context.session.ICOsinfo[i];
                             matched = true;
-                            return callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else if(i === context.session.ICOsinfo.length - 1){
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
                 }
             }
         });
+
 
     bot.setTask('showICO1',
         {
@@ -2102,7 +2311,10 @@ module.exports = function(bot)
                             }
                             else {
                                 context.session.news = body;
-                                callback();
+                                if(callback) {
+                                    callback();
+                                }
+                                callback = undefined;
                             }
                         }
                     }
@@ -2183,7 +2395,10 @@ module.exports = function(bot)
                                         console.log("get！   response.statusCode=" + response.statusCode);
                                         body = JSON.parse(body);
                                         context.session.news = body;
-                                        callback();
+                                        if(callback) {
+                                            callback();
+                                        }
+                                        callback = undefined;
                                     }
                                 });
                             }
@@ -2193,6 +2408,8 @@ module.exports = function(bot)
                 }
             }
         });
+
+
 
 
 
@@ -2288,7 +2505,7 @@ module.exports = function(bot)
 
                 if (dialog.userInput.matchedIntent !== 'News') {
                     matched = false;
-                    callback(matched);
+                    return callback(matched);
                 }
                 else {
 
@@ -2310,7 +2527,10 @@ module.exports = function(bot)
                         }
                         else if (i === COIN.length - 1 && coin === "") {
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                     }
 
@@ -2324,7 +2544,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("get！   response.statusCode=" + response.statusCode);
@@ -2342,13 +2565,16 @@ module.exports = function(bot)
 
                                 var difference = (nowtime - Number(body[0].updateTime)) / (60 * 1000);
 
-                                if (difference > 0) {
+                                if (difference > 30) {
                                     crawling(options);
                                 }
                                 else {
                                     context.session.news = body;
                                     matched = true;
-                                    callback(matched);
+                                    if(callback) {
+                                        callback(matched);
+                                    }
+                                    callback = undefined;
                                 }
                             }
                         }
@@ -2393,7 +2619,10 @@ module.exports = function(bot)
                                         if (err) {
                                             console.log(err);
                                             matched = false;
-                                            callback(matched);
+                                            if(callback) {
+                                                callback(matched);
+                                            }
+                                            callback = undefined;
                                         }
                                         else {
                                             console.log("delete！   response.statusCode=" + response.statusCode);
@@ -2416,7 +2645,10 @@ module.exports = function(bot)
                         if (err) {
                             console.log(err);
                             matched = false;
-                            callback(matched);
+                            if(callback) {
+                                callback(matched);
+                            }
+                            callback = undefined;
                         }
                         else {
                             console.log("new！   response.statusCode=" + response.statusCode);
@@ -2430,14 +2662,20 @@ module.exports = function(bot)
                                     if (err) {
                                         console.log(err);
                                         matched = false;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                     else {
                                         console.log("get！   response.statusCode=" + response.statusCode);
                                         body = JSON.parse(body);
                                         context.session.news = body;
                                         matched = true;
-                                        callback(matched);
+                                        if(callback) {
+                                            callback(matched);
+                                        }
+                                        callback = undefined;
                                     }
                                 });
                             }
