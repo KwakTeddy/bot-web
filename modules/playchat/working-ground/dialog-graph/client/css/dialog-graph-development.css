@@ -1,3 +1,8 @@
+.drag-hover
+{
+    outline: 1px dashed cadetblue;
+}
+
 .dialog-graph-error
 {
     position: absolute;

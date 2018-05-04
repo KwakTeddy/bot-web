@@ -1189,6 +1189,7 @@
             line.className = 'graph-dialog-line';
 
             var parent = undefined;
+            var target = undefined;
 
             var startX = undefined;
             var startY = undefined;
@@ -1251,12 +1252,24 @@
                 var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
                 var top = angular.element('.graph-body').get(0).offsetTop;
 
-                // var target = document.elementFromPoint(e.clientX, e.clientY);
-                //
-                // while(target && !target.dialog)
-                // {
-                //     target = target.parentElement;
-                // }
+                target = document.elementFromPoint(e.clientX, e.clientY);
+
+                while(target && !target.dialog)
+                {
+                    target = target.parentElement;
+                }
+
+                console.log('타겟 : ', target);
+
+                $('.drag-hover').removeClass('drag-hover');
+                if(target && target != item)
+                {
+                    $(target).addClass('drag-hover');
+                }
+                else
+                {
+                    target = undefined;
+                }
                 //
                 // if(target && target.parentElement.parentElement == parent)
                 // {
@@ -1266,51 +1279,51 @@
                 //     line.style.left = target.offsetLeft + 'px';
                 // }
 
-                var min = -1;
-                var minTarget = undefined;
-                var siblings = item.parentElement.parentElement.children;
-                for(var i=0; i<siblings.length; i++)
-                {
-                    if(!siblings[i].children[0])
-                        continue;
+                // var min = -1;
+                // var minTarget = undefined;
+                // var siblings = item.parentElement.parentElement.children;
+                // for(var i=0; i<siblings.length; i++)
+                // {
+                //     if(!siblings[i].children[0])
+                //         continue;
+                //
+                //     var compareTarget = angular.element(siblings[i]).find('.graph-dialog-item').get(0);
+                //
+                //     var rect = compareTarget.getBoundingClientRect();
+                //     var half = rect.top + (rect.bottom - rect.top) / 2;
+                //
+                //     if(!minTarget || min > Math.abs(half - e.clientY))
+                //     {
+                //         min = Math.abs(half - e.clientY);
+                //         minTarget = compareTarget;
+                //     }
+                // }
+                //
+                // minTarget.parentElement.insertBefore(line, minTarget);
 
-                    var compareTarget = angular.element(siblings[i]).find('.graph-dialog-item').get(0);
+                // if(angular.element(minTarget).parent().next().attr('class') == 'plus')
+                // {
+                //     var rect = minTarget.getBoundingClientRect();
+                //     var half = rect.top + (rect.bottom - rect.top) / 2;
+                //
+                //     if(half < e.clientY)
+                //     {
+                //         line.style.top = minTarget.offsetTop + minTarget.offsetHeight + 10 + 'px';
+                //         line.isLast = true;
+                //     }
+                //     else
+                //     {
+                //         line.style.top = minTarget.offsetTop - 10 + 'px';
+                //         line.isLast = false;
+                //     }
+                // }
+                // else
+                // {
+                //     line.style.top = minTarget.offsetTop - 10 + 'px';
+                //     line.isLast = false;
+                // }
 
-                    var rect = compareTarget.getBoundingClientRect();
-                    var half = rect.top + (rect.bottom - rect.top) / 2;
-
-                    if(!minTarget || min > Math.abs(half - e.clientY))
-                    {
-                        min = Math.abs(half - e.clientY);
-                        minTarget = compareTarget;
-                    }
-                }
-
-                minTarget.parentElement.insertBefore(line, minTarget);
-
-                if(angular.element(minTarget).parent().next().attr('class') == 'plus')
-                {
-                    var rect = minTarget.getBoundingClientRect();
-                    var half = rect.top + (rect.bottom - rect.top) / 2;
-
-                    if(half < e.clientY)
-                    {
-                        line.style.top = minTarget.offsetTop + minTarget.offsetHeight + 10 + 'px';
-                        line.isLast = true;
-                    }
-                    else
-                    {
-                        line.style.top = minTarget.offsetTop - 10 + 'px';
-                        line.isLast = false;
-                    }
-                }
-                else
-                {
-                    line.style.top = minTarget.offsetTop - 10 + 'px';
-                    line.isLast = false;
-                }
-
-                line.style.left = minTarget.offsetLeft + 'px';
+                // line.style.left = minTarget.offsetLeft + 'px';
 
                 var scrollTop = graphBody.scrollTop;
                 var scrollLeft = graphBody.scrollLeft;
@@ -1325,62 +1338,86 @@
             {
                 if(dragStart)
                 {
-                    if(clone.parentElement)
+                    if(target)
                     {
-                        var change = false;
-                        if(clone.origin.parentElement != line.parentElement)
+                        console.log(target.dialog);
+                        console.log(item.dialog);
+                        if($(item.parentElement).find(target.parentElement).length == 0)
                         {
-                            var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
+                            var parentDialog = item.parentElement.parentElement.parentElement.children[0].dialog;
+                            var index = parentDialog.children.indexOf(item.dialog);
+                            parentDialog.children.splice(index, 1);
 
-                            //먼저 children에서 index를 빼고
-                            var index = children.indexOf(clone.origin.dialog);
+                            (target.dialog.children = (target.dialog.children || [])).push(item.dialog);
 
-                            var prev = clone.origin.parentElement.previousElementSibling;
-                            if(line.isLast)
-                            {
-                                line.parentElement.parentElement.appendChild(clone.origin.parentElement);
-                            }
-                            else
-                            {
-                                line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
-                            }
-
-                            change = prev != clone.origin.parentElement.previousElementSibling;
-
-                            if(change)
-                            {
-                                var source = children.splice(index, 1);
-
-                                var targetIndex = children.indexOf(line.nextElementSibling.dialog);
-
-                                if(line.isLast)
-                                {
-                                    children.push(source[0]);
-                                }
-                                else
-                                {
-                                    children.splice(targetIndex, 0, source[0]);
-                                }
-                            }
-                        }
-
-                        clone.parentElement.removeChild(clone);
-                        line.parentElement.removeChild(line);
-
-                        if(change)
-                        {
-                            var scrollTop = graphBody.scrollTop;
-                            instance.setDirty(true);
+                            var plus = $(target.parentElement).find('.plus');
+                            $(item.parentElement).insertBefore(plus);
                             instance.refresh();
 
-                            graphBody.scrollTop = scrollTop;
-
-                            if(instance.$scope.compactMode != 'Compact')
-                            {
-                                instance.$scope.compactMode = 'Compact';
-                                instance.$scope.toggleCompactMode();
-                            }
+                            instance.setDirty(true);
                         }
+                        else
+                        {
+                            alert('자식 카드에는 이동할 수 없습니다');
+                        }
+                    }
+
+                    if(clone.parentElement)
+                    {
+                        // var change = false;
+                        // if(clone.origin.parentElement != line.parentElement)
+                        // {
+                        //     var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
+                        //
+                        //     //먼저 children에서 index를 빼고
+                        //     var index = children.indexOf(clone.origin.dialog);
+                        //
+                        //     var prev = clone.origin.parentElement.previousElementSibling;
+                        //     if(line.isLast)
+                        //     {
+                        //         line.parentElement.parentElement.appendChild(clone.origin.parentElement);
+                        //     }
+                        //     else
+                        //     {
+                        //         line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
+                        //     }
+                        //
+                        //     change = prev != clone.origin.parentElement.previousElementSibling;
+                        //
+                        //     if(change)
+                        //     {
+                        //         var source = children.splice(index, 1);
+                        //
+                        //         var targetIndex = children.indexOf(line.nextElementSibling.dialog);
+                        //
+                        //         if(line.isLast)
+                        //         {
+                        //             children.push(source[0]);
+                        //         }
+                        //         else
+                        //         {
+                        //             children.splice(targetIndex, 0, source[0]);
+                        //         }
+                        //     }
+                        // }
+
+                        clone.parentElement.removeChild(clone);
+                        // line.parentElement.removeChild(line);
+                        //
+                        // if(change)
+                        // {
+                        //     var scrollTop = graphBody.scrollTop;
+                        //     instance.setDirty(true);
+                        //     instance.refresh();
+                        //
+                        //     graphBody.scrollTop = scrollTop;
+                        //
+                        //     if(instance.$scope.compactMode != 'Compact')
+                        //     {
+                        //         instance.$scope.compactMode = 'Compact';
+                        //         instance.$scope.toggleCompactMode();
+                        //     }
+                        // }
                     }
 
                     dragStart = false;
