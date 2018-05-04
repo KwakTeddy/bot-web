@@ -572,8 +572,8 @@ module.exports = function(bot)
                 'Price: '+context.session.coinsinfo.price+'\n'+
                 'Volume(24h):  '+context.session.coinsinfo.volume+'\n'+
                 'Change(24h): '+context.session.coinsinfo.change+'\n' +
-                    'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo.graph+')' +'\n' +
-                    'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo.url+')';
+                    'See price graph:\n'+ context.session.coinsinfo.graph+'\n' +
+                    'Specific Information:\n'+ context.session.coinsinfo.url;
                 dialog.output[0].buttons = [
                     // {
                     //     text: 'See price graph',
@@ -614,7 +614,7 @@ module.exports = function(bot)
                 }
                 else {
 
-                    userInput = userInput.replace(/price/g, '').replace(/rate/g, '');
+                    userInput = userInput.replace(/price/g, '').replace(/rate/g, '').replace(/want/g, '');
 
                     modelname = 'bitcoin_coinmarketcap';
                     options = {};
@@ -843,8 +843,8 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n' +
-                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')' +'\n' +
-                            'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo[0].url+')';;
+                            'See price graph:\n' + context.session.coinsinfo[0].graph+'\n' +
+                            'Specific Information:\n' + context.session.coinsinfo[0].url;
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
                             // {
@@ -873,8 +873,8 @@ module.exports = function(bot)
                             'Price: ' + context.session.coinsinfo[0].price + '\n' +
                             'Volume(24h):  ' + context.session.coinsinfo[0].volume + '\n' +
                             'Change(24h): ' + context.session.coinsinfo[0].change + '\n'+
-                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')' +'\n' +
-                            'Specific Information:\n' +'[Click see specific information]('+ context.session.coinsinfo[0].url+')';
+                            'See price graph:\n' + context.session.coinsinfo[0].graph+'\n' +
+                            'Specific Information:\n' + context.session.coinsinfo[0].url;
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'See price graph',
@@ -1136,7 +1136,7 @@ module.exports = function(bot)
                 else {
                     dialog.output[0].text = ' Coin: '+context.session.coinsinfo.name+'\n'+
                         'Shortname: '+context.session.coinsinfo.shortname + '\n' +
-                        'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo.graph+')';
+                        'See price graph:\n'+ context.session.coinsinfo.graph;
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'See price graph',
@@ -1174,7 +1174,7 @@ module.exports = function(bot)
                 }
                 else {
 
-                    userInput = userInput.replace(/chart/g, '').replace(/graph/g, '');
+                    userInput = userInput.replace(/chart/g, '').replace(/graph/g, '').replace(/want/g, '');
 
                     modelname = 'bitcoin_coinmarketcap';
                     options = {};
@@ -1400,7 +1400,7 @@ module.exports = function(bot)
                     if (context.session.coinsinfo[0].graphimage.indexOf('.svg') === -1) {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')';
+                            'See price graph:\n' + context.session.coinsinfo[0].graph;
                         dialog.output[0].image = {url: context.session.coinsinfo[0].graphimage};
                         dialog.output[0].buttons = [
                             // {
@@ -1426,7 +1426,7 @@ module.exports = function(bot)
                     else {
                         dialog.output[0].text = ' Coin: ' + context.session.coinsinfo[0].name + '\n' +
                             'Shortname: ' + context.session.coinsinfo[0].shortname + '\n' +
-                            'See price graph:\n' +'[Click see price graph]('+ context.session.coinsinfo[0].graph+')';
+                            'See price graph:\n' + context.session.coinsinfo[0].graph;
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'See price graph',
@@ -1496,7 +1496,7 @@ module.exports = function(bot)
                         var nowtime = new Date().getTime();
                         difference = (nowtime - Number(body[0].updateTime))/ (60 * 60 * 1000);
 
-                        if(difference >= 3){
+                        if(difference >= 1){
                             ICOcrawling();
                         }
                         else{
@@ -1726,7 +1726,7 @@ module.exports = function(bot)
                             var nowtime = new Date().getTime();
                             difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-                            if (difference >= 3) {
+                            if (difference >= 1) {
                                 ICOcrawling();
                             }
                             else {
@@ -1920,8 +1920,7 @@ module.exports = function(bot)
                 callback(matched);
             }
             else {
-
-                userInput = userInput.toLowerCase();
+                userInput = userInput.toLowerCase().replace(/want/g, '');
 
                 modelname = 'bitcoin_icodrops';
                 options = {};
@@ -1947,7 +1946,7 @@ module.exports = function(bot)
                             var nowtime = new Date().getTime();
                             difference = (nowtime - Number(body[0].updateTime)) / (60 * 60 * 1000);
 
-                            if (difference >= 3) {
+                            if (difference >= 1) {
                                 ICOkind.forEach(ICOcrawling);
                             }
                             else {
@@ -1987,6 +1986,7 @@ module.exports = function(bot)
                                     ICO[i].rate = kind.eq(i).find('div.interest div.nr').text();
                                 }
                             }
+                            ICO[i].kind = ICOkind;
                         }
                         modelname = 'bitcoin_icodrops';
                         options = {};
@@ -2151,7 +2151,7 @@ module.exports = function(bot)
                             'Category: ' + context.session.ICOsinfo[0].category + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
                             'Start Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOsinfo[0].url+')';
+                            'Specific Information:\n' + context.session.ICOsinfo[0].url;
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'Specific Information',
@@ -2177,7 +2177,7 @@ module.exports = function(bot)
                             'Received: ' + context.session.ICOsinfo[0].now + ' / '+ context.session.ICOsinfo[0].now_percent + '\n' +
                             'Goal:  ' + context.session.ICOsinfo[0].goal + '\n' +
                             'End Date: ' + context.session.ICOsinfo[0].date + '\n' +
-                            'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOsinfo[0].url+')';
+                            'Specific Information:\n'+ context.session.ICOsinfo[0].url;
                         dialog.output[0].buttons = [
                             // {
                             //     text: 'Specific Information',
@@ -2265,7 +2265,7 @@ module.exports = function(bot)
                         'Category: ' + context.session.ICOinfo.category + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
                         'Start Date: ' + context.session.ICOinfo.date + '\n' +
-                        'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOinfo.url+')';
+                        'Specific Information:\n'+ context.session.ICOinfo.url;
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'Specific Information',
@@ -2288,7 +2288,7 @@ module.exports = function(bot)
                         'Received: ' + context.session.ICOinfo.now + ' / '+ context.session.ICOinfo.now_percent + '\n' +
                         'Goal:  ' + context.session.ICOinfo.goal + '\n' +
                         'End Date: ' + context.session.ICOinfo.date + '\n'+
-                        'Specific Information:\n' +'[Click see specific information]('+ context.session.ICOinfo.url+')';
+                        'Specific Information:\n'+ context.session.ICOinfo.url;
                     dialog.output[0].buttons = [
                         // {
                         //     text: 'Specific Information',
