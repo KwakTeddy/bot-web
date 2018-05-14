@@ -270,6 +270,7 @@ var Logger = require('./logger.js');
     {
         if(bot.options.isHuman)
         {
+            // 사용자가 봇과 대화하다가 사람이 가로채서 대화하는 경우 여기로 들어옴.
             if(Logger.userSockets[context.user.userKey])
             {
                 // 어떻게 로깅을 하지
@@ -286,6 +287,7 @@ var Logger = require('./logger.js');
         var text = userInput.text;
         if((text == '>' || text == '<') && context.session.isPaging)
         {
+            // 챗봇 결과가 많을 경우 페이징 처리
             return this.paging(transaction, bot, context, userInput, error, callback);
         }
         else
@@ -297,6 +299,7 @@ var Logger = require('./logger.js');
 
         if(context.session.retryDialogInstance && context.session.retryInput)
         {
+            //task에서 재질의 한경우
             this.retryQuestion(transaction, bot, context, userInput, error, callback);
         }
         else
@@ -308,6 +311,7 @@ var Logger = require('./logger.js');
 
             transaction.call(function(done)
             {
+                //대화셋해서 사용자 입력과 비슷한 답변을 찾음
                 QNAManager.find(bot, context, inputRaw, synonyms, nlp, nlpText, function(err, matchedList)
                 {
                     if(matchedList.length > 0)
@@ -325,6 +329,7 @@ var Logger = require('./logger.js');
             {
                 if(!context.session.findOnlyQA)
                 {
+                    // 대화 시나리오에서 history 기반으로 답변을 검색
                     DialogGraphManager.find(bot, context, userInput, function(err, matchedDialog)
                     {
                         if(matchedDialog)
@@ -349,6 +354,7 @@ var Logger = require('./logger.js');
 
                 if(bot.options.hybrid.use)
                 {
+                    //하이브리드 옵션이 사용중이면 대화셋과 시나리오의 답변중 더 정확한걸로 보여줌
                     var qaMatchedRate = transaction.qa && transaction.qa.matchedDialog ? transaction.qa.matchedDialog.matchRate : -1;
                     var dmMatchedRate = transaction.dm && transaction.dm.matchedDialog ? transaction.dm.matchedDialog.matchRate : -1;
 

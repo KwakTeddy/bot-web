@@ -72,6 +72,7 @@ var s3 = new AWS.S3();
 
     Core.prototype.downloadFromS3 = function(botId, callback)
     {
+        // 스케일링됐을 경우 모든 봇 파일들을 동기화 하기 위해 s3에서 다운로드 받음.
         if(process.env.NODE_ENV == 'production')
         {
             if(fs.existsSync(path.resolve('./custom_modules/' + botId)))
@@ -154,6 +155,7 @@ var s3 = new AWS.S3();
                 return error.delegate('bot is not found');
             }
 
+            // 봇 로딩. 이미 메모리에 로딩이 됐으면 그냥 쓰고 아니면 로딩함
             BotManager.load(botId, function(err, bot)
             {
                 if(err)
@@ -168,6 +170,7 @@ var s3 = new AWS.S3();
                     }
 
                     var contextKey = botId + '_' + userKey;
+                    //스케일링됐을때 여러 서버에 request가 가더라도 사용자가 대화한 기록이 남아있을 수 있게끔 레디스를 활용함
                     that.redis.get(contextKey, function(err, context)
                     {
                         if(err)
@@ -211,6 +214,7 @@ var s3 = new AWS.S3();
 
                             if(!bot)
                             {
+                                //만약 봇 로딩이 제대로 안된다면 옛날 버전의 봇임.
                                 return outCallback(context, { type: 'dialog', output: { kind: 'Content', text: SystemMessages['There is an unsupported version of the bot. if you are using previous version, then please move below.'].ko, buttons: [{ text: 'https://old.playchat.ai', url: 'https://old.playchat.ai' }] } });
                             }
                             else if(!bot.options.use)
@@ -220,12 +224,14 @@ var s3 = new AWS.S3();
 
                             if(inputRaw.startsWith(':'))
                             {
+                                // 대화를 처음부터 시작한다든지, 레디스 메모리를 클리어 한다든지 하는 커맨드 실행
                                 Command.execute(that.redis, contextKey, inputRaw, bot, context, error, outCallback);
                                 return;
                             }
 
                             if(context.session.history.length > 10)
                             {
+                                //각 사용자별로 봇과 대화한 히스토리 관리
                                 context.session.history.splice(context.session.history.length-1, 1);
                             }
 
@@ -235,12 +241,14 @@ var s3 = new AWS.S3();
                             }
 
                             var userInput = { text: inputRaw };
+                            //사용자 입력을 분석함
                             InputManager.analysis(bot, context, userInput, error, function()
                             {
                                 var transaction = new Transaction.sync();
 
                                 if(bot.options.useKnowledgeMemory)
                                 {
+                                    //지식그래프로 데모용 코드
                                     transaction.call(function(done)
                                     {
                                         KnowledgeGraph.memory(bot, userInput, error, function(numAffected)
@@ -271,6 +279,7 @@ var s3 = new AWS.S3();
                                 {
                                     transaction.done(function()
                                     {
+                                        //분석된 사용자 입력 기반으로 답을 찾아주는 모듈
                                         AnswerManager.answer(bot, context, userInput, error, function(dialog)
                                         {
                                             delete context.bot;

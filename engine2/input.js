@@ -49,6 +49,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
 
         transaction.done(function()
         {
+            // 언어별로 자연어처리 하는 모듈을 실행함 (오픈소스)
             NLPManager.analysis(bot.language, inputRaw, function(err, lastChar, nlpText, nlp, sentenceInfo, turnTaking, nlpJsonPOS)
             {
                 if(err)
@@ -66,6 +67,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
 
                 console.log('nlp: ', nlp);
 
+                //DB를 조회해서 엔티티 분석
                 EntityManager.analysis(bot, nlp, function(err, entities)
                 {
                     if(err)
@@ -76,6 +78,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
                     console.log('엔티티 : ', entities);
                     userInput.entities = entities;
 
+                    //DB를 조회해서 인텐트 분석
                     IntentManager.analysis(bot, context, inputRaw, nlp, nlpText, function(err, intents)
                     {
                         if(err)
@@ -90,6 +93,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
                         var split = inputRaw.split(' ');
                         async.eachSeries(split, function(word, next)
                         {
+                            //동의어사전 조회
                             SynonymDictionary.find({ botId: bot.id, words: { $in: [word] } }).exec(function(err, synonyms)
                             {
                                 if(err)

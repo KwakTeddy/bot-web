@@ -446,6 +446,7 @@ var ContextManager = require('../context.js');
         var foundDialog = undefined;
         transaction.call(function(done)
         {
+            //공통 대화 시나리오에서 답변 검색
             that.findDialog(bot, context, userInput, intents, entities, bot.commonDialogs, function(result)
             {
                 foundDialog = result;
@@ -457,6 +458,7 @@ var ContextManager = require('../context.js');
         {
             if(context.session.dialogCursor && !foundDialog)
             {
+                //현재 커서가 위치한 카드의 자식 카드들 가져옴
                 var dialogs = that.getNextDialogs(context.session.dialogCursor, bot.commonDialogs);
                 if(!dialogs)
                 {
@@ -465,6 +467,7 @@ var ContextManager = require('../context.js');
 
                 if(dialogs)
                 {
+                    // 자식카드에서 답변 검색
                     that.findDialog(bot, context, userInput, intents, entities, dialogs, function(result)
                     {
                         foundDialog = result;
@@ -484,7 +487,7 @@ var ContextManager = require('../context.js');
 
         if(bot.options.globalSearch && bot.options.globalSearch.use)
         {
-            // 글로벌 서치 했는데 없으면 없는거다.
+            // 글로벌 서치 옵션이 사용중이면 커서 위치 상관없이 전체 카드에서 검색(intent로만)
             transaction.call(function(done)
             {
                 if(!foundDialog)

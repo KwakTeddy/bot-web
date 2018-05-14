@@ -79,6 +79,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
             var inputRawList = [];
 
+            //동의어 사전 쓰면 동의어 적용
             if(bot.options.useSynonymDictionary)
             {
                 for(var i=0; i<split.length; i++)
@@ -101,6 +102,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
             async.eachSeries(inputRawList, function(i, next)
             {
+                //완전히 사용자 입력과 일치하는 대화셋 검색
                 that.findExactly(bot, context, dialogsets, i, next, callback);
             },
             function()

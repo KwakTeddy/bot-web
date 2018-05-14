@@ -10,6 +10,9 @@ var utils = require('./utils/utils.js');
 
 var BotObject = require('./bot/bot.js');
 
+
+// bots 디비에서 봇 데이터를 로드하고 custom_modules/의 봇 폴더에서 봇 로직을 로딩하는 역할.
+
 (function()
 {
     var BotManager = function()
@@ -36,6 +39,7 @@ var BotObject = require('./bot/bot.js');
             else
             {
                 var bot = new BotObject(botId);
+                //DB에서 봇 데이터 가져옴
                 bot.loadBotData(function(err)
                 {
                     if(err)
@@ -50,6 +54,7 @@ var BotObject = require('./bot/bot.js');
                         botDir = path.resolve('./templates/' + bot.template.id + '/bot');
                     }
 
+                    //custom_modules에서 봇 파일 읽어들임
                     that.loadBotFiles(bot, botDir, function()
                     {
                         callback(null, bot);
