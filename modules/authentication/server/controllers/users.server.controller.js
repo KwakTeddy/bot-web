@@ -53,6 +53,8 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
             $or: [mainProviderSearchQuery, additionalProviderSearchQuery]
         };
 
+
+
         //Define email search query
         if(providerUserProfile.email){
             var emailSearchQuery = {};
@@ -60,7 +62,12 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
             searchQuery.$or.push(emailSearchQuery);
         }
 
+        console.log('====search query====');
+        console.log(searchQuery);
+        console.log('====search query end====');
+
         User.findOne(searchQuery, function (err, user) {
+
             if (err) {
                 return done(err);
             } else {

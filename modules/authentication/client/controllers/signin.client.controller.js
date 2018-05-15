@@ -63,7 +63,7 @@
         if(err)
         {
             err = decodeURIComponent(err);
-            if(err.indexOf('email_1 up key'))
+            if(err.indexOf('email_1 up key')>=0)
             {
                 alert('이미 다른 방법으로 로그인이 되었습니다');
             }
