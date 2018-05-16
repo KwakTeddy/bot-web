@@ -18,7 +18,7 @@
             this.iframe.style.width = '280pt';
 
             // explorer only
-            if(navigator.userAgent.indexOf("MSIE")!=-1){
+            if(document.documentMode){
                 this.iframe.style.width = '380pt';
             }
 
