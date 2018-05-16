@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialog Scenario - Menual</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+       <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+      <div id="nav"></div>
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+         <!--본문 내용-->
+        <div id="readme" class="readme blob instapaper_body">
+            <article class="markdown-body entry-content" itemprop="text">
+                <h2>
+                    <a id="user-content-dialog-scenarios" class="anchor" aria-hidden="true" href="#dialog-scenarios">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Dialog Scenarios
+                </h2>
+                <p>Dialog scenarios are scenario graphs in the form of trees, and are tools that assist the user to create and edit a chatbot. It is divided into a scenario tab, and a function workspace tab. To use a dialog scenario, click on “Develop” -&gt; “Dialog Scenarios” on the navigation bar.</p>
+                <h2>
+                    <a id="user-content-development" class="anchor" aria-hidden="true" href="#development">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Development
+                </h2>
+                <h2>
+                    <a id="user-content-cards" class="anchor" aria-hidden="true" href="#cards">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Cards
+                </h2>
+                <p>In the dialog scenario tab, you can see several boxes that are connected. Each one of these boxes are called “Cards”. Each card consists of the card name, user input, and chatbot responses. Double click the card and the card editting tab will appear on the right side.</p>
+                <iframe src="https://www.youtube.com/embed/SFJa0TJYG4s" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+                <p><a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/25.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/25.png" title="클릭" style="max-width:100%;"></a></p>
+
+
+                <ol>
+                    <li>
+                        <p>Card Name<br>
+                            A card name is the name of the card and is used as the identifier and thus can’t be  duplicated or overlapped. Card names are used in the “Dialog flow adjustment” function.
+                        </p>
+                    </li>
+                    <li>
+                        <p>User Input<br>
+                            User input is the part where the input that implements the entire card(or the predicted user input) is specified. For example, if you have entered “Hello” in the user input card, the moment a chatbot user types in “Hello”, the card is executed.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Chatbot Response<br>
+                            Chatbot response is the part where you design the response the chatbot will output once the card is executed. For example, if you have entered “Hello” in the chatbot response card, the chatbot will output “Hello” once the card is executed.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Parent Cards, Descendant Cards, and Sister Cards<br>
+                            “Parent Cards” and “Descendant Cards” used to describe the relation between two cards that are directly connected. A card can have a single parent card and multiple descendant cards. For example, all the cards that are connected to the right side of the starter card are descendant cards which all have the starter card as a parent card. Cards that share the same parent cards are called “Sister Cards”. The basic relations between each card follow the family tree.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Depth<br>
+                            “Depth” refers to the generation of the cards. For example, in the case of the starter card, the generation(or depth) is 0, and the depth of it’s descendant cards are 1. The depth value is added by 1 for each generation that goes down.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Cursor<br>
+                            “Cursor” is a term referring to the card that is currently awaiting the user’s input (or the card that was executed most recently). Once the starter card is executed and is awaiting the user’s input, the cursor is set on the starter card.
+                        </p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/26.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/26.png" title="클릭" style="max-width:100%;"></a>
+
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>The cursor will move once there is an input from the user.</p>
+                    </li>
+                    <li>
+                        <p>The movement of the cursor can also be referred to as the flow of the dialog.</p>
+                    </li>
+                    <li>
+                        <p>The flow of the dialog(movement of the cursor) basically moves from parent cards to the descendant cards. However, if the dialog flow adjustment function is utilized, it may move to a different card of a random position.</p>
+                    </li>
+                </ul>
+                <ol start="7">
+                    <li>Searching, Matching, and Executing</li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>“Searching” refers to the act of identifying if the chatbot user’s input concurs with a card’s “user input information”. For example, if a chatbot user types in “Hello”, identifying the card that possesses “Hello” as it’s “user input information” is the act of searching.</p>
+                    </li>
+                    <li>
+                        <p>There are orders of sequences in a search. The search starts from the upper descendant cards to the lower descendant cards. In other words, the chatbot judges if the user input matches the first descendant card(the highest card) first, and if unsuccessful, repeats the act on the second descendant card. Because of this, if there are cards that share the same “user input information”, the search will automatically match the user input with the highest card that possesses that info.</p>
+                    </li>
+                    <li>
+                        <p>Common cards are searched before general cards. Regardless of the position of the cursor, the search will start with the common cards and then the general cards.</p>
+                    </li>
+                    <li>
+                        <p>A “Match” is the discovery of the card with the exact “user input information” as the actual user input. For example, when a chatbot user types in “Hello”, and the program finds the card that has “Hello” as it’s “user input info”, the user input is matched with the very card.</p>
+                    </li>
+                    <li>
+                        <p>An “Execution” is when the chatbot successfully outputs a response when the user input is matched with a certain card. For example, when a chatbot user types in “Hello” and it is matched with a card that has the same “user input info”, and the chatbot outputs the concerning card’s response, the card has been successfully executed.</p>
+                    </li>
+                    <li>
+                        <p>Once a card is executed, the cursor moves to the concerning card and returns to waiting for the next user input.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/27.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/27.png" title="클릭" style="max-width:100%;"></a>
+                    </li>
+                </ul>
+                <ol start="8">
+                    <li>Dialog Flow<br>
+                        ”Dialog Flow” refers to the movement of the cursor from “Chatbot User’s Input” -&gt; “Search” -&gt; “Execute”.
+                    </li>
+                </ol>
+                <p>“Chatbot User’s Input” -&gt; “Search(match sequence)” -&gt; “Execute(chatbot response)” -&gt; “Chatbot User’s Input” -&gt; …</p>
+                <ul>
+                    <li>
+                        <p>Chatbot User’s Input</p>
+                    </li>
+                    <li>
+                        <p>Search - The program searchs for the card that matches with the user input.</p>
+                    </li>
+                    <li>
+                        <p>Execute - Once a card is executed after being matched with the chatbot user’s input, the cursor moves to it’s position. After the chatbot outputs it’s response, it awaits for the user input. (If the chatbot user’s input matches with none of the cards, the chatbot responds “Unable to understand” and the cursor moves to the starter card. This is because there are no descendant card that matches with the user’s input.)</p>
+                    </li>
+                </ul>
+                <ol start="9">
+                    <li>Common Cards<br>
+                        Common cards are the cards that are searched before all other cards. You can identify the common cards by clicking on the “Common Cards” button in the dialog scenario tab. Regardless of the starter card or the position of the cursor, common cards are the first to be searched for a match with the user’s input.
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Common cards are the cards that are executed when the starter card user begins the dialog with the chatbot, and the cards that are executed when the user wishes to return to the beginning of the dialog scenario.</p>
+                    </li>
+                    <li>
+                        <p>Common cards are executed when the user types in “Go Back”, in order to return to the previous dialog card. These common cards are created to utilize the “Return to previous dialog” function of the dialog flow adjustment functions.</p>
+                    </li>
+                    <li>
+                        <p>Common cards are executed when the user types in “Upper”, in order to return to the parent card of the card that the cursor is currently positioned at. These common cards are created to utilize the “Go to upper card” function of the dialog flow adjustment functions.</p>
+                    </li>
+                    <li>
+                        <p>The “No Reply” common card is the card that is executed when there are no matches from a search. The default chatbot response for this card is “Unable to understand”.</p>
+                    </li>
+                </ul>
+                <ol start="10">
+                    <li>Menu<br>
+                        There is a menu available to modify cards on the upper right hand of each card.
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Create a descendant card - Creates a descendant card that has the relevant card as it’s parent card. The newly created descendant card is added as the lowest descendant card. You can also create descendant cards by clicking on the “Add card” button on the right side of each card.</p>
+                    </li>
+                    <li>
+                        <p>Move Up/Move Down - Change the order between sister cards.</p>
+                    </li>
+                    <li>
+                        <p>Cut card - Delete the relevant card and make a copy of it in the memory of the computer.</p>
+                    </li>
+                    <li>
+                        <p>Copy card - Copy the relevant card and make a copy of it in the memory of the computer.</p>
+                    </li>
+                    <li>
+                        <p>Paste card - Create by pasting the card copied in the memory as the descendant card of the relevant card.</p>
+                    </li>
+                    <li>
+                        <p>Duplicate card - Create a duplicate of the relevant card as it’s sister card.</p>
+                    </li>
+                    <li>
+                        <p>Delete card - Delete the relevant card.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/28.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/28.png" style="max-width:100%;"></a>
+
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-user-input" class="anchor" aria-hidden="true" href="#user-input">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    User Input
+                </h2>
+                <ol>
+                    <li>
+                        <p>Organization of the User Input</p>
+                    </li>
+                    <li>
+                        <p>The basic mode of all user input are keywords. It is possible to diversely organize user input by associating keywords, intents, entities, “RegExr”s, types, and “If Conditional”s.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/29.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/29.png" title="클릭" style="max-width:100%;"></a>
+
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Keyword</p>
+                    </li>
+                    <li>
+                        <p>The basic mode of user input are keywords.</p>
+                    </li>
+                    <li>
+                        <p>The “Keyword Method” is when the card that is matched with the chatbot user’s input is executed. For example, when a keyword such as “Summer outfit cotton” is set as the keyword info of the card, the chatbot user must input a sentence that uses every single keywork such as “Can you find me a summer outfit made of cotton?” for the card to be executed.  When the keywords are entered into the card info seperately such as “Summer”, “Outfit”, “Cotton”, the chatbot user can type in a sentence that only uses one of those keywords for the card to be executed.</p>
+                    </li>
+                    <li>
+                        <p>The “Keyword Method” is appropriate for simple chatbots such as “Button Chatbots’, by is not so for dialog chatbots or advanced chatbots. For example, when a chatbot user inputs “Find me a summer outfit made of cotton”, the keyword method is appropriate, but for different sentences with the same meaning such as “Find me clothes for when it’s hot”, the relevant card will not be executed. In order to process various sentences that share the same  purpose, you must use “Intents” rather than keywords.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/30.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/30.png" title="클릭" style="max-width:100%;"></a>
+
+                    </li>
+                    <li>
+                        <p>”Keywords” for “Button Chatbots”! “Intents” for “Dialog Chatbots”!</p>
+                    </li>
+                    <li>
+                        <p>Intent(#Intent)</p>
+                    </li>
+                    <li>
+                        <p>“Intent” means intention.</p>
+                    </li>
+                    <li>
+                        <p>“Find outfits” and “Search outfits” share the same meaning for intent. In this case, you can process both sentences with one intent. Thus, if you set the user input info of a card using intents, it is possible to process various praises and sentences that share the same intent.</p>
+                    </li>
+                    <li>
+                        <p>Create an intent from “Management” on the navigation bar -&gt; “Intent”. An “Entry Guide” will appear once you press the ‘#’key while focusing on the user input space of a card.</p>
+                    </li>
+                    <li>
+                        <p>Remember the fact that a sentence and an intent are not in a one-on-one relation with each other. In other words, a single sentence can be part of multiple intents. For example, in the case of “I want a jumper”, it can be part of a search intent, or a purchase intent, depending on the context. Much like this, the intent a sentence belongs in may change depending on the context of the dialog. The chatbot developer must keep this fact in mind to use intents consistently.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/31.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/31.png" title="클릭" style="max-width:100%;"></a>
+
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/n9hqJY9h4ck" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                    <li>
+                        <p>Entity(@Entity)</p>
+                    </li>
+                    <li>
+                        <p>“Entity” means entity.</p>
+                    </li>
+                    <li>
+                        <p>If you want to recognize “t-shirts, pants, skirts, jumpers, etc.” as a single entity(clothing), you can use an “Entity”. The items of clothing will be bundled as an entity named ‘Clothing’. For another example, you may bundle “horses, cats, tigers, etc.” into a different entity named ‘Animals’. In other words, it is possible to bundle separate entities(species) into a bigger, conceptual entity(animals).</p>
+                    </li>
+                    <li>
+                        <p>Create an entity from “Management” on the navigation bar -&gt; “Entity”. An “Entry Guide” will appear once you press the ‘@’key while focusing on the user input space of a card.</p>
+                    </li>
+                    <li>
+                        <p>Remember the fact that a noun and an entity are not in a one-on-one relation with each other. In other words, a single noun can be part of multiple entities. For example, in the case of “Horse”, it can be part of a “Animals” intent, or a “Chinese Zodiac” intent, depending on the context. Also, the noun “Cat” itself could be an entity and types of cats such as “Siamese Cat” or “Bangol Cat” could be part of the entity. Because of this, you must decide what kind of entity you will use to bundle words, depending on the usage of the word.</p>
+                    </li>
+                    <li>
+                        <p>If, in the user input space of the card, the @clothing entity and the #search intent are input with the “AND” condition, the card will only be executed if the chatbot user’s input contain the objects from the @clothing entity and sentences from the #search intent. As a result, it is possible to process various praises such as “find me a t-shirt”, “find me a skirt”, or “search for a skirt” in single card.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/32.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/32.png" title="클릭" style="max-width:100%;"></a>
+
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/R6A41_mg5SE" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                    <li>
+                        <p>Regular Expression(/RegExr/)</p>
+                    </li>
+                    <li>
+                        <p>A ”Regular Expression” is a form used to express “strings in certain patterns”.</p>
+                    </li>
+                    <li>
+                        <p>What if you want the chatbot user to input their phone number? If you set the user input info of the card to “010-1234-1234”, this will only match certain phone numbers. However, we can’t enter every single phone number in the user input info. Thus, we need a way to input “a certain pattern of numbers”, which can be solved by using a regular expression.</p>
+                    </li>
+                    <li>
+                        <p>Once you save a regular expression that indicates “a certain pattern of strings” such as 010-1234-1234 in the card’s user input info, the dialog card is only executed if the chatbot user types in the pattern. In other words, the card’s user input info is “/^\d{3}-\d{3,4}-\d{4}$/“, so for the card to be executed, the chatbot user must input a  phone number form.</p>
+                    </li>
+                    <li>
+                        <p>Enter ‘/‘ in the card’s user input space in order to enter a regular expression. Those who aren’t familiar with regular expressions, please look into <a href="https://www.playchat.ai/moneybrain-ai/PlayChat-Docs/blob/master/regexr.com" rel="nofollow">regexr.com</a>.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/33.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/33.png" title="클릭" style="max-width:100%;"></a>
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/cYKwWw_GgXo" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+
+                    <li>
+                        <p>Type($Type)</p>
+                    </li>
+                    <li>
+                        <p>A ”Type” is a form used to express “strings in certain patterns”.</p>
+                    </li>
+                    <li>
+                        <p>Types provide the same functions as regular expressions, which read strings in certain patterns. Enter ‘$’ in the user input space of a card to see various types that are already created. Among these types, select “mobile” to receive only the input that are in the form of a phone number. Like this, types basically function so that the program only receives input that are in the form of a certain pattern.(In other words, it works the same way as a regular expression.)</p>
+                    </li>
+                    <li>
+                        <p>However, it is possible to accomplish more things with types because unlike regular expressions, types can be manipulated within the function workspace window. For example, you can’t tell whether the  verifying number sent to your mobile phone matches the number the user inputs with a regular expression. A regular expression may be able to read the verifying number that is input by the user, but it can’t tell if it matches the number that is sent to the mobile phone. Thus, you have to approach cases like these with coding, in order to figure out the match. This is when you can utilize types.</p>
+
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/34.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/34.png" title="클릭" style="max-width:100%;"></a><br>
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/CajmWALyiMY" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                    <li>
+                        <p>“If” Conditional(IF)</p>
+                    </li>
+                    <li>
+                        <p>An “If Conditional” is a function that executes a card with a variable other than the user input info that is already set within the card.</p>
+                    </li>
+                    <li>
+                        <p>There are some cases where a card needs to be executed regardless of the input of the chatbot user. For example, when the program must receive a user’s name from the user input, you can’t save or process the data through a certain variable or pattern. This is because there isn’t a stable value or a certain pattern in names(Most Korean names can be catagorized in a pattern so it is possible to use a regular expression or a type). Thus, the card must be executed regardless of the user’s input. This is when you can utilize “if” conditionals.</p>
+                    </li>
+                    <li>
+                        <p>To enter an “if” conditional in the input space of a card, you must enter “if()” in the advanced mode and enter the conditional inside the colon.</p>
+                    </li>
+                    <li>
+                        <p>The conditional must be written on a code level. The result value of a conditional is either “true” or “false”. If the user input info of the card is set as “if(true)”, the card will always be matched and executed.</p>
+                    </li>
+                    <li>
+                        <p>Conditionals may be utilized in a simple method such as the above, but it is possible to use the variables  in the function workspace. For example, if you want to differentiate the matchability between male and female users, you can use the form of “if(gender == ‘male’). Of course, variables such as “gender” and “male” must be  defined in the function workspace beforehand.</p>
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/35.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/35.png" title="클릭" style="max-width:100%;"></a>
+
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/_Ki4C3h3Mmc" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                </ul>
+                <ol start="2">
+                    <li>
+                        <p>Add/Delete User Input Information<br>
+                            Click on ‘+’ to add more user input info, and click on the bin button to delete user input info.
+
+                            <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/36.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/36.png" title="클릭" style="max-width:100%;"></a>
+                        </p>
+                    </li>
+                    <li>
+                        <p>Plural User Input Information(“Or” conditional)<br>
+                            In the user input info of the starter card, there are three default user input info(start,  begin, beginning). If the user’s input is plural, and if any one of the three words are entered, the starter card will be executed. For example, if a user types in any one of ‘start’, ‘begin’, ‘beginning’, the starter card will be executed(you can confirm this in the test dialog window on the right screen).
+                        </p>
+                    </li>
+                    <li>
+                        <p>“AND” Conditional of the User Input Information Space<br>
+                            If plural values are entered into a single user input info of a card, the chatbot user must type in each and every value in order for the card to be executed. For example, if the values “start”, “begin” and “beginning” are entered in the same user input info, the chatbot user must type in “start begin beginning” for the card to be executed.
+                        </p>
+                    </li>
+                    <li>
+                        <p>NLU(Natural Language Understanding)<br>
+                            When a new value is entered into the user input info of a card, a praise that says “nlu” appears under the window in small letters. nlu stands for “Natural Language Understanding”, and is the result of the program translating the value of the user input info into a language the chatbot can understand(natural language processing).
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    <a id="user-content-execute-functions-before-response" class="anchor" aria-hidden="true" href="#execute-functions-before-response">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Execute Functions before Response
+                </h2>
+                <iframe src="https://www.youtube.com/embed/AqqgghG9kWE" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                <p>“Execute Functions before Response” are functions that process various other functions that are needed before the chatbot outputs a response once the card is executed.</p>
+                <a target="_blank" href="https://github.com/moneybrain-ai/PlayChat-Docs/blob/master/start_image/37.png"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/37.png" alt="image" style="max-width:100%;"></a><br>
+
+                <p>Execute functions are what carries out the various functions needed when a chatbot sends you a text, turns on music, manipulates the household lights, communicates with other machinery or accesses the information of the database. Thus, execute functions require javascript coding, which carries out work that can be done on the coding level.</p>
+                <div class="highlight highlight-source-js">
+         <pre><span class="pl-smi">bot</span>.<span class="pl-en">setTask</span>(<span class="pl-s"><span class="pl-pds">"</span>myTask<span class="pl-pds">"</span></span>,
+{
+    <span class="pl-en">action</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>)
+      {
+       <span class="pl-c"><span class="pl-c">//</span>기능 구현 영역</span>
+          <span class="pl-en">callback</span>();
+      }
+});</pre>
+                </div>
+                <p>The javascript code above shows the basic structure of what makes up an execute function.</p>
+                <ul>
+                    <li>
+                        <p>Enter in the basic form of “bot.setTask(arg1, arg2);” in the chatbot through the setTask function.</p>
+                    </li>
+                    <li>
+                        <p>Enter the name of the function (“myTask”) into the first parameter(arg1) in string format.</p>
+                    </li>
+                    <li>
+                        <p>Enter the Object into the second parameter(arg2) in JSON format. The basic structure looks like the following. {</p>
+                        <div class="highlight highlight-source-js">
+               <pre> {
+ 	<span class="pl-en">action</span> <span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>){}
+ }</pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p>Implement functions in the function implementation space via javascript coding. Thus, it is possible to use Node.js library.</p>
+                    </li>
+                </ul>
+                <ol>
+                    <li>
+                        <p>Action Functions</p>
+                    </li>
+                    <li>
+                        <p>Action functions receive three mediation variables: dialog, context, and callback.</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Dialog</p>
+                    </li>
+                    <li>
+                        <p>Dialog stores the information regarding the execution of the relevant card(card info, chatbot user’s input, chatbot response) in JSON format. In other words, the dialog parameter(JSON object) holds four keys(card, userInput, output, data).</p>
+                    </li>
+                    <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                    </div>
+
+                    <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> {
+ 				    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>카드 이름<span class="pl-pds">"</span></span>,
+ 				    <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>default95<span class="pl-pds">"</span></span>,
+ 				    <span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				        {
+ 				            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 				                <span class="pl-s"><span class="pl-pds">"</span>raw<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				                <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>
+ 				            }
+ 				        }
+ 				    ],
+ 				    <span class="pl-s"><span class="pl-pds">"</span>task<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 				        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>defaultTask<span class="pl-pds">"</span></span>
+ 				    },
+ 				    <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				        {
+ 				            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 				            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 				            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				                {
+ 				                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 				                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 				                }
+ 				            ]
+ 				        }
+ 				    ]
+ 			   },
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                    </div>
+                    <li>
+                        <p>“card” holds the information of the card.</p>
+                    </li>
+                    <li>
+                        <p>“name” is the name of the card.</p>
+                    </li>
+                    <li>
+                        <p>“id” is the identifier of the card.</p>
+                    </li>
+                    <li>
+                        <p>“input” are the arrays of values that are saved in the card’s user input information.</p>
+                    </li>
+                    <li>
+                        <p>“task” are the execute functions(object) that are registered on the card.</p>
+                    </li>
+                    <li>
+                        <p>“output” are the arrays of values that are saved in the card’s chatbot output information.</p>
+                    </li>
+
+
+                    <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> {
+ 				        <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				        <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 				            {
+ 				                <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				                <span class="pl-s"><span class="pl-pds">"</span>pos<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Number<span class="pl-pds">"</span></span>,
+ 				                <span class="pl-s"><span class="pl-pds">"</span>length<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">1</span>
+ 				            }
+ 				        ],
+ 				        <span class="pl-s"><span class="pl-pds">"</span>nlpText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 				        <span class="pl-s"><span class="pl-pds">"</span>types<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 				        <span class="pl-s"><span class="pl-pds">"</span>entities<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 				        <span class="pl-s"><span class="pl-pds">"</span>intents<span class="pl-pds">"</span></span><span class="pl-k">:</span> []
+ 				   },
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                    </div>
+                    <li>
+                        <p>“userInput” holds the values and information of the chatbot user’s input.</p>
+                    </li>
+                    <li>
+                        <p>“text” refers to the input of the chatbot user itself.</p>
+                    </li>
+                    <li>
+                        <p>“nlp” is the array of results that have been natural language translated from the chatbot user’s input.</p>
+                    </li>
+                    <li>
+                        <p>“nlpText”  is the string  of values that have been textualized from the results that have been natural language translated from the chatbot user’s input.</p>
+                    </li>
+                    <li>
+                        <p>“types” hold the types that been matched with the chatbot user’s input.</p>
+                    </li>
+                    <li>
+                        <p>“entities” hold the entities in regard to the chatbot user’s input.</p>
+                    </li>
+                    <li>
+                        <p>“intents” hold the intents in regard to the chatbot user’s input.</p>
+                    </li>
+
+                    <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> [
+ 			        {
+ 			            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 			            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 			            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 			                {
+ 			                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 			                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 			                }
+ 			            ]
+ 			        }
+ 			   ],
+ 	    data<span class="pl-k">:</span> <span class="pl-k">...</span>
+     }</pre>
+                    </div>
+                    <li>
+                        <p>“output” holds the chatbot responses about to be output.</p>
+                    </li>
+                    <li>
+                        <p>Therefore, if you edit “output”, it is possible to edit chatbot responses on the code level.</p>
+                    </li>
+                    <li>
+                        <p>“kind” refers to the kind of  response from the chatbot(Content and Action). Content refers to the basic, normalized chatbot responses(text, image, button), whereas Action refers to the responses from chatbots that utilize dialog flow adjustment.</p>
+                    </li>
+                    <li>
+                        <p>“text” refers to the text response of the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“button” refers to the button in the chatbot response.</p>
+                    </li>
+
+                    <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 	    card <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    userInput <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    output<span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 	    data<span class="pl-k">:</span> {}
+     }</pre>
+                    </div>
+                    <li>
+                        <p>“data” is an empty object. It is a “Key” that the chatbot developer may use in order to save and print data.</p>
+                    </li>
+                    <li>
+                        <p>A point of caution is that the value saved in dialog.data['key'] = ‘value'; will automatically disappear when the chatbot is updated. Therefore, information that can’t afford to be erased in an update must be saved in context.session['key'] = ‘value’;. Additionally, even if the data is stored in context.session, once the server is rebooted or if interaction is ceased for a while(if a session is expired), the data will disappear. Therefore, data that can’t afford to be erased should be  saved in the database in order to be linked.</p>
+                    </li>
+                    <li>
+                        <p>The following is the overall look of a dialog parameter.</p>
+                    </li>
+                    <div class="highlight highlight-source-js">
+               <pre>     dialog <span class="pl-k">=</span> {
+ 			    <span class="pl-s"><span class="pl-pds">"</span>card<span class="pl-pds">"</span></span> <span class="pl-k">:</span> {
+ 						    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>카드 이름<span class="pl-pds">"</span></span>,
+ 						    <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>default95<span class="pl-pds">"</span></span>,
+ 						    <span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								        {
+ 								            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 								                <span class="pl-s"><span class="pl-pds">"</span>raw<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 								                <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>
+ 								            }
+ 								        }
+ 								    ],
+ 						    <span class="pl-s"><span class="pl-pds">"</span>task<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 								        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>defaultTask<span class="pl-pds">"</span></span>
+ 								    },
+ 						    <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								        {
+ 								            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 								            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 								            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								                {
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 								                }
+ 								            ]
+ 								        }
+ 								     ]
+ 					     },
+ 			    <span class="pl-s"><span class="pl-pds">"</span>userInput<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+ 						        <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 						        <span class="pl-s"><span class="pl-pds">"</span>nlp<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								            {
+ 								                <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 								                <span class="pl-s"><span class="pl-pds">"</span>pos<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Number<span class="pl-pds">"</span></span>,
+ 								                <span class="pl-s"><span class="pl-pds">"</span>length<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">1</span>
+ 								            }
+ 								       ],
+ 						        <span class="pl-s"><span class="pl-pds">"</span>nlpText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+ 						        <span class="pl-s"><span class="pl-pds">"</span>types<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 						        <span class="pl-s"><span class="pl-pds">"</span>entities<span class="pl-pds">"</span></span><span class="pl-k">:</span> {},
+ 						        <span class="pl-s"><span class="pl-pds">"</span>intents<span class="pl-pds">"</span></span><span class="pl-k">:</span> []
+ 						     },
+ 		        <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 					        {
+ 					            <span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Content<span class="pl-pds">"</span></span>,
+ 					            <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 텍스트입니다.<span class="pl-pds">"</span></span>,
+ 					            <span class="pl-s"><span class="pl-pds">"</span>buttons<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+ 								                {
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+ 								                    <span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>챗봇 답변 버튼입니다.<span class="pl-pds">"</span></span>
+ 								                }
+ 								           ]
+ 					        }
+ 					     ],
+ 			    <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}
+ 		    }</pre>
+                    </div>
+
+
+
+                    <li>
+                        <p>Context</p>
+                    </li>
+                    <li>
+                        <p>“Context” holds not only the information related to the execution of a card, but the contextual information regarding the interaction between the chatbot and it’s user in JSON format.<br>
+                            A “Context” parameter(JSON object) holds three keys(bot, user, session).
+                        </p>
+                    </li>
+                    <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    user <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    session<span class="pl-k">:</span> <span class="pl-k">...</span>
+ 			  }</pre>
+                    </div>
+
+                    <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span>	{
+ 					        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        created<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>2018-02-20T08:34:41.854Z<span class="pl-pds">'</span></span>,
+ 					        language<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ko<span class="pl-pds">'</span></span>,
+ 					        options<span class="pl-k">:</span> {
+ 								          use<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+ 								          kakao<span class="pl-k">:</span> {},
+ 								          globalSearch<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          hybrid<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          dialogsetMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          intentMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          useQuibble<span class="pl-k">:</span> <span class="pl-c1">false</span>
+ 							         },
+ 					       dialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       commonDialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       tasks<span class="pl-k">:</span> { defaultTask<span class="pl-k">:</span> [<span class="pl-c1">Object</span>]},
+ 					       types<span class="pl-k">:</span> { email<span class="pl-k">:</span> [<span class="pl-c1">Object</span>] },
+ 		     			   intents<span class="pl-k">:</span> [],
+ 		     			   entities<span class="pl-k">:</span> [],
+ 					       entityContents<span class="pl-k">:</span> [],
+ 					       dialogsets<span class="pl-k">:</span> []
+ 				        },
+ 			    user <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    session<span class="pl-k">:</span> <span class="pl-k">...</span>
+ 			 }</pre>
+                    </div>
+                    <li>
+                        <p>“bot” holds the information about the relevant chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“name” is the relevant chatbot’s name.</p>
+                    </li>
+                    <li>
+                        <p>“description” is the description of the relevant chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“created” is the date of creation of the relevant chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“language” is the language the relevant chatbot uses.</p>
+                    </li>
+                    <li>
+                        <p>“options” is the basic settings of the relevant chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“dialogs” holds the relevant chatbot’s dialog scenario in the format of a JSON object.</p>
+                    </li>
+                    <li>
+                        <p>“commonDialogs” hold the relevant chatbot’s common dialog scenario in the format of a JSON object.</p>
+                    </li>
+                    <li>
+                        <p>“tasks” hold the execute functions(object) that are registered in the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“types” hold every types that are registered in the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“intents” hold every intent that is registered in the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“entities” hold every entity that is registered in the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“entityContents” hold every entity contents that are registered in the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>“dialogsets” hold every dialog sets that are registered in the chatbot.</p>
+                    </li>
+
+                    <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    user <span class="pl-k">:</span> {
+ 					      userKey<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>5a4d91842b7a1e41079c0d9a<span class="pl-pds">'</span></span>,
+ 					      channel<span class="pl-k">:</span> { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>socket<span class="pl-pds">'</span></span> }
+ 					   },
+ 			    session<span class="pl-k">:</span> <span class="pl-k">...</span>
+ 		      }</pre>
+                    </div>
+                    <li>
+                        <p>“user” holds information on the relevant chatbot’s user.</p>
+                    </li>
+                    <li>
+                        <p>“userKey” is the identifier value of the relevant chatbot’s user.</p>
+                    </li>
+                    <li>
+                        <p>“channel” holds the information on the channel the chatbot user is using to communicate with the chatbot.</p>
+                    </li>
+
+                    <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    user <span class="pl-k">:</span> <span class="pl-k">...</span> ,
+ 			    session<span class="pl-k">:</span>  {
+ 						     history<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 						     dialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>default95<span class="pl-pds">'</span></span>,
+ 						     previousDialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>startDialog<span class="pl-pds">'</span></span>
+ 						  }
+ 		      }</pre>
+                    </div>
+                    <li>
+                        <p>“session” holds the data regarding the interaction between the chatbot and it’s user, and is where the data that will remain for a certain duration of time(a session) is saved. The duration of a session is 5 minutes, and if there are no interaction between a chatbot and it’s user for 5 minutes, the session will be expired.</p>
+                    </li>
+                    <li>
+                        <p>“history” holds the list of cards that were executed in order.</p>
+                    </li>
+                    <li>
+                        <p>“dialogCursor” is the identifier value of the card that the cursor is currently positioned at.</p>
+                    </li>
+                    <li>
+                        <p>“previousDialogCursor” is the identifier value of the card that the cursor was previously positioned at.</p>
+                    </li>
+                    <li>
+                        <p>To save data that will kept for a certain duration of time, context.session[‘key'] = value; is used.</p>
+                    </li>
+                    <li>
+                        <p>The following is the overall look of the context parameter.</p>
+                    </li>
+                    <div class="highlight highlight-source-js">
+               <pre>     context <span class="pl-k">=</span> {
+ 			    bot <span class="pl-k">:</span>	{
+ 					        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test_sample<span class="pl-pds">'</span></span>,
+ 					        created<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>2018-02-20T08:34:41.854Z<span class="pl-pds">'</span></span>,
+ 					        language<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ko<span class="pl-pds">'</span></span>,
+ 					        options<span class="pl-k">:</span> {
+ 								          use<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+ 								          kakao<span class="pl-k">:</span> {},
+ 								          globalSearch<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          hybrid<span class="pl-k">:</span> [<span class="pl-c1">Object</span>],
+ 								          dialogsetMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          intentMinMatchRate<span class="pl-k">:</span> <span class="pl-c1">0.5</span>,
+ 								          useQuibble<span class="pl-k">:</span> <span class="pl-c1">false</span>
+ 							         },
+ 					       dialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       commonDialogs<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 					       tasks<span class="pl-k">:</span> { defaultTask<span class="pl-k">:</span> [<span class="pl-c1">Object</span>]},
+ 					       types<span class="pl-k">:</span> { email<span class="pl-k">:</span> [<span class="pl-c1">Object</span>] },
+ 		     			   intents<span class="pl-k">:</span> [],
+ 		     			   entities<span class="pl-k">:</span> [],
+ 					       entityContents<span class="pl-k">:</span> [],
+ 					       dialogsets<span class="pl-k">:</span> []
+ 				        },
+ 			    user <span class="pl-k">:</span> {
+ 					      userKey<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>5a4d91842b7a1e41079c0d9a<span class="pl-pds">'</span></span>,
+ 					      channel<span class="pl-k">:</span> { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>socket<span class="pl-pds">'</span></span> }
+ 					   },
+ 			    session<span class="pl-k">:</span> {
+ 						     history<span class="pl-k">:</span> [ [<span class="pl-c1">Object</span>], [<span class="pl-c1">Object</span>] ],
+ 						     dialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>default95<span class="pl-pds">'</span></span>,
+ 						     previousDialogCursor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>startDialog<span class="pl-pds">'</span></span>
+ 						  }
+ 			 }</pre>
+                    </div>
+
+                    <li>
+                        <p>Callback</p>
+                    </li>
+                    <li>
+                        <p>Execute functions are implemented by Async method, and therefore must summon a callback once the implementation is over. A callback is a function that declares the implementation is over and returns the results. Therefore, carry out a callback() where a function implementation is over.</p>
+                    </li>
+                    <li>
+                        <p>callback(arg1, arg2)</p>
+                    </li>
+                    <li>
+                        <p>a callback() function can receive two parameters. The first parameter(arg1) is the value which decides on the re-inquiry status. It receives either “true” or “false”. The second parameter(arg2) receives  a sentence of re-inquiry, if the first parameter is “true”. For example, if you type in callback(true, ‘Please repeat.’);, once the execution function is executed the cursor will not move and the chatbot will output “please repeat”. For further examples look into the dialog scenario guide.</p>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>
+                        <p>Plural Action Functions</p>
+                    </li>
+                    <li>
+                        <p>If you want to register a function that utilizes both the preexisting functions and newly implemented additional functions, it is possible to set up plural functions in an action function.</p>
+                    </li>
+                </ol>
+                <div class="highlight highlight-source-js">
+               <pre><span class="pl-k">var</span> preTask <span class="pl-k">=</span>
+{
+	<span class="pl-en">action</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>)
+	{
+		<span class="pl-smi">dialog</span>.<span class="pl-smi">output</span>[<span class="pl-c1">0</span>].<span class="pl-c1">text</span> <span class="pl-k">+=</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-cce">\n</span>하하하2<span class="pl-pds">'</span></span>;
+		<span class="pl-en">callback</span>();
+  	}
+};
+
+<span class="pl-k">var</span> <span class="pl-en">postAction</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">dialog</span>, <span class="pl-smi">context</span>, <span class="pl-smi">callback</span>)
+{
+	<span class="pl-en">callback</span>();
+}
+
+<span class="pl-smi">bot</span>.<span class="pl-en">setTask</span>(<span class="pl-s"><span class="pl-pds">'</span>newTask<span class="pl-pds">'</span></span>,
+{
+	action<span class="pl-k">:</span> [
+           		preTask,	<span class="pl-c"><span class="pl-c">//</span>답변 전 실행 함수 형태</span>
+           		<span class="pl-s"><span class="pl-pds">'</span>myTask<span class="pl-pds">'</span></span>,   <span class="pl-c"><span class="pl-c">//</span>기존에 등록된 답변 전 실행 함수. 즉, bot.setTask()된 함수.</span>
+           		postAction	<span class="pl-c"><span class="pl-c">//</span>action 함수 형태</span>
+           	]
+});</pre>
+                </div>
+
+                <ul>
+                    <li>
+                        <p>In the case of “newTask”, it receives arrays through action functions. The elements of the array are Task objects(preTask), pre-registered functions(‘myTask’) or action functions(postAction).</p>
+                    </li>
+                    <li>
+                        <p>In a case where an action function is designed as an array, each function will be executed following the orders in the array. In other words, the action function of preTask will be executed, then the action function of ‘myTask’, and finally postAction will be executed.</p>
+                    </li>
+                </ul>
+
+
+                <h2>
+                    <a id="user-content-example-1---saving-a-name" class="anchor" aria-hidden="true" href="#example-1---saving-a-name">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Example 1 - Saving a Name
+                </h2>
+                <p>Create an execute function(task) named “saveCustomerName”.</p>
+                <pre><code>bot.setTask('saveCustomerName', {
+    action: function (dialog,context,callback) {
+
+	    context.session.customerName = dialog.userInput.text;
+
+	    callback();
+	}
+});
+</code></pre>
+                <ul>
+                    <li>
+                        <p>The javascript code is visible in the function implementation space. Inside context.session.customerName, save the value of dialog.userInput.text . Save the chatbot user’s input(dialog.userInput.text) in a temporary session(context.session.customerName).</p>
+                    </li>
+                    <li>
+                        <p>For the relevant value(context.session.customerName) to be output in a chatbot response, enter in the form of “+VariableName+”. For example, if you enter “+context.session.customerName+”, the chatbot will output the relevant value as it’s response.</p>
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-example-2---requesting-external-servers-crawling" class="anchor" aria-hidden="true" href="#example-2---requesting-external-servers-crawling">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Example 2 - Requesting External Servers (Crawling)
+                </h2>
+                <p>For the chatbot to fulfill various functions, it must utilize information from external servers. In order the use info from external servers, create a function with the name of “crawling”. Then, in order to request external servers, use “request.js” and “cheerio(Node.js Module)”.</p>
+                <p>Add the following code into the function implementation workspace of the “crawling” execute function.</p>
+                <pre><code>var request = require('request');
+var cheerio = require('cheerio');
+var url = 'http://finance.naver.com/item/main.nhn?code=035720';
+
+request(url, function (err, response, body)
+		     {
+			      if(err)
+			      {
+				      console.log(err);
+			      }
+	              var $ = cheerio.load(body);
+	              var selector = '#content &gt; div.section.invest_trend &gt; div:nth-child(2) &gt; table &gt; tbody &gt; tr:nth-child(2) &gt; td:nth-child(2) &gt; em';
+	              var result = $(selector).text();
+
+	              context.session.crawlingResult = result;
+	              callback();
+			 }
+);
+</code></pre>
+
+                <ul>
+                    <li>Enter “+context.session.crawlingResult+” into the chatbot response information for the chatbot to output the relevant value as it’s response.</li>
+                </ul>
+                <h2>
+                    <a id="user-content-example-3---requesting-external-servers-2-api" class="anchor" aria-hidden="true" href="#example-3---requesting-external-servers-2-api">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Example 3 - Requesting External Servers 2 (API)
+                </h2>
+                <p>Create an execute function named “naverMovieSearch”. Then enter the following code in the function implementation workspace.</p>
+
+                <div class="highlight highlight-source-js">
+         <pre>   <span class="pl-k">var</span> client_id <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>tXRaAWut2_2R5OkcLpLQ<span class="pl-pds">'</span></span>;
+   <span class="pl-k">var</span> client_secret <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>TaU4yqU4fI<span class="pl-pds">'</span></span>;
+   <span class="pl-k">var</span> api_url <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>https://openapi.naver.com/v1/search/movie.json<span class="pl-pds">'</span></span>;
+   <span class="pl-k">var</span> options <span class="pl-k">=</span> {
+       method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>GET<span class="pl-pds">"</span></span>,
+       url<span class="pl-k">:</span> api_url,
+       headers<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>X-Naver-Client-Id<span class="pl-pds">'</span></span><span class="pl-k">:</span>client_id, <span class="pl-s"><span class="pl-pds">'</span>X-Naver-Client-Secret<span class="pl-pds">'</span></span><span class="pl-k">:</span> client_secret},
+       qs<span class="pl-k">:</span>{ query<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>사건<span class="pl-pds">'</span></span>}
+   };
+   <span class="pl-k">var</span> request <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>request<span class="pl-pds">'</span></span>);
+   <span class="pl-en">request</span>(options, <span class="pl-k">function</span> (<span class="pl-smi">err</span>, <span class="pl-smi">response</span>, <span class="pl-smi">body</span>)
+				    {
+			           <span class="pl-k">if</span>(err)
+			           {
+			               <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
+			           }
+			     	   body <span class="pl-k">=</span> <span class="pl-c1">JSON</span>.<span class="pl-c1">parse</span>(body);
+
+			           <span class="pl-smi">context</span>.<span class="pl-smi">session</span>.<span class="pl-smi">movieData</span> <span class="pl-k">=</span> body;
+			           <span class="pl-en">callback</span>();
+			        }
+   );</pre>
+                </div>
+                <ul>
+                    <li>
+                        <p>This function is used to search movies on Naver.</p>
+                    </li>
+                    <li>
+                        <p>Access <a href="https://developers.naver.xn--com-568n/" rel="nofollow">https://developers.naver.com에</a> to register application and receive the values for “client_id” and “client_secret”. Then add “Search” in the API settings. After that, go to Documents -&gt; Service API -&gt; Search -&gt; Movies to look up the information regarding API  summoning.</p>
+                    </li>
+                    <li>
+                        <p>The format of information received from Naver is in JSON. More than 10 films are held in arrays in the received data. In order to express array formats in a chatbot response, use grammar such as ###. Detailed explanations will be made in the “Chatbot Response” part of the document.</p>
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-chatbot-response" class="anchor" aria-hidden="true" href="#chatbot-response">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Chatbot Response
+                </h2>
+                <ol>
+                    <li>Formation of a chatbot response<br>
+                        In the default chatbot response of a starter card, along with the chatbot’s greetings is a self-introduction as well.
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>If you want the chatbot to respond in the form of text, enter in text, for a more lively brand image, use images.</p>
+                    </li>
+                    <li>
+                        <p>In order to simplify the users’ input process, you may add “buttons” on cards. In the case of buttons, it could be a button for a simple answer, but by adding URLs, it is possible to create “Link Buttons” as well.</p>
+                    </li>
+                    <li>
+                        <p>“Dialog Flow Adjustment” is a function that has to do with the settings of the cursor’s movement. The cursor ordinarily moves from the parent card to it’s descendant card. You can use “Dialog Flow Adjustment” to move the cursor to a random card.</p>
+
+                        <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/38.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/38.png" title="클릭" style="max-width:100%;"></a>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>
+                        <p>Add/Delete Chatbot Response Information<br>
+                            Click on ‘+’ to add chatbot response information, and click on the bin button to delete them.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Multiple Chatbot Responses(OR Conditional)<br>
+                            If there are multiple chatbot responses that are set up, any one of them will be randomly chosen as the response.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Accessing Variables<br>
+                            Chatbot responses may stay unchanging, but in a lot of cases, must output different responses depending on who the client is. For example, even if the user has already typed in their name, there may be a need for the chatbot to mention the user’s name in a response. Therefore, you have saved the user’s input data from the username dialog card in a variable(context.session.customerName). If you want to use a saved variable in a chatbot response, enter “+VariableName+”.
+                        </p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>If the object variable is an object, you can access the value of the relevant key using a “.key” form, much like javascript.</p>
+                    </li>
+                    <li>
+                        <p>Cf.) +context.session.movieDataObject.date+</p>
+                    </li>
+                    <li>
+                        <p>If the array variable is an array, using grammar such as ### can get you access to the array like a “for” conditional. For example, “context.session.movieDataArray” is an array. In this case, use the form of “#movieDataArray#” to get you access to each item in the array. From behind that point it is possible to access the value of each item through the key. When an access of an item is over, add ‘#’ to confirm it is over. Conclusively, it is used in the form of “#array#each item#.</p>
+                    </li>
+                </ul>
+                <ol start="5">
+                    <li>
+                        <p>IF Conditional (Conditional Chatbot Response)<br>
+                            We looked at the usage of the “if” conditional at the user input document. The same function can be utilized in chatbot responses. Instead of randomly choosing one response to output, when multiple responses are entered and an “if” conditional is used, the response that corresponds to the conditional is executed. This structure is related to distribution channels. In order to distribute various channels such as Kakao, Facebook, and Naver TalkTalk from a single chatbot, the chatbot must be programmed to fit the form that matches each channel. For example,
+                        </p>
+                    </li>
+                    <li>
+                        <p>IF(context.user.channel.name == ‘kakao’) /<br>
+                            IF(context.user.channel.name == ‘facebook’) /<br>
+                            IF(context.user.channel.name == ‘navertalk’)<br>
+                            like the above, the chatbot response must differ depending on the distribution channel.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Dialog Flow Adjustment<br>
+                            The cursor movement in a dialog scenario generally moves from the parent card to it’s descendant card. “Dialog Flow Adjustment” is the function to move the cursor to any certain card.
+                            <iframe src="https://www.youtube.com/embed/mKfRLj03PfU?autoplay=1" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                            <a href="https://raw.githubusercontent.com/moneybrain-ai/PlayChat-Docs/master/start_image/40.png" rel="nofollow"><img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/menual/scenario/40.png" title="클릭" style="max-width:100%;"></a><br>
+                        </p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Dialog movement</p>
+                    </li>
+                    <li>
+                        <p>Move the cursor to a certain dialog card. After the movement, the execute function of the card will be executed and the text output from the previous card will be printed. The cursor will be positioned at the dialog card it moved to.</p>
+                    </li>
+                    <li>
+                        <p>Re-Inquiry</p>
+                    </li>
+                    <li>
+                        <p>“Re-Inquiry” is a function where the cursor does not move in order to re-execute the chatbot’s response, because there a match from any card with the user’s input is non-existent. In this case, the chatbot will output “Unable to understand”. But if the lowest descendant card’s user input info is set up as “if(true)” and the chatbot response info as “Re-Inquiry”, the cursor will stay at the card of the unanswered question, in the case of a non-existent match. It will then print the relevant card’s chatbot response text info. Like this, the function of “Re-inquiry” is used together with “if(true” in the user input space of the lowest descendant card.</p>
+                    </li>
+                    <li>
+                        <p>Move to Previous Dialog</p>
+                    </li>
+                    <li>
+                        <p>“Move to previous dialog” is when the cursor moves back to the card that was previously executed, in the case the user types in “previous” in a dialog. This function is implemented with common dialog scenario function. A point of caution: If a card that already uses the “move to previous dialog” function is the previously executed card, this order will cause the cursor to move up two generations.</p>
+                    </li>
+                    <li>
+                        <p>Dialog Movement and Search</p>
+                    </li>
+                    <li>
+                        <p>“Dialog movement and search” is the function of searching the relevant card’s descendant cards, after the cursor’s movement to the said card. If there is a user input match amongst the descendant cards, it will be executed and if there isn’t a match, the response will be “Unable to understand”.</p>
+                    </li>
+                    <li>
+                        <p>Dialog Movement to Return to / Returning</p>
+                    </li>
+                    <li>
+                        <p>” Dialog movement to return to” works the same way as dialog movement. However, if the return function is executed after the cursor is moved elsewhere, the cursor will move back to the parent card of the card where the “Dialog movement to return to” was executed.</p>
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-keyboard-shortcuts" class="anchor" aria-hidden="true" href="#keyboard-shortcuts">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Keyboard Shortcuts
+                </h2>
+                <ol>
+                    <li>Dialog Scenario</li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>←  ↓  ↑  → : Move card focus</p>
+                    </li>
+                    <li>
+                        <p>Ctrl + ↑  ↓ : Move card up/down</p>
+                    </li>
+                    <li>
+                        <p>Enter : Open card edit window</p>
+                    </li>
+                    <li>
+                        <p>Esc : Close card edit window</p>
+                    </li>
+                    <li>
+                        <p>Insert : Add descendant card</p>
+                    </li>
+                    <li>
+                        <p>Del : Delete card</p>
+                    </li>
+                    <li>
+                        <p>Space : Fold/open descendant card</p>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>Card Editing Window</li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Tab : Input Switch (User input info, execute functions, chatbot response info, etc.)</p>
+                    </li>
+                    <li>
+                        <p>Ctrl+Enter : Save card edit window</p>
+                    </li>
+                </ul>
+                <ol start="3">
+                    <li>Function Workspace</li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Ctrl + F : Search</p>
+                    </li>
+                    <li>
+                        <p>Ctrl + G : Search constantly with the following</p>
+                    </li>
+                    <li>
+                        <p>Ctrl + S : Save</p>
+                    </li>
+                </ul>
+                <ol start="4">
+                    <li>Common to All</li>
+                </ol>
+                <ul>
+                    <li>? : keyboard shortcut help</li>
+                </ul>
+                <h2>
+                    <a id="user-content-management" class="anchor" aria-hidden="true" href="#management">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Management
+                </h2>
+                <ol>
+                    <li>
+                        <p>Dialog Scenario</p>
+                    </li>
+                    <li>
+                        <p>Files regarding dialog scenarios are basically one of two types( *.graph.js  , *.js ).</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>(*.graph.js) file - This is the file that saves the dialog scenario graph in a JSON object form. It is possible to make multiple dialog scenario graph files on the dialog scenario management menu. If there are multiple dialog scenario graph files, each dialog scenario will be bundled as a descendant card of the starter card, for which you can set up priorities among the scenarios.</p>
+                    </li>
+                    <li>
+                        <p>(*.js) file - This is the file that sets up execute functions. It is possible to make multiple execute function files on the dialog scenario management menu.</p>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>
+                        <p>Entity</p>
+                    </li>
+                    <li>
+                        <p>This is the menu where you can create, edit or delete an entity.</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Click “upload” to register an entity with an excel file.</p>
+                    </li>
+                    <li>
+                        <p>Be sure to check the format of the excel file, if registered as an entity. The format can be downloaded by clicking on the “upload” button.</p>
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/dhmZhVLknRI" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                </ul>
+                <ol start="3">
+                    <li>
+                        <p>Intent</p>
+                    </li>
+                    <li>
+                        <p>This is the menu where you can create, edit or delete an intent.</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Click “upload” to register an intent with an excel file.</p>
+                    </li>
+                    <li>
+                        <p>Be sure to check the format of the excel file, if registered as an intent. The format can be downloaded by clicking on the “upload” button.</p>
+                    </li>
+                    <iframe src="https://www.youtube.com/embed/XkiQprvTjVM" frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                </ul>
+                <ol start="4">
+                    <li>
+                        <p>Task</p>
+                    </li>
+                    <li>
+                        <p>This is the menu where you can create, edit or delete a task.</p>
+                    </li>
+                </ol>
+            </article>
+        </div>    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation.html #menual-en", function () {
+
+        });
+
+        $("#topbar").load("topbar.html #en", function () {
+            $('#menual').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

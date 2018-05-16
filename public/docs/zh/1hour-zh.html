@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1 Hour</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+        <div id="nav">
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+        <div id="readme" class="readme blob instapaper_body">
+            <article class="markdown-body entry-content" itemprop="text">
+                <h2>
+                    <a id="user-content-what-kind-of-chatbot-do-you-want" class="anchor" aria-hidden="true" href="#what-kind-of-chatbot-do-you-want">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    What kind of Chatbot do you want?
+                </h2>
+                <img class="vertical-img" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/gnb-scenario.png" title="클릭" style="float: right">
+
+                <p>PlayChat chatbots make dialog with the user’s question and the chatbot’s respond as it’s two main message units. PlayChat chatbots can be made using two different methods.</p>
+                <h2>
+                    <a id="user-content-chatbots-made-using-dialog-sets" class="anchor" aria-hidden="true" href="#chatbots-made-using-dialog-sets">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Chatbots made using dialog sets
+                </h2>
+                <p>This method is used by teaching the chatbot blocks of dialog which are made by consolidating the question and answer into one. It it mostly used to create FAQ Chatbots.</p>
+                <a href="https://www.youtube.com/watch?v=nFIgNJeDH6s" target="_blank" rel="nofollow">
+                    Watch example Video
+                </a>
+
+                <h2>
+                    <a id="user-content-chatbots-made-using-dialog-scenarios" class="anchor" aria-hidden="true" href="#chatbots-made-using-dialog-scenarios">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Chatbots made using dialog scenarios
+                </h2>
+                <p>This method is used by using scenario graphs that are provided by PlayChat to create the chatbot. If a dialog scenario is used, it works beyond simple one-on-one Q&amp;As and can even work dialogs that require specific procedures and functions(C.F. Crawling, Phone num. certification, interlocking external servers, etc.).</p>
+                <a href="https://www.youtube.com/watch?v=44Q4L3NZg58" target="_blank" rel="nofollow">
+                    Watch example Video
+                </a>
+
+                <h2>
+                    <a id="user-content-tip" class="anchor" aria-hidden="true" href="#tip">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Tip
+                </h2>
+                <p>It is possible to create a chatbot by using both dialog blocks and scenarios, this way a smarter/practical chatbot can me created. It is best if you decide on the method determining on the purpose of your chatbot.</p>
+                <h2>
+                    <a id="user-content-setting-up-chatbots-using-dialog-scenarios" class="anchor" aria-hidden="true" href="#setting-up-chatbots-using-dialog-scenarios">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Setting up chatbots using dialog scenarios
+                </h2>
+                <iframe src="https://www.youtube.com/embed/44Q4L3NZg58?autoplay=1" autoplay frameborder="0" allowfullscreen style="width: 80%;height: 400px"></iframe>
+
+                <p>This document presents the procedures of creating a “BitcoinBot” using dialog scenarios. A BitcoinBot is a chatbot used to search information regarding bitcoins.</p>
+                <p>In order to set up a chatbot using dialog scenarios, a basic unit of dialog(cards) consisting of user inputs and chatbot responses must be created. Dialog scenarios consist of numerous sets of dialog cards, and it is possible to teach a chatbot multiple dialog scenarios.</p>
+                <h2>
+                    <a id="user-content-creating-a-chatbot" class="anchor" aria-hidden="true" href="#creating-a-chatbot">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Creating a Chatbot
+                </h2>
+                <p>Create a chatbot following these procedures.</p>
+                <ol>
+                    <li>
+                        <p>Sign up if you do not have a PlayChat account, if you do, please log into your account.</p>
+                    </li>
+                    <li>
+                        <p>Choose “Create new bot” -&gt; “Empty Bot” on the chatbot managing page</p>
+                    </li>
+                    <li>
+                        <p>Fill in the blank spaces.</p>
+                    </li>
+                    <li>
+                        <p>Click on “Save”. Once the chatbot is created, it will show up as a card format. Click on the created chatbot.</p>
+                    </li>
+                </ol>
+                <h2>
+                    <a id="user-content-creating-a-dialog-card" class="anchor" aria-hidden="true" href="#creating-a-dialog-card">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Creating a Dialog Card
+                </h2>
+                <p>Dialog scenarios consist of dialog cards made from user inputs and chatbot outputs. If advanced functions are utilized, it is possible to add execution functions before responses.</p>
+                <p>Create a dialog card following these procedures.</p>
+                <p><a href="https://youtu.be/44QP-8ooqto" rel="nofollow">Watch the example video</a></p>
+                <ol>
+                    <li>
+                        <p>Choose “Dialog Scenarios” in the development menu on the navigation bar located on the left of the screen.</p>
+                    </li>
+                    <li>
+                        <p>Choose the “Add” button on the right side of the starter card and name it “Bitcoin Starter”. The name of the card is what the card is called, also known as the identifier.</p>
+                    </li>
+                    <li>
+                        <p>Enter the questions the users may ask in the “User input” space. Since this is a BitcoinBot, enter questions about bitcoins in the user input space. The more questions you add, the more user inputs the chatbot will be able to understand. Enter the following example questions in the user input space. In order to enter multiple user inputs, click on the “+” button next to the user input space.</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Bitcoin</p>
+                    </li>
+                    <li>
+                        <p>Coin</p>
+                    </li>
+                </ul>
+                <ol start="4">
+                    <li>
+                        <p>Enter the correlating responses in the “Chatbot response” space. Enter a question asking what kind of bitcoin is being searched as the response. Enter the following example responses in the chatbot output space. In order to enter multiple chatbot outputs, click on the “+” button next to the chatbot output space.</p>
+                    </li>
+                    <li></li>
+                </ol>
+                <ul>
+                    <li>What kind of bitcoin are you searching for?</li>
+                </ul>
+                <ol start="5">
+                    <li>
+                        <p>If multiple responses are entered, the program will randomly select a response as the output.</p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/bitcoin-start.png" alt="bitcoin-start">
+
+                    <li>
+                        <p>Click on the “Save” button.</p>
+                    </li>
+                    <li>
+                        <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/bitcoin-start-test.png" alt="bitcoin-start-test">
+
+                        <p>Go for a test drive. Enter the question that was added through the test dialog window on the right. You’ll find the chatbot responding using the ready-made output.</p>
+                    </li>
+                </ol>
+                <h2>
+                    <a id="user-content-tip-1" class="anchor" aria-hidden="true" href="#tip-1">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Tip
+                </h2>
+                <p>Under the test dialog window, a dialog analysis window will pop up. It provides a simple analysis on the basic units of cards consisting of the user’s input and the chatbot’s output.</p>
+                <ul>
+                    <li>
+                        <p>User input analysis - Goes through a natural language processing of the user’s inputs and shows the results.</p>
+                    </li>
+                    <li>
+                        <p>Intent analysis - Shows the intent that was matched with the user’s input</p>
+                    </li>
+                    <li>
+                        <p>Entity analysis - Shows the entity that was ousted from the user’s input</p>
+                    </li>
+                    <li>
+                        <p>Chatbot output analysis - Shows which data was matched with the user’s input to present the chatbot’s response.</p>
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-create-a-bitcoin-search-scenario" class="anchor" aria-hidden="true" href="#create-a-bitcoin-search-scenario">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Create a Bitcoin Search Scenario
+                </h2>
+                <p>A dialog scenario is  a set of different card units. Much like the addition of the “Bitcoin Starter” card on the initial starter card, it is possible to add descendent  cards or sister cards. As numerous cards are connected, they form a tree-shaped graph, and the final outcome is called a Dialog scenario.</p>
+                <h2>
+                    <a id="user-content-tip-2" class="anchor" aria-hidden="true" href="#tip-2">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Tip
+                </h2>
+                <p>Why is a dialog scenario needed? Take a look into the procedure of a BitcoinBot gathering info from the users of 1) the type of bitcoin they are about to search 2) the info they are trying to find out and 3)the cases of them executing the search</p>
+                <ol>
+                    <li>
+                        <p>The info regarding the type of bitcoin the user wants to search for is input.</p>
+                    </li>
+                    <li>
+                        <p>The information the user wants to know about is input.</p>
+                    </li>
+                    <li>
+                        <p>The program executes the search.</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>If there is no problem with the results of the search, the results are output.</p>
+                    </li>
+                    <li>
+                        <p>If there are no results of the search, the program either returns to procedure 1, or procedure 2.</p>
+                    </li>
+                </ul>
+                <p>For the chatbot to properly execute it’s cause, the above procedures are made in order. A single card unit may be used to process the entire procedure, but this may not be an ideal case for beginners as it may not be intuitive. This is because, in principle, a single card unit is best used to process a single function. In the case of a “Search Scenario”, three different functions are needed, due to the three procedures above, so it is ideal to connect and utilize three different card units to create a Bitcoin Search Scenario. In other words, when a specific procedure has to be made in order to fulfill a cause, creating descendant cards is recommended.</p>
+                <p>Create a bitcoin search scenario following these procedures.</p>
+                <ol>
+                    <li>Create a “Bitcoin Type” card as the descendant card of the “Bitcoin Starter” card.</li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Card Name - Enter type of Bitcoin</p>
+                    </li>
+                    <li>
+                        <p>User Input - if(true)</p>
+                    </li>
+                    <li>
+                        <p>Chatbot Output - Enter the information you want to know regarding bitcoin.</p>
+                    </li>
+                </ul>
+                <ol start="2">
+                    <li>
+                        <p>If you enter “if()” in the user input space, the input mode alters. Enter “if(true)”. In the case of “if()”, it means the card will be executed no matter what the user input is. It includes some Java Script coding. If you enter “True” in between the colons, the select case will always be executed.</p>
+                    </li>
+                    <li>
+                        <p>Create a “Search Information” card as the descendant card of the “Bitcoin Type” card.</p>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Card Name - Enter information to search</p>
+                    </li>
+                    <li>
+                        <p>User Input - if(true)</p>
+                    </li>
+                    <li>
+                        <p>Chatbot Output - Would you like to go on with the search?</p>
+                    </li>
+                </ul>
+                <ol start="4">
+                    <li>Create an “Execute Search” card as the descendant card of the “Search Information” card.</li>
+                </ol>
+                <ul>
+                    <li>
+                        <p>Card Name - Execute search</p>
+                    </li>
+                    <li>
+                        <p>User Input - Execute</p>
+                    </li>
+                    <li>
+                        <p>Chatbot Output - The search results for bitcoins are as the following.</p>
+                    </li>
+                </ul>
+                <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/bitcoin-scenario.png" title="클릭" style="max-width:100%;">
+
+                <ol start="5">
+                    <li>Go for a test drive.</li>
+                </ol>
+                <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/bitcoin-scenario-test.png" title="클릭" style="max-width:100%;">
+
+                <ul>
+                    <li>
+                        <p>“Bitcoin Starter” card - &gt; Once the user enters “Bitcoin Start”, the chatbot will respond by asking the user to input the type of bitcoin the user wants to search</p>
+                    </li>
+                    <li>
+                        <p>“Bitcoin Type” card -&gt; The chatbot will respond by asking the user to input the information the user wants to search.</p>
+                    </li>
+                    <li>
+                        <p>“Search Information” card -&gt; The chatbot will resbond by asking the user if they want to make the search</p>
+                    </li>
+                    <li>
+                        <p>“Execute Search” card -&gt; Once the user confirms the execution, the chatbot will output the results of the search.</p>
+                    </li>
+                </ul>
+                <p>A basic dialog scenario used to search info on bitcoins has been made. Now, take a look through the procedure of teaching the chatbot to request website info from the user after it has been given a faulty input.</p>
+                <h2>
+                    <a id="user-content-round-off" class="anchor" aria-hidden="true" href="#round-off">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Round Off
+                </h2>
+                <p>So far, we’ve seen the procedures used to set up chatbots using dialog scenarios. Chatbots using dialog scenarios connect different card units in order to function for a specific cause. However, for a chatbot to actually search for bitcoins, you must add “Execution functions pre-output”. In the next document(applying “Execution functions pre-output”), you’ll learn to fulfill this part of setting up the chatbot.</p>
+                <h2>
+                    <a id="user-content-applying-execution-functions-pre-output" class="anchor" aria-hidden="true" href="#applying-execution-functions-pre-output">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Applying “Execution functions pre-output”
+                </h2>
+                <p>Execution functions pre-output is used when the chatbot requires external resources(Bitcoin prices, Weather info, Box Office info, etc.), or when a certain level of coding is needed to manipulate the chatbot. For example, for a BitcoinBot to execute a search, it must save the data of the bitcoin type and the info the user inputs. It also needs a function to execute the search. This document is focused on implementing the function.</p>
+                <h2>
+                    <a id="user-content-saving-the-variables" class="anchor" aria-hidden="true" href="#saving-the-variables">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Saving the Variables
+                </h2>
+                <p>To execute the search, the chatbot must save the data of the bitcoin type and the search info from the user input. In order to save the user input data, execution functions are used.</p>
+                <p>Create execution functions pre-output following these procedures.</p>
+                <ol>
+                    <li>
+                        <p>Double click the “Bitcoin Type” card and open the card editting window.</p>
+                    </li>
+                    <li>
+                        <p>Enter “saveBitcoinName” in the execution functions window and click “Make New Function”.</p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/task-saveBitcoinName.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>
+                        <p>On the newly created function workspace window, add</p>
+                    </li>
+                    <li>
+                        <p>context.session.bitcoinName = dialog.userInput.text;  in the action window of the “saveBitcoinName” workspace. In other words, enter the code.</p>
+                        <pre lang="javscript"><code>bot.setTask('saveBitcoinName',
+{
+    action: function (dialog, context, callback)
+    {
+        context.session.bitcoinName = dialog.userInput.text;
+        callback();
+    }
+});
+                    </code></pre>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/task-saveBitcoinName-code.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>
+                        <p>Click on “Save”.</p>
+                    </li>
+                </ol>
+                <p>Now the  input from chatbot users(dialog.userInput.text) is saved under context.session.bitcoinName  of the function workspace. If you want to utilize the saved input, you can use it through here(context.session.bitcoinName).</p>
+                <p>The same goes for making an execution function for the next card unit.</p>
+                <ol>
+                    <li>
+                        <p>Double click the “Search Information” card and open the card editting window.</p>
+                    </li>
+                    <li>
+                        <p>Enter “saveInfo” in the execution functions window and click “Make New Function”.</p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/task-saveInfo.png" title="클릭" style="max-width:100%;"></p>
+                    <li>
+                        <p>On the newly created function workspace window, add</p>
+                    </li>
+                    <li>
+                        <p>context.session.info = dialog.userInput.text;  in the action window of the “saveInfo” workspace.</p>
+                        <pre lang="javscript"><code>bot.setTask('saveInfo',
+{
+	action: function (dialog, context, callback)
+	{
+		context.session.info = dialog.userInput.text;
+		callback();
+	}
+});
+</code></pre>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/task-saveInfo-code.png" title="클릭" style="max-width:100%;"></p>
+                    <li>
+                        <p>Click on “Save”.</p>
+                    </li>
+                </ol>
+                <p>Now the  input from chatbot users(dialog.userInput.text) is saved under context.session.info  of the function workspace. If you want to utilize the saved input, you can use it through here (context.session.info).</p>
+                <h2>
+                    <a id="user-content-using-the-saved-variables" class="anchor" aria-hidden="true" href="#using-the-saved-variables">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Using the saved variables
+                </h2>
+                <p>We’ll be using the saved variables stored in context.session.bitcoinName  and context.session.info  to create responses from the chatbot. Edit the “Search Information” card following these procedures.</p>
+                <ol>
+                    <li>
+                        <p>Double click the “Search Information” card and open the card editting window.</p>
+                    </li>
+                    <li>
+                        <p>Enter the following in the chatbot response space.<br>
+                            Bitcoin Type : +context.session.bitcoinName+<br>
+                            Search Information : +context.session.info+<br>
+                            Would you like to go on with the search?<br>
+                            Texts like “+Variable+” are written in specific language in order to reach the saved variables in the function workspace. Enter the variable you would like to reach in between “++”.
+                        </p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/var-use.png" title="클릭" style="max-width:100%;">
+
+                    <li>
+                        <p>Click on “Save”.</p>
+                    </li>
+                    <li>
+                        <p>Go for a test drive.</p>
+                    </li>
+                </ol>
+                <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/var-use-test.png" title="클릭" style="max-width:100%;">
+                <ul>
+                    <li>
+                        <p>Enter “Bitcoin” to start up the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>Enter the type of the bitcoin you want to search.</p>
+                    </li>
+                    <li>
+                        <p>Enter the information regarding the bitcoin you want to search.</p>
+                    </li>
+                    <li>
+                        <p>The chatbot will correctly output the type and the information of the  corresponding bitcoin that the user input.</p>
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-executing-the-search" class="anchor" aria-hidden="true" href="#executing-the-search">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Executing the Search
+                </h2>
+                <p>Find out how to create an execute function that executes the search using the saved data from the user input.</p>
+                <p>Edit the “Execute Search” card following these procedures.</p>
+                <ol>
+                    <li>
+                        <p>Double click the “Execute Search” card and open the card editting window.</p>
+                    </li>
+                    <li>
+                        <p>Enter “searchBitcoin” in the execution functions window and click “Make New Function”.</p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/task-searchBitcoin.png" title="클릭" style="max-width:100%;"></p>
+                    <li>
+                        <p>On the newly created function workspace window, add () in the action window of the “searchBitcoin” workspace.</p>
+                        <pre lang="javscript"><code>bot.setTask('searchBitcoin',
+{
+	action: function (dialog, context, callback)
+			{
+			    var request = require('request');
+
+			    var url = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-";
+			    url += context.session.bitcoinName
+			    request(url, function (err, response, body)
+						  {
+						      if(err)
+						      {
+								context.session.result = err.message;
+					          }
+						      else
+					          {
+                                body = JSON.parse(body);
+								if(!body.success)
+								{
+									context.session.result = body.message;
+								}
+								else
+								{
+                                    var info = context.session.info;
+                                    info = info.charAt(0).toUpperCase() + info.slice(1);
+
+                                    context.session.result = body.result[0][info];
+                                }
+						      }
+					          callback();
+						  }
+			    );
+			}
+});
+</code></pre>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/task-searchBitcoin-code.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>
+                        <p>Enter “The result of the search are as the following” in the chatbot response space.</p>
+                    </li>
+                    <li>
+                        <p>Results : +context.session.result+ BTC</p>
+                    </li>
+                    <img src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/card-edit-result2.png" title="클릭" style="max-width:100%;"></p>
+
+                    <li>
+                        <p>Click on “Save”.</p>
+                    </li>
+                    <li>
+                        <p>Go for a test drive.</p>
+                    </li>
+                </ol>
+                <img class="custom-float-right" src="https://github.com/moneybrain-ai/PlayChat-Docs/raw/master/start_image/1hour/en/searchBitcoin-test.png" title="클릭" style="max-width:100%;">
+                <ul>
+                    <li>
+                        <p>Enter “Bitcoin” to start up the chatbot.</p>
+                    </li>
+                    <li>
+                        <p>Enter the type of the bitcoin you want to search.</p>
+                    </li>
+                    <li>
+                        <p>Enter the information regarding the bitcoin you want to search.</p>
+                    </li>
+                    <li>
+                        <p>Enter “Execute”.</p>
+                    </li>
+                </ul>
+                <h2>
+                    <a id="user-content-round-off-1" class="anchor" aria-hidden="true" href="#round-off-1">
+                        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+                        </svg>
+                    </a>
+                    Round Off
+                </h2>
+                <p>So far, we’ve looked through the procedures of applying execute functions. After creating a functions that saved the data from the user input, an execute function using an external AIP was made to fulfill the chatbot’s objective. If you wish to  look for detailed procedures, please take a look at the general outline documents.</p>
+            </article>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation.html #1hour-en");
+        $("#topbar").load("topbar.html #en", function () {
+            $('#1hour').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

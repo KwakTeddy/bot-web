@@ -196,11 +196,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 for(var i=0; i<fileList.length; i++)
                 {
-                    if(fileList[i].endsWith('bot.js'))
-                    {
-                        fileList.splice(i, 1);
-                        break;
-                    }
+                    // if(fileList[i].endsWith('bot.js'))
+                    // {
+                    //     fileList.splice(i, 1);
+                    //     break;
+                    // }
                 }
 
                 $scope.fileList = fileList;

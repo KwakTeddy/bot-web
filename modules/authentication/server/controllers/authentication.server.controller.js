@@ -26,7 +26,12 @@ module.exports.signin = function(req, res, next)
                 // Generate random token
                 function (done) {
                     crypto.randomBytes(20, function (err, buffer) {
+
+                        var veriCode = Math.floor(1000 + Math.random() * 9000);
+
+
                         var token = buffer.toString('hex');
+                        user.localEmailConfirmCode = veriCode;
                         user.localEmailConfirmToken = token;
                         user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
                         // Then save the user
@@ -39,12 +44,12 @@ module.exports.signin = function(req, res, next)
                                 // Remove sensitive data before login
                                 user.password = undefined;
                                 user.salt = undefined;
-                                done(err, token, user);
+                                done(err, token, veriCode, user);
                             }
                         });
                     });
                 },
-                function (token, user, done) {
+                function (token, veriCode, user, done) {
 
                     var httpTransport = 'http://';
                     if (config.secure && config.secure.ssl === true) {
@@ -54,7 +59,8 @@ module.exports.signin = function(req, res, next)
                     {
                         name: user.displayName,
                         appName: 'Play Chat',
-                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token,
+                        veriCode: veriCode
                     }, function (err, emailHTML)
                     {
                         done(err, emailHTML, user);
@@ -238,7 +244,11 @@ module.exports.signup = function(req, res, next)
                     {
                         crypto.randomBytes(20, function (err, buffer)
                         {
+                            var veriCode = Math.floor(1000 + Math.random() * 9000);
+
+
                             var token = buffer.toString('hex');
+                            user.localEmailConfirmCode = veriCode;
                             user.localEmailConfirmToken = token;
                             user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
                             if (!result)
@@ -257,7 +267,7 @@ module.exports.signup = function(req, res, next)
                                         // Remove sensitive data before login
                                         user.password = undefined;
                                         user.salt = undefined;
-                                        done(err, token, user);
+                                        done(err, token, veriCode, user);
                                     }
                                 });
                             }
@@ -271,10 +281,12 @@ module.exports.signup = function(req, res, next)
 
                                 result.password = JSON.parse(JSON.stringify(user.password));
                                 result['localEmailConfirmToken'] = JSON.parse(JSON.stringify(user.localEmailConfirmToken));
+                                result['localEmailConfirmCode'] = JSON.parse(JSON.stringify(user.localEmailConfirmCode));
                                 result['localEmailConfirmExpires'] = JSON.parse(JSON.stringify(user.localEmailConfirmExpires));
 
                                 user.password = undefined;
                                 user.roles = undefined;
+                                user.localEmailConfirmCode = undefined;
                                 user.localEmailConfirmToken = undefined;
                                 user.localEmailConfirmExpires = undefined;
                                 result.additionalProvidersData[user.provider] = user;
@@ -294,13 +306,13 @@ module.exports.signup = function(req, res, next)
                                         // Remove sensitive data before login
                                         result.password = undefined;
                                         result.salt = undefined;
-                                        done(err, token, user);
+                                        done(err, token, veriCode, user);
                                     }
                                 });
                             }
                         });
                     },
-                    function (token, user, done)
+                    function (token, veriCode, user, done)
                     {
                         var httpTransport = 'http://';
                         if (config.secure && config.secure.ssl === true)
@@ -312,7 +324,8 @@ module.exports.signup = function(req, res, next)
                         {
                             name: user.displayName,
                             appName: 'Play Chat',
-                            url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                            url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token,
+                            veriCode: veriCode
                         }, function (err, emailHTML)
                         {
                             done(err, emailHTML, user);
@@ -413,6 +426,73 @@ module.exports.validateEmailConfirmToken = function(req, res)
         else
         {
             return res.redirect('/signup?error=true&type=email');
+        }
+    });
+};
+
+module.exports.validateEmailConfirmCode = function(req, res)
+{
+    //Define email search query
+    var emailConfirmQuery = {};
+    emailConfirmQuery['email'] = req.body.email;
+
+    User.findOne(emailConfirmQuery, function (err, user)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.end();
+        }
+
+        if(user)
+        {
+            if(user.localEmailConfirmExpires >= Date.now())
+            {
+                if(user.localEmailConfirmCode == req.body.veriCode)
+                {
+                    user.localEmailConfirmed = true;
+                    user.localEmailConfirmToken = undefined;
+                    user.localEmailConfirmCode = undefined;
+                    user.localEmailConfirmExpires = undefined;
+
+                    user.save(function (err)
+                    {
+                        if (err)
+                        {
+                            console.log(err);
+                        }
+                        else
+                        {
+                            req.login(user, function (err)
+                            {
+                                if (err)
+                                {
+                                    res.status(400).send(err);
+                                }
+                                else
+                                {
+                                    //for closedbeta
+                                    res.cookie('login', true);
+                                    return res.end();
+                                }
+                            });
+                        }
+                    });
+                }
+                else
+                {
+                    return res.status(400).send({ message: 'Verification Code does not match' });
+                }
+
+            }
+            else
+            {
+                return res.status(400).send({ message: 'Verification Code does not match' });
+            }
+        }
+        else
+        {
+            return res.end();
         }
     });
 };

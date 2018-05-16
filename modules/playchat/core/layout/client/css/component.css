@@ -5,8 +5,8 @@
     cursor: pointer;
     font-weight: 600;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 8px 15px;
+    border-radius: 3px;
+    padding: 10px 15px;
     font-size: 13px;
     color: #919191;
     width: 110px;
@@ -17,15 +17,34 @@
     background: #efefef;
 }
 
+.default-big-button
+{
+    outline: 0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 15px;
+    font-size: 13px;
+    color: #919191;
+    width: 210px;
+}
+
+.default-big-button:hover, .default-big-button:focus
+{
+    background: #efefef;
+}
+
 .blue-button
 {
     outline: 0;
     text-align: center;
     background: #038eda;
     cursor: pointer;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     font-weight: 600;
     padding: 10px;
     font-size: 13px;
@@ -39,9 +58,9 @@
     text-align: center;
     background: #d9534f;
     cursor: pointer;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 
     border: 1px solid #d43f3a;
 
@@ -78,6 +97,23 @@
     padding-right: 4px;
 }
 
+.blue-big-button
+{
+    outline: 0;
+    background: #038eda;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 15px;
+    font-size: 13px;
+    color: #fff;
+    width: 210px;
+}
+
+.blue-big-button:hover, .blue-big-button:focus
+{
+    background: #007dc2;
+}
 
 .funtionbtn1
 {
@@ -274,7 +310,7 @@
 
 .jumbo-select
 {
-    border-radius: 6px;
+    border-radius: 3px;
     border:1px solid #e8ebf0;
     width: 100px;
     height: 35px;
