@@ -16,6 +16,12 @@
             this.iframe.style.right = '25px';
             this.iframe.style.bottom = '25px';
             this.iframe.style.width = '280pt';
+
+            // explorer only
+            if(navigator.userAgent.indexOf("MSIE")!=-1){
+                this.iframe.style.width = '380pt';
+            }
+
             this.iframe.style.height = '70%';
             this.iframe.style.maxHeight = '720px';
             this.iframe.style.minHeight = '480px';
