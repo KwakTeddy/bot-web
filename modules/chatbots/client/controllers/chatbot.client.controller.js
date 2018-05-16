@@ -75,7 +75,8 @@
         $scope.selectChatbot = function(chatbot, callback)
         {
             LogService.botId = chatbot._id;
-            delete chatbot.user;
+            // alert(JSON.stringify(chatbot))
+            // delete chatbot.user;
             ChatbotAuthService.get({ botId: chatbot._id }, function(result)
             {
                 var version = result.version;
