@@ -144,7 +144,7 @@ exports.create = function(req, res)
             }
 
             var chatbot = new ChatBot(req.body);
-            if(req.body.type != 'sample' && req.body.type != 'blank')
+            if(!req.body.type.startsWith('sample') && req.body.type != 'blank')
             {
                 chatbot.templateId = req.body.type;
             }
