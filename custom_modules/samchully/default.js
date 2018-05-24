@@ -9,9 +9,9 @@ module.exports = function(bot)
 
     var monthIndex =
     {
-            3 : 1,
-            6: 2,
-            12: 3
+        3 : 1,
+        6: 2,
+        12: 3
     };
 
     var bankArr = ['기업은행', '국민은행', '농협', '우리은행', '신한은행', '하나은행'];
@@ -91,204 +91,252 @@ module.exports = function(bot)
         }
         return newStr ? newStr : dateString;
     };
-    
+
     var timeout = 4000;
 
 
     //Type Area
 
     bot.setType('customerListType',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            var selected = undefined;
-            var customerList = context.session.customerList;
-            for(var i = 0; i < customerList.length; i++)
+            typeCheck: function (dialog, context, callback)
             {
- 
-               if(i + 1 == dialog.userInput.text)
+                var matched = false;
+                var selected = undefined;
+                var customerList = context.session.customerList;
+                for(var i = 0; i < customerList.length; i++)
                 {
-                    selected = customerList[i];
-                    break;
+
+                    if(i + 1 == dialog.userInput.text)
+                    {
+                        selected = customerList[i];
+                        break;
+                    }
                 }
-            }
 
-            if(selected)
-            {
-                context.session.curCustomer = selected;
-                matched = true;
-            }
-            else
-            {
-                context.session.curCustomer = undefined;
-                matched = false;
-            }
+                if(selected)
+                {
+                    context.session.curCustomer = selected;
+                    matched = true;
+                }
+                else
+                {
+                    context.session.curCustomer = undefined;
+                    matched = false;
+                }
 
-            callback(matched);
-        }
-    });
+                callback(matched);
+            }
+        });
 
     bot.setType('monthType',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            var word = dialog.userInput.text;
-            var num = parseInt(word);
-            if(num == 3 || num == 6 || num == 12)
+            typeCheck: function (dialog, context, callback)
             {
-                context.session.selectedMonth = num;
-                matched = true;
-            }
+                var matched = false;
+                var word = dialog.userInput.text;
+                var num = parseInt(word);
+                if(num == 3 || num == 6 || num == 12)
+                {
+                    context.session.selectedMonth = num;
+                    matched = true;
+                }
 
-            callback(matched);
-        }
-    });
+                callback(matched);
+            }
+        });
 
     bot.setType('saveCustomerName',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            var word = dialog.userInput.text;
-            var regExp = new RegExp('[가-힣]{2,4}', "g");
-            if(regExp.exec(word))
+            typeCheck: function (dialog, context, callback)
             {
-                context.session.customerName = word;
-                matched = true;
-            }
+                var matched = false;
+                var word = dialog.userInput.text;
+                var regExp = new RegExp('[가-힣]{2,4}', "g");
+                if(regExp.exec(word))
+                {
+                    context.session.customerName = word;
+                    matched = true;
+                }
 
-            callback(matched);
-        }
-    });
+                callback(matched);
+            }
+        });
+
+    bot.setTask('selfRFC',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_KKO_MESSAGE_SEND';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                        }
+                        else if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log('success => ' + JSON.stringify(body));
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
 
     bot.setType('saveCustomerBirth',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            var word = dialog.userInput.text;
-            var regexp = new RegExp("[0-9]{6}", "g");
-
-            if(regexp.exec(word))
+            typeCheck: function (dialog, context, callback)
             {
-                context.session.customerBirth = word;
-                matched = true;
-            }
+                var matched = false;
+                var word = dialog.userInput.text;
+                var regexp = new RegExp("[0-9]{6}", "g");
 
-            callback(matched);
-        }
-    });
+                if(regexp.exec(word))
+                {
+                    context.session.customerBirth = word;
+                    matched = true;
+                }
+
+                callback(matched);
+            }
+        });
 
     bot.setType('email',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-
-            var regExp = new RegExp('^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$', 'g');
-            var result = regExp.exec(dialog.userInput.text);
-
-            if(result)
+            typeCheck: function (dialog, context, callback)
             {
-                context.session.curCustomer.email = dialog.userInput.text;
-                matched = true;
+                var matched = false;
+
+                var regExp = new RegExp('^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$', 'g');
+                var result = regExp.exec(dialog.userInput.text);
+
+                if(result)
+                {
+                    context.session.curCustomer.email = dialog.userInput.text;
+                    matched = true;
+                }
+
+
+                callback(matched);
             }
-
-
-            callback(matched);
-        }
-    });
+        });
 
     bot.setType('saveCustomerMobile',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            var word = dialog.userInput.text;
-
-            var regExp = new RegExp('\\b((?:010[-.]?\\d{4}|01[1|6|7|8|9][-.]?\\d{3,4})[-.]?\\d{4})\\b', 'g');
-            if(regExp.exec(word))
+            typeCheck: function (dialog, context, callback)
             {
-                matched = true;
+                var matched = false;
+                var word = dialog.userInput.text;
 
-                if(word.indexOf('-') != -1) word = mobileFormatChange(word);
-                context.session.customerMobile = word;
+                var regExp = new RegExp('\\b((?:010[-.]?\\d{4}|01[1|6|7|8|9][-.]?\\d{3,4})[-.]?\\d{4})\\b', 'g');
+                if(regExp.exec(word))
+                {
+                    matched = true;
+
+                    if(word.indexOf('-') != -1) word = mobileFormatChange(word);
+                    context.session.customerMobile = word;
+                }
+
+
+                callback(matched);
             }
-
-
-            callback(matched);
-        }
-    });
+        });
 
     bot.setType('multiMonthType',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            var userInput = dialog.userInput.text.split(' ');
-            var nonPaymentList = context.session.nonpaymentHistory;
-            var selected = context.session.selectedNonpayment = [];
-            var total = 0;
-
-            for(var i = 0; i < userInput.length; i++)
+            typeCheck: function (dialog, context, callback)
             {
-                if(nonPaymentList[userInput[i] - 1])
+                var matched = false;
+                var userInput = dialog.userInput.text.split(' ');
+                var nonPaymentList = context.session.nonpaymentHistory;
+                var selected = context.session.selectedNonpayment = [];
+                var total = 0;
+
+                for(var i = 0; i < userInput.length; i++)
                 {
-                    var alreadySelected = false;
-                    for(var j = 0; j < selected.length; j++)
+                    if(nonPaymentList[userInput[i] - 1])
                     {
-                        if(selected[j] == nonPaymentList[userInput[i] - 1])
+                        var alreadySelected = false;
+                        for(var j = 0; j < selected.length; j++)
                         {
-                            alreadySelected = true;
+                            if(selected[j] == nonPaymentList[userInput[i] - 1])
+                            {
+                                alreadySelected = true;
+                            }
+                        }
+                        if(!alreadySelected)
+                        {
+                            nonPaymentList[userInput[i] - 1].userIdx = userInput[i];
+                            selected.push(nonPaymentList[userInput[i] - 1]);
+                            matched = true;
                         }
                     }
-                    if(!alreadySelected)
-                    {
-                        nonPaymentList[userInput[i] - 1].userIdx = userInput[i];
-                        selected.push(nonPaymentList[userInput[i] - 1]);
-                        matched = true;
-                    }
                 }
+
+                for(var k = 0; k < selected.length; k++)
+                {
+                    total += parseInt(selected[k].BETRWP.replace(',', ''));
+                }
+
+                context.session.totalSelectedNonpayment = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g , ',');
+
+                selected.sort(function (a, b)
+                {
+                    return a.YYYYMM-b.YYYYMM;
+                });
+                callback(matched);
             }
-
-            for(var k = 0; k < selected.length; k++)
-            {
-                total += parseInt(selected[k].BETRWP.replace(',', ''));
-            }
-
-            context.session.totalSelectedNonpayment = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g , ',');
-
-            selected.sort(function (a, b)
-            {
-                return a.YYYYMM-b.YYYYMM;
-            });
-            callback(matched);
-        }
-    });
+        });
 
     bot.setType('selectedAccountType',
-    {
-        typeCheck: function (dialog, context, callback)
         {
-            var matched = false;
-            bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
-
-
-            for(var i = 0; i < bankArr.length; i++)
+            typeCheck: function (dialog, context, callback)
             {
-                if(dialog.userInput.text.indexOf(bankArr[i]) != -1)
-                {
-                    dialog.userInput.selectedBank = bankArr[i];
-                    matched = true;
-                    break;
-                }
-            }
+                var matched = false;
+                bankArr = ['기업', '국민', '농협', '우리', '신한', '하나'];
 
-            callback(matched);
-        }
-    });
+
+                for(var i = 0; i < bankArr.length; i++)
+                {
+                    if(dialog.userInput.text.indexOf(bankArr[i]) != -1)
+                    {
+                        dialog.userInput.selectedBank = bankArr[i];
+                        matched = true;
+                        break;
+                    }
+                }
+
+                callback(matched);
+            }
+        });
 
     bot.setType('centerAddressType', {
         typeCheck: function (dialog, context, callback) {
@@ -307,440 +355,440 @@ module.exports = function(bot)
     //Task Area
 
     bot.setTask('defaultTask',
-    {
-        action: function(dialog, context, callback)
         {
-            callback();
-        }
-    });
+            action: function(dialog, context, callback)
+            {
+                callback();
+            }
+        });
 
     bot.setTask('addButton',
-    {
-        action: function (dialog, context, callback)
         {
-            callback();
-        }
-    });
+            action: function (dialog, context, callback)
+            {
+                callback();
+            }
+        });
 
     bot.setTask('searchSamchullyUser',
-    {
-        action: function (dialog, context, callback)
         {
-          	var options = {};
-          	options.url = 'http://sam.moneybrain.ai:3000/api';
-          	options.json = {};
-          	options.json.name = 'ZCS_CUSTOMER_INFO';
-          	options.json.param = [
-            	{ key: 'I_NAME', val: context.session.customerName },
-              	{ key: 'I_BIRTH', val: context.session.customerBirth },
-                { key: 'I_PHONE', val: context.session.customerMobile }
-            ];
-            options.json.isTable = true;
-            ////options.timeout = timeout;
-
-          	request.post(options, function(err, response, body)
+            action: function (dialog, context, callback)
             {
-              	if(err)
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CUSTOMER_INFO';
+                options.json.param = [
+                    { key: 'I_NAME', val: context.session.customerName },
+                    { key: 'I_BIRTH', val: context.session.customerBirth },
+                    { key: 'I_PHONE', val: context.session.customerMobile }
+                ];
+                options.json.isTable = true;
+                ////options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
                 {
-                    errorHandler(dialog, err);
-                }
-				else
-    	        {
-    	            if(!body)
+                    if(err)
                     {
-                        errorHandler(dialog, null);
-                       return callback();
+                        errorHandler(dialog, err);
                     }
-
-                    if(body.E_RETCD == 'E')
+                    else
                     {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        context.session.customerList = body.data.E_TAB;
-
-                        for(var i=0; i<context.session.customerList.length; i++)
+                        if(!body)
                         {
-                            if(context.session.customerList[i].VKONT.startsWith('000'))
-                            {
-                                context.session.customerList[i].VKONT = context.session.customerList[i].VKONT.substring(3);
-                            }
+                            errorHandler(dialog, null);
+                            return callback();
                         }
-                    }else {
-                        errorHandler(dialog, body);
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            context.session.customerList = body.data.E_TAB;
+
+                            for(var i=0; i<context.session.customerList.length; i++)
+                            {
+                                if(context.session.customerList[i].VKONT.startsWith('000'))
+                                {
+                                    context.session.customerList[i].VKONT = context.session.customerList[i].VKONT.substring(3);
+                                }
+                            }
+                        }else {
+                            errorHandler(dialog, body);
+                        }
                     }
-                }
-                callback();
-            });
-        }
-    });
+                    callback();
+                });
+            }
+        });
 
     bot.setTask('getCustomerList',
-    {
-        action: function (dialog, context, callback)
         {
-            var customerList = context.session.customerList;
-
-            if(context.session.auth && customerList.length != 1)
+            action: function (dialog, context, callback)
             {
-                dialog.output[0].buttons = [];
-                for(var i = 0; i < customerList.length; i++)
+                var customerList = context.session.customerList;
+
+                if(context.session.auth && customerList.length != 1)
                 {
-                    dialog.output[0].buttons.push({text: (i + 1) + ''});
-                }
-
-                addDefaultButton(dialog);
-            }
-            else if(context.session.auth && customerList.length == 1)
-            {
-                context.session.curCustomer = customerList[0];
-            }
-
-            callback();
-
-        }
-    });
-
-    bot.setTask('getNoticeHistory',
-    {
-        action: function (dialog, context, callback)
-        {
-            var monthIdx = monthIndex[context.session.selectedMonth];
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZBI_MS_GOJI_LIST';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                { key: 'I_GUBUN', val: monthIdx }
-            ];
-            options.json.isTable = true;
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
+                    dialog.output[0].buttons = [];
+                    for(var i = 0; i < customerList.length; i++)
                     {
-                        errorHandler(dialog, null);
-                       return callback();
+                        dialog.output[0].buttons.push({text: (i + 1) + ''});
                     }
 
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        var data = body.data.ET_TABLE;
-                        dialog.output[0].buttons = [];
-                        for(var i = 0; i < data.length; i++)
-                        {
-
-
-                            minusDataFormatChange(data[i]);
-
-                            data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
-                            data[i].FAEDN = dateFormatChange(data[i].FAEDN);
-                            dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
-                        }
-                        context.session.noticeHistory = data;
-                        console.log(context.session.noticeHistory);
-                        addDefaultButton(dialog);
-
-                    }else {
-                        errorHandler(dialog, body);
-                    }
+                    addDefaultButton(dialog);
                 }
+                else if(context.session.auth && customerList.length == 1)
+                {
+                    context.session.curCustomer = customerList[0];
+                }
+
                 callback();
 
-            });
+            }
+        });
 
-        }
-    });
+    bot.setTask('getNoticeHistory',
+        {
+            action: function (dialog, context, callback)
+            {
+                var monthIdx = monthIndex[context.session.selectedMonth];
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZBI_MS_GOJI_LIST';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_GUBUN', val: monthIdx }
+                ];
+                options.json.isTable = true;
+                ////options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            var data = body.data.ET_TABLE;
+                            dialog.output[0].buttons = [];
+                            for(var i = 0; i < data.length; i++)
+                            {
+
+
+                                minusDataFormatChange(data[i]);
+
+                                data[i].BILLING_PERIOD = dateFormatChange(data[i].BILLING_PERIOD);
+                                data[i].FAEDN = dateFormatChange(data[i].FAEDN);
+                                dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
+                            }
+                            context.session.noticeHistory = data;
+                            console.log(context.session.noticeHistory);
+                            addDefaultButton(dialog);
+
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    callback();
+
+                });
+
+            }
+        });
 
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     bot.setTask('getNoticeDetail',
-    {
-        action: function (dialog, context, callback)
         {
-            console.log('노티스 히스토리 : ', context.session.noticeHistory);
-            for(var i = 0; i < context.session.noticeHistory.length; i++)
+            action: function (dialog, context, callback)
             {
-                if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
+                console.log('노티스 히스토리 : ', context.session.noticeHistory);
+                for(var i = 0; i < context.session.noticeHistory.length; i++)
                 {
-                    dialog.noticeDetail = context.session.noticeHistory[i];
-
-                    dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
-
-                    var split = dialog.noticeDetail.USED_CALORY.split('.');
-
-                    dialog.noticeDetail.USED_CALORY = numberWithCommas(split[0]) + (split[1] ? '.' + split[1] : '');
-
-                    break;
-                }
-            }
-            callback();
-        }
-    });
-
-    bot.setTask('getPaymentHistory',
-    {
-        action: function (dialog, context, callback)
-        {
-            var monthIdx = monthIndex[context.session.selectedMonth];
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZFC_MS_PAYMENT';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                { key: 'I_GUBUN', val: monthIdx }
-            ];
-            options.json.isTable = true;
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
+                    if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
                     {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
+                        dialog.noticeDetail = context.session.noticeHistory[i];
 
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(JSON.stringify(body, null, 4));
-                        var data = body.data.ET_TABLE;
+                        dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
 
-                        for(var i = 0; i < data.length; i++)
-                        {
-                            data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
-                            data[i].BUDAT = dateFormatChange(data[i].BUDAT);
-                        }
-                        context.session.paymentHistory = data;
+                        var split = dialog.noticeDetail.USED_CALORY.split('.');
 
-                    }else {
-                        errorHandler(dialog, body);
+                        dialog.noticeDetail.USED_CALORY = numberWithCommas(split[0]) + (split[1] ? '.' + split[1] : '');
+
+                        break;
                     }
                 }
                 callback();
-            });
-        }
-    });
-
-    bot.setTask('getPaymentDetail',
-    {
-        action: function (dialog, context, callback)
-        {
-            for(var i = 0; i < context.session.paymentHistory.length; i++)
-            {
-                if(context.session.paymentHistory[i].YYYYMM == dialog.userInput.text)
-                {
-                    dialog.paymentDetail = context.session.paymentHistory[i];
-                    break;
-                }
             }
-            callback();
-        }
-    });
+        });
 
-    bot.setTask('getNonpaymentList',
-    {
-        action: function (dialog, context, callback)
+    bot.setTask('getPaymentHistory',
         {
-
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_CHECK_NOTI_AMT';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-            ];
-            options.json.isTable = true;
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
+            action: function (dialog, context, callback)
             {
-                if(err)
+                var monthIdx = monthIndex[context.session.selectedMonth];
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZFC_MS_PAYMENT';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_GUBUN', val: monthIdx }
+                ];
+                options.json.isTable = true;
+                ////options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
                 {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
+                    if(err)
                     {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        if(body.data)
-                        {
-                            console.log(JSON.stringify(body, null, 4));
-                            var data = body.data.E_TAB;
-
-                            for(var i = 0 ; i < data.length; i++)
-                            {
-                                data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
-                                data[i].FAEDN = dateFormatChange(data[i].FAEDN);
-
-                            }
-
-                            context.session.nonpaymentHistory = data;
-                        }
-                        else
-                        {
-                            body.E_RETMG = '테이블 데이터를 요구하지 않았습니다. 관리자에게 문의해주세요.';
-                            errorHandler(dialog, body);
-                        }
+                        errorHandler(dialog, err);
                     }
                     else
                     {
-                        errorHandler(dialog, body);
-                    }
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
 
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(JSON.stringify(body, null, 4));
+                            var data = body.data.ET_TABLE;
+
+                            for(var i = 0; i < data.length; i++)
+                            {
+                                data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
+                                data[i].BUDAT = dateFormatChange(data[i].BUDAT);
+                            }
+                            context.session.paymentHistory = data;
+
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    callback();
+                });
+            }
+        });
+
+    bot.setTask('getPaymentDetail',
+        {
+            action: function (dialog, context, callback)
+            {
+                for(var i = 0; i < context.session.paymentHistory.length; i++)
+                {
+                    if(context.session.paymentHistory[i].YYYYMM == dialog.userInput.text)
+                    {
+                        dialog.paymentDetail = context.session.paymentHistory[i];
+                        break;
+                    }
                 }
                 callback();
-
-            });
-        }
-    });
-
-    bot.setTask('getAuth',
-    {
-        action: function (dialog, context, callback)
-        {
-            if(!context.session.auth)
-            {
-                //DB연동
-                //있으면 context.session.auth = true;
             }
+        });
 
-            if(context.session.auth && dialog.output[0].buttons.length < 6)
-            {
-                dialog.output[0].buttons.push({text: '로그아웃'});
-            }
-
-
-            callback();
-        }
-    });
-
-    bot.setTask('getAccountList',
-    {
-        action: function (dialog, context, callback)
+    bot.setTask('getNonpaymentList',
         {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_CB_COMMON_ACCINFO';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-            ];
-            ////options.timeout = timeout;
-
-            options.json.isTable = true;
-            request.post(options, function(err, response, body)
+            action: function (dialog, context, callback)
             {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
 
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        var data = body.data.ET_TABLE;
-                        dialog.output[0].buttons = [];
-                        context.session.nonpaymentHistory = [];
+                var curCustomer = context.session.curCustomer;
 
-                        var bankText = bankArr.join(' ');
-                        for(var i=0; i<data.length; i++)
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CHECK_NOTI_AMT';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                ];
+                options.json.isTable = true;
+                ////options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
                         {
-                            if(bankText.indexOf(data[i].BANKA) == -1)
-                            {
-                                continue;
-                            }
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
 
-                            if(!data[i].BANKN)
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            if(body.data)
                             {
-                                dialog.output[0].buttons.push({text: data[i].BANKA + ' 입금전용계좌 생성'});
+                                console.log(JSON.stringify(body, null, 4));
+                                var data = body.data.E_TAB;
+
+                                for(var i = 0 ; i < data.length; i++)
+                                {
+                                    data[i].YYYYMM = dateFormatChange(data[i].YYYYMM);
+                                    data[i].FAEDN = dateFormatChange(data[i].FAEDN);
+
+                                }
+
+                                context.session.nonpaymentHistory = data;
                             }
                             else
                             {
-                                context.session.nonpaymentHistory.push(data[i]);
+                                body.E_RETMG = '테이블 데이터를 요구하지 않았습니다. 관리자에게 문의해주세요.';
+                                errorHandler(dialog, body);
                             }
                         }
-
-                        if(dialog.output[0].buttons.length > 0)
+                        else
                         {
-                            dialog.output[0].text += '다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요.';
+                            errorHandler(dialog, body);
                         }
-                        // else
-                        // {
-                        //     dialog.output[0].text.replace('다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요.', '');
-                        // }
 
-                        addDefaultButton(dialog);
-
-                    }else {
-                        errorHandler(dialog, body);
                     }
+                    callback();
 
+                });
+            }
+        });
+
+    bot.setTask('getAuth',
+        {
+            action: function (dialog, context, callback)
+            {
+                if(!context.session.auth)
+                {
+                    //DB연동
+                    //있으면 context.session.auth = true;
                 }
-                callback();
 
-            });
-        }
-    });
+                if(context.session.auth && dialog.output[0].buttons.length < 6)
+                {
+                    dialog.output[0].buttons.push({text: '로그아웃'});
+                }
+
+
+                callback();
+            }
+        });
+
+    bot.setTask('getAccountList',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CB_COMMON_ACCINFO';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                ];
+                ////options.timeout = timeout;
+
+                options.json.isTable = true;
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            var data = body.data.ET_TABLE;
+                            dialog.output[0].buttons = [];
+                            context.session.nonpaymentHistory = [];
+
+                            var bankText = bankArr.join(' ');
+                            for(var i=0; i<data.length; i++)
+                            {
+                                if(bankText.indexOf(data[i].BANKA) == -1)
+                                {
+                                    continue;
+                                }
+
+                                if(!data[i].BANKN)
+                                {
+                                    dialog.output[0].buttons.push({text: data[i].BANKA + ' 입금전용계좌 생성'});
+                                }
+                                else
+                                {
+                                    context.session.nonpaymentHistory.push(data[i]);
+                                }
+                            }
+
+                            if(dialog.output[0].buttons.length > 0)
+                            {
+                                dialog.output[0].text += '다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요.';
+                            }
+                            // else
+                            // {
+                            //     dialog.output[0].text.replace('다른 은행 계좌를 원하시면 아래 버튼으로 선택해주세요.', '');
+                            // }
+
+                            addDefaultButton(dialog);
+
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
 
     bot.setTask('createDepositAccount',
-    {
-        action: function (dialog, context, callback)
         {
+            action: function (dialog, context, callback)
+            {
                 var bankIndex =
                 {
                     '기업' : '003',
@@ -764,7 +812,7 @@ module.exports = function(bot)
                 ////options.timeout = timeout;
 
 
-            request.post(options, function(err, response, body)
+                request.post(options, function(err, response, body)
                 {
                     if(err)
                     {
@@ -794,708 +842,708 @@ module.exports = function(bot)
                     callback();
                 });
             }
-    });
+        });
 
     bot.setTask('getNoticeMethod',
-    {
-        action: function (dialog, context, callback)
         {
-            var methodIdex =
+            action: function (dialog, context, callback)
             {
-                '0001' : '우편송달',
-                '0002' : '고객센터송달',
-                '0003' : '이메일송달',
-                '0004' : '모바일송달',
-                '0005' : 'LMS송달',
-                '0006' : '카카오알림톡송달',
-                '0007' : '카카오청구서송달'
-            };
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_GOJI_TYPE_INFO';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-            ];
-            ////options.timeout = timeout;
-
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
+                var methodIdex =
                 {
-                    errorHandler(dialog, err);
-                }
-                else
+                    '0001' : '우편송달',
+                    '0002' : '고객센터송달',
+                    '0003' : '이메일송달',
+                    '0004' : '모바일송달',
+                    '0005' : 'LMS송달',
+                    '0006' : '카카오알림톡송달',
+                    '0007' : '카카오청구서송달'
+                };
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_TYPE_INFO';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                ];
+                ////options.timeout = timeout;
+
+
+                request.post(options, function(err, response, body)
                 {
-                    if(!body)
+                    if(err)
                     {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body);
-                        dialog.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
-                        dialog.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
-                        console.log(dialog.curNoticeMethod)
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('setNoticeMethod_kkopay',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                { key: 'I_HPNUM', val: curCustomer.mobile }
-            ];
-            ////options.timeout = timeout;
-
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body);
-                        dialog.setNoticeMethodSuccess = true;
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('setNoticeMethod_lms',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_GOJI_LMS_REQUEST';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                { key: 'I_HPNUM', val: curCustomer.mobile }
-            ];
-            //options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body);
-                        dialog.setNoticeMethodSuccess = true;
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('setNoticeMethod_email',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                { key: 'I_EMAIL', val: curCustomer.email }
-            ];
-            //options.timeout = timeout;
-
-            var start = new Date().getTime();
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body, ((new Date().getTime()) - start) / 1000 + 'ms');
-                        dialog.setNoticeMethodSuccess = true;
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-                }
-                callback();
-            });
-        }
-    });
-
-    bot.setTask('cancelNoticeMethod',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_GOJI_CANCEL';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
-            ];
-            //options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body);
-                        dialog.cancelNoticeMethodSuccess = true;
-                    }
-                    else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('resendNotice',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZBI_MS_GOJI_RESEND';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
-            ];
-            //options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        dialog.setNoticeMethodSuccess = true;
-                        console.log(body)
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('getPaymentMethod',
-    {
-        action: function (dialog, context, callback)
-        {
-
-            var methodIdex =
-            {
-                'A': '비자동이체',
-                'D': '은행자동이체',
-                'K': '카드자동이체'
-            };
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_GET_PAYMENT_METHOD';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
-            ];
-            //options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        if(body['E_EZAWE'] == '')
-                        {
-                            body['E_EZAWE'] = 'A'
-                        }
-
-                        dialog.curPaymentMethod = methodIdex[body['E_EZAWE']];
-                        console.log(body)
-                    }else {
                         errorHandler(dialog, err);
                     }
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('getErrMsg',
-    {
-        action: function (dialog, context, callback)
-        {
-            callback();
-        }
-    });
-
-    bot.setTask('getSafetyCheckResult',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'MS_IF_CM0014';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-            ];
-            options.json.isTable = true;
-            //options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                    callback();
-                }
-                else
-                {
-                    if(!body)
+                    else
                     {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        if(body.E_RETMSG.indexOf('정보 없음') != -1 || body.E_RETMSG.indexOf('결과가 없습니다') != -1)
+                        if(!body)
                         {
-                            dialog.output[0].text = body.E_RETMSG;
+                            errorHandler(dialog, null);
+                            return callback();
                         }
-                        else
+
+                        if(body.E_RETCD == 'E')
                         {
                             errorHandler(dialog, body);
                         }
-                        callback();
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        dialog.data.list = body.data.T_OUT;
-
-                        console.log('성공 데이터 : ', dialog.data.list);
-                        var outputText = [];
-
-                        // async.eachSeries(dialog.data.list, function(item, next)
-                        //
-
-                        var resultList = {};
-                        for(var i=0; i<dialog.data.list.length; i++)
+                        else if(body.E_RETCD == 'S')
                         {
-                            var date = dialog.data.list[i].CHK_DAT
-                            if(!resultList[date])
-                            {
-                                resultList[date] = [];
-                            }
-
-                            resultList[date].push(dialog.data.list[i]);
+                            console.log(body);
+                            dialog.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
+                            dialog.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
+                            console.log(dialog.curNoticeMethod)
+                        }else {
+                            errorHandler(dialog, body);
                         }
 
-                        for(var key in resultList)
+                    }
+                    callback();
+
+                });
+            }
+        });
+
+    bot.setTask('setNoticeMethod_kkopay',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                ];
+                ////options.timeout = timeout;
+
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
                         {
-                            var item = resultList[key];
-                            var chkItmNm = '';
-                            for(var i=0; i<item.length; i++)
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body);
+                            dialog.setNoticeMethodSuccess = true;
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
+
+    bot.setTask('setNoticeMethod_lms',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_LMS_REQUEST';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                ];
+                //options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body);
+                            dialog.setNoticeMethodSuccess = true;
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
+
+    bot.setTask('setNoticeMethod_email',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'I_EMAIL', val: curCustomer.email }
+                ];
+                //options.timeout = timeout;
+
+                var start = new Date().getTime();
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body, ((new Date().getTime()) - start) / 1000 + 'ms');
+                            dialog.setNoticeMethodSuccess = true;
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    callback();
+                });
+            }
+        });
+
+    bot.setTask('cancelNoticeMethod',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GOJI_CANCEL';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                ];
+                //options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body);
+                            dialog.cancelNoticeMethodSuccess = true;
+                        }
+                        else {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
+
+    bot.setTask('resendNotice',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZBI_MS_GOJI_RESEND';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                ];
+                //options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            dialog.setNoticeMethodSuccess = true;
+                            console.log(body)
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
+
+    bot.setTask('getPaymentMethod',
+        {
+            action: function (dialog, context, callback)
+            {
+
+                var methodIdex =
+                {
+                    'A': '비자동이체',
+                    'D': '은행자동이체',
+                    'K': '카드자동이체'
+                };
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_GET_PAYMENT_METHOD';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                ];
+                //options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            if(body['E_EZAWE'] == '')
                             {
-                                if(item[i].CHK_ITM_NM)
-                                {
-                                    chkItmNm += ' - ' + item[i].CHK_ITM_NM + '\n';
-                                    if(item[i].CHK_ITM_BNM)
-                                    {
-                                        chkItmNm += ' → ' + item[i].CHK_ITM_BNM + '\n';
-                                    }
-                                }
+                                body['E_EZAWE'] = 'A'
                             }
 
-                            item[0].CHK_ITM_NM = '\n' + chkItmNm;
+                            dialog.curPaymentMethod = methodIdex[body['E_EZAWE']];
+                            console.log(body)
+                        }else {
+                            errorHandler(dialog, err);
+                        }
+                    }
+                    callback();
 
-                            item = item[0];
+                });
+            }
+        });
 
+    bot.setTask('getErrMsg',
+        {
+            action: function (dialog, context, callback)
+            {
+                callback();
+            }
+        });
 
-                            var test = '안전점검일: ' + item.CHK_DAT + '\n';
-                            test += '점검참여자: ' + item.SCR_MGR_NO + '\n';
-                            if(item.SCR_MGR_CLF == '01')
+    bot.setTask('getSafetyCheckResult',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'MS_IF_CM0014';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                ];
+                options.json.isTable = true;
+                //options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                        callback();
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            if(body.E_RETMSG.indexOf('정보 없음') != -1 || body.E_RETMSG.indexOf('결과가 없습니다') != -1)
                             {
-                                test += '계약자와관계: 본인\n';
-                            }
-                            else if(item.SCR_MGR_CLF == '02')
-                            {
-                                test += '계약자와관계: 가족\n';
-                            }
-                            else if(item.SCR_MGR_CLF == '03')
-                            {
-                                test += '계약자와관계: 관리인\n';
-                            }
-                            else if(item.SCR_MGR_CLF == '04')
-                            {
-                                test += '계약자와관계: 기타\n';
-                            }
-
-                            if(item.CHK_YN == 'Y')
-                            {
-                                if(item.FITN_YN == 'Y')
-                                {
-                                    test += '점검결과: 적합\n';
-                                }
-                                else
-                                {
-                                    test += '점검결과: 부적합\n';
-
-                                    if(item.IMPV_YN == 'Y')
-                                    {
-                                        test += '부적합개선여부: 개선완료\n';
-                                    }
-                                    else
-                                    {
-                                        test += '부적합개선여부: 미개선\n';
-                                    }
-
-                                    test += '부적합 시설: ' + item.CHK_ITM_NM + '\n';
-                                }
+                                dialog.output[0].text = body.E_RETMSG;
                             }
                             else
                             {
-                                test += '미점검사유: ';
-                                if(item.UCHK_RSN == '1')
+                                errorHandler(dialog, body);
+                            }
+                            callback();
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            dialog.data.list = body.data.T_OUT;
+
+                            console.log('성공 데이터 : ', dialog.data.list);
+                            var outputText = [];
+
+                            // async.eachSeries(dialog.data.list, function(item, next)
+                            //
+
+                            var resultList = {};
+                            for(var i=0; i<dialog.data.list.length; i++)
+                            {
+                                var date = dialog.data.list[i].CHK_DAT
+                                if(!resultList[date])
                                 {
-                                    test += '공가\n';
+                                    resultList[date] = [];
                                 }
-                                else if(item.UCHK_RSN == '2')
-                                {
-                                    test += '미입주\n';
-                                }
-                                else if(item.UCHK_RSN == '3')
-                                {
-                                    test += '미사용\n';
-                                }
-                                else if(item.UCHK_RSN == '4')
-                                {
-                                    test += '중폐지\n';
-                                }
-                                else if(item.UCHK_RSN == '5')
-                                {
-                                    test += '이사\n';
-                                }
-                                else if(item.UCHK_RSN == '6')
-                                {
-                                    test += '체납중지\n';
-                                }
-                                else if(item.UCHK_RSN == '7')
-                                {
-                                    test += '요청중지\n';
-                                }
-                                else if(item.UCHK_RSN == '8')
-                                {
-                                    test += '철거\n';
-                                }
-                                else if(item.UCHK_RSN == '9')
-                                {
-                                    test += '점검거부\n';
-                                }
+
+                                resultList[date].push(dialog.data.list[i]);
                             }
 
-                            outputText.push(test + (i == dialog.data.list.length - 1 ? '' : '\n'));
-                        }
+                            for(var key in resultList)
+                            {
+                                var item = resultList[key];
+                                var chkItmNm = '';
+                                for(var i=0; i<item.length; i++)
+                                {
+                                    if(item[i].CHK_ITM_NM)
+                                    {
+                                        chkItmNm += ' - ' + item[i].CHK_ITM_NM + '\n';
+                                        if(item[i].CHK_ITM_BNM)
+                                        {
+                                            chkItmNm += ' → ' + item[i].CHK_ITM_BNM + '\n';
+                                        }
+                                    }
+                                }
 
-                        dialog.output[0].text = outputText.join('\n');
-                        callback();
+                                item[0].CHK_ITM_NM = '\n' + chkItmNm;
+
+                                item = item[0];
+
+
+                                var test = '안전점검일: ' + item.CHK_DAT + '\n';
+                                test += '점검참여자: ' + item.SCR_MGR_NO + '\n';
+                                if(item.SCR_MGR_CLF == '01')
+                                {
+                                    test += '계약자와관계: 본인\n';
+                                }
+                                else if(item.SCR_MGR_CLF == '02')
+                                {
+                                    test += '계약자와관계: 가족\n';
+                                }
+                                else if(item.SCR_MGR_CLF == '03')
+                                {
+                                    test += '계약자와관계: 관리인\n';
+                                }
+                                else if(item.SCR_MGR_CLF == '04')
+                                {
+                                    test += '계약자와관계: 기타\n';
+                                }
+
+                                if(item.CHK_YN == 'Y')
+                                {
+                                    if(item.FITN_YN == 'Y')
+                                    {
+                                        test += '점검결과: 적합\n';
+                                    }
+                                    else
+                                    {
+                                        test += '점검결과: 부적합\n';
+
+                                        if(item.IMPV_YN == 'Y')
+                                        {
+                                            test += '부적합개선여부: 개선완료\n';
+                                        }
+                                        else
+                                        {
+                                            test += '부적합개선여부: 미개선\n';
+                                        }
+
+                                        test += '부적합 시설: ' + item.CHK_ITM_NM + '\n';
+                                    }
+                                }
+                                else
+                                {
+                                    test += '미점검사유: ';
+                                    if(item.UCHK_RSN == '1')
+                                    {
+                                        test += '공가\n';
+                                    }
+                                    else if(item.UCHK_RSN == '2')
+                                    {
+                                        test += '미입주\n';
+                                    }
+                                    else if(item.UCHK_RSN == '3')
+                                    {
+                                        test += '미사용\n';
+                                    }
+                                    else if(item.UCHK_RSN == '4')
+                                    {
+                                        test += '중폐지\n';
+                                    }
+                                    else if(item.UCHK_RSN == '5')
+                                    {
+                                        test += '이사\n';
+                                    }
+                                    else if(item.UCHK_RSN == '6')
+                                    {
+                                        test += '체납중지\n';
+                                    }
+                                    else if(item.UCHK_RSN == '7')
+                                    {
+                                        test += '요청중지\n';
+                                    }
+                                    else if(item.UCHK_RSN == '8')
+                                    {
+                                        test += '철거\n';
+                                    }
+                                    else if(item.UCHK_RSN == '9')
+                                    {
+                                        test += '점검거부\n';
+                                    }
+                                }
+
+                                outputText.push(test + (i == dialog.data.list.length - 1 ? '' : '\n'));
+                            }
+
+                            dialog.output[0].text = outputText.join('\n');
+                            callback();
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                            callback();
+                        }
+                    }
+                });
+            }
+        });
+
+    bot.setTask('getSafetyCheckMonth',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'MS_IF_CM0013';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                ];
+                ////options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
                     }
                     else
                     {
-                        errorHandler(dialog, body);
-                        callback();
-                    }
-                }
-            });
-        }
-    });
-
-    bot.setTask('getSafetyCheckMonth',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'MS_IF_CM0013';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-            ];
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                        if(!body)
                         {
-                            dialog.output[0].text = body.E_RETMSG;
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            if(body.E_RETMSG.indexOf('정보 없음') != -1)
+                            {
+                                dialog.output[0].text = body.E_RETMSG;
+                            }
+                            else
+                            {
+                                errorHandler(dialog, body);
+                            }
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(JSON.stringify(body, null, 4));
+
+                            var msg = '';
+
+                            if(body.E_FCNTMM != '00')
+                            {
+                                msg += body.E_FCNTMM + '월';
+                            }
+
+                            if(body.E_SCNTMM != '00')
+                            {
+                                if(msg)
+                                {
+                                    msg += ', ';
+                                }
+
+                                msg += body.E_SCNTMM + '월';
+                            }
+
+                            if(!msg.length)
+                            {
+                                msg = '없음';
+                            }
+                            dialog.data.month = msg;
+                            dialog.data.gasType = body.E_AKLASSE;
                         }
                         else
                         {
                             errorHandler(dialog, body);
                         }
+
                     }
-                    else if(body.E_RETCD == 'S')
+                    callback();
+
+                });
+            }
+        });
+
+    bot.setTask('sendNotiTalk',
+        {
+            action: function (dialog, context, callback)
+            {
+                callback();
+            }
+        });
+
+    bot.setTask('searchCustomerCenter',
+        {
+            action: function (dialog, context, callback)
+            {
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CENTER_INFO';
+                options.json.param = [
+                    { key: 'I_DONG', val: context.session.centerAddress}
+                ];
+                options.json.isTable = true;
+                ////options.timeout = timeout;
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
                     {
-                        console.log(JSON.stringify(body, null, 4));
-                        
-                        var msg = '';
-
-                        if(body.E_FCNTMM != '00')
-                        {
-                            msg += body.E_FCNTMM + '월';
-                        }
-
-                        if(body.E_SCNTMM != '00')
-                        {
-                            if(msg)
-                            {
-                                msg += ', ';
-                            }
-
-                            msg += body.E_SCNTMM + '월';
-                        }
-
-                        if(!msg.length)
-                        {
-                            msg = '없음';
-                        }
-                        dialog.data.month = msg;
-                        dialog.data.gasType = body.E_AKLASSE;
+                        errorHandler(dialog, err);
                     }
                     else
                     {
-                        errorHandler(dialog, body);
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(JSON.stringify(body, null, 4));
+                            context.session.centerAddressList = body.data.E_TAB;
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+
                     }
+                    callback();
 
-                }
-                callback();
-
-            });
-        }
-    });
-
-    bot.setTask('sendNotiTalk',
-    {
-        action: function (dialog, context, callback)
-        {
-            callback();
-        }
-    });
-
-    bot.setTask('searchCustomerCenter',
-    {
-        action: function (dialog, context, callback)
-        {
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_CENTER_INFO';
-            options.json.param = [
-                { key: 'I_DONG', val: context.session.centerAddress}
-            ];
-            options.json.isTable = true;
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(JSON.stringify(body, null, 4));
-                        context.session.centerAddressList = body.data.E_TAB;
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-        }
-    });
+                });
+            }
+        });
 
     bot.setTask('authConfirm',
-    {
-        action: function (dialog, context, callback)
         {
-            for(var i = 0; i < context.session.customerList.length; i ++)
+            action: function (dialog, context, callback)
             {
-                context.session.customerList[i]['mobile'] = context.session.customerMobile;
+                for(var i = 0; i < context.session.customerList.length; i ++)
+                {
+                    context.session.customerList[i]['mobile'] = context.session.customerMobile;
+                }
+                context.session.auth = true;
+                callback();
             }
-            context.session.auth = true;
-            callback();
-        }
-    });
+        });
 
     bot.setTask('payByARS',
         {
@@ -1549,7 +1597,7 @@ module.exports = function(bot)
             }
         });
 
-    bot.setTask('selfRFC',
+    bot.setTask('payByQR',
         {
             action: function (dialog, context, callback)
             {
@@ -1558,11 +1606,35 @@ module.exports = function(bot)
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
-                options.json.name = 'ZCS_KKO_MESSAGE_SEND';
-                options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_HPNUM', val: curCustomer.mobile }
-                ];
+                options.json.name = 'ZCS_QR_PAYMENT';
+                // options.json.param = [
+                //     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                //     { key: 'I_HPNUM', val: curCustomer.mobile },
+                //     { key : "I_BILLMON", val: context.session.totalSelectedMonth},
+                //     { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
+                // ];
+                // options.json.param = [
+                //     { key: 'I_VKONT', val: '106141397'},
+                //     { key: 'I_HPNUM', val: '01055948807' },
+                //     { key: "I_BILLMON", val: 201803},
+                //     { key: 'I_BETRWP', val: '83020'}
+                // ];
+
+                // options.json.param = [
+                //     { key: 'I_VKONT', val: '105616488'},
+                //     { key: 'I_HPNUM', val: '01036623810' },
+                //     { key: "I_BILLMON", val: 201804},
+                //     { key: 'I_BETRWP', val: '101020'}
+                // ];
+
+                // options.json.param = [
+                //     { key: 'I_VKONT', val: '303580417'},
+                //     { key: 'I_HPNUM', val: '01045044720' },
+                //     { key: "I_BILLMON", val: 201802},
+                //     { key: 'I_BETRWP', val: '0'}
+                // ];
+
+                ////options.timeout = timeout;
 
                 request.post(options, function(err, response, body)
                 {
@@ -1576,14 +1648,30 @@ module.exports = function(bot)
                         if(!body)
                         {
                             errorHandler(dialog, null);
+                            return callback();
                         }
-                        else if(body.E_RETCD == 'E')
+
+                        if(body.E_RETCD == 'E')
                         {
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log('success => ' + JSON.stringify(body));
+                            var url = body.E_URL;
+                            dialog.output[0].text = body.E_RETMG + '\n자세히 보기를 클릭해주세요.';
+                            dialog.output[0].buttons = [
+                                {
+                                    text: '자세히 보기',
+                                    url: url
+                                },
+                                {
+                                    text: '이전'
+                                },
+                                {
+                                    text: '처음'
+                                }
+                            ];
+                            console.log(body);
                         }
                         else
                         {
@@ -1597,208 +1685,120 @@ module.exports = function(bot)
             }
         });
 
-    bot.setTask('payByQR',
-    {
-        action: function (dialog, context, callback)
+    bot.setTask('cancelAutoTransfer',
         {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_QR_PAYMENT';
-            // options.json.param = [
-            //     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-            //     { key: 'I_HPNUM', val: curCustomer.mobile },
-            //     { key : "I_BILLMON", val: context.session.totalSelectedMonth},
-            //     { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
-            // ];
-            // options.json.param = [
-            //     { key: 'I_VKONT', val: '106141397'},
-            //     { key: 'I_HPNUM', val: '01055948807' },
-            //     { key: "I_BILLMON", val: 201803},
-            //     { key: 'I_BETRWP', val: '83020'}
-            // ];
-
-            // options.json.param = [
-            //     { key: 'I_VKONT', val: '105616488'},
-            //     { key: 'I_HPNUM', val: '01036623810' },
-            //     { key: "I_BILLMON", val: 201804},
-            //     { key: 'I_BETRWP', val: '101020'}
-            // ];
-
-            // options.json.param = [
-            //     { key: 'I_VKONT', val: '303580417'},
-            //     { key: 'I_HPNUM', val: '01045044720' },
-            //     { key: "I_BILLMON", val: 201802},
-            //     { key: 'I_BETRWP', val: '0'}
-            // ];
-
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
+            action: function (dialog, context, callback)
             {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
+                var curCustomer = context.session.curCustomer;
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_EXPIRE_SO';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                ];
+                ////options.timeout = timeout;
 
-                    if(!body)
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
                     {
-                        errorHandler(dialog, null);
-                        return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        var url = body.E_URL;
-                        dialog.output[0].text = body.E_RETMG + '\n자세히 보기를 클릭해주세요.';
-                        dialog.output[0].buttons = [
-                            {
-                                text: '자세히 보기',
-                                url: url
-                            },
-                            {
-                                text: '이전'
-                            },
-                            {
-                                text: '처음'
-                            }
-                        ];
-                        console.log(body);
+                        errorHandler(dialog, err);
                     }
                     else
                     {
-                        errorHandler(dialog, body);
+
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body)
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+
                     }
+                    callback();
 
-                }
-                callback();
+                });
 
-            });
-        }
-    });
-
-    bot.setTask('cancelAutoTransfer',
-    {
-        action: function (dialog, context, callback)
-        {
-            var curCustomer = context.session.curCustomer;
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_EXPIRE_SO';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-            ];
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
-
-                    if(body.E_RETCD == 'E')
-                    {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body)
-                    }else {
-                        errorHandler(dialog, body);
-                    }
-
-                }
-                callback();
-
-            });
-
-        }
-    });
+            }
+        });
 
     bot.setTask('testTask',
-    {
-        paramDefs: [
-            { type: 'mobileType', description: '핸드폰번호를 입력해주세요' }
-        ],
-        action: function (dialog, context, callback)
         {
-            callback(true, dialog.userInput.text);
-        }
-    });
-
-	bot.setTask('logout', 
-	{
-		action: function (dialog, context, callback)
-		{
-		    context.session.curCustomer = undefined;
-		    context.session.customerName = undefined;
-		    context.session.customerMobile = undefined;
-		    context.session.customerBirth = undefined;
-
-		    context.session.paymentHistory = undefined;
-		    context.session.paymentDetail = undefined;
-		    context.session.noticeHistory = undefined;
-		    context.session.noticeDetail = undefined;
-		    context.session.nonpaymentHistory = undefined;
-
-		    context.session.selectedBank = undefined;
-		    context.session.selectedNonpayment = undefined;
-		    context.session.selectedMonth = undefined;
-		    context.session.totalSelectedNonpayment = undefined;
-
-		    context.session.auth = undefined;
-
-		    callback();
-		}
-	});
-
-	bot.setTask('selfMeterReading', 
-	{
-		action: function (dialog, context, callback)
-		{
-            var VKONT = context.session.curCustomer.VKONT;
-            var secret    = '2003'; //make this your secret!!
-
-            var exec = require('child_process').exec;
-            var compileit = 'java -jar ' + path.resolve('./external_modules/sam_encode.jar') + ' ' + VKONT + ' ' + secret;
-
-            exec(compileit, function(error, stdout, stderr)
+            paramDefs: [
+                { type: 'mobileType', description: '핸드폰번호를 입력해주세요' }
+            ],
+            action: function (dialog, context, callback)
             {
-                var hash = stdout.trim();
-                var url = 'https://billgates-web.kakao.com/r/selfMeter/tms/2003?billerUserKey=' + VKONT + '&hashCode=' + hash + '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
-                dialog.output[0].text = '자세히 보기를 클릭해주세요.';
-                dialog.output[0].buttons = [
-                    {
-                        text: '자세히 보기',
-                        url: url
-                    },
-                    {
-                        text: '이전'
-                    },
-                    {
-                        text: '처음'
-                    }
-                ];
+                callback(true, dialog.userInput.text);
+            }
+        });
+
+    bot.setTask('logout',
+        {
+            action: function (dialog, context, callback)
+            {
+                context.session.curCustomer = '';
+                context.session.customerName = '';
+                context.session.customerMobile = '';
+                context.session.customerBirth = '';
+
+                context.session.paymentHistory = '';
+                context.session.paymentDetail = '';
+                context.session.noticeHistory = ''
+                context.session.noticeDetail = '';
+                context.session.nonpaymentHistory = '';
+
+                context.session.selectedBank = '';
+                context.session.selectedNonpayment = '';
+                context.session.selectedMonth = '';
+                context.session.totalSelectedNonpayment = '';
+
+                context.session.auth = '';
+
                 callback();
-            });
-		}
-	});
+            }
+        });
+
+    bot.setTask('selfMeterReading',
+        {
+            action: function (dialog, context, callback)
+            {
+                var VKONT = context.session.curCustomer.VKONT;
+                var secret    = '2003'; //make this your secret!!
+
+                var exec = require('child_process').exec;
+                var compileit = 'java -jar ' + path.resolve('./external_modules/sam_encode.jar') + ' ' + VKONT + ' ' + secret;
+
+                exec(compileit, function(error, stdout, stderr)
+                {
+                    var hash = stdout.trim();
+                    var url = 'https://billgates-web.kakao.com/r/selfMeter/tms/2003?billerUserKey=' + VKONT + '&hashCode=' + hash + '&UTM_SOURCE=sclgas&UTM_MEDIUM=lms&UTM_CAMPAIGN=meter';
+                    dialog.output[0].text = '자세히 보기를 클릭해주세요.';
+                    dialog.output[0].buttons = [
+                        {
+                            text: '자세히 보기',
+                            url: url
+                        },
+                        {
+                            text: '이전'
+                        },
+                        {
+                            text: '처음'
+                        }
+                    ];
+                    callback();
+                });
+            }
+        });
 };
