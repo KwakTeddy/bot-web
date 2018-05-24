@@ -1700,23 +1700,23 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-		    context.session.curCustomer = undefined;
-		    context.session.customerName = undefined;
-		    context.session.customerMobile = undefined;
-		    context.session.customerBirth = undefined;
+		    context.session.curCustomer = '';
+		    context.session.customerName = '';
+		    context.session.customerMobile = '';
+		    context.session.customerBirth = '';
 
-		    context.session.paymentHistory = undefined;
-		    context.session.paymentDetail = undefined;
-		    context.session.noticeHistory = undefined;
-		    context.session.noticeDetail = undefined;
-		    context.session.nonpaymentHistory = undefined;
+		    context.session.paymentHistory = '';
+		    context.session.paymentDetail = '';
+		    context.session.noticeHistory = ''
+		    context.session.noticeDetail = '';
+		    context.session.nonpaymentHistory = '';
 
-		    context.session.selectedBank = undefined;
-		    context.session.selectedNonpayment = undefined;
-		    context.session.selectedMonth = undefined;
-		    context.session.totalSelectedNonpayment = undefined;
+		    context.session.selectedBank = '';
+		    context.session.selectedNonpayment = '';
+		    context.session.selectedMonth = '';
+		    context.session.totalSelectedNonpayment = '';
 
-		    context.session.auth = undefined;
+		    context.session.auth = '';
 
 		    callback();
 		}
