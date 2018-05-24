@@ -1498,56 +1498,104 @@ module.exports = function(bot)
     });
 
     bot.setTask('payByARS',
-    {
-        action: function (dialog, context, callback)
         {
-            var curCustomer = context.session.curCustomer;
-
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_ARS_PAYMENT';
-            options.json.param = [
-                { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                { key: 'I_HPNUM', val: curCustomer.mobile },
-                { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
-            ];
-            ////options.timeout = timeout;
-
-            request.post(options, function(err, response, body)
+            action: function (dialog, context, callback)
             {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
+                var curCustomer = context.session.curCustomer;
 
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                       return callback();
-                    }
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_ARS_PAYMENT';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_HPNUM', val: curCustomer.mobile },
+                    { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
+                ];
+                ////options.timeout = timeout;
 
-                    if(body.E_RETCD == 'E')
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
                     {
-                        errorHandler(dialog, body);
-                    }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        console.log(body)
+                        errorHandler(dialog, err);
                     }
                     else
                     {
-                        errorHandler(dialog, body);
+
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body)
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+
                     }
+                    callback();
 
-                }
-                callback();
+                });
+            }
+        });
 
-            });
-        }
-    });
+    bot.setTask('selfRFC',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_KKO_MESSAGE_SEND';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                        }
+                        else if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log('success => ' + JSON.stringify(body));
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
+            }
+        });
 
     bot.setTask('payByQR',
     {
