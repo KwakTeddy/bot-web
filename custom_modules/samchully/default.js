@@ -416,7 +416,7 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_KKO_MESSAGE_SEND';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                    { key: 'I_HPNO', val: curCustomer.mobile }
                 ];
 
                 request.post(options, function(err, response, body)
