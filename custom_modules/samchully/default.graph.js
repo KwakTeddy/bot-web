@@ -1302,11 +1302,15 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "자세히 보기를 클릭해주세요.",
+                                "text": "정상 발송 되었습니다.",
                                 "buttons": [
                                     {
                                         "url": "",
-                                        "text": "자세히 보기"
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
                                     }
                                 ]
                             }
