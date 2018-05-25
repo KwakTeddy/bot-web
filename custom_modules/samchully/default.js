@@ -163,53 +163,7 @@ module.exports = function(bot)
             }
         });
 
-    bot.setTask('selfRFC',
-        {
-            action: function (dialog, context, callback)
-            {
-                var curCustomer = context.session.curCustomer;
 
-                var options = {};
-                options.url = 'http://sam.moneybrain.ai:3000/api';
-                options.json = {};
-                options.json.name = 'ZCS_KKO_MESSAGE_SEND';
-                options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_HPNUM', val: curCustomer.mobile }
-                ];
-
-                request.post(options, function(err, response, body)
-                {
-                    if(err)
-                    {
-                        errorHandler(dialog, err);
-                    }
-                    else
-                    {
-
-                        if(!body)
-                        {
-                            errorHandler(dialog, null);
-                        }
-                        else if(body.E_RETCD == 'E')
-                        {
-                            errorHandler(dialog, body);
-                        }
-                        else if(body.E_RETCD == 'S')
-                        {
-                            console.log('success => ' + JSON.stringify(body));
-                        }
-                        else
-                        {
-                            errorHandler(dialog, body);
-                        }
-
-                    }
-                    callback();
-
-                });
-            }
-        });
 
     bot.setType('saveCustomerBirth',
         {
@@ -447,6 +401,53 @@ module.exports = function(bot)
 
                 callback();
 
+            }
+        });
+
+    bot.setTask('selfRFC',
+        {
+            action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_KKO_MESSAGE_SEND';
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                        }
+                        else if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log('success => ' + JSON.stringify(body));
+                        }
+                        else
+                        {
+                            errorHandler(dialog, body);
+                        }
+
+                    }
+                    callback();
+
+                });
             }
         });
 

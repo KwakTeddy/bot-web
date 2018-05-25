@@ -1314,7 +1314,7 @@ var dialogs = [
                         "id": "default10",
                         "children": [],
                         "task": {
-                            "name": "selfMeterReading"
+                            "name": "selfRFC"
                         }
                     },
                     {
