@@ -48,6 +48,7 @@ module.exports = function(bot)
 
     var errorHandler = function (dialog, errData)
     {
+        console.log('comes error handler')
         console.log(JSON.stringify(errData, null, 4));
 
         if(!errData)
