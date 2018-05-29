@@ -58,7 +58,7 @@ module.exports = function(bot)
             return
         }
 
-        if(errData.error.msg == "CONNECTIONERR")
+        if(errData.error && errData.error.msg && errData.error.msg == "CONNECTIONERR")
         {
             dialog.output[0].text = '[에러]\n\n에러 메세지 : "시스템이 불안정하여 접속 오류가 발생되었습니다.\n\n다시한번 시도를 부탁드립니다."';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
