@@ -57,6 +57,12 @@ module.exports = function(bot)
             return
         }
 
+        if(errData.code == "CONNECTIONERR")
+        {
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "시스템이 불안정하여 접속 오류가 발생되었습니다.\n\n다시한번 시도를 부탁드립니다."';
+            dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
+        }
+
 
         if(errData.E_RETCD)
         {
@@ -968,7 +974,6 @@ module.exports = function(bot)
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
                     { key: 'I_HPNUM', val: curCustomer.mobile }
                 ];
-                //options.timeout = timeout;
 
                 request.post(options, function(err, response, body)
                 {
