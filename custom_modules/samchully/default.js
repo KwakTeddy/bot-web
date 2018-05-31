@@ -6,7 +6,6 @@ module.exports = function(bot)
 {
 
     //Variable Area
-
     var monthIndex =
     {
         3 : 1,
@@ -32,7 +31,6 @@ module.exports = function(bot)
     };
 
     var addDefaultButton = function (dialog, onlyStart) {
-
         if(!dialog.output[0].buttons) dialog.output[0].buttons =[];
 
         if(onlyStart)
@@ -48,7 +46,6 @@ module.exports = function(bot)
 
     var errorHandler = function (dialog, errData)
     {
-        console.log('comes error handler')
         console.log(JSON.stringify(errData, null, 4));
 
         if(!errData)
@@ -58,12 +55,17 @@ module.exports = function(bot)
             return
         }
 
-        if(errData.error && errData.error.msg && errData.error.msg == "CONNECTIONERR")
+        if(errData.msg && errData.msg == "CONNECTIONERR")
         {
             dialog.output[0].text = '[에러]\n\n에러 메세지 : "시스템이 불안정하여 접속 오류가 발생되었습니다.\n\n다시한번 시도를 부탁드립니다."';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
         }
 
+        if(errData.msg && errData.msg == "access_error")
+        {
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "자가검침 기간이 아닙니다.\n\n지정된 검침기간에만 자가검침값 등록이 가능합니다.\n\n검침 등록 안내 메시지를 받으신 후에 재시도를 부탁드립니다."';
+            dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+        }
 
         if(errData.E_RETCD)
         {
@@ -428,15 +430,16 @@ module.exports = function(bot)
 
                 request.post(options, function(err, response, body)
                 {
+                    var replace_error_msg = { "msg": "access_error", "E_RETCD": "E", "E_RETMG": "" };
                     if(err)
                     {
-                        errorHandler(dialog, err);
+                        errorHandler(dialog, replace_error_msg);
                     }
                     else
                     {
                         if(!body)
                         {
-                            errorHandler(dialog, null);
+                            errorHandler(dialog, replace_error_msg);
                         }
                         else if(body.E_RETCD == 'E')
                         {
@@ -444,11 +447,10 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log('success => ' + JSON.stringify(body));
                         }
                         else
                         {
-                            errorHandler(dialog, body);
+                            errorHandler(dialog, replace_error_msg);
                         }
 
                     }
@@ -672,6 +674,10 @@ module.exports = function(bot)
                                     data[i].FAEDN = dateFormatChange(data[i].FAEDN);
 
                                 }
+
+                                data.sort(function(a, b){
+                                    return new Date(a.slice(0,4),a.slice(4),1) - new Date(b.slice(0,4),b.slice(4),1)
+                                });
 
                                 context.session.nonpaymentHistory = data;
                             }

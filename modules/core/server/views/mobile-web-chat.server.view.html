@@ -420,7 +420,10 @@
                     var output = this.innerText;
                     that.send(output);
 
-                    e.preventDefault();
+                    console.log(e.target.href);
+                    if(e.target.href.indexOf('#')>=0){
+                        e.preventDefault();
+                    }
                     e.stopPropagation();
                 });
             }

@@ -105,11 +105,9 @@ var dialogs = [
                                                 "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
                                                 "buttons": [
                                                     {
-                                                        "url": "",
                                                         "text": "네"
                                                     },
                                                     {
-                                                        "url": "",
                                                         "text": "아니요"
                                                     }
                                                 ]
@@ -693,7 +691,9 @@ var dialogs = [
                                                         "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다.",
                                                         "buttons": [
                                                             {
-                                                                "url": "",
+                                                                "text": "이전"
+                                                            },
+                                                            {
                                                                 "text": "처음"
                                                             }
                                                         ]
@@ -742,7 +742,15 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n미납금액 목록입니다.\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
+                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n미납금액 목록입니다.\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                        "buttons": [
+                                            {
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "text": "처음"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "id": "default23",
@@ -1005,7 +1013,9 @@ var dialogs = [
                                                 "text": "카카오페이 고지 신청 알림톡을 송부해드렸습니다.",
                                                 "buttons": [
                                                     {
-                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
                                                         "text": "처음"
                                                     }
                                                 ]
@@ -1038,7 +1048,9 @@ var dialogs = [
                                                 "text": "정상적으로 처리되셨습니다.",
                                                 "buttons": [
                                                     {
-                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
                                                         "text": "처음"
                                                     }
                                                 ]
@@ -1340,10 +1352,9 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "현재 고지방법 : +dialog.curNoticeMethod+",
+                                "text": "고객님의 고지방법 '+dialog.curNoticeMethod+'으로 재발행이 완료되었습니다.",
                                 "buttons": [
                                     {
-                                        "url": "",
                                         "text": "처음"
                                     }
                                 ]
@@ -1900,23 +1911,18 @@ var dialogs = [
                 "text": "원하시는 메뉴를 선택해주세요.",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "1. 도시가스 이용가이드"
                     },
                     {
-                        "url": "",
                         "text": "2. 자주 묻는 질문"
                     },
                     {
-                        "url": "",
                         "text": "3. 관할 고객센터 조회"
                     },
                     {
-                        "url": "",
                         "text": "이전"
                     },
                     {
-                        "url": "",
                         "text": "처음"
                     }
                 ]
@@ -2456,7 +2462,10 @@ var dialogs = [
                     }
                 ]
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     },
     {
         "name": "로그아웃",
@@ -2630,7 +2639,32 @@ var commonDialogs = [
         ],
         "task": {
             "name": "addButton"
-        }
+        },
+        "children": []
+    },
+    {
+        "id": "reTry",
+        "name": "재시도",
+        "input": [
+            {
+                "text": {
+                    "raw": "retry",
+                    "nlp": "retry"
+                }
+            },
+            {
+                "text": {
+                    "raw": "재시도",
+                    "nlp": "재시 도"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
     }
 ];
 
