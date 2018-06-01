@@ -15,6 +15,8 @@ module.exports = function(bot)
 
     var bankArr = ['기업은행', '국민은행', '농협', '우리은행', '신한은행', '하나은행'];
 
+    var channel = '';
+
     var mobileFormatChange = function (mobile) {
         return mobile.replace(/-/g, '');
     };
@@ -344,7 +346,8 @@ module.exports = function(bot)
                 options.json.param = [
                     { key: 'I_NAME', val: context.session.customerName },
                     { key: 'I_BIRTH', val: context.session.customerBirth },
-                    { key: 'I_PHONE', val: context.session.customerMobile }
+                    { key: 'I_PHONE', val: context.session.customerMobile },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 options.json.isTable = true;
                 ////options.timeout = timeout;
@@ -425,7 +428,8 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_KKO_MESSAGE_SEND';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_HPNO', val: curCustomer.mobile }
+                    { key: 'I_HPNO', val: curCustomer.mobile },
+                    { key: 'channel', val: context.channel.name }
                 ];
 
                 request.post(options, function(err, response, body)
@@ -473,7 +477,8 @@ module.exports = function(bot)
                 options.json.name = 'ZBI_MS_GOJI_LIST';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_GUBUN', val: monthIdx }
+                    { key: 'I_GUBUN', val: monthIdx },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 options.json.isTable = true;
                 ////options.timeout = timeout;
@@ -511,7 +516,6 @@ module.exports = function(bot)
                                 dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                             }
                             context.session.noticeHistory = data;
-                            console.log(context.session.noticeHistory);
                             addDefaultButton(dialog);
 
                         }else {
@@ -533,7 +537,6 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                console.log('노티스 히스토리 : ', context.session.noticeHistory);
                 for(var i = 0; i < context.session.noticeHistory.length; i++)
                 {
                     if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
@@ -566,7 +569,8 @@ module.exports = function(bot)
                 options.json.name = 'ZFC_MS_PAYMENT';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_GUBUN', val: monthIdx }
+                    { key: 'I_GUBUN', val: monthIdx },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 options.json.isTable = true;
                 ////options.timeout = timeout;
@@ -638,7 +642,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_CHECK_NOTI_AMT';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 options.json.isTable = true;
                 ////options.timeout = timeout;
@@ -730,7 +735,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_CB_COMMON_ACCINFO';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
@@ -821,7 +827,8 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_CB_COMMON_ACCCRE';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                    { key: 'I_BANKK', val: selectedBank }
+                    { key: 'I_BANKK', val: selectedBank },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
@@ -879,7 +886,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_GOJI_TYPE_INFO';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
@@ -930,7 +938,8 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_GOJI_KKOPAY_REQUEST';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                    { key: 'I_HPNUM', val: curCustomer.mobile },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
@@ -979,7 +988,8 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_GOJI_LMS_REQUEST';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                    { key: 'I_HPNUM', val: curCustomer.mobile }
+                    { key: 'I_HPNUM', val: curCustomer.mobile },
+                    { key: 'channel', val: context.channel.name }
                 ];
 
                 request.post(options, function(err, response, body)
@@ -1027,7 +1037,8 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_GOJI_EMAIL_REQUEST';
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                    { key: 'I_EMAIL', val: curCustomer.email }
+                    { key: 'I_EMAIL', val: curCustomer.email },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 //options.timeout = timeout;
 
@@ -1073,7 +1084,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_GOJI_CANCEL';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 //options.timeout = timeout;
 
@@ -1122,7 +1134,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZBI_MS_GOJI_RESEND';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 //options.timeout = timeout;
 
@@ -1177,7 +1190,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_GET_PAYMENT_METHOD';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'channel', val: context.channel.name }
                 ];
                 //options.timeout = timeout;
 
@@ -1237,7 +1251,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'MS_IF_CM0014';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 options.json.isTable = true;
                 //options.timeout = timeout;
@@ -1421,7 +1436,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'MS_IF_CM0013';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
@@ -1507,7 +1523,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_CENTER_INFO';
                 options.json.param = [
-                    { key: 'I_DONG', val: context.session.centerAddress}
+                    { key: 'I_DONG', val: context.session.centerAddress},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 options.json.isTable = true;
                 ////options.timeout = timeout;
@@ -1571,7 +1588,8 @@ module.exports = function(bot)
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                     { key: 'I_HPNUM', val: curCustomer.mobile },
-                    { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
+                    { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
@@ -1640,12 +1658,9 @@ module.exports = function(bot)
                 //     { key: 'I_BETRWP', val: '101020'}
                 // ];
 
-                // options.json.param = [
-                //     { key: 'I_VKONT', val: '303580417'},
-                //     { key: 'I_HPNUM', val: '01045044720' },
-                //     { key: "I_BILLMON", val: 201802},
-                //     { key: 'I_BETRWP', val: '0'}
-                // ];
+                options.json.param = [
+                    { key: 'channel', val: context.channel.name }
+                ];
 
                 ////options.timeout = timeout;
 
@@ -1708,7 +1723,8 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_EXPIRE_SO';
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'channel', val: context.channel.name }
                 ];
                 ////options.timeout = timeout;
 
