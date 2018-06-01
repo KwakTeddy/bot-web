@@ -17,7 +17,8 @@ app/tests/coverage/
 .bower-*/
 .idea/
 coverage/
-
+custom_modules/
+custom_modules/*
 
 # MEAN.js app and assets
 # ======================
