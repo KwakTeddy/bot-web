@@ -24,7 +24,7 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "질문2. 전자 청구서를 사용하지 않는 가장 큰 이유는 무엇인가요?  \n\n1. 신청 방법을 몰라서\n2. 신청 방법이 번거로워서\n3. 종이 청구서가 편해서\n4. 전자 청구서를 믿을 수 없어서\n5. 지로 납부를 하고 싶어서\n\n(해당하는 숫자를 입력해주세요)"
+                "text": "질문2. 전자 청구서를 사용하지 않는 가장 큰 이유는 무엇인가요?  \n\n1. 신청 방법을 몰라서\n2. 신청 방법이 번거로워서\n3. 종이 청구서가 편해서\n4. 전자 청구서를 믿을 수 없어서\n5. 지로 납부를 하고 싶어서"
             }
         ],
         "id": "default0",
@@ -41,7 +41,11 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                         "text": "[기초설문]\n질문1. 고객님의 나이대에 해당하는 보기 숫자를 입력해주세요.\n\n1. 19세이하\n2. 20대\n3. 30대\n4. 40대\n5. 50대\n6. 60대이상\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                        "text": "[기초설문]\n질문1. 고객님의 나이대에 해당하는 보기 숫자를 입력해주세요.\n\n1. 19세이하\n2. 20대\n3. 30대\n4. 40대\n5. 50대\n6. 60대이상"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
                     }
                 ],
                 "id": "default2",
@@ -58,7 +62,11 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                                 "text": "질문2. 고객님의 성별에 해당하는 보기 숫자를 입력해주세요.\n\n1. 남성\n2. 여성\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                                "text": "질문2. 고객님의 성별에 해당하는 보기 숫자를 입력해주세요.\n\n1. 남성\n2. 여성"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
                             }
                         ],
                         "id": "default3",
@@ -75,7 +83,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "설문에 참여해 주셔서 감사합니다."
+                                        "text": "대화형 SMS 설문에 참여해 주셔서 감사합니다.\n추첨을 통해 50분께 문화상품권을 보내드리겠습니다."
                                     }
                                 ],
                                 "id": "default4"
@@ -111,7 +119,11 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                 "text": "삼천리도시가스는 고객님께서 더 편리하게 요금을 확인하실 수 있도록 알림톡, 카카오페이, 문자 등 다양한 전자 청구서를 발행하고 있습니다. 청구서 분실 및 도착 지연 없는 전자 청구서는 고객센터(1544-3002)에서 신청하실 수 있습니다. \n\n질문 2. 어떤 조건이 만족되면 전자 청구서를 사용하실 의사가 있으신가요? \n\n1. 현재도 사용 의사 있음\n2. 더 간편한 가입 방법\n3. 더 많은 고객 리워드 (경품, 캐시백 등)\n4. 다양한 결제수단 제공 (카드, 계좌 등)\n5. 기타 (주관식으로 직접 입력)\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                "text": "삼천리도시가스는 고객님께서 더 편리하게 요금을 확인하실 수 있도록 알림톡, 카카오페이, 문자 등 다양한 전자 청구서를 발행하고 있습니다. 청구서 분실 및 도착 지연 없는 전자 청구서는 고객센터(1544-3002)에서 신청하실 수 있습니다. \n\n질문 2. 어떤 조건이 만족되면 전자 청구서를 사용하실 의사가 있으신가요? \n\n1. 현재도 사용 의사 있음\n2. 더 간편한 가입 방법\n3. 더 많은 고객 리워드 (경품, 캐시백 등)\n4. 다양한 결제수단 제공 (카드, 계좌 등)\n5. 기타 (주관식으로 직접 입력)"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
             }
         ],
         "id": "default1",
@@ -146,7 +158,11 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                                 "text": "[기초설문]\n질문1. 고객님의 나이대에 해당하는 보기 숫자를 입력해주세요.\n\n1. 19세이하\n2. 20대\n3. 30대\n4. 40대\n5. 50대\n6. 60대이상\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                                "text": "[기초설문]\n질문1. 고객님의 나이대에 해당하는 보기 숫자를 입력해주세요.\n\n1. 19세이하\n2. 20대\n3. 30대\n4. 40대\n5. 50대\n6. 60대이상"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
                             }
                         ],
                         "id": "default2-Clone-Clone",
@@ -163,7 +179,11 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                                         "text": "질문2. 고객님의 성별에 해당하는 보기 숫자를 입력해주세요.\n\n1. 남성\n2. 여성\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                                        "text": "질문2. 고객님의 성별에 해당하는 보기 숫자를 입력해주세요.\n\n1. 남성\n2. 여성"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
                                     }
                                 ],
                                 "id": "default3-Clone-Clone-Clone",
@@ -180,7 +200,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "설문에 참여해 주셔서 감사합니다."
+                                                "text": "대화형 SMS 설문에 참여해 주셔서 감사합니다.\n추첨을 통해 50분께 문화상품권을 보내드리겠습니다."
                                             }
                                         ],
                                         "id": "default4-Clone-Clone-Clone"
@@ -203,7 +223,11 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                         "text": "[기초설문]\n질문1. 고객님의 나이대에 해당하는 보기 숫자를 입력해주세요.\n\n1. 19세이하\n2. 20대\n3. 30대\n4. 40대\n5. 50대\n6. 60대이상\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                        "text": "[기초설문]\n질문1. 고객님의 나이대에 해당하는 보기 숫자를 입력해주세요.\n\n1. 19세이하\n2. 20대\n3. 30대\n4. 40대\n5. 50대\n6. 60대이상"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
                     }
                 ],
                 "id": "default2-Clone",
@@ -220,7 +244,11 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                                 "text": "질문2. 고객님의 성별에 해당하는 보기 숫자를 입력해주세요.\n\n1. 남성\n2. 여성\n\n(해당하는 숫자를 입력해주세요)"
+=======
+                                "text": "질문2. 고객님의 성별에 해당하는 보기 숫자를 입력해주세요.\n\n1. 남성\n2. 여성"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
                             }
                         ],
                         "id": "default3-Clone",
@@ -237,7 +265,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "설문에 참여해 주셔서 감사합니다."
+                                        "text": "대화형 SMS 설문에 참여해 주셔서 감사합니다.\n추첨을 통해 50분께 문화상품권을 보내드리겠습니다."
                                     }
                                 ],
                                 "id": "default4-Clone"
@@ -271,7 +299,11 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
+<<<<<<< HEAD:custom_modules/SK_survey/default.graph.js
                 "text": "[삼천리도시가스] \n가스 요금 전자 청구서에 대한 설문조사를 실시하고 있습니다. 끝까지 답해주신 분들 중 50분께 문화상품권을 보내드립니다.\n\n본 설문조사는 대화형 SMS 방식으로 진행되며, 고객님의 SMS 발송비용은 무료입니다.\n\n문의: 1544-3002\n무료수신거부: 080-xxx-xxxx\n\n[요금설문]\n질문1. 가스 요금 전자 청구서 (알림톡, 카카오페이 등) 가 있다는 것을 알고 계신가요?\n\n1. 예, 알고 있습니다\n2. 아니오, 모릅니다\n\n(예시. 알고 계시면 1을 입력)"
+=======
+                "text": "[삼천리도시가스] \n삼천리 인공지능 챗봇입니다. 가스 요금 전자 청구서에 대한 설문조사를 실시하고 있습니다. 끝까지 답해주신 분들 중 50분께 문화상품권을 보내드립니다.\n \n본 설문조사는 대화형 SMS 방식으로 진행되며, 고객님의 SMS 발송비용은 무료입니다.\n\n문의: 1544-3002\n무료수신거부: 080-xxx-xxxx\n\n[요금설문]\n질문1. 가스 요금 전자 청구서 (알림톡, 카카오페이 등) 가 있다는 것을 알고 계신가요?\n\n1. 예, 알고 있습니다\n2. 아니오, 모릅니다\n\n(예시. 알고 계시면 1을 입력)"
+>>>>>>> b0a2f85c2e9f569560ff4568e8df857f50b71e9e:custom_modules/samchully_survey/default.graph.js
             }
         ]
     },

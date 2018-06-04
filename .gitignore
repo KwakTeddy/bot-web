@@ -19,6 +19,7 @@ app/tests/coverage/
 coverage/
 custom_modules/
 custom_modules/*
+temp/
 
 # MEAN.js app and assets
 # ======================
