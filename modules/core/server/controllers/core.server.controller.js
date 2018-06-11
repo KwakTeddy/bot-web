@@ -15,6 +15,8 @@ var UserLog = mongoose.model('UserLog');
 var supportedLan = ["en", "ko", "zh", "ja"];
 var accepts = require('accepts');
 
+var urlExist = require('url-exists');
+
 exports.renderWebChatBot = function(req, res)
 {
     var Bot = mongoose.model('Bot');
@@ -46,7 +48,22 @@ exports.renderMobileChatBot = function(req, res)
             return res.status(500).send({ error: err });
         }
 
-        res.render('modules/core/server/views/mobile-web-chat', { botId: bot.id, botName: bot.name });
+        var param = {
+            botId: bot.id,
+            botName: bot.name,
+            image_url:'/modules/playchat/simulator/client/imgs/bot.png'
+        };
+
+        if(bot.imageFile && bot.imageFile != ''){
+            urlExist(bot.imageFile,function(e,r){
+                if(r){
+                    param.image_url = bot.imageFile;
+                }
+                res.render('modules/core/server/views/mobile-web-chat', param);
+            });
+        }else{
+            res.render('modules/core/server/views/mobile-web-chat', param);
+        }
     });
 };
 
