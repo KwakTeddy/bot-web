@@ -100,6 +100,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
 
             var template = angular.element('#botAnswerTemplate').html();
+            console.log(bot_image_url);
             template = template.replace('{botName}', chatbot.name).replace('{{bot_image_url}}', bot_image_url).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
             template = angular.element(template);
