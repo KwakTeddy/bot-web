@@ -635,17 +635,32 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
 
-                var curCustomer = context.session.curCustomer;
+                //var curCustomer = context.session.curCustomer;
+                //
+                //var options = {};
+                //options.url = 'http://sam.moneybrain.ai:3000/api';
+                //options.json = {};
+                //options.json.name = 'ZCS_CHECK_NOTI_AMT';
+                //options.json.channel = context.channel.name;
+                //options.json.param = [
+                //    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                //];
+                //options.json.isTable = true;
 
+
+                // for test
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
                 options.json.name = 'ZCS_CHECK_NOTI_AMT';
                 options.json.channel = context.channel.name;
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
+                    { key: 'I_VKONT', val: '000105937945'}
                 ];
                 options.json.isTable = true;
+
+
+
                 ////options.timeout = timeout;
 
                 request.post(options, function(err, response, body)
@@ -661,7 +676,6 @@ module.exports = function(bot)
                             errorHandler(dialog, null);
                             return callback();
                         }
-
                         if(body.E_RETCD == 'E')
                         {
                             errorHandler(dialog, body);
@@ -680,8 +694,11 @@ module.exports = function(bot)
 
                                 }
 
+                                console.log('response after============');
+                                console.log(data);
+
                                 data.sort(function(a, b){
-                                    return new Date(a.slice(0,4),a.slice(4),1) - new Date(b.slice(0,4),b.slice(4),1)
+                                    return a.FAEDN - b.FAEDN
                                 });
 
                                 context.session.nonpaymentHistory = data;
