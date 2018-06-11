@@ -224,11 +224,15 @@
         {
             padding: 0px 0px 6px 0px;
         }
+        .bot_img{
+            width:27px;
+            height:27px;
+        }
     </style>
 
     <script type="text/template" id="botAnswerTemplate">
         <div class="answer">
-            <img src="{{image_url}}">
+            <img class="bot_img" src="{{image_url}}">
             <div class="system-text">
                 <span class="name">{botName}</span>
                 <span class="time">{time}</span>
@@ -312,7 +316,7 @@
             var that = this;
             var output = data.output;
             var template = '<div class="answer">\n' +
-                '    <img src="{{image_url}}">\n' +
+                '    <img class="bot_img" src="{{image_url}}">\n' +
                 '    <div class="system-text">\n' +
                 '        <span class="name">{botName}</span>\n' +
                 '        <span class="time">{time}</span>\n' +

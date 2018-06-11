@@ -28,7 +28,9 @@ exports.renderWebChatBot = function(req, res)
             return res.status(500).send({ error: err });
         }
 
-        res.render('modules/core/server/views/web-chatbot', { botId: bot.id, botName: bot.name, botDescription: bot.description });
+        var param = { botId: bot.id, botName: bot.name, botDescription: bot.description };
+
+        res.render('modules/core/server/views/web-chatbot', param);
     });
 };
 
