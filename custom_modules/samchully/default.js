@@ -635,29 +635,29 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
 
-                //var curCustomer = context.session.curCustomer;
-                //
-                //var options = {};
-                //options.url = 'http://sam.moneybrain.ai:3000/api';
-                //options.json = {};
-                //options.json.name = 'ZCS_CHECK_NOTI_AMT';
-                //options.json.channel = context.channel.name;
-                //options.json.param = [
-                //    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
-                //];
-                //options.json.isTable = true;
+                var curCustomer = context.session.curCustomer;
 
-
-                // for test
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
                 options.json.name = 'ZCS_CHECK_NOTI_AMT';
                 options.json.channel = context.channel.name;
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000105937945'}
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
                 ];
                 options.json.isTable = true;
+
+
+                // for test
+                //var options = {};
+                //options.url = 'http://sam.moneybrain.ai:3000/api';
+                //options.json = {};
+                //options.json.name = 'ZCS_CHECK_NOTI_AMT';
+                //options.json.channel = context.channel.name;
+                //options.json.param = [
+                //    { key: 'I_VKONT', val: '000105937945'}
+                //];
+                //options.json.isTable = true;
 
 
 
@@ -693,9 +693,6 @@ module.exports = function(bot)
                                     data[i].FAEDN = dateFormatChange(data[i].FAEDN);
 
                                 }
-
-                                console.log('response after============');
-                                console.log(data);
 
                                 data.sort(function(a, b){
                                     return a.FAEDN - b.FAEDN
