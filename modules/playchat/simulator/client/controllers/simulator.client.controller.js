@@ -20,8 +20,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         $scope.shortCutHelp = false;
         $scope.isClosed = false;
 
-        $scope.bot_image_url = chatbot.imageFile && chatbot.imageFile != '' ? chatbot.imageFile : 'modules/playchat/simulator/client/imgs/bot.png';
-
+        var bot_image_url = chatbot.imageFile && chatbot.imageFile != '' ? chatbot.imageFile : 'modules/playchat/simulator/client/imgs/bot.png';
+        console.log('$scope.bot_image_url'+bot_image_url);
         $scope.$on('editChatbotInfo', function () {
             chatbot = $cookies.getObject('chatbot');
             $scope.refresh();
@@ -100,7 +100,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
 
             var template = angular.element('#botAnswerTemplate').html();
-            template = template.replace('{botName}', chatbot.name).replace('{{bot_image_url}}', $scope.bot_image_url).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+            template = template.replace('{botName}', chatbot.name).replace('{{bot_image_url}}', bot_image_url).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
             template = angular.element(template);
 
