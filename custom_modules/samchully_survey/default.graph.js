@@ -331,9 +331,8 @@ var commonDialogs = [
             {
                 "text": "알아듣지 못했습니다.",
                 "kind": "Action",
-                "type": "call",
-                "dialogId": "startDialog",
-                "dialogName": "시작"
+                "type": "back",
+                "dialogId": "startDialog"
             }
         ]
     }
@@ -343,4 +342,4 @@ module.exports = function(bot)
 {
 	bot.setDialogs(dialogs);
 	bot.setCommonDialogs(commonDialogs);
-};
+}

@@ -1,10 +1,16 @@
 module.exports = function(bot)
 {
+    var answer_lst = [
+        ["1. 19세이하", "2. 20대", "3. 30대", "4. 40대", "5. 50대", "6. 60대이상"]
+    ];
+
     bot.setType("nextFlow",
         {
             typeCheck: function(dialog, context, callback)
             {
                 var is_true = true;
+                //console.log('============== answer line ===============');
+                //console.log(answer_lst);
                 callback(is_true);
             }
         });

@@ -57,7 +57,7 @@ module.exports = function(bot)
 
         if(errData.msg && errData.msg == "CONNECTIONERR")
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "시스템이 불안정하여 접속 오류가 발생되었습니다.\n\n다시한번 시도를 부탁드립니다."';
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "연결지 지연되고 있습니다."';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
         }
 
@@ -67,13 +67,13 @@ module.exports = function(bot)
             dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
         }
 
-        if(errData.E_RETCD)
+        if(errData.E_RETCD && !errData.msg)
         {
             dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
             dialog.output[0].buttons = [];
             addDefaultButton(dialog);
         }
-        else
+        else if(!errData.msg)
         {
             if(errData.code &&  errData.code == "ESOCKETTIMEDOUT")
             {
@@ -418,13 +418,22 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                var curCustomer = context.session.curCustomer;
-
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
                 options.json.name = 'ZCS_KKO_MESSAGE_SEND';
                 options.json.channel = context.channel.name;
+
+                // test param
+                //var curCustomer = context.session.curCustomer;
+                //
+                //options.json.param = [
+                //    { key: 'I_VKONT', val: '000301926016'},
+                //    { key: 'I_HPNO', val: '01029253152' }
+                //];
+
+                var curCustomer = context.session.curCustomer;
+
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
                     { key: 'I_HPNO', val: curCustomer.mobile }
@@ -445,7 +454,7 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'E')
                         {
-                            errorHandler(dialog, body);
+                            errorHandler(dialog, replace_error_msg);
                         }
                         else if(body.E_RETCD == 'S')
                         {
