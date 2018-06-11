@@ -118,6 +118,7 @@
     "tls": "^0.0.1",
     "top-client-taobao": "^1.0.2",
     "tough-cookie": "^2.3.3",
+    "url-exists": "^1.0.3",
     "validator": "^3.41.2",
     "webdriverio": "^4.2.0",
     "wechat": "^2.1.0",
