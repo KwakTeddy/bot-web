@@ -21,6 +21,10 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         $scope.isClosed = false;
 
         $scope.bot_image_url = chatbot.imageFile && chatbot.imageFile != '' ? chatbot.imageFile : 'modules/playchat/simulator/client/imgs/bot.png';
+        console.log('=============> boturl checker')
+        console.log($scope.bot_image_url);
+        // for test
+        //$scope.bot_image_url = 'https://s3.ap-northeast-2.amazonaws.com/playchat-files/578e5cdc06c7dc1d3e86649a/sample_restaurant_com2best_1524555556290-1528698147917-6778608613.20130306141523.jpg';
 
         $scope.$on('editChatbotInfo', function () {
             chatbot = $cookies.getObject('chatbot');
@@ -100,8 +104,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             }
 
             var template = angular.element('#botAnswerTemplate').html();
-            var bot_image_url = chatbot.imageFile && chatbot.imageFile != '' ? chatbot.imageFile : 'modules/playchat/simulator/client/imgs/bot.png';
-            template = template.replace('{botName}', chatbot.name).replace('{{bot_image_url}}', bot_image_url).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
+            template = template.replace('{botName}', chatbot.name).replace('{{bot_image_url}}', $scope.bot_image_url).replace('{time}', getCurrentTime(time)).replace('{text}', (text.text || '' ).replace(/</gi, '&lt;').replace(/>/gi, '&gt;').replace(/\n/gi, '<br>'));
 
             template = angular.element(template);
 

@@ -32,11 +32,14 @@
     display: inline-block;
     width: 45%;
 }
+.bot-icon{
+    width:27px;
+}
 </style>
 
 <script type="text/template" id="botAnswerTemplate">
 <div class="answer">
-    <img src="{{bot_image_url}}">
+    <img class="bot-icon" src="{{bot_image_url}}">
     <div class="system-text">
         <span class="name">{botName}</span>
         <span class="time">{time}</span>
