@@ -1360,8 +1360,11 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객님의 고지방법 '+dialog.curNoticeMethod+'으로 재발행이 완료되었습니다.",
+                                "text": "고객님의 고지방법  '+dialog.curNoticeMethod+' (으)로 재발행이 완료되었습니다.",
                                 "buttons": [
+                                    {
+                                        "text": "이전"
+                                    },
                                     {
                                         "text": "처음"
                                     }

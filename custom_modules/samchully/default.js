@@ -13,6 +13,17 @@ module.exports = function(bot)
         12: 3
     };
 
+    var methodIdex =
+    {
+        '0001' : '우편송달',
+        '0002' : '고객센터송달',
+        '0003' : '이메일송달',
+        '0004' : '모바일송달',
+        '0005' : 'LMS송달',
+        '0006' : '카카오알림톡송달',
+        '0007' : '카카오청구서송달'
+    };
+
     var bankArr = ['기업은행', '국민은행', '농협', '우리은행', '신한은행', '하나은행'];
 
     var mobileFormatChange = function (mobile) {
@@ -892,16 +903,6 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                var methodIdex =
-                {
-                    '0001' : '우편송달',
-                    '0002' : '고객센터송달',
-                    '0003' : '이메일송달',
-                    '0004' : '모바일송달',
-                    '0005' : 'LMS송달',
-                    '0006' : '카카오알림톡송달',
-                    '0007' : '카카오청구서송달'
-                };
                 var curCustomer = context.session.curCustomer;
 
                 var options = {};
@@ -1146,21 +1147,25 @@ module.exports = function(bot)
             }
         });
 
+
+    // ZBI_MS_GOJI_RESEND 에서 고지방법을 보내주지 않으므로 ZCS_GOJI_TYPE_INFO 에서 결과수신 후 다시 API를 콜함. 서비스개선을 위해 ZBI_MS_GOJI_RESEND의 결과값에 고지방법을 포함해주길 요청
     bot.setTask('resendNotice',
         {
             action: function (dialog, context, callback)
             {
+
                 var curCustomer = context.session.curCustomer;
 
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
-                options.json.name = 'ZBI_MS_GOJI_RESEND';
+                options.json.name = 'ZCS_GOJI_TYPE_INFO';
                 options.json.channel = context.channel.name;
                 options.json.param = [
-                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT }
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT}
                 ];
-                //options.timeout = timeout;
+                ////options.timeout = timeout;
+
 
                 request.post(options, function(err, response, body)
                 {
@@ -1182,16 +1187,49 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            dialog.setNoticeMethodSuccess = true;
-                            console.log(body)
+                            dialog.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
+                            dialog.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
+
+                            options.json.name = 'ZBI_MS_GOJI_RESEND';
+
+                            request.post(options, function(err, response, body)
+                            {
+                                if(err)
+                                {
+                                    errorHandler(dialog, err);
+                                }
+                                else
+                                {
+                                    if(!body)
+                                    {
+                                        errorHandler(dialog, null);
+                                        return callback();
+                                    }
+
+                                    if(body.E_RETCD == 'E')
+                                    {
+                                        errorHandler(dialog, body);
+                                    }
+                                    else if(body.E_RETCD == 'S')
+                                    {
+                                        dialog.setNoticeMethodSuccess = true;
+                                    }else {
+                                        errorHandler(dialog, body);
+                                    }
+
+                                }
+                                callback();
+
+                            });
+
                         }else {
                             errorHandler(dialog, body);
                         }
 
                     }
-                    callback();
 
                 });
+
             }
         });
 
@@ -1662,34 +1700,6 @@ module.exports = function(bot)
                 options.json = {};
                 options.json.name = 'ZCS_QR_PAYMENT';
                 options.json.channel = context.channel.name;
-                // options.json.param = [
-                //     { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
-                //     { key: 'I_HPNUM', val: curCustomer.mobile },
-                //     { key : "I_BILLMON", val: context.session.totalSelectedMonth},
-                //     { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
-                // ];
-                // options.json.param = [
-                //     { key: 'I_VKONT', val: '106141397'},
-                //     { key: 'I_HPNUM', val: '01055948807' },
-                //     { key: "I_BILLMON", val: 201803},
-                //     { key: 'I_BETRWP', val: '83020'}
-                // ];
-
-                // options.json.param = [
-                //     { key: 'I_VKONT', val: '105616488'},
-                //     { key: 'I_HPNUM', val: '01036623810' },
-                //     { key: "I_BILLMON", val: 201804},
-                //     { key: 'I_BETRWP', val: '101020'}
-                // ];
-
-                // options.json.param = [
-                //     { key: 'I_VKONT', val: '303580417'},
-                //     { key: 'I_HPNUM', val: '01045044720' },
-                //     { key: "I_BILLMON", val: 201802},
-                //     { key: 'I_BETRWP', val: '0'}
-                // ];
-
-                ////options.timeout = timeout;
 
                 request.post(options, function(err, response, body)
                 {
