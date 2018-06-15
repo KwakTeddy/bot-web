@@ -125,7 +125,7 @@ exports.create = function(req, res)
         {
             return res.status(400).send({ message: err.stack || err });
         }
-
+        console.log(req.body)
         if(bot)
         {
             return res.status(400).send({ message: 'Duplicated Bot Id' });
@@ -164,8 +164,8 @@ exports.create = function(req, res)
                         if (!fs.existsSync(dir)) {
                             fs.mkdirSync(dir);
                         }
-                        var templateDir = path.resolve('./templates/election');
-                        // var templateDir = path.resolve('./templates/' + req.body.templateDir);
+                        //var templateDir = path.resolve('./templates/election');
+                        var templateDir = path.resolve('./templates/' + req.body.templateDir);
 
                         var files = fs.readdirSync(templateDir + '/bot');
                         for (var i = 0; i < files.length; i++) {
@@ -279,13 +279,19 @@ exports.create = function(req, res)
                             }
                         }
                         else {
-                            var botjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) +  + '/bot.js'));
-                            var defaultjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.js'));
-                            var graphjs = fs.readFileSync(path.resolve('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language ) + '/default.graph.js'));
-                            // var botjs = fs.readFileSync(path.resolve('./templates/election/bot/election.bot.js'));
-                            // var defaultjs = fs.readFileSync(path.resolve('./templates/election/bot/default.js'));
-                            // var graphjs = fs.readFileSync(path.resolve('./templates/election/bot/default.graph.js'));
+                            var bot_tpl_path = '';
 
+                            try{
+                                fs.lstatSync('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language)).isDirectory();
+
+                                bot_tpl_path = './custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language);
+                            }catch(e){
+                                bot_tpl_path = './custom_modules/' + type;
+                            }
+
+                            var botjs = fs.readFileSync(path.resolve(bot_tpl_path  + '/bot.js'));
+                            var defaultjs = fs.readFileSync(path.resolve(bot_tpl_path + '/default.js'));
+                            var graphjs = fs.readFileSync(path.resolve(bot_tpl_path + '/default.graph.js'));
 
                             fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
                             fs.writeFileSync(dir + '/default.js', defaultjs.toString());

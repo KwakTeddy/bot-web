@@ -22,7 +22,6 @@ var BotObject = require('./bot/bot.js');
 
     BotManager.prototype.load = function(botId, callback)
     {
-        console.log();
         console.log(chalk.yellow('[[[ Bot loading ]]]'));
         var that = this;
         if(this.bots[botId])
