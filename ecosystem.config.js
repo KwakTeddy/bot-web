@@ -7,9 +7,15 @@ module.exports =
             script: "./server.js",
             instances : "1",
             exec_mode : "cluster",
+
             error_file : "err.log",
             out_file : "out.log",
+            retain : "all",
+            workerInterval : 60,
+            max_size : '100M',
             merge_logs : true,
+            rotateInterval : '*/1 * * * *',
+
             log_date_format : "YYYY-MM-DD HH:mm Z",
             watch: false,
             env:
@@ -38,14 +44,22 @@ module.exports =
             },
             env_development:
             {
+                //"PORT": 8443,
                 "PORT": 443,
+                //"HOST": "http://localhost:8443",
                 "HOST": "https://remaster.moneybrain.ai",
+                //"REDIS": "127.0.0.1",
+                "REDIS": "172.31.5.26",
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
                 "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-                "REDIS": "172.31.5.26",
+
+                //"LOG_ROTATING_ACTIVE":'true',
+                //"LOG_LEVEL":'debug',
+                //"LOG_ROTATING_VERBOSE":'true',
+
                 "NODE_ENV": "development"
             },
             env_production:
@@ -61,6 +75,10 @@ module.exports =
                 "REDIS": "172.31.26.141",
                 "MONGOLAB_URI": "mongodb://172.31.14.78:27017/bot",
                 "MONGO_RSNAME": "rs1",
+
+                "LOG_ROTATING_ACTIVE":'true',
+                "LOG_LEVEL":'warning',
+
                 "NODE_ENV": "production"
             }
         }
