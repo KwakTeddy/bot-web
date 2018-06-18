@@ -1701,6 +1701,14 @@ module.exports = function(bot)
                 options.json.name = 'ZCS_QR_PAYMENT';
                 options.json.channel = context.channel.name;
 
+
+                // 2018/06/18 api update
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT},
+                    { key: 'I_HPNUM', val: curCustomer.mobile },
+                    { key: 'I_BETRWP', val: context.session.totalSelectedNonpayment}
+                ];
+
                 request.post(options, function(err, response, body)
                 {
                     if(err)
