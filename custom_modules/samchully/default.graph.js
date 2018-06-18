@@ -1369,264 +1369,18 @@ var dialogs = [
         }
     },
     {
-        "name": "이사/AS",
+        "name": "안전점검",
         "input": [
             {
                 "text": {
-                    "raw": "2. 이사/AS",
-                    "nlp": "2 . 이사 / AS"
+                    "raw": "2. 안전점검",
+                    "nlp": "2 . 안전 점검"
                 }
             },
             {
                 "text": {
                     "raw": "2",
                     "nlp": "2"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "1. 이사 들어오실 때"
-                    },
-                    {
-                        "url": "",
-                        "text": "2. 이사 나가실 때"
-                    },
-                    {
-                        "url": "",
-                        "text": "3. AS (렌지연결 등)"
-                    },
-                    {
-                        "url": "",
-                        "text": "4. 예약 확인/변경"
-                    },
-                    {
-                        "url": "",
-                        "text": "5. 연결비 안내"
-                    },
-                    {
-                        "url": "",
-                        "text": "이전"
-                    },
-                    {
-                        "url": "",
-                        "text": "처음"
-                    }
-                ]
-            }
-        ],
-        "id": "default5",
-        "children": [
-            {
-                "name": "이사 들어오실 때",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "1. 이사 들어오실 때",
-                            "nlp": "1 . 이사 들어오다 때"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "1",
-                            "nlp": "1"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/MoveIn",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default54"
-            },
-            {
-                "name": "이사 나가실 때",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "2. 이사 나가실 때",
-                            "nlp": "2 . 이사 나가다 때"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "2",
-                            "nlp": "2"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/MoveOut",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default55"
-            },
-            {
-                "name": "AS (렌지연결 등)",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "3. AS (렌지연결 등)",
-                            "nlp": "3 . AS ( 렌 지 연결 등 )"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "3",
-                            "nlp": "3"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/AfterService",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default56"
-            },
-            {
-                "name": "예약 확인/변경",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "4. 예약 확인/변경",
-                            "nlp": "4 . 예약 확인 / 변경"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "4",
-                            "nlp": "4"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/CheckService",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default58"
-            },
-            {
-                "name": "연결비 안내",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "5. 연결비 안내",
-                            "nlp": "5 . 연결 비 안내"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "5",
-                            "nlp": "5"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default64"
-            }
-        ]
-    },
-    {
-        "name": "안전점검",
-        "input": [
-            {
-                "text": {
-                    "raw": "3. 안전점검",
-                    "nlp": "3 . 안전 점검"
-                }
-            },
-            {
-                "text": {
-                    "raw": "3",
-                    "nlp": "3"
                 }
             }
         ],
@@ -1848,55 +1602,18 @@ var dialogs = [
         }
     },
     {
-        "name": "카카오톡상담",
-        "input": [
-            {
-                "text": {
-                    "raw": "4. 카카오톡상담",
-                    "nlp": "4 . 카카오 톡 상담"
-                }
-            },
-            {
-                "text": {
-                    "raw": "4",
-                    "nlp": "4"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "고객 인증이 되어 있는 경우 \n1) 고객의 관할 고객센터명 및 코드 ex)동인천(11)를 카카오상담톡 플러스 아이디로 알림톡 전송\n\n고객 인증이 되어 있지 않은 경우 \n2) 고객 인증 화면 이동 결과 중 선택한 주소의 관할 고객센터명 및 코드 ex) 동인천(11) 를 카카오 상담톡 플러스아이디로 알림톡 전송",
-                "buttons": [
-                    {
-                        "url": "",
-                        "text": "이전"
-                    },
-                    {
-                        "url": "",
-                        "text": "처음"
-                    }
-                ]
-            }
-        ],
-        "id": "default7",
-        "task": {
-            "name": "sendNotiTalk"
-        }
-    },
-    {
         "name": "기타",
         "input": [
             {
                 "text": {
-                    "raw": "5. 기타",
-                    "nlp": "5 . 기타"
+                    "raw": "3. 기타",
+                    "nlp": "3 . 기타"
                 }
             },
             {
                 "text": {
-                    "raw": "5",
-                    "nlp": "5"
+                    "raw": "3",
+                    "nlp": "3"
                 }
             }
         ],
@@ -2551,16 +2268,10 @@ var commonDialogs = [
                         "text": "1. 요금"
                     },
                     {
-                        "text": "2. 이사/AS"
+                        "text": "2. 안전점검"
                     },
                     {
-                        "text": "3. 안전점검"
-                    },
-                    {
-                        "text": "4. 카카오톡상담"
-                    },
-                    {
-                        "text": "5. 기타"
+                        "text": "3. 기타"
                     }
                 ],
                 "image": {
