@@ -3,7 +3,7 @@
 module.exports = {
     secure: {
         ssl: true,
-        ca: './config/sslcerts_update/ChainCA/rsa-dv.chain-bundle.pem',
+        ca: './config/sslcerts/ChainCA/rsa-dv.chain-bundle.pem',
         privateKey: './config/sslcerts/ssl.key',
         certificate: './config/sslcerts/ssl.crt'
     },
