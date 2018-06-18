@@ -748,7 +748,9 @@ module.exports = function(bot)
                     //있으면 context.session.auth = true;
                 }
 
-                if(context.session.auth && dialog.output[0].buttons.length < 6)
+                var arr = dialog.output[0].buttons;
+
+                if(context.session.auth && arr[arr.length-1].text!='로그아웃')
                 {
                     dialog.output[0].buttons.push({text: '로그아웃'});
                 }
