@@ -1,13 +1,12 @@
 'use strict';
 
 module.exports = {
-  secure: {
-    ssl: true,
-    ca: './config/sslcerts_update/ChainCA/rsa-dv.chain-bundle.pem',
-    //ca: './config/sslcerts/ca.pem',
-    privateKey: './config/sslcerts_update/ssl.key',
-    certificate: './config/sslcerts_update/ssl.crt'
-  },
+    secure: {
+        ssl: true,
+        ca: './config/sslcerts_update/ChainCA/rsa-dv.chain-bundle.pem',
+        privateKey: './config/sslcerts/ssl.key',
+        certificate: './config/sslcerts/ssl.crt'
+    },
   host: process.env.HOST || 'https://localhost',
   port: process.env.PORT || 443,
   db: {
