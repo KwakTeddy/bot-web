@@ -688,7 +688,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "주어진 번호로 ARS결제 가상번호를 발송하였습니다.\n가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다.",
+                                                        "text": "등록된  고객님의 핸드폰 번호로 ARS결제 가상번호를 발송하였습니다. 가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다.",
                                                         "buttons": [
                                                             {
                                                                 "text": "이전"
@@ -719,7 +719,10 @@ var dialogs = [
                                                 "type": "repeat"
                                             }
                                         ],
-                                        "id": "default30"
+                                        "id": "default30",
+                                        "task": {
+                                            "name": "monthSelectError"
+                                        }
                                     }
                                 ]
                             },
@@ -1002,7 +1005,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "카카오페이 고지 신청 알림톡을 송부해드렸습니다.",
+                                                "text": "등록된 고객님의 핸드폰 번호로 카카오페이 고지 신청 알림톡을 송부해드렸습니다.",
                                                 "buttons": [
                                                     {
                                                         "text": "이전"
@@ -1306,14 +1309,12 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "정상 발송 되었습니다.",
+                                "text": "등록된 고객님의 핸드폰 번호로 검침 안내 메시지가 발송 되었습니다.",
                                 "buttons": [
                                     {
-                                        "url": "",
                                         "text": "이전"
                                     },
                                     {
-                                        "url": "",
                                         "text": "처음"
                                     }
                                 ]

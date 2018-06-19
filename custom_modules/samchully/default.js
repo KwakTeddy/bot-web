@@ -68,14 +68,23 @@ module.exports = function(bot)
 
         if(errData.msg && errData.msg == "CONNECTIONERR")
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "연결지 지연되고 있습니다."';
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "연결이 지연되고 있습니다."';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
+            return
+        }
+
+        if(errData.msg && errData.msg == "SELECTERROR")
+        {
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "죄송합니다.\n요금납부는 과거 미납요금부터 납부하실 수 있습니다.\n과거 고지년월의 번호부터 입력해주세요."\n\n예시 : 1 2';
+            dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+            return
         }
 
         if(errData.msg && errData.msg == "access_error")
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "자가검침 기간이 아닙니다.\n\n지정된 검침기간에만 자가검침값 등록이 가능합니다.\n\n검침 등록 안내 메시지를 받으신 후에 재시도를 부탁드립니다."';
+            dialog.output[0].text = '[에러]\n\n에러 메세지 : "자가검침 기간이 아닙니다.\n\n지정된 검침기간에만 자가검침값 등록이 가능합니다.\n검침 등록 안내 메시지를 받으신 후에 입력 부탁드립니다."';
             dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+            return
         }
 
         if(errData.E_RETCD && !errData.msg)
@@ -254,6 +263,12 @@ module.exports = function(bot)
                 var selected = context.session.selectedNonpayment = [];
                 var total = 0;
 
+                if(!userInput.find(function(it){ return it=='1'})){
+                    context.session.isMultiMonthError = 'true';
+                    callback(matched);
+                    return null;
+                }
+
                 for(var i = 0; i < userInput.length; i++)
                 {
                     if(nonPaymentList[userInput[i] - 1])
@@ -327,6 +342,17 @@ module.exports = function(bot)
     });
 
     //Task Area
+
+    bot.setTask('monthSelectError',{
+        action: function(dialog, context, callback){
+            if(context.session.isMultiMonthError=='true'){
+                context.session.isMultiMonthError = 'false';
+                var err = {msg:'SELECTERROR'};
+                errorHandler(dialog, err);
+            }
+            callback();
+        }
+    });
 
     bot.setTask('defaultTask',
         {
