@@ -91,6 +91,7 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         var ws = workbook.Sheets[first_sheet_name];
 
         var range = XLSX.utils.decode_range(ws['!ref']);
+        console.log(range.e.c);
 
         if(range.e.c <= 0)
         {
@@ -99,6 +100,8 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
         var dialogsetList = [];
         var lastData = undefined;
+
+
         for(var r=1; r<=range.e.r; r++)
         {
             var q = ws[XLSX.utils.encode_cell({ c: range.e.c-1, r: r })];
@@ -115,13 +118,13 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
             var a = a.v;
 
             var category = '';
+
             for(var c=0; c<range.e.c-1; c++)
             {
                 if(category)
                 {
                     category += '@@@';
-                }
-
+                };
                 var target = ws[XLSX.utils.encode_cell({ c: c, r: r })];
                 if(target)
                 {
@@ -133,6 +136,13 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                     while(!(target = ws[XLSX.utils.encode_cell({ c: c, r: r-i })]))
                     {
                         i++;
+
+
+                        // for safety code. if it has problem, fix it!
+                        if(i>10){
+                            return callback('The format does not match');
+                            break;
+                        }
                     }
 
                     category += target.v.trim();
