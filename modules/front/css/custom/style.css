@@ -1675,106 +1675,6 @@ form.domainForm {
 	max-height: 100%;
 }
 
-
-/*
-*****************************************
->>> | Price Area Css |
-*****************************************
-*/
-
-.singlePrice {
-	border: 1px solid #e8e8e8;
-	text-align: center;
-	padding: 20px 0;
-	width: 100%;
-	-webkit-transition: .4s;
-	transition: .4s;
-	margin: 20px 0;
-	background: #fff;
-}
-
-.singlePrice {
-	border-right-color: transparent;
-}
-
-.priceCol:last-child .singlePrice {
-	border-right-color: #e8e8e8;
-}
-
-.singlePrice:hover,
-.priceCol:last-child .singlePrice:hover {
-	padding: 40px 0;
-	z-index: 1;
-	margin-top: -20px;
-	margin: 0;
-	border:#288feb 1px solid;
-	box-shadow: 0 0 2px #288feb;
-}
-
-.priceTitle {
-	font-family: "proxima_nova_rgbold";
-	font-size: 16px;
-	margin-bottom: 20px;
-	text-transform: uppercase;
-}
-
-.priceImg {
-	height: 48px;
-	margin-bottom: 20px;
-}
-
-.priceImg img {
-	max-height: 100%;
-}
-
-.currency {
-	font-family: "proxima_nova_rgbold";
-	font-size: 25px;
-	margin-bottom: 10px
-}
-
-.currency span {
-	font-family: "proxima_nova_rgregular";
-}
-
-.priceHead p {
-	color: #8292a5;
-	margin-bottom: 35px
-}
-
-.priceCol {
-	padding: 0
-}
-
-.priceBody {
-	list-style: outside none none;
-	text-align: left;
-	margin-bottom: 20px
-}
-
-.priceBody > li {
-	color: #8292a5;
-	font-family: "proxima_novasemibold";
-	font-size: 14px;
-	line-height: 40px;
-	padding-left: 25px;
-}
-
-.priceBody > li:nth-child(2n+1) {
-	background: #f6f6f6 none repeat scroll 0 0;
-}
-
-.priceBody > li i.icofont-ui-check {
-	color: #2ecc71;
-	margin-right: 11px;
-}
-
-.priceBody > li i.icofont-ui-close {
-	color: #f3746f;
-	margin-right: 11px;
-}
-
-
 /*
 *****************************************
 >>> | cta Area Css |
@@ -2671,6 +2571,106 @@ h4.price {
 	margin-top: 20px;
 	width: 170px;
 }
+
+
+/*
+*****************************************
+>>> | Price Area Css |
+*****************************************
+*/
+
+.singlePrice {
+	border: 1px solid #e8e8e8;
+	text-align: center;
+	padding: 20px 0;
+	width: 100%;
+	-webkit-transition: .4s;
+	transition: .4s;
+	margin: 20px 0;
+	background: #fff;
+}
+
+.singlePrice {
+	border-right-color: transparent;
+}
+
+.priceCol:last-child .singlePrice {
+	border-right-color: #e8e8e8;
+}
+
+.singlePrice:hover,
+.priceCol:last-child .singlePrice:hover {
+	padding: 40px 0;
+	z-index: 1;
+	margin-top: -20px;
+	margin: 0;
+	border:#288feb 1px solid;
+	box-shadow: 0 0 2px #288feb;
+}
+
+.priceTitle {
+	font-family: "proxima_nova_rgbold";
+	font-size: 16px;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+}
+
+.priceImg {
+	height: 48px;
+	margin-bottom: 20px;
+}
+
+.priceImg img {
+	max-height: 100%;
+}
+
+.currency {
+	font-family: "proxima_nova_rgbold";
+	font-size: 25px;
+	margin-bottom: 10px
+}
+
+.currency span {
+	font-family: "proxima_nova_rgregular";
+}
+
+.priceHead p {
+	color: #8292a5;
+	margin-bottom: 35px
+}
+
+.priceCol {
+	padding: 0
+}
+
+.priceBody {
+	list-style: outside none none;
+	text-align: left;
+	margin-bottom: 20px
+}
+
+.priceBody > li {
+	color: #8292a5;
+	font-family: "proxima_novasemibold";
+	font-size: 14px;
+	line-height: 40px;
+	padding-left: 25px;
+}
+
+.priceBody > li:nth-child(2n+1) {
+	background: #f6f6f6 none repeat scroll 0 0;
+}
+
+.priceBody > li i.icofont-ui-check {
+	color: #2ecc71;
+	margin-right: 11px;
+}
+
+.priceBody > li i.icofont-ui-close {
+	color: #f3746f;
+	margin-right: 11px;
+}
+
 
 
 /***************************************/
