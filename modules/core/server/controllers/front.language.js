@@ -109,7 +109,8 @@ module.exports = function(code)
             "L097" : "10분 만에 누구나 쉽고 빠르게 만드는 챗봇",
             "L098" : "세계 최고의 대화형 인공지능 플랫폼",
             "lan" : "ko",
-            "sigunup" : "가입이 완료되었습니다. 입력하신 이메일로 인증 메일을 보냈습니다. 확인후 로그인해주세요."
+            "sigunup" : "가입이 완료되었습니다. 입력하신 이메일로 인증 메일을 보냈습니다. 확인후 로그인해주세요.",
+            "start" : '시작하기'
 
         },
         en: {
@@ -220,7 +221,8 @@ module.exports = function(code)
             "L097" : "Make chatbot in 10 minutes",
             "L098" : "Best Chatbot Builder. It`s easy and fast",
             "lan" : "en",
-            "sigunup" : "Success! Please, confirm your email."
+            "sigunup" : "Success! Please, confirm your email.",
+            "start" : 'Start'
 
         },
         zh: {
@@ -330,10 +332,11 @@ module.exports = function(code)
             "L096" : "Sign up",
             "L097" : "Chatbot I build, easy and fast",
             "L098" : "World best dialog Artificial Intelligence Technology",
-            "lan" : "zh"
+            "lan" : "zh",
+            "start" : '开始对话'
 
         },
-        ja: {
+        jp: {
             "L001":"",
             "L002":"",
             "L003":"",
@@ -440,7 +443,8 @@ module.exports = function(code)
             "L096" : "Sign up",
             "L097" : "Chatbot I build, easy and fast",
             "L098" : "World best dialog Artificial Intelligence Technology",
-            "lan" : "ja"
+            "lan" : "ja",
+            "start" : '始める'
 
         }
     };
