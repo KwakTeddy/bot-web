@@ -5,9 +5,9 @@ var defaultEnvConfig = require('./default');
 module.exports = {
     secure: {
         ssl: true,
-        ca: './config/sslcerts/ChainCA/rsa-dv.chain-bundle.pem',
-        privateKey: './config/sslcerts/ssl.key',
-        certificate: './config/sslcerts/ssl.crt'
+        ca: './config/sslcerts_moneybrain/ChainCA/rsa-dv.chain-bundle.pem',
+        privateKey: './config/sslcerts_moneybrain/ssl.key',
+        certificate: './config/sslcerts_moneybrain/ssl.crt'
     },
   db: {
     uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bot-dev',

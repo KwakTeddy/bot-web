@@ -349,38 +349,38 @@ module.exports = function(bot) {
             if (dialog.userInput.text.indexOf("성형") >= 0 || dialog.userInput.text==="1" ) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"4",
+                    month:"6",
                     year:"2018",
                     category:"성형"
                 };
-               // dialog.output[0].text = "가슴 성형 이벤트 아래와 같습니다.";
+                dialog.output[1].text = "6월 성형 나와 가장 잘어울리는 라인을 만들어주는 곳! 남들이 부러워하는 라인을 빠르게 완성시키는 곳!";
             }
             else if (dialog.userInput.text.indexOf("피부") >= 0 || dialog.userInput.text==="2" ) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"4",
+                    month:"6",
                     year:"2018",
                     category:"피부"
                 };
-              // dialog.output[0].text = "지방 흡입 다이어트 이벤트 아래와 같습니다.";
+               dialog.output[1].text = "6월 피부 수술없이 예뻐지는 방법! 가만히 있어도 빛나는 피부를 만드는 비밀!";
             }
-            else if (dialog.userInput.text.indexOf("한정") >= 0  || dialog.userInput.text==="3" ) {
+            else if (dialog.userInput.text.indexOf("쁘띠") >= 0  || dialog.userInput.text==="3" ) {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"4",
+                    month:"6",
                     year:"2018",
-                    category:"한정 이벤트"
+                    category:"쁘띠"
                 };
-               // dialog.output[0].text = "애플힙 이벤트 아래와 같습니다.";
+                dialog.output[1].text = "여자라면 욕심내자! 꽃보다 아름다워 질 수 있는 기회";
             }
             else if (dialog.userInput.text.indexOf("그 외") >= 0  || dialog.userInput.text==="4") {
                 options.qs = {
                     company: "포에버성형외과",
-                    month:"4",
+                    month:"6",
                     year:"2018",
-                    category:"그 외 4월 이벤트"
+                    category:"그 외 6월 이벤트"
                 };
-              //  dialog.output[0].text = "그 외 3월 이벤트 아래와 같습니다.";
+              dialog.output[1].text = "그 외 6월 이벤트 아래와 같습니다.";
             }
 
             request.get(options, function (err, response, body) {
@@ -467,7 +467,7 @@ module.exports = function(bot) {
 
                     options.qs = {
                         company: "포에버성형외과",
-                        month:"4",
+                        month:"6",
                         year:"2018",
                         name:name[1]
                     };
