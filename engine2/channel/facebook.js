@@ -95,7 +95,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         var data = req.body;
 
         console.log('facebook : comes post ======================>>');
-        console.log(JSON.stringify(req));
+        console.log(JSON.stringify(data));
         return null;
         if(data.object == 'page')
         {
