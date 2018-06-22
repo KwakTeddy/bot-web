@@ -10,7 +10,7 @@ module.exports = {
         certificate: './config/sslcerts_moneybrain/ssl.crt'
     },
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://13.124.231.245:27017/bot-dev',
+    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bot-dev',
     options: {
       user: '',
       pass: '',
