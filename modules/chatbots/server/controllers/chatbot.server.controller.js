@@ -119,13 +119,16 @@ var deleteBotObjectFromS3 = function(botId, callback)
 
 exports.create = function(req, res)
 {
+
+    var language = req.body.language;
+    console.log(language);
+
     ChatBot.findOne({ id: req.body.id }).exec(function(err, bot)
     {
         if(err)
         {
             return res.status(400).send({ message: err.stack || err });
         }
-        console.log(req.body)
         if(bot)
         {
             return res.status(400).send({ message: 'Duplicated Bot Id' });
@@ -171,6 +174,12 @@ exports.create = function(req, res)
                         for (var i = 0; i < files.length; i++) {
                             if (files[i].endsWith('.js')) {
                                 var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
+
+                                if(files[i].indexOf('bot.js')>=0 && (!language || language != 'ko')){
+                                    botData = botData.replace("시작",lanService(language)['start']);
+                                }
+
+
                                 fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
                             }
                         }
@@ -197,7 +206,6 @@ exports.create = function(req, res)
                             fs.mkdirSync(dir);
                         }
 
-                        var language = req.body.language;
                         if (language === undefined) language = 'en';
 
                         if (type == 'sample') {
@@ -207,7 +215,16 @@ exports.create = function(req, res)
 
                             var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
                             var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
-                            var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+
+                            var botData = botjs.toString();
+
+                            if(!language || language != 'ko'){
+                                botData = botData.replace("시작",lanService(language)['start']);
+                            }
+
+                            botData = botData.replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
                             fs.writeFileSync(dir + '/default.graph.js', graphData);
                             fs.writeFileSync(dir + '/default.js', defaultData);
                             fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
@@ -268,6 +285,11 @@ exports.create = function(req, res)
                             var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
                             var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
 
+                            if(!language || language != 'ko'){
+                                console.log(lanService(language));
+                                botData = botData.replace("시작",lanService(language)['start']);
+                            }
+
                             fs.writeFileSync(dir + '/default.graph.js', graphData);
                             fs.writeFileSync(dir + '/default.js', defaultData);
                             fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
@@ -293,9 +315,15 @@ exports.create = function(req, res)
                             var defaultjs = fs.readFileSync(path.resolve(bot_tpl_path + '/default.js'));
                             var graphjs = fs.readFileSync(path.resolve(bot_tpl_path + '/default.graph.js'));
 
+                            var botData = botjs.toString();
+
+                            if(!language || language != 'ko'){
+                                botData = botData.replace("시작",lanService(language)['start']);
+                            }
+
                             fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
                             fs.writeFileSync(dir + '/default.js', defaultjs.toString());
-                            fs.writeFileSync(dir + '/bot.js', botjs.toString());
+                            fs.writeFileSync(dir + '/bot.js', botData);
 
                             if (process.env.NODE_ENV == 'production') {
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');

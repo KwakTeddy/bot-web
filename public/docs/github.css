@@ -2015,7 +2015,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
     background-size:8px 10px;
     -webkit-appearance:none;
     -moz-appearance:none;
-    appearance:none
+    appearance:none;)
     }
     .form-select::-ms-expand{
     opacity:0

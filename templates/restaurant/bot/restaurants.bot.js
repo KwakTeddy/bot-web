@@ -14,7 +14,7 @@ var restaurants = {
     clientSecret: '0AKq2NoNgn'
   },
     kakao: {
-        keyboard: { type :"buttons", buttons:["대화 시작"]}
+        keyboard: { type :"buttons", buttons:["Start"]}
     }
 };
 
