@@ -99,7 +99,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         console.log('facebook : comes post ======================>>');
         if(data.object == 'page')
         {
-            console.log(msg.entry[0].messaging[0].message.text);
+            console.log(data.entry[0].messaging[0].message.text);
 
             async.eachSeries(data.entry, function(entry, next)
             {
