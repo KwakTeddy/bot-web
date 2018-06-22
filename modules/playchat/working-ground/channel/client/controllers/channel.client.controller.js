@@ -113,11 +113,8 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
         $scope.connect = function (page)
         {
-            console.log('============================> $scope.connect');
-            console.log(page);
             FB.api('/me/subscribed_apps?access_token=' + page.access_token, 'post', function (response)
             { // 페이지 연결하기
-                console.log(response);
                 if (response.success)
                 {
                     var info = {};
@@ -131,8 +128,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
                     $http.post('/api/auth/facebook/pageInfo', info).then(function (response)
                     { //페이지 연결정보 데이터 변경
-                        console.log('============================> /api/auth/facebook/pageInfo');
-                        console.log(response);
                         FB.api('me/messenger_profile?access_token=' + page.access_token, 'post', {
                             "persistent_menu": [
                                 {
@@ -249,9 +244,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         {
                             $http.post('/api/auth/facebook/pageInfo', {user: user._id, list: true, pageInfo: response.data}).then(function (res)
                             { // 페이지 연결정보 불러오기
-                                console.log('=========================> api/auth/facebook/pageInfo');
-                                console.log(response);
-                                console.log(res);
 
                                 for (var j = 0; j < response.data.length; j++)
                                 {

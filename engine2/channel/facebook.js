@@ -41,7 +41,8 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
 
     Facebook.prototype.get = function(req, res)
     {
-        console.log(req);
+        console.log('facebook : comes get ======================>>');
+        console.log(JSON.stringify(req));
         return null;
         if(req.query['hub.verify_token'] === 'moneybrain_token')
         {
@@ -93,7 +94,8 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         var that = this;
         var data = req.body;
 
-        console.log(data);
+        console.log('facebook : comes post ======================>>');
+        console.log(JSON.stringify(req));
         return null;
         if(data.object == 'page')
         {
