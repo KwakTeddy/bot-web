@@ -64,6 +64,8 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         {
             Engine.process(botId, 'facebook', sender.id, message.text, {}, function(context, out)
             {
+                console.log('facebook : send Message =========================>');
+                console.log(out);
                 var output = out.output;
                 var message = that.makeOutputMessage(output);
 
@@ -95,10 +97,10 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         var data = req.body;
 
         console.log('facebook : comes post ======================>>');
-        console.log(JSON.stringify(data));
-        return null;
         if(data.object == 'page')
         {
+            console.log(msg.entry[0].messaging[0].message.text);
+
             async.eachSeries(data.entry, function(entry, next)
             {
                 var messaging = entry.messaging;
