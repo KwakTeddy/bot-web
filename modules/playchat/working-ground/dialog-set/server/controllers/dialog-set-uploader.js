@@ -91,7 +91,7 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
         var ws = workbook.Sheets[first_sheet_name];
 
         var range = XLSX.utils.decode_range(ws['!ref']);
-        console.log(range.e.c);
+
 
         if(range.e.c <= 0)
         {
@@ -114,8 +114,13 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                 continue;
             }
 
-            var q = q.v;
-            var a = a.v;
+            try{
+                q = q.v;
+                a = a.v;
+            }catch(e){
+                return callback('The format does not match');
+                break;
+            }
 
             var category = '';
 
@@ -125,28 +130,35 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                 {
                     category += '@@@';
                 };
+
                 var target = ws[XLSX.utils.encode_cell({ c: c, r: r })];
-                if(target)
-                {
-                    category += target.v.trim();
-                }
-                else
-                {
-                    var i = 1;
-                    while(!(target = ws[XLSX.utils.encode_cell({ c: c, r: r-i })]))
+                try{
+                    if(target)
                     {
-                        i++;
-
-
-                        // for safety code. if it has problem, fix it!
-                        if(i>10){
-                            return callback('The format does not match');
-                            break;
-                        }
+                        category += target.v.trim();
                     }
+                    else
+                    {
+                        var i = 1;
+                        while(!(target = ws[XLSX.utils.encode_cell({ c: c, r: r-i })]))
+                        {
+                            i++;
 
-                    category += target.v.trim();
+                            // for safety code. if it has problem, fix it!
+                            if(i>10){
+                                return callback('The format does not match');
+                                break;
+                            }
+                        }
+
+                        category += target.v.trim();
+                    }
+                }catch(e){
+                    console.log(e);
+                    return callback('The format does not match');
+                    break;
                 }
+
             }
 
             if(q && a)
