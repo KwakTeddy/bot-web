@@ -67,11 +67,11 @@ module.exports =
                 "PORT": 443,
 
                 // for Facebook Test
-                "FACEBOOK_ID" : "299548697231251",
-                "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
+                //"FACEBOOK_ID" : "299548697231251",
+                //"FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
 
-                //"FACEBOOK_ID": "1557169960967403",
-                //"FACEBOOK_SECRET": "282b2a30ec8115f364833a5d48b60cf6",
+                "FACEBOOK_ID": "1557169960967403",
+                "FACEBOOK_SECRET": "282b2a30ec8115f364833a5d48b60cf6",
                 "KAKAO_KEY": "25009b49de426e1ad0b8da2631b52cc5",
                 "KAKAO_JSID": "f1eb73f3491e5c1e1178b3b8c12b10e5",
                 "GOOGLE_ID": "567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com",
