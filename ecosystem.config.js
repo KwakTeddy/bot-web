@@ -10,13 +10,8 @@ module.exports =
 
             error_file : "err.log",
             out_file : "out.log",
-            retain : "all",
-            workerInterval : 60*60*10,
-            max_size : '1000M',
-            merge_logs : true,
-            rotateInterval : '* * 23 * * *',
 
-            log_date_format : "YYYY-MM-DD HH:mm Z",
+            merge_logs : true,
             watch: false,
             env:
             {
@@ -82,7 +77,7 @@ module.exports =
                 "MONGO_RSNAME": "rs1",
 
                 "LOG_ROTATING_ACTIVE":'true',
-                "LOG_LEVEL":'warning',
+                "LOG_LEVEL":'error',
 
                 "NODE_ENV": "production"
             }

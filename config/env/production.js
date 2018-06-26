@@ -66,7 +66,7 @@ module.exports = {
           active: process.env.LOG_ROTATING_ACTIVE === 'true' ? true : false, // activate to use rotating logs
           fileName: process.env.LOG_ROTATING_FILE || 'access-%DATE%.log', // if rotating logs are active, this fileName setting will be used
           frequency: process.env.LOG_ROTATING_FREQUENCY || 'daily',
-          date_format: "YYYY-MM-DD",
+          date_format: 'YYYY-MM-DD',
           verbose: process.env.LOG_ROTATING_VERBOSE === 'true' ? true : false
         }
       }
