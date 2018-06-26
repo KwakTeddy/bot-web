@@ -49,7 +49,7 @@ var demo = require('../modules/demo/server/controllers/demo.server.controller.js
         app.post('/facebook/webhook', function(req, res){ facebook.post.call(facebook, req, res); });
         //app.route('/facebook/:bot/webhook').post(facebook.message);
 
-        app.post('/facebook/:bot/webhook',function(req, res){ facebook.message(req,res); });
+        app.post('/facebook/:bot/webhook',function(req, res){ facebook.post.call(facebook, req, res); });
         // app.route('/facebook/webhook/refresh').get(facebook.refresh);
         //
         // // 네이버 톡톡
