@@ -91,6 +91,9 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         var that = this;
         var data = req.body;
 
+        console.log('==========fb post comes ==================')
+        console.log(data);
+
         if(data.object == 'page')
         {
             async.eachSeries(data.entry, function(entry, next)
