@@ -34,7 +34,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
     var Facebook = function()
     {
         //테스트용
-        this.PAGE_ACCESS_TOKEN = '﻿EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvEjHZAZC3quiAjj5m2SdlUOjuyxH4kylozDvrSod5UKTqtYM5NGhF5DpdMBKpffVyZANutmHuqPtxGhrL3jxr7kSETmq3P7n7Qtjt9GUDEpuZB5ReJWCwJHZCYl3OKeGE1GHdChkoJ4mhZCITKqsALPSMFgZDZD';
+        this.PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvEjHZAZC3quiAjj5m2SdlUOjuyxH4kylozDvrSod5UKTqtYM5NGhF5DpdMBKpffVyZANutmHuqPtxGhrL3jxr7kSETmq3P7n7Qtjt9GUDEpuZB5ReJWCwJHZCYl3OKeGE1GHdChkoJ4mhZCITKqsALPSMFgZDZD';
 
         this.pageInfos = {};
     };
@@ -43,8 +43,10 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
     {
         console.log('facebook : comes get ======================>>');
         console.log(req.query['hub.verify_token']);
+        console.log('facebook : this.page_access_token');
+        console.log(this.PAGE_ACCESS_TOKEN);
 
-        if(req.query['hub.verify_token'] === this.PAGE_ACCESS_TOKEN)
+        if(req.query['hub.verify_token'] == this.PAGE_ACCESS_TOKEN)
         {
             res.status(200).send(req.query['hub.challenge']);
         }
