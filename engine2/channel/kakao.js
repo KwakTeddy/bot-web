@@ -10,6 +10,9 @@ exports.keyboard = function (req, res)
     {
         var sendMsg = (bot.options.kakao && bot.options.kakao.keyboard) || { type: 'text' };
 
+        console.log('==========================exports keyborad==============');
+        console.log(sendMsg);
+
         res.write(JSON.stringify(sendMsg));
         res.end();
     },
