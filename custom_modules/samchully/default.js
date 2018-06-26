@@ -768,9 +768,6 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-              if(context.channel && context.channel.name=='kakao' && dialog.userInput && dialog.userInput.text=='시작하기'){
-                window.open('https://naver.com')
-              };
               
                 if(!context.session.auth)
                 {
