@@ -42,7 +42,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
 
     Facebook.prototype.get = function(req, res)
     {
-        console.lof('fb get request for reqest check')
+        console.log('fb get request for reqest check')
         console.log(req);
         if(req.query['hub.verify_token'] === 'moneybrain_token')
         {
