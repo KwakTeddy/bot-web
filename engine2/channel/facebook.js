@@ -135,6 +135,53 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         }
     };
 
+    Facebook.prototype.message = function (req, res)
+    {
+        var data = req.body;
+        console.log('==============comes fb message');
+        console.log(data);
+
+        res.sendStatus(200);
+        return null;
+        if (data.object == 'page')
+        {      // Make sure this is a page subscription
+            data.entry.forEach(function(pageEntry)
+            {       // There may be multiple if batched
+                pageEntry.messaging.forEach(function(messagingEvent)
+                {          // Iterate over each messaging event
+                    messagingEvent.botId = req.params.bot;
+
+                    if (messagingEvent.message)
+                    {
+                        receivedMessage(messagingEvent);
+                    }
+                    else if (messagingEvent.postback)
+                    {
+                        receivedPostback(messagingEvent);
+                    }
+                    else if (messagingEvent.optin)
+                    {
+                        receivedAuthentication(messagingEvent);
+                    }
+                    else if (messagingEvent.delivery)
+                    {
+                        receivedDeliveryConfirmation(messagingEvent);
+                    }
+                    else
+                    {
+                        console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+                    }
+                });
+            });
+
+            res.sendStatus(200); // You must send back a 200, within 20 seconds, to let us know you've
+        }
+        else
+        {
+            return false;
+        }
+    };
+
     Facebook.prototype.getPageInfo = function(senderId, callback)
     {
         UserBotFbPage.findOne({ pageId: senderId }).exec(function(err, data)
@@ -242,10 +289,11 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
  
 //
 //
-// exports.message = function (req, res)
-// {
+//exports.message = function (req, res)
+//{
 //     var data = req.body;
-//     if (data.object == 'page')
+//    console.log(data);
+//    if (data.object == 'page')
 //     {      // Make sure this is a page subscription
 //         data.entry.forEach(function(pageEntry)
 //         {       // There may be multiple if batched
@@ -282,7 +330,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
 //     {
 //         return false;
 //     }
-// };
+//};
 //
 // function liveChatAddDialog(botId, message , userId, inOut)
 // {
