@@ -14,7 +14,7 @@ module.exports =
             workerInterval : 60*60*10,
             max_size : '1000M',
             merge_logs : true,
-            rotateInterval : '0 0 23 * * *',
+            rotateInterval : '* * 23 * * *',
 
             log_date_format : "YYYY-MM-DD HH:mm Z",
             watch: false,

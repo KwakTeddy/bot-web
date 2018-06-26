@@ -41,15 +41,6 @@ var PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvE
 
     Facebook.prototype.get = function(req, res)
     {
-        var that = this;
-        console.log('facebook : comes get ======================>>');
-
-        console.log();
-
-        console.log(req.query['hub.verify_token']);
-        console.log('facebook : this.page_access_token');
-        console.log(PAGE_ACCESS_TOKEN);
-
         if(req.query['hub.verify_token'] == PAGE_ACCESS_TOKEN)
         {
             res.status(200).send(req.query['hub.challenge']);
@@ -100,9 +91,6 @@ var PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvE
         var that = this;
         var data = req.body;
 
-        console.log('==========fb post comes ==================')
-        console.log(data);
-
         if(data.object == 'page')
         {
             async.eachSeries(data.entry, function(entry, next)
@@ -115,9 +103,9 @@ var PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvE
                     var timestamp = event.timestamp;
                     var message = event.message;
 
-                    console.log(sender);
-                    console.log(recipient);
-                    console.log(message);
+                    //console.log(sender);
+                    //console.log(recipient);
+                    //console.log(message);
 
                     that.getPageInfo(recipient.id, function(err, data)
                     {
