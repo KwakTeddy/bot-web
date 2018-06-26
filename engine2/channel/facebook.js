@@ -44,9 +44,9 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         console.log('facebook : comes get ======================>>');
         console.log(req.query['hub.verify_token']);
         console.log('facebook : this.page_access_token');
-        console.log(this.PAGE_ACCESS_TOKEN);
+        console.log(this.prototype.PAGE_ACCESS_TOKEN);
 
-        if(req.query['hub.verify_token'] == this.PAGE_ACCESS_TOKEN)
+        if(req.query['hub.verify_token'] == this.prototype.PAGE_ACCESS_TOKEN)
         {
             res.status(200).send(req.query['hub.challenge']);
         }
