@@ -41,6 +41,9 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
 
     Facebook.prototype.get = function(req, res)
     {
+        console.log('facebook : comes get ======================>>');
+        console.log(JSON.stringify(req));
+        return null;
         if(req.query['hub.verify_token'] === 'moneybrain_token')
         {
             res.status(200).send(req.query['hub.challenge']);
@@ -61,6 +64,8 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         {
             Engine.process(botId, 'facebook', sender.id, message.text, {}, function(context, out)
             {
+                console.log('facebook : send Message =========================>');
+                console.log(out);
                 var output = out.output;
                 var message = that.makeOutputMessage(output);
 
