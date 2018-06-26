@@ -35,12 +35,15 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
     {
         //테스트용
         this.PAGE_ACCESS_TOKEN = 'EAAEQcB2wZC5MBAM74uGkfE97nqjZBh7JXa2B6RYJ6zx6SUTuJXp2Kanyfz87Bpt2dLWq3GcG2M1nGCyaj94XfLfDZCNQG26hJudPne2kjKUKLx0t6yj3XdH1KKGUheffAw507Qkjt4J58H5x0ZCnYEodQzkoZAXXrqEjwRXhK7AZDZD';
+        this.PAGE_ACCESS_TOKEN = '﻿EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvEjHZAZC3quiAjj5m2SdlUOjuyxH4kylozDvrSod5UKTqtYM5NGhF5DpdMBKpffVyZANutmHuqPtxGhrL3jxr7kSETmq3P7n7Qtjt9GUDEpuZB5ReJWCwJHZCYl3OKeGE1GHdChkoJ4mhZCITKqsALPSMFgZDZD';
 
         this.pageInfos = {};
     };
 
     Facebook.prototype.get = function(req, res)
     {
+        console.lof('fb get request for reqest check')
+        console.log(req);
         if(req.query['hub.verify_token'] === 'moneybrain_token')
         {
             res.status(200).send(req.query['hub.challenge']);
