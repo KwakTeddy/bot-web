@@ -90,7 +90,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
     {
         var that = this;
         var data = req.body;
-        
+
         if(data.object == 'page')
         {
             async.eachSeries(data.entry, function(entry, next)
@@ -191,7 +191,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
                             {
                                 type: 'web_url',
                                 url: output.image.url
-                            },
+                            }
                         }
                     ]
                 }
