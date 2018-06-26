@@ -768,6 +768,7 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
+              
                 if(!context.session.auth)
                 {
                     //DB연동
