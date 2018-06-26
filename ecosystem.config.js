@@ -11,7 +11,7 @@ module.exports =
             error_file : "err.log",
             out_file : "out.log",
             retain : "all",
-            workerInterval : 60,
+            workerInterval : 60*60*10,
             max_size : '1000M',
             merge_logs : true,
             rotateInterval : '0 0 23 * * *',
@@ -65,6 +65,11 @@ module.exports =
             env_production:
             {
                 "PORT": 443,
+
+                // for Facebook Test
+                //"FACEBOOK_ID" : "299548697231251",
+                //"FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
+
                 "FACEBOOK_ID": "1557169960967403",
                 "FACEBOOK_SECRET": "282b2a30ec8115f364833a5d48b60cf6",
                 "KAKAO_KEY": "25009b49de426e1ad0b8da2631b52cc5",
