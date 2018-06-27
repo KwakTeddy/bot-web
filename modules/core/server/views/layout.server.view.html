@@ -44,7 +44,7 @@
 
 <link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
 
-{% if env == 'development' %}
+{% if env != 'production' %}
 
 {% for cssFile in cssFiles %}
 <link rel="stylesheet" type="text/css" href="{{cssFile}}">
@@ -150,7 +150,7 @@ Beagle.error = function(e)
 </script>
 
 
-{% if env == 'development' %}
+{% if env != 'production' %}
 {% for jsFile in jsFiles %}
 <script type="text/javascript" src="{{jsFile}}"></script>
 {% endfor %}
