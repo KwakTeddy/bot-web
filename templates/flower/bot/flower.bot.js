@@ -24,9 +24,9 @@ module.exports = function(options)
     //     clientId: 'Aqi_RlMlLRlJnmJptMhD',
     //         clientSecret: '0AKq2NoNgn'
     // };
-    // options.kakao={
-    //     keyboard: {
-    //         type:"buttons",buttons:["대화 시작"]
-    //     }
-    // };
+    options.kakao={
+         keyboard: {
+             type:"buttons",buttons:["Start"]
+         }
+    };
 };

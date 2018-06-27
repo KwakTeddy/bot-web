@@ -29,19 +29,19 @@ var config = require(path.resolve('config/config'));
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 
+//테스트용
+var PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvEjHZAZC3quiAjj5m2SdlUOjuyxH4kylozDvrSod5UKTqtYM5NGhF5DpdMBKpffVyZANutmHuqPtxGhrL3jxr7kSETmq3P7n7Qtjt9GUDEpuZB5ReJWCwJHZCYl3OKeGE1GHdChkoJ4mhZCITKqsALPSMFgZDZD';
+
 (function()
 {
     var Facebook = function()
     {
-        //테스트용
-        this.PAGE_ACCESS_TOKEN = 'EAAEQcB2wZC5MBAM74uGkfE97nqjZBh7JXa2B6RYJ6zx6SUTuJXp2Kanyfz87Bpt2dLWq3GcG2M1nGCyaj94XfLfDZCNQG26hJudPne2kjKUKLx0t6yj3XdH1KKGUheffAw507Qkjt4J58H5x0ZCnYEodQzkoZAXXrqEjwRXhK7AZDZD';
-
         this.pageInfos = {};
     };
 
     Facebook.prototype.get = function(req, res)
     {
-        if(req.query['hub.verify_token'] === 'moneybrain_token')
+        if(req.query['hub.verify_token'] == PAGE_ACCESS_TOKEN)
         {
             res.status(200).send(req.query['hub.challenge']);
         }
@@ -103,9 +103,9 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
                     var timestamp = event.timestamp;
                     var message = event.message;
 
-                    console.log(sender);
-                    console.log(recipient);
-                    console.log(message);
+                    //console.log(sender);
+                    //console.log(recipient);
+                    //console.log(message);
 
                     that.getPageInfo(recipient.id, function(err, data)
                     {
@@ -191,7 +191,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
                             {
                                 type: 'web_url',
                                 url: output.image.url
-                            },
+                            }
                         }
                     ]
                 }
@@ -242,10 +242,11 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
  
 //
 //
-// exports.message = function (req, res)
-// {
+//exports.message = function (req, res)
+//{
 //     var data = req.body;
-//     if (data.object == 'page')
+//    console.log(data);
+//    if (data.object == 'page')
 //     {      // Make sure this is a page subscription
 //         data.entry.forEach(function(pageEntry)
 //         {       // There may be multiple if batched
@@ -282,7 +283,7 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
 //     {
 //         return false;
 //     }
-// };
+//};
 //
 // function liveChatAddDialog(botId, message , userId, inOut)
 // {

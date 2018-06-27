@@ -30,7 +30,6 @@ module.exports.init = function(socket)
 
         Engine.process(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg.options, function(context, out)
         {
-            console.log('아웃풋', out);
             socket.emit('send_msg', out);
         },
         function(err)

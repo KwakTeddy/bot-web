@@ -128,7 +128,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
                     $http.post('/api/auth/facebook/pageInfo', info).then(function (response)
                     { //페이지 연결정보 데이터 변경
-                        FB.api('me/messenger_profile?access_token=' + page.access_token, 'post', { //페이지 시작 화면 설정
+                        FB.api('me/messenger_profile?access_token=' + page.access_token, 'post', {
                             "persistent_menu": [
                                 {
                                     "locale": "default",
@@ -145,7 +145,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                             "get_started": {
                                 "payload": "시작"
                             }
-                        },
+                        } ,
                         function (response)
                         {
                             console.log(response)
@@ -202,7 +202,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
                 FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response)
                 {
-                    console.log(response);
                     if(response.error)
                     {
                         console.log(response.error);
@@ -245,6 +244,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         {
                             $http.post('/api/auth/facebook/pageInfo', {user: user._id, list: true, pageInfo: response.data}).then(function (res)
                             { // 페이지 연결정보 불러오기
+
                                 for (var j = 0; j < response.data.length; j++)
                                 {
                                     for (var i = 0; i < res.data.length; i++)

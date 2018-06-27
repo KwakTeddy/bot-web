@@ -6165,9 +6165,8 @@ red-btn-hold{
     border-top-left-radius: 5px;
 }
 .price li {
-    border-bottom: 1px solid #eee;
-    padding: 20px;
-    text-align: center;
+    padding: 13px;
+    text-indent: 22px;
 }
 
 .header-scroll {
