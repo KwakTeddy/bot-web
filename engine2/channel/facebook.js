@@ -29,22 +29,19 @@ var config = require(path.resolve('config/config'));
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 
+//테스트용
+var PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvEjHZAZC3quiAjj5m2SdlUOjuyxH4kylozDvrSod5UKTqtYM5NGhF5DpdMBKpffVyZANutmHuqPtxGhrL3jxr7kSETmq3P7n7Qtjt9GUDEpuZB5ReJWCwJHZCYl3OKeGE1GHdChkoJ4mhZCITKqsALPSMFgZDZD';
+
 (function()
 {
     var Facebook = function()
     {
-        //테스트용
-        this.PAGE_ACCESS_TOKEN = '﻿EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvEjHZAZC3quiAjj5m2SdlUOjuyxH4kylozDvrSod5UKTqtYM5NGhF5DpdMBKpffVyZANutmHuqPtxGhrL3jxr7kSETmq3P7n7Qtjt9GUDEpuZB5ReJWCwJHZCYl3OKeGE1GHdChkoJ4mhZCITKqsALPSMFgZDZD';
-
         this.pageInfos = {};
     };
 
     Facebook.prototype.get = function(req, res)
     {
-        console.log('facebook : comes get ======================>>');
-        console.log(req.query['hub.verify_token']);
-
-        if(req.query['hub.verify_token'] === this.PAGE_ACCESS_TOKEN)
+        if(req.query['hub.verify_token'] == PAGE_ACCESS_TOKEN)
         {
             res.status(200).send(req.query['hub.challenge']);
         }
@@ -94,9 +91,6 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
         var that = this;
         var data = req.body;
 
-        console.log('==========fb post comes ==================')
-        console.log(data);
-
         if(data.object == 'page')
         {
             async.eachSeries(data.entry, function(entry, next)
@@ -109,9 +103,9 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
                     var timestamp = event.timestamp;
                     var message = event.message;
 
-                    console.log(sender);
-                    console.log(recipient);
-                    console.log(message);
+                    //console.log(sender);
+                    //console.log(recipient);
+                    //console.log(message);
 
                     that.getPageInfo(recipient.id, function(err, data)
                     {

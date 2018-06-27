@@ -81,6 +81,7 @@ function getLogOptions () {
           options.stream = fileStreamRotator.getStream({
             filename: options.stream.directoryPath + '/' + options.stream.rotatingLogs.fileName,
             frequency: options.stream.rotatingLogs.frequency,
+            date_format: options.stream.date_format || 'YYYY-MM-DD',
             verbose: options.stream.rotatingLogs.verbose
           });
 

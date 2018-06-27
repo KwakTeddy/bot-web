@@ -466,7 +466,7 @@ module.exports = function(code)
             "L102" : "Examples of constructings using our interactive artificial intelligence.",
             "L103" : "Rakjae Choi",
             "L104" : "+82-10-4763-7667",
-            "lan" : "ja",
+            "lan" : "jp",
             "start" : '始める'
 
         }
