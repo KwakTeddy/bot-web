@@ -108,10 +108,15 @@ module.exports = function(code)
             "L096" : "회원가입",
             "L097" : "10분 만에 누구나 쉽고 빠르게 만드는 챗봇",
             "L098" : "세계 최고의 대화형 인공지능 플랫폼",
+            "L099" : "제작 문의",
+            "L100" : "중소형 챗봇",
+            "L101" : "대형 챗봇",
+            "L102" : "대형 챗봇 문의는 아래의 번호로 연락주세요.",
+            "L103" : "김성훈",
+            "L104" : "010-9502-0541",
             "lan" : "ko",
             "sigunup" : "가입이 완료되었습니다. 입력하신 이메일로 인증 메일을 보냈습니다. 확인후 로그인해주세요.",
             "start" : '시작하기'
-
         },
         en: {
             "L001":"Playchat - Develop a Chatbot, Conversational AI platform, Moneybrain",
@@ -220,6 +225,12 @@ module.exports = function(code)
             "L096" : "Sign up",
             "L097" : "Make chatbot in 10 minutes",
             "L098" : "Best Chatbot Builder. It`s easy and fast",
+            "L099" : "Manufacturing Inquiry",
+            "L100" : "Medium Chatbot",
+            "L101" : "Large Chatbot",
+            "L102" : "Examples of constructings using our interactive artificial intelligence.",
+            "L103" : "Rakjae Choi",
+            "L104" : "+82-10-4763-7667",
             "lan" : "en",
             "sigunup" : "Success! Please, confirm your email.",
             "start" : 'Start'
@@ -332,6 +343,12 @@ module.exports = function(code)
             "L096" : "Sign up",
             "L097" : "Chatbot I build, easy and fast",
             "L098" : "World best dialog Artificial Intelligence Technology",
+            "L099" : "制作咨询",
+            "L100" : "中小型聊天机器人",
+            "L101" : "大型聊天机器人",
+            "L102" : "有关大型聊天机器人的咨询请联系下面的负责人。",
+            "L103" : "崔乐再",
+            "L104" : "184-5816-5507",
             "lan" : "zh",
             "start" : '开始对话'
 
@@ -443,6 +460,12 @@ module.exports = function(code)
             "L096" : "Sign up",
             "L097" : "Chatbot I build, easy and fast",
             "L098" : "World best dialog Artificial Intelligence Technology",
+            "L099" : "Manufacturing Inquiry",
+            "L100" : "Medium Chatbot",
+            "L101" : "Large Chatbot",
+            "L102" : "Examples of constructings using our interactive artificial intelligence.",
+            "L103" : "Rakjae Choi",
+            "L104" : "+82-10-4763-7667",
             "lan" : "ja",
             "start" : '始める'
 
