@@ -443,7 +443,7 @@ module.exports = function(code)
             "L096" : "Sign up",
             "L097" : "Chatbot I build, easy and fast",
             "L098" : "World best dialog Artificial Intelligence Technology",
-            "lan" : "ja",
+            "lan" : "jp",
             "start" : '始める'
 
         }
