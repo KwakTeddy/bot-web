@@ -12,7 +12,7 @@ module.exports =
             out_file : "out.log",
 
             merge_logs : true,
-            watch: true,
+            watch: false,
             env:
             {
                 "PORT": 8443,
