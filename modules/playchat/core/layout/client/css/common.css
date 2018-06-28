@@ -398,6 +398,7 @@ input.search[type="submit"]:hover {
 input[type="checkbox"]{
 	box-sizing: border-box;
     padding: 0px;
+    margin-right: 4px;
 }
 label{
 	display: inline-block;

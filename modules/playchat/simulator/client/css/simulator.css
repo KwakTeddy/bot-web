@@ -258,6 +258,8 @@
     background: #fff;
     padding: 4px 16px;
     border-radius:4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
     width: 300px;
     max-width: 400px;
     display: flex;
@@ -270,16 +272,20 @@
     right: 18px;
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    outline: none;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
 }
-/*
-.simulator .input-box:active:after,.simulator .input-box:active:before
+
+.input-box:focus
 {
-    /*box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.15);
-    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
-    border: 2px solid #7c7c7c;
-    box-shadow: none;
-    content: "";
-}*/
+    /*box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.15); box-shadow: none;*/
+    border-color: #038eda;
+    -webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+    -moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+    box-shadow: 0 0 5px rgba(109,207,246,.5);
+    width: 300px;
+}
 
 /*
 .simulator .input-box:before,
@@ -302,6 +308,7 @@
     font-size: 16px;
     line-height: 16px;
     vertical-align: middle;
+    text-overflow: ellipsis;
 }
 
 .simulator .input-box input::-webkit-input-placeholder { color:#aeaeae; font-size: 14px;}
