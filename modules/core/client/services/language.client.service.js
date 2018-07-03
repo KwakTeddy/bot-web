@@ -3316,7 +3316,7 @@
                 "zh": "中文",
                 "jp": "中国語"
             },
-            "ja": {
+            "jp": {
                 "ko": "일본어",
                 "en": "Japanese",
                 "zh": "日本语",
@@ -3622,9 +3622,17 @@
 
         var lan = function(key)
         {
+
+
+            console.log('lan service',key)
+
             if(!key) return '';
 
             key = key.trim();
+
+
+
+
             if(!languages[key])
             {
                 console.log(languages[key]);

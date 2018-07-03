@@ -51,7 +51,7 @@ module.exports = {
     port: process.env.LB_PORT || 3000
   },
   log: {
-    level: process.env.LOG_LEVEL || 'debug',
+    level: process.env.LOG_LEVEL || 'warning',
 
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
@@ -66,6 +66,7 @@ module.exports = {
           active: process.env.LOG_ROTATING_ACTIVE === 'true' ? true : false, // activate to use rotating logs
           fileName: process.env.LOG_ROTATING_FILE || 'access-%DATE%.log', // if rotating logs are active, this fileName setting will be used
           frequency: process.env.LOG_ROTATING_FREQUENCY || 'daily',
+          date_format: 'YYYY-MM-DD',
           verbose: process.env.LOG_ROTATING_VERBOSE === 'true' ? true : false
         }
       }

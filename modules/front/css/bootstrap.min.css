@@ -4166,9 +4166,10 @@ fieldset[disabled] .btn-link:hover {
 .btn-group-sm>.btn,
 .btn-sm {
     padding: 0px 8px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 3;
     color: #288feb;
+    font-weight: bold;
 }
 
 .btn-group-xs>.btn,
@@ -5176,10 +5177,12 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .navbar-toggle {
     position: relative;
     float: right;
+    /*
     padding: 9px 10px;
     margin-top: 8px;
     margin-right: 15px;
     margin-bottom: 8px;
+    */
     background-color: transparent;
     background-image: none;
     border: 1px solid transparent;
