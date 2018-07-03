@@ -44,9 +44,17 @@
 
 <link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
 
+{% if env != 'production' %}
+
 {% for cssFile in cssFiles %}
 <link rel="stylesheet" type="text/css" href="{{cssFile}}">
 {% endfor %}
+
+{% endif %}
+
+{% if env == 'production' %}
+<link rel="stylesheet" type="text/css" href="dist/application.min.css?rel={{app_version}}">
+{% endif %}
 
 <link href="/modules/playchat/gnb/client/css/gnb-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 1024px)" id="gnb-responsive-css">
 <link href="/modules/playchat/simulator/client/css/simulator-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 900px)" id="simulator-responsive-css">
@@ -142,9 +150,18 @@ Beagle.error = function(e)
 </script>
 
 
+{% if env != 'production' %}
 {% for jsFile in jsFiles %}
 <script type="text/javascript" src="{{jsFile}}"></script>
 {% endfor %}
+{% endif %}
+
+
+
+
+{% if env == 'production' %}
+<script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
+{% endif %}
 
 
 
