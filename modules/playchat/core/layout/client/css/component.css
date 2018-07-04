@@ -175,9 +175,8 @@
     position: relative;
     outline: 0;
     border: solid 1px #e8ebf0;
-    border-radius: 5px;
-    padding: 8px 12px 8px 8px!important;
-
+    border-radius: 2px;
+    padding: 11px 12px 11px 8px!important;
     transition: border 0.5s;
 }
 
@@ -310,7 +309,7 @@
 
 .jumbo-select
 {
-    border-radius: 3px;
+    border-radius: 2px;
     border:1px solid #ddd;
     /*width: 100px;
     height: 35px;*/
@@ -322,7 +321,7 @@
 .codebtn
 {
     background: #038eda url(/modules/playchat/working-ground/dialog-graph/client/imgs/codebtn.png) no-repeat 50%;
-    border-radius: 3px;
+    border-radius: 2px;
     padding: 0px 13px;
     display: inline;
     margin: 0 10px;
