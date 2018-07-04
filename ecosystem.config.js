@@ -41,7 +41,7 @@ module.exports =
             {
                 "PORT": 443,
                 "HOST": "https://remaster.moneybrain.ai",
-                "REDIS": "172.31.5.26",
+                "REDIS": "127.0.0.1",
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
@@ -54,8 +54,8 @@ module.exports =
             },
             env_production:
             {
-                "PORT": 443,
 
+                "PORT": 443,
                 "HOST": "https://playchat.ai",
                 "REDIS": "172.31.26.141",
                 "MONGOLAB_URI": "mongodb://172.31.14.78:27017/bot",
@@ -75,4 +75,4 @@ module.exports =
             }
         }
     ]
-}
+};
