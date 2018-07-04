@@ -3623,20 +3623,12 @@
         var lan = function(key)
         {
 
-
-            console.log('lan service',key)
-
             if(!key) return '';
 
             key = key.trim();
 
-
-
-
             if(!languages[key])
             {
-                console.log(languages[key]);
-                console.log(key);
                 if(!list[key])
                     list[key] = true;
 
