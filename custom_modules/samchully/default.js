@@ -8,6 +8,7 @@ module.exports = function(bot)
     //Variable Area
     var monthIndex =
     {
+        1 : 4,
         3 : 1,
         6: 2,
         12: 3
@@ -22,6 +23,37 @@ module.exports = function(bot)
         '0005' : 'LMS송달',
         '0006' : '카카오알림톡송달',
         '0007' : '카카오청구서송달'
+    };
+
+    var test_userData = {
+        testmode:true,
+        auth : true,
+        customer : {
+            NAME : '전재영',
+            VSTELLE_ADDR : 'Dont know where',
+            VKONT : '110116118',
+            mobile : '01031994434'
+        }
+    };
+
+    var add_bfBtn = (dialog, context) => {
+        if(context.channel.name=='kakao'){
+            dialog.output[0].text = [dialog.output[0].text,'\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("")
+        }else{
+            dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+        }
+    };
+
+    var add_setCall = (dialog, context) => {
+        if(context.channel.name=='kakao'){
+            if(dialog.id=='default3'){
+                dialog.output[0].text = [dialog.output[0].text,'\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("")
+            }else{
+                dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+            }
+        }else{
+            dialog.output[0].buttons = [{"text": "고객센터 전화하기", "url": "tel:+15443002"}, {text: '이전'}, {text: '처음'}];
+        }
     };
 
     var bankArr = ['기업은행', '국민은행', '농협', '우리은행', '신한은행', '하나은행'];
@@ -89,7 +121,7 @@ module.exports = function(bot)
 
         if(errData.E_RETCD && !errData.msg)
         {
-            dialog.output[0].text = '[알림]\n\n메세지 : "' +  errData.E_RETMG + '"\n\n 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+            dialog.output[0].text = '[알림]\n\n' +  errData.E_RETMG;
             dialog.output[0].buttons = [];
             addDefaultButton(dialog);
         }
@@ -130,6 +162,7 @@ module.exports = function(bot)
         {
             typeCheck: function (dialog, context, callback)
             {
+
                 var matched = false;
                 var selected = undefined;
                 var customerList = context.session.customerList;
@@ -165,7 +198,7 @@ module.exports = function(bot)
                 var matched = false;
                 var word = dialog.userInput.text;
                 var num = parseInt(word);
-                if(num == 3 || num == 6 || num == 12)
+                if(num == 1 || num == 3 || num == 6 || num == 12)
                 {
                     context.session.selectedMonth = num;
                     matched = true;
@@ -342,6 +375,27 @@ module.exports = function(bot)
     });
 
     //Task Area
+    bot.setTask('setCall',{
+        action: function(dialog, context, callback){
+            add_setCall(dialog, context);
+            callback();
+        }
+    });
+
+    bot.setTask('setCenterCall',{
+        action: function(dialog, context, callback){
+            dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+            if(context.channel.name=='kakao'){
+                dialog.output[0].text = '접수를 위해 종합상황실로 전화 부탁드립니다.\n종합상황실 전화번호 (080-3002-119)\n\n사고관련 신고 이외 문의사항은 고객센터로 문의 바랍니다. 고객센터 전화번호 (1544-3002)';
+            }else{
+                dialog.output[0].text = '접수를 위해 종합상황실로 전화 부탁드립니다.\n\n사고관련 신고 이외 문의사항은 고객센터로 문의 바랍니다.';
+                dialog.output[0].buttons.unshift({"text": "종합상황실 전화하기", "url": "tel:+0803002119"});
+                dialog.output[0].buttons.unshift({"text": "고객센터 전화하기", "url": "tel:+15443002"});
+            }
+            callback();
+        }
+    });
+
 
     bot.setTask('monthSelectError',{
         action: function(dialog, context, callback){
@@ -366,6 +420,7 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
+                add_bfBtn(dialog, context);
                 callback();
             }
         });
@@ -403,6 +458,7 @@ module.exports = function(bot)
 
                         if(body.E_RETCD == 'E')
                         {
+                            body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
@@ -744,7 +800,9 @@ module.exports = function(bot)
                                     return a.FAEDN - b.FAEDN
                                 });
 
-                                context.session.nonpaymentHistory = data;
+                                context.session.nonpaymentHistory
+
+                                add_bfBtn(dialog, context);
                             }
                             else
                             {
@@ -768,11 +826,20 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-              
+
                 if(!context.session.auth)
                 {
                     //DB연동
                     //있으면 context.session.auth = true;
+
+
+                    // for through authorization
+                    if(test_userData.testmode){
+                        context.session.auth = test_userData.auth;
+                        context.session.customerList = customerList = [test_userData.customer];
+                        context.session.curCustomer = customerList[0];
+                    }
+
                 }
 
                 var arr = dialog.output[0].buttons;
@@ -1243,7 +1310,15 @@ module.exports = function(bot)
                                     {
                                         dialog.setNoticeMethodSuccess = true;
                                     }else {
-                                        errorHandler(dialog, body);
+                                        var msg = '[알림]\n\n전자고지 고객님만 가능하며 종이고지서 수령을 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.';
+                                        var btns = [{text: '이전'}, {text: '처음'}];
+                                        if(context.channel.name=='kakao'){
+                                            msg = [msg,'\n\n고객센터 전화번호 (1544-3002 연결)'].join("");
+                                        }else{
+                                            btns.unshift({"text": "고객센터 전화하기", "url": "tel:+15443002"});
+                                        }
+                                        dialog.output[0].text = msg;
+                                        dialog.output[0].buttons = btns;
                                     }
 
                                 }
@@ -1639,8 +1714,9 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(JSON.stringify(body, null, 4));
                             context.session.centerAddressList = body.data.E_TAB;
+                            add_setCall(dialog, context);
+
                         }else {
                             errorHandler(dialog, body);
                         }
@@ -1700,6 +1776,7 @@ module.exports = function(bot)
 
                         if(body.E_RETCD == 'E')
                         {
+                            body.E_RETMG = '조회된 미납금액이 없습니다.';
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
@@ -1755,6 +1832,7 @@ module.exports = function(bot)
 
                         if(body.E_RETCD == 'E')
                         {
+                            body.E_RETMG = '조회된 미납금액이 없습니다.';
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
