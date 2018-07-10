@@ -28,7 +28,6 @@ public/dist/
 uploads
 modules/users/client/img/profile/uploads
 config/env/local.js
-*.pem
 
 aws-s3-credentials.json
 

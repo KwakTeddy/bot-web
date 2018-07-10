@@ -47,12 +47,12 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "요금, 안전전검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다. \n\n인증을 위해 고객님 한글 성함을 입력해주세요.\n(한글로된 2-4글자입니다.)\n\nex)홍길동\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
+                        "text": "요금, 안전점검 메뉴를 이용하기 위해서는 고객님 인증이 필요합니다.\n삼천리에 등록된 성함, 핸드폰번호, 생년월일이 일치할 경우에만 이용 하실 수 있습니다.\n고객정보 등록 또는 수정이 필요하실 경우, 고객센터로 문의해주세요.\n\n고객센터 전화번호 (1544-3002)\n\n성함을 입력해주세요.\n예) 홍길동"
                     }
                 ],
                 "id": "default3",
                 "task": {
-                    "name": ""
+                    "name": "setCall"
                 },
                 "children": [
                     {
@@ -67,7 +67,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n삼천리에 등록된 휴대폰 번호나 현재 사용중인 핸드폰 번호를 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
+                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678"
                             }
                         ],
                         "id": "default49",
@@ -84,7 +84,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
                                         "if": ""
                                     }
                                 ],
@@ -193,7 +193,10 @@ var dialogs = [
                                         ],
                                         "id": "default63"
                                     }
-                                ]
+                                ],
+                                "task": {
+                                    "name": "addButton"
+                                }
                             },
                             {
                                 "name": "핸드폰번호 재질의",
@@ -211,7 +214,10 @@ var dialogs = [
                                 ],
                                 "id": "default51"
                             }
-                        ]
+                        ],
+                        "task": {
+                            "name": "addButton"
+                        }
                     },
                     {
                         "name": "이름입력 재질의",
@@ -253,12 +259,12 @@ var dialogs = [
         ]
     },
     {
-        "name": "요금",
+        "name": "이사/AS",
         "input": [
             {
                 "text": {
-                    "raw": "1. 요금",
-                    "nlp": "1 . 요금"
+                    "raw": "1. 이사 및 AS",
+                    "nlp": "1 . 이사 및 AS"
                 }
             },
             {
@@ -271,9 +277,255 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
+                "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "1. 이사 들어오실 때"
+                    },
+                    {
+                        "url": "",
+                        "text": "2. 이사 나가실 때"
+                    },
+                    {
+                        "url": "",
+                        "text": "3. AS (렌지연결 등)"
+                    },
+                    {
+                        "url": "",
+                        "text": "4. 예약 확인/변경"
+                    },
+                    {
+                        "url": "",
+                        "text": "5. 연결비 안내"
+                    },
+                    {
+                        "url": "",
+                        "text": "이전"
+                    },
+                    {
+                        "url": "",
+                        "text": "처음"
+                    }
+                ]
+            }
+        ],
+        "id": "default5",
+        "children": [
+            {
+                "name": "이사 들어오실 때",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "1. 이사 들어오실 때",
+                            "nlp": "1 . 이사 들어오다 때"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "자세히 보기를 클릭해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/MoveIn",
+                                "text": "자세히보기"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default54"
+            },
+            {
+                "name": "이사 나가실 때",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "2. 이사 나가실 때",
+                            "nlp": "2 . 이사 나가다 때"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "자세히 보기를 클릭해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/MoveOut",
+                                "text": "자세히보기"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default55"
+            },
+            {
+                "name": "AS (렌지연결 등)",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "3. AS (렌지연결 등)",
+                            "nlp": "3 . AS ( 렌 지 연결 등 )"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "3",
+                            "nlp": "3"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "자세히 보기를 클릭해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/AfterService",
+                                "text": "자세히보기"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default56"
+            },
+            {
+                "name": "예약 확인/변경",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "4. 예약 확인/변경",
+                            "nlp": "4 . 예약 확인 / 변경"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "4",
+                            "nlp": "4"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "자세히 보기를 클릭해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            },
+                            {
+                                "url": "http://59.6.157.142/Simple/CheckService",
+                                "text": "자세히보기"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default58"
+            },
+            {
+                "name": "연결비 안내",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "5. 연결비 안내",
+                            "nlp": "5 . 연결 비 안내"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "5",
+                            "nlp": "5"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "자세히 보기를 클릭해주세요.",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            },
+                            {
+                                "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
+                                "text": "자세히보기"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default64"
+            }
+        ]
+    },
+    {
+        "name": "요금 조회 및 납부",
+        "input": [
+            {
+                "text": {
+                    "raw": "2. 요금 조회 및 납부",
+                    "nlp": "2 . 요금 조회 및 납부"
+                }
+            },
+            {
+                "text": {
+                    "raw": "2",
+                    "nlp": "2"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
                 "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
                 "if": "context.session.auth && context.session.customerList.length != 1",
-                "dialogName": "요금"
+                "dialogName": "요금 조회 및 납부"
             },
             {
                 "kind": "Action",
@@ -321,19 +573,7 @@ var dialogs = [
                             },
                             {
                                 "url": "",
-                                "text": "4. 전자고지 신청/해지"
-                            },
-                            {
-                                "url": "",
-                                "text": "5. 자동이체 신청/해지"
-                            },
-                            {
-                                "url": "",
-                                "text": "6. 자가검침 입력"
-                            },
-                            {
-                                "url": "",
-                                "text": "7. 고지서 재발행 신청"
+                                "text": "4. 고지서 재발행 신청"
                             },
                             {
                                 "url": "",
@@ -347,6 +587,671 @@ var dialogs = [
                     }
                 ],
                 "id": "default13",
+                "children": [
+                    {
+                        "name": "월별 고지내역 조회",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "1. 월별 고지내역 조회",
+                                    "nlp": "1 . 월별 고 지내역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "1",
+                                    "nlp": "1"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
+                                "buttons": [
+                                    {
+                                        "text": "1개월"
+                                    },
+                                    {
+                                        "text": "3개월"
+                                    },
+                                    {
+                                        "text": "6개월"
+                                    },
+                                    {
+                                        "text": "12개월"
+                                    },
+                                    {
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "text": "처음"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default14",
+                        "children": [
+                            {
+                                "name": "고지내역 3개월",
+                                "input": [
+                                    {
+                                        "types": [
+                                            "monthType"
+                                        ]
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
+                                    }
+                                ],
+                                "id": "default15",
+                                "children": [
+                                    {
+                                        "name": "고지내역 상세화면",
+                                        "input": [
+                                            {
+                                                "if": "true"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+㎥\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+㎥\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+㎥\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+MJ\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+MJ\n기본요금 : +dialog.noticeDetail.BETRW_GI+원\n사용요금 : +dialog.noticeDetail.BETRW_GA+원\n경감금액 : +dialog.noticeDetail.BETRW_DC+원\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+원\n부가세 : +dialog.noticeDetail.SBETW+원\n가산금 : +dialog.noticeDetail.BETRW_D+원\n정산금액 : +dialog.noticeDetail.BETRW_JS+원\n원단위절사 : +dialog.noticeDetail.BETRW_RO+원\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+원\n고지금액 : +dialog.noticeDetail.BETRW_TOT+원",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "id": "default18",
+                                        "task": {
+                                            "name": "getNoticeDetail"
+                                        }
+                                    }
+                                ],
+                                "task": {
+                                    "name": "getNoticeHistory"
+                                }
+                            },
+                            {
+                                "name": "개월수 선택오류",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "type": "repeat",
+                                        "dialog": 1
+                                    }
+                                ],
+                                "id": "default17"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "월별 납부내역 조회",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "2. 월별 납부내역 조회",
+                                    "nlp": "2 . 월별 납부 내 역 조회"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "2",
+                                    "nlp": "2"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
+                                "buttons": [
+                                    {
+                                        "text": "1개월"
+                                    },
+                                    {
+                                        "text": "3개월"
+                                    },
+                                    {
+                                        "text": "6개월"
+                                    },
+                                    {
+                                        "text": "12개월"
+                                    },
+                                    {
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "text": "처음"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default4",
+                        "children": [
+                            {
+                                "name": "납부내역 3개월",
+                                "input": [
+                                    {
+                                        "types": [
+                                            "monthType"
+                                        ]
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "[납부내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.session.selectedMonth+개월)\n\n#context.session.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+원\n납부금액 : +BETRWS+원\n\n#",
+                                        "buttons": [
+                                            {
+                                                "url": "",
+                                                "text": "이전"
+                                            },
+                                            {
+                                                "url": "",
+                                                "text": "처음"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "default19",
+                                "children": [],
+                                "task": {
+                                    "name": "getPaymentHistory"
+                                }
+                            },
+                            {
+                                "name": "개월수 선택오류_납부",
+                                "input": [
+                                    {
+                                        "if": "true"
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Action",
+                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "type": "repeat",
+                                        "dialog": 1
+                                    }
+                                ],
+                                "id": "default20"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "요금납부",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "3. 요금납부",
+                                    "nlp": "3 . 요금 납부"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "3",
+                                    "nlp": "3"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "요금납부를 진행합니다.\n원하시는 납부 방식을 선택해주세요.",
+                                "buttons": [
+                                    {
+                                        "url": "",
+                                        "text": "신용카드 (ARS 결제)"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "편의점 (QR코드 결제)"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "입금전용계좌 조회"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "url": "",
+                                        "text": "처음"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default1",
+                        "children": [
+                            {
+                                "name": "신용카드 (ARS 결제)",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "신용카드 (ARS 결제)",
+                                            "nlp": "신용카드 ( ARS 결제 )"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "1",
+                                            "nlp": "1"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "[신용카드(ARS 결제)]\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예) 1 2"
+                                    }
+                                ],
+                                "id": "default12",
+                                "task": {
+                                    "name": "getNonpaymentList"
+                                },
+                                "children": [
+                                    {
+                                        "name": "납부연월 선택확인 신용카드",
+                                        "input": [
+                                            {
+                                                "types": [
+                                                    "multiMonthType"
+                                                ]
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.session.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.session.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "신용카드 납부"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "id": "default28",
+                                        "children": [
+                                            {
+                                                "name": "신용카드 납부",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "신용카드 납부",
+                                                            "nlp": "신용카드 납부"
+                                                        }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "1",
+                                                            "nlp": "1"
+                                                        }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "2",
+                                                            "nlp": "2"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "등록된  고객님의 핸드폰 번호로 ARS결제 가상번호를 발송하였습니다. 가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "text": "이전"
+                                                            },
+                                                            {
+                                                                "text": "처음"
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "payByARS"
+                                                },
+                                                "id": "default21"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "납부연월 선택 재질의",
+                                        "input": [
+                                            {
+                                                "if": "true"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "type": "repeat"
+                                            }
+                                        ],
+                                        "id": "default30",
+                                        "task": {
+                                            "name": "monthSelectError"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "편의점 (QR코드 결제)",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "편의점 (QR코드 결제)",
+                                            "nlp": "편의점 ( QR 코드 결제 )"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "2",
+                                            "nlp": "2"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 1 2"
+                                    }
+                                ],
+                                "id": "default23",
+                                "children": [
+                                    {
+                                        "name": "납부연월 선택확인 QR",
+                                        "input": [
+                                            {
+                                                "types": [
+                                                    "multiMonthType"
+                                                ]
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.session.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.session.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "QR 코드 납부"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "id": "default35",
+                                        "children": [
+                                            {
+                                                "name": "QR코드 납부",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "QR 코드 납부",
+                                                            "nlp": "QR 코드 납부"
+                                                        }
+                                                    },
+                                                    {
+                                                        "text": {
+                                                            "raw": "1",
+                                                            "nlp": "1"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "url": "",
+                                                                "text": "처음"
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "payByQR"
+                                                },
+                                                "id": "default16"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "납부연월 선택 QR 재질의",
+                                        "input": [
+                                            {
+                                                "if": "true"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "type": "repeat"
+                                            }
+                                        ],
+                                        "id": "default39"
+                                    }
+                                ],
+                                "task": {
+                                    "name": "getNonpaymentList"
+                                }
+                            },
+                            {
+                                "name": "입금전용계좌 조회",
+                                "input": [
+                                    {
+                                        "text": {
+                                            "raw": "입금전용계좌 조회",
+                                            "nlp": "입금 전용 계좌 조회"
+                                        }
+                                    },
+                                    {
+                                        "text": {
+                                            "raw": "3",
+                                            "nlp": "3"
+                                        }
+                                    }
+                                ],
+                                "output": [
+                                    {
+                                        "kind": "Content",
+                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.session.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#"
+                                    }
+                                ],
+                                "id": "default24",
+                                "children": [
+                                    {
+                                        "name": "입금전용계좌 생성",
+                                        "input": [
+                                            {
+                                                "types": [
+                                                    "selectedAccountType"
+                                                ]
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "+dialog.userInput.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.userInput.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다.",
+                                                "buttons": [
+                                                    {
+                                                        "url": "",
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "id": "default25",
+                                        "children": [],
+                                        "task": {
+                                            "name": "createDepositAccount"
+                                        }
+                                    }
+                                ],
+                                "task": {
+                                    "name": "getAccountList"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "고지서 재발행 신청",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "4. 고지서 재발행 신청",
+                                    "nlp": "4 . 고지서 재발 행 신청"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "4",
+                                    "nlp": "4"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Content",
+                                "text": "고객님의 고지방법  '+dialog.curNoticeMethod+' (으)로 재발행이 완료되었습니다.",
+                                "buttons": [
+                                    {
+                                        "text": "이전"
+                                    },
+                                    {
+                                        "text": "처음"
+                                    }
+                                ]
+                            }
+                        ],
+                        "id": "default11",
+                        "children": [],
+                        "task": {
+                            "name": "resendNotice"
+                        }
+                    }
+                ]
+            }
+        ],
+        "task": {
+            "name": "getCustomerList"
+        }
+    },
+    {
+        "name": "전자고지, 자동이체 신청/해지",
+        "input": [
+            {
+                "text": {
+                    "raw": "3. 전자고지, 자동이체 신청/해지",
+                    "nlp": "3 . 전자 고지 , 자동 이체 신청 / 해지"
+                }
+            },
+            {
+                "text": {
+                    "raw": "3",
+                    "nlp": "3"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.session.auth && context.session.customerList.length != 1",
+                "dialogName": "요금"
+            },
+            {
+                "kind": "Action",
+                "type": "call",
+                "dialogId": "default37",
+                "if": "context.session.auth && context.session.customerList.length == 1",
+                "dialogName": "요금 메뉴 선택"
+            },
+            {
+                "kind": "Action",
+                "type": "call",
+                "dialogId": "default76",
+                "dialogName": "고객정보 취득동의",
+                "dialog": "고객정보 취득동의"
+            }
+        ],
+        "id": "default36",
+        "children": [
+            {
+                "name": "요금 메뉴 선택",
+                "input": [
+                    {
+                        "types": [
+                            "customerListType"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
+                        "if": "",
+                        "buttons": [
+                            {
+                                "url": "",
+                                "text": "1. 전자고지 신청/해지"
+                            },
+                            {
+                                "url": "",
+                                "text": "2. 자동이체 신청/해지"
+                            },
+                            {
+                                "url": "",
+                                "text": "이전"
+                            },
+                            {
+                                "url": "",
+                                "text": "처음"
+                            }
+                        ]
+                    }
+                ],
+                "id": "default37",
                 "children": [
                     {
                         "name": "월별 고지내역 조회",
@@ -560,357 +1465,18 @@ var dialogs = [
                         ]
                     },
                     {
-                        "name": "요금납부",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "3. 요금납부",
-                                    "nlp": "3 . 요금 납부"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "3",
-                                    "nlp": "3"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "요금납부를 진행합니다.\n원하시는 납부 방식을 선택해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "신용카드 (ARS 결제)"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "편의점 (QR코드 결제)"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "입금전용계좌 조회"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "이전"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "처음"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default1",
-                        "children": [
-                            {
-                                "name": "신용카드 (ARS 결제)",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "신용카드 (ARS 결제)",
-                                            "nlp": "신용카드 ( ARS 결제 )"
-                                        }
-                                    },
-                                    {
-                                        "text": {
-                                            "raw": "1",
-                                            "nlp": "1"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "ARS 결제 개요\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
-                                    }
-                                ],
-                                "id": "default12",
-                                "task": {
-                                    "name": "getNonpaymentList"
-                                },
-                                "children": [
-                                    {
-                                        "name": "납부연월 선택확인 신용카드",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "multiMonthType"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.session.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.session.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 신용카드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "신용카드 납부"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "이전"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "처음"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default28",
-                                        "children": [
-                                            {
-                                                "name": "신용카드 납부",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "신용카드 납부",
-                                                            "nlp": "신용카드 납부"
-                                                        }
-                                                    },
-                                                    {
-                                                        "text": {
-                                                            "raw": "1",
-                                                            "nlp": "1"
-                                                        }
-                                                    },
-                                                    {
-                                                        "text": {
-                                                            "raw": "2",
-                                                            "nlp": "2"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "등록된  고객님의 핸드폰 번호로 ARS결제 가상번호를 발송하였습니다. 가상번호로 전화하여 신용카드 수납절차를 진행하시기 바랍니다.",
-                                                        "buttons": [
-                                                            {
-                                                                "text": "이전"
-                                                            },
-                                                            {
-                                                                "text": "처음"
-                                                            }
-                                                        ]
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "payByARS"
-                                                },
-                                                "id": "default21"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "납부연월 선택 재질의",
-                                        "input": [
-                                            {
-                                                "if": "true"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Action",
-                                                "type": "repeat"
-                                            }
-                                        ],
-                                        "id": "default30",
-                                        "task": {
-                                            "name": "monthSelectError"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "편의점 (QR코드 결제)",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "편의점 (QR코드 결제)",
-                                            "nlp": "편의점 ( QR 코드 결제 )"
-                                        }
-                                    },
-                                    {
-                                        "text": {
-                                            "raw": "2",
-                                            "nlp": "2"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n미납금액 목록입니다.\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 3 4\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
-                                    }
-                                ],
-                                "id": "default23",
-                                "children": [
-                                    {
-                                        "name": "납부연월 선택확인 QR",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "multiMonthType"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "선택하신 납부연월은 다음과 같습니다.\n\n#context.session.selectedNonpayment#\n+userIdx+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+원\n미납금액 : +BETRWP+원\n납기일자 : +FAEDN+\n\n#\n\n미납금액 합계 : +context.session.totalSelectedNonpayment+원\n\n납부를 원하시면 아래의 QR 코드 납부 버튼을 눌러주세요.\n다시 선택하고 싶으시면 이전 버튼을 눌러주세요.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "QR 코드 납부"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "이전"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "처음"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default35",
-                                        "children": [
-                                            {
-                                                "name": "QR코드 납부",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "QR 코드 납부",
-                                                            "nlp": "QR 코드 납부"
-                                                        }
-                                                    },
-                                                    {
-                                                        "text": {
-                                                            "raw": "1",
-                                                            "nlp": "1"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "주어진 번호로 QR코드를 발송하였습니다.\n가까운 편의점에서 QR코드를 스캔하여 요금을 결제하시기 바랍니다.",
-                                                        "buttons": [
-                                                            {
-                                                                "url": "",
-                                                                "text": "처음"
-                                                            }
-                                                        ]
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "payByQR"
-                                                },
-                                                "id": "default16"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "납부연월 선택 QR 재질의",
-                                        "input": [
-                                            {
-                                                "if": "true"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Action",
-                                                "type": "repeat"
-                                            }
-                                        ],
-                                        "id": "default39"
-                                    }
-                                ],
-                                "task": {
-                                    "name": "getNonpaymentList"
-                                }
-                            },
-                            {
-                                "name": "입금전용계좌 조회",
-                                "input": [
-                                    {
-                                        "text": {
-                                            "raw": "입금전용계좌 조회",
-                                            "nlp": "입금 전용 계좌 조회"
-                                        }
-                                    },
-                                    {
-                                        "text": {
-                                            "raw": "3",
-                                            "nlp": "3"
-                                        }
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "고객님별로 부여된 가상계좌를 통하여 계좌이체로  도시가스 요금을 결제하는 시스템입니다.\n\n기 생선된 계좌번호 입니다. \n입금을 원하시는 계좌에 납부해주세요\n\n#context.session.nonpaymentHistory#\n은행명 : +BANKA+\n계좌번호 : +BANKN+\n\n#"
-                                    }
-                                ],
-                                "id": "default24",
-                                "children": [
-                                    {
-                                        "name": "입금전용계좌 생성",
-                                        "input": [
-                                            {
-                                                "types": [
-                                                    "selectedAccountType"
-                                                ]
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "+dialog.userInput.selectedBank+은행 입금전용계좌가 생성됐습니다.\n\n은행 : +dialog.userInput.selectedBank+은행\n계좌 : +dialog.createdBankAccount+\n\n위의 계좌로 입금하시면 됩니다.",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "이전"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "처음"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default25",
-                                        "children": [],
-                                        "task": {
-                                            "name": "createDepositAccount"
-                                        }
-                                    }
-                                ],
-                                "task": {
-                                    "name": "getAccountList"
-                                }
-                            }
-                        ]
-                    },
-                    {
                         "name": "전자고지 신청/해지",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "4. 전자고지 신청/해지",
-                                    "nlp": "4 . 전자 고지 신청 / 해지"
+                                    "raw": "1. 전자고지 신청/해지",
+                                    "nlp": "1 . 전자 고지 신청 / 해지"
                                 }
                             },
                             {
                                 "text": {
-                                    "raw": "4",
-                                    "nlp": "4"
+                                    "raw": "1",
+                                    "nlp": "1"
                                 }
                             }
                         ],
@@ -1173,18 +1739,18 @@ var dialogs = [
                         }
                     },
                     {
-                        "name": "자동이체 신청해지_",
+                        "name": "자동이체 신청해지",
                         "input": [
                             {
                                 "text": {
-                                    "raw": "5. 자동이체 신청/해지",
-                                    "nlp": "5 .   자동 이체 신청 / 해지"
+                                    "raw": "2. 자동이체 신청/해지",
+                                    "nlp": "2 .   자동 이체 신청 / 해지"
                                 }
                             },
                             {
                                 "text": {
-                                    "raw": "5",
-                                    "nlp": "5"
+                                    "raw": "2",
+                                    "nlp": "2"
                                 }
                             }
                         ],
@@ -1233,20 +1799,13 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "금융결제원 자동이체 동의자료 열람서비스 제도 시행으로 인해 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터 전화번호 안내 (1544-3002 연결)",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "이전"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "처음"
-                                            }
-                                        ]
+                                        "text": "금융결제원의 정책에따라 자동이체 동의자료 녹취가 필요합니다. 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터(1544-3002)"
                                     }
                                 ],
-                                "id": "default53"
+                                "id": "default53",
+                                "task": {
+                                    "name": "setCall"
+                                }
                             },
                             {
                                 "name": "자동이제 해지",
@@ -1289,78 +1848,6 @@ var dialogs = [
                         "task": {
                             "name": "getPaymentMethod"
                         }
-                    },
-                    {
-                        "name": "자가 검침 입력",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "6. 자가검침 입력",
-                                    "nlp": "6 . 자가 검침 입력"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "6",
-                                    "nlp": "6"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "등록된 고객님의 핸드폰 번호로 검침 안내 메시지가 발송 되었습니다.",
-                                "buttons": [
-                                    {
-                                        "text": "이전"
-                                    },
-                                    {
-                                        "text": "처음"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default10",
-                        "children": [],
-                        "task": {
-                            "name": "selfRFC"
-                        }
-                    },
-                    {
-                        "name": "고지서 재발행 신청",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "7. 고지서 재발행 신청",
-                                    "nlp": "7 . 고지서 재발 행 신청"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "7",
-                                    "nlp": "7"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "고객님의 고지방법  '+dialog.curNoticeMethod+' (으)로 재발행이 완료되었습니다.",
-                                "buttons": [
-                                    {
-                                        "text": "이전"
-                                    },
-                                    {
-                                        "text": "처음"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default11",
-                        "children": [],
-                        "task": {
-                            "name": "resendNotice"
-                        }
                     }
                 ]
             }
@@ -1370,18 +1857,92 @@ var dialogs = [
         }
     },
     {
-        "name": "안전점검",
+        "name": "자가검침 입력",
         "input": [
             {
                 "text": {
-                    "raw": "2. 안전점검",
-                    "nlp": "2 . 안전 점검"
+                    "raw": "4. 자가검침 입력",
+                    "nlp": "4 . 자가 검침 입력"
                 }
             },
             {
                 "text": {
-                    "raw": "2",
-                    "nlp": "2"
+                    "raw": "4",
+                    "nlp": "4"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.session.auth && context.session.customerList.length != 1",
+                "dialogName": "요금"
+            },
+            {
+                "kind": "Action",
+                "type": "call",
+                "dialogId": "default10",
+                "if": "context.session.auth && context.session.customerList.length == 1",
+                "dialogName": "자가 검침 입력"
+            },
+            {
+                "kind": "Action",
+                "type": "call",
+                "dialogId": "default76",
+                "dialogName": "고객정보 취득동의",
+                "dialog": "고객정보 취득동의"
+            }
+        ],
+        "id": "default38",
+        "children": [
+            {
+                "id": "default10",
+                "children": [],
+                "task": {
+                    "name": "selfRFC"
+                },
+                "name": "자가 검침 입력",
+                "input": [
+                    {
+                        "types": [
+                            "customerListType"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "등록된 고객님의 핸드폰 번호로 검침 안내 메시지가 발송 되었습니다.",
+                        "buttons": [
+                            {
+                                "text": "이전"
+                            },
+                            {
+                                "text": "처음"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "task": {
+            "name": "getCustomerList"
+        }
+    },
+    {
+        "name": "안전",
+        "input": [
+            {
+                "text": {
+                    "raw": "5. 안전",
+                    "nlp": "5 . 안전"
+                }
+            },
+            {
+                "text": {
+                    "raw": "5",
+                    "nlp": "5"
                 }
             }
         ],
@@ -1580,19 +2141,13 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "종합상황실 : 080-3002-119\n\n\n가스 누출 또는 화재 등 \n사고관련 신고 이외 민원은\n1544-3002로 문의 바랍니다",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "이전"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "처음"
-                                    }
-                                ]
+                                "text": "",
+                                "buttons": []
                             }
                         ],
+                        "task": {
+                            "name": "setCenterCall"
+                        },
                         "id": "default45"
                     }
                 ]
@@ -1607,14 +2162,14 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "3. 기타",
-                    "nlp": "3 . 기타"
+                    "raw": "6. 기타",
+                    "nlp": "6 . 기타"
                 }
             },
             {
                 "text": {
-                    "raw": "3",
-                    "nlp": "3"
+                    "raw": "6",
+                    "nlp": "6"
                 }
             }
         ],
@@ -1906,14 +2461,12 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "1. 실제 많이 사용인 경우(사용패턴, 기후변화등)\n2. 착오 검침인 경우\n3. 보일러 오작동인 경우\n4. 온수 누수인 경우\n5. 계량기 불량인 경우\n6. 가스 누설인 경우\n위와 같은 경우를 예측할 수 있습니다.  \n그러므로 고객님 댁의 상황을 먼저 확인 하신 후 고지서의 당월 지침과 계량기의 현 지침을 비교하신 후 해당 고객센터로 문의 하시기 바랍니다.",
+                                "text": "요금이 많이 나오는 경우는\n1. 사용패턴, 기후변화 등으로 실제 많이 사용한 경우\n2. 보일러 오작동인 경우\n3. 온수 누수인 경우\n4. 계량기 불량인 경우\n5. 가스 누설인 경우\n6. 착오 검침인 경우\n위와 같은 경우를 예측할 수 있습니다.\n그러므로 고객님 댁의 상황을 먼저 확인 하신 후 고지서의 당월지침과 계량기의 현지침을 비교하신 후 해당 고객센터로 문의 하시기 바랍니다.\n고객센터 전화번호 (1544-3002)",
                                 "buttons": [
                                     {
-                                        "url": "",
                                         "text": "이전"
                                     },
                                     {
-                                        "url": "",
                                         "text": "처음"
                                     }
                                 ]
@@ -2191,8 +2744,8 @@ var dialogs = [
             },
             {
                 "text": {
-                    "raw": "6",
-                    "nlp": "6"
+                    "raw": "7",
+                    "nlp": "7"
                 }
             }
         ],
@@ -2202,7 +2755,6 @@ var dialogs = [
                 "text": "로그아웃되셨습니다.",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "처음"
                     }
                 ]
@@ -2258,21 +2810,36 @@ var commonDialogs = [
                     "raw": "처음",
                     "nlp": "처음"
                 }
+            },
+            {
+                "text": {
+                    "raw": "ㄴ",
+                    "nlp": "ㄴ"
+                }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-                "text": "안녕하세요, 삼천리 고객센터 입니다.\n무엇을 도와드릴까요? \n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
+                "text": "안녕하세요. 삼천리 톡 서비스 입니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
                 "buttons": [
                     {
-                        "text": "1. 요금"
+                        "text": "1. 이사 및 AS"
                     },
                     {
-                        "text": "2. 안전점검"
+                        "text": "2. 요금 조회 및 납부"
                     },
                     {
-                        "text": "3. 기타"
+                        "text": "3. 전자고지, 자동이체 신청/해지"
+                    },
+                    {
+                        "text": "4. 자가검침 입력"
+                    },
+                    {
+                        "text": "5. 안전"
+                    },
+                    {
+                        "text": "6. 기타"
                     }
                 ],
                 "image": {
@@ -2323,6 +2890,12 @@ var commonDialogs = [
                     "raw": "이전",
                     "nlp": "이전"
                 }
+            },
+            {
+                "text": {
+                    "raw": "ㄱ",
+                    "nlp": "ㄱ"
+                }
             }
         ],
         "output": [
@@ -2330,7 +2903,10 @@ var commonDialogs = [
                 "kind": "Action",
                 "type": "back"
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     },
     {
         "id": "noanswer",
