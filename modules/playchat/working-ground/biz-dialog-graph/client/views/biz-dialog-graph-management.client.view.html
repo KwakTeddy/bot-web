@@ -1,0 +1,101 @@
+<div ng-controller="BizDialogGraphManagementController">
+    <div class="upSide">
+        <form class="inline-block">
+            <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+        </form>
+    </div>
+    <div class="tab01" style="margin-top: 10px;">
+        <ul class="tabs1">
+            <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
+        </ul>
+        <div class="flR" style="position: relative; top: -40px;" ng-if="myBotAuth.edit">
+            <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
+                <a href="#">
+                    <img src="modules/playchat/working-ground/common/client/imgs/import.png">
+                    <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/Q.png">-->
+                </a>
+            </div>
+            <div class="btn02" ng-click="modal.mgmtModal.open();" style="width: 110px; display: inline-block;">
+                <a href="#" class="">{{lan('Add New') }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="downSide">
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 90%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>File Name</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="dialogGraphs.length == 0">
+                    <td colspan="2">{{lan('empty') }}</td>
+                </tr>
+                <tr ng-repeat="fileName in dialogGraphs track by $index">
+                    <td style="text-align: left;"><a href="/playchat/development/dialog-graph?fileName={{ fileName }}">{{ fileName }}</a></td>
+                    <td>
+                        <a href="#" class="flR" ng-click="delete(fileName);" ng-if="checkEssentionFile(fileName);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
+        <div class="modal" style="width: 400px;">
+            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('File Type') }}</span>
+                        <label>
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph"> graph
+                        </label>
+                        <label>
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> js file
+                        </label>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="required" style="width: 100%;">
+                        <span class="form-title">{{lan('File Name') }}</span>
+                        <p style="margin: 0; padding-left: 3px; padding-bottom: 5px; margin-bottom: 5px;">{{ lan('DialogGraphManagementCreateDescription') }}</p>
+                        <input type="text" style="height: 35px; width: 85%;" placeholder="{{ lan('Type name of the file.') }}" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-zA-Z]*[a-zA-Z0-9-]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
+                    </label>
+                    <p style="color: red; font-size: 12px; padding-left: 20px;">{{ modal.mgmtModal.data.error }}</p>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal" style="width: 400px;">
+            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+                <div class="form-row">
+                    <label class="required">
+                        <span>File</span>
+                        <div class="form-box">
+                            <input type="file" name="file" id="file" ng-required="true" class="inputfiles" data-multiple-caption="{count} files selected" nv-file-select uploader="uploader"/>
+                            <label for="file">{{lan('Choose a file')}}</label>
+                        </div>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -457,6 +457,12 @@
                 "jp": "ダイアログシナリオ",
                 "zh": "对话场景"
             },
+            "Biz Dialog Graph": {
+                "ko": "비즈챗 대화 시나리오",
+                "en": "Biz Dialog Scenario",
+                "jp": "ダイアログシナリオ",
+                "zh": "对话场景"
+            },
             "Dialog Learning trains questions and answers accordingly.": {
                 "ko": "대화 학습 기능은 1:1로 이루어진 질문답변을 챗봇에게 학습 시키는 기능입니다.",
                 "en": "Dialog Learning trains questions and answers accordingly.",

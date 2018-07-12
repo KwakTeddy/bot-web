@@ -1,0 +1,24 @@
+<form ng-controller="BizDialogGraphIntentAddController" ng-submit="save($event);">
+    <div class="intent-management-add-header">
+        <a href="#" class="intent-management-add-close">
+            <img src="/modules/playchat/working-ground/common/client/imgs/close.png" ng-click="close($event);">
+        </a>
+        <p>{{lan('Intent Add') }}</p>
+    </div>
+    <div class="intent-management-add-content">
+        <p class="intent-management-add-subject">{{lan('Intent name') }}</p>
+        <input type="text" class="intent-management-add-input" placeholder="Intent Name" ng-model="intent.name" ng-required="true" ng-keydown="checkNamePattern($event);">
+        <p class="intent-management-add-subject">{{lan('Intent sentence') }}</p>
+        <div class="intent-management-add-input-wrapper" ng-repeat="content in intent.intentContents">
+            <input type="text" class="intent-management-add-input" ng-keydown="keydown($event, $index);" ng-model="content.content">
+            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteContent($index);">
+        </div>
+        <div style="text-align: center;">
+            <span class="intent-management-add-input-plus" ng-click="addIntent();"></span>
+        </div>
+    </div>
+    <div class="dialog-editor-footer">
+        <button class="blue-button">{{lan('Save') }}</button>
+        <button type="button" class="default-button" ng-click="close($event);">{{lan('Cancel') }}</button>
+    </div>
+</form>

@@ -1,0 +1,87 @@
+<style>
+.working-ground
+{
+    padding: 0 !important;
+}
+
+.playchat-background .top-bar+div > div .working-ground
+{
+    overflow-x: hidden;
+}
+
+caption
+{
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    display: table-caption;
+}
+
+.close-topBar
+{
+    border: 2px black solid;
+    border-radius : 6px;
+    padding : 9px 10px;
+
+}
+
+.topBarToggleButton
+{
+    display: block;
+}
+
+</style>
+
+
+<!--card area-->
+<script type="text/template" id="dialogGraphTemplate">
+    <div class="graph-dialog" id="{id}">
+        <div class="graph-dialog-item">
+            <div class="graph-dialog-header">
+                <span>{name}</span>
+                <a href="" class="dialog-more"></a>
+            </div>
+            <div class="graph-dialog-input">
+                {input}
+                <a href="#" class="arrow"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/miniarrow.png"></a>
+            </div>
+            {task}
+            <div class="graph-dialog-output">
+                {output}
+            </div>
+            {buttons}
+            <a class="graph-fold" ng-click="toggleChild($event);"></a>
+        </div>
+        <div class="graph-dialog-children"></div>
+    </div>
+</script>
+
+
+<div ng-controller="BizDialogGraphDevelopmentController" class="graph-background">
+
+    <!--header tab line-->
+    <div class="tab" style="padding-top: 16px;">
+        <ul class="tab-body"><li>탭 영역</li></ul>
+        <!--<a class="prev-tab" ng-mousedown="prevTab($event);"><img src="/modules/playchat/gnb/client/imgs/left.png"></a>-->
+            <!--<ul class="tab-body">-->
+                <!--<li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">-->
+                    <!--<a>{{ lan(file.endsWith('bot.js') ? 'bot.js' : file); }}</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--<a class="next-tab" ng-mousedown="nextTab($event);"><img src="/modules/playchat/gnb/client/imgs/right.png"></a>-->
+    </div>
+
+    <!--search/zoom/edit target select line -->
+    <div class="graph-controller">
+        <div>Working ground 영역</div>
+    </div>
+
+
+    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
+
+        <!--init here the selected card-->
+        <div id="graphDialogCanvas"></div>
+    </div>
+</div>
+

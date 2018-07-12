@@ -6,7 +6,7 @@
     var instance = undefined;
     var menuInstance = undefined;
 
-    angular.module('playchat').factory('DialogGraph', function($window, $rootScope)
+    angular.module('playchat').factory('BizDialogGraph', function($window, $rootScope)
     {
         var Menu = function()
         {
@@ -60,7 +60,7 @@
             }
 
             this.currentDialog.parent().get(0).removeChild(this.currentDialog.get(0));
-            
+
             this.tempDialogElement = this.currentDialog;
             this.tempDialog = dialog;
             this.closeMenu();
@@ -357,8 +357,6 @@
 
         if(!menuInstance)
             menuInstance = new Menu();
-
-
 
 
 

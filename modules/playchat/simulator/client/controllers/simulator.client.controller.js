@@ -223,8 +223,8 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
-                console.log('data type =========================send msg')
-                console.log(data)
+                console.log('data type =========================send msg');
+                console.log(data);
 
                 if(data.type == 'command')
                 {
@@ -352,7 +352,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.init = function()
         {
-            $scope.isAdvisorMode = true;
+            $scope.isAdvisorMode = false;
             simulatorBody = angular.element('#simulatorBody');
             // init
             simulatorBody.html('');
