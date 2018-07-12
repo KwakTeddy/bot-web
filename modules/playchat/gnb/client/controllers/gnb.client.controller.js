@@ -23,7 +23,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.drawMenu = function()
         {
             var savedMenu = [];
-            console.log(chatbot);
             if(chatbot.templateId)
             {
                 MenuService.get(chatbot.templateId.id, function(menus)

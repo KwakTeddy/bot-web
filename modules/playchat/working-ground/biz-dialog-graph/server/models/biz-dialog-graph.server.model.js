@@ -1,15 +1,16 @@
-//'use strict';
-//
-//var mongoose = require('mongoose');
-//var Schema = mongoose.Schema;
-//
-//var BotFileSchema = new Schema(
-//{
-//    bot: { type: Schema.ObjectId, ref: 'Bot' },
-//    name: { type: String },
-//    user: { type: Schema.ObjectId, ref: 'User' },
-//    updated: { type: Date, default: Date.now },
-//    created: { type: Date, default: Date.now }
-//});
-//
-//mongoose.model('BotFile', BotFileSchema);
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var SentencesSchema = new Schema(
+{
+    templateId : {type : String},
+    name: { type: String },
+    input: Schema.Types.Mixed,
+    inputRaw: Schema.Types.Mixed,
+    output: Schema.Types.Mixed,
+    children: Schema.Types.Mixed,
+    useYN : { type: Number, default:1 },
+    created: { type: Date, default: Date.now }
+});
+
+mongoose.model('Sentences', SentencesSchema);

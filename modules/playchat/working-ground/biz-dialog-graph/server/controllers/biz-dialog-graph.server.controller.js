@@ -9,16 +9,11 @@ var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var S3 = require(path.resolve('./modules/common/s3.js'));
 
-var BotFile = mongoose.model('BotFile');
+var Sentenses = mongoose.model('Sentenses');
 
 exports.find = function (req, res)
 {
     var botsPath = path.resolve('./custom_modules/' + req.params.botId);
-    if(req.query.templateId)
-    {
-        // 추후 서비스봇과 템플릿 클론봇 구분
-        botsPath = path.resolve('./templates/' + req.query.templateId + '/bot');
-    }
 
     if(!fs.existsSync(botsPath))
     {
@@ -54,15 +49,11 @@ exports.checkFile = function(req, res)
     res.jsonp({ exist: fs.existsSync(filePath) });
 };
 
+// for dialog graph
 exports.getGraphFile = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
 
-    if(req.query.templateId)
-    {
-        // 추후 서비스봇과 템플릿 클론봇 구분
-        filePath = path.resolve('./templates/' + req.query.templateId + '/bot/' + req.params.fileName);
-    }
 
     fs.stat(filePath, function(err, stat)
     {
@@ -98,11 +89,6 @@ exports.findFile = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
 
-    if(req.query.templateId)
-    {
-        // 추후 서비스봇과 템플릿 클론봇 구분
-        filePath = path.resolve('./templates/' + req.query.templateId + '/bot/' + req.params.fileName);
-    }
 
     fs.stat(filePath, function(err, stat)
     {
@@ -126,13 +112,8 @@ exports.findFile = function(req, res)
 
 exports.saveFile = function(req, res)
 {
-
-
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.body.fileName);
-    if(req.body.templateId)
-    {
-        filePath = path.resolve('./templates/' + req.body.templateId + '/bot/' + req.body.fileName);
-    }
+
 
     if(req.params.fileName && req.body.path)
     {
@@ -324,9 +305,31 @@ module.exports.getNlp = function(req, res)
     });
 };
 
-module.exports.getBlankTemplate = function(req, res)
+module.exports.getDefaultTemplate = function(req, res)
 {
-    var language = req.query.language;
-    var data = fs.readFileSync(path.resolve('./modules/chatbots/server/controllers/sample/blank/graph.' + language + '.template'));
+    var language = req.query.language? req.query.language : 'ko';
+    var templateId = req.params.fileName;
+
+    var data = fs.readFileSync(path.resolve('./modules/chatbots/server/controllers/'+templateId+'/blank/graph.' + language + '.template'));
     res.send({ data: data.toString() });
+};
+
+
+exports.getSentences = function(req, res){
+    var type = req.params.type;
+    if(type && type == 'bizchat'){
+        var query = { templateId: req.params.bizchatId, useYN: 1 };
+        Sentenses.find(query)
+            .sort('-created')
+            .exec((err, sentences) => {
+                if(err){
+                    return res.status(400).send({ message: err.stack || err });
+                }else{
+                    res.jsonp(sentences);
+                }
+            })
+    }else{
+        res.jsonp({});
+    }
+
 };
