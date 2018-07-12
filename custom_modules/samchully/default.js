@@ -32,7 +32,7 @@ module.exports = function(bot)
     };
 
     var test_userData = {
-        testmode:true,
+        testmode:false,
         auth : true,
         customer : {
             NAME : '전재영',
