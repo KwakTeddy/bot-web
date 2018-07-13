@@ -67,7 +67,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678"
+                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678\n\n*본 서비스는 삼천리에 등록하신 휴대폰으로만 이용하실 수 있습니다. 핸드폰번호를 는 서비스 이오니 미등록 또는 변경시에는 고객센터로 문의하여 등록 후 이용해주세요."
                             }
                         ],
                         "id": "default49",
@@ -84,7 +84,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
+                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n생년월일 앞 6자리를 입력해주세요.\n예) 900930",
                                         "if": ""
                                     }
                                 ],
@@ -1537,7 +1537,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으실 이메일 주소를 입력해주세요.\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
+                                                "text": "받으실 이메일 주소를 입력해주세요.\n\n이전으로 돌아가시려면 'ㄱ' 을 입력해주세요.\n처음으로 돌아가시려면 'ㄴ' 을 입력해주세요."
                                             }
                                         ],
                                         "task": {
@@ -1730,7 +1730,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "금융결제원의 정책에따라 자동이체 동의자료 녹취가 필요합니다. 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터(1544-3002)"
+                                        "text": "금융결제원의 정책에따라 자동이체 동의자료 녹취가 필요합니다. 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.\n\n고객센터(1544-3002)"
                                     }
                                 ],
                                 "id": "default53",

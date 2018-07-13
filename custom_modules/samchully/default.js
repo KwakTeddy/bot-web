@@ -110,7 +110,7 @@ module.exports = function(bot)
             reTry[bot.userKey].reTryId = dialog.id;
             reTry[bot.userKey].reTryName = dialog.card.name;
 
-            dialog.output[0].text = '[에러]\n\n"연결이 지연되고 있습니다."';
+            dialog.output[0].text = '[에러]\n\n"연결이 지연되고 있습니다.재시도 부탁드립니다."';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
             return
         }
@@ -1412,11 +1412,9 @@ module.exports = function(bot)
                                     {
                                         dialog.setNoticeMethodSuccess = true;
                                     }else {
-                                        var msg = '[알림]\n\n전자고지 고객님만 가능하며 종이고지서 수령을 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.';
+                                        var msg = '[알림]\n\n전자고지 고객님만 가능하며 종이고지서 수령을 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.\n\n고객센터 전화번호 (1544-3002 연결)';
                                         var btns = [{text: '이전'}, {text: '처음'}];
-                                        if(context.channel.name=='kakao'){
-                                            msg = [msg,'\n\n고객센터 전화번호 (1544-3002 연결)'].join("");
-                                        }else{
+                                        if(context.channel.name !== 'kakao') {
                                             btns.unshift({"text": "고객센터 전화하기", "url": "tel:+15443002"});
                                         }
                                         dialog.output[0].text = msg;
@@ -2091,6 +2089,11 @@ module.exports = function(bot)
 		{
                 dialog.output[0].dialogId = reTry[bot.userKey].reTryId;
                 dialog.output[0].dialogName = reTry[bot.userKey].reTryName;
+
+            if(!reTry[bot.userKey].reTryId || !reTry[bot.userKey].reTryName){
+                dialog.output[0].dialogId = 'startDialog';
+                dialog.output[0].dialogName = '시작';
+            }
 
 			callback();
 		}
