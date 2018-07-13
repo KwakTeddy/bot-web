@@ -372,11 +372,9 @@ var dialogs = [
                         "text": "자세히 보기를 클릭해주세요.",
                         "buttons": [
                             {
-                                "url": "",
                                 "text": "이전"
                             },
                             {
-                                "url": "",
                                 "text": "처음"
                             },
                             {
@@ -644,7 +642,16 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
+                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요.",
+                                        "if": "context.session.selectedMonth === 3 || context.session.selectedMonth === 6 || context.session.selectedMonth ===12"
+                                    },
+                                    {
+                                        "kind": "Action",
+                                        "text": "",
+                                        "if": "context.session.selectedMonth === 1",
+                                        "type": "call",
+                                        "dialogId": "default18",
+                                        "dialogName": "고지내역 상세화면"
                                     }
                                 ],
                                 "id": "default15",
@@ -692,7 +699,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
+                                        "text": "1개월, 3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
                                         "type": "repeat",
                                         "dialog": 1
                                     }
@@ -860,7 +867,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[신용카드(ARS 결제)]\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예) 1 2"
+                                        "text": "[신용카드(ARS 결제)]\n고객님 고유의 가상번호로 전화 한 뒤 카드정보를 입력하여 도시가스 요금을 결제하는 시스템입니다.\n\n#context.session.nonpaymentHistory#\n+index+. \n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월 상단에 있는 번호를 띄어쓰기로 구분하여 입력해주세요.\n예) 1개월분일 경우 1\n     2개월분일 경우 1 2"
                                     }
                                 ],
                                 "id": "default12",
@@ -1254,217 +1261,6 @@ var dialogs = [
                 "id": "default37",
                 "children": [
                     {
-                        "name": "월별 고지내역 조회",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "1. 월별 고지내역 조회",
-                                    "nlp": "1 . 월별 고 지내역 조회"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "1",
-                                    "nlp": "1"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "3개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "6개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "12개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "이전"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "처음"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default14",
-                        "children": [
-                            {
-                                "name": "고지내역 3개월",
-                                "input": [
-                                    {
-                                        "types": [
-                                            "monthType"
-                                        ]
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요."
-                                    }
-                                ],
-                                "id": "default15",
-                                "children": [
-                                    {
-                                        "name": "고지내역 상세화면",
-                                        "input": [
-                                            {
-                                                "if": "true"
-                                            }
-                                        ],
-                                        "output": [
-                                            {
-                                                "kind": "Content",
-                                                "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+㎥\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+㎥\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+㎥\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+MJ\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+MJ\n기본요금 : +dialog.noticeDetail.BETRW_GI+원\n사용요금 : +dialog.noticeDetail.BETRW_GA+원\n경감금액 : +dialog.noticeDetail.BETRW_DC+원\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+원\n부가세 : +dialog.noticeDetail.SBETW+원\n가산금 : +dialog.noticeDetail.BETRW_D+원\n정산금액 : +dialog.noticeDetail.BETRW_JS+원\n원단위절사 : +dialog.noticeDetail.BETRW_RO+원\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+원\n고지금액 : +dialog.noticeDetail.BETRW_TOT+원",
-                                                "buttons": [
-                                                    {
-                                                        "url": "",
-                                                        "text": "이전"
-                                                    },
-                                                    {
-                                                        "url": "",
-                                                        "text": "처음"
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        "id": "default18",
-                                        "task": {
-                                            "name": "getNoticeDetail"
-                                        }
-                                    }
-                                ],
-                                "task": {
-                                    "name": "getNoticeHistory"
-                                }
-                            },
-                            {
-                                "name": "개월수 선택오류",
-                                "input": [
-                                    {
-                                        "if": "true"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
-                                        "type": "repeat",
-                                        "dialog": 1
-                                    }
-                                ],
-                                "id": "default17"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "월별 납부내역 조회",
-                        "input": [
-                            {
-                                "text": {
-                                    "raw": "2. 월별 납부내역 조회",
-                                    "nlp": "2 . 월별 납부 내 역 조회"
-                                }
-                            },
-                            {
-                                "text": {
-                                    "raw": "2",
-                                    "nlp": "2"
-                                }
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Content",
-                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
-                                "buttons": [
-                                    {
-                                        "url": "",
-                                        "text": "3개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "6개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "12개월"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "이전"
-                                    },
-                                    {
-                                        "url": "",
-                                        "text": "처음"
-                                    }
-                                ]
-                            }
-                        ],
-                        "id": "default4",
-                        "children": [
-                            {
-                                "name": "납부내역 3개월",
-                                "input": [
-                                    {
-                                        "types": [
-                                            "monthType"
-                                        ]
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Content",
-                                        "text": "[납부내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.session.selectedMonth+개월)\n\n#context.session.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+원\n납부금액 : +BETRWS+원\n\n#",
-                                        "buttons": [
-                                            {
-                                                "url": "",
-                                                "text": "이전"
-                                            },
-                                            {
-                                                "url": "",
-                                                "text": "처음"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "id": "default19",
-                                "children": [],
-                                "task": {
-                                    "name": "getPaymentHistory"
-                                }
-                            },
-                            {
-                                "name": "개월수 선택오류_납부",
-                                "input": [
-                                    {
-                                        "if": "true"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "text": "3개월, 6개월, 12개월 단위로 조회 가능합니다. \n\n조회할 고지내역 기간을 다시 선택해주세요.",
-                                        "type": "repeat",
-                                        "dialog": 1
-                                    }
-                                ],
-                                "id": "default20"
-                            }
-                        ]
-                    },
-                    {
                         "name": "전자고지 신청/해지",
                         "input": [
                             {
@@ -1528,23 +1324,21 @@ var dialogs = [
                                         "text": "원하시는 고지 방법을 선택해주세요.",
                                         "buttons": [
                                             {
-                                                "url": "",
+                                                "text": "카카오알림톡 고지"
+                                            },
+                                            {
                                                 "text": "카카오페이 고지"
                                             },
                                             {
-                                                "url": "",
                                                 "text": "LMS 고지"
                                             },
                                             {
-                                                "url": "",
                                                 "text": "이메일 고지"
                                             },
                                             {
-                                                "url": "",
                                                 "text": "이전"
                                             },
                                             {
-                                                "url": "",
                                                 "text": "처음"
                                             }
                                         ]
@@ -1552,6 +1346,72 @@ var dialogs = [
                                 ],
                                 "id": "default26",
                                 "children": [
+                                    {
+                                        "name": "카카오알림톡",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "카카오알림톡 고지",
+                                                    "nlp": "카카오 알림 톡 고지"
+                                                }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "1",
+                                                    "nlp": "1"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "카카오알림톡 고지 신청을 계속 진행하시겠습니까?",
+                                                "buttons": [
+                                                    {
+                                                        "text": "네"
+                                                    },
+                                                    {
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "task": {
+                                            "name": ""
+                                        },
+                                        "id": "default79",
+                                        "children": [
+                                            {
+                                                "name": "카카오알림톡 완료",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "네",
+                                                            "nlp": "네"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "정상적으로 처리되었습니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "text": "이전"
+                                                            },
+                                                            {
+                                                                "text": "처음"
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "id": "default80"
+                                            }
+                                        ]
+                                    },
                                     {
                                         "name": "카카오",
                                         "input": [
@@ -1563,8 +1423,8 @@ var dialogs = [
                                             },
                                             {
                                                 "text": {
-                                                    "raw": "1",
-                                                    "nlp": "1"
+                                                    "raw": "2",
+                                                    "nlp": "2"
                                                 }
                                             }
                                         ],
@@ -1585,7 +1445,8 @@ var dialogs = [
                                         "task": {
                                             "name": "setNoticeMethod_kkopay"
                                         },
-                                        "id": "default32"
+                                        "id": "default32",
+                                        "children": []
                                     },
                                     {
                                         "name": "LMS 고지",
@@ -1598,16 +1459,19 @@ var dialogs = [
                                             },
                                             {
                                                 "text": {
-                                                    "raw": "2",
-                                                    "nlp": "2"
+                                                    "raw": "3",
+                                                    "nlp": "3"
                                                 }
                                             }
                                         ],
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "정상적으로 처리되셨습니다.",
+                                                "text": "LMS 고지 신청을 계속 진행하시겠습니까?",
                                                 "buttons": [
+                                                    {
+                                                        "text": "네"
+                                                    },
                                                     {
                                                         "text": "이전"
                                                     },
@@ -1618,9 +1482,41 @@ var dialogs = [
                                             }
                                         ],
                                         "task": {
-                                            "name": "setNoticeMethod_lms"
+                                            "name": ""
                                         },
-                                        "id": "default33"
+                                        "id": "default33",
+                                        "children": [
+                                            {
+                                                "name": "LMS 고지 원료",
+                                                "input": [
+                                                    {
+                                                        "text": {
+                                                            "raw": "네",
+                                                            "nlp": "네"
+                                                        }
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "정상적으로 처리되었습니다.",
+                                                        "buttons": [
+                                                            {
+                                                                "text": "이전"
+                                                            },
+                                                            {
+                                                                "text": "처음"
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "task": {
+                                                    "name": "setNoticeMethod_lms"
+                                                },
+                                                "id": "default7",
+                                                "children": []
+                                            }
+                                        ]
                                     },
                                     {
                                         "name": "이메일",
@@ -1633,8 +1529,8 @@ var dialogs = [
                                             },
                                             {
                                                 "text": {
-                                                    "raw": "3",
-                                                    "nlp": "3"
+                                                    "raw": "4",
+                                                    "nlp": "4"
                                                 }
                                             }
                                         ],
@@ -1718,19 +1614,54 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "정상적으로 처리되었습니다.",
+                                        "text": "LMS 고지 해지를 계속 진행하시겠습니까?",
                                         "buttons": [
                                             {
-                                                "url": "",
+                                                "text": "네"
+                                            },
+                                            {
+                                                "text": "이전"
+                                            },
+                                            {
                                                 "text": "처음"
                                             }
                                         ]
                                     }
                                 ],
                                 "id": "default31",
-                                "children": [],
+                                "children": [
+                                    {
+                                        "name": "전자고지 해지 원료",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "네",
+                                                    "nlp": "네"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "정상적으로 처리되었습니다.",
+                                                "buttons": [
+                                                    {
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "task": {
+                                            "name": "cancelNoticeMethod"
+                                        },
+                                        "id": "default59"
+                                    }
+                                ],
                                 "task": {
-                                    "name": "cancelNoticeMethod"
+                                    "name": ""
                                 }
                             }
                         ],
@@ -1826,14 +1757,15 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "정상처리 되었습니다.",
+                                        "text": "자동이체 해지를 계속 진행하시겠습니까?",
                                         "buttons": [
                                             {
-                                                "url": "",
+                                                "text": "네"
+                                            },
+                                            {
                                                 "text": "이전"
                                             },
                                             {
-                                                "url": "",
                                                 "text": "처음"
                                             }
                                         ]
@@ -1841,8 +1773,39 @@ var dialogs = [
                                 ],
                                 "id": "default57",
                                 "task": {
-                                    "name": "cancelAutoTransfer"
-                                }
+                                    "name": ""
+                                },
+                                "children": [
+                                    {
+                                        "name": "자동이제 해지 완료",
+                                        "input": [
+                                            {
+                                                "text": {
+                                                    "raw": "네",
+                                                    "nlp": "네"
+                                                }
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Content",
+                                                "text": "정상적으로 처리되었습니다.",
+                                                "buttons": [
+                                                    {
+                                                        "text": "이전"
+                                                    },
+                                                    {
+                                                        "text": "처음"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "task": {
+                                            "name": "cancelAutoTransfer"
+                                        },
+                                        "id": "default77"
+                                    }
+                                ]
                             }
                         ],
                         "task": {
@@ -2693,14 +2656,12 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "+context.session.centerAddress+ 관할 고객센터입니다.\n#context.session.centerAddressList#\n+index+.\n+MESSAGE+\n\n#",
+                                "text": "+context.session.centerAddress+ 관할 고객센터입니다.\n#context.session.centerAddressList#\n+index+.\n+MESSAGE+\n\n#\n고객센터 전화번호 (1544-3002)",
                                 "buttons": [
                                     {
-                                        "url": "",
                                         "text": "이전"
                                     },
                                     {
-                                        "url": "",
                                         "text": "처음"
                                     }
                                 ]
@@ -2945,9 +2906,15 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Action",
-                "type": "back"
+                "type": "call",
+                "text": "",
+                "dialogId": "rePeat",
+                "dialogName": "다시질문"
             }
-        ]
+        ],
+        "task": {
+            "name": "reTry"
+        }
     }
 ];
 
