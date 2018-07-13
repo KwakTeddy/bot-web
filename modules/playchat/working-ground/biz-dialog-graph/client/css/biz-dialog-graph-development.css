@@ -91,17 +91,17 @@ select.custom-select option{
     background: #fffbe6;
     transition: all 0.3s;
 }
+.ml3{
+    margin-left:3%;
+}
 .bot-messages-list select.message-inselect{
-    border: none;
-    outline: none;
-    width: 126px;
-    padding-left: 10px;
-    margin-left: 10px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: url("/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down.png") no-repeat 95% 43%;
+    background: url("/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down.png") no-repeat 94% 49%;
     cursor: pointer;
+    border: 1px solid #e1e1e1;
+    padding: 2% 7% 2% 2%;
 }
 select.message-inselect::-ms-expand{
     display: none;
@@ -109,7 +109,6 @@ select.message-inselect::-ms-expand{
 select.message-inselect option{
     background: transparent;
     color:#424242;
-
 }
 .mobile-view-practice .header p{
     text-align: center;
@@ -136,7 +135,7 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 }
 .bot-messages-list textarea{
     width: 97.5%;
-    height:150px;
+    height:100px;
 }
 .bot-messages-list span{
     margin-left: 10px;
@@ -190,7 +189,7 @@ select.add-menu option{
 .bot-messages-list span.close-btn{
     float: right;
     font-size: 30px;
-    line-height: 17px;
+    line-height: 25px;
 }
 .message-view{
     width: 32%;
@@ -1145,7 +1144,45 @@ select.add-menu option{
 {
     font-size: 13px;
 }
-
+/*checkbox change by lisa*/
+.detail-select{
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+.detail-select input[type='checkbox'] {
+    display: none;
+}
+.detail-select input[type='checkbox'] + label::before {
+    content: ' ';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    vertical-align: middle;
+    margin: -2px 7px 0px 0;
+    background:#fff;
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+}
+.detail-select input[type='checkbox'] + label:hover:before{
+    border: 1px solid #038eda !important;
+    transition: .3s all;
+}
+.detail-select input[type='checkbox']:checked + label:before{
+    background: #038eda;
+    cursor: pointer;
+}
+.detail-select label{
+    font-size: 12px;
+    line-height: 28px;
+}
+.connection-data{
+    margin: 1% 0;
+}
+.connection-data input{
+    border: 1px solid #e5e5e5;
+    width: 52.9%;
+    text-overflow: ellipsis;
+}
 @media screen and (max-width: 1450px)
 {
     .graph-controller
