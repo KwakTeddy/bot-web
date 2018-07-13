@@ -318,20 +318,16 @@ module.exports.getDefaultTemplate = function(req, res)
 
 exports.getSentences = function(req, res){
     var type = req.params.type;
-    if(type && type == 'bizchat'){
-        var query = { templateId: req.params.bizchatId, useYN: 1 };
-        Sentences.find(query)
-            .sort('-created')
-            .exec((err, sentences) => {
-                if(err){
-                    return res.status(400).send({ message: err.stack || err });
-                }else{
-                    res.jsonp({data:sentences});
-                }
-            })
-    }else{
-        res.jsonp({data:[]});
-    }
+    var query = { templateId: req.params.bizchatId, type:type, useYN: 1 };
+    Sentences.find(query)
+        .sort('-created')
+        .exec((err, sentences) => {
+            if(err){
+                return res.status(400).send({ message: err.stack || err });
+            }else{
+                res.jsonp({data:sentences});
+            }
+        })
 
 };
 

@@ -17,7 +17,6 @@
 
         var SentencesService = $resource('/api/:type/biz-sentences/:bizchatId', { type:'@type', bizchatId: '@bizchatId' });
 
-
         var BizChat = {
             type : 'bizchat',
             bizchatId : 'survey',
@@ -25,13 +24,11 @@
             taskFileName : 'default.js',
             commonDialogs : null,
             dialogs : null,
+            cardArr : [],
             template : {
                 card : '',
                 input : '',
-                output : {
-                    text : '',
-                    button : ''
-                }
+                output : ''
             },
             tasks : [],
             types : [],
@@ -58,6 +55,15 @@
             cb(data);
         };
 
+        var _globalSentenceLoad = function(){
+            SentencesService.get({type:'global',bizchatId:BizChat.bizchatId},(res) => {
+                BizChat.dataset = res.data;
+                console.log(res)
+            },(err) => {
+                console.log(err)
+            })
+        };
+
         var _customTypeLoad = function(){
             CustomTypeService.get({name:'', type:'type'},(res) => {
                 BizChat.addOn.types = res.data;
@@ -74,6 +80,36 @@
             });
         };
 
+        var _dialogIndexing = function(dialog,parentId){
+            for(var i in dialog){
+                BizChat.cardArr.push(_mk_index(dialog[i], parentId));
+                if(dialog[i].children && dialog[i].children.length) {
+                    _dialogIndexing(dialog[i].children, dialog[i].id);
+                }
+            }
+        };
+
+        BizChat.createDialog = function(dialog, parent){
+            BizChat.cardArr.push(_mk_index(dialog, parent? parent.id : null))
+        };
+
+        BizChat.deleteDialog = function(id){
+            BizChat.cardArr.forEach(function(){
+
+            })
+        };
+
+
+
+        var _mk_index = function(dia, parentId){
+            return {
+                id : dia.id,
+                name : dia.name,
+                input : dia.input,
+                output : dia.output,
+                parentId : parentId ? parentId : null
+            }
+        };
 
         BizChat.onReady = (cb) => {
             // load chatbot obj
@@ -82,6 +118,7 @@
             // custom type list load
             _customTypeLoad();
             _customTaskLoad();
+            _globalSentenceLoad();
 
             // load dialog list
             GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
@@ -89,6 +126,8 @@
                     // it will be included dialogs, commonDialogs
                     BizChat.commonDialogs = res.commonDialogs;
                     BizChat.dialogs = res.dialogs;
+
+                    _dialogIndexing(BizChat.dialogs);
 
                     // list of task names in the file
                     TaskService.query({botId: chatbot.id}
@@ -123,31 +162,32 @@
         };
 
         BizChat.makeCard = function(dialog){
-            if(!BizChat.template.card)
-                return alert('Template does not exist!');
+            if(!BizChat.template.card) return alert('Template does not exist!');
 
-            BizChat.template.card.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
+            var tpl = BizChat.template.card.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
             var input = [];
+
+            // input이 if일 땐 필요없음
             dialog.input.forEach(function(v){
                 var type = Object.keys(v)[0];
                 if(type == 'text'){
+                    // 대답에 의한 분기
                     input.push(BizChat.template.input.replace('{keyword}',v.text.raw))
                 }else if(type == 'types'){
-                    input.push(BizChat.template.input.replace('{keyword}',v.types))
-                }else if(type == 'if'){
-                    input.push(BizChat.template.input.replace('{keyword}','if:'+v.if))
+                    // 타입체크에 fail
+                    input.push(BizChat.template.input.replace('{keyword}','type:'+v.types[0]))
                 }
             });
 
             var output = [];
-            dialog.output.forEach(function(v){
-                var type = Object.keys(v)[0];
-                if(type == 'text'){
-                    input.push(BizChat.template.input.replace('{keyword}',v.text.raw))
-                }
-            });
 
-            //if(dialog.)
+            // bot이 대답할 답변
+            // 나중에 button이 있을 경우를 추가하여야 한다
+            var op = dialog.output[0];
+            output.push(BizChat.template.output.replace('{message}',op.text));
+
+
+            return tpl.replace('{input}', input.join("")).replace('{output}', output.join(""));
         };
 
         BizChat.saveGraph = (cb) => {

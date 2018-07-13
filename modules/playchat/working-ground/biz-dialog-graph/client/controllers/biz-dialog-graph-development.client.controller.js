@@ -25,7 +25,10 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     {
         $scope.$parent.loaded('working-ground');
 
-        BizChatService.template = angular.element('#cardTemplate') ? angular.element('#cardTemplate').html() : '';
+        // 나중에 HTML에 바인딩하면서
+        BizChatService.template.card = angular.element('#cardTpl');
+        BizChatService.template.input = angular.element('#inputTpl');
+        BizChatService.template.output = angular.element('#outputTpl');
 
         $scope.initialize = function()
         {
@@ -40,27 +43,33 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 $scope.sentences = bizchat.sentences;
 
+                // template set
+
+
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
             });
         };
 
+
+
         $scope.appendGrid = function(dialog){
+            $scope.addCard(dialog);
+
             if(dialog.children.length > 0){
                 var child = dialog.children;
                 for(var c in child){
                     $scope.appendGrid(c);
                 }
-            }else{
-
             }
         };
 
-        $scope.addCard = function(card){
+        $scope.addCard = function(dialog){
+            var tpl = BizChatService.makeCard(dialog);
 
+            angular.element('#cardArea').append(tpl);
         };
-
 
     })();
     $scope.initialize();
