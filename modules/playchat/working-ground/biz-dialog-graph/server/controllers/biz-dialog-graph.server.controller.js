@@ -9,7 +9,7 @@ var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var S3 = require(path.resolve('./modules/common/s3.js'));
 
-var Sentenses = mongoose.model('Sentenses');
+// var Sentenses = mongoose.model('Sentenses');
 
 exports.find = function (req, res)
 {
@@ -316,20 +316,20 @@ module.exports.getDefaultTemplate = function(req, res)
 
 
 exports.getSentences = function(req, res){
-    var type = req.params.type;
-    if(type && type == 'bizchat'){
-        var query = { templateId: req.params.bizchatId, useYN: 1 };
-        Sentenses.find(query)
-            .sort('-created')
-            .exec((err, sentences) => {
-                if(err){
-                    return res.status(400).send({ message: err.stack || err });
-                }else{
-                    res.jsonp(sentences);
-                }
-            })
-    }else{
-        res.jsonp({});
-    }
+    // var type = req.params.type;
+    // if(type && type == 'bizchat'){
+    //     var query = { templateId: req.params.bizchatId, useYN: 1 };
+    //     Sentenses.find(query)
+    //         .sort('-created')
+    //         .exec((err, sentences) => {
+    //             if(err){
+    //                 return res.status(400).send({ message: err.stack || err });
+    //             }else{
+    //                 res.jsonp(sentences);
+    //             }
+    //         })
+    // }else{
+    //     res.jsonp({});
+    // }
 
 };

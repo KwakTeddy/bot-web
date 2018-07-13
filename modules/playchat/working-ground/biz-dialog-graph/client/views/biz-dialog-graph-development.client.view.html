@@ -1,4 +1,8 @@
 <style>
+    /*@font-face{*/
+        /*font-family: "Noto Sans";*/
+        /*src: url("NotoSansCJKkr-Medium.otf");*/
+    /*}*/
 .working-ground
 {
     padding: 0 !important;
@@ -61,27 +65,86 @@ caption
 <div ng-controller="BizDialogGraphDevelopmentController" class="graph-background">
 
     <!--header tab line-->
-    <div class="tab" style="padding-top: 16px;">
-        <ul class="tab-body"><li>탭 영역</li></ul>
-        <!--<a class="prev-tab" ng-mousedown="prevTab($event);"><img src="/modules/playchat/gnb/client/imgs/left.png"></a>-->
-            <!--<ul class="tab-body">-->
-                <!--<li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">-->
-                    <!--<a>{{ lan(file.endsWith('bot.js') ? 'bot.js' : file); }}</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--<a class="next-tab" ng-mousedown="nextTab($event);"><img src="/modules/playchat/gnb/client/imgs/right.png"></a>-->
-    </div>
-
     <!--search/zoom/edit target select line -->
-    <div class="graph-controller">
-        <div>Working ground 영역</div>
+    <div class="working-ground-bizchat">
+        <select class="custom-select" style="display: none;">
+            <option  selected>설문조사 봇</option>
+            <option>rrrrr 봇</option>
+            <option>dddddd 봇</option>
+        </select>
+        <div class="bizchat-select01" style="float: left;">
+            <span class="custom-select-trigger">
+                설문조사 봇
+            </span>
+        </div>
+        <a href="" class="icon-area" style="margin-left: 30px;"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/copy.png"></a>
+        <a href="" class="icon-area"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/save.png"></a>
+
+        <div class="subtitle">
+            <div class="message-edit-list">
+                <span>메세지 서식 리스트</span>
+                <ul>
+                    <li class="select"><a href="#">이벤트 안내 메세지</a></li>
+                    <li><a href="">전화번호 수집</a></li>
+                    <li><a href="">주소 수집</a></li>
+                    <li><a href="">개인정보 동의</a></li>
+                    <li><a href="">아웃링크 이벤트 정보</a></li>
+                    <li><a href="">이미지 첨부 이벤트</a></li>
+                </ul>
+            </div>
+            <div class="bot-messages-list">
+                <span>설문조사 봇 (총 0개의 메세지)</span>
+                <ul>
+                    <li>
+                        <a href=""><span class="message-title01">01. 메시지</span>
+                            <select class="message-inselect" disabled>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                            </select>
+                            <span class="close-btn">+</span>
+                        </a>
+                    </li>
+                    <li class="select">
+                        <a href=""><span class="message-title02">02. 메시지</span>
+                            <select class="message-inselect">
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                            </select>
+                            <span class="open-btn">-</span>
+                        <p class="cd">내용입력</p>
+                        <textarea placeholder="내용을 입력해주세요." class=""></textarea>
+                        <div class="deleteBtn">삭제</div>
+                        </a>
+                    </li>
+                    <li class="new-select">
+                        <a href="" class="add-menu"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="message-view">
+                <div class="mobile-view-practice">
+                    fffffffff
+                </div>
+                <input class="dialog-input" placeholder="input your info">
+                <div class="dialog-setting"></div>
+                <a href=""><div class="dialog-btn">발송하기</div></a>
+            </div>
+        </div>
     </div>
-
-
+<!--
     <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
 
-        <!--init here the selected card-->
+        <!--init here the selected card
         <div id="graphDialogCanvas"></div>
     </div>
+-->
 </div>
 
