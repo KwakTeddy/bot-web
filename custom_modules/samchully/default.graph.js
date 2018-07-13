@@ -67,7 +67,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678\n\n*본 서비스는 삼천리에 등록하신 휴대폰으로만 이용하실 수 있습니다. 핸드폰번호를 는 서비스 이오니 미등록 또는 변경시에는 고객센터로 문의하여 등록 후 이용해주세요."
+                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678\n\n*본 서비스는 삼천리에 등록하신 휴대폰으로만 이용하실 수 있습니다. 핸드폰번호 미등록 또는 변경시에는 고객센터로 문의하여 등록 후 이용해주세요."
                             }
                         ],
                         "id": "default49",
@@ -277,230 +277,23 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
+                "text": "이사(전입/전출) 및 가스렌지 연결/철거 신청, 예약내용 확인/변경, 연결비 안내를 이용하실 수\n있습니다.\n\n자세히 보기를 클릭해주세요.",
                 "buttons": [
                     {
-                        "url": "",
-                        "text": "1. 이사 들어오실 때"
+                        "url": "http://59.6.157.142",
+                        "text": "자세히보기"
                     },
                     {
-                        "url": "",
-                        "text": "2. 이사 나가실 때"
-                    },
-                    {
-                        "url": "",
-                        "text": "3. AS (렌지연결 등)"
-                    },
-                    {
-                        "url": "",
-                        "text": "4. 예약 확인/변경"
-                    },
-                    {
-                        "url": "",
-                        "text": "5. 연결비 안내"
-                    },
-                    {
-                        "url": "",
                         "text": "이전"
                     },
                     {
-                        "url": "",
                         "text": "처음"
                     }
                 ]
             }
         ],
         "id": "default5",
-        "children": [
-            {
-                "name": "이사 들어오실 때",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "1. 이사 들어오실 때",
-                            "nlp": "1 . 이사 들어오다 때"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "1",
-                            "nlp": "1"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/MoveIn",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default54"
-            },
-            {
-                "name": "이사 나가실 때",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "2. 이사 나가실 때",
-                            "nlp": "2 . 이사 나가다 때"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "2",
-                            "nlp": "2"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "text": "이전"
-                            },
-                            {
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/MoveOut",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default55"
-            },
-            {
-                "name": "AS (렌지연결 등)",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "3. AS (렌지연결 등)",
-                            "nlp": "3 . AS ( 렌 지 연결 등 )"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "3",
-                            "nlp": "3"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/AfterService",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default56"
-            },
-            {
-                "name": "예약 확인/변경",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "4. 예약 확인/변경",
-                            "nlp": "4 . 예약 확인 / 변경"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "4",
-                            "nlp": "4"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/CheckService",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default58"
-            },
-            {
-                "name": "연결비 안내",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "5. 연결비 안내",
-                            "nlp": "5 . 연결 비 안내"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "5",
-                            "nlp": "5"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default64"
-            }
-        ]
+        "children": []
     },
     {
         "name": "요금 조회 및 납부",
@@ -642,7 +435,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요.",
+                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n월별 상세내용을 확인할 수 있습니다.",
                                         "if": "context.session.selectedMonth === 3 || context.session.selectedMonth === 6 || context.session.selectedMonth ===12"
                                     },
                                     {
@@ -1467,11 +1260,8 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "LMS 고지 신청을 계속 진행하시겠습니까?",
+                                                "text": "현재 고지방법이 고객센터를 통한 종이고지서 송달로 되어 있습니다. 전자고지를 원하실 경우 신청 메뉴를 눌러주세요.",
                                                 "buttons": [
-                                                    {
-                                                        "text": "네"
-                                                    },
                                                     {
                                                         "text": "이전"
                                                     },
@@ -1485,38 +1275,7 @@ var dialogs = [
                                             "name": ""
                                         },
                                         "id": "default33",
-                                        "children": [
-                                            {
-                                                "name": "LMS 고지 원료",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "네",
-                                                            "nlp": "네"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "정상적으로 처리되었습니다.",
-                                                        "buttons": [
-                                                            {
-                                                                "text": "이전"
-                                                            },
-                                                            {
-                                                                "text": "처음"
-                                                            }
-                                                        ]
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "setNoticeMethod_lms"
-                                                },
-                                                "id": "default7",
-                                                "children": []
-                                            }
-                                        ]
+                                        "children": []
                                     },
                                     {
                                         "name": "이메일",
@@ -1614,7 +1373,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "LMS 고지 해지를 계속 진행하시겠습니까?",
+                                        "text": "해지를 계속 진행하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "text": "네"

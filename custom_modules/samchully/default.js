@@ -110,7 +110,7 @@ module.exports = function(bot)
             reTry[bot.userKey].reTryId = dialog.id;
             reTry[bot.userKey].reTryName = dialog.card.name;
 
-            dialog.output[0].text = '[에러]\n\n"연결이 지연되고 있습니다.재시도 부탁드립니다."';
+            dialog.output[0].text = '[에러]\n\n"연결이 지연되고 있습니다. 재시도 부탁드립니다. 연결 지연이 계속될 경우, 고객센터로 문의해주세요. 고객센터 전화 (1544-3002)"';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
             return
         }
@@ -738,16 +738,18 @@ module.exports = function(bot)
                     {
                         if(!body)
                         {
+                            console.log('111111111');
                             errorHandler(dialog, null);
                             return callback();
                         }
 
                         if(body.E_RETCD == 'E')
                         {
+                            console.log('2222222222');
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
-                        {
+                        { console.log('3333333333');
                             console.log(JSON.stringify(body, null, 4));
                             var data = body.data.ET_TABLE;
 
@@ -758,7 +760,7 @@ module.exports = function(bot)
                             }
                             context.session.paymentHistory = data;
 
-                        }else {
+                        }else {console.log('444444444');
                             errorHandler(dialog, body);
                         }
                     }
@@ -771,15 +773,22 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                for(var i = 0; i < context.session.paymentHistory.length; i++)
-                {
-                    if(context.session.paymentHistory[i].YYYYMM == dialog.userInput.text)
-                    {
-                        dialog.paymentDetail = context.session.paymentHistory[i];
-                        break;
+
+                if(context.session.selectedMonth === 1){
+
+                    dialog.paymentDetail = context.session.paymentHistory[0];
+
+                    callback();
+
+                }else {
+                    for (var i = 0; i < context.session.paymentHistory.length; i++) {
+                        if (context.session.paymentHistory[i].YYYYMM == dialog.userInput.text) {
+                            dialog.paymentDetail = context.session.paymentHistory[i];
+                            break;
+                        }
                     }
+                    callback();
                 }
-                callback();
             }
         });
 
@@ -851,7 +860,7 @@ module.exports = function(bot)
                                     return a.FAEDN - b.FAEDN
                                 });
 
-                                // context.session.nonpaymentHistory
+                                context.session.nonpaymentHistory = data;
 
                                 add_bfBtn(dialog, context);
                             }
@@ -1260,7 +1269,7 @@ module.exports = function(bot)
                 options.json.channel = context.channel.name;
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                    { key: 'I_EMAIL', val: curCustomer.email }
+                    { key: 'I_EMAIL', val: dialog.userInput.text}
                 ];
                 //options.timeout = timeout;
 
