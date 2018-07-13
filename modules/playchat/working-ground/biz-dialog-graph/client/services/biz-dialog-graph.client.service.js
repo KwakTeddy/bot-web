@@ -88,18 +88,32 @@
                 }
             }
         };
+        var _dialogRebasing = function(dialogs){
+            for(var i in dialogs){
+                console.log(dialogs[i].id);
+                var child = _mk_rebase(dialogs[i]);
+                if(child.length > 0){
+                    dialogs[i].children = child;
+                    _dialogRebasing(child);
+                }
+            }
+
+            return dialogs;
+        };
 
         BizChat.createDialog = function(dialog, parent){
             BizChat.cardArr.push(_mk_index(dialog, parent? parent.id : null))
         };
 
         BizChat.deleteDialog = function(id){
-            BizChat.cardArr.forEach(function(){
-
-            })
+            var parentId = angular.element('#'+id).prev()[0].id;
+            BizChat.cardArr = BizChat.cardArr.filter(function(e){return e.id != id});
+            BizChat.cardArr.filter(function(e){if(e.parentId == id){e.parentId = parentId != ''? parentId : null}})
         };
 
-
+        var _mk_rebase = function(dialog){
+            return BizChat.cardArr.filter(function(e){return dialog.id == e.parentId})
+        };
 
         var _mk_index = function(dia, parentId){
             return {
@@ -109,6 +123,10 @@
                 output : dia.output,
                 parentId : parentId ? parentId : null
             }
+        };
+
+        BizChat.test = () => {
+
         };
 
         BizChat.onReady = (cb) => {
@@ -191,7 +209,11 @@
         };
 
         BizChat.saveGraph = (cb) => {
-            _getCompleteData(BizChat.userDialogs, BizChat.commonDialogs,
+            var dialog = BizChat.cardArr.filter((e) => {return e.parentId == null});
+
+            var dialogs = _dialogRebasing(dialog);
+
+            _getCompleteData(dialogs, BizChat.commonDialogs,
                 (script) => {
                 GraphFileService.post({
                         botId: chatbot.id,
