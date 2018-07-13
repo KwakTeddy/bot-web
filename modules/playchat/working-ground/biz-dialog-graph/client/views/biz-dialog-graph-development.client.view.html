@@ -95,8 +95,8 @@ caption
             <div class="bot-messages-list">
                 <span>설문조사 봇 (총 0개의 메세지)</span>
                 <ul>
-                    <li>
-                        <a href=""><span class="message-title01">01. 메시지</span>
+                    <a href=""><li>
+                        <span class="message-title01">01. 메시지</span>
                             <select class="message-inselect" disabled>
                                 <option>텍스트 - 선택형</option>
                                 <option>텍스트 - 선택형</option>
@@ -106,8 +106,7 @@ caption
                                 <option>텍스트 - 선택형</option>
                             </select>
                             <span class="close-btn">+</span>
-                        </a>
-                    </li>
+                    </li></a>
                     <li class="select">
                         <a href=""><span class="message-title02">02. 메시지</span>
                             <select class="message-inselect">
@@ -125,15 +124,28 @@ caption
                         </a>
                     </li>
                     <li class="new-select">
-                        <a href="" class="add-menu"></a>
+                        <select class="add-menu">
+                            <option selected>메세지 추가하기</option>
+                            <option>텍스트 - 선택형</option>
+                            <option>텍스트 - 선택형</option>
+                        </select>
                     </li>
                 </ul>
             </div>
             <div class="message-view">
                 <div class="mobile-view-practice">
-                    fffffffff
+                    <div class="header">
+                        <p>설문조사 봇</p>
+                        <a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>
+                    </div>
                 </div>
-                <input class="dialog-input" placeholder="input your info">
+                <div class="dialog-input">
+                    <input placeholder="input your info">
+                    <button type="button">
+                        <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">
+                    </button>
+                </div>
+
                 <div class="dialog-setting"></div>
                 <a href=""><div class="dialog-btn">발송하기</div></a>
             </div>
