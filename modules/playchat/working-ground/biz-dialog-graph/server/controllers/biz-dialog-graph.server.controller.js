@@ -9,13 +9,9 @@ var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var S3 = require(path.resolve('./modules/common/s3.js'));
 
-<<<<<<< HEAD
 var Sentences = mongoose.model('Sentences');
 
 var Scripts = mongoose.model('Scripts');
-=======
-// var Sentenses = mongoose.model('Sentenses');
->>>>>>> 1951090efbb72b5fcfb6020eacbebc25cb5c0126
 
 exports.find = function (req, res)
 {
@@ -321,7 +317,6 @@ module.exports.getDefaultTemplate = function(req, res)
 
 
 exports.getSentences = function(req, res){
-<<<<<<< HEAD
     var type = req.params.type;
     if(type && type == 'bizchat'){
         var query = { templateId: req.params.bizchatId, useYN: 1 };
@@ -337,23 +332,6 @@ exports.getSentences = function(req, res){
     }else{
         res.jsonp({data:[]});
     }
-=======
-    // var type = req.params.type;
-    // if(type && type == 'bizchat'){
-    //     var query = { templateId: req.params.bizchatId, useYN: 1 };
-    //     Sentenses.find(query)
-    //         .sort('-created')
-    //         .exec((err, sentences) => {
-    //             if(err){
-    //                 return res.status(400).send({ message: err.stack || err });
-    //             }else{
-    //                 res.jsonp(sentences);
-    //             }
-    //         })
-    // }else{
-    //     res.jsonp({});
-    // }
->>>>>>> 1951090efbb72b5fcfb6020eacbebc25cb5c0126
 
 };
 
