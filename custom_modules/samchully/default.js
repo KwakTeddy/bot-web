@@ -1269,7 +1269,7 @@ module.exports = function(bot)
                 options.json.channel = context.channel.name;
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                    { key: 'I_EMAIL', val: dialog.userInput.text}
+                    { key: 'I_EMAIL', val: curCustomer.email}
                 ];
                 //options.timeout = timeout;
 
