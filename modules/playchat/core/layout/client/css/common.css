@@ -25,7 +25,7 @@ img { border: 0px; vertical-align:top; }
 table{/* table-layout:fixed; */border-collapse:collapse;border-spacing:0}
 a:link { text-decoration: none; color:#363636; }
 a:visited { text-decoration: none; color:#363636; }
-a:hover { text-decoration: none; color: #038eda; }
+a:hover { text-decoration: none; /*color: #038eda;*/ }
 a:active { text-decoration: none; color:#363636; }
 
 
