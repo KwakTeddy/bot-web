@@ -38,6 +38,11 @@ caption
 </style>
 
 
+<!--head area-->
+<head>
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+
 <!--card area-->
 <script type="text/template" id="dialogGraphTemplate">
     <div class="graph-dialog" id="{id}">
@@ -67,11 +72,7 @@ caption
     <!--header tab line-->
     <!--search/zoom/edit target select line -->
     <div class="working-ground-bizchat">
-        <select class="custom-select">
-            <option  selected>설문조사 봇</option>
-            <option>rrrrr 봇</option>
-            <option>dddddd 봇</option>
-        </select>
+        <select ng-model="selectedCustom" ng-change="selectChange(selectedCustom)" ng-init="selectedCustom = customs[0]" class="custom-select"  ng-options="x for x in customs"></select>
         <a href="" class="icon-area" style="margin-left: 2%;"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/copy.png"></a>
         <a href="" class="icon-area"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/save.png"></a>
 
@@ -88,7 +89,7 @@ caption
                 </ul>
             </div>
             <div class="bot-messages-list">
-                <span>설문조사 봇 (총 0개의 메세지)</span>
+                <span>{{selectedCustom}} (총 {{customData.number}} 개의 메세지)</span>
                 <ul>
                     <a href=""><li>
                         <span class="message-title01">01. 메시지</span>

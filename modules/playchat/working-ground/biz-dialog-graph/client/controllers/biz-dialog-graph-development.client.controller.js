@@ -1,7 +1,7 @@
 angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
-
+    console.log('!!!!!!!!!!!!!!!!');
     //var chatbot = $cookies.getObject('chatbot');
     //
     //$scope.myBotAuth = chatbot.myBotAuth;
@@ -9,7 +9,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     // close header area
     angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
     angular.element('#middle-container').css("top", "0px");
-
+    $scope.customData = {};
     //var data = BizChat.getCompleteData();
 
     //BizChat.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
@@ -20,10 +20,31 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     //    alert($scope.lan('저장 실패 : ') + error.message);
     //});
 
+    var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
+
+    var SentencesService = $resource('/api/:type/biz-sentences/:bizchatId', { type:'@type', bizchatId: '@bizchatId' });
 
     (function()
     {
+        $scope.getCustomsDetail = function () {
+
+        };
+
+
+        //get selected custom
+        $scope.customs = ["설문 조사 봇", "마케팅 봇","정보 봇"];
+        //when select option changed
+        $scope.selectChange = function(customName){
+            console.log("customName : " + customName);
+            //push the new selected custom to server
+            $scope.customData.name = customName;
+
+            getCustomsDetail($scope.customData);
+        };
+
+
         $scope.$parent.loaded('working-ground');
+        var Bot = angular.element('#middle-container > div > section.working-ground.ng-scope > div > div > select > option:nth-child(1)');
 
         // 나중에 HTML에 바인딩하면서
         BizChatService.template.card = angular.element('#cardTpl');
