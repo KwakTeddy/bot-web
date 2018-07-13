@@ -11,6 +11,8 @@ var S3 = require(path.resolve('./modules/common/s3.js'));
 
 var Sentences = mongoose.model('Sentences');
 
+var Scripts = mongoose.model('Scripts');
+
 exports.find = function (req, res)
 {
     var botsPath = path.resolve('./custom_modules/' + req.params.botId);
@@ -88,7 +90,6 @@ exports.getGraphFile = function(req, res)
 exports.findFile = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
-
 
     fs.stat(filePath, function(err, stat)
     {
@@ -332,4 +333,50 @@ exports.getSentences = function(req, res){
         res.jsonp({data:[]});
     }
 
+};
+
+
+exports.getScript = function(req, res){
+    var type = req.params.type;
+    var query = { useYN: 1,type:type };
+    Scripts.find(query)
+        .sort('-created')
+        .exec((err, script) => {
+            if(err){
+                return res.status(400).send({ message: err.stack || err });
+            }else{
+                res.jsonp({data:script});
+            }
+        })
+};
+
+exports.editScript = function(req, res){
+    var name = req.params.name;
+    var type = req.params.type;
+    var code = req.body.code;
+    if(!code)
+        return res.status(400).send({ message: 'Code does not exist' });
+
+    Scripts.findOne({name: name, type: type, useYN: 1}).exec(function(err, script){
+        if(err){
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        if(script){
+            script.code = code;
+        }else{
+            script = new Scripts();
+            script.name = name;
+            script.type = type;
+            script.code = code;
+        }
+
+        script.save(function(err){
+            if(err){
+                return res.status(400).send({ message: err.stack || err });
+            }
+
+            res.jsonp(script)
+        })
+    })
 };

@@ -9,6 +9,9 @@ module.exports = function(app)
 
     app.get('/api/:type/biz-sentences/:bizchatId', dialoggraphs.getSentences);
 
+    app.post('/api/script/:type/:name', dialoggraphs.editScript);
+    app.get('/api/script/:type', dialoggraphs.getScript);
+
     app.post('/api/:botId/biz-dialog-graphs/uploadImage', dialoggraphs.uploadImage);
     app.post('/api/:botId/biz-dialog-graphs/uploadFile', dialoggraphs.uploadFile);
     app.post('/api/:botId/biz-dialog-graphs/:fileName', dialoggraphs.saveFile);

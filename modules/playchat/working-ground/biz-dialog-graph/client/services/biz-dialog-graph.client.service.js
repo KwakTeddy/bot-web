@@ -3,14 +3,18 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('BizChat', function($window, $resource, $cookies, $rootScope)
+    angular.module('playchat').factory('BizChatService', function($window, $resource, $cookies, $rootScope)
     {
         var chatbot = null;
 
         // load api list
         var GraphFileService = $resource('/api/:botId/biz-graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
+        var JSFileService = $resource('/api/:botId/biz-dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' }, { update: { method: 'PUT' } });
+
+        var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
+
         var SentencesService = $resource('/api/:type/biz-sentences/:bizchatId', { type:'@type', bizchatId: '@bizchatId' });
 
 
@@ -20,9 +24,22 @@
             dialogFileName : 'default.graph.js',
             taskFileName : 'default.js',
             commonDialogs : null,
-            userDialogs : null,
+            dialogs : null,
+            template : {
+                card : '',
+                input : '',
+                output : {
+                    text : '',
+                    button : ''
+                }
+            },
             tasks : [],
             types : [],
+            scripts : [],
+            addOn : {
+                tasks : [],
+                types : []
+            },
             sentences : []
         };
 
@@ -41,9 +58,30 @@
             cb(data);
         };
 
+        var _customTypeLoad = function(){
+            CustomTypeService.get({name:'', type:'type'},(res) => {
+                BizChat.addOn.types = res.data;
+            },(err) => {
+                console.log(err)
+            });
+        };
+
+        var _customTaskLoad = function(){
+            CustomTypeService.get({name:'', type:'task'},(res) => {
+                BizChat.addOn.tasks = res.data;
+            },(err) => {
+                console.log(err)
+            });
+        };
+
+
         BizChat.onReady = (cb) => {
             // load chatbot obj
             chatbot = $cookies.getObject('chatbot');
+
+            // custom type list load
+            _customTypeLoad();
+            _customTaskLoad();
 
             // load dialog list
             GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
@@ -64,9 +102,9 @@
 
                                     SentencesService.get({type : BizChat.type, bizchatId: BizChat.bizchatId}
                                         , (res) => {
-                                            BizChat.sentences = res;
+                                            BizChat.sentences = res.data;
 
-                                            cb();
+                                            cb(BizChat);
 
                                         }, (err) => {
                                             console.log(err);
@@ -84,6 +122,34 @@
                 })
         };
 
+        BizChat.makeCard = function(dialog){
+            if(!BizChat.template.card)
+                return alert('Template does not exist!');
+
+            BizChat.template.card.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
+            var input = [];
+            dialog.input.forEach(function(v){
+                var type = Object.keys(v)[0];
+                if(type == 'text'){
+                    input.push(BizChat.template.input.replace('{keyword}',v.text.raw))
+                }else if(type == 'types'){
+                    input.push(BizChat.template.input.replace('{keyword}',v.types))
+                }else if(type == 'if'){
+                    input.push(BizChat.template.input.replace('{keyword}','if:'+v.if))
+                }
+            });
+
+            var output = [];
+            dialog.output.forEach(function(v){
+                var type = Object.keys(v)[0];
+                if(type == 'text'){
+                    input.push(BizChat.template.input.replace('{keyword}',v.text.raw))
+                }
+            });
+
+            //if(dialog.)
+        };
+
         BizChat.saveGraph = (cb) => {
             _getCompleteData(BizChat.userDialogs, BizChat.commonDialogs,
                 (script) => {
@@ -99,12 +165,25 @@
             });
         };
 
-        BizChat.addScript = (obj, arr) => {
+        // obj : addOn -> type
+        // arr : types (already added type list...)
+        BizChat.appendTypes = (obj, arr) => {
             var is_exist = false;
-            arr.forEach(function(v){
+            BizChat.types.forEach(function(v){
                 if(obj.name == v.name) is_exist = true
             });
-            if(!is_exist) arr.push(obj);
+            if(!is_exist) BizChat.scripts.push(obj);
+            return arr;
+        };
+
+        // obj : addOn -> task
+        // arr : tasks (already added task list...)
+        BizChat.appendTasks = (obj, arr) => {
+            var is_exist = false;
+            BizChat.tasks.forEach(function(v){
+                if(obj.name == v.name) is_exist = true
+            });
+            if(!is_exist) BizChat.scripts.push(obj);
             return arr;
         };
 
@@ -112,22 +191,29 @@
             if(!datas || datas.length <= 0){
                 return null;
             }else{
-                var scripts = 'module.exports = function (bot) { \n';
+                JSFileService.get({botId: chatbot.id, fileName: BizChat.taskFileName},(res) => {
+                    var scripts = res.data;
+                    if(scripts.endsWith('};')){
+                        scripts = scripts.slice(0,-2);
+                    }else if(scripts.endsWith('}')){
+                        scripts = scripts.slice(0,-1);
+                    }
 
-                datas.forEach((v) => {
-                    var ck = v.fn.replace(' ','');
-                    if(ck.startsWith('bot.set') && ck.endsWith('}')) scripts = [scripts,'\n',v.fn].join("")
-                });
-
-                scripts = scripts + '\n}';
-
-                GraphFileService.post(
-                    {botId: chatbot.id, fileName: BizChat.taskFileName, data : scripts},
-                    (res) => {
-                        cb(res);
-                    }, (err) => {
-                        console.log(err);
+                    datas.forEach((v) => {
+                        var ck = v.code.replace(' ','');
+                        if(ck.startsWith('bot.set')) scripts = [scripts,'\n',v.code].join("")
                     });
+
+                    scripts = scripts + '\n};';
+
+                    GraphFileService.post(
+                        {botId: chatbot.id, fileName: BizChat.taskFileName, data : scripts},
+                        (res) => {
+                            cb(res);
+                        }, (err) => {
+                            console.log(err);
+                        });
+                });
             }
         };
 

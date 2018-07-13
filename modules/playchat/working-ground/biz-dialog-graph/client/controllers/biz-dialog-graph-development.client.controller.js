@@ -1,10 +1,10 @@
-angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChat', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChat, LanguageService)
+angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
 
-    var chatbot = $cookies.getObject('chatbot');
-
-    $scope.myBotAuth = chatbot.myBotAuth;
+    //var chatbot = $cookies.getObject('chatbot');
+    //
+    //$scope.myBotAuth = chatbot.myBotAuth;
 
     // close header area
     angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
@@ -25,22 +25,45 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     {
         $scope.$parent.loaded('working-ground');
 
+        BizChatService.template = angular.element('#cardTemplate') ? angular.element('#cardTemplate').html() : '';
+
         $scope.initialize = function()
         {
-            $scope.searchedDialogs = [];
-            $scope.searchedDialogFocus = 0;
-            $scope.graphHistory = [];
-            $scope.graphHistoryIndex = -1;
-            $scope.isDirty = false;
-            $scope.saveState = 'ready';
-            BizChat.onReady(function(){
-                console.log('Bizchat bot is placed successfully');
-                console.log(BizChat);
+            BizChatService.onReady(function(bizchat){
+                aaaaa = bizchat;
+                $scope.dialogs = bizchat.dialogs;
+                $scope.commonDialogs = bizchat.commonDialogs;
+                $scope.tasks = bizchat.tasks;
+                $scope.types = bizchat.types;
+                $scope.scripts = bizchat.scripts;
+                $scope.addOn = bizchat.addOn;
+
+                $scope.sentences = bizchat.sentences;
+
                 angular.element('.log-analysis').css('display', 'none');
+
+                $scope.saveState = 'ready';
             });
         };
+
+        $scope.appendGrid = function(dialog){
+            if(dialog.children.length > 0){
+                var child = dialog.children;
+                for(var c in child){
+                    $scope.appendGrid(c);
+                }
+            }else{
+
+            }
+        };
+
+        $scope.addCard = function(card){
+
+        };
+
 
     })();
     $scope.initialize();
     $scope.lan=LanguageService;
 }]);
+var aaaaa = null;
