@@ -1,7 +1,7 @@
 .working-ground-bizchat{
     margin: 2% auto 0;
     height: 100%;
-    width: 1000px;
+    width: 1010px;
 }
 .custom-select{
     position: relative;
@@ -54,13 +54,12 @@ select.bizchat-select01:hover{
     margin-top: 14px;
 }
 .subtitle{
-    margin-top: 3%;
+    margin-top: 4%;
 }
 .message-edit-list{
     width: 160px;
-    font-size: 14px;
     float: left;
-    margin: 0 1% 0 0;
+    margin: 0 1.6% 0 0;
 }
 .message-edit-list span{
     margin-left: 20px;
@@ -78,11 +77,13 @@ select.bizchat-select01:hover{
     box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05), 0 1px 20px rgba(0, 0, 0, 0.07);
     opacity: 1;
     font-weight: 600;
+}
+.message-edit-list ul li.select a{
     color:#038eda;
+    font-size: 14px;
 }
 .bot-messages-list{
     width: 490px;
-    font-size: 14px;
     float: left;
 }
 .bot-messages-list li{
@@ -90,6 +91,10 @@ select.bizchat-select01:hover{
     background: #f6f6f6;
     border: 1px solid #d0d2d3;
     margin: 12px 0;
+}
+.bot-messages-list li:hover{
+    background: #fff;
+    transition: all 0.3s;
 }
 .bot-messages-list li.select{
     border: 1px solid #038eda;
@@ -101,6 +106,11 @@ select.bizchat-select01:hover{
     background: #fff;
     padding: 8% 0;
     text-align: center;
+    cursor: pointer;
+}
+.bot-messages-list li.new-select:hover{
+    background: #fffbe6;
+    transition: all 0.3s;
 }
 .bot-messages-list select.message-inselect{
     border: none;
@@ -168,6 +178,10 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     width: 80px;
     text-align: center;
 }
+.bot-messages-list .deleteBtn:hover{
+    background: #f5f5f5;
+    transition: all 0.3s;
+}
 .bot-messages-list .add-menu{
     padding: 3%;
     margin: 0 auto;
@@ -196,7 +210,7 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     line-height: 17px;
 }
 .message-view{
-    width: 30%;
+    width: 32%;
     float: left;
     font-size: 14px;
     margin-left:2%;
@@ -204,16 +218,14 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 .message-view .mobile-view-practice{
     background: #c7e0e4;
     border: 1px solid #aec5cb;
-    width: 100%;
     height: 450px;
-    margin-top: 10%;
+    margin-top: 9%;
     position: relative;
 }
 .message-view .dialog-input{
     border-right: 1px solid #d0d2d3;
     border-left: 1px solid #d0d2d3;
     border-bottom: 1px solid #d0d2d3;
-    width:96%;
     padding: 6% 2%;
     display: flex;
     position: relative;
@@ -231,11 +243,33 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 .message-view .dialog-setting{
     background: #e9e9e9;
     margin-top: 3%;
-    padding: 8% 0;
-    width: 100%;
+    padding: 6% 4%;
     border-right: 1px solid #d0d2d3;
     border-left: 1px solid #d0d2d3;
     border-top: 1px solid #d0d2d3;
+}
+.message-view .dialog-setting p{
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 700;
+}
+.message-view .dialog-setting button{
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    background: #fff;
+    padding: 3%;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 3% 1% .2% 1%;
+    width: 88px;
+}
+.message-view .dialog-setting button.select{
+    border: 1px solid #038eda;
+    color: #038eda;
+}
+.message-view .dialog-setting button:hover{
+    background: #f4fcff;
+    transition: all 0.3s;
 }
 .message-view .dialog-btn{
     background: #038eda;
