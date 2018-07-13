@@ -4,6 +4,12 @@ var path = require('path');
 
 module.exports = function(bot)
 {
+   if(!reTry){
+       var reTry = {};
+   }
+    reTry[bot.userKey]= {};
+    reTry[bot.userKey].reTryId = '';
+    reTry[bot.userKey].reTryName = '';
 
     //Variable Area
     var monthIndex =
@@ -26,7 +32,7 @@ module.exports = function(bot)
     };
 
     var test_userData = {
-        testmode:true,
+        testmode:false,
         auth : true,
         customer : {
             NAME : '전재영',
@@ -35,6 +41,7 @@ module.exports = function(bot)
             mobile : '01031994434'
         }
     };
+
 
     var add_bfBtn = (dialog, context) => {
         if(context.channel.name=='kakao'){
@@ -93,28 +100,31 @@ module.exports = function(bot)
 
         if(!errData)
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "결과 값이 없습니다."';
+            dialog.output[0].text = '[에러]\n\n"결과 값이 없습니다."';
             dialog.output[0].buttons = [{text: '처음'}];
             return
         }
 
         if(errData.msg && errData.msg == "CONNECTIONERR")
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "연결이 지연되고 있습니다."';
+            reTry[bot.userKey].reTryId = dialog.id;
+            reTry[bot.userKey].reTryName = dialog.card.name;
+
+            dialog.output[0].text = '[에러]\n\n"연결이 지연되고 있습니다."';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
             return
         }
 
         if(errData.msg && errData.msg == "SELECTERROR")
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "죄송합니다.\n요금납부는 과거 미납요금부터 납부하실 수 있습니다.\n과거 고지년월의 번호부터 입력해주세요."\n\n예시 : 1 2';
+            dialog.output[0].text = '[에러]\n\n"죄송합니다.\n요금납부는 과거 미납요금부터 납부하실 수 있습니다.\n과거 고지년월의 번호부터 입력해주세요."\n\n예시 : 1 2';
             dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
             return
         }
 
         if(errData.msg && errData.msg == "access_error")
         {
-            dialog.output[0].text = '[에러]\n\n에러 메세지 : "자가검침 기간이 아닙니다.\n\n지정된 검침기간에만 자가검침값 등록이 가능합니다.\n검침 등록 안내 메시지를 받으신 후에 입력 부탁드립니다."';
+            dialog.output[0].text = '[에러]\n\n"자가검침 기간이 아닙니다.\n\n지정된 검침기간에만 자가검침값 등록이 가능합니다.\n검침 등록 안내 메시지를 받으신 후에 입력 부탁드립니다."';
             dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
             return
         }
@@ -129,12 +139,12 @@ module.exports = function(bot)
         {
             if(errData.code &&  errData.code == "ESOCKETTIMEDOUT")
             {
-                dialog.output[0].text = '[에러]\n\n에러 메세지 : "시간 지연 오류가 발생했습니다."';
+                dialog.output[0].text = '[에러]\n\n"시간 지연 오류가 발생했습니다."';
                 dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
             }
             else
             {
-                dialog.output[0].text = '[에러]\n\n에러 메세지 : "예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
+                dialog.output[0].text = '[에러]\n\n"예상하지 못한 에러가 발생했습니다."\n\n위와 같은 에러가 계속 될 시 에러 메세지와 함께 문의 바랍니다. 처음으로 돌아가기 원하시면 "처음"이라고 입력해주세요.';
             }
         }
     };
@@ -292,15 +302,32 @@ module.exports = function(bot)
             {
                 var matched = false;
                 var userInput = dialog.userInput.text.split(' ');
+
                 var nonPaymentList = context.session.nonpaymentHistory;
                 var selected = context.session.selectedNonpayment = [];
                 var total = 0;
 
-                if(!userInput.find(function(it){ return it=='1'})){
+                if (!nonPaymentList) {
                     context.session.isMultiMonthError = 'true';
                     callback(matched);
                     return null;
                 }
+
+                    var indexOf1 = userInput.indexOf('1');
+                    if (indexOf1 === -1) {
+                        context.session.isMultiMonthError = 'true';
+                        callback(matched);
+                        return null;
+                    }
+                    else {
+                        for (var n = indexOf1 + 1; n < userInput.length; n++) {
+                            if (userInput[n] !== userInput[n - 1] + 1) {
+                                context.session.isMultiMonthError = 'true';
+                                callback(matched);
+                                return null;
+                            }
+                        }
+                    }
 
                 for(var i = 0; i < userInput.length; i++)
                 {
@@ -335,8 +362,8 @@ module.exports = function(bot)
                     return a.YYYYMM-b.YYYYMM;
                 });
                 callback(matched);
-            }
-        });
+        }
+});
 
     bot.setType('selectedAccountType',
         {
@@ -399,10 +426,19 @@ module.exports = function(bot)
 
     bot.setTask('monthSelectError',{
         action: function(dialog, context, callback){
-            if(context.session.isMultiMonthError=='true'){
+
+            if(context.session.isMultiMonthError === 'true'){
                 context.session.isMultiMonthError = 'false';
-                var err = {msg:'SELECTERROR'};
-                errorHandler(dialog, err);
+                if(!context.session.nonpaymentHistory){
+                    var Error = {};
+                    Error.E_RETCD = 'E';
+                    Error.E_RETMG = '조회된 미납금액이 없습니다.';
+                    errorHandler(dialog, Error);
+                }
+                else {
+                    var err = {msg: 'SELECTERROR'};
+                    errorHandler(dialog, err);
+                }
             }
             callback();
         }
@@ -556,7 +592,6 @@ module.exports = function(bot)
                         {
                             errorHandler(dialog, replace_error_msg);
                         }
-
                     }
                     callback();
 
@@ -639,22 +674,38 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
                 console.log('노티스 히스토리 : ', context.session.noticeHistory);
-                for(var i = 0; i < context.session.noticeHistory.length; i++)
-                {
-                    if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
+                if(context.session.selectedMonth === 1){
+
+                    dialog.noticeDetail = context.session.noticeHistory[0];
+
+                    dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
+
+                    var split1 = dialog.noticeDetail.USED_CALORY.split('.');
+
+                    dialog.noticeDetail.USED_CALORY = numberWithCommas(split1[0]) + (split1[1] ? '.' + split1[1] : '');
+
+                    callback();
+
+                }else{
+
+                    for(var i = 0; i < context.session.noticeHistory.length; i++)
                     {
-                        dialog.noticeDetail = context.session.noticeHistory[i];
+                        if(context.session.noticeHistory[i].BILLING_PERIOD == dialog.userInput.text)
+                        {
+                            dialog.noticeDetail = context.session.noticeHistory[i];
 
-                        dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
+                            dialog.noticeDetail.PR_ZWSTNDAB = numberWithCommas(dialog.noticeDetail.PR_ZWSTNDAB);
 
-                        var split = dialog.noticeDetail.USED_CALORY.split('.');
+                            var split = dialog.noticeDetail.USED_CALORY.split('.');
 
-                        dialog.noticeDetail.USED_CALORY = numberWithCommas(split[0]) + (split[1] ? '.' + split[1] : '');
+                            dialog.noticeDetail.USED_CALORY = numberWithCommas(split[0]) + (split[1] ? '.' + split[1] : '');
 
-                        break;
+                            break;
+                        }
                     }
+                    callback();
+
                 }
-                callback();
             }
         });
 
@@ -800,7 +851,7 @@ module.exports = function(bot)
                                     return a.FAEDN - b.FAEDN
                                 });
 
-                                context.session.nonpaymentHistory
+                                // context.session.nonpaymentHistory
 
                                 add_bfBtn(dialog, context);
                             }
@@ -849,6 +900,8 @@ module.exports = function(bot)
                     dialog.output[0].buttons.push({text: '로그아웃'});
                 }
 
+                reTry[bot.userKey].reTryId = '';
+                reTry[bot.userKey].reTryName = '';
 
                 callback();
             }
@@ -1047,6 +1100,55 @@ module.exports = function(bot)
             }
         });
 
+  
+  bot.setTask('setNoticeMethod_kkoalarm', 
+	{
+		action: function (dialog, context, callback)
+            {
+                var curCustomer = context.session.curCustomer;
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = '';
+                options.json.channel = context.channel.name;
+                options.json.param = [
+                    { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
+                    { key: 'I_NAME', val: context.session.customerName },
+                    { key: 'I_PHONE', val: context.session.customerMobile },
+                    { key: 'I_BIRTH', val: context.session.customerBirth }
+                ];
+
+                request.post(options, function(err, response, body)
+                {
+                    if(err)
+                    {
+                        errorHandler(dialog, err);
+                    }
+                    else
+                    {
+                        if(!body)
+                        {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if(body.E_RETCD == 'E')
+                        {
+                            errorHandler(dialog, body);
+                        }
+                        else if(body.E_RETCD == 'S')
+                        {
+                            console.log(body);
+                            dialog.setNoticeMethodSuccess = true;
+                        }else {
+                            errorHandler(dialog, body);
+                        }
+                    }
+                    callback();
+                });
+            }
+	});
+  
     bot.setTask('setNoticeMethod_kkopay',
         {
             action: function (dialog, context, callback)
@@ -1936,7 +2038,7 @@ module.exports = function(bot)
 
                 context.session.paymentHistory = '';
                 context.session.paymentDetail = '';
-                context.session.noticeHistory = ''
+                context.session.noticeHistory = '';
                 context.session.noticeDetail = '';
                 context.session.nonpaymentHistory = '';
 
@@ -1947,7 +2049,7 @@ module.exports = function(bot)
 
                 context.session.auth = '';
 
-                callback();
+                    callback();
             }
         });
 
@@ -1982,4 +2084,15 @@ module.exports = function(bot)
                 });
             }
         });
+
+	bot.setTask('reTry', 
+	{
+		action: function (dialog, context, callback)
+		{
+                dialog.output[0].dialogId = reTry[bot.userKey].reTryId;
+                dialog.output[0].dialogName = reTry[bot.userKey].reTryName;
+
+			callback();
+		}
+	});
 };
