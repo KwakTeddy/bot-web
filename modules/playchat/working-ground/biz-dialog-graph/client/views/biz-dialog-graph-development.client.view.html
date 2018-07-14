@@ -72,7 +72,7 @@ caption
     <!--header tab line-->
     <!--search/zoom/edit target select line -->
     <div class="working-ground-bizchat">
-        <select ng-model="selectedCustom" ng-change="selectChange(selectedCustom)" ng-init="selectedCustom = customs[0]" class="custom-select"  ng-options="x for x in customs"></select>
+        <select ng-model="selectedCustom" ng-change="bizbotSelectChange(selectedCustom)" ng-init="selectedCustom = customs[0]" class="custom-select"  ng-options="x for x in customs"></select>
         <a href="" class="icon-area" style="margin-left: 2%;"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/copy.png"></a>
         <a href="" class="icon-area"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/save.png"></a>
 
@@ -146,11 +146,7 @@ caption
                         </a>
                     </li>
                     <li class="new-select">
-                        <select class="add-menu">
-                            <option selected>메세지 추가하기</option>
-                            <option>텍스트 - 선택형</option>
-                            <option>텍스트 - 선택형</option>
-                        </select>
+                        <select ng-model="selectedMenu" ng-change="menusSelectChange(selectedMenu)" ng-init="selectedMenu = menus[0]" class="add-menu" ng-options="x for x in menus"></select>
                     </li>
                 </ul>
             </div>
