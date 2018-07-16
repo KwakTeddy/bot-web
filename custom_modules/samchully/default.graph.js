@@ -781,7 +781,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 1 2"
+                                        "text": "[편의점 (QR코드 결제)]\n가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월 상단에 있는 번호를 띄어쓰기로 구분하여 입력해주세요.\n예) 1개월분일 경우 1\n       2개월분일 경우 1 2"
                                     }
                                 ],
                                 "id": "default23",
@@ -865,7 +865,10 @@ var dialogs = [
                                                 "type": "repeat"
                                             }
                                         ],
-                                        "id": "default39"
+                                        "id": "default39",
+                                        "task": {
+                                            "name": "monthSelectError"
+                                        }
                                     }
                                 ],
                                 "task": {
