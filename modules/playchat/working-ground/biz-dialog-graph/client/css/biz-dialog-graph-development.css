@@ -195,17 +195,17 @@ select.add-menu option{
     line-height: 25px;
 }
 .message-view{
-    /*width: 32%;*/
-    /*float: left;*/
-    /*font-size: 14px;*/
-    /*margin-left:2%;*/
-    /*margin-bottom: 10%;*/
-    width: 17%;
+    width: 32%;
+    float: left;
     font-size: 14px;
-    margin-left: 2%;
+    margin-left:2%;
     margin-bottom: 10%;
-    position: fixed;
-    right: 27%;
+    /*width: 17%;*/
+    /*font-size: 14px;*/
+    /*margin-left: 2%;*/
+    /*margin-bottom: 10%;*/
+    /*position: fixed;*/
+    /*right: 27%;*/
 }
 .message-view .mobile-view-practice{
     background: #c7e0e4;
