@@ -80,7 +80,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             $scope.selectedBot = $scope.bots[0];
 
             $scope.messageMenus = ['메세지 추가하기'];
-            $scope.messageMenus.push($scope.Data.dataset[j].name);
+            for(var j=0; j<$scope.Data.dataset.length; j++) {
+                $scope.messageMenus.push($scope.Data.dataset[j].name);
+            }
 
             $scope.selectedMessageMenu = $scope.messageMenus[0];
             $scope.botData.sentencesNumber = $scope.Data.sentences.length;
