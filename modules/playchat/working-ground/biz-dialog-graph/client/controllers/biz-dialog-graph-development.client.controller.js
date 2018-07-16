@@ -37,6 +37,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         };
 
 
+
         $scope.$parent.loaded('working-ground');
 
         // 나중에 HTML에 바인딩하면서
@@ -49,6 +50,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         {
             BizChatService.onReady(bizchatId, function(bizchat){
                 $scope.Data = bizchat;
+                console.log('$scope.Data');
+                console.log($scope.Data);
 
                 $scope.dialogs = bizchat.dialogs;
                 $scope.commonDialogs = bizchat.commonDialogs;
@@ -64,6 +67,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom',(dt) => {
                     $scope.customSentence = dt;
                 });
+                $scope.botData.sentencesNumber = $scope.Data.cardArr.length;
 
                 angular.element('.log-analysis').css('display', 'none');
 
@@ -72,7 +76,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                     // global dataset
                     BizChatService.getCustomSentence($scope.Data.bizchatId, 'global',((dt) => {
                         $scope.Data.dataset = dt;
-                        $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.dataset[0]
+                        $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.dataset[0];
                         $scope.getList();
                     }));
                 })
@@ -104,7 +108,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         $scope.messageMenusSelectChange = function(xx){
             // insert logic what is changed
             console.log(xx)
-        }
+        };
 
 
         $scope.appendGrid = function(dialog){
