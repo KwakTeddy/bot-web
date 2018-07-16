@@ -1208,6 +1208,13 @@ input.type03{
     text-align: right;
     display: block;
 }
+.deleteBtn02 {
+    border: 1px solid #d8d8d8;
+    padding: 8px 0;
+    width: 80px;
+    float: right;
+    text-align: center;
+}
 @media screen and (max-width: 1450px)
 {
     .graph-controller
