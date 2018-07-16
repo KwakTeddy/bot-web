@@ -20,7 +20,7 @@
 
         var BizChat = {
             type : 'bizchat',
-            bizchatId : 'survey',
+            bizchatId : '',
             dialogFileName : 'default.graph.js',
             taskFileName : 'default.js',
             commonDialogs : null,
@@ -134,14 +134,14 @@
 
         };
 
-        BizChat.onReady = (cb) => {
-
-
+        BizChat.onReady = (bizchatId, cb) => {
+            bizchatId = bizchatId ? bizchatId : 'survey';
+            BizChat.bizchatId = bizchatId;
             // custom type list load
             _customTypeLoad();
             _customTaskLoad();
             _globalSentenceLoad();
-
+            $rootScope.$broadcast('simulator-build');
             // load dialog list
             GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
                 , (res) => {
@@ -314,8 +314,11 @@
             return uploader;
         };
 
-        BizChat.refresh = () => {
-            $rootScope.$broadcast('simulator-build');
+        BizChat.refresh = (bizchatId) => {
+            bizchatId = bizchatId ? bizchatId : BizChat.bizchatId;
+            BizChat.onReady(bizchatId);
+
+
         };
 
         return BizChat;

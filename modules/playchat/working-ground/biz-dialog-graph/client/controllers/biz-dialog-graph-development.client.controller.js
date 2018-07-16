@@ -27,8 +27,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         //when bizbot select option changed
         $scope.bizbotSelectChange = function(customName){
-            $scope.botData.name = customName;
-            // getCustomsDetail($scope.customData);
+            $scope.botData.name = customName.name;
+            $scope.refresh(customName.id);
         };
 
 
@@ -40,9 +40,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         BizChatService.template.output = angular.element('#outputTpl');
         $scope.uploader = BizChatService.setUploader();
 
-        $scope.initialize = function()
+        $scope.initialize = function(bizchatId)
         {
-            BizChatService.onReady(function(bizchat){
+            BizChatService.onReady(bizchatId, function(bizchat){
                 bizchat_s = bizchat;
                 $scope.Data = bizchat;
 
@@ -82,10 +82,13 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         $scope.getList = function()
         {
-            //
-            $scope.bots = [];
             //$scope.customs.push($scope.Data.bizchatId);
-            $scope.bots = ["설문 조사 봇", "마케팅 봇","정보 봇"];
+            // sample bot data
+            $scope.bots = [
+                {id:'survey',name:"설문 조사 봇"},
+                {id:'marketing',name:"마케팅 봇"},
+                {id:'infomation',name:"정보 봇"}];
+
             $scope.selectedBot = $scope.bots[0];
 
             $scope.messageMenus = ['메세지 추가하기'];
@@ -115,6 +118,11 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
             angular.element('#cardArea').append(tpl);
         };
+
+        $scope.refresh = function(bizchatId){
+            BizChatService.bizchatId = bizchatId;
+            $scope.initialize(bizchatId);
+        }
 
     })();
     $scope.initialize();
