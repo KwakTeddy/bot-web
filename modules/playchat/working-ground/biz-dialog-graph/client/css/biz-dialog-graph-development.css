@@ -1178,7 +1178,11 @@ select.add-menu option{
 }
 .detail-select input[type='checkbox']:checked + label:before{
     background: #038eda;
+    content: '\2714';
+    color: #fff;
     cursor: pointer;
+    border: 1px solid #038eda;
+    line-height: 10px;
 }
 .detail-select label{
     font-size: 12px;
