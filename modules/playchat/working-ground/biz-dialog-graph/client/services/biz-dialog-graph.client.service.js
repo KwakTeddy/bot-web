@@ -25,6 +25,7 @@
             taskFileName : 'default.js',
             commonDialogs : null,
             dialogs : null,
+            dataset : [],
             cardArr : [],
             template : {
                 card : '',
@@ -56,10 +57,6 @@
             cb(data);
         };
 
-        var _globalSentenceLoad = function(){
-            BizChat.dataset = BizChat.getCustomSentence('global',BizChat.bizchatId)
-
-        };
 
         var _customTypeLoad = function(){
             CustomTypeService.get({name:'', type:'type'},(res) => {
@@ -122,9 +119,9 @@
             }
         };
 
-        BizChat.getCustomSentence = function(bizchatId, type){
+        BizChat.getCustomSentence = function(bizchatId, type, ck){
             SentencesService.get({type:type, bizchatId:bizchatId},(res) => {
-                return res.data;
+                if(typeof ck ==='function')ck(res.data)
             },(err) => {
                 console.log(err)
             })
@@ -140,7 +137,7 @@
             // custom type list load
             _customTypeLoad();
             _customTaskLoad();
-            _globalSentenceLoad();
+            BizChat.dataset = BizChat.getCustomSentence(BizChat.bizchatId,'global');
             $rootScope.$broadcast('simulator-build');
             // load dialog list
             GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}

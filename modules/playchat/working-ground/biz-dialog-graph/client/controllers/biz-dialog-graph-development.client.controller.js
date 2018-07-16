@@ -2,6 +2,11 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
 
+    $scope.bots = [
+        {id:'survey',name:"설문 조사 봇"},
+        {id:'marketing',name:"마케팅 봇"},
+        {id:'infomation',name:"정보 봇"}];
+
     var chatbot = $cookies.getObject('chatbot');
     //
     //$scope.myBotAuth = chatbot.myBotAuth;
@@ -43,7 +48,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         $scope.initialize = function(bizchatId)
         {
             BizChatService.onReady(bizchatId, function(bizchat){
-                bizchat_s = bizchat;
                 $scope.Data = bizchat;
 
                 $scope.dialogs = bizchat.dialogs;
@@ -55,12 +59,23 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 $scope.sentences = bizchat.sentences;
                 // template set
-                $scope.customSentence = BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom');
+
+                // template dataset
+                BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom',(dt) => {
+                    $scope.customSentence = dt;
+                });
 
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
-                $scope.getList();
+                $timeout(function(){
+                    // global dataset
+                    BizChatService.getCustomSentence($scope.Data.bizchatId, 'global',((dt) => {
+                        $scope.Data.dataset = dt;
+                        $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.dataset[0]
+                        $scope.getList();
+                    }));
+                })
 
             });
         };
@@ -84,22 +99,12 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         {
             //$scope.customs.push($scope.Data.bizchatId);
             // sample bot data
-            $scope.bots = [
-                {id:'survey',name:"설문 조사 봇"},
-                {id:'marketing',name:"마케팅 봇"},
-                {id:'infomation',name:"정보 봇"}];
-
-            $scope.selectedBot = $scope.bots[0];
-
-            $scope.messageMenus = ['메세지 추가하기'];
-            for(var j=0; j<$scope.Data.dataset.length; j++) {
-                $scope.messageMenus.push($scope.Data.dataset[j].name);
-            }
-
-            $scope.selectedMessageMenu = $scope.messageMenus[0];
-            $scope.botData.sentencesNumber = $scope.Data.sentences.length;
-
         };
+
+        $scope.messageMenusSelectChange = function(xx){
+            // insert logic what is changed
+            console.log(xx)
+        }
 
 
         $scope.appendGrid = function(dialog){

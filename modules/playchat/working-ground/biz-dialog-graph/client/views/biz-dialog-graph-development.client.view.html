@@ -206,7 +206,7 @@ caption
                         </a>
                     </li>
                     <li class="new-select">
-                        <select ng-model="selectedMessageMenu" ng-change="messageMenusSelectChange(selectedMessageMenu)" ng-init="selectedMessageMenu = messageMenus[0]" class="add-menu" ng-options="x for x in messageMenus"></select>
+                        <select ng-model="selectedMessageMenu" ng-change="messageMenusSelectChange(selectedMessageMenu)" class="add-menu" ng-options="x.name for x in Data.dataset"></select>
                     </li>
                 </ul>
             </div>
