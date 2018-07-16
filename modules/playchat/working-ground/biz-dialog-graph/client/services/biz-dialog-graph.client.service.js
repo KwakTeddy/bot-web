@@ -3,9 +3,10 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('BizChatService', function($window, $resource, $cookies, $rootScope)
+    angular.module('playchat').factory('BizChatService', function($window, $resource, $cookies, $rootScope, FileUploader)
     {
-        var chatbot = null;
+        // load chatbot obj
+        var chatbot = $cookies.getObject('chatbot');
 
         // load api list
         var GraphFileService = $resource('/api/:botId/biz-graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
@@ -56,12 +57,8 @@
         };
 
         var _globalSentenceLoad = function(){
-            SentencesService.get({type:'global',bizchatId:BizChat.bizchatId},(res) => {
-                BizChat.dataset = res.data;
-                console.log(res)
-            },(err) => {
-                console.log(err)
-            })
+            BizChat.dataset = BizChat.getCustomSentence('global',BizChat.bizchatId)
+
         };
 
         var _customTypeLoad = function(){
@@ -88,18 +85,32 @@
                 }
             }
         };
+        var _dialogRebasing = function(dialogs){
+            for(var i in dialogs){
+                console.log(dialogs[i].id);
+                var child = _mk_rebase(dialogs[i]);
+                if(child.length > 0){
+                    dialogs[i].children = child;
+                    _dialogRebasing(child);
+                }
+            }
+
+            return dialogs;
+        };
 
         BizChat.createDialog = function(dialog, parent){
             BizChat.cardArr.push(_mk_index(dialog, parent? parent.id : null))
         };
 
         BizChat.deleteDialog = function(id){
-            BizChat.cardArr.forEach(function(){
-
-            })
+            var parentId = angular.element('#'+id).prev()[0].id;
+            BizChat.cardArr = BizChat.cardArr.filter(function(e){return e.id != id});
+            BizChat.cardArr.filter(function(e){if(e.parentId == id){e.parentId = parentId != ''? parentId : null}})
         };
 
-
+        var _mk_rebase = function(dialog){
+            return BizChat.cardArr.filter(function(e){return dialog.id == e.parentId})
+        };
 
         var _mk_index = function(dia, parentId){
             return {
@@ -111,9 +122,20 @@
             }
         };
 
+        BizChat.getCustomSentence = function(bizchatId, type){
+            SentencesService.get({type:type, bizchatId:bizchatId},(res) => {
+                return res.data;
+            },(err) => {
+                console.log(err)
+            })
+        };
+
+        BizChat.test = () => {
+
+        };
+
         BizChat.onReady = (cb) => {
-            // load chatbot obj
-            chatbot = $cookies.getObject('chatbot');
+
 
             // custom type list load
             _customTypeLoad();
@@ -191,7 +213,11 @@
         };
 
         BizChat.saveGraph = (cb) => {
-            _getCompleteData(BizChat.userDialogs, BizChat.commonDialogs,
+            var dialog = BizChat.cardArr.filter((e) => {return e.parentId == null});
+
+            var dialogs = _dialogRebasing(dialog);
+
+            _getCompleteData(dialogs, BizChat.commonDialogs,
                 (script) => {
                 GraphFileService.post({
                         botId: chatbot.id,
@@ -255,6 +281,37 @@
                         });
                 });
             }
+        };
+
+        BizChat.setUploader = function(){
+            var uploader = new FileUploader({
+                url: '/api/' + chatbot.id + '/biz-dialog-graphs/uploadImage',
+                alias: 'uploadFile',
+                autoUpload: true
+            });
+
+            uploader.onSuccessItem = function(item, response, status, headers)
+            {
+                var image = {
+                    url: response.url,
+                    displayname: item.file.name
+                };
+                // bind with card scope
+                console.log(image)
+            };
+
+            uploader.onErrorItem = function(item, response, status, headers)
+            {
+                alert(response.message);
+            };
+
+            uploader.onProgressItem = function(fileItem, progress)
+            {
+                console.log(progress);
+            };
+
+
+            return uploader;
         };
 
         BizChat.refresh = () => {

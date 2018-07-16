@@ -1,7 +1,7 @@
-angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
+angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
-    console.log('!!!!!!!!!!!!!!!!');
+
     var chatbot = $cookies.getObject('chatbot');
     //
     //$scope.myBotAuth = chatbot.myBotAuth;
@@ -21,10 +21,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     //    alert($scope.lan('저장 실패 : ') + error.message);
     //});
 
-    var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
-
-    var SentencesService = $resource('/api/:type/biz-sentences/:bizchatId', { type:'@type', bizchatId: '@bizchatId' });
-
     (function()
     {
 
@@ -42,15 +38,13 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         BizChatService.template.card = angular.element('#cardTpl');
         BizChatService.template.input = angular.element('#inputTpl');
         BizChatService.template.output = angular.element('#outputTpl');
+        $scope.uploader = BizChatService.setUploader();
 
         $scope.initialize = function()
         {
             BizChatService.onReady(function(bizchat){
-
                 bizchat_s = bizchat;
                 $scope.Data = bizchat;
-                console.log('$scope.Data:');
-                console.log($scope.Data);
 
                 $scope.dialogs = bizchat.dialogs;
                 $scope.commonDialogs = bizchat.commonDialogs;
@@ -61,7 +55,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 $scope.sentences = bizchat.sentences;
                 // template set
-
+                $scope.customSentence = BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom');
 
                 angular.element('.log-analysis').css('display', 'none');
 
@@ -71,11 +65,26 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             });
         };
 
+
+        /*
+        Sample structure
+        <div ng-click="imageUpload($event);">
+          <input tabindex="-1" type="file" nv-file-select uploader="uploader" data-index="{{ $index }}">
+        </div>
+         */
+        $scope.imageUpload = function(e){
+            var imageFile = angular.element(e.currentTarget).find('input[type="file"]');
+            $timeout(function()
+            {
+                imageFile.click();
+            });
+        };
+
         $scope.getList = function()
         {
             //
             $scope.bots = [];
-            // $scope.customs.push($scope.Data.bizchatId);
+            //$scope.customs.push($scope.Data.bizchatId);
             $scope.bots = ["설문 조사 봇", "마케팅 봇","정보 봇"];
             $scope.selectedBot = $scope.bots[0];
 
