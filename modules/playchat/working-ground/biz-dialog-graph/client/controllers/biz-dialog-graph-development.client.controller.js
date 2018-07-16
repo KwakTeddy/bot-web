@@ -22,6 +22,15 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
     (function()
     {
+
+
+        //when bizbot select option changed
+        $scope.bizbotSelectChange = function(customName){
+            $scope.botData.name = customName;
+            // getCustomsDetail($scope.customData);
+        };
+
+
         $scope.$parent.loaded('working-ground');
 
         // 나중에 HTML에 바인딩하면서
@@ -33,7 +42,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         $scope.initialize = function()
         {
             BizChatService.onReady(function(bizchat){
-                bizchat = bizchat;
+                bizchat_s = bizchat;
+                $scope.Data = bizchat;
+
                 $scope.dialogs = bizchat.dialogs;
                 $scope.commonDialogs = bizchat.commonDialogs;
                 $scope.tasks = bizchat.tasks;
@@ -42,13 +53,14 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 $scope.addOn = bizchat.addOn;
 
                 $scope.sentences = bizchat.sentences;
-
                 // template set
 
 
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
+                $scope.getList();
+
             });
         };
 
@@ -60,6 +72,23 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             });
         };
 
+        $scope.getList = function()
+        {
+            //
+            $scope.bots = [];
+            // $scope.customs.push($scope.Data.bizchatId);
+            $scope.bots = ["설문 조사 봇", "마케팅 봇","정보 봇"];
+            $scope.selectedBot = $scope.bots[0];
+
+            $scope.messageMenus = ['메세지 추가하기'];
+            for(var j=0; j<$scope.Data.dataset.length; j++) {
+                $scope.messageMenus.push($scope.Data.dataset[j].name);
+            }
+
+            $scope.selectedMessageMenu = $scope.messageMenus[0];
+            $scope.botData.sentencesNumber = $scope.Data.sentences.length;
+
+        };
 
 
         $scope.appendGrid = function(dialog){
@@ -83,4 +112,4 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     $scope.initialize();
     $scope.lan=LanguageService;
 }]);
-var bizchat = null;
+var bizchat_s = null;

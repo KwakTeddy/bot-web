@@ -1178,10 +1178,35 @@ select.add-menu option{
 .connection-data{
     margin: 1% 0;
 }
-.connection-data input{
+input.type01{
     border: 1px solid #e5e5e5;
     width: 52.9%;
     text-overflow: ellipsis;
+}
+input.type02{
+    border: 1px solid #e5e5e5;
+    width: 88%;
+    text-overflow: ellipsis;
+}
+input.type03{
+    border: 1px solid #e5e5e5;
+    width: 82%;
+    text-overflow: ellipsis;
+}
+.pic-area{
+    width: 100%;
+    height: 100px;
+    margin: 4% 0 2% 0;
+    background:#f3f3f3 url("/modules/playchat/working-ground/biz-dialog-graph/client/imgs/pic-bg.png") no-repeat 50%;
+
+}
+.pic-area:hover{
+    background:#e5e5e5 url("/modules/playchat/working-ground/biz-dialog-graph/client/imgs/pic-bg.png") no-repeat 50%;
+    transition: all .3s;
+}
+.reorder{
+    text-align: right;
+    display: block;
 }
 @media screen and (max-width: 1450px)
 {
