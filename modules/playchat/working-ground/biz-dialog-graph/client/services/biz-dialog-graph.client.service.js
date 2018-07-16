@@ -5,7 +5,8 @@
 
     angular.module('playchat').factory('BizChatService', function($window, $resource, $cookies, $rootScope, FileUploader)
     {
-        var chatbot = null;
+        // load chatbot obj
+        var chatbot = $cookies.getObject('chatbot');
 
         // load api list
         var GraphFileService = $resource('/api/:botId/biz-graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
@@ -56,12 +57,8 @@
         };
 
         var _globalSentenceLoad = function(){
-            SentencesService.get({type:'global',bizchatId:BizChat.bizchatId},(res) => {
-                BizChat.dataset = res.data;
-                console.log(res)
-            },(err) => {
-                console.log(err)
-            })
+            BizChat.dataset = BizChat.getCustomSentence('global',BizChat.bizchatId)
+
         };
 
         var _customTypeLoad = function(){
@@ -125,13 +122,20 @@
             }
         };
 
+        BizChat.getCustomSentence = function(bizchatId, type){
+            SentencesService.get({type:type, bizchatId:bizchatId},(res) => {
+                return res.data;
+            },(err) => {
+                console.log(err)
+            })
+        };
+
         BizChat.test = () => {
 
         };
 
         BizChat.onReady = (cb) => {
-            // load chatbot obj
-            chatbot = $cookies.getObject('chatbot');
+
 
             // custom type list load
             _customTypeLoad();
@@ -249,60 +253,6 @@
             return arr;
         };
 
-
-        /*
-        *
-
-         <div class="dialog-editor-output-box-row button" ng-click="clickToImageFile($event);">
-         <div ng-show="output.uploader.item == 'none'">
-         <span class="blue-label">{{lan('Add image') }}</span>
-         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
-         </div>
-         <input tabindex="-1" type="file" class="dialog-editor-output-file" nv-file-select uploader="output.uploader" data-index="{{ $index }}">
-         <div class="dialog-editor-output-image-box" ng-show="output.uploader.item != 'none'">
-         <img style="width: 100%;" ng-src="{{ output.uploader.item }}">
-         <div>
-         <p>{{lan('Click to change image') }}</p>
-         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);" style="cursor: pointer;">
-         </div>
-         </div>
-         </div>
-
-        * */
-        //BizChat.imageUpload = function(output, index)
-        //{
-        //    console.log(output);
-        //    output[index].uploader = new FileUploader({
-        //        url: '/api/' + chatbot.id + '/biz-dialog-graphs/uploadImage',
-        //        alias: 'uploadFile',
-        //        autoUpload: true
-        //    });
-        //
-        //    output[index].uploader.item = 'none';
-        //    if(output[index].kind == 'Content' && output[index].image)
-        //        output[index].uploader.item = output[index].image.url;
-        //
-        //    output[index].uploader.onErrorItem = function(item, response, status, headers)
-        //    {
-        //        alert(response.message);
-        //    };
-        //
-        //    output[index].uploader.onSuccessItem = function(item, response, status, headers)
-        //    {
-        //        output[index].image = {
-        //            url: response.url,
-        //            displayname: item.file.name
-        //        };
-        //
-        //        return output[index];
-        //    };
-        //
-        //    output[index].uploader.onProgressItem = function(fileItem, progress)
-        //    {
-        //        console.log(progress);
-        //    };
-        //};
-
         BizChat.saveScript = (datas,cb) => {
             if(!datas || datas.length <= 0){
                 return null;
@@ -333,17 +283,20 @@
             }
         };
 
-        BizChat.setImgudt = function(){
-            console.log('settts')
-            var uploader = new FileUploader();
+        BizChat.setUploader = function(){
+            var uploader = new FileUploader({
+                url: '/api/' + chatbot.id + '/biz-dialog-graphs/uploadImage',
+                alias: 'uploadFile',
+                autoUpload: true
+            });
 
             uploader.onSuccessItem = function(item, response, status, headers)
             {
-                console.log(item)
                 var image = {
                     url: response.url,
                     displayname: item.file.name
                 };
+                // bind with card scope
                 console.log(image)
             };
 

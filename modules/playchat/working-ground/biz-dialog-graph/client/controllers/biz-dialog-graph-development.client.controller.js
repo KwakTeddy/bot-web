@@ -2,14 +2,15 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
 
-    //var chatbot = $cookies.getObject('chatbot');
+    var chatbot = $cookies.getObject('chatbot');
     //
     //$scope.myBotAuth = chatbot.myBotAuth;
 
     // close header area
     angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
     angular.element('#middle-container').css("top", "0px");
-
+    $scope.Data = [];
+    $scope.botData = {};
     //var data = BizChat.getCompleteData();
 
     //BizChat.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
@@ -37,7 +38,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         BizChatService.template.card = angular.element('#cardTpl');
         BizChatService.template.input = angular.element('#inputTpl');
         BizChatService.template.output = angular.element('#outputTpl');
-        $scope.uploader = BizChatService.setImgudt();
+        $scope.uploader = BizChatService.setUploader();
 
         $scope.initialize = function()
         {
@@ -54,7 +55,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 $scope.sentences = bizchat.sentences;
                 // template set
-
+                $scope.customSentence = BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom');
 
                 angular.element('.log-analysis').css('display', 'none');
 
@@ -64,6 +65,13 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             });
         };
 
+
+        /*
+        Sample structure
+        <div ng-click="imageUpload($event);">
+          <input tabindex="-1" type="file" nv-file-select uploader="uploader" data-index="{{ $index }}">
+        </div>
+         */
         $scope.imageUpload = function(e){
             var imageFile = angular.element(e.currentTarget).find('input[type="file"]');
             $timeout(function()
@@ -76,7 +84,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         {
             //
             $scope.bots = [];
-            // $scope.customs.push($scope.Data.bizchatId);
+            //$scope.customs.push($scope.Data.bizchatId);
             $scope.bots = ["설문 조사 봇", "마케팅 봇","정보 봇"];
             $scope.selectedBot = $scope.bots[0];
 
