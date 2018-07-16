@@ -1,4 +1,4 @@
-angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
+angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
 
@@ -20,7 +20,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     //    alert($scope.lan('저장 실패 : ') + error.message);
     //});
 
-
     (function()
     {
         $scope.$parent.loaded('working-ground');
@@ -29,11 +28,12 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         BizChatService.template.card = angular.element('#cardTpl');
         BizChatService.template.input = angular.element('#inputTpl');
         BizChatService.template.output = angular.element('#outputTpl');
+        $scope.uploader = BizChatService.setImgudt();
 
         $scope.initialize = function()
         {
             BizChatService.onReady(function(bizchat){
-                aaaaa = bizchat;
+                bizchat = bizchat;
                 $scope.dialogs = bizchat.dialogs;
                 $scope.commonDialogs = bizchat.commonDialogs;
                 $scope.tasks = bizchat.tasks;
@@ -49,6 +49,14 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
+            });
+        };
+
+        $scope.imageUpload = function(e){
+            var imageFile = angular.element(e.currentTarget).find('input[type="file"]');
+            $timeout(function()
+            {
+                imageFile.click();
             });
         };
 
@@ -75,4 +83,4 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     $scope.initialize();
     $scope.lan=LanguageService;
 }]);
-var aaaaa = null;
+var bizchat = null;
