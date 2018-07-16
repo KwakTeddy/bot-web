@@ -60,8 +60,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 $scope.addOn = bizchat.addOn;
 
                 $scope.sentences = bizchat.sentences;
-
-                console.log($scope.sentences);
                 // template set
 
 
@@ -75,23 +73,16 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         $scope.getList = function()
         {
-            // $scope.customs = ["설문 조사 봇", "마케팅 봇","정보 봇"];
-            $scope.customs = [];
-            // for(var i=0; i<$scope.Data.dataset.length; i++){
-            //     if($scope.customs.indexOf($scope.Data.dataset[i].templateId) === -1){
-            //         $scope.customs.push($scope.Data.dataset[i].templateId);
-            //     }
-            // }
-            $scope.customs.push($scope.Data.bizchatId);
-            $scope.selectedCustom = $scope.customs[0];
+            //
+            $scope.bots = [];
+            // $scope.customs.push($scope.Data.bizchatId);
+            $scope.bots = ["설문 조사 봇", "마케팅 봇","정보 봇"];
+            $scope.selectedBot = $scope.bots[0];
 
-            $scope.menus = ['메세지 추가하기'];
-                for(var j=0; j<$scope.Data.dataset.length; j++){
-                    if($scope.Data.dataset[j].templateId === $scope.selectedCustom){
-                        $scope.menus.push($scope.Data.dataset[j].name);
-                    }
-                }
-            $scope.selectedMenu = $scope.menus[0];
+            $scope.messageMenus = ['메세지 추가하기'];
+            $scope.messageMenus.push($scope.Data.dataset[j].name);
+
+            $scope.selectedMessageMenu = $scope.messageMenus[0];
             $scope.botData.sentencesNumber = $scope.Data.sentences.length;
 
         };
