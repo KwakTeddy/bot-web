@@ -52,7 +52,7 @@ module.exports = function(bot)
     };
 
     var add_setCall = (dialog, context) => {
-        if(context.channel.name=='kakao'){
+        if(context.channel.name == 'kakao'){
             if(dialog.id=='default3'){
                 dialog.output[0].text = [dialog.output[0].text,'\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("")
             }else{
