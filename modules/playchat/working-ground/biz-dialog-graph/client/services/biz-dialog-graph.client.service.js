@@ -145,7 +145,7 @@
                     // it will be included dialogs, commonDialogs
                     BizChat.commonDialogs = res.commonDialogs;
                     BizChat.dialogs = res.dialogs;
-
+                    BizChat.cardArr = [];
                     _dialogIndexing(BizChat.dialogs);
 
                     // list of task names in the file

@@ -67,6 +67,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom',(dt) => {
                     $scope.customSentence = dt;
                 });
+
                 $scope.botData.sentencesNumber = $scope.Data.cardArr.length;
 
                 angular.element('.log-analysis').css('display', 'none');
