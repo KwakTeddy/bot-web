@@ -1,6 +1,7 @@
 var dialogs = [
     {
         "name": "질문 2-1",
+        "type":"﻿5b486d4a55611f9addf74b64",
         "input": [
             {
                 "text": {
@@ -31,6 +32,7 @@ var dialogs = [
         "children": [
             {
                 "name": "질문 3-1",
+                "type":"﻿5b486d4a55611f9addf74b64",
                 "input": [
                     {
                         "types": [
@@ -48,6 +50,7 @@ var dialogs = [
                 "children": [
                     {
                         "name": "질문 4-1",
+                        "type":"﻿5b486d4a55611f9addf74b64",
                         "input": [
                             {
                                 "types": [
@@ -65,6 +68,7 @@ var dialogs = [
                         "children": [
                             {
                                 "name": "결과-1",
+                                "type":"﻿5b486e6955611f9addf74b65",
                                 "input": [
                                     {
                                         "types": [
@@ -88,6 +92,7 @@ var dialogs = [
     },
     {
         "name": "질문 2-2",
+        "type":"﻿5b486d4a55611f9addf74b64",
         "input": [
             {
                 "text": {
@@ -118,6 +123,7 @@ var dialogs = [
         "children": [
             {
                 "name": "질문 2-2-1",
+                "type":"﻿5b486d4a55611f9addf74b64",
                 "input": [
                     {
                         "text": {
@@ -136,6 +142,7 @@ var dialogs = [
                 "children": [
                     {
                         "name": "질문 3-3",
+                        "type":"﻿5b486d4a55611f9addf74b64",
                         "input": [
                             {
                                 "types": [
@@ -153,6 +160,7 @@ var dialogs = [
                         "children": [
                             {
                                 "name": "질문 4-3",
+                                "type":"﻿5b486d4a55611f9addf74b64",
                                 "input": [
                                     {
                                         "types": [
@@ -170,6 +178,7 @@ var dialogs = [
                                 "children": [
                                     {
                                         "name": "결과-3",
+                                        "type":"﻿5b486e6955611f9addf74b65",
                                         "input": [
                                             {
                                                 "types": [
@@ -193,6 +202,7 @@ var dialogs = [
             },
             {
                 "name": "질문 3-2",
+                "type":"﻿5b486d4a55611f9addf74b64",
                 "input": [
                     {
                         "types": [
@@ -210,6 +220,7 @@ var dialogs = [
                 "children": [
                     {
                         "name": "질문 4-2",
+                        "type":"﻿5b486d4a55611f9addf74b64",
                         "input": [
                             {
                                 "types": [
@@ -227,6 +238,7 @@ var dialogs = [
                         "children": [
                             {
                                 "name": "결과-2",
+                                "type":"﻿5b486e6955611f9addf74b65",
                                 "input": [
                                     {
                                         "types": [

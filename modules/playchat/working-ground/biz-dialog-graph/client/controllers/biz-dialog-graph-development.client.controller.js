@@ -29,14 +29,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     (function()
     {
 
-
-        //when bizbot select option changed
-        $scope.bizbotSelectChange = function(customName){
-            $scope.botData.name = customName.name;
-            $scope.refresh(customName.id);
-        };
-
-
         $scope.$parent.loaded('working-ground');
 
         // 나중에 HTML에 바인딩하면서
@@ -49,37 +41,27 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         {
             BizChatService.onReady(bizchatId, function(bizchat){
                 $scope.Data = bizchat;
-
-                $scope.dialogs = bizchat.dialogs;
-                $scope.commonDialogs = bizchat.commonDialogs;
-                $scope.tasks = bizchat.tasks;
-                $scope.types = bizchat.types;
-                $scope.scripts = bizchat.scripts;
-                $scope.addOn = bizchat.addOn;
-
-                $scope.sentences = bizchat.sentences;
-                // template set
-
-                // template dataset
-                BizChatService.getCustomSentence($scope.Data.bizchatId, 'custom',(dt) => {
-                    $scope.customSentence = dt;
-                });
-
+                bizchat_s = bizchat;
+                $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.dataset[0];
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
-                $timeout(function(){
-                    // global dataset
-                    BizChatService.getCustomSentence($scope.Data.bizchatId, 'global',((dt) => {
-                        $scope.Data.dataset = dt;
-                        $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.dataset[0]
-                        $scope.getList();
-                    }));
-                })
-
             });
         };
 
+        $scope.getCardType = function(id){
+            var ds = $scope.Data.dataset.find(function(e){
+                return id.indexOf(e._id) >= 0
+            });
+            return ds;
+        };
+
+
+        //when bizbot select option changed
+        $scope.bizbotSelectChange = function(customName){
+            $scope.botData.name = customName.name;
+            $scope.refresh(customName.id);
+        };
 
         /*
         Sample structure
@@ -100,11 +82,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             //$scope.customs.push($scope.Data.bizchatId);
             // sample bot data
         };
-
-        $scope.messageMenusSelectChange = function(xx){
-            // insert logic what is changed
-            console.log(xx)
-        }
 
 
         $scope.appendGrid = function(dialog){
@@ -127,6 +104,28 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         $scope.refresh = function(bizchatId){
             BizChatService.bizchatId = bizchatId;
             $scope.initialize(bizchatId);
+        };
+
+        var _templateSet = function(card,type){
+            var id = '#'+type._id;
+            var t  = angular.element(id).html();
+            t = t.replace(/{id}/gi, card.id)
+                .replace('{name}',card.name)
+                .replace('{messageType}',type.name)
+                .replace('{output}',card.output[0].text);
+
+            return t;
+        };
+
+        $scope.cardUiSet = function(me){
+            console.log(me);
+            me.is_open = me.is_open ? false : true;
+            var cardType = $scope.getCardType(me.type);
+            console.log(cardType)
+
+            var t = _templateSet(me,cardType);
+            angular.element('#'+me.id).append($compile(t)($scope));
+
         }
 
     })();

@@ -82,6 +82,7 @@
                 }
             }
         };
+
         var _dialogRebasing = function(dialogs){
             for(var i in dialogs){
                 console.log(dialogs[i].id);
@@ -113,6 +114,7 @@
             return {
                 id : dia.id,
                 name : dia.name,
+                type : dia.type,
                 input : dia.input,
                 output : dia.output,
                 parentId : parentId ? parentId : null
@@ -137,12 +139,15 @@
             // custom type list load
             _customTypeLoad();
             _customTaskLoad();
-            BizChat.dataset = BizChat.getCustomSentence(BizChat.bizchatId,'global');
+            BizChat.getCustomSentence(BizChat.bizchatId,'global',function(data){
+                BizChat.dataset = data;
+            });
             $rootScope.$broadcast('simulator-build');
             // load dialog list
             GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
                 , (res) => {
                     // it will be included dialogs, commonDialogs
+
                     BizChat.commonDialogs = res.commonDialogs;
                     BizChat.dialogs = res.dialogs;
 
@@ -316,6 +321,14 @@
             BizChat.onReady(bizchatId);
 
 
+        };
+
+        BizChat.template.card = (obj) => {
+            var tpl = '';
+
+
+
+            return tpl;
         };
 
         return BizChat;
