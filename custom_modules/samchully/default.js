@@ -1117,13 +1117,12 @@ module.exports = function(bot)
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
-                options.json.name = '';
+                options.json.name = 'ZCS_GOJI_KKO_REQUEST';
                 options.json.channel = context.channel.name;
                 options.json.param = [
                     { key: 'I_VKONT', val: '000' + curCustomer.VKONT },
-                    { key: 'I_NAME', val: context.session.customerName },
-                    { key: 'I_PHONE', val: context.session.customerMobile },
-                    { key: 'I_BIRTH', val: context.session.customerBirth }
+                    { key: 'I_HPNUM', val: context.session.customerMobile },
+                    { key: 'I_PERSON_ID', val: context.session.customerBirth }
                 ];
 
                 request.post(options, function(err, response, body)
@@ -1146,7 +1145,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body);
                             dialog.setNoticeMethodSuccess = true;
                         }else {
                             errorHandler(dialog, body);
@@ -2055,6 +2053,8 @@ module.exports = function(bot)
 
                 context.session.auth = '';
 
+                context.session.identificationNum = '';
+
                     callback();
             }
         });
@@ -2142,7 +2142,16 @@ module.exports = function(bot)
                             errorHandler(dialog, body);
                         }
                         else if (body.E_RETCD == 'S') {
-                            context.session.identificationNum = body.E_CONF_NO;
+                            context.session.identificationNum = '' + body.E_CONF_NO;
+                            context.session.customerList = body.data.E_TAB;
+
+                            for(var i=0; i<context.session.customerList.length; i++)
+                            {
+                                if(context.session.customerList[i].VKONT.startsWith('000'))
+                                {
+                                    context.session.customerList[i].VKONT = context.session.customerList[i].VKONT.substring(3);
+                                }
+                            }
                         } else {
                             errorHandler(dialog, body);
                         }
@@ -2173,8 +2182,11 @@ module.exports = function(bot)
             var matched = false;
             if(dialog.userInput.text === context.session.identificationNum){
                 matched = true;
+                callback(matched);
             }
-            callback(matched);
+            else{
+                callback(matched);
+            }
         }
     });
 };

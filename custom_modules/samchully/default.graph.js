@@ -132,7 +132,7 @@ var dialogs = [
                                                 ],
                                                 "id": "default50",
                                                 "task": {
-                                                    "name": "searchSamchullyUser"
+                                                    "name": ""
                                                 },
                                                 "children": [
                                                     {
@@ -1269,7 +1269,10 @@ var dialogs = [
                                                         ]
                                                     }
                                                 ],
-                                                "id": "default80"
+                                                "id": "default80",
+                                                "task": {
+                                                    "name": "setNoticeMethod_kkoalarm"
+                                                }
                                             }
                                         ]
                                     },
