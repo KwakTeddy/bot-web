@@ -105,8 +105,8 @@
 
 .graph-zoom-controller .graph-zoom-in
 {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
+    /*border-top-left-radius: 6px;*/
+    /*border-bottom-left-radius: 6px;*/
     border-right: none;
 
     cursor: pointer;
@@ -148,9 +148,8 @@
 
 .graph-zoom-controller .graph-zoom-out
 {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-
+    /*border-top-right-radius: 6px;*/
+    /*border-bottom-right-radius: 6px;*/
     cursor: pointer;
 }
 
@@ -210,20 +209,16 @@
 .graph-controller .graph-button
 {
     display: inline-block;
-
     width: 90px;
     height: 35px;
     text-align: center;
     cursor: pointer;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 4px;
+    /*-webkit-border-radius: 6px;*/
+    /*-moz-border-radius: 6px;*/
+    /*border-radius: 4px;*/
     vertical-align: top;
-
     letter-spacing: 0.3px;
-
     border: 1px solid #ddd;
-
     margin: 2px 0;
 }
 
@@ -310,18 +305,14 @@
 .graph-dialog-item
 {
     position: relative;
-
     width: 200px;
     border: 1px solid #d7d7d7;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
     margin-top: 20px;
     display: inline-block;
     margin-right: 14px;
-
     box-sizing: border-box;
-
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
-
     cursor: pointer;
 }
 
@@ -345,7 +336,7 @@
 {
     position: absolute;
     top: 0;
-    right: 3px;
+    right: 0;
     bottom: 0;
 
     display: flex;
@@ -356,13 +347,11 @@
 .graph-dialog-header
 {
     white-space: normal;
-
     position: relative;
     background: #f8f8f8;
     border-bottom: 1px solid #d7d7d7;
-
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    /*border-top-left-radius: 6px;*/
+    /*border-top-right-radius: 6px;*/
 }
 
 .graph-dialog-item.selected .graph-dialog-header
@@ -468,8 +457,8 @@
 .graph-dialog-input
 {
     height: auto;
-    max-height: 80px;
-    overflow: hidden;
+    /*max-height: 80px;*/
+    /*overflow: hidden;*/
 }
 
 .graph-dialog-input
@@ -565,25 +554,17 @@
     width: 200px;
     height: 36px;
     text-align: center;
-
     /*border: 1px solid #d7d7d7;*/
-    border-radius: 6px;
+    /*border-radius: 6px;*/
     outline: 0;
-
     margin-top: 11px;
     margin-bottom: 10px;
-
     /*box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);*/
-
     /*margin-left: -11px;*/
     /*margin-top: 20px;*/
-
     border: 1px dashed #97a7c0;
-
     color: #97a7c0;
-
     background-color: white;
-
     cursor: pointer;
 }
 
@@ -613,18 +594,13 @@
 .dialog-menu
 {
     position: absolute;
-
     top: 0;
     left: 0;
-
     width: 150px;
     padding: 10px;
-    border-radius: 6px;
     border: 1px solid #ebebeb;
-    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
-
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05), 0 1px 20px rgba(0, 0, 0, 0.05);
     background-color: white;
-
     z-index: 1000;
 }
 
@@ -700,7 +676,7 @@
 {
     padding-top: 35px;
     border-bottom: 2px solid #768ea2;
-    height: 40px;
+    height: 43px;
     display: flex;
 }
 
@@ -722,9 +698,9 @@
 .tab-body li, .prev-tab, .next-tab
 {
     display: inline-block;
-    padding: 10px 24px 3px;
+    padding: 10px 24px 6px;
     background-color: #f5f5f5;
-    border-radius: 6px 6px 0 0;
+    /*border-radius: 6px 6px 0 0;*/
     border: 2px solid #ebebeb;
     border-bottom-color: transparent;
     color: #7e7e7e;

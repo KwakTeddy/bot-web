@@ -85,7 +85,6 @@
 .input_type09{
     width: 240px;
     border: 1px solid #d7d7d7;
-    border-radius: 3px;
     background: #fff;
     margin: 5px auto 0px;
     position: relative;
@@ -106,7 +105,6 @@
 .loginbtn{
     background: #038eda;
     padding:14px 0px;
-    border-radius: 3px;
     width: 268px;
     margin: 10px auto;
     color: #fff;
@@ -237,15 +235,14 @@ a.policy{
 }
 .noticebox{
     font-family: 'Noto Sans SC', sans-serif;
-    border-radius: 6px;
     width: 560px;
     margin: 0 auto;
     padding: 18px;
-    text-align: left;
+    text-align: center;
     line-height: 20px;
     font-weight: 700;
-    background: #2f6587;
-    color: #fff;
+    color: #363636;
+    border: 1px solid #363636;
 }
 .leftbox{
     display: inline-block;
