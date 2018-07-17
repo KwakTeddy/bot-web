@@ -2109,49 +2109,60 @@ module.exports = function(bot)
 
 	bot.setTask('sendIdentificationNum', 
 	{
-        action: function (dialog, context, callback)
-        {
-            var options = {};
-            options.url = 'http://sam.moneybrain.ai:3000/api';
-            options.json = {};
-            options.json.name = 'ZCS_CUSTOMER_INFO';
-            options.json.channel = context.channel.name;
-            options.json.param = [
-                { key: 'I_NAME', val: context.session.customerName },
-                { key: 'I_BIRTH', val: context.session.customerBirth },
-                { key: 'I_PHONE', val: context.session.customerMobile }
-            ];
-            options.json.isTable = true;
-            ////options.timeout = timeout;
+        action: function (dialog, context, callback) {
+            var word = dialog.userInput.text;
+            var regexp = new RegExp("[0-9]{6}", "g");
 
-            request.post(options, function(err, response, body)
-            {
-                if(err)
-                {
-                    errorHandler(dialog, err);
-                }
-                else
-                {
-                    if(!body)
-                    {
-                        errorHandler(dialog, null);
-                        return callback();
-                    }
+            if (regexp.exec(word) || word === 'ㅈ' || word === '재발송') {
+                var options = {};
+                options.url = 'http://sam.moneybrain.ai:3000/api';
+                options.json = {};
+                options.json.name = 'ZCS_CUSTOMER_INFO';
+                options.json.channel = context.channel.name;
+                options.json.param = [
+                    {key: 'I_NAME', val: context.session.customerName},
+                    {key: 'I_BIRTH', val: context.session.customerBirth},
+                    {key: 'I_PHONE', val: context.session.customerMobile}
+                ];
+                options.json.isTable = true;
+                ////options.timeout = timeout;
 
-                    if(body.E_RETCD == 'E')
-                    {
-                        body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
-                        errorHandler(dialog, body);
+                request.post(options, function (err, response, body) {
+                    if (err) {
+                        errorHandler(dialog, err);
                     }
-                    else if(body.E_RETCD == 'S')
-                    {
-                        context.session.identificationNum = body.E_CONF_NO;
-                    }else {
-                        errorHandler(dialog, body);
+                    else {
+                        if (!body) {
+                            errorHandler(dialog, null);
+                            return callback();
+                        }
+
+                        if (body.E_RETCD == 'E') {
+                            body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
+                            errorHandler(dialog, body);
+                        }
+                        else if (body.E_RETCD == 'S') {
+                            context.session.identificationNum = body.E_CONF_NO;
+                        } else {
+                            errorHandler(dialog, body);
+                        }
                     }
+                    if (context.channel.name == 'kakao') {
+                        dialog.output[0].text = [dialog.output[0].text, '\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("")
+                    } else {
+                        dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+                    }
+                    callback();
+                });
+            }
+            else{
+                if(context.channel.name == 'kakao'){
+                    dialog.output[0].text = [dialog.output[0].text,'\n\n인증번호를 다시 받으시려면 \'ㅈ\' 을,\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("")
+                }else{
+                    dialog.output[0].buttons = [{text: '재발송'},{text: '이전'}, {text: '처음'}];
                 }
                 callback();
-            });
+            }
         }
 	});
 
