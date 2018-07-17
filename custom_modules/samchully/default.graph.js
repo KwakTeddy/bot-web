@@ -91,7 +91,7 @@ var dialogs = [
                                 "id": "default46",
                                 "children": [
                                     {
-                                        "name": "고객 검색",
+                                        "name": "인증_인증번호",
                                         "input": [
                                             {
                                                 "types": [
@@ -102,80 +102,118 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
-                                                "buttons": [
-                                                    {
-                                                        "text": "네"
-                                                    },
-                                                    {
-                                                        "text": "아니요"
-                                                    }
-                                                ]
+                                                "text": "받으신 인증번호를 입력해주세요.\n예) 1234"
                                             }
                                         ],
-                                        "id": "default50",
-                                        "task": {
-                                            "name": "searchSamchullyUser"
-                                        },
+                                        "id": "default7",
                                         "children": [
                                             {
-                                                "name": "인증동의_",
+                                                "name": "고객 검색",
                                                 "input": [
                                                     {
-                                                        "text": {
-                                                            "raw": "네",
-                                                            "nlp": "네"
-                                                        }
-                                                    },
-                                                    {
-                                                        "text": {
-                                                            "raw": "1",
-                                                            "nlp": "1"
-                                                        }
+                                                        "types": [
+                                                            "checkIdentificationNum"
+                                                        ]
                                                     }
                                                 ],
                                                 "output": [
                                                     {
-                                                        "kind": "Action",
-                                                        "text": "인증되셨습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
-                                                        "type": "call",
-                                                        "dialogName": "시작",
-                                                        "dialogId": "startDialog"
+                                                        "kind": "Content",
+                                                        "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
+                                                        "buttons": [
+                                                            {
+                                                                "text": "네"
+                                                            },
+                                                            {
+                                                                "text": "아니요"
+                                                            }
+                                                        ]
                                                     }
                                                 ],
+                                                "id": "default50",
                                                 "task": {
-                                                    "name": "authConfirm"
+                                                    "name": "searchSamchullyUser"
                                                 },
-                                                "id": "default47"
+                                                "children": [
+                                                    {
+                                                        "name": "인증동의_",
+                                                        "input": [
+                                                            {
+                                                                "text": {
+                                                                    "raw": "네",
+                                                                    "nlp": "네"
+                                                                }
+                                                            },
+                                                            {
+                                                                "text": {
+                                                                    "raw": "1",
+                                                                    "nlp": "1"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Action",
+                                                                "text": "인증되셨습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
+                                                                "type": "call",
+                                                                "dialogName": "시작",
+                                                                "dialogId": "startDialog"
+                                                            }
+                                                        ],
+                                                        "task": {
+                                                            "name": "authConfirm"
+                                                        },
+                                                        "id": "default47"
+                                                    },
+                                                    {
+                                                        "name": "인증거절_",
+                                                        "input": [
+                                                            {
+                                                                "text": {
+                                                                    "raw": "아니다",
+                                                                    "nlp": "아니다"
+                                                                }
+                                                            },
+                                                            {
+                                                                "text": {
+                                                                    "raw": "2",
+                                                                    "nlp": "2"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Action",
+                                                                "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
+                                                                "type": "call",
+                                                                "dialogName": "시작",
+                                                                "dialogId": "startDialog"
+                                                            }
+                                                        ],
+                                                        "id": "default48"
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "name": "인증거절_",
+                                                "name": "인증_인증번호 재질의",
                                                 "input": [
                                                     {
-                                                        "text": {
-                                                            "raw": "아니다",
-                                                            "nlp": "아니다"
-                                                        }
-                                                    },
-                                                    {
-                                                        "text": {
-                                                            "raw": "2",
-                                                            "nlp": "2"
-                                                        }
+                                                        "if": "true"
                                                     }
                                                 ],
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
-                                                        "type": "call",
-                                                        "dialogName": "시작",
-                                                        "dialogId": "startDialog"
+                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+:\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 형식에 맞게 입력해주세요.\n시) 1234\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                                        "type": "repeat"
                                                     }
                                                 ],
-                                                "id": "default48"
+                                                "id": "default54"
                                             }
-                                        ]
+                                        ],
+                                        "task": {
+                                            "name": "sendIdentificationNum"
+                                        }
                                     },
                                     {
                                         "name": "생년월일 재질의",
@@ -187,7 +225,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -208,7 +246,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                        "text": "고객명 : +context.session.customerName+\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],

@@ -291,7 +291,6 @@ module.exports = function(bot)
                     context.session.customerMobile = word;
                 }
 
-
                 callback(matched);
             }
         });
@@ -2107,4 +2106,64 @@ module.exports = function(bot)
 			callback();
 		}
 	});
+
+	bot.setTask('sendIdentificationNum', 
+	{
+        action: function (dialog, context, callback)
+        {
+            var options = {};
+            options.url = 'http://sam.moneybrain.ai:3000/api';
+            options.json = {};
+            options.json.name = 'ZCS_CUSTOMER_INFO';
+            options.json.channel = context.channel.name;
+            options.json.param = [
+                { key: 'I_NAME', val: context.session.customerName },
+                { key: 'I_BIRTH', val: context.session.customerBirth },
+                { key: 'I_PHONE', val: context.session.customerMobile }
+            ];
+            options.json.isTable = true;
+            ////options.timeout = timeout;
+
+            request.post(options, function(err, response, body)
+            {
+                if(err)
+                {
+                    errorHandler(dialog, err);
+                }
+                else
+                {
+                    if(!body)
+                    {
+                        errorHandler(dialog, null);
+                        return callback();
+                    }
+
+                    if(body.E_RETCD == 'E')
+                    {
+                        body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
+                        errorHandler(dialog, body);
+                    }
+                    else if(body.E_RETCD == 'S')
+                    {
+                        context.session.identificationNum = body.E_CONF_NO;
+                    }else {
+                        errorHandler(dialog, body);
+                    }
+                }
+                callback();
+            });
+        }
+	});
+
+    bot.setType('checkIdentificationNum',
+    {
+        typeCheck: function (dialog, context, callback)
+        {
+            var matched = false;
+            if(dialog.userInput.text === context.session.identificationNum){
+                matched = true;
+            }
+            callback(matched);
+        }
+    });
 };
