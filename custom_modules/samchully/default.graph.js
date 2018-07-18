@@ -2694,7 +2694,7 @@ var commonDialogs = [
             }
         ],
         "task": {
-            "name": ""
+            "name": "notRetry"
         }
     },
     {
