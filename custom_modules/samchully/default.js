@@ -2182,8 +2182,8 @@ module.exports = function(bot)
 
             else{
                 if(context.channel.name == 'kakao'){
-                    if(dialog.output[0].text.indexOf('처음으로') === -1) {
-                        dialog.output[0].text = [dialog.output[0].text, '\n\n인증번호를 다시 받으시려면 \'ㅈ\' 을,\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
+                    if(dialog.options.outputText.indexOf('처음으로') === -1) {
+                        dialog.options.outputText = [dialog.options.outputText, '\n\n인증번호를 다시 받으시려면 \'ㅈ\' 을,이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
                         callback();
                     }else{
                         callback();
