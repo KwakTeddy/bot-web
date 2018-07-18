@@ -26,3 +26,17 @@ var ScriptsSchema = new Schema(
     });
 
 mongoose.model('Scripts', ScriptsSchema);
+
+
+var BizMsgSchema = new Schema({
+    index: { type: Number },
+    id: { type: String },
+    botId: { type: String },
+    name: { type: String },
+    input: Schema.Types.Mixed,
+    output: { type: String},
+    parentId: { type: String },
+    created: { type: Date, default: Date.now }
+});
+
+mongoose.model('BizMsgs', BizMsgSchema);

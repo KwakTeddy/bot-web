@@ -14,9 +14,11 @@
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' }, { update: { method: 'PUT' } });
 
+        var BizMsgsService = $resource('/api/:botId/biz-msg/:id', { botId: '@botId', id:'@id' });
+
         var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
 
-        var SentencesService = $resource('/api/:type/biz-sentences/:bizchatId', { type:'@type', bizchatId: '@bizchatId' });
+        var SentencesService = $resource('/api/:bizchatId/biz-sentences', { bizchatId: '@bizchatId' });
 
         var BizChat = {
             type : 'bizchat',
@@ -117,7 +119,7 @@
                 type : dia.type,
                 input : dia.input,
                 output : dia.output,
-                parentId : parentId ? parentId : null
+                parentId : parentId ? parentId : 'startDialog'
             }
         };
 
@@ -133,56 +135,78 @@
 
         };
 
+        BizChat.error = (err) => {
+            console.log(err)
+        };
+
         BizChat.onReady = (bizchatId, cb) => {
-            bizchatId = bizchatId ? bizchatId : 'survey';
+
             BizChat.bizchatId = bizchatId;
             // custom type list load
             _customTypeLoad();
             _customTaskLoad();
-            BizChat.getCustomSentence(BizChat.bizchatId,'global',function(data){
-                BizChat.dataset = data;
-            });
-            $rootScope.$broadcast('simulator-build');
+
+
+            // commonDialog load
+            SentencesService.get({bizchatId: BizChat.bizchatId},(res) => {
+                BizChat.commonDialogs = res.data.common;
+                BizChat.defaultSentences = res.data.defaultSentences;
+                BizChat.sentences = res.data.sentences;
+                // message list load
+                BizMsgsService.get({botId:chatbot.id},(res) => {
+                    BizChat.cardArr = res.data;
+                    // survey sentences load
+                    $rootScope.$broadcast('simulator-build');
+                    cb(BizChat);
+                },BizChat.error)
+            },BizChat.error);
+
+
+            //BizChat.getCustomSentence(BizChat.bizchatId,'global',function(data){
+            //    BizChat.dataset = data;
+            //});
+            //$rootScope.$broadcast('simulator-build');
             // load dialog list
-            GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
-                , (res) => {
-                    // it will be included dialogs, commonDialogs
-
-                    BizChat.commonDialogs = res.commonDialogs;
-                    BizChat.dialogs = res.dialogs;
-                    BizChat.cardArr = [];
-                    _dialogIndexing(BizChat.dialogs);
-
-                    // list of task names in the file
-                    TaskService.query({botId: chatbot.id}
-                        , (res) => {
-                            // load templates task list. attach the task name each dialog
-                            BizChat.tasks = res;
-
-                            TypeService.query({botId: chatbot.id}
-                                , (res) => {
-                                    BizChat.types = res;
-
-                                    SentencesService.get({type : BizChat.type, bizchatId: BizChat.bizchatId}
-                                        , (res) => {
-                                            BizChat.sentences = res.data;
-
-                                            cb(BizChat);
-
-                                        }, (err) => {
-                                            console.log(err);
-                                        })
-
-                                }, (err) => {
-                                    console.log(err);
-                                })
-
-                        }, (err) => {
-                            console.log(err);
-                        })
-                },(err) => {
-                    console.log(err);
-                })
+            //GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
+            //    , (res) => {
+            //        // it will be included dialogs, commonDialogs
+            //
+            //        BizChat.commonDialogs = res.commonDialogs;
+            //
+            //        BizChat.dialogs = res.dialogs;
+            //        BizChat.cardArr = [BizChat.commonDialogs[0]];
+            //        _dialogIndexing(BizChat.dialogs);
+            //
+            //        // list of task names in the file
+            //        TaskService.query({botId: chatbot.id}
+            //            , (res) => {
+            //                // load templates task list. attach the task name each dialog
+            //                BizChat.tasks = res;
+            //
+            //                TypeService.query({botId: chatbot.id}
+            //                    , (res) => {
+            //                        BizChat.types = res;
+            //
+            //                        SentencesService.get({type : BizChat.type, bizchatId: BizChat.bizchatId}
+            //                            , (res) => {
+            //                                BizChat.sentences = res.data;
+            //
+            //                                cb(BizChat);
+            //
+            //                            }, (err) => {
+            //                                console.log(err);
+            //                            })
+            //
+            //                    }, (err) => {
+            //                        console.log(err);
+            //                    })
+            //
+            //            }, (err) => {
+            //                console.log(err);
+            //            })
+            //    },(err) => {
+            //        console.log(err);
+            //    })
         };
 
         BizChat.makeCard = function(dialog){

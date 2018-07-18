@@ -10,7 +10,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     var chatbot = $cookies.getObject('chatbot');
     //
     //$scope.myBotAuth = chatbot.myBotAuth;
-
+    console.log(chatbot)
     // close header area
     angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
     angular.element('#middle-container').css("top", "0px");
@@ -39,10 +39,13 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         $scope.initialize = function(bizchatId)
         {
+            bizchatId = bizchatId ? bizchatId : 'survey';
+
             BizChatService.onReady(bizchatId, function(bizchat){
                 $scope.Data = bizchat;
                 bizchat_s = bizchat;
-                $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.dataset[0];
+
+                $scope.selectedMessageMenu = $scope.selectedMessageMenu? $scope.selectedMessageMenu :$scope.Data.defaultSentences[0];
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
@@ -77,11 +80,25 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             });
         };
 
-        $scope.getList = function()
+        $scope.getNextInputList = function(id)
         {
             //$scope.customs.push($scope.Data.bizchatId);
             // sample bot data
+            var lst = $scope.Data.cardArr.filter(function(e){return e.parentId == id});
+            return lst
         };
+
+
+        $scope.getValueString = function(val){
+            var str = '';
+            val.forEach(function(e){
+
+            })
+        }
+
+        $scope.test = function(){
+            console.log($scope.Data.cardArr)
+        }
 
 
         $scope.appendGrid = function(dialog){
@@ -118,14 +135,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         };
 
         $scope.cardUiSet = function(me){
-            console.log(me);
             me.is_open = me.is_open ? false : true;
-            var cardType = $scope.getCardType(me.type);
-            console.log(cardType)
 
-            var t = _templateSet(me,cardType);
-            angular.element('#'+me.id).append($compile(t)($scope));
-
+            console.log(me);
         }
 
     })();

@@ -2277,7 +2277,10 @@ var commonDialogs = [
                 ],
                 "image": {
                     "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-samchully/samchully-1518159068905-1.png"
-                }
+                },
+                "type": "call",
+                "dialogId": "default3",
+                "dialogName": "인증_고객명"
             }
         ],
         "task": {

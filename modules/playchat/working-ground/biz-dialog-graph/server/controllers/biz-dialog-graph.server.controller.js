@@ -13,6 +13,8 @@ var Sentences = mongoose.model('Sentences');
 
 var Scripts = mongoose.model('Scripts');
 
+var BizMsgs = mongoose.model('BizMsgs');
+
 exports.find = function (req, res)
 {
     var botsPath = path.resolve('./custom_modules/' + req.params.botId);
@@ -65,6 +67,7 @@ exports.getGraphFile = function(req, res)
         }
 
         var bot = {};
+
         bot.setDialogs = function(dialogs)
         {
             this.dialogs = dialogs;
@@ -114,7 +117,6 @@ exports.findFile = function(req, res)
 exports.saveFile = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.body.fileName);
-
 
     if(req.params.fileName && req.body.path)
     {
@@ -316,16 +318,20 @@ module.exports.getDefaultTemplate = function(req, res)
 };
 
 
+// common, templateId in (global, custom) 을 export.....
 exports.getSentences = function(req, res){
-    var type = req.params.type;
-    var query = { templateId: req.params.bizchatId, type:type, useYN: 1 };
+    var templateId = req.params.bizchatId;
+    var query = { templateId: {'$in':[templateId,'common']}, useYN: 1 };
     Sentences.find(query)
-        .sort('-created')
         .exec((err, sentences) => {
             if(err){
                 return res.status(400).send({ message: err.stack || err });
             }else{
-                res.jsonp({data:sentences});
+                var result = {};
+                result.common = sentences.filter((e)=>{return e.templateId == 'common'});
+                result.defaultSentences = sentences.filter((e) => {return e.templateId == templateId && e.type == 'global'});
+                result.sentences = sentences.filter((e) => {return e.templateId == templateId && e.type == 'custom'});
+                res.jsonp({data:result});
             }
         })
 
@@ -375,4 +381,55 @@ exports.editScript = function(req, res){
             res.jsonp(script)
         })
     })
+};
+
+exports.editBizMsg = function(req,res){
+    var botId = req.params.botId;
+    var id = req.params.id;
+    var param = req.body;
+    BizMsgs.findOne({'botId':botId,'id':id}).exec(function(err, bizMsg){
+        if(err){
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        if(!bizMsg){
+            bizMsg = new BizMsgs();
+            bizMsg.botId = botId;
+            bizMsg.id = id;
+        }
+        bizMsg.index = param.index;
+        bizMsg.input = param.input;
+        bizMsg.output = param.output;
+        bizMsg.children = param.children;
+
+        bizMsg.save(function(err){
+            if(err){
+                return res.status(400).send({ message: err.stack || err });
+            }
+        })
+    });
+};
+
+exports.getBizMsg = function(req, res){
+  var botId = req.params.botId;
+    BizMsgs.find({'botId':botId}).sort('index').exec(function(err,bizMsgs){
+        if(err) {
+            return res.status(400).send({ message: err.stack || err });
+        };
+        res.jsonp({data:bizMsgs});
+    })
+};
+
+// data =>
+_dialogFileUpdate = function(req, res){
+    var botId = req.params.botId;
+
+    BizMsgs.find({'botId':botId}).exec(function(err,bizMsgs){
+        if(err) {
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        var startDialog = bizMsgs.find((e) => {return e.id == 'startDialog'});
+    })
+
 };

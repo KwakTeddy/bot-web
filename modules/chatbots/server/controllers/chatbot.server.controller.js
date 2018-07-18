@@ -4,6 +4,8 @@ var fs = require('fs');
 var accepts = require('accepts');
 var async = require('async');
 
+// sample
+var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var S3 = require(path.resolve('./modules/common/s3.js'));
 
@@ -19,6 +21,8 @@ var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var Entity = mongoose.model('Entity');
 var EntityContent = mongoose.model('EntityContent');
+
+var BizMsgs = mongoose.model('BizMsgs');
 
 var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
 var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
@@ -121,7 +125,6 @@ exports.create = function(req, res)
 {
 
     var language = req.body.language;
-    console.log(language);
 
     ChatBot.findOne({ id: req.body.id }).exec(function(err, bot)
     {
@@ -147,7 +150,7 @@ exports.create = function(req, res)
             }
 
             var chatbot = new ChatBot(req.body);
-            if(!req.body.type.startsWith('sample') && req.body.type != 'blank')
+            if(!req.body.type.startsWith('sample') && req.body.type != 'blank' && req.body.type != 'survey')
             {
                 chatbot.templateId = req.body.type;
             }
@@ -299,8 +302,61 @@ exports.create = function(req, res)
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
                             }
-                        }
-                        else {
+                        }else if (type == 'survey'){
+                            var graphfilepath = __dirname + '/sample/survey/graph.' + language + '.js';
+                            var botjs = fs.readFileSync(__dirname + '/sample/survey/bot.js');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/survey/default.js');
+                            var graphjs = fs.readFileSync(graphfilepath);
+
+
+                            fs.stat(graphfilepath, function(err, stat)
+                            {
+                                if(err || !stat)
+                                {
+                                    return res.status(404).end();
+                                }
+                                console.log(stat);
+                                var bot = {};
+
+                                bot.setDialogs = function(dialogs)
+                                {
+                                    this.dialogs = dialogs;
+                                };
+
+                                bot.setCommonDialogs = function(commonDialogs)
+                                {
+                                    this.commonDialogs = commonDialogs;
+                                };
+
+                                try
+                                {
+                                    utils.requireNoCache(filepath, true)(bot);
+                                    console.log(bot)
+
+                                    //var arr = [{
+                                    //        botId: chatbot.id,
+                                    //        index: 0,
+                                    //        id : bot.commonDialogs,
+                                    //        name :
+                                    //    }];
+
+                                    console.log(bot.commonDialogs)
+
+                                    res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
+                                }
+                                catch(err)
+                                {
+                                    res.json({ });
+                                }
+                            });
+
+
+
+
+                            //console.log(graphData);
+                            //console.log(graphData.dialogs)
+                            //res.send(true);
+                        } else {
                             var bot_tpl_path = '';
 
                             try{
@@ -332,20 +388,20 @@ exports.create = function(req, res)
                             }
                         }
 
-                        var botAuth = new BotAuth();
-                        botAuth.bot = chatbot._id;
-                        botAuth.user = req.user;
-                        botAuth.giver = req.user;
-                        botAuth.edit = true;
-
-                        botAuth.save(function (err) {
-                            if (err) {
-                                console.error(err);
-                                return res.status(400).send({message: err.stack || err});
-                            }
-
-                            res.jsonp(chatbot);
-                        });
+                        //var botAuth = new BotAuth();
+                        //botAuth.bot = chatbot._id;
+                        //botAuth.user = req.user;
+                        //botAuth.giver = req.user;
+                        //botAuth.edit = true;
+                        //
+                        //botAuth.save(function (err) {
+                        //    if (err) {
+                        //        console.error(err);
+                        //        return res.status(400).send({message: err.stack || err});
+                        //    }
+                        //
+                        //    res.jsonp(chatbot);
+                        //});
                     }
                 });
             });

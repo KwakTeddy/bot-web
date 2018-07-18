@@ -126,8 +126,6 @@ exports.findFile = function(req, res)
 
 exports.saveFile = function(req, res)
 {
-    console.log('save file ===============================>>>>>> ');
-    console.log(req.body);
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.body.fileName);
     if(req.body.templateId)
     {

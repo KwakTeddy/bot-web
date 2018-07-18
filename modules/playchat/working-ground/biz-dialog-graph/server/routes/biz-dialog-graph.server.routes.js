@@ -7,7 +7,10 @@ module.exports = function(app)
     app.get('/api/:botId/biz-dialog-graphs', dialoggraphs.find);
     app.get('/api/:botId/biz-graphfiles/:fileName', dialoggraphs.getGraphFile);
 
-    app.get('/api/:type/biz-sentences/:bizchatId', dialoggraphs.getSentences);
+    app.get('/api/:botId/biz-msg',dialoggraphs.getBizMsg);
+    app.post('/api/:botId/biz-msg/:id',dialoggraphs.editBizMsg);
+
+    app.get('/api/:bizchatId/biz-sentences', dialoggraphs.getSentences);
 
     app.post('/api/script/:type/:name', dialoggraphs.editScript);
     app.get('/api/script/:type', dialoggraphs.getScript);
