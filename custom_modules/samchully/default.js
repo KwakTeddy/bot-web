@@ -2113,7 +2113,7 @@ module.exports = function(bot)
             var word = dialog.userInput.text;
             var regexp = new RegExp("[0-9]{6}", "g");
 
-            if (regexp.exec(word) || word === 'ㅈ' || word === '재발송') {
+            if (regexp.exec(word) || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
