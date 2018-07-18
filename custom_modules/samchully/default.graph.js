@@ -231,7 +231,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 형식에 맞게 입력해주세요.\n시) 1234",
+                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 형식에 맞게 입력해주세요.\n시) 1234\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                                         "type": "repeat"
                                                     }
                                                 ],
@@ -252,7 +252,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930",
+                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -273,7 +273,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.session.customerName+\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678",
+                                        "text": "고객명 : +context.session.customerName+\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -294,7 +294,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)",
+                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                 "type": "repeat"
                             }
                         ],
