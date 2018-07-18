@@ -2200,8 +2200,10 @@ module.exports = function(bot)
 		    // console.log(context.session.history[2].id);
 		    // console.log(context.session.history[3].id);
 		    // console.log(context.session.history[4].id);
-            if(context.session.history[3].id === 'reTry') {
-                context.session.history.splice(0, 1);
+            if(context.session.history[2]) {
+                if (context.session.history[2].id === 'reTry') {
+                    context.session.history.splice(0, 2);
+                }
             }
 			callback();
 		}
