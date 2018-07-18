@@ -2184,11 +2184,14 @@ module.exports = function(bot)
                 if(context.channel.name == 'kakao'){
                     if(dialog.output[0].text.indexOf('처음으로') === -1) {
                         dialog.output[0].text = [dialog.output[0].text, '\n\n인증번호를 다시 받으시려면 \'ㅈ\' 을,\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
+                        callback();
+                    }else{
+                        callback();
                     }
                 }else{
                     dialog.output[0].buttons = [{text: '재발송'},{text: '이전'}, {text: '처음'}];
+                    callback();
                 }
-                callback();
             }
         }
 	});
