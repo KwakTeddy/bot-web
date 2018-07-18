@@ -2143,6 +2143,7 @@ module.exports = function(bot)
                         }
                         else if (body.E_RETCD == 'S') {
                             context.session.identificationNum = '' + body.E_CONF_NO;
+                            console.log('인증번호: ' + context.session.identificationNum);
                             context.session.customerList = body.data.E_TAB;
 
                             for(var i=0; i<context.session.customerList.length; i++)
