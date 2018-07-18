@@ -2191,4 +2191,15 @@ module.exports = function(bot)
             }
         }
     });
+
+	bot.setTask('notRetry', 
+	{
+		action: function (dialog, context, callback)
+		{
+            if(context.session.history[2].id === 'reTry') {
+                context.session.history.splice(0, 1);
+            }
+			callback();
+		}
+	});
 };
