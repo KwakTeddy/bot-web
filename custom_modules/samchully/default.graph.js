@@ -252,7 +252,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
+                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930",
                                                 "type": "repeat"
                                             }
                                         ],
