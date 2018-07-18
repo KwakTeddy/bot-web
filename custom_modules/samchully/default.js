@@ -2136,7 +2136,7 @@ module.exports = function(bot)
                             errorHandler(dialog, null);
                             return callback();
                         }
-
+                        console.log('channel: ' + context.channel.name);
                         if (body.E_RETCD == 'E') {
                             body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
                             errorHandler(dialog, body);
