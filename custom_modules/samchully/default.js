@@ -2161,13 +2161,6 @@ module.exports = function(bot)
                             errorHandler(dialog, body);
                         }
                     }
-                    if (context.channel.name == 'kakao') {
-                        if(dialog.output[0].text.indexOf('처음으로') === -1) {
-                            dialog.output[0].text = [dialog.output[0].text, '\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
-                        }
-                    } else {
-                        dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
-                    }
                     callback();
                 });
             }
