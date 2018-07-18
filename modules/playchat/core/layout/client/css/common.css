@@ -55,7 +55,7 @@ input[type="checkbox"],input[type="radio"] { padding:0; vertical-align:middle; m
 input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:8px 18px 8px 8px; background: #fff;}
 input[type="button"] ,input[type="submit"] { cursor:pointer; }
 
-textarea { font-size: 12px; border:1px solid #e5e5e5; padding:5px; }
+textarea { font-size: 12px; border:1px solid #d0d2d3; padding:5px; }
 
 input {
     border-style: none;
@@ -276,17 +276,17 @@ input.search[type="submit"]:hover {
     padding-right: 8px;
 }
 .btn02{
-  width: 90px;
-  height: 28px;
-  text-align: center;
-  background: #038eda;
-  cursor: pointer;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 4px;
-  padding-top: 6px;
-  margin-top: -40px;
-	line-height: 20px;
+    width: 90px;
+    height: 30px;
+    text-align: center;
+    background: #038eda;
+    cursor: pointer;
+    /*-webkit-border-radius: 6px;*/
+    /*-moz-border-radius: 6px;*/
+    /*border-radius: 4px;*/
+    padding-top: 6px;
+    margin-top: -40px;
+    line-height: 20px;
 }
 .btn02 >a{
     color: #fff;

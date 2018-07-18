@@ -264,9 +264,9 @@
 {
     display: inline-block;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
     cursor:pointer;
-    padding: 9px 10px;
+    padding: 10px;
     text-align: center;
     vertical-align: middle;
 }
@@ -279,7 +279,6 @@
     line-height: 20px;
     padding: 0;
     text-transform: none;
-
     text-align: center;
     margin: 30px 0;
 }
