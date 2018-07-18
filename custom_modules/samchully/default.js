@@ -2116,8 +2116,15 @@ module.exports = function(bot)
         action: function (dialog, context, callback) {
             var word = dialog.userInput.text;
             var regexp = new RegExp("[0-9]{6}", "g");
+            var isFirst = false;
+            if(regexp.exec(word) ){
+                if(word === context.session.customerBirth){
+                    isFirst = true;
+                }
+            }
 
-            if (regexp.exec(word) || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
+            if (isFirst || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
+
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
@@ -2157,6 +2164,14 @@ module.exports = function(bot)
                                     context.session.customerList[i].VKONT = context.session.customerList[i].VKONT.substring(3);
                                 }
                             }
+                            if (context.channel.name == 'kakao') {
+                                if(dialog.output[0].text.indexOf('처음으로') === -1) {
+                                    dialog.output[0].text = [dialog.output[0].text, '\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
+                                }
+                            } else {
+                                dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+                            }
+
                         } else {
                             errorHandler(dialog, body);
                         }
@@ -2164,6 +2179,7 @@ module.exports = function(bot)
                     callback();
                 });
             }
+
             else{
                 if(context.channel.name == 'kakao'){
                     if(dialog.output[0].text.indexOf('처음으로') === -1) {
@@ -2200,8 +2216,8 @@ module.exports = function(bot)
 		    console.log(JSON.stringify(context.session.history));
 		    // console.log(context.session.history[3].id);
 		    // console.log(context.session.history[4].id);
-            if(context.session.history[3]) {
-                if (context.session.history[3].id === 'reTry') {
+            if(context.session.history[2]) {
+                if (context.session.history[2].id === 'reTry') {
                     context.session.history.splice(0, 2);
                 }
             }
