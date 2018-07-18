@@ -31,6 +31,7 @@ var BotSchema = new Schema(
     learning: { type: Boolean, default: false },
     templateId: { type: Schema.ObjectId, ref: 'Template' },
     templateDataId: { type: Schema.ObjectId, ref: 'TemplateData' },
+    type: { type:String },
     topicKeywords: Schema.Types.Mixed,
     user: { type: Schema.ObjectId, ref: 'User' },
     created: { type: Date, default: Date.now }

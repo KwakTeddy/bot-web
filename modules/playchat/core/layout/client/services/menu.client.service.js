@@ -10,6 +10,8 @@
 
         var instance = undefined;
 
+        var chatbot = $cookies.getObject('chatbot');
+
         var Menu = function()
         {
             // this.setting = { name: 'Setting', icon: 'setting.png' };
@@ -24,6 +26,17 @@
                 { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
                 { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
             ] };
+
+            if(chatbot.type && chatbot.type === 'survey'){
+                this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                    { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+                ] };
+            }else{
+                this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                    { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                    { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
+                ] };
+            }
 
             this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
                 { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },

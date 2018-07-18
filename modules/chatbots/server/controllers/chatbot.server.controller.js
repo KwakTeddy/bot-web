@@ -313,9 +313,24 @@ exports.create = function(req, res)
                             {
                                 if(err || !stat)
                                 {
-                                    return res.status(404).end();
+                                    console.error(err);
                                 }
-                                console.log(stat);
+
+                                var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                                var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                                var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+                                fs.writeFileSync(dir + '/default.graph.js', graphData);
+                                fs.writeFileSync(dir + '/default.js', defaultData);
+                                fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+
+                                if (process.env.NODE_ENV == 'production') {
+                                    S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                    S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                    S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                                }
+
                                 var bot = {};
 
                                 bot.setDialogs = function(dialogs)
@@ -330,32 +345,26 @@ exports.create = function(req, res)
 
                                 try
                                 {
-                                    utils.requireNoCache(filepath, true)(bot);
-                                    console.log(bot)
+                                    utils.requireNoCache(graphfilepath, true)(bot);
+                                    var startCard = bot.commonDialogs.find((e)=>{return e.id === 'startDialog'});
+                                    var index = 0;
+                                    var bizMsg = new BizMsgs({
+                                        botId: chatbot.id,
+                                        index: index,
+                                        id : startCard.id,
+                                        name :startCard.name,
+                                        message: startCard.output[0].text
+                                    });
 
-                                    //var arr = [{
-                                    //        botId: chatbot.id,
-                                    //        index: 0,
-                                    //        id : bot.commonDialogs,
-                                    //        name :
-                                    //    }];
-
-                                    console.log(bot.commonDialogs)
-
-                                    res.json({ dialogs: bot.dialogs, commonDialogs: bot.commonDialogs });
+                                    bizMsg.save((err) => {
+                                        if(err) console.error(err);
+                                    });
                                 }
                                 catch(err)
                                 {
-                                    res.json({ });
+                                    console.error(err);
                                 }
                             });
-
-
-
-
-                            //console.log(graphData);
-                            //console.log(graphData.dialogs)
-                            //res.send(true);
                         } else {
                             var bot_tpl_path = '';
 
@@ -388,20 +397,20 @@ exports.create = function(req, res)
                             }
                         }
 
-                        //var botAuth = new BotAuth();
-                        //botAuth.bot = chatbot._id;
-                        //botAuth.user = req.user;
-                        //botAuth.giver = req.user;
-                        //botAuth.edit = true;
-                        //
-                        //botAuth.save(function (err) {
-                        //    if (err) {
-                        //        console.error(err);
-                        //        return res.status(400).send({message: err.stack || err});
-                        //    }
-                        //
-                        //    res.jsonp(chatbot);
-                        //});
+                        var botAuth = new BotAuth();
+                        botAuth.bot = chatbot._id;
+                        botAuth.user = req.user;
+                        botAuth.giver = req.user;
+                        botAuth.edit = true;
+
+                        botAuth.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).send({message: err.stack || err});
+                            }
+
+                            res.jsonp(chatbot);
+                        });
                     }
                 });
             });
@@ -688,21 +697,25 @@ exports.duplicate = function(req, res)
 
 exports.delete = function(req, res)
 {
-    ChatBot.remove({ _id: req.params.botId }).exec(function(err)
-    {
-        if(err)
+    BizMsgs.remove({botId:req.query.botDisplayId}).exec(function(err){
+        if(err) console.log(err);
+        ChatBot.remove({ _id: req.params.botId }).exec(function(err)
         {
-            console.error(err);
-            return res.status(400).send({ message: err.stack || err });
-        }
-        else
-        {
-            var rimraf = require('rimraf');
-            rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
+            if(err)
+            {
+                console.error(err);
+                return res.status(400).send({ message: err.stack || err });
+            }
+            else
+            {
+                var rimraf = require('rimraf');
+                rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
 
-            deleteBotObjectFromS3(req.params.botId);
-        }
+                deleteBotObjectFromS3(req.params.botId);
+            }
+        });
     });
+
 };
 
 exports.share = function(req, res)

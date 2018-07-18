@@ -6,6 +6,7 @@ var SentencesSchema = new Schema(
         templateId : {type : String},
         type : {type: String},
         name: { type: String },
+        message: { type: String},
         input: Schema.Types.Mixed,
         output: Schema.Types.Mixed,
         children: Schema.Types.Mixed,
@@ -33,8 +34,8 @@ var BizMsgSchema = new Schema({
     id: { type: String },
     botId: { type: String },
     name: { type: String },
+    message: { type: String},
     input: Schema.Types.Mixed,
-    output: { type: String},
     parentId: { type: String },
     created: { type: Date, default: Date.now }
 });

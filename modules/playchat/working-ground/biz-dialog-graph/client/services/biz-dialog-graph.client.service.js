@@ -155,8 +155,6 @@
                 // message list load
                 BizMsgsService.get({botId:chatbot.id},(res) => {
                     BizChat.cardArr = res.data;
-                    // survey sentences load
-                    $rootScope.$broadcast('simulator-build');
                     cb(BizChat);
                 },BizChat.error)
             },BizChat.error);
