@@ -2202,7 +2202,7 @@ module.exports = function(bot)
 		    // console.log(context.session.history[4].id);
             if(context.session.history[3]) {
                 if (context.session.history[3].id === 'reTry') {
-                    context.session.history.splice(0, 1);
+                    context.session.history.splice(0, 2);
                 }
             }
 			callback();
