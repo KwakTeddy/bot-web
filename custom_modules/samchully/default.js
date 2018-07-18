@@ -2196,7 +2196,7 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-            if(context.session.history[2].id === 'reTry') {
+            if(context.session.history[3].id === 'reTry') {
                 context.session.history.splice(0, 1);
             }
 			callback();
