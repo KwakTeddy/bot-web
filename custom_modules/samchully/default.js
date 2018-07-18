@@ -2215,10 +2215,6 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
-		    console.log('history: ');
-		    console.log(JSON.stringify(context.session.history));
-		    // console.log(context.session.history[3].id);
-		    // console.log(context.session.history[4].id);
             if(context.session.history[1]) {
                 if (context.session.history[1].id === 'reTry') {
                     context.session.history.splice(0, 1);
