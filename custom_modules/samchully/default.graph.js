@@ -67,7 +67,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678"
+                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678\n\n*본 서비스는 삼천리에 등록하신 휴대폰으로만 이용하실 수 있습니다. 핸드폰번호 미등록 또는 변경시에는 고객센터로 문의하여 등록 후 이용해주세요."
                             }
                         ],
                         "id": "default49",
@@ -84,14 +84,14 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n주민등록번호 앞 6자리를 입력해주세요.\n예시) 900930",
+                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n생년월일 앞 6자리를 입력해주세요.\n예) 900930",
                                         "if": ""
                                     }
                                 ],
                                 "id": "default46",
                                 "children": [
                                     {
-                                        "name": "고객 검색",
+                                        "name": "인증_인증번호",
                                         "input": [
                                             {
                                                 "types": [
@@ -102,80 +102,145 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
-                                                "buttons": [
-                                                    {
-                                                        "text": "네"
-                                                    },
-                                                    {
-                                                        "text": "아니요"
-                                                    }
-                                                ]
+                                                "text": "받으신 인증번호를 입력해주세요.\n예) 1234"
                                             }
                                         ],
-                                        "id": "default50",
-                                        "task": {
-                                            "name": "searchSamchullyUser"
-                                        },
+                                        "id": "default7",
                                         "children": [
                                             {
-                                                "name": "인증동의_",
+                                                "name": "고객 검색",
                                                 "input": [
                                                     {
-                                                        "text": {
-                                                            "raw": "네",
-                                                            "nlp": "네"
-                                                        }
-                                                    },
-                                                    {
-                                                        "text": {
-                                                            "raw": "1",
-                                                            "nlp": "1"
-                                                        }
+                                                        "types": [
+                                                            "checkIdentificationNum"
+                                                        ]
                                                     }
                                                 ],
                                                 "output": [
                                                     {
-                                                        "kind": "Action",
-                                                        "text": "인증되셨습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
-                                                        "type": "call",
-                                                        "dialogName": "시작",
-                                                        "dialogId": "startDialog"
+                                                        "kind": "Content",
+                                                        "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
+                                                        "buttons": [
+                                                            {
+                                                                "text": "네"
+                                                            },
+                                                            {
+                                                                "text": "아니요"
+                                                            }
+                                                        ]
                                                     }
                                                 ],
+                                                "id": "default50",
                                                 "task": {
-                                                    "name": "authConfirm"
+                                                    "name": ""
                                                 },
-                                                "id": "default47"
+                                                "children": [
+                                                    {
+                                                        "name": "인증동의_",
+                                                        "input": [
+                                                            {
+                                                                "text": {
+                                                                    "raw": "네",
+                                                                    "nlp": "네"
+                                                                }
+                                                            },
+                                                            {
+                                                                "text": {
+                                                                    "raw": "1",
+                                                                    "nlp": "1"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Action",
+                                                                "text": "인증되셨습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
+                                                                "type": "call",
+                                                                "dialogName": "시작",
+                                                                "dialogId": "startDialog"
+                                                            }
+                                                        ],
+                                                        "task": {
+                                                            "name": "authConfirm"
+                                                        },
+                                                        "id": "default47"
+                                                    },
+                                                    {
+                                                        "name": "인증거절_",
+                                                        "input": [
+                                                            {
+                                                                "text": {
+                                                                    "raw": "아니다",
+                                                                    "nlp": "아니다"
+                                                                }
+                                                            },
+                                                            {
+                                                                "text": {
+                                                                    "raw": "2",
+                                                                    "nlp": "2"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "output": [
+                                                            {
+                                                                "kind": "Action",
+                                                                "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
+                                                                "type": "call",
+                                                                "dialogName": "시작",
+                                                                "dialogId": "startDialog"
+                                                            }
+                                                        ],
+                                                        "id": "default48"
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "name": "인증거절_",
+                                                "name": "인증_인증번호 재발송",
                                                 "input": [
                                                     {
                                                         "text": {
-                                                            "raw": "아니다",
-                                                            "nlp": "아니다"
+                                                            "raw": "ㅈ",
+                                                            "nlp": "ㅈ"
                                                         }
                                                     },
                                                     {
                                                         "text": {
-                                                            "raw": "2",
-                                                            "nlp": "2"
+                                                            "raw": "재발송",
+                                                            "nlp": "재 발송"
                                                         }
                                                     }
                                                 ],
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "인증을 거절하셨습니다. 처음 단계로 이동했습니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
+                                                        "text": "",
                                                         "type": "call",
-                                                        "dialogName": "시작",
-                                                        "dialogId": "startDialog"
+                                                        "dialogId": "default7",
+                                                        "dialogName": "인증_인증번호"
                                                     }
                                                 ],
-                                                "id": "default48"
+                                                "id": "default55"
+                                            },
+                                            {
+                                                "name": "인증_인증번호 재질의",
+                                                "input": [
+                                                    {
+                                                        "if": "true"
+                                                    }
+                                                ],
+                                                "output": [
+                                                    {
+                                                        "kind": "Action",
+                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 형식에 맞게 입력해주세요.\n시) 1234\n\n인증번호를 다시 받으시려면 'ㅈ' 을, 이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
+                                                        "type": "repeat"
+                                                    }
+                                                ],
+                                                "id": "default54"
                                             }
-                                        ]
+                                        ],
+                                        "task": {
+                                            "name": "sendIdentificationNum"
+                                        }
                                     },
                                     {
                                         "name": "생년월일 재질의",
@@ -187,7 +252,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다.\n주민등록번호 앞 6자리 형식에 맞게 입력해주세요.\n예시) 900930\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -208,7 +273,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.session.customerName+\n\n(다시 입력하시려면 '이전'이라고 입력해주세요.)\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                        "text": "고객명 : +context.session.customerName+\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -229,7 +294,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Action",
-                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요.",
+                                "text": "잘못 입력하셨습니다.\n한글 이름 형식에 맞게 다시 입력해주세요.\n(한글로된 2-4글자입니다.)\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                 "type": "repeat"
                             }
                         ],
@@ -277,230 +342,23 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "이사 관련 문의를 처리합니다.\n메뉴를 선택해주세요.",
+                "text": "이사(전입/전출) 및 가스렌지 연결/철거 신청, 예약내용 확인/변경, 연결비 안내를 이용하실 수\n있습니다.\n\n자세히 보기를 클릭해주세요.",
                 "buttons": [
                     {
-                        "url": "",
-                        "text": "1. 이사 들어오실 때"
+                        "url": "http://59.6.157.142",
+                        "text": "자세히보기"
                     },
                     {
-                        "url": "",
-                        "text": "2. 이사 나가실 때"
-                    },
-                    {
-                        "url": "",
-                        "text": "3. AS (렌지연결 등)"
-                    },
-                    {
-                        "url": "",
-                        "text": "4. 예약 확인/변경"
-                    },
-                    {
-                        "url": "",
-                        "text": "5. 연결비 안내"
-                    },
-                    {
-                        "url": "",
                         "text": "이전"
                     },
                     {
-                        "url": "",
                         "text": "처음"
                     }
                 ]
             }
         ],
         "id": "default5",
-        "children": [
-            {
-                "name": "이사 들어오실 때",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "1. 이사 들어오실 때",
-                            "nlp": "1 . 이사 들어오다 때"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "1",
-                            "nlp": "1"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/MoveIn",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default54"
-            },
-            {
-                "name": "이사 나가실 때",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "2. 이사 나가실 때",
-                            "nlp": "2 . 이사 나가다 때"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "2",
-                            "nlp": "2"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "text": "이전"
-                            },
-                            {
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/MoveOut",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default55"
-            },
-            {
-                "name": "AS (렌지연결 등)",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "3. AS (렌지연결 등)",
-                            "nlp": "3 . AS ( 렌 지 연결 등 )"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "3",
-                            "nlp": "3"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/AfterService",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default56"
-            },
-            {
-                "name": "예약 확인/변경",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "4. 예약 확인/변경",
-                            "nlp": "4 . 예약 확인 / 변경"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "4",
-                            "nlp": "4"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://59.6.157.142/Simple/CheckService",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default58"
-            },
-            {
-                "name": "연결비 안내",
-                "input": [
-                    {
-                        "text": {
-                            "raw": "5. 연결비 안내",
-                            "nlp": "5 . 연결 비 안내"
-                        }
-                    },
-                    {
-                        "text": {
-                            "raw": "5",
-                            "nlp": "5"
-                        }
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Content",
-                        "text": "자세히 보기를 클릭해주세요.",
-                        "buttons": [
-                            {
-                                "url": "",
-                                "text": "이전"
-                            },
-                            {
-                                "url": "",
-                                "text": "처음"
-                            },
-                            {
-                                "url": "http://www.samchully.co.kr/customer/gas/info/usage/popup/fee.do",
-                                "text": "자세히보기"
-                            }
-                        ]
-                    }
-                ],
-                "id": "default64"
-            }
-        ]
+        "children": []
     },
     {
         "name": "요금 조회 및 납부",
@@ -642,7 +500,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+ 개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n상세내용을 확인할 기간을 선택해주세요.",
+                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+개월)\n\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n\n#\n월별 상세내용을 확인할 수 있습니다.",
                                         "if": "context.session.selectedMonth === 3 || context.session.selectedMonth === 6 || context.session.selectedMonth ===12"
                                     },
                                     {
@@ -988,7 +846,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월의 번호를 띄어쓰기로 구분하여 입력해주세요.\n예시  : 1 2"
+                                        "text": "[편의점 (QR코드 결제)]\n가까운 편의점에서 QR코드를 스캔하여 도시가스 요금을 결제하는 시스템입니다.\n\n\n#context.session.nonpaymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n고지금액 : +BETRWG+ 원\n미납금액 : +BETRWP+ 원\n납기일자 : +FAEDN+\n\n#납부하실 고지년월 상단에 있는 번호를 띄어쓰기로 구분하여 입력해주세요.\n예) 1개월분일 경우 1\n       2개월분일 경우 1 2"
                                     }
                                 ],
                                 "id": "default23",
@@ -1072,7 +930,10 @@ var dialogs = [
                                                 "type": "repeat"
                                             }
                                         ],
-                                        "id": "default39"
+                                        "id": "default39",
+                                        "task": {
+                                            "name": "monthSelectError"
+                                        }
                                     }
                                 ],
                                 "task": {
@@ -1408,7 +1269,10 @@ var dialogs = [
                                                         ]
                                                     }
                                                 ],
-                                                "id": "default80"
+                                                "id": "default80",
+                                                "task": {
+                                                    "name": "setNoticeMethod_kkoalarm"
+                                                }
                                             }
                                         ]
                                     },
@@ -1467,11 +1331,8 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "LMS 고지 신청을 계속 진행하시겠습니까?",
+                                                "text": "현재 고지방법이 고객센터를 통한 종이고지서 송달로 되어 있습니다. 전자고지를 원하실 경우 신청 메뉴를 눌러주세요.",
                                                 "buttons": [
-                                                    {
-                                                        "text": "네"
-                                                    },
                                                     {
                                                         "text": "이전"
                                                     },
@@ -1485,38 +1346,7 @@ var dialogs = [
                                             "name": ""
                                         },
                                         "id": "default33",
-                                        "children": [
-                                            {
-                                                "name": "LMS 고지 원료",
-                                                "input": [
-                                                    {
-                                                        "text": {
-                                                            "raw": "네",
-                                                            "nlp": "네"
-                                                        }
-                                                    }
-                                                ],
-                                                "output": [
-                                                    {
-                                                        "kind": "Content",
-                                                        "text": "정상적으로 처리되었습니다.",
-                                                        "buttons": [
-                                                            {
-                                                                "text": "이전"
-                                                            },
-                                                            {
-                                                                "text": "처음"
-                                                            }
-                                                        ]
-                                                    }
-                                                ],
-                                                "task": {
-                                                    "name": "setNoticeMethod_lms"
-                                                },
-                                                "id": "default7",
-                                                "children": []
-                                            }
-                                        ]
+                                        "children": []
                                     },
                                     {
                                         "name": "이메일",
@@ -1537,7 +1367,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으실 이메일 주소를 입력해주세요.\n\n이전으로 돌아가시려면 '이전' 을 입력해주세요.\n처음으로 돌아가시려면 '처음' 을 입력해주세요."
+                                                "text": "받으실 이메일 주소를 입력해주세요.\n\n이전으로 돌아가시려면 'ㄱ' 을 입력해주세요.\n처음으로 돌아가시려면 'ㄴ' 을 입력해주세요."
                                             }
                                         ],
                                         "task": {
@@ -1614,7 +1444,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "LMS 고지 해지를 계속 진행하시겠습니까?",
+                                        "text": "해지를 계속 진행하시겠습니까?",
                                         "buttons": [
                                             {
                                                 "text": "네"
@@ -1730,7 +1560,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "금융결제원의 정책에따라 자동이체 동의자료 녹취가 필요합니다. 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.”\n\n고객센터(1544-3002)"
+                                        "text": "금융결제원의 정책에따라 자동이체 동의자료 녹취가 필요합니다. 은행/카드자동이체를 원하시는 고객님께서는 관할 고객센터로 연락주시기 바랍니다.\n\n고객센터(1544-3002)"
                                     }
                                 ],
                                 "id": "default53",
