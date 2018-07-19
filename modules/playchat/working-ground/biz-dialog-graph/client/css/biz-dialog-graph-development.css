@@ -97,6 +97,7 @@ select.custom-select option{
 .ml3{
     margin-left:3%;
 }
+/*select box*/
 .bot-messages-list select.message-inselect{
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -113,6 +114,26 @@ select.message-inselect option{
     background: transparent;
     color:#424242;
 }
+
+select.message-inselect02{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down.png) no-repeat 97% 50%;
+    cursor: pointer;
+    border: 1px solid #e1e1e1;
+    padding: 2% 7% 2% 2%;
+    width: 77%;
+    margin-bottom: 2%;
+}
+select.message-inselect02::-ms-expand{
+    display: none;
+}
+select.message-inselect02 option{
+    background: transparent;
+    color:#424242;
+}
+
 .mobile-view-practice .header p{
     text-align: center;
     margin-top: 5%;
@@ -154,9 +175,9 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 }
 .bot-messages-list .deleteBtn{
     border: 1px solid #d8d8d8;
-    padding: 8px 0;
+    padding: 8px 26px;
     margin-top: 6px;
-    width: 80px;
+    /*width: 80px;*/
     text-align: center;
     display: inline-block;
 }
@@ -179,11 +200,12 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 }
 
 .addBtn{
-    padding: 8px 0;
+    /*padding: 8px 0;*/
+    /* width: 80px; */
+    padding: 8px 26px;
     margin-top: 6px;
-    width: 80px;
     text-align: center;
-    border:1px solid #038eda;
+    border: 1px solid #038eda;
     background: #fff;
     color: #038eda !important;
     display: inline-block;
@@ -192,6 +214,17 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     background: #f4fcff;
     transition: all 0.3s;
 }
+.btn-style03{
+    /*padding: 8px 0;*/
+    /* width: 80px; */
+    padding: 9px 26px;
+    margin-top: 6px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+}
+
 .bot-messages-list .add-menu{
     padding: 3%;
     margin: 0 auto;
@@ -404,6 +437,7 @@ input.type03{
     text-align: right;
     display: block;
 }
+
 .deleteBtn02 {
     border: 1px solid #d8d8d8;
     padding: 8px 0;
@@ -411,6 +445,7 @@ input.type03{
     float: right;
     text-align: center;
 }
+
 @media screen and (max-width: 1450px)
 {
     .graph-controller

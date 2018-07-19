@@ -50,8 +50,8 @@ caption
     <div class="working-ground-bizchat">
         <select ng-model="selectedBot" ng-change="bizbotSelectChange(selectedBot)" ng-init="selectedBot = bots[0]" class="custom-select"  ng-options="x.name for x in bots"></select>
         <!--<a href="" class="icon-area" style="margin-left: 2%;"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/copy.png"></a>-->
-        <a class="copyBtn" href="" style="margin-left: 2%;margin-right:5px;">복사하기</a>
-        <a class="addBtn" href="">저장하기</a>
+        <a class="copyBtn" href="" style="margin-left: 2%;margin-right:5px;width: 104px;">복사하기</a>
+        <a class="btn-style03" href="">저장하기</a>
         <!--<a href="" class="icon-area"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/save.png"></a>-->
 
         <div class="subtitle">
@@ -228,7 +228,49 @@ caption
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요."></textarea>
                             <a class="deleteBtn" href="">삭제</a>
-                            <a class="addBtn" href="">저장</a>
+                            <a class="addBtn flR" href="">메세지 추가</a>
+                            <!--<a class="addBtn" href="">저장</a>-->
+                        </a>
+                    </li>
+                    <li class="select">
+                        <a href=""><span class="message-title02">02. 메시지</span>
+                            <select class="message-inselect ml3">
+                                <option selected>텍스트 - 단답형/일반</option>
+                                <option>텍스트 - 선택형</option>
+                            </select>
+                            <a href=""><span class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span></a>
+                            <p class="cd">내용입력</p>
+                            <textarea placeholder="내용을 입력해주세요."></textarea>
+                            <a class="deleteBtn" href="">삭제</a>
+                            <div class="detail-select" style="margin-bottom:0;">
+                                <label class="ml3">연결할 메시지</label>
+                                <select class="message-inselect02 ml3">
+                                    <option selected>03. 메세지</option>
+                                    <option>03. 메세지</option>
+                                    <option>03. 메세지</option>
+                                    <option>03. 메세지</option>
+                                    <option>03. 메세지</option>
+                                    <option>03. 메세지</option>
+                                </select>
+                            </div>
+                            <div class="reorder">
+                                <a href="" class=""><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus.png"></a>
+                                <a href="" class=""><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus.png"></a>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="select">
+                        <a href=""><span class="message-title02">02. 메시지</span>
+                            <select class="message-inselect ml3">
+                                <option selected>텍스트 - 단답형/일반</option>
+                                <option>텍스트 - 선택형</option>
+                            </select>
+                            <a href=""><span class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span></a>
+                            <p class="cd">내용입력</p>
+                            <textarea placeholder="내용을 입력해주세요."></textarea>
+                            <a class="deleteBtn" href="">삭제</a>
+                            <a class="addBtn flR" href="">복사</a>
+                            <a class="btn-style03 flR mr5" href="">저장</a>
                         </a>
                     </li>
                     <li class="select">
@@ -257,7 +299,7 @@ caption
                                 </div>
                             </div>
                             <a class="deleteBtn reorder" href="">삭제</a>
-                            <a class="addBtn" href="">저장</a>
+                            <!--<a class="addBtn" href="">저장</a>-->
                         </a>
                     </li>
                     <li class="new-select">
