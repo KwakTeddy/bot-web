@@ -102,7 +102,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Content",
-                                                "text": "받으신 인증번호를 입력해주세요.\n예) 1234"
+                                                "text": "받은신 인증번호를 입력해주세요.\n예) 1234 or 123"
                                             }
                                         ],
                                         "id": "default7",
@@ -231,7 +231,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 형식에 맞게 입력해주세요.\n시) 1234",
+                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 혹은 3자리 형식에 맞게 입력해주세요.\n시) 1234 or 123",
                                                         "type": "repeat"
                                                     }
                                                 ],
