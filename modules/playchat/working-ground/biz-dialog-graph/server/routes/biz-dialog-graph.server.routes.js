@@ -9,6 +9,7 @@ module.exports = function(app)
 
     app.get('/api/:botId/biz-msg',dialoggraphs.getBizMsg);
     app.post('/api/:botId/biz-msg/:id',dialoggraphs.editBizMsg);
+    app.delete('/api/:botId/biz-msg',dialoggraphs.deleteBizMsg);
 
     app.get('/api/:bizchatId/biz-sentences', dialoggraphs.getSentences);
 

@@ -33,6 +33,7 @@ var BizMsgSchema = new Schema({
     index: { type: Number },
     id: { type: String },
     botId: { type: String },
+    type: { type: String },
     name: { type: String },
     message: { type: String},
     input: Schema.Types.Mixed,

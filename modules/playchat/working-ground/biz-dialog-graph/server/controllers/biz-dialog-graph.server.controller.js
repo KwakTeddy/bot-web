@@ -387,6 +387,7 @@ exports.editBizMsg = function(req,res){
     var botId = req.params.botId;
     var id = req.params.id;
     var param = req.body;
+
     BizMsgs.findOne({'botId':botId,'id':id}).exec(function(err, bizMsg){
         if(err){
             return res.status(400).send({ message: err.stack || err });
@@ -397,18 +398,39 @@ exports.editBizMsg = function(req,res){
             bizMsg.botId = botId;
             bizMsg.id = id;
         }
+        bizMsg.name = param.name;
+        bizMsg.message = param.message;
         bizMsg.index = param.index;
         bizMsg.input = param.input;
+        bizMsg.type = param.type;
         bizMsg.output = param.output;
         bizMsg.children = param.children;
 
+
         bizMsg.save(function(err){
+            console.log(err);
             if(err){
                 return res.status(400).send({ message: err.stack || err });
             }
+
+            res.send({status:true});
         })
     });
 };
+
+exports.deleteBizMsg = function(req, res){
+    var botId = req.params.botId;
+    var data = req.query.data;
+
+    BizMsgs.remove({botId:botId},function(err){
+        if(err) console.log(err);
+        BizMsgs.collection.insertMany(data,function(err,docs){
+            if(err) console.log(err);
+            res.send({status:true});
+        })
+
+    })
+}
 
 exports.getBizMsg = function(req, res){
   var botId = req.params.botId;

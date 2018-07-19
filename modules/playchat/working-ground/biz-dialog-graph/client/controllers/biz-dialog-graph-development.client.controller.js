@@ -1,7 +1,7 @@
 angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'BizChatService', 'LanguageService', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, BizChatService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Biz Dialog Graph'), '/modules/playchat/gnb/client/imgs/scenario.png');
-
+    var defaultS = null;
     $scope.bots = [
         {id:'survey',name:"설문 조사 봇"},
         {id:'marketing',name:"마케팅 봇"},
@@ -45,8 +45,14 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             BizChatService.onReady(bizchatId, function(bizchat){
                 $scope.Data = bizchat;
                 bizchat_s = bizchat;
-
-                $scope.addCardSentence = $scope.Data.defaultSentences[0];
+                defaultS = () => {
+                    return {
+                        name : bizchat.defaultSentences[2].name,
+                        message : '',
+                        id : bizchat.defaultSentences[2]._id
+                    }
+                };
+                $scope.addCardSentence = defaultS();
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
@@ -54,10 +60,10 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         };
 
         $scope.getCardType = function(id){
-            id = id? id : '5b486e6955611f9addf74b65';
             var ds = $scope.Data.defaultSentences.find(function(e){
                 return id.indexOf(e._id) >= 0
             });
+
             return ds;
         };
 
@@ -98,8 +104,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             })
         }
 
-        $scope.test = function(){
-            console.log($scope.Data.cardArr)
+        $scope.test = function(a){
+            console.log(a)
         }
 
 
@@ -114,11 +120,44 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             }
         };
 
-        $scope.addCard = function(card){
-            console.log(card)
+        $scope.addCard = function(me){
+            BizChatService.addCard(me,function(card){
+                if(!card){
+                    alert('빈 내용은 추가할 수 없습니다.')
+                }
+                $scope.Data.cardArr.push(card);
+                $scope.addCardSentence = defaultS();
+                console.log(defaultS);
+                console.log($scope.addCardSentence)
+            })
+        };
+
+        $scope.selectCard = function(card){
+            if(card.name=='선택형'){
+                card.connect = true;
+            }
             //var tpl = BizChatService.makeCard(dialog);
 
             //angular.element('#cardArea').append(tpl);
+        };
+
+        $scope.saveCard = function(){
+            BizChatService.saveCard($scope.addCardSentence)
+        };
+
+        $scope.deleteCard = function(me){
+            $scope.Data.cardArr = $scope.Data.cardArr.filter((e) => {return e.id != me.id});
+            var i = 0;
+            $scope.Data.cardArr.forEach((e)=>{
+                e.index = i;
+                i++;
+            });
+            console.log($scope.Data.cardArr);
+            BizChatService.deleteCard($scope.Data.cardArr,(rtn) => {
+                if(!rtn){
+                    console.log(rtn);
+                }
+            })
         };
 
         $scope.getChildCards = function(arr){
@@ -143,7 +182,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         $scope.cardUiSet = function(me){
             me.is_open = me.is_open ? false : true;
-
         }
 
     })();

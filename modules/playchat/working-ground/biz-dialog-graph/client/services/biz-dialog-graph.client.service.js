@@ -14,7 +14,7 @@
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' }, { update: { method: 'PUT' } });
 
-        var BizMsgsService = $resource('/api/:botId/biz-msg/:id', { botId: '@botId', id:'@id' });
+        var BizMsgsService = $resource('/api/:botId/biz-msg/:id', { botId: '@botId', id:'@id', data:'@data' });
 
         var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
 
@@ -139,6 +139,69 @@
             console.log(err)
         };
 
+        BizChat.save = (card,cb) => {
+            if(!card.message || card.message == ''){
+                return cb(false);
+
+            }
+
+            var idx = 1, track = true, id;
+
+            while(track){
+                id = BizChat.templateId + (BizChat.cardArr.length + idx);
+                track = BizChat.cardArr.filter((e) => {return e.id == id}).length > 0 ? true : false;
+                idx ++;
+            }
+
+            var dialogParam = {
+                id : id,
+                name : card.name,
+                output : [{kind : "Content", text : card.message}]
+            };
+
+            switch(card.name){
+
+            }
+            console.log(card);
+            //BizMsgsService.post({botId:chatbot.id},(res) => {
+            //BizChat.cardArr = res.data;
+            //},BizChat.error)
+        };
+
+        BizChat.addCard = (card,cb) => {
+            if(!card.message || card.message == ''){
+                cb(false);
+                return null;
+            }
+
+            var idx = 0, track = true, id = '';
+
+            while(track){
+                id = 'dialog_' + (BizChat.cardArr.length + idx);
+                track = BizChat.cardArr.filter((e) => {return e.id == id}).length > 0 ? true : false;
+                idx ++;
+            }
+            card.botId = chatbot.id;
+            card.id = id;
+            card.type = card._id;
+            card.index = BizChat.cardArr.length + 1;
+
+            BizMsgsService.save(card, (rtn)=> {
+                if(rtn.status == true) cb(card)
+                else cb(false)
+            },(err) => {
+                cb(false);
+            });
+        };
+
+        BizChat.deleteCard = (cards,cb) => {
+            BizMsgsService.delete({botId:chatbot.id,data:cards},(rtn) => {
+                cb(rtn);
+            },(err) => {
+                cb(false);
+            })
+        }
+
         BizChat.onReady = (bizchatId, cb) => {
 
             BizChat.bizchatId = bizchatId;
@@ -155,56 +218,10 @@
                 // message list load
                 BizMsgsService.get({botId:chatbot.id},(res) => {
                     BizChat.cardArr = res.data;
+                    BizChat.cardArr[0].type = BizChat.defaultSentences.find((e) => {return e.name == '일반형'})._id;
                     cb(BizChat);
                 },BizChat.error)
             },BizChat.error);
-
-
-            //BizChat.getCustomSentence(BizChat.bizchatId,'global',function(data){
-            //    BizChat.dataset = data;
-            //});
-            //$rootScope.$broadcast('simulator-build');
-            // load dialog list
-            //GraphFileService.get({botId: chatbot.id, fileName: BizChat.dialogFileName}
-            //    , (res) => {
-            //        // it will be included dialogs, commonDialogs
-            //
-            //        BizChat.commonDialogs = res.commonDialogs;
-            //
-            //        BizChat.dialogs = res.dialogs;
-            //        BizChat.cardArr = [BizChat.commonDialogs[0]];
-            //        _dialogIndexing(BizChat.dialogs);
-            //
-            //        // list of task names in the file
-            //        TaskService.query({botId: chatbot.id}
-            //            , (res) => {
-            //                // load templates task list. attach the task name each dialog
-            //                BizChat.tasks = res;
-            //
-            //                TypeService.query({botId: chatbot.id}
-            //                    , (res) => {
-            //                        BizChat.types = res;
-            //
-            //                        SentencesService.get({type : BizChat.type, bizchatId: BizChat.bizchatId}
-            //                            , (res) => {
-            //                                BizChat.sentences = res.data;
-            //
-            //                                cb(BizChat);
-            //
-            //                            }, (err) => {
-            //                                console.log(err);
-            //                            })
-            //
-            //                    }, (err) => {
-            //                        console.log(err);
-            //                    })
-            //
-            //            }, (err) => {
-            //                console.log(err);
-            //            })
-            //    },(err) => {
-            //        console.log(err);
-            //    })
         };
 
         BizChat.makeCard = function(dialog){
