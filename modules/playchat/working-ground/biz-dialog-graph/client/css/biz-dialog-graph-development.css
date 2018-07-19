@@ -86,12 +86,12 @@ select.custom-select option{
 .bot-messages-list li.new-select{
     border: 1px dashed #d0d2d3;
     background: #fff;
-    padding: 8% 0;
+    padding: 5% 0;
     text-align: center;
     cursor: pointer;
 }
 .bot-messages-list li.new-select:hover{
-    background: #fffbe6;
+    background: #f4fcff;
     transition: all 0.3s;
 }
 .ml3{
@@ -158,9 +158,24 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     margin-top: 6px;
     width: 80px;
     text-align: center;
+    display: inline-block;
 }
 .bot-messages-list .deleteBtn:hover{
     background: #f5f5f5;
+    transition: all 0.3s;
+}
+.bot-messages-list .addBtn{
+    padding: 8px 0;
+    margin-top: 6px;
+    width: 80px;
+    text-align: center;
+    border:1px solid #038eda;
+    background: #fff;
+    color: #038eda;
+    display: inline-block;
+}
+.bot-messages-list .addBtn:hover{
+    background: #f4fcff;
     transition: all 0.3s;
 }
 .bot-messages-list .add-menu{
@@ -185,14 +200,11 @@ select.add-menu option{
 }
 .bot-messages-list span.open-btn{
     float: right;
-    font-size: 50px;
-    line-height: 10px;
-    color: #038eda;
+    margin-top: 3px;
 }
 .bot-messages-list span.close-btn{
     float: right;
-    font-size: 30px;
-    line-height: 25px;
+    margin-top: 3px;
 }
 .message-view{
     width: 32%;
@@ -247,7 +259,7 @@ select.add-menu option{
 }
 .message-view .dialog-setting button{
     border: 1px solid #d9d9d9;
-    border-radius: 3px;
+    /*border-radius: 3px;*/
     background: #fff;
     padding: 3%;
     font-size: 12px;
@@ -330,13 +342,38 @@ input.type01{
 }
 input.type02{
     border: 1px solid #e5e5e5;
-    width: 88%;
+    width: 84%;
     text-overflow: ellipsis;
+    padding: 8px 35px 8px 8px;
+}
+a.input_delete{
+    background: url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/close_1.png) no-repeat 99% 36%;
+    opacity: .5;
 }
 input.type03{
     border: 1px solid #e5e5e5;
     width: 82%;
     text-overflow: ellipsis;
+}
+.type04{
+    border: 1px dashed #d0d2d3;
+    width: 93.5%;
+    margin-left: 24px;
+    height: 33.5px;
+    margin-top: 1px;
+    opacity: .5;
+    display: inline-block;
+    position: relative;
+}
+.type04 >img{
+    margin-top: 2px;
+    position: absolute;
+    left: 46%;
+}
+.type04:hover{
+    background: #f4fcff;
+    transition: all 0.3s;
+    opacity: 1;
 }
 .pic-area{
     width: 100%;

@@ -336,6 +336,56 @@ caption
                             <textarea placeholder="내용을 입력해주세요.">{{addCardSentence.message}}</textarea>
                         </div>
                     </li>
+                    <li>
+                        <span class="message-title01">01. 메시지</span>
+                        <select class="message-inselect ml3" disabled>
+                            <option>텍스트 - 선택형</option>
+                            <option>텍스트 - 선택형</option>
+                        </select>
+                        <a href=""><span class="open-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus_.png"></span></a>
+                    </li></a>
+                    <li>
+                        <a href=""><span class="message-title01">02. 메시지</span>
+                            <select class="message-inselect ml3">
+                                <option selected>텍스트 - 단답형/일반</option>
+                                <option>텍스트 - 선택형</option>
+                            </select>
+                            <a href=""><span class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span></a>
+                            <p class="cd">내용입력</p>
+                            <textarea placeholder="내용을 입력해주세요."></textarea>
+                            <a class="deleteBtn" href="">삭제</a>
+                            <a class="addBtn" href="">저장</a>
+                        </a>
+                    </li>
+                    <li class="select">
+                        <a href=""><span class="message-title02">04. 메시지</span>
+                            <select class="message-inselect ml3">
+                                <option selected>텍스트 - 선택형</option>
+                                <option>텍스트 - 선택형</option>
+                            </select>
+                            <p class="cd">내용입력</p>
+                            <textarea placeholder="내용을 입력해주세요."></textarea>
+                            <div class="detail-select">
+                                <input type="checkbox" name="connection02" value="" id="connection02">
+                                <label for="connection02">문항별 메시지 연결</label>
+                                <div class="connection-data">
+                                    1.<input type="text" class="ml3 type02">
+                                </div>
+                                <div class="connection-data">
+                                    2.<input type="text" class="ml3 type02">
+                                </div>
+                                <div class="connection-data">
+                                    3.<input type="text" class="ml3 type02">
+                                </div>
+                                <div class="reorder">
+                                    <a href="" class=""><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus.png"></a>
+                                    <a href="" class=""><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus.png"></a>
+                                </div>
+                            </div>
+                            <a class="deleteBtn reorder" href="">삭제</a>
+                            <a class="addBtn" href="">추가</a>
+                        </a>
+                    </li>
                     <li class="new-select">
                         <select ng-model="addCardSentence" ng-change="addCard(addCardSentence)" class="add-menu" ng-options="x.name for x in Data.defaultSentences"></select>
                     </li>
