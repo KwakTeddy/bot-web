@@ -5837,7 +5837,7 @@ red-btn-hold{
 .btn {
     cursor: pointer;
     font-size: 14px;
-    /*border-radius: 30px;*/
+    border-radius: 30px;
     font-family: Lato,Source Sans Pro,sans-serif;
     letter-spacing: 2px;
     white-space: nowrap;
