@@ -55,7 +55,7 @@ caption
         </select>
         <!--<select ng-model="selectedBot" ng-change="bizbotSelectChange(selectedBot)" ng-init="selectedBot = bots[0]" class="custom-select"  ng-options="x.name for x in bots"></select>-->
         <!--<a href="" class="icon-area" style="margin-left: 2%;"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/copy.png"></a>-->
-        <a class="copyBtn" href="" style="margin-left: 2%;margin-right:5px;width: 104px;">복사하기</a>
+        <a class="btn-style05" href="" style="margin-left: 2%;margin-right:5px;width: 104px;">복사하기</a>
         <a class="btn-style03" href="">저장하기</a>
         <!--<a href="" class="icon-area"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/save.png"></a>-->
 
@@ -102,7 +102,7 @@ caption
                                     </select>
                                 </div>
                             </div>
-                            <a class="deleteBtn reorder" href="" ng-click="deleteCard(card)">삭제</a>
+                            <a class="btn-style01 reorder" href="" ng-click="deleteCard(card)">삭제</a>
                         </div>
                         <!-- 단답형, 일반형, 연락처수집형, 날짜수집형 -->
                         <div ng-if="card.is_open && (getCardType(card.type).name == '단답형' || getCardType(card.type).name == '일반형' || getCardType(card.type).name == '연락처수집형' || getCardType(card.type).name == '날짜수집형')">
@@ -113,7 +113,7 @@ caption
                             <span class="open-btn" ng-click="cardUiSet(card)">-</span>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요.">{{card.message}}</textarea>
-                            <a class="deleteBtn reorder" href="" ng-click="deleteCard(card)">삭제</a>
+                            <a class="btn-style01 reorder" href="" ng-click="deleteCard(card)">삭제</a>
                         </div>
                         <!-- 정보형 -->
                         <div ng-if="card.is_open && getCardType(card.type).name == '정보형'">
@@ -128,7 +128,7 @@ caption
                                 <input type="checkbox">
                                 <label>URL</label><input type="text" class="ml3 type03" value="{{card.output[0].url}}">
                             </div>
-                            <a class="deleteBtn reorder" href="" ng-click="deleteCard(card)">삭제</a>
+                            <a class="btn-style01 reorder" href="" ng-click="deleteCard(card)">삭제</a>
                         </div>
                         <!-- 이미지형 -->
                         <div ng-if="card.is_open && getCardType(card.type).name == '이미지형'">
@@ -142,10 +142,10 @@ caption
                                 <div ng-if="!card.output || !card.output.image || card.output.image.url == ''" class="pic-area" style="background-image : url('/modules/playchat/working-ground/biz-dialog-graph/client/imgs/pic-bg.png')"></div>
                             </a>
                             <span style="color: #038eda;margin-left: 0;">0000 * 0000 권장 합니다.</span>
-                            <a class="deleteBtn02" href="">삭제</a>
+                            <a class="btn-style04" href="">삭제</a>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요.">{{card.message}}</textarea>
-                            <a class="deleteBtn reorder" ng-click="deleteCard(card)" href="">삭제</a>
+                            <a class="btn-style01 reorder" ng-click="deleteCard(card)" href="">삭제</a>
                         </div>
                     </li>
 
@@ -210,7 +210,7 @@ caption
                                 <div ng-if="!addCardSentence.output || !addCardSentence.output.image || addCardSentence.output.image.url == ''" class="pic-area" style="background-image : url('/modules/playchat/working-ground/biz-dialog-graph/client/imgs/pic-bg.png')"></div>
                             </a>
                             <span style="color: #038eda;margin-left: 0;">0000 * 0000 권장 합니다.</span>
-                            <a class="deleteBtn02" href="">삭제</a>
+                            <a class="btn-style04" href="">삭제</a>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
                         </div>
@@ -232,9 +232,9 @@ caption
                             <a href=""><span class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span></a>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요."></textarea>
-                            <a class="deleteBtn" href="">삭제</a>
-                            <a class="addBtn flR" href="">메세지 추가</a>
-                            <!--<a class="addBtn" href="">저장</a>-->
+                            <a class="btn-style01" href="">삭제</a>
+                            <a class="btn-style02 flR" href="">메세지 추가</a>
+                            <!--<a class="btn-style02" href="">저장</a>-->
                         </a>
                     </li>
                     <li class="select">
@@ -246,7 +246,7 @@ caption
                             <a href=""><span class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span></a>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요."></textarea>
-                            <a class="deleteBtn" href="">삭제</a>
+                            <a class="btn-style01" href="">삭제</a>
                             <div class="detail-select" style="margin-bottom:0;">
                                 <label class="ml3">연결할 메시지</label>
                                 <select class="message-inselect02 ml3">
@@ -273,8 +273,8 @@ caption
                             <a href=""><span class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span></a>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요."></textarea>
-                            <a class="deleteBtn" href="">삭제</a>
-                            <a class="addBtn flR" href="">복사</a>
+                            <a class="btn-style01" href="">삭제</a>
+                            <a class="btn-style02 flR" href="">복사</a>
                             <a class="btn-style03 flR mr5" href="">저장</a>
                         </a>
                     </li>
@@ -303,8 +303,8 @@ caption
                                     <a href="" class=""><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus.png"></a>
                                 </div>
                             </div>
-                            <a class="deleteBtn reorder" href="">삭제</a>
-                            <!--<a class="addBtn" href="">저장</a>-->
+                            <a class="btn-style01 reorder" href="">삭제</a>
+                            <!--<a class="btn-style02" href="">저장</a>-->
                         </a>
                     </li>
                     <li class="new-select">
