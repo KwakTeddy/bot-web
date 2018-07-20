@@ -741,18 +741,16 @@ module.exports = function(bot)
                     {
                         if(!body)
                         {
-                            console.log('111111111');
                             errorHandler(dialog, null);
                             return callback();
                         }
 
                         if(body.E_RETCD == 'E')
                         {
-                            console.log('2222222222');
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
-                        { console.log('3333333333');
+                        {
                             console.log(JSON.stringify(body, null, 4));
                             var data = body.data.ET_TABLE;
 
