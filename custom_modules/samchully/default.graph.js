@@ -12,11 +12,9 @@ var dialogs = [
                 "text": "[안내]\n\n<삼천리>는 개인정보를 다음의 목적을 위해 처리하며, 목적 이외의 용도로는 사용되지 않습니다. 이용 목적이 변경될 시에는 사전 동의를 구할 예정입니다. \n•가. 사용요금조회, 자동이체신청/해지 등 도시가스 사용 요금 관련 서비스 및 각종 편리한 서비스를 제공하기 위하여 개인정보를 처리합니다.\n•나. 제한적 본인 확인제에 따른 본인확인, 개인식별, 부정이용방지, 비인가 사용방지, 문의에 대한 질문 접수 및 응답 등을 목적으로 개인정보를 처리합니다.\n\n동의하시겠습니까?",
                 "buttons": [
                     {
-                        "url": "",
                         "text": "네"
                     },
                     {
-                        "url": "",
                         "text": "아니요"
                     },
                     {
@@ -321,7 +319,10 @@ var dialogs = [
                 ],
                 "id": "default78"
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     },
     {
         "name": "이사/AS",
@@ -358,7 +359,10 @@ var dialogs = [
             }
         ],
         "id": "default5",
-        "children": []
+        "children": [],
+        "task": {
+            "name": ""
+        }
     },
     {
         "name": "요금 조회 및 납부",
@@ -2549,7 +2553,10 @@ var dialogs = [
                 "type": "repeat"
             }
         ],
-        "id": "default22"
+        "id": "default22",
+        "task": {
+            "name": ""
+        }
     }
 ];
 
@@ -2615,7 +2622,18 @@ var commonDialogs = [
                 ],
                 "image": {
                     "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-samchully/samchully-1518159068905-1.png"
-                }
+                },
+                "if": "context.channel.name === 'kakao' || context.session.isFirst === false"
+            },
+            {
+                "kind": "Content",
+                "text": "안녕하세요. 삼천리 톡 서비스 입니다. 환영합니다!",
+                "if": "context.channel.name !== 'kakao' && context.session.isFirst === undefined",
+                "buttons": [
+                    {
+                        "text": "시작하기"
+                    }
+                ]
             }
         ],
         "task": {

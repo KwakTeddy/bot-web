@@ -889,6 +889,9 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
+                if(dialog.userInput.text === '시작하기'){
+                    context.session.isFirst = false;
+                }
 
                 if(!context.session.auth)
                 {
