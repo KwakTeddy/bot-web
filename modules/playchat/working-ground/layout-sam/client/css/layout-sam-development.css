@@ -167,3 +167,15 @@ a.new-bot-right{
     font-size: 13px;
     padding: 2px 0px;
 }
+.temp-bot-info p.highlight{
+    font-size: 13px;
+    padding: 2px 0 7px 0;
+    color: #ff4259;
+    padding-bottom: 7px;
+    font-weight: 600;
+}
+
+.pop-up{
+    background: #0a0a0a;
+    z-index: 300;
+}
