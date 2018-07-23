@@ -39,7 +39,7 @@ select.custom-select option{
 .message-edit-list{
     width: 160px;
     float: left;
-    margin: 0 1.6% 0 0;
+    margin: 0 16px 0 0;
 }
 .message-edit-list span{
     margin-left: 20px;
@@ -48,15 +48,17 @@ select.custom-select option{
     margin: 8% 0;
 }
 .message-edit-list ul li{
-    padding: 18px 0;
+    padding: 15px 0;
     text-indent: 20px;
     opacity: .5;
     cursor: pointer;
 }
 .message-edit-list ul li.select{
-    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05), 0 1px 20px rgba(0, 0, 0, 0.07);
+    /*box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05), 0 1px 20px rgba(0, 0, 0, 0.07);*/
     opacity: 1;
     font-weight: 600;
+    background: url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/blue-arrow.png) no-repeat 0% 50%;
+    text-indent: 24px;
 }
 .message-edit-list ul li.select a{
     color:#038eda;

@@ -224,8 +224,8 @@ a.new-bot-right{
 }
 .xbtn{
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 4px;
+    top: 8px;
     width: 28px;
     height: 26px;
     color: #b0b0b0;
@@ -239,7 +239,7 @@ a.new-bot-right{
     position: absolute;
     left: 14px;
     content: ' ';
-    height: 21px;
+    height: 16px;
     width: 2px;
     background-color: #a5a5a5;
     border-radius: 10px;
@@ -249,7 +249,7 @@ a.new-bot-right{
     position: absolute;
     left: 14px;
     content: ' ';
-    height: 21px;
+    height: 16px;
     width: 2px;
     background-color: #a5a5a5;
     border-radius: 10px;
