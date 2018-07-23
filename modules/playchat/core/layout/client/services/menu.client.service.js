@@ -10,8 +10,6 @@
 
         var instance = undefined;
 
-        var chatbot = $cookies.getObject('chatbot');
-
         var Menu = function()
         {
             // this.setting = { name: 'Setting', icon: 'setting.png' };
@@ -21,16 +19,21 @@
         {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
 
-            if(chatbot.type && chatbot.type === 'survey'){
-                this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
-                    { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
-                ] };
-            }else{
-                this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
-                    { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
-                    { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
-                ] };
-            }
+            this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+            ] };
+
+
+            this.development_global = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
+                { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+            ] };
+
+            this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
+            ] };
 
             this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
                 { name: '샘플 영역', url: '/development/layout-sam', icon: 'scenatio_select.png' },
@@ -126,10 +129,16 @@
             else if(typeof templateId == 'function')
             {
                 var chatbot = $cookies.getObject('chatbot');
-
                 var menus = [];
                 menus.push(that.dashboard);
-                menus.push(that.development);
+
+                //if(chatbot.type && chatbot.type === 'survey'){
+                //    menus.push(that.development_test);
+                //}else{
+                //    menus.push(that.development);
+                //}
+                menus.push(that.development_global);
+
                 menus.push(that.management);
                 // menus.push(this.contents);
                 menus.push(that.channel);

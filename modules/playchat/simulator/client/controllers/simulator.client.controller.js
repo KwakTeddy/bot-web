@@ -223,9 +223,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
         {
             try
             {
-                console.log('data type =========================send msg');
-                console.log(data);
-
                 if(data.type == 'command')
                 {
                     clearBubble();

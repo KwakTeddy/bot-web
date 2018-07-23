@@ -37,6 +37,8 @@ var BizMsgSchema = new Schema({
     name: { type: String },
     message: { type: String},
     input: Schema.Types.Mixed,
+    output: Schema.Types.Mixed,
+    connect: {type: Boolean},
     parentId: { type: String },
     created: { type: Date, default: Date.now }
 });

@@ -27,7 +27,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             {
                 MenuService.get(chatbot.templateId.id, function(menus)
                 {
-                    console.log(menus);
                     $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
@@ -36,7 +35,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             {
                 MenuService.get(function(menus)
                 {
-                    console.log(menus)
                     $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
@@ -47,7 +45,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
         $scope.$on('changeLanguage', function()
         {
-            console.log('머냐 : ');
             $scope.drawMenu();
         });
     })();

@@ -397,12 +397,15 @@ exports.editBizMsg = function(req,res){
             bizMsg = new BizMsgs();
             bizMsg.botId = botId;
             bizMsg.id = id;
+            bizMsg.name = param.name+'_'+param.index;
+            bizMsg.type = param._id;
+        }else{
+            bizMsg.type = param.type;
         }
-        bizMsg.name = param.name;
         bizMsg.message = param.message;
         bizMsg.index = param.index;
         bizMsg.input = param.input;
-        bizMsg.type = param.type;
+        bizMsg.connect = param.connect;
         bizMsg.output = param.output;
         bizMsg.children = param.children;
 
@@ -413,14 +416,21 @@ exports.editBizMsg = function(req,res){
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            res.send({status:true});
+            res.send({status:true,data:bizMsg});
         })
     });
 };
 
 exports.deleteBizMsg = function(req, res){
     var botId = req.params.botId;
-    var data = req.query.data;
+    var data = [];
+    try{
+        req.query.data.forEach((e) => {
+            data.push(JSON.parse(e))
+        });
+    }catch(e){
+        data.push(JSON.parse(req.query.data))
+    }
 
     BizMsgs.remove({botId:botId},function(err){
         if(err) console.log(err);

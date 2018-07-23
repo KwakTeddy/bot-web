@@ -7,10 +7,14 @@
     {
         // load chatbot obj
         var chatbot = $cookies.getObject('chatbot');
-
+        var bizchatId = 'survey';
         // load api list
+        var DialogGraphsService = $resource('/api/:botId/biz-dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+
         var GraphFileService = $resource('/api/:botId/biz-graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
         var JSFileService = $resource('/api/:botId/biz-dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+        var DialogGraphsNLPService = $resource('/api/:botId/biz-dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: chatbot.language });
+
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' }, { update: { method: 'PUT' } });
 
@@ -19,6 +23,48 @@
         var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
 
         var SentencesService = $resource('/api/:bizchatId/biz-sentences', { bizchatId: '@bizchatId' });
+
+        var TC = {
+            firstInput : function(){
+                return [
+                    {
+                        "text": {
+                            "raw": "start",
+                            "nlp": "start"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "시작",
+                            "nlp": "시작"
+                        }
+                    },
+                    {
+                        "text": {
+                            "raw": "처음",
+                            "nlp": "처음"
+                        }
+                    }
+                ]
+            },
+            callCard : function(){
+                return {
+                    "name": "call_",
+                    "input":  [
+                        {"if": "true"}
+                    ],
+                    "output": [
+                        {
+                            "kind": "Action",
+                            "text": "",
+                            "type": "call",
+                            "dialogId": ""
+                        }
+                    ],
+                    "id": "call_"
+                }
+            }
+        };
 
         var BizChat = {
             type : 'bizchat',
@@ -49,7 +95,7 @@
             var children = commonDialogs[0].children;
             delete commonDialogs[0].children;
 
-            var userDialogsString = JSON.stringify(JSON.parse(angular.toJson(userDialogs)), null, 4);
+            var userDialogsString = JSON.stringify(JSON.parse(angular.toJson(dialog)), null, 4);
             var commonDialogsString = JSON.stringify(JSON.parse(angular.toJson(commonDialogs)), null, 4);
 
             commonDialogs[0].children = children;
@@ -76,51 +122,176 @@
             });
         };
 
-        var _dialogIndexing = function(dialog,parentId){
+
+        var _dialogRebasing = (dialog, resultbox) => {
             for(var i in dialog){
-                BizChat.cardArr.push(_mk_index(dialog[i], parentId));
-                if(dialog[i].children && dialog[i].children.length) {
-                    _dialogIndexing(dialog[i].children, dialog[i].id);
-                }
-            }
-        };
-
-        var _dialogRebasing = function(dialogs){
-            for(var i in dialogs){
-                console.log(dialogs[i].id);
-                var child = _mk_rebase(dialogs[i]);
-                if(child.length > 0){
-                    dialogs[i].children = child;
-                    _dialogRebasing(child);
+                var child = resultbox.filter((e) => {return e.index == dialog[i].index + 1});
+                var dialogitem = BizChat.cardArr.find((a)=>{return dialog[i].index == a.index});
+                if(child && child.length > 0 && !dialogitem.connect && !child[0].parent){
+                    //resultbox.splice(dialogitem.index - dn,1);
+                    //dn ++;
+                    dialog[i].children = child;
+                    _dialogRebasing(child,resultbox);
                 }
             }
 
-            return dialogs;
+            return dialog;
         };
 
-        BizChat.createDialog = function(dialog, parent){
-            BizChat.cardArr.push(_mk_index(dialog, parent? parent.id : null))
+        var _getCallTarget = function(id){
+            var t = BizChat.cardArr.find((e) => {return e.id == id});
+            return {id:t.id,name:t.name};
         };
 
-        BizChat.deleteDialog = function(id){
-            var parentId = angular.element('#'+id).prev()[0].id;
-            BizChat.cardArr = BizChat.cardArr.filter(function(e){return e.id != id});
-            BizChat.cardArr.filter(function(e){if(e.parentId == id){e.parentId = parentId != ''? parentId : null}})
-        };
+        var _createGraph = function(arr, userInput){
+            var resultBox = [];
+            var callIdx = 0;
+            while(arr.length >= 1){
+                var item = arr.splice(0, 1)[0];
+                var card = _reform_item(item, userInput);
+                var nextInput = _mk_nextInput(item);
+                var child = [];
+                if(item.connect == true){
 
-        var _mk_rebase = function(dialog){
-            return BizChat.cardArr.filter(function(e){return dialog.id == e.parentId})
-        };
+                    nextInput.forEach((e, i) => {
+                        var c = TC.callCard();
+                        c.name = c.name + callIdx;
+                        c.id = c.id + callIdx;
 
-        var _mk_index = function(dia, parentId){
-            return {
-                id : dia.id,
-                name : dia.name,
-                type : dia.type,
-                input : dia.input,
-                output : dia.output,
-                parentId : parentId ? parentId : 'startDialog'
+
+                        var target = _getCallTarget(item.input[i].target);
+                        c.output[0].dialogId = target.id;
+                        c.output[0].dialogName = target.name;
+
+                        c.input = [e];
+                        callIdx ++;
+
+                        child.push(c);
+
+                        try{
+                            arr.find((v) => {return v.id == target.id }).parent = true;
+                        }catch(e){
+                            resultBox.find((v) => {return v.id == target.id }).parent = true;
+                        }
+                        //arr[idx] ? arr[idx].parent = true : null;
+                        //callbox.push(arr.splice(idx,1)[0]);
+                    });
+                    card.children = child;
+                    // call카드 등록 rely on input words
+                    resultBox.unshift(card);
+                }else if(item.input && item.input[0].target){
+                    var c = TC.callCard();
+
+                    c.name = c.name + callIdx;
+                    c.id = c.id + callIdx;
+
+                    var target = _getCallTarget(item.input[0].target);
+                    c.output[0].dialogId = target.id;
+                    c.output[0].dialogName = target.name;
+
+                    c.input = nextInput;
+                    callIdx ++;
+
+                    child.push(c);
+
+                    //var idx = arr.findIndex((e) => {return e.id = target});
+                    //callbox.push(arr.splice(idx,1)[0]);
+
+                    card.children = child;
+                    // call카드 등록 with any case
+                    resultBox.unshift(card);
+                }else{
+                    userInput = nextInput;
+                    resultBox.push(card);
+                }
             }
+
+
+            BizChat.commonDialogs[0] = resultBox.filter((e) => {return e.index == 0})[0];
+            var dialog = resultBox.filter((e) => {return e.index != 0}).sort((a,b)=>{return a.index - b.index});
+            var startup = dialog.filter((e) => {return e.parent});
+            if(startup.findIndex((e)=> {return dialog[0].id == e.id}) < 0){
+                startup.unshift(dialog[0]);
+            }
+            var rtn = _dialogRebasing(startup, dialog);
+
+            return rtn
+        };
+
+        var _reform_item = (card, userInput) => {
+            var item = {};
+            item.name = card.name;
+            item.id = card.id;
+            item.index = card.index;
+            card.parent ? item.parent = true : null;
+
+            // set input
+            if(userInput){
+                item.input = userInput;
+            }else{
+                item.input = [{'if':'true'}]
+            }
+
+            item.output = [{
+                kind : 'Content',
+                text : card.message
+            }];
+
+            // set output
+            if(card.output){
+                switch(Object.keys(card.output)[0]){
+                    case 'image' :  item.output[0].image = {url : card.output.image}; break;
+                    case 'url' : item.output[0].text = item.output[0].text + '\n\n' + card.output.url; break;
+                    default : break
+                }
+            }
+
+            return item;
+        };
+
+        var _mk_nextInput = (card) => {
+            var nextInput = null;
+
+            if(card.input){
+                if(Object.keys(card.input[0])[0] == 'types'){
+                    nextInput = [
+                        {types : [card.input[0].types]}
+                    ]
+                }else{
+                    nextInput = [];
+                    card.input.forEach((e) => {
+                        nextInput.push({
+                            text : {
+                                raw : e.text,
+                                nlp : e.nlp ? e.nlp : e.text
+                            }
+                        })
+                    })
+                }
+            }
+
+            return nextInput;
+        };
+
+
+        BizChat.saveGraph = (arr, cb) => {
+            var dialog = [];
+            BizChat.cardArr = arr.sort((a,b)=>{return a.index - b.index});
+            angular.copy(BizChat.cardArr,dialog);
+            var dialogs = _createGraph(dialog,TC.firstInput());
+
+            _getCompleteData(dialogs, BizChat.commonDialogs,
+                (script) => {
+                    DialogGraphsService.save({
+                            botId: chatbot.id,
+                            fileName: BizChat.dialogFileName,
+                            data : script},
+                        (res) => {
+                            cb(res);
+                        }, (err) => {
+                            console.log(err);
+                        })
+                });
         };
 
         BizChat.getCustomSentence = function(bizchatId, type, ck){
@@ -131,41 +302,19 @@
             })
         };
 
+        BizChat.addNlp = (text,cb) => {
+            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+            {
+                cb(result.text);
+            });
+        };
+
         BizChat.test = () => {
 
         };
 
         BizChat.error = (err) => {
             console.log(err)
-        };
-
-        BizChat.save = (card,cb) => {
-            if(!card.message || card.message == ''){
-                return cb(false);
-
-            }
-
-            var idx = 1, track = true, id;
-
-            while(track){
-                id = BizChat.templateId + (BizChat.cardArr.length + idx);
-                track = BizChat.cardArr.filter((e) => {return e.id == id}).length > 0 ? true : false;
-                idx ++;
-            }
-
-            var dialogParam = {
-                id : id,
-                name : card.name,
-                output : [{kind : "Content", text : card.message}]
-            };
-
-            switch(card.name){
-
-            }
-            console.log(card);
-            //BizMsgsService.post({botId:chatbot.id},(res) => {
-            //BizChat.cardArr = res.data;
-            //},BizChat.error)
         };
 
         BizChat.addCard = (card,cb) => {
@@ -181,13 +330,22 @@
                 track = BizChat.cardArr.filter((e) => {return e.id == id}).length > 0 ? true : false;
                 idx ++;
             }
+
             card.botId = chatbot.id;
             card.id = id;
-            card.type = card._id;
-            card.index = BizChat.cardArr.length + 1;
+            card.index = BizChat.cardArr.length;
 
             BizMsgsService.save(card, (rtn)=> {
-                if(rtn.status == true) cb(card)
+                if(rtn.status == true) cb(rtn);
+                else cb(false)
+            },(err) => {
+                cb(false);
+            });
+        };
+
+        BizChat.updateCard = (card,cb) => {
+            BizMsgsService.save(card, (rtn)=> {
+                if(rtn.status == true) cb(rtn);
                 else cb(false)
             },(err) => {
                 cb(false);
@@ -200,15 +358,15 @@
             },(err) => {
                 cb(false);
             })
-        }
+        };
 
-        BizChat.onReady = (bizchatId, cb) => {
+        BizChat.onReady = (chatbot, cb) => {
+            chatbot = chatbot;
 
-            BizChat.bizchatId = bizchatId;
+            BizChat.bizchatId = BizChat.bizchatId ? BizChat.bizchatId : bizchatId;
             // custom type list load
             _customTypeLoad();
             _customTaskLoad();
-
 
             // commonDialog load
             SentencesService.get({bizchatId: BizChat.bizchatId},(res) => {
@@ -251,25 +409,6 @@
 
 
             return tpl.replace('{input}', input.join("")).replace('{output}', output.join(""));
-        };
-
-        BizChat.saveGraph = (cb) => {
-            var dialog = BizChat.cardArr.filter((e) => {return e.parentId == null});
-
-            var dialogs = _dialogRebasing(dialog);
-
-            _getCompleteData(dialogs, BizChat.commonDialogs,
-                (script) => {
-                GraphFileService.post({
-                        botId: chatbot.id,
-                        fileName: BizChat.dialogFileName,
-                        data : script},
-                    (res) => {
-                        cb(res);
-                    }, (err) => {
-                        console.log(err);
-                    })
-            });
         };
 
         // obj : addOn -> type
@@ -324,7 +463,7 @@
             }
         };
 
-        BizChat.setUploader = function(){
+        BizChat.setUploader = function(card){
             var uploader = new FileUploader({
                 url: '/api/' + chatbot.id + '/biz-dialog-graphs/uploadImage',
                 alias: 'uploadFile',
@@ -333,12 +472,8 @@
 
             uploader.onSuccessItem = function(item, response, status, headers)
             {
-                var image = {
-                    url: response.url,
-                    displayname: item.file.name
-                };
                 // bind with card scope
-                console.log(image)
+                card.output = {image:response.url}
             };
 
             uploader.onErrorItem = function(item, response, status, headers)

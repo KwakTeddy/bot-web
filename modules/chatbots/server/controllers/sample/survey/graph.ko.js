@@ -26,7 +26,7 @@ var commonDialogs = [
         ],
         "output": [{
             "kind": "Content",
-            "text": "안녕하세요, +bot.name+ 입니다."
+            "text": "(광고) 업체명\n안녕하세요! +bot.name+ 입니다.\n\n무료거부\n000-0000-0000"
         }]
     },
     {
