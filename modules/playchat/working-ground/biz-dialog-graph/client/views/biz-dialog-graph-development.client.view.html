@@ -205,7 +205,9 @@ caption
                             </select>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
-                            <a class="btn-style02 flR" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            <div style="text-align: right">
+                                <a class="btn-style02" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            </div>
                         </div>
                         <!-- 정보형 -->
                         <div ng-if="addCardSentence.name == '정보형'">
