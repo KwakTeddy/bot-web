@@ -21,9 +21,9 @@
         <div class="email">
             <form class="login" ng-submit="signin();">
                 <p>{{ lan('Email ID') }}</p>
-                <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.email" ng-required="true" style="padding: 8px 18px 8px 8px;">
+                <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.email" ng-required="true">
                 <p>{{ lan('Password') }}</p>
-                <input type="password" class="input_type09 sign-input" ng-model="credentials.password" ng-required="true" style="padding: 8px 18px 8px 8px;">
+                <input type="password" class="input_type09 sign-input" ng-model="credentials.password" ng-required="true">
                 <a href="#" ng-click="forgotPassword();"><p class="find">{{ lan('Forget your password?') }}</p></a>
                 <a href="#">
                     <input type="submit" class="loginbtn" value="{{ lan('Sign in') }}" ng-click="signin();">
@@ -35,6 +35,6 @@
     <div id="bottoms">
         <span>{{ lan('New to Playchat?') }} <a ui-sref="signup" href="#" class="create">{{ lan('Create Account') }}</a></span>
         <!--<span>{{ lan('New to Playchat?') }} <a ui-sref="signup" href="#" class="create">{{ lan('Register for free closed beta') }}</a></span>-->
-        <a class="policy" href="/signup.client.privacy.view.html">{{ lan('Terms of Use and Privacy Policy') }}</a>
+        <a class="policy" onclick="javascript:window.open('https://playchat.ai/signup.client.privacy.view.html')">{{ lan('Terms of Use and Privacy Policy') }}</a>
     </div>
 </div>
