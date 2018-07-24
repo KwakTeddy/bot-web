@@ -4,10 +4,6 @@
     width: 1010px;
     position: relative;
 }
-
-.working-ground {
-    bottom : 0px !important;
-}
 .custom-select{
     position: relative;
     display: inline-block;
@@ -43,7 +39,7 @@ select.custom-select option{
 .message-edit-list{
     width: 160px;
     float: left;
-    margin: 0 1.6% 0 0;
+    margin: 0 16px 0 0;
 }
 .message-edit-list span{
     margin-left: 20px;
@@ -52,15 +48,17 @@ select.custom-select option{
     margin: 8% 0;
 }
 .message-edit-list ul li{
-    padding: 18px 0;
+    padding: 15px 0;
     text-indent: 20px;
     opacity: .5;
     cursor: pointer;
 }
 .message-edit-list ul li.select{
-    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05), 0 1px 20px rgba(0, 0, 0, 0.07);
+    /*box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05), 0 1px 20px rgba(0, 0, 0, 0.07);*/
     opacity: 1;
     font-weight: 600;
+    background: url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/blue-arrow.png) no-repeat 0% 50%;
+    text-indent: 24px;
 }
 .message-edit-list ul li.select a{
     color:#038eda;
@@ -101,6 +99,7 @@ select.custom-select option{
 .ml3{
     margin-left:3%;
 }
+/*select box*/
 .bot-messages-list select.message-inselect{
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -117,6 +116,26 @@ select.message-inselect option{
     background: transparent;
     color:#424242;
 }
+
+select.message-inselect02{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down.png) no-repeat 97% 50%;
+    cursor: pointer;
+    border: 1px solid #e1e1e1;
+    padding: 2% 7% 2% 2%;
+    width: 77%;
+    margin-bottom: 2%;
+}
+select.message-inselect02::-ms-expand{
+    display: none;
+}
+select.message-inselect02 option{
+    background: transparent;
+    color:#424242;
+}
+
 .mobile-view-practice .header p{
     text-align: center;
     margin-top: 5%;
@@ -156,46 +175,68 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     font-weight: 600;
     color:#038eda;
 }
-.bot-messages-list .deleteBtn{
+/*btn style*/
+.btn-style01{
     border: 1px solid #d8d8d8;
-    padding: 8px 0;
+    padding: 8px 26px;
     margin-top: 6px;
-    width: 80px;
+    /*width: 80px;*/
     text-align: center;
     display: inline-block;
 }
-.bot-messages-list .deleteBtn:hover{
+.btn-style01:hover{
     background: #f5f5f5;
     transition: all 0.3s;
 }
-
-.copyBtn{
-    border: 1px solid #d8d8d8;
-    padding: 8px 0;
+.btn-style02{
+    /*padding: 8px 0;*/
+    /* width: 80px; */
+    padding: 8px 26px;
     margin-top: 6px;
-    width: 80px;
     text-align: center;
-    display: inline-block;
-}
-.copyBtn:hover{
-    background: #f5f5f5;
-    transition: all 0.3s;
-}
-
-.addBtn{
-    padding: 8px 0;
-    margin-top: 6px;
-    width: 80px;
-    text-align: center;
-    border:1px solid #038eda;
+    border: 1px solid #038eda;
     background: #fff;
     color: #038eda !important;
     display: inline-block;
 }
-.addBtn:hover{
+.btn-style02:hover{
     background: #f4fcff;
     transition: all 0.3s;
 }
+
+.btn-style03{
+    /*padding: 8px 0;*/
+    /* width: 80px; */
+    padding: 9px 26px;
+    margin-top: 6px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+}
+
+.btn-style04 {
+    border: 1px solid #d8d8d8;
+    padding: 8px 0;
+    width: 80px;
+    float: right;
+    text-align: center;
+}
+
+.btn-style05{
+    border: 1px solid #d8d8d8;
+    padding: 8px 0;
+    margin-top: 6px;
+    width: 80px;
+    text-align: center;
+    display: inline-block;
+}
+.btn-style05:hover{
+    background: #f5f5f5;
+    transition: all 0.3s;
+}
+
+
 .bot-messages-list .add-menu{
     padding: 3%;
     margin: 0 auto;
@@ -408,13 +449,7 @@ input.type03{
     text-align: right;
     display: block;
 }
-.deleteBtn02 {
-    border: 1px solid #d8d8d8;
-    padding: 8px 0;
-    width: 80px;
-    float: right;
-    text-align: center;
-}
+
 @media screen and (max-width: 1450px)
 {
     .graph-controller
