@@ -398,7 +398,11 @@ exports.editBizMsg = function(req,res){
             bizMsg.botId = botId;
             bizMsg.id = id;
             bizMsg.name = param.name+'_'+param.index;
-            bizMsg.type = param._id;
+            if(param.type == 'custom'){
+                bizMsg.type = param.parentType;
+            }else{
+                bizMsg.type = param.type;
+            }
         }else{
             bizMsg.type = param.type;
         }

@@ -44,7 +44,10 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             BizChatService.onReady($scope.chatbot, function(bizchat){
                 $scope.Data = bizchat;
                 bizchat_s = bizchat;
-                $scope.addCardSentence = bizchat.defaultSentences[2];
+                $scope.addCardSentence = {};
+                angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
+                $scope.addCardSentence.type = bizchat.defaultSentences[2]._id;
+
                 angular.element('.log-analysis').css('display', 'none');
 
                 $scope.saveState = 'ready';
@@ -99,8 +102,10 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         }
 
         $scope.test = function(a){
-            console.log(a)
-        }
+            console.log('===== update log =====');
+            console.log(_isUpdated);
+            _isUpdated = true;
+        };
 
 
         $scope.appendGrid = function(dialog){
@@ -143,8 +148,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 $scope.Data.cardArr.push(item);
                 $scope.Data.defaultSentences[2].message = '';
-                $scope.addCardSentence = $scope.Data.defaultSentences[2];
 
+                angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
+                $scope.addCardSentence.type = $scope.Data.defaultSentences[2]._id;
             })
         };
 
@@ -158,11 +164,19 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             }
         };
 
+        $scope.addInput = function(card,what){
+            if(what){
+                card.input.push({text:card.input.length+1})
+            }else{
+                card.input.pop()
+            }
+        };
+
         $scope.addudtList = function(card){
             var lst = _waitDataList.find((e) => {return e == card.id});
             if(!lst || lst.length < 1){
                 _waitDataList.push(card.id);
-            }
+            };
         };
 
         $scope.update = function(cb){
@@ -184,6 +198,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                     BizChatService.updateCard(card,(er)=> {
                         _udtCnt = _udtCnt - 1;
                         if(_udtCnt == 0){
+                            _isUpdated = false;
                             _waitDataList = [];
                             if(cb && typeof cb == 'function'){
                                 cb();
@@ -206,6 +221,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 })
             }else{
                 if(cb && typeof cb == 'function'){
+                    _isUpdated = false;
                     cb();
                 }
             }
@@ -260,11 +276,14 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         };
 
         $scope.save = function(){
-            $scope.update(function(){
-                BizChatService.saveGraph($scope.Data.cardArr,function(err){
-                    $rootScope.$broadcast('simulator-build');
-                })
-            });
+            console.log('_isUpdated : ' ,_isUpdated)
+            if(_isUpdated){
+                $scope.update(function(){
+                    BizChatService.saveGraph($scope.Data.cardArr,function(err){
+                        $rootScope.$broadcast('simulator-build');
+                    })
+                });
+            }
         };
 
         $scope.deleteCard = function(me){
@@ -284,9 +303,38 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             });
         };
 
-        $scope.test = function(e){
-            console.log(e)
-        }
+        $scope.setDefaultValue = function(card, typeNm){
+            if(!typeNm){
+                typeNm = $scope.getCardType(card.type).name
+            }else{
+                card.name = typeNm;
+            }
+            if(card.input && card.input.length > 0){card.input.forEach((e)=>{delete e.target});}
+            switch(typeNm){
+                case '단답형' :
+                case '일반형' :
+                case '연락처수집형' :
+                case '날짜수집형' :
+                    delete card.connect;
+                    delete card.output;
+                    break;
+                case '정보형' :
+                    delete card.connect;
+                    card.output = {url:''};
+                    break;
+                case '이미지형' :
+                    delete card.connect;
+                    card.output = {image:''};
+                    break;
+                case '선택형' :
+                    delete card.output;
+                    card.connect == undefined ? card.connect = false : null;
+                    if(!card.input || card.input.length < 2){
+                        card.input = $scope.Data.defaultSentences.find((e) => {return e.name == typeNm}).input;
+                    }
+                    break;
+            }
+        };
 
         $scope.getChildCards = function(arr){
             return arr.filter((e) => {return !e.parentId && e.id !== 'startDialog'})
@@ -312,9 +360,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             me.is_open = me.is_open ? false : true;
         }
 
-        $scope.$watch('Data.cardArr', function(newVal) {
-            _isUpdated = true;
-        },true);
+        //$scope.$watch('Data.cardArr', function(newVal) {
+        //    _isUpdated = true;
+        //},true);
 
     })();
     $scope.initialize();

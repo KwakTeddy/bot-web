@@ -5,6 +5,7 @@ var SentencesSchema = new Schema(
     {
         templateId : {type : String},
         type : {type: String},
+        parentType: { type: String },
         name: { type: String },
         message: { type: String},
         input: Schema.Types.Mixed,
