@@ -274,6 +274,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         };
 
         $scope.save = function(){
+            //console.log($scope.Data.cardArr);
+            //return null;
             if(_isUpdated){
                 $scope.update(function(){
                     BizChatService.saveGraph($scope.Data.cardArr,function(err){

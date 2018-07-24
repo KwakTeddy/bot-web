@@ -119,6 +119,12 @@ caption
                             <p class="cd">내용입력</p>
 
                             <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
+                            <div class="detail-select" style="margin-bottom:0;">
+                                <label class="ml3">연결할 메시지</label>
+                                <select ng-model="card.input[0].target" class="message-inselect02 ml3">
+                                    <option ng-repeat="ar in Data.cardArr" value="{{ar.id}}">{{ar.name}}</option>
+                                </select>
+                            </div>
                             <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
                             <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
                             <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
