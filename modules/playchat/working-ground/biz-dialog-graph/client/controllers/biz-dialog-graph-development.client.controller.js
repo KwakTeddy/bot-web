@@ -270,13 +270,10 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 });
 
                 $scope.Data.cardArr.sort(e.index);
-
-                console.log($scope.Data.cardArr)
             })
         };
 
         $scope.save = function(){
-            console.log('_isUpdated : ' ,_isUpdated)
             if(_isUpdated){
                 $scope.update(function(){
                     BizChatService.saveGraph($scope.Data.cardArr,function(err){
@@ -358,6 +355,10 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         $scope.cardUiSet = function(me){
             me.is_open = me.is_open ? false : true;
+        };
+
+        $scope.autoSaveTrigger = () => {
+            _isUpdated = true;
         }
 
         //$scope.$watch('Data.cardArr', function(newVal) {

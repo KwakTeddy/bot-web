@@ -78,26 +78,26 @@ caption
                             <span  ng-click="cardUiSet(card)" class="open-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus_.png"></span>
                         </div>
                         <!-- 선택형 -->
-                        <div ng-if="card.is_open && getCardType(card.type).name == '선택형'" onplay="test()">
+                        <div ng-if="card.is_open && getCardType(card.type).name == '선택형'" onplay="autoSaveTrigger()">
                             <span class="message-title02">{{card.index+1}} {{card.name}}</span>
                             <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
                                 <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
                             </select>
                             <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
                             <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="test()"></textarea>
+                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
                             <div class="detail-select">
                                 <input id="{{card.id}}" type="checkbox" ng-model="card.connect">
                                 <label for="{{card.id}}">문항별 메시지 연결</label>
 
                                 <div ng-if="card.connect" class="connection-data" ng-repeat="input in card.input">
-                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input);test();" class="ml3 type01" ng-model="input.text"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link.png">
+                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input);autoSaveTrigger();" class="ml3 type01" ng-model="input.text"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link.png">
                                     <select ng-model="input.target" class="message-inselect">
                                         <option ng-repeat="ar in Data.cardArr" value="{{ar.id}}">{{ar.name}}</option>
                                     </select>
                                 </div>
                                 <div ng-if="!card.connect" class="connection-data" ng-repeat="input in card.input">
-                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input);test();" class="ml3 type02"  ng-model="input.text">
+                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input);autoSaveTrigger();" class="ml3 type02"  ng-model="input.text">
                                 </div>
 
                                 <div class="reorder">
@@ -118,7 +118,7 @@ caption
                             <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
                             <p class="cd">내용입력</p>
 
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="test()"></textarea>
+                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
                             <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
                             <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
                             <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
@@ -131,7 +131,7 @@ caption
                             </select>
                             <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
                             <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="test()"></textarea>
+                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
                             <div class="detail-select">
                                 <input type="checkbox">
                                 <label>URL</label><input type="text" class="ml3 type03" ng-model="card.output.url">
@@ -156,7 +156,7 @@ caption
                             <a class="btn-style04" href="">삭제</a>
                             <p class="cd">내용입력</p>
 
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="test()"></textarea>
+                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
                             <a class="btn-style01 reorder" href="">삭제</a>
                             <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
                             <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
