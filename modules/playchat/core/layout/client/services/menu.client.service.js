@@ -132,12 +132,12 @@
                 var menus = [];
                 menus.push(that.dashboard);
 
-                //if(chatbot.type && chatbot.type === 'survey'){
-                //    menus.push(that.development_test);
-                //}else{
-                //    menus.push(that.development);
-                //}
-                menus.push(that.development_global);
+                if(chatbot.type && chatbot.type === 'survey'){
+                    menus.push(that.development_test);
+                }else{
+                    menus.push(that.development);
+                }
+                //menus.push(that.development_global);
 
                 menus.push(that.management);
                 // menus.push(this.contents);
