@@ -60,11 +60,11 @@ select.custom-select option{
     background: url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/blue-arrow.png) no-repeat 0% 50%;
     text-indent: 24px;
 }
-.message-edit-list ul li.select a{
+.message-edit-list ul li.select{
     color:#038eda;
     font-size: 14px;
 }
-.message-edit-list ul li a:hover{
+.message-edit-list ul li:hover{
     color:#038eda;
 }
 .bot-messages-list{
@@ -76,6 +76,7 @@ select.custom-select option{
     background: #f6f6f6;
     border: 1px solid #d0d2d3;
     margin: 12px 0;
+    cursor: pointer;
 }
 .bot-messages-list li:hover{
     background: #fff;
@@ -260,10 +261,12 @@ select.add-menu option{
 .bot-messages-list span.open-btn{
     float: right;
     margin-top: 3px;
+    cursor: pointer;
 }
 .bot-messages-list span.close-btn{
     float: right;
     margin-top: 3px;
+    cursor: pointer;
 }
 .message-view{
     width: 32%;
