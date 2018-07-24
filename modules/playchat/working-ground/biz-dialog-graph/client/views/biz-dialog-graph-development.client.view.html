@@ -8,7 +8,8 @@
 {
     padding: 0 !important;
     bottom: 0 !important;
-}
+    /*position:relative !important;*/
+}2
 
 .playchat-background .top-bar+div > div .working-ground
 {
@@ -36,6 +37,22 @@ caption
 {
     display: block;
 }
+
+.playchat-background .top-bar+div .simulator
+{
+    position: relative;
+    height: 520px;
+    margin-top: 26px;
+    width: 322px;
+    background: #f8f8f8;
+    border-left: #e7e7e7 solid 1px;
+}
+
+
+.simulator .input-box{
+    width: 258px;
+}
+
 
 </style>
 
@@ -256,18 +273,19 @@ caption
                 </ul>
             </div>
             <div class="message-view">
-                <div class="mobile-view-practice">
-                    <div class="header">
-                        <p>{{selectedBot.name}}</p>
-                        <a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>
-                    </div>
-                </div>
-                <div class="dialog-input">
-                    <input placeholder="input your info">
-                    <button type="button">
-                        <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">
-                    </button>
-                </div>
+                <section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>
+                <!--<div class="mobile-view-practice">-->
+                    <!--<div class="header">-->
+                        <!--<p>{{selectedBot.name}}</p>-->
+                        <!--<a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="dialog-input">-->
+                    <!--<input placeholder="input your info">-->
+                    <!--<button type="button">-->
+                        <!--<img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">-->
+                    <!--</button>-->
+                <!--</div>-->
 
                 <div class="dialog-setting">
                     <p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>
