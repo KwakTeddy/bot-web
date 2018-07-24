@@ -327,6 +327,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                     break;
                 case '선택형' :
                     delete card.output;
+                    delete card.target;
                     card.connect == undefined ? card.connect = false : null;
                     if(!card.input || card.input.length < 2){
                         card.input = $scope.Data.defaultSentences.find((e) => {return e.name == typeNm}).input;

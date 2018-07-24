@@ -127,7 +127,7 @@
             for(var i in dialog){
                 var child = resultbox.filter((e) => {return e.index == dialog[i].index + 1});
                 var dialogitem = BizChat.cardArr.find((a)=>{return dialog[i].index == a.index});
-                if(child && child.length > 0 && !dialogitem.connect && !child[0].parent){
+                if(child && child.length > 0 && !dialogitem.connect&& !dialogitem.target && !child[0].parent){
                     //resultbox.splice(dialogitem.index - dn,1);
                     //dn ++;
                     dialog[i].children = child;
@@ -179,13 +179,13 @@
                     card.children = child;
                     // call카드 등록 rely on input words
                     resultBox.unshift(card);
-                }else if(item.input && item.input[0].target){
+                }else if(item.target && item.target != ''){
                     var c = TC.callCard();
 
                     c.name = c.name + callIdx;
                     c.id = c.id + callIdx;
 
-                    var target = _getCallTarget(item.input[0].target);
+                    var target = _getCallTarget(item.target);
                     c.output[0].dialogId = target.id;
                     c.output[0].dialogName = target.name;
 
@@ -196,6 +196,11 @@
 
                     //var idx = arr.findIndex((e) => {return e.id = target});
                     //callbox.push(arr.splice(idx,1)[0]);
+                    try{
+                        arr.find((v) => {return v.id == target.id }).parent = true;
+                    }catch(e){
+                        resultBox.find((v) => {return v.id == target.id }).parent = true;
+                    }
 
                     card.children = child;
                     // call카드 등록 with any case
@@ -205,7 +210,6 @@
                     resultBox.push(card);
                 }
             }
-
 
             BizChat.commonDialogs[0] = resultBox.filter((e) => {return e.index == 0})[0];
             var dialog = resultBox.filter((e) => {return e.index != 0}).sort((a,b)=>{return a.index - b.index});
@@ -268,6 +272,8 @@
                         })
                     })
                 }
+            }else{
+                nextInput = [{'if':'true'}]
             }
 
             return nextInput;

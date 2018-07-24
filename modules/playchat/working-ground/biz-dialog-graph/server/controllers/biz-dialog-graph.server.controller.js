@@ -405,6 +405,7 @@ exports.editBizMsg = function(req,res){
             }
         }else{
             bizMsg.type = param.type;
+            bizMsg.target = param.target;
         }
         bizMsg.message = param.message;
         bizMsg.index = param.index;
@@ -444,7 +445,7 @@ exports.deleteBizMsg = function(req, res){
         })
 
     })
-}
+};
 
 exports.getBizMsg = function(req, res){
   var botId = req.params.botId;
