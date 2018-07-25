@@ -178,12 +178,6 @@ a.new-bot-right{
     font-weight: 600;
 }
 
-.pop-up{
-    background: #0a0a0a;
-    width: 100%;
-    height: 100%;
-    z-index: 300;
-}
 /*나의봇*/
 .mybot-list{}
 .mybot-list .content{

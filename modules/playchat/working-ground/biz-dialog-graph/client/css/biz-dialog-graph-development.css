@@ -1,6 +1,7 @@
 .working-ground-bizchat{
-    margin: 2% auto 0;
-    height: 100%;
+    /*margin: 2% auto 0;*/
+    margin: 2% auto 10px;
+    /*height: 100%;*/
     width: 1010px;
     position: relative;
 }
