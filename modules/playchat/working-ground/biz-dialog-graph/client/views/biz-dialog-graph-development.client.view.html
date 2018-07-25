@@ -88,7 +88,7 @@ caption
             <div class="bot-messages-list">
                 <span>{{chatbot.name}} (총 {{Data.cardArr.length}} 개의 메세지)</span>
                 <ul ondragstart="dragStartHandler(event)" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
-                    <li ng-repeat="card in Data.cardArr | orderBy:'index'" draggable="true" data-value="{{card}}" class="dragline" ng-class="card.is_open? 'select' : ''" ng-click="addudtList(card)">
+                    <li ng-repeat="card in Data.cardArr | orderBy:'index'" draggable="true" data-value="{{card}}" class="dragline unsel" ng-class="card.is_open? 'select' : ''" ng-click="addudtList(card)">
                         <div ng-if="!card.is_open">
                             <span class="message-title01">{{card.index+1}} {{card.name}}</span>
                             <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
@@ -218,7 +218,9 @@ caption
                                     <img ng-if="addCardSentence.input.length > 2" ng-click="addInput(addCardSentence, false)" src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus.png"/>
                                 </div>
                             </div>
-                            <a class="btn-style02 flR" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            <div style="text-align: right">
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            </div>
                         </div>
                         <!-- 단답형, 일반형, 연락처수집형, 날짜수집형 -->
                         <div ng-if="addCardSentence.name == '단답형' || addCardSentence.name == '일반형'
@@ -231,7 +233,7 @@ caption
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
                             <div style="text-align: right">
-                                <a class="btn-style02" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
                             </div>
                         </div>
                         <!-- 정보형 -->
@@ -247,7 +249,9 @@ caption
                                 <input type="checkbox">
                                 <label>URL</label><input type="text" class="ml3 type03" value="{{addCardSentence.output.url}}">
                             </div>
-                            <a class="btn-style02 flR" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            <div style="text-align: right">
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            </div>
                         </div>
                         <!-- 이미지형 -->
                         <div ng-if="addCardSentence.name == '이미지형'">
@@ -264,12 +268,73 @@ caption
                             <a class="btn-style04" href="">삭제</a>
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
-                            <a class="btn-style02 flR" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            <div style="text-align: right">
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                            </div>
                         </div>
                     </li>
                     <!--<li class="new-select">-->
                         <!--<select ng-model="addCardSentence" ng-change="selectCard(addCardSentence)" class="add-menu" ng-options="x.name for x in Data.defaultSentences"></select>-->
                     <!--</li>-->
+                    <li class="new-select">
+                        <!--<select class="add-menu">셀렉버튼으로 안가고 커스터마이징으로 가기로 함-->
+                            <!--<option selected>메세지 추가하기</option>-->
+                            <!--<option>텍스트 - 선택형</option>-->
+                            <!--<option>텍스트 - 선택형</option>-->
+                        <!--</select>-->
+                        <a href="" class="add-menu">메세지 추가하기</a>
+                    </li>
+
+                    <ul class="long-dd" style="top:687px;left:266px;">
+                        <li class="long-dd-menu-container">
+                            <ul class="menu-left">
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list01.png"></div>
+                                        <a href="" class="dd-tit">선택형</a>
+                                    </div>
+                                </li>
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list03.png"></div>
+                                        <a href="" class="dd-tit">일반형</a>
+                                    </div>
+                                </li>
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list05.png"></div>
+                                        <a href="" class="dd-tit">연락처수집형</a>
+                                    </div>
+                                </li>
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list07.png"></div>
+                                        <a href="" class="dd-tit">이미지형</a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="menu-right">
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list02.png"></div>
+                                        <a href="" class="dd-tit">단답형</a>
+                                    </div>
+                                </li>
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list04.png"></div>
+                                        <a href="" class="dd-tit">정보형</a>
+                                    </div>
+                                </li>
+                                <li class="dd-l">
+                                    <div class="dd-contents">
+                                        <div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list06.png"></div>
+                                        <a href="" class="dd-tit">날짜수집형</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </ul>
             </div>
             <div class="message-view">
@@ -286,7 +351,6 @@ caption
                         <!--<img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">-->
                     <!--</button>-->
                 <!--</div>-->
-
                 <div class="dialog-setting">
                     <p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>
                     <button class="select"># 기본</button>
