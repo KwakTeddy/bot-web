@@ -11,33 +11,11 @@
             <span class="detail">(총 {{botList.length}}개)</span>
             <div class="content">
                 <div class="list">
-                    <div href="" class="bot">
-                        <a class="num">01.</a>
-                        <a class="data"> 2018.01.22</a>
+                    <div ng-repeat="bot in botList" href="" class="bot">
+                        <a class="num">{{$index +1}}.</a>
+                        <a class="data"> {{bot.created}}</a>
                         <a class="xbtn" href=""></a>
-                        <p class="detail2">9월 가입 이벤트</p>
-                        <div class="btn-area">
-                            <a class="btn-style02" href="">수정하기</a>
-                            <a class="btn-style03" href="">발송하기</a>
-                        </div>
-                        <div class="cpc">cpc</div>
-                    </div>
-                    <div href="" class="bot">
-                        <a class="num">01.</a>
-                        <a class="data"> 2018.01.22</a>
-                        <a class="xbtn" href=""></a>
-                        <p class="detail2">9월 가입 이벤트</p>
-                        <div class="btn-area">
-                            <a class="btn-style02" href="">수정하기</a>
-                            <a class="btn-style03" href="">발송하기</a>
-                        </div>
-                        <div class="cpc">cpc</div>
-                    </div>
-                    <div href="" class="bot">
-                        <a class="num">01.</a>
-                        <a class="data"> 2018.01.22</a>
-                        <a class="xbtn" href=""></a>
-                        <p class="detail2">9월 가입 이벤트</p>
+                        <p class="detail2">{{bot.name}}</p>
                         <div class="btn-area">
                             <a class="btn-style02" href="">수정하기</a>
                             <a class="btn-style03" href="">발송하기</a>

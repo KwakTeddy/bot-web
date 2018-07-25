@@ -12,7 +12,6 @@ angular.module('playchat').controller('MyBotDevelopmentController', ['$window', 
 
     $scope.botList = [];
 
-
     //console.log(chatbot);
     $scope.getList = function()
     {
