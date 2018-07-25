@@ -6,14 +6,15 @@
     angular.module('playchat').factory('BizChatService', function($window, $resource, $cookies, $rootScope, FileUploader)
     {
         // load chatbot obj
-        var chatbot = $cookies.getObject('chatbot');
+        // 쿠키의 봇이 구형봇으로 선택되어 제외
+        //var chatbot = $cookies.getObject('chatbot');
         var bizchatId = 'survey';
         // load api list
         var DialogGraphsService = $resource('/api/:botId/biz-dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
         var GraphFileService = $resource('/api/:botId/biz-graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
         var JSFileService = $resource('/api/:botId/biz-dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
-        var DialogGraphsNLPService = $resource('/api/:botId/biz-dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: chatbot.language });
+        var DialogGraphsNLPService = $resource('/api/:botId/biz-dialog-graphs/nlp/:text', { botId: '@botId', text: '@text', language: 'ko' });
 
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' }, { update: { method: 'PUT' } });
@@ -67,6 +68,7 @@
         };
 
         var BizChat = {
+            bot : null,
             type : 'bizchat',
             bizchatId : '',
             dialogFileName : 'default.graph.js',
@@ -168,11 +170,14 @@
 
                         child.push(c);
 
+                        var parent = null;
                         try{
-                            arr.find((v) => {return v.id == target.id }).parent = true;
+                            parent = arr.find((v) => {return v.id == target.id })
                         }catch(e){
-                            resultBox.find((v) => {return v.id == target.id }).parent = true;
+                            parent = resultBox.find((v) => {return v.id == target.id })
                         }
+                        parent.parent = true;
+                        parent.parentInput = [e];
                         //arr[idx] ? arr[idx].parent = true : null;
                         //callbox.push(arr.splice(idx,1)[0]);
                     });
@@ -196,20 +201,25 @@
 
                     //var idx = arr.findIndex((e) => {return e.id = target});
                     //callbox.push(arr.splice(idx,1)[0]);
+                    var parent = null;
                     try{
-                        arr.find((v) => {return v.id == target.id }).parent = true;
+                        parent = arr.find((v) => {return v.id == target.id })
                     }catch(e){
-                        resultBox.find((v) => {return v.id == target.id }).parent = true;
+                        parent = resultBox.find((v) => {return v.id == target.id })
                     }
+                    parent.parent = true;
 
                     card.children = child;
                     // call카드 등록 with any case
                     resultBox.unshift(card);
+                    userInput = nextInput;
                 }else{
                     userInput = nextInput;
                     resultBox.push(card);
                 }
             }
+
+            console.log(resultBox)
 
             BizChat.commonDialogs[0] = resultBox.filter((e) => {return e.index == 0})[0];
             var dialog = resultBox.filter((e) => {return e.index != 0}).sort((a,b)=>{return a.index - b.index});
@@ -230,7 +240,9 @@
             card.parent ? item.parent = true : null;
 
             // set input
-            if(userInput){
+            if(card.parentInput){
+                item.input = card.parentInput;
+            }else if(userInput){
                 item.input = userInput;
             }else{
                 item.input = [{'if':'true'}]
@@ -249,12 +261,13 @@
                     default : break
                 }
             }
-
             return item;
         };
 
         var _mk_nextInput = (card) => {
             var nextInput = null;
+            if(card.parentInput)
+                return card.parentInput;
 
             if(card.input){
                 if(Object.keys(card.input[0])[0] == 'types'){
@@ -285,11 +298,10 @@
             BizChat.cardArr = arr.sort((a,b)=>{return a.index - b.index});
             angular.copy(BizChat.cardArr,dialog);
             var dialogs = _createGraph(dialog,TC.firstInput());
-
             _getCompleteData(dialogs, BizChat.commonDialogs,
                 (script) => {
                     DialogGraphsService.save({
-                            botId: chatbot.id,
+                            botId: BizChat.chatbot.id,
                             fileName: BizChat.dialogFileName,
                             data : script},
                         (res) => {
@@ -309,7 +321,7 @@
         };
 
         BizChat.addNlp = (text,cb) => {
-            DialogGraphsNLPService.get({ botId: chatbot.id, text: text }, function(result)
+            DialogGraphsNLPService.get({ botId: BizChat.chatbot.id, text: text }, function(result)
             {
                 cb(result.text);
             });
@@ -337,7 +349,7 @@
                 idx ++;
             }
 
-            card.botId = chatbot.id;
+            card.botId = BizChat.chatbot.id;
             card.id = id;
             card.index = BizChat.cardArr.length;
 
@@ -359,16 +371,14 @@
         };
 
         BizChat.deleteCard = (cards,cb) => {
-            BizMsgsService.delete({botId:chatbot.id,data:cards},(rtn) => {
+            BizMsgsService.delete({botId:BizChat.chatbot.id,data:cards},(rtn) => {
                 cb(rtn);
             },(err) => {
                 cb(false);
             })
         };
 
-        BizChat.onReady = (chatbot, cb) => {
-            chatbot = chatbot;
-
+        BizChat.onReady = (cb) => {
             BizChat.bizchatId = BizChat.bizchatId ? BizChat.bizchatId : bizchatId;
             // custom type list load
             _customTypeLoad();
@@ -380,7 +390,7 @@
                 BizChat.defaultSentences = res.data.defaultSentences;
                 BizChat.sentences = res.data.sentences;
                 // message list load
-                BizMsgsService.get({botId:chatbot.id},(res) => {
+                BizMsgsService.get({botId:BizChat.chatbot.id},(res) => {
                     BizChat.cardArr = res.data;
                     BizChat.cardArr[0].type = BizChat.defaultSentences.find((e) => {return e.name == '일반형'})._id;
                     cb(BizChat);
@@ -443,7 +453,7 @@
             if(!datas || datas.length <= 0){
                 return null;
             }else{
-                JSFileService.get({botId: chatbot.id, fileName: BizChat.taskFileName},(res) => {
+                JSFileService.get({botId: BizChat.chatbot.id, fileName: BizChat.taskFileName},(res) => {
                     var scripts = res.data;
                     if(scripts.endsWith('};')){
                         scripts = scripts.slice(0,-2);
@@ -459,7 +469,7 @@
                     scripts = scripts + '\n};';
 
                     GraphFileService.post(
-                        {botId: chatbot.id, fileName: BizChat.taskFileName, data : scripts},
+                        {botId: BizChat.chatbot.id, fileName: BizChat.taskFileName, data : scripts},
                         (res) => {
                             cb(res);
                         }, (err) => {
@@ -471,7 +481,7 @@
 
         BizChat.setUploader = function(card){
             var uploader = new FileUploader({
-                url: '/api/' + chatbot.id + '/biz-dialog-graphs/uploadImage',
+                url: '/api/' + BizChat.chatbot.id + '/biz-dialog-graphs/uploadImage',
                 alias: 'uploadFile',
                 autoUpload: true
             });

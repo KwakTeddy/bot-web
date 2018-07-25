@@ -20,11 +20,15 @@
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
 
             this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: '샘플 영역', url: '/development/layout-sam', icon: 'scenatio_select.png' },
+                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
                 { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
             ] };
 
 
             this.development_global = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+
                 { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
                 { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
                 { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
@@ -36,7 +40,6 @@
             ] };
 
             this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
-                { name: '샘플 영역', url: '/development/layout-sam', icon: 'scenatio_select.png' },
                 { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },
                 // { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
                 { name: LanguageService('Entity'), url: '/management/entity', icon: 'entity_select_mini.png' },

@@ -27,7 +27,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
     (function()
     {
-
         $scope.$parent.loaded('working-ground');
         // 나중에 HTML에 바인딩하면서
         BizChatService.template.card = angular.element('#cardTpl');
@@ -39,9 +38,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
         $scope.initialize = function()
         {
-            $scope.chatbot = $cookies.getObject('chatbot');
-
-            BizChatService.onReady($scope.chatbot, function(bizchat){
+            BizChatService.chatbot = $cookies.getObject('chatbot');
+            BizChatService.onReady(function(bizchat){
                 $scope.Data = bizchat;
                 bizchat_s = bizchat;
                 $scope.addCardSentence = {};
@@ -134,14 +132,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 card = card.data;
 
-                var item = {
-                    id: card.id,
-                    botId : card.botId,
-                    index: card.index,
-                    message: card.message,
-                    name: card.name,
-                    type: card.type
-                };
+                var item = {};
+                angular.copy(card,item);
+
                 card.connect != undefined ? item.connect = card.connect : null;
                 card.input? item.input = card.input : null;
                 card.output? item.output = card.output : null;
@@ -155,7 +148,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         };
 
         $scope.selectCard = function(card){
-            card.botId = $scope.chatbot.id;
+            card.botId = BizChatService.chatbot.id;
 
             if(card.name=='선택형'){
                 card.connect = false;
@@ -176,7 +169,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             var lst = _waitDataList.find((e) => {return e == card.id});
             if(!lst || lst.length < 1){
                 _waitDataList.push(card.id);
-            };
+            }
         };
 
         $scope.update = function(cb){
