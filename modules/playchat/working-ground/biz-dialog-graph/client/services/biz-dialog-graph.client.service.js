@@ -219,8 +219,6 @@
                 }
             }
 
-            console.log(resultBox)
-
             BizChat.commonDialogs[0] = resultBox.filter((e) => {return e.index == 0})[0];
             var dialog = resultBox.filter((e) => {return e.index != 0}).sort((a,b)=>{return a.index - b.index});
             var startup = dialog.filter((e) => {return e.parent});
@@ -524,3 +522,7 @@
         return BizChat;
     });
 })();
+
+
+//미처리 이슈
+//* 선택형 문항에 대하여 숫자 or 입력내용 인식하도록 추가

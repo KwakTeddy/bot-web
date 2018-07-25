@@ -37,7 +37,6 @@
         {
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
-                console.log(list)
                 $scope.list = list;
                 
                 for(var i=0; i<list.length; i++)
@@ -134,6 +133,7 @@
 
         $scope.toPage = function(page)
         {
+            console.log(page)
             $scope.getList(page);
         };
 

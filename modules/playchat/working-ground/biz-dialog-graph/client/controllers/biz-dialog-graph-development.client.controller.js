@@ -50,6 +50,12 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                 $scope.saveState = 'ready';
             });
+
+            angular.element('.main-logo-background').css('opacity', 0);
+            $timeout(function()
+            {
+                angular.element('.main-logo-background').css('display', 'none');
+            }, 1200);
         };
 
         $scope.getCardType = function(id){

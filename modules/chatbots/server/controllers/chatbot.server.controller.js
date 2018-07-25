@@ -60,6 +60,8 @@ exports.find = function (req, res)
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
+    if(req.query.type)
+        query.type = { $in: ['survey'] };
 
     ChatBot.find(query).sort('-created').populate('templateId').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
     {

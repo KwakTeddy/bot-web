@@ -1,4 +1,4 @@
-angular.module('playchat').controller('LayoutSamDevelopmentController', ['$window', '$scope', '$cookies', '$rootScope', '$location', '$timeout', '$resource', function ($window, $scope, $cookies, $rootScope, $location, $timeout,$resource)
+angular.module('playchat').controller('MyBotDevelopmentController', ['$window', '$scope', '$cookies', '$rootScope', '$location', '$timeout', '$resource', function ($window, $scope, $cookies, $rootScope, $location, $timeout,$resource)
 {
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var SharedChatBotService = $resource('/api/chatbots/shared');
