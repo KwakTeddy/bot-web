@@ -20,6 +20,7 @@
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
             /*비즈챗 개발을 위한 설정*/
             this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: '샘플페이지', url: '/development/layout-sam', icon: 'scenatio_select.png' },
                 { name: '마이봇', url: '/development/my-bot', icon: 'scenatio_select.png' },
                 { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
             ] };
