@@ -2,8 +2,38 @@
 .working-ground {
     position:relative !important;
 }
+#AreaDeletePopup{
+ display:none;
+}
+/*.graph-background {*/
+    /*overflow: unset;*/
+/*}*/
 </style>
-
+<script type="text/template" id="DeleteBotTemplate">
+    <div class="DeleteBotPopup">
+        <div class="biz-window_overlay">
+            <div class="biz-window">
+                <div class="biz-card_detail_window">
+                    <div class="biz-window_header">
+                        <!--
+                                        <span class="biz-window_header_icon">
+                                            <img src="images/temp-new-popup.png">
+                                        </span>
+                        -->
+                        <div class="biz-window_title">
+                            <h1>봇 삭제확인</h1>
+                        </div>
+                        <p class="detail">선택하신 봇의 내용은 삭제되며, 복구가 불가합니다.<br>이대로 삭제하시겠습니까?</p>
+                    </div>
+                    <div class="btnarea-bizpop">
+                        <div class="btn-style07" onclick="popupClickEvt(false)">취소</div>
+                        <div class="btn-style06 ml15" onclick="popupClickEvt(true)">삭제</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 <div ng-controller="MyBotDevelopmentController" class="graph-background">
     <div class="working-ground-bizchat">
         <div class="mybot-list">
@@ -14,10 +44,10 @@
                     <div ng-repeat="bot in botList" href="" class="bot">
                         <a class="num">{{$index +1}}.</a>
                         <a class="data"> {{bot.created}}</a>
-                        <a class="xbtn" href=""></a>
+                        <a class="xbtn" href="" ng-click="deleteBot(bot)"></a>
                         <p class="detail2">{{bot.name}}</p>
                         <div class="btn-area">
-                            <a class="btn-style02" href="">수정하기</a>
+                            <a class="btn-style02" ng-click="botDevelopPage(bot)" href="">수정하기</a>
                             <a class="btn-style03" href="">발송하기</a>
                         </div>
                         <div class="cpc">cpc</div>
@@ -39,5 +69,6 @@
             </div>
         </div>
     </div>
+    <div id="AreaDeletePopup"></div>
 </div>
 

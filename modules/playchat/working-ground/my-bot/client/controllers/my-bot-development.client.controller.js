@@ -2,7 +2,7 @@ angular.module('playchat').controller('MyBotDevelopmentController', ['$window', 
 {
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var SharedChatBotService = $resource('/api/chatbots/shared');
-
+    angular.element('#AreaDeletePopup').html(angular.element('#DeleteBotTemplate').html())
     var page = 1;
     var countPerPage = $location.search().countPerPage || 50;
 
@@ -12,7 +12,6 @@ angular.module('playchat').controller('MyBotDevelopmentController', ['$window', 
 
     $scope.botList = [];
 
-    //console.log(chatbot);
     $scope.getList = function()
     {
         ChatBotService.query({ page: page, countPerPage: countPerPage, type : true }, function(list)
@@ -26,10 +25,35 @@ angular.module('playchat').controller('MyBotDevelopmentController', ['$window', 
         });
     };
 
+    $scope.deleteBot = (bot) => {
+        $scope.selectBot = bot;
+        angular.element('#AreaDeletePopup').fadeIn();
+    };
+
+    $scope.botDevelopPage = (bot) => {
+        bot.myBotAuth = { read: true, edit: true };
+        $cookies.putObject('chatbot', bot);
+        $location.url('/playchat/development/biz-dialog-graph');
+    };
 
     // default environment setting
     (() => {
         $scope.getList();
+        popupClickEvt = (is) => {
+            if(is){
+                ChatBotService.delete({ botId : $scope.selectBot._id, botDisplayId: $scope.selectBot.id }, function()
+                {
+                    $scope.getList();
+                    angular.element('#AreaDeletePopup').fadeOut();
+                }, function(err)
+                {
+                    alert(err.data.message);
+                });
+            }else{
+                angular.element('#AreaDeletePopup').fadeOut();
+            }
+        };
+
         angular.element('.main-logo-background').css('opacity', 0);
         $timeout(function()
         {
@@ -39,3 +63,4 @@ angular.module('playchat').controller('MyBotDevelopmentController', ['$window', 
     $scope.$parent.loaded('working-ground');
     //$scope.lan=LanguageService;
 }]);
+var popupClickEvt;
