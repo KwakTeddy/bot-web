@@ -346,7 +346,7 @@ var dialogs = [
                 "text": "이사(전입/전출) 및 가스렌지 연결/철거 신청, 예약내용 확인/변경, 연결비 안내를 이용하실 수\n있습니다.\n\n자세히 보기를 클릭해주세요.",
                 "buttons": [
                     {
-                        "url": "http://59.6.157.142",
+                        "url": "https://www.samchully.co.kr/simpleReg",
                         "text": "자세히보기"
                     },
                     {
