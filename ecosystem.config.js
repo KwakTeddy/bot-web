@@ -50,7 +50,6 @@ module.exports =
 
                 "LOG_ROTATING_ACTIVE":'true',
                 "LOG_LEVEL":'debug',
-
                 "NODE_ENV": "development"
             },
             env_production:

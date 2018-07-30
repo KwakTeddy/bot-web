@@ -701,12 +701,12 @@ a.btn-mod:focus{
 .form input[type="color"],
 .form select{
     height: 43px;
-    font-size: 13px;
+    font: 15px/24px "Lato", Arial, sans-serif;
     font-weight: 400;
     letter-spacing: 1px;
-    color: #777;
-    border: 1px solid #e9e9e9;
-
+    color: #333;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;

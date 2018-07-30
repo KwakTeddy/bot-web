@@ -741,18 +741,16 @@ module.exports = function(bot)
                     {
                         if(!body)
                         {
-                            console.log('111111111');
                             errorHandler(dialog, null);
                             return callback();
                         }
 
                         if(body.E_RETCD == 'E')
                         {
-                            console.log('2222222222');
                             errorHandler(dialog, body);
                         }
                         else if(body.E_RETCD == 'S')
-                        { console.log('3333333333');
+                        {
                             console.log(JSON.stringify(body, null, 4));
                             var data = body.data.ET_TABLE;
 
@@ -889,6 +887,9 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
+                if(dialog.userInput.text === '시작하기'){
+                    context.session.isFirst = false;
+                }
 
                 if(!context.session.auth)
                 {
@@ -2116,8 +2117,15 @@ module.exports = function(bot)
         action: function (dialog, context, callback) {
             var word = dialog.userInput.text;
             var regexp = new RegExp("[0-9]{6}", "g");
+            var isFirst = false;
+            if(regexp.exec(word) ){
+                if(word === context.session.customerBirth){
+                    isFirst = true;
+                }
+            }
 
-            if (regexp.exec(word) || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
+            if (isFirst || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
+
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
@@ -2157,29 +2165,34 @@ module.exports = function(bot)
                                     context.session.customerList[i].VKONT = context.session.customerList[i].VKONT.substring(3);
                                 }
                             }
+                            if (context.channel.name == 'kakao') {
+                                if(dialog.output[0].text.indexOf('처음으로') === -1) {
+                                    dialog.output[0].text = [dialog.output[0].text, '\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
+                                }
+                            } else {
+                                dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+                            }
+
                         } else {
                             errorHandler(dialog, body);
                         }
                     }
-                    if (context.channel.name == 'kakao') {
-                        if(dialog.output[0].text.indexOf('처음으로') === -1) {
-                            dialog.output[0].text = [dialog.output[0].text, '\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
-                        }
-                    } else {
-                        dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
-                    }
                     callback();
                 });
             }
+
             else{
                 if(context.channel.name == 'kakao'){
-                    if(dialog.output[0].text.indexOf('처음으로') === -1) {
-                        dialog.output[0].text = [dialog.output[0].text, '\n\n인증번호를 다시 받으시려면 \'ㅈ\' 을,\n\n이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
+                    if(dialog.options.outputText.indexOf('처음으로') === -1) {
+                        dialog.options.outputText = [dialog.options.outputText, '\n\n인증번호를 다시 받으시려면 \'ㅈ\' 을,이전으로 돌아가시려면 \'ㄱ\' 을, 처음으로 돌아가시려면 \'ㄴ\' 를 입력해주세요.'].join("");
+                        callback();
+                    }else{
+                        callback();
                     }
                 }else{
                     dialog.output[0].buttons = [{text: '재발송'},{text: '이전'}, {text: '처음'}];
+                    callback();
                 }
-                callback();
             }
         }
 	});
@@ -2198,4 +2211,17 @@ module.exports = function(bot)
             }
         }
     });
+
+	bot.setTask('notRetry', 
+	{
+		action: function (dialog, context, callback)
+		{
+            if(context.session.history[1]) {
+                if (context.session.history[1].id === 'reTry') {
+                    context.session.history.splice(0, 1);
+                }
+            }
+			callback();
+		}
+	});
 };
