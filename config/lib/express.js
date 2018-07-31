@@ -169,7 +169,6 @@ module.exports.initHelmetHeaders = function (app) {
 module.exports.initModulesClientRoutes = function (app) {
   app.use(function forceWWW(req, res, next) {
     var host = req.header("host");
-
     if (host == 'playchat.ai') {
       return res.redirect(301, 'https://www.' + host + req.path);
     } else {
