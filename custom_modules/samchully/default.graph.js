@@ -2689,10 +2689,9 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Action",
-                "type": "call",
+                "type": "back",
                 "text": "",
-                "dialogId": "rePeat",
-                "dialogName": "다시질문"
+                "dialogId": "rePeat"
             }
         ],
         "task": {
