@@ -3,7 +3,13 @@ module.exports = function(bot)
     var answer_lst = [
         ["1. 19세이하", "2. 20대", "3. 30대", "4. 40대", "5. 50대", "6. 60대이상"]
     ];
-
+    bot.setTask("defaultTask",
+            {
+                action: function(dialog, context, callback)
+                {
+                    callback();
+                }
+            });
     bot.setType("nextFlow",
         {
             typeCheck: function(dialog, context, callback)
@@ -47,11 +53,5 @@ module.exports = function(bot)
             }
         });
   
-    bot.setTask("defaultTask",
-        {
-            action: function(dialog, context, callback)
-            {
-                callback();
-            }
-        });
+    
 };

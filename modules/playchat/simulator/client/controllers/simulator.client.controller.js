@@ -8,8 +8,10 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
     var tempUserKey = 'socket-user-' + new Date().getTime();
 
     $scope.isAdvisorMode = false;
+    var lastScrollHeigth = 0;
+    var scrollTop = 0;
 
-    (function()
+        (function()
     {
         var chatbot = $cookies.getObject('chatbot');
 
@@ -151,7 +153,14 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
             });
 
             var body = angular.element('#simulatorBody').get(0);
-            body.scrollTop = body.scrollHeight;
+            if((body.scrollHeight - lastScrollHeigth) > 1000){
+                body.scrollTop = scrollTop + 760;
+            }
+            else{
+                body.scrollTop = body.scrollHeight;
+            }
+            lastScrollHeigth = body.scrollHeight;
+            scrollTop = body.scrollTop;
         };
 
         var addUserBubble = function(text, time)
@@ -204,8 +213,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     addUserBubble(data.inputRaw);
                 }
             }
-
-            console.log('챗로그', data);
             if(data.output)
             {
                 addBotBubble(data.output);

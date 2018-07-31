@@ -1,0 +1,204 @@
+<!doctype html>
+
+<html>
+<head ng-controller="TitleController">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93998259-1"></script>
+    <script>
+        if('{{env}}' == 'production')
+        {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-93998259-1');
+        }
+    </script>
+
+
+    <!-- Google Tag Manager -->
+    <script>
+        if('{{env}}' == 'production')
+        {
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5JVQMVS');
+        }
+    </script>
+    <!-- End Google Tag Manager -->
+
+
+    <base href="/">
+<!-- Basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<meta name="Keywords" content="인공지능 AI 챗봇 Chatbot 딥러닝 Deep Learning">
+<meta name="Description" content="NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
+<meta name="author" content="MoneyBrain">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+<title ng-bind="enterpriseTitle"></title>
+
+<link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
+
+{% if env != 'production' %}
+
+{% for cssFile in cssFiles %}
+<link rel="stylesheet" type="text/css" href="{{cssFile}}">
+{% endfor %}
+
+{% endif %}
+
+{% if env == 'production' %}
+<link rel="stylesheet" type="text/css" href="dist/application.min.css?rel={{app_version}}">
+{% endif %}
+
+<link href="/modules/playchat/gnb/client/css/gnb-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 1024px)" id="gnb-responsive-css">
+<link href="/modules/playchat/simulator/client/css/simulator-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 900px)" id="simulator-responsive-css">
+
+
+<script>
+window.__CONFIG = {};
+//window.__CONFIG.platform = 'web';
+//if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
+//{
+//    window.__CONFIG.platform = 'mobile';
+//}
+//window.__CONFIG.os = '';
+//window.__CONFIG.facebookAppId = "{{facebookAppId}}";
+//window.__CONFIG.kakaoJSId = "{{kakaoJSAppId}}";
+//window.__CONFIG.ogTitle = "{{title}}";
+//window.__CONFIG.ogDescription = "{{description}}";
+//window.__CONFIG.ogUrl = "{{url}}";
+//window.__CONFIG.ogLogo = "{{logo}}";
+
+window.__CONFIG.PLATFORM = '{{ platform }}';
+window.__CONFIG.user = {{ user | json | safe }};
+</script>
+
+<!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '874201392715500');
+    fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=874201392715500&ev=PageView&noscript=1"/></noscript>
+<!-- End Facebook Pixel Code -->
+
+</head>
+<body ng-controller="MainController">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JVQMVS"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div class="main-logo-background">
+    <div class="logo"></div>
+</div>
+
+<section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
+
+<section id="main" role="main">
+    <section ui-view style="height: 100%; overflow: auto;"></section>
+</section>
+
+<!--<aside id="chat-include" class="sidebar-right" style="z-index: 11;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>-->
+
+
+
+
+
+
+<!-- 필요한 라이브러리 import -->
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="/lib/angular/angular.js"></script>
+<script src="/lib/angular-resource/angular-resource.js"></script>
+<script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/lib/angular-cookies/angular-cookies.js"></script>
+<script src="/lib/angular-file-upload/dist/angular-file-upload.js"></script>
+<script src="/lib/codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="/lib/codemirror/lib/codemirror.css">
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+<!--<script src="/lib/d3/d3.min.js"></script>-->
+<script src="/lib/chart.js/dist/Chart.js"></script>
+
+<script type="text/javascript" src="/lib/moment/min/moment.min.js"></script>
+<link rel="stylesheet" href="/lib/bootstrap-daterangepicker/daterangepicker.css">
+<script src="/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+
+<script>
+// UI 공통 에러 구현.. 임시로 여기 위치.
+var Beagle = {};
+Beagle.error = function(e)
+{
+    console.error(e);
+};
+</script>
+
+
+{% if env != 'production' %}
+{% for jsFile in jsFiles %}
+<script type="text/javascript" src="{{jsFile}}"></script>
+{% endfor %}
+{% endif %}
+
+
+
+
+{% if env == 'production' %}
+<script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
+{% endif %}
+
+
+
+
+
+
+
+<script>
+$.ajaxPrefilter(function( options, original_Options, jqXHR )
+{
+    options.async = true;
+});
+</script>
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script src="https://connect.facebook.net/en_US/all.js" async></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js" async></script>
+<script>
+var facebookAppId = {{ facebookAppId | json | safe }};
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : facebookAppId,
+        status     : true,
+        xfbml      : true,
+        version    : 'v2.8'
+    });
+};
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+//var kakaoJSID = {{ kakaoJSID | json | safe }};
+//    Kakao.init(kakaoJSID);  // 사용할 앱의 JavaScript 키를 설정해 주세요.
+</script>
+</body>
+</html>

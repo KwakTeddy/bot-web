@@ -4197,7 +4197,7 @@ header .topInfo li.clientAreaLi span,
 	text-transform: uppercase;
 	padding: 0 18px;
 	color: #fff;
-	border-radius: 4px;
+	border-radius: 2px;
 	text-align: center;
 	float: right;
 	background: #288feb;
@@ -4220,7 +4220,7 @@ header .topInfo li.clientAreaLi span,
 .dropup>button{
 	color: #000;
 	padding: 12px 18px;
-	letter-spacing: 2.1px;
+	letter-spacing: 2px;
 	/*
 	background: #288feb;
 	border: 2px solid #badaf7;*/
