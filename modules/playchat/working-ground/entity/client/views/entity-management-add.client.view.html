@@ -1,0 +1,112 @@
+<style>
+.entity-management-add-form > div
+{
+    margin: 20px 0;
+}
+
+.entity-management-add-form label.required > span::after
+{
+    content: '*';
+
+    color: #038eda;
+    font-size: 12px;
+    position: relative;
+    top: -5px;
+    left: 2px;
+}
+
+.entity-management-add-form label > span
+{
+    font-size: 15px;
+    font-weight: 600;
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.entity-management-add-form input
+{
+    border-bottom:1px solid #a0a0a0;
+    width: 494px;
+    margin: 0 4px;
+    padding: 5px;
+}
+
+.entity-management-add-form input:focus
+{
+    border-bottom: 2px solid #038eda;
+}
+
+.entity-management-add-form .entity-management-add-button
+{
+    border: 1px solid #038eda;
+    border-radius: 4px;
+    padding: 7px 15px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #038eda;
+}
+
+.entity-management-add-form table thead th
+{
+    text-align: left;
+    padding-left: 40px;
+}
+</style>
+
+<div ng-controller="EntityManagementAddController" class="fixed-width">
+    <div style="width: 90%; margin: 0 auto;">
+        <form class="entity-management-add-form" ng-submit="save();">
+            <div>
+                <label class="required">
+                    <span>{{lan('Entity') }}</span>
+                    <input type="text" ng-model="name" required="true" autofocus="true">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>{{lan('Contents') }}</span>
+                    <input type="text" ng-keydown="contentInputKeydown($event);">
+                    <button type="button" class="entity-management-add-button" ng-click="addEntityContentClick($event);">+ Add</button>
+                </label>
+            </div>
+            <div>
+                <label class="required" style="width: 100%;">
+                    <span style="vertical-align: top;">{{lan('List') }}</span>
+                    <div style="display: inline-block; vertical-align: top; width: 90%; margin: 20px 0 0 35px;">
+                        <table class="tb02" style="width: 100%;margin-top: 0px;">
+                            <colgroup>
+                                <col style="width: 90%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>{{lan('Contents') }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="entityList">
+                                <tr ng-if="entities.length == 0">
+                                    <td colspan="2">{{ lan('empty') }}</td>
+                                </tr>
+                                <tr ng-repeat="item in entities">
+                                    <td style="text-align: left;"> <textarea class="entity-content-name" ng-model="item.name" style="width: 100%;"></textarea></td>
+                                    <td>
+                                        <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(entities, $index);">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </label>
+            </div>
+            <div style="text-align: right; padding-right: 12px;">
+                <button class="blue-button">{{lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="cancel();">{{lan('Cancel') }}</button>
+            </div>
+        </form>
+    </div>
+</div>

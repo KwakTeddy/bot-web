@@ -1,0 +1,24 @@
+rect
+{
+    shape-rendering:crispEdges;
+}
+
+rect.kakao
+{
+    fill: #ffe100;
+}
+
+rect.facebook
+{
+    fill: #4267b2;
+}
+
+rect.navertalk
+{
+    fill: #00be39;
+}
+
+text.date-label
+{
+    color: #656565;
+}

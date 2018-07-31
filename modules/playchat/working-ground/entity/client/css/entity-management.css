@@ -1,0 +1,114 @@
+#entityList .entity-content-name
+{
+    border: 0;
+    width: 100px;
+    height: 12px;
+
+    padding: 10px;
+
+    vertical-align: middle;
+
+    border: 1px solid transparent;
+    transition: border-color 0.5s;
+
+    resize: none;
+}
+
+#entityList .entity-content-name+img
+{
+    vertical-align: middle;
+}
+
+#entityList .entity-content-name:focus
+{
+    outline: 0;
+    border-color: #ddd;
+}
+
+#entityList .entity-content-synonyms
+{
+    position: relative;
+}
+
+#entityList .entity-content-synonyms > input:first-child
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1000;
+    opacity: 0;
+}
+
+#entityList .entity-content-synonyms > input:last-child
+{
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 12px;
+    width: 100px;
+    display: inline-block;
+    padding: 5px;
+
+    vertical-align: middle;
+}
+
+#entityList .entity-content-synonyms .entity-content-synonym
+{
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: 0;
+    font-size: 12px;
+    padding: 5px;
+    margin: 3px;
+
+    vertical-align: middle;
+}
+
+#entityList .entity-content-synonyms .entity-content-synonym:focus
+{
+    border-color: #038eda;
+}
+
+/*.entity-add-new-modal .entity-content*/
+/*{*/
+    /*display: inline-block;*/
+    /*border: 1px solid #ddd;*/
+    /*border-radius: 5px;*/
+    /*outline: 0;*/
+    /*font-size: 13px;*/
+    /*padding: 5px;*/
+    /*margin: 0 3px;*/
+
+    /*cursor: text;*/
+/*}*/
+
+/*.entity-add-new-modal .entity-content:focus*/
+/*{*/
+    /*border-color: #038eda;*/
+/*}*/
+
+/*.entity-add-new-modal .entity-content:last-child*/
+/*{*/
+    /*border-color: #efefef;*/
+/*}*/
+
+/*.entity-add-new-modal .entity-content:last-child:after*/
+/*{*/
+    /*font-size: 10px;*/
+    /*content: '동의어 입력 (enter)';*/
+/*}*/
+
+/*.entity-add-new-modal .entity-content:last-child:focus*/
+/*{*/
+    /*border-radius: 0;*/
+    /*border-color: #038eda;*/
+    /*min-width: 40px;*/
+    /*content: '';*/
+/*}*/
+
+/*.entity-add-new-modal .entity-content:last-child:focus:after*/
+/*{*/
+    /*content: '';*/
+/*}*/

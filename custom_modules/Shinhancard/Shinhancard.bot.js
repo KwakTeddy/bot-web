@@ -1,12 +1,12 @@
-var path = require('path');
-var botlib = require(path.resolve('config/lib/bot'));
-
-var Shinhancard = {
-  use: true,
-  kakao: {
-    keyboard: { type :"buttons", buttons:["FAN","내게 맞는 카드 추천","자주 묻는 질문(FAQ)"]}
-  }
+module.exports = function(options)
+{
+    options.version = 1.0;
+    options.use = true;
+    options.kakao = { keyboard: { type : "buttons", buttons: ["반갑습니다. 신한카드입니다."]} };
+    options.globalSearch = {
+        use: true,
+        limitOfSimilarAnswer: 1
+    };
+    options.hybrid = true;
+    options.dialogsetMinMatchRate = 0.38;
 };
-
-botlib.makeBot('Shinhancard', Shinhancard);
-

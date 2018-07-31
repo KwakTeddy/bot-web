@@ -1,0 +1,8 @@
+{
+    "botId":"String",
+    "topic": "String",
+    "name": "String",
+    "description": "String",
+    "picture": "String",
+    "status":"String"
+}

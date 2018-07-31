@@ -1,0 +1,20 @@
+<style>
+header
+{
+    display: none;
+}
+</style>
+
+<section class="playchat-background">
+    <nav class="gnb" ng-include="'/modules/playchat/gnb/client/views/gnb.client.view.html'"></nav>
+    <div>
+        <section class="top-bar" id="top-bar-container" ng-include="'/modules/playchat/top-bar/client/views/top-bar.client.view.html'"></section>
+        <div id="middle-container">
+            <div>
+                <section class="working-ground" ng-include="page"></section>
+                <section class="log-analysis" ng-include="'/modules/playchat/log-analysis/client/views/log-analysis.client.view.html'"></section>
+            </div>
+            <section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>
+        </div>
+    </div>
+</section>

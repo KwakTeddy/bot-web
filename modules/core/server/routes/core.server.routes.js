@@ -1,19 +1,28 @@
 'use strict';
 
-module.exports = function (app) {
-  // Root routing
-  var core = require('../controllers/core.server.controller');
+module.exports = function (app)
+{
+    // Root routing
+    var core = require('../controllers/core.server.controller');
 
-  // Define error pages
-  app.route('/server-error').get(core.renderServerError);
+    app.get('/web/chatbot/:botId', core.renderWebChatBot);
+    app.get('/mobile/chatbot/:botId', core.renderMobileChatBot);
 
-  // To Get Config
-  app.route('/config').get(core.getConfig);
+    // Define error pages
+    app.route('/server-error').get(core.renderServerError);
 
-  // Return a 404 for all undefined api, module or lib routes
-  app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
+    // To Log User Activity
+    app.route('/logging').post(core.logging);
 
-  // Define application route
-  app.route('/*').get(core.renderIndex);
+    // To Get Config
+    app.route('/config').get(core.getConfig);
 
+    // Return a 404 for all undefined api, module or lib routes
+    app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
+
+    app.route('/facebookOvertext/:index').get(core.fbOvertext);
+    app.route('/notice').get(core.notice);
+
+    // Define application route
+    app.route('/*').get(core.renderIndex);
 };

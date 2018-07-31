@@ -1,0 +1,352 @@
+.dashboard-summary-title
+{
+    font-size: 15px;
+    font-weight: 600;
+    color: #424242;
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-summary-title:first-child
+{
+    margin-top: 0;
+}
+
+.dashboard-summary-body
+{
+    padding: 40px;
+}
+
+.dashboard-bot-profile
+{
+    display: flex;
+    padding: 10px 20px;
+}
+
+.dashboard-bot-profile-content > div
+{
+    margin: 0;
+}
+
+.dashboard-bot-profile-image
+{
+    margin-top: 4px;
+}
+
+.dashboard-bot-profile-image-wrapper
+{
+    width: 142px;
+    height: 142px;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.dashboard-bot-profile-image-wrapper > img
+{
+    width: 128px;
+    height: 128px;
+}
+
+.dashboard-bot-profile-image-wrapper > span
+{
+    color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+.dashboard-bot-profile-content
+{
+    padding: 0 40px;
+    min-width: 698px;
+}
+
+.dashboard-bot-profile-content span, .dashboard-bot-profile-content p
+{
+    font-size: 13px;
+    color: #656565;
+}
+
+.dashboard-bot-profile-content p
+{
+    margin-top: 6px;
+    margin-bottom: 5px;
+}
+
+.dashboard-bot-profile-content input
+{
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    margin-left: 20px;
+    vertical-align: middle;
+
+    width: 399px;
+}
+
+.dashboard-bot-profile-content textarea
+{
+    width: 492px;
+    height: 64px;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.dashboard-dialog-develop
+{
+    display: flex;
+    margin: 10px 0px 8px;
+    min-width: 875px;
+    padding: 0 5px;
+}
+
+.dashboard-dialog-learning, .dashboard-dialog-graph
+{
+    flex: 1;
+    padding-left: 25px;
+    display: flex;
+    float: left;
+}
+
+.dashboard-dialog-learning > div, .dashboard-dialog-graph > div
+{
+    padding: 0 40px;
+}
+
+.dashboard-dialog-management-card
+{
+    height:200px;
+    margin: 0 7px;
+    width: 50%;
+    min-width: 18.3%;
+    display: inline-block;
+    position: relative;
+    border-radius:6px;
+    -webkit-box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    
+}
+.dashboard-dialog-management-card:hover{
+	-webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -webkit-box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.13);
+    box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.13);
+}
+
+.dashboard-dialog-management-card .card1{
+	background: #93c0d9;
+	padding: 17px;
+	border-radius:6px 6px 0 0;
+	text-align: center;
+}
+
+.dashboard-dialog-management-card .card2{
+	background: #82c5c6;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+
+.dashboard-dialog-management-card .card3{
+	background: #77c7a0;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+.dashboard-dialog-management-card .card4{
+	background: #afb5d4;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+/*new start*/
+.dashboard-dialog-management-newcard
+{
+    height:200px;
+    margin: 0 7px;
+    width: 50%;
+    min-width: 18.3%;
+    display: inline-block;
+    position: relative;
+    border-radius:6px;
+    -webkit-box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    
+}
+
+.dashboard-dialog-management-newcard .card1{
+	background: #93c0d9;
+	padding: 17px;
+	border-radius:6px 6px 0 0;
+	text-align: center;
+}
+
+.dashboard-dialog-management-newcard .card2{
+	background: #82c5c6;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+
+.dashboard-dialog-management-newcard .card3{
+	background: #77c7a0;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+.dashboard-dialog-management-newcard .card4{
+	background: #afb5d4;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+/*new end*/
+.dashboard-dialog-cover
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.wid1
+{
+    width: 219px;
+}
+.wid2
+{
+    width: 215px;
+}
+.dashboard-dialog-management-card > div > p
+{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    word-wrap: break-word;
+}
+
+.dashboard-dialog-cover:hover + div{
+
+}
+.dashboard-dialog-management-card > div > div
+{
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-size: 14px;
+}
+.dashboard-dialog-management-newcard > div > div
+{
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-size: 14px;
+}
+.dashboard-dialog-management-card > div > div a>img{
+    margin-right: 5px;
+    margin-top: -2px;
+}
+.dashboard-dialog-learning > div p:first-child, .dashboard-dialog-graph > div p:first-child
+{
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.dashboard-dialog-learning > div p, .dashboard-dialog-graph > div p
+{
+    margin: 15px 0 22px 0;
+}
+
+.dashboard-dialog-learning > div a, .dashboard-dialog-graph > div a
+{
+    color: white;
+}
+
+.dashboard-channel
+{
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 20px;
+    position: relative;
+}
+
+.dashboard-channel p:first-child
+{
+    color: #038eda;
+    margin-bottom: 10px;
+}
+
+.dashboard-channel a
+{
+    position: absolute;
+
+    right: 20px;
+    top: 27px;
+
+    color: white;
+}
+
+.dashboard-dialog-develop.operation > div
+{
+    width: 48.3%;
+}
+
+.dashboard-dialog-develop.analysis > div
+{
+    width: 31.6%;
+}
+
+.dashboard-dialog-management-card-first
+{
+    padding: 32px 24px;
+    margin: 0 5px;
+    width: 50%;
+    min-width: 18.3%;
+    height: 73px;
+    display: inline-block;
+    position: relative;
+    border: 1px solid #d3e4ee;
+    border-radius: 6px;
+}
+
+.dashboard-dialog-management-card-first > div > div
+{
+    text-align: left;
+    margin-bottom: 10px;
+    color: #038eda;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.dashboard-dialog-management-card-first > div > div a>img{
+    margin-right: 5px;
+    margin-top: -2px;
+}
+
+.dashboard-dialog-management-card-first > div > p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    word-wrap: break-word;
+}

@@ -1,0 +1,62 @@
+<!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
+
+<div ng-controller="OperationUserDetailController">
+    <h2 class="operation-title">{{lan('Dialog') }} - {{ data.userKey }}</h2>
+
+    <div class="operation-search-area advanced">
+        <table>
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 40%;">
+                <col style="width: 10%;">
+                <col style="width: 40%;">
+            </colgroup>
+            <tbody>
+            <tr>
+                <th>Channel</th>
+                <td>
+                    <input type="text" style="background-color: #f2f2f2" class="input_type09" ng-model="data.channel" disabled="true">
+                </td>
+                <th>New Msg</th>
+                <td>
+                    <input type="text" style="background-color: #f2f2f2"  class="input_type09" ng-model="data.newMsg" disabled="true" style="width: 90%;">
+                </td>
+            </tr>
+            <tr>
+                <th>User Key</th>
+                <td>
+                    <input type="text" style="background-color: #f2f2f2"  class="input_type09" ng-model="data.userKey" disabled="true">
+                </td>
+                <th>Last update</th>
+                <td>
+                    <input type="text" style="background-color: #f2f2f2"  class="input_type09" ng-model="data.lastUpdate" disabled="true">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="position: absolute; top: 40px; right: 10px;">
+            <button type="button" class="blue-button" style="width: 140px;" ng-click="changeAdvisorMode();">{{advisorModeText}}</button>
+        </div>
+    </div>
+    <div class="operation-active-area">
+        <p class="operation-active-area-title">{{lan('New Memo') }}</p>
+        <div class="user-operation-memo-area">
+            <form ng-submit="saveUserMemo($event);">
+                <textarea placeholder="Enter memo" ng-model="memo" required="true"></textarea>
+                <div style="text-align: right;">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="user-operation-history-area">
+        <p class="operation-history-title">{{lan('History') }}</p>
+        <div ng-if="data.memos.length == 0" style="text-align: center; padding: 30px 0;">Empty</div>
+        <div class="operation-history-card" ng-repeat="memo in data.memos">
+            <div class="operation-history-card-content">
+                {{ memo.memo }}
+            </div>
+            <span class="operation-history-card-date">{{ formatDate(memo.created) }}</span>
+        </div>
+    </div>
+</div>

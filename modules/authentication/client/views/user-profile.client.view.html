@@ -1,0 +1,64 @@
+<div class="chatbot-body">
+    <form ng-submit="save();" style="width: 300px; margin: 30px auto;">
+        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;text-align: center;">{{ lan('Profile') }}</h2>
+        <div class="form-row" >
+            <span class="form-title">{{ lan('Email') }}</span>
+            <input type="text" ng-model="user.email" disabled="true" class="data-input" style="background: #f2f2f2;margin: 2px;border:#f3f3f3;">
+        </div>
+        <div class="form-row" >
+            <span class="form-title">{{ lan('Provider') }}</span>
+            <input type="text" ng-model="user.provider" disabled="true" class="data-input" style="background: #f2f2f2;margin: 2px;border:#f3f3f3;">
+        </div>
+        <div class="form-row">
+            <span class="form-title">{{ lan('Username') }}</span>
+            <input type="text" ng-model="user.username" disabled="true" class="data-input" style="background: #f2f2f2;margin: 2px;border:#f3f3f3;">
+        </div>
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">E-mail</span>-->
+                <!--<input type="email" ng-model="user.email" class="data-input" ng-required="true" disabled="true">-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">First name</span>-->
+                <!--<input type="text" ng-model="user.firstName" class="data-input" ng-required="true" autofocus="true">-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<div class="form-row">-->
+            <!--<label class="required">-->
+                <!--<span class="form-title">Last name</span>-->
+                <!--<input type="text" ng-model="user.lastName" class="data-input" ng-required="true">-->
+            <!--</label>-->
+        <!--</div>-->
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">{{ lan('Language') }}</span>
+                <div class="select-wrapper">
+                    <select class="jumbo-select" ng-model="user.language" style="height: 33px;">
+                        <option value="ko">{{ lan('Korean') }}</option>
+                        <option value="en">{{ lan('English') }}</option>
+                        <option value="zh">{{ lan('Chinese') }}</option>
+                        <option value="jp">{{ lan('Japanese') }}</option>
+                    </select>
+                </div>
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">{{ lan('Password') }}</span>
+                <input type="password" ng-model="password" class="data-input" style="width: 100%;">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">{{ lan('Password Confirm') }}</span>
+                <input type="password" ng-model="passwordConfirm" class="data-input" style="width: 100%;">
+            </label>
+        </div>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">{{ lan('Confirm') }}</button>
+            <!--<button class="red-button" style="float: left;">Delete Account</button>-->
+        </div>
+    </form>
+</div>

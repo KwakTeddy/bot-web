@@ -1,0 +1,328 @@
+<div ng-controller="ChannelController">
+    <!--<div class="channel-title">{{ lan('Messanger') }}</div>-->
+    <div class="channel-content-row">
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/kakao.png">
+                <p class="channel-content-item-name">{{ lan('KaKao Talk') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('kakao');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/facebook.png">
+                <p class="channel-content-item-name">{{ lan('Facebook') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="connectFacebook();">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/telegram.jpeg" style="width: 90px; height: 90px;">
+                <p class="channel-content-item-name">{{ lan('Telegram') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('telegram');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/naver.png">
+                <p class="channel-content-item-name">{{ lan('Naver Talk Talk') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('naver');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/line.png">
+                <p class="channel-content-item-name">{{ lan('Line') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('line');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+    </div>
+    <div class="channel-content-row">
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/wechat.png">
+                <p class="channel-content-item-name">{{ lan('WeChat') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('wechat');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/wechat.png">
+                <p class="channel-content-item-name">{{ lan('MiniWebChat') }}</p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('miniwebchat');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="channel-content-item">
+            <div>
+                <img src="/modules/playchat/working-ground/channel/client/imgs/phone.png">
+                <p class="channel-content-item-name">{{lan('Phone')}}<span class="empha">alpha</span></p>
+            </div>
+            <div class="connect-button">
+                <button type="button" class="blue-button" ng-click="viewHelp('phone');">{{ lan('Connect') }}</button>
+            </div>
+        </div>
+        <div class="empty-channel">
+        </div>
+        <div class="empty-channel">
+        </div>
+    </div>
+    <div class="modal-background" ng-show="help.kakao">
+        <div class="modal">
+            <div class="modal-title">{{lan('Kakaotalk')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>{{lan('Create a Kakao YellowID')}}</li>
+                    <li>{{lan('Make a Yellow ID profile.')}}</li>
+                    <li>{{lan('Go to the Auto ID page.')}}</li>
+                    <li>{{lan('Go to API auto-response setup page.')}}</li>
+                    <li>{{lan('Set the app name, URL, description, and phone number. You need to set the URL to the URL below!')}}</li>
+                </ul>
+                <div>
+                    <span>Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/kakao/{{ chatbot.id }}">
+                    <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
+                </div>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('kakao')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.line">
+        <div class="modal">
+            <div class="modal-title">{{lan('Line')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>1. 라인 모바일앱을 다운로드 받고 실행하세요.</li>
+                    <li>2. 설정메뉴 -> 계정 -> 이메일을 선택하세요.</li>
+                    <li>3. 이메일 주소와 비밀번호를 입력하고 등록하세요.</li>
+                    <li>4. <a href="https://developers.line.me/">https://developers.line.me/</a> 에 접속해서 Start using Messaging API 버튼을 클릭하세요.</li>
+                    <li>5. 3번에서 등록했던 이메일로 로그인하세요.</li>
+                    <li>6. 인증절차를 거친 후 나타나는 화면에서 Provider 이름과 이메일 주소를 입력하세요.</li>
+                    <li>7. 화면에 나타나는 절차를 거쳐서 채널을 생성하세요.</li>
+                    <li>8. 생성된 채널에 Configuration not yet complete 버튼을 클릭하세요.</li>
+                    <li>9. Messaging settings에서 Use webhooks을 enable로 설정하세요.</li>
+                    <li>10. Webhook URL에 아래의 Webhook URL을 입력하세요.</li>
+                    <li>11. Channel access token을 생성한 후 ChannelId, Channel Secret, Access Token을 아래에 입력하고 저장버튼을 클릭하세요</li>
+                    <!--<li>{{lan('You must be a member of Line. Please log in first with Lind application or Web.')}}</li>-->
+                    <!--<li>{{lan('If you signed up, please register your email to be used in LINE Business Center')}}</li>-->
+                    <!--<li>{{lan('On the Services tab, click the Start Messaging API button and enter the information.')}}</li>-->
+                    <!--<li>{{lan('In LINE Manager, press the API ON button and allow the use of Webhook, then save.')}}</li>-->
+                    <!--<li>{{lan('Go to Account List tab in LINE Business Center')}}</li>-->
+                    <!--<li>{{lan('Press the LINE Developers button in the Messaging API.')}}</li>-->
+                    <!--<li>{{lan('Press the ISSUE button to get a Channel access token.')}}</li>-->
+                    <!--<li>{{lan('Press the EDIT button to copy the Webhook URL below, save it and verify it')}}</li>-->
+                    <!--<li>{{lan("It's done!")}}</li>-->
+                </ul>
+                <div>
+                    <span style="width: 100px; display: inline-block;">Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/line/{{ chatbot.id }}/receive">
+                    <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
+                </div>
+                <div>
+                    <form ng-submit="saveLineInfo();">
+                        <p>
+                            <span style="width: 100px; display: inline-block;">Channel Id</span>
+                            <input type="text" class="webhook" ng-model="lineChannelId" required="true">
+                        </p>
+                        <p>
+                            <span style="width: 100px; display: inline-block;">Channel Secret</span>
+                            <input type="text" class="webhook" ng-model="lineChannelSecret" required="true">
+                        </p>
+                        <p>
+                            <span style="width: 100px; display: inline-block;">AccessToken: </span>
+                            <input type="text" class="webhook" ng-model="lineAccessToken" required="true">
+                        </p>
+                        <div style="text-align: center;">
+                            <button class="blue-button">저장</button>
+                            <button type="button" class="default-button" ng-click="closeHelp('line')">{{ lan('Close') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.telegram">
+        <div class="modal">
+            <div class="modal-title">{{lan('Telegram')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>텔레그램 모바일 앱에서 텔레그램 계정을 생성합니다.</li>
+                    <li>텔레그램의 사용자명 검색을 통해 BotFather를 검색해서 대화를 시작합니다.</li>
+                    <li>/start 명령어 입력 후 /newbot 명령어를 입력 합니다.</li>
+                    <li>안내에 따라 봇 이름, 사용자이름을 입력하면 토큰을 발급받을 수 있습니다.</li>
+                    <li>ex)123454: 로 시작하는 문자열</li>
+                    <li>발급받은 토큰을 아래에 입력하고 연결하기 버튼을 누르세요.</li>
+                </ul>
+                <div>
+                    <span>Token : </span>
+                    <input type="text" class="webhook" ng-model="telegramToken">
+                    <button type="button" class="default-button" ng-click="connectTelegram($event);" style="width: auto;">{{ lan('Connect') }}</button>
+                </div>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('telegram')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.naver">
+        <div class="modal">
+            <div class="modal-title">{{lan('Naver Talk Talk')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>{{lan('Connect to Naver TalktTalk Partner Center (partner.talk.naver.com)')}}</li>
+                    <li>{{lan('Sign in with a corporate ID or a representative personal ID')}}</li>
+                    <li>{{lan('Manage My Account> Create New Chat Account')}}</li>
+                    <li>{{lan("Click on 'Link to Service Later' without selecting a service from the list.")}}</li>
+                    <li>{{lan('When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.')}}</li>
+                    <li>{{lan('The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS')}}</li>
+                    <li>{{lan('In Account Management, click Account Home under Account Management in the list of registered accounts.')}}</li>
+                    <li>{{lan("Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)")}}</li>
+                    <li>{{lan('After Naver has approved the use of API, please enter the URL provided by playchat.')}}</li>
+                </ul>
+                <div>
+                    <span>Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/naver/{{ chatbot.id }}/webhook">
+                    <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
+                </div>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('naver')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.wechat">
+        <div class="modal">
+            <div class="modal-title">{{lan('WeChat')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>{{lan('wechatScription1')}}</li>
+                    <li>{{lan('wechatScription2')}}</li>
+                    <li>{{lan('wechatScription3')}}</li>
+                    <li>{{lan('wechatScription3-1')}}</li>
+                    <li>{{lan("wechatScription4")}}</li>
+                    <li>{{lan('wechatScription5')}}</li>
+                    <li>{{lan('wechatScription6')}}</li>
+                </ul>
+                <div>
+                    <span style="display: inline-block; width: 110px; text-align: right;">Webhook URL : </span>
+                    <input type="text" class="webhook" value="{{ host }}/wechat/{{ chatbot.id }}/webhook" style="width: 66.5%;">
+                    <button type="button" class="default-button" ng-click="copyLink($event);" style="width: auto;">{{ lan('Copy') }}</button>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span style="display: inline-block; width: 110px; text-align: right;">AppId : </span>
+                    <input type="text" class="webhook"id="wechatAppId" ng-model="wechatAppId">
+                </div>
+                <div>
+                    <span style="display: inline-block; width: 110px; text-align: right;">EncodingAESKey : </span>
+                    <input type="text" class="webhook" id="encodingAESKey" ng-model="wechatKey">
+
+                </div>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="blue-button" ng-click="saveWeChatToken($event);" style="width: auto;">{{ lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="closeHelp('wechat')" style="width: auto;">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.miniwebchat">
+        <div class="modal">
+            <div class="modal-title">{{lan('MiniWebChat')}}</div>
+            <div class="modal-body">
+                <ul class="channel-description">
+                    <li>{{ lan('Insert the code below into the head or body of the website where you want to attach the mini-web chat window') }}</li>
+                </ul>
+                <pre style="margin: 0; padding: 15px 0; border: 1px solid #ddd; border-radius: 5px; line-height: 20px;">
+                    &lt;script src="{{ host }}/js/playchat-web/playchat-web.js"&gt;&lt;/script&gt;
+                    &lt;script&gt;
+                        new PlayChatWeb('{{ chatbot.id }}', '{{ chatbot.name }}').init();
+                    &lt;/script&gt;</pre>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('miniwebchat')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.facebook">
+        <div class="modal" style="min-width: 490px; width: auto;">
+            <div class="modal-title">{{lan('Facebook')}}</div>
+            <div class="modal-body" style="padding: 30px 0;">
+                <table class="tb02">
+                    <thead>
+                        <tr>
+                            <th>{{lan('Page name')}}</th>
+                            <th>{{lan('Page link')}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="pageList.length == 0">
+                            <td colspan="3">{{ lan('You do not have any Facebook pages to connect to.'); }}</td>
+                        </tr>
+                        <tr ng-repeat="page in pageList">
+                            <td>{{ page.name }}</td>
+                            <td>{{ page.link }}</td>
+                            <td>
+                                <a href="https://www.messenger.com/t/{{ page.id }}" class="default-button" target="_blank" ng-if="page.connected">{{lan('Try now')}}</a>
+                                <button type="button" class="default-button" ng-click="connect(page);" ng-if="!page.connected">{{lan('Connect')}}</button>
+                                <button type="button" class="red-button" ng-click="disconnect(page);" ng-if="page.connected">{{lan('Disconnect')}}</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 35px;">
+                    <a href="https://www.facebook.com/pages/create/?ref_type=pages_browser" class="blue-button" style="color: white;">{{lan('Create a new Facebook Page')}}</a>
+                </p>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('facebook')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background" ng-show="help.phone">
+        <div class="modal" style="min-width: 490px; width: auto;">
+            <div class="modal-title"><strong class="letterS1">{{lan('Phone')}} <span class="point">ALPHA</span></strong></div>
+            <div class="modal-body">
+                <span class="inline-block" style="font-size: 15px;font-weight: 700;">{{lan('Register')}}</span>
+                <ul class="input_type01" style="margin-top:10px;width:91.4%; height: auto;">
+                    <li style="padding: 5px;">{{lan('You can also use the service on your phone to serve customers with the same content used in messenger.')}}</li>
+                    <li style="padding: 5px;">{{lan('If you want to use the Playchat phone, please click the button to apply after filling in the form below.')}}</li>
+                    <li style="padding: 5px;">{{lan('An Internet phone number will be issued when the application is received.')}} </li>
+                    <li style="padding: 5px;">{{lan('It may take 3-4 business days.')}}</li>
+                    <li style="padding: 5px;">{{lan('* This service is free during the beta service period and the contents of the service are subject to change.')}}</li>
+                    <li style="padding: 5px 0 2px 5px; vertical-align: middle;">{{lan("Inquiry: tel) 02-858-5683")}}</li>
+                </ul>
+                <div class="mt25">
+                    <span class="inline-block" style="font-size: 15px;font-weight: 700;">{{lan('Contact')}}</span>
+                    <div class="input_type02" style="margin-top:10px;width:94.4%; height: 40px;">
+                        <span style="line-height: 40px;">{{lan('No phone number. If you would like to receive a Playchat phone number, please contact us with the number above.')}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeHelp('phone')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

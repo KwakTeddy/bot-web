@@ -1,0 +1,213 @@
+var dialogs = [
+    {
+        "name": "대화이동 후 검색 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "기능",
+                    "nlp": "기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n'대화이동 후 검색'은 대화이동 후, 이동한 대화카드의 자식들에 대하여 검색을 실행하는 기능입니다.\n\nA 대화카드에서 B 대화카드로 대화이동 후 검색을 실행할 경우, B 대화카드로 커서(Cursor)가 이동한 후 A 대화카드에서 받은 사용자 입력으로  B의 자식들에 대하여 검색을 실행합니다. \n\nA 대화카드에서 받은 사용자 입력으로 검색한 다음 매칭된 대화 카드가 없을 경우 B 대화카드로 커서가 이동하고, 매칭된 대화 카드가 있을 경우 매칭된 대화 카드로 커서가 이동합니다.\n\n따라서 커서가 '대화이동 후 검색 실행 대화카드'에 있을 때, 사용자가 대화이동 후 검색 이라고 입력했을 경우 B(대화 이동 후 검색될 카드)의 자식 중 매칭될 수 있는 카드가 없어 B로 커서가 이동하고, 사용자가 1이라고 입력할 경우 B의 자식 중 '검색될 자식카드1'로 커서가 이동합니다.\n\n챗봇 답변은 대화이동 후 검색 기능을 실행하는 대화카드에서 챗봇 답변이 있을 경우 해당 답변이 실행되며, 없을 경우 커서가 이동한 대화카드의 챗봇 답변이 실행됩니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "대화이동 후 검색 실행",
+        "input": [
+            {
+                "text": {
+                    "raw": "실행",
+                    "nlp": "실행"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화이동 후 검색 실행을 위해서 아래의 버튼을 눌러주세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "대화이동 후 검색"
+                    }
+                ]
+            }
+        ],
+        "id": "default1",
+        "children": [
+            {
+                "name": "대화이동 후 검색 실행 카드",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "callChild": "대화 이동 후 검색될 카드",
+                        "options": {
+                            "output": "대화이동 후 검색을 실행합니다."
+                        }
+                    }
+                ],
+                "id": "default2"
+            }
+        ]
+    },
+    {
+        "name": "대화 이동 후 검색될 카드",
+        "input": [
+            {
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 이동됐습니다."
+            }
+        ],
+        "id": "default3",
+        "children": [
+            {
+                "name": "검색될 자식카드1",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "1"
+                    }
+                ],
+                "id": "default4"
+            },
+            {
+                "name": "검색될 자식카드2",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "2"
+                    }
+                ],
+                "id": "default5"
+            }
+        ]
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "开始",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "开始",
+                    "nlp": "开始"
+                }
+            },
+            {
+                "text": {
+                    "raw": "初始画面",
+                    "nlp": "初始画面"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "您好, 我是+bot.name+。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "返回",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "返回",
+                    "nlp": "返回"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "上一页",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "上一页",
+                    "nlp": "上一页"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "没有回答",
+        "input": "",
+        "output": [
+            {
+                text: "我不是很明白您的意思。",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

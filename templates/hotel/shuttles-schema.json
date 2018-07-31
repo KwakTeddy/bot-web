@@ -1,0 +1,4 @@
+{
+    "shuttleornot" : "Boolean",
+    "shuttleimage" : "String"
+}

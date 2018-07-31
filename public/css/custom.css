@@ -1,12 +1,14 @@
 /************************** new **************************/
 body {
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .content-body {
-    margin-right: 330px !important;
+    margin-right: 330px;
     margin-left: 230px !important;
     padding: 20px;
+    height: 100%;   /* 메인 영역 스크롤 */
+    overflow: auto; /* 메인 영역 스크롤 */
 }
 
 html.fixed.sidebar-left-collapsed .content-body {
@@ -34,14 +36,17 @@ html.fixed.sidebar-left-collapsed .page-header {
 
 .page-header .right-wrapper {
     height:40px;
-    display: none;
+    display: block;
 }
 
 #header {height: 50px;}
 
 .header-right {height: 46px;}
 
-.inner-wrapper {padding-top: 90px !important;}
+.inner-wrapper {
+    padding-top: 90px !important;
+    height: 100%; // 메인 영역 스크롤
+}
 
 
 #content {
@@ -420,7 +425,38 @@ figure.profile-picture {display: none !important;}
 .pagination > .active > a {
     z-index: auto;
 }
+*:focus {
+outline: 0;
+outline: none;
+}
 
+#modalForm {
+    display:none;
+    width: 450px;
+    height: 100%;
+    /*min-height: 86vh;*/
+    /*max-height: 86vh;*/
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    z-index: 1;
+    background:white;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+#modalTaskForm {
+    display:none;
+    width: 450px;
+    height: 100%;
+    /*min-height: 86vh;*/
+    /*max-height: 86vh;*/
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    z-index: 1;
+    background:white;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
 #filetree{
     background: gray;
     min-height: 100vh;

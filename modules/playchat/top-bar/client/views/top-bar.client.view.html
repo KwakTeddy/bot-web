@@ -1,0 +1,116 @@
+<style>
+.popup-menu
+{
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 150px;
+    padding: 10px;
+    border-radius: 2px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+
+    background-color: white;
+
+    z-index: 1000;
+
+    display: none;
+}
+
+.popup-menu li a
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.popup-menu li:hover a
+{
+    background-color: #038eda;
+
+    color: white;
+}
+
+.popup-menu .popup-menu-divider
+{
+    height: 1px;
+    background-color: #ebebeb;
+    margin: 12px 0;
+}
+
+.topBarToggleButton
+{
+    display: inline-block;
+    border-radius : 6px;
+    background-color: white;
+    position: absolute;
+    top: 63px;
+    padding:4px;
+    cursor: pointer;
+    z-index: 1000;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    right: 368px;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: none;
+}
+</style>
+
+<div ng-controller="TopBarController">
+    <div class="breadcrumbs">
+        <img class="menu-name-icon" src="">
+        <div class="label">
+            <span class="current">
+                <a href="#">
+                    <strong class="menu-name"></strong>
+                </a>
+            </span>
+        </div>
+    </div>
+
+    <div>
+        <a class="topBarToggleButton" style="background: url('/modules/playchat/top-bar/client/imgs/arrow_up.png') no-repeat center center;"  href="#" ng-if="isTopBarOpen" ng-click="toggleTopBar(false)">
+        </a>
+        <a class="topBarToggleButton" style="background: url('/modules/playchat/top-bar/client/imgs/arrow_down.png') no-repeat center center;" href="#" ng-if="!isTopBarOpen" ng-click="toggleTopBar(true)">
+        </a>
+    </div>
+
+    <div class="system" >
+        <!--<a class="store-btn" href="#">-->
+            <!--<span>{{lan('Store') }}</span>-->
+        <!--</a>-->
+        <!--<a class="notify" href="#"></a>-->
+        <!--<span>-->
+            <!--<button type="button" class="blue-button" style="width: auto;padding:8px;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>-->
+        <!--</span>-->
+        <span style="width:100px;">
+            <label class="select-label">
+                <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
+                    <option value="ko">{{ lan('Korean') }}</option>
+                    <option value="en">{{ lan('English') }}</option>
+                    <option value="zh">{{ lan('Chinese') }}</option>
+                    <option value="jp">{{ lan('Japanese') }}</option>
+                </select>
+            </label>
+        </span>
+        <a class="login" href="#" ng-click="openMenu($event);"></a>
+        <ul class="popup-menu user-menu">
+            <ul>
+                <li class="popup-title">{{ user.email }}</a></li>
+                <li><a href="/playchat/user-profile">{{lan('Profile') }}</a></li>
+                <li><a href="#" ng-click="signout();">{{lan('Signout') }}</a></li>
+            </ul>
+        </ul>
+    </div>
+</div>

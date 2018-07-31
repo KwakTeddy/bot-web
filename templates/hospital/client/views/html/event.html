@@ -1,0 +1,79 @@
+<style>
+    .template-demo-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-demo-menu
+    {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .template-demo-menu input
+    {
+        border: 1px solid #ddd;
+        padding: 8px;
+        border-radius: 6px;
+    }
+    .must:after {
+        content: '*';
+        color: #d2322d;
+        font-size: 12px;
+        margin-left: 3px;
+    }
+</style>
+
+<!--<h1 class="template-demo-title">시술정보관리</h1>-->
+<div ng-controller="hospitalEventController" class="template-demo-menu">
+    <form ng-submit="saveMenu($event);">
+        <table style="table-layout:fixed;" class="tb02">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 30%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="must">이벤트명</th>
+                <th>설명</th>
+                <th>이벤트 기간</th>
+                <th>이미지</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="menu in menus">
+                <td>
+                    <input type="text" ng-model="menu.name" required style="width: 86%;">
+                </td>
+                <td>
+                    <input type="text" ng-model="menu.description" style="width: 100%;">
+                </td>
+                <td>
+                    <input type="text" ng-model="menu.period" style="width:70%;">
+                </td>
+                <td>
+                    <img src="{{ menu.image }}" style="width: 50px;" ng-if="menu.image" ng-click="editImage($event);">
+                    <input style="border: none;" type="file" nv-file-select uploader="menu.uploader" ng-show="!menu.image"/>
+                </td>
+                <td>
+                    <button style="width: 70px;" type="button" class="default-button" ng-click="deleteMenu($index)">삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <button type="button" class="default-button" ng-click="addMenu();">이벤트 추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;float: right;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

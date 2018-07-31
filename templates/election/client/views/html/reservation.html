@@ -1,0 +1,58 @@
+<style>
+    .tab01 li
+    {
+        width: 120px;
+    }
+    .guide {
+        float: right;
+        margin-top: 20px;
+    }
+    .guide_blue{
+        color: #038eda;
+        font-weight: bold;
+        margin-right: 8px;
+    }
+    .guide_red{
+        color: #fc4c4c;
+        font-weight: bold;
+    }
+    .guide_blue_line{
+        margin-top: 3px;
+    }
+    .guide_red_line{
+        margin-top: 3px;
+    }
+</style>
+<div ng-controller="flowerReservationController">
+<div class="upSide">
+    <form>
+        <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+        <div id="createdRange" class="pull-right" style="width: 20%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </form>
+</div>
+<div class="guide">
+    <span class="guide_blue_line"><img src="modules/playchat/working-ground/common/client/imgs/blue_line.png" style="padding: 8px 2px;"></span>
+    <span class="guide_blue">승인 완료</span>
+    <span class="guide_red_line"><img src="modules/playchat/working-ground/common/client/imgs/red_line.png" style="padding: 8px 2px;"></span>
+    <span class="guide_red">승인 대기</span>
+</div>
+<div class="failed-dialog">
+    <div class="tab01" style="margin-top: 10px;">
+        <ul class="tabs1">
+            <li class="select_tab" ng-click="changeTab($event, 'schedule');"><a href="#schedule" class="ng-binding">스케줄</a></li>
+            <li ng-click="changeTab($event, 'await');"><a href="#await" class="ng-binding" >승인 대기({{ awaitlength }})</a></li>
+            <li ng-click="changeTab($event, 'complete');"><a href="#complete" class="ng-binding" >승인 완료({{ acceptlength }})</a></li>
+            <li ng-click="changeTab($event, 'cancel');"><a href="#cancel" class="ng-binding" >취소 내역({{ cancellength }})</a></li>
+        </ul>
+    </div>
+
+    <div class="tab-body" data-id="schedule" ng-include="'/templates/flower/client/views/html/reservationSchedule.html'" style="display: block;"></div>
+    <div class="tab-body" data-id="await" ng-include="'/templates/flower/client/views/html/reservationAwait.html'"></div>
+    <div class="tab-body" data-id="complete" ng-include="'/templates/flower/client/views/html/reservationComplete.html'"></div>
+    <div class="tab-body" data-id="cancel" ng-include="'/templates/flower/client/views/html/reservationCancel.html'"></div>
+
+</div>
+</div>

@@ -1,88 +1,129 @@
-<!-- start: header -->
-<header id="header" class="header" ng-controller="HeaderController">
-<!--<header id="header" class="header" ng-controller="HeaderController" style="z-index: 0">-->
-  <div class="logo-container">
-    <a href="/developer/bots" class="logo" style="margin-top: 5px;">
-      <img src="/images/MONEYBRAIN_s.jpg" height="35" alt="MoneyBrain">
-    </a>
-    <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
-      <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
-    </div>
-  </div>
+<style>
+.popup-menu
+{
+    position: absolute;
 
-  <!-- start: search & user box -->
-  <div class="header-right" ng-show="authentication && authentication.user">
+    top: 0;
+    left: 0;
 
+    width: 150px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
 
-    <span class="separator"></span>
+    background-color: white;
 
-    <div id="userbox" class="userbox">
-      <a href="#" data-toggle="dropdown">
-        <figure class="profile-picture">
-          <img src="{{currentBot.imageFile?currentBot.imageFile:'/images/!logged-user.jpg'}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
-        </figure>
-        <div class="profile-info">
-          <span class="name">{{currentBot.name}}</span>
-          <!--<span class="role">{{}}</span>-->
-        </div>
+    z-index: 1000;
 
-        <i class="fa custom-caret"></i>
-      </a>
+    display: none;
+}
 
-      <div class="dropdown-menu" >
-        <ul class="list-unstyled">
-          <li class="divider"></li>
-          <li data-ng-repeat="bot in myBot" ng-click="changeBot(bot)">
-            <a role="menuitem" tabindex="-1" >
-              <figure class="profile-picture">
-                <img src="{{bot.imageFile?bot.imageFile:'/images/!logged-user.jpg'}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
-              </figure>
-              <div class="profile-info">
-                <span class="name">{{bot.name}}</span>
-              </div>
+.popup-menu li a
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.popup-menu li:hover a
+{
+    background-color: #038eda;
+
+    color: white;
+}
+
+.popup-menu li.popup-title
+{
+    padding: 0px 0 9px 0;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.popup-menu .popup-menu-divider
+{
+    height: 1px;
+    background-color: #ebebeb;
+    margin: 12px 0;
+}
+</style>
+
+<script>
+
+</script>
+
+<header ng-controller="HeaderController">
+    <div class="gnb_entry">
+        <div class="header">
+            <a class="logo_min" href="/playchat/chatbots">
+                <img src="/modules/core/client/imgs/logo.png">
             </a>
-          </li>
-
-          <!--<li>-->
-          <!--<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a role="menuitem" tabindex="-1" href="/api/auth/signout" target="_self"><i class="fa fa-power-off"></i> Logout</a>-->
-          <!--</li>-->
-        </ul>
-      </div>
-    </div>
-
-    <div id="userbox" class="userbox">
-      <a href="#" data-toggle="dropdown">
-        <figure class="profile-picture">
-          <img src="/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
-        </figure>
-        <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-          <span class="name">{{authentication.user.displayName}}</span>
-          <span class="role">{{authentication.user.roles[0]}}</span>
         </div>
-
-        <i class="fa custom-caret"></i>
-      </a>
-
-      <div class="dropdown-menu" >
-        <ul class="list-unstyled">
-          <li class="divider"></li>
-          <!--<li>-->
-            <!--<a role="menuitem" tabindex="-1" href="pages-user-profile.html" ><i class="fa fa-user"></i> My Profile</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>-->
-          <!--</li>-->
-          <li>
-            <!--<a role="menuitem" tabindex="-1" href="/api/auth/signout" target="_self"><i class="fa fa-power-off"></i> Logout</a>-->
-            <a role="menuitem" tabindex="-1" ng-click="signout()" target="_self"><i class="fa fa-power-off"></i> Logout</a>
-          </li>
-        </ul>
-      </div>
+        <div class="system">
+            <ul class="docs">
+                <!--<li>
+                    <a href="/" target="_blank">
+                        <img src="/modules/core/client/imgs/home_silver.png">
+                        <span>Home</span>
+                    </a>
+                </li>-->
+                <li>
+                    <a href="/docs/{{language}}/5minutes-{{language}}.html" target="_blank">
+                        <img src="/modules/core/client/imgs/docs.png">
+                        <span>Docs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" ng-click="reporting();">
+                        <img src="/modules/core/client/imgs/support.png">
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+            <!--<span ng-if="isLogin">-->
+                <!--<button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>-->
+            <!--</span>-->
+            <span>
+                <div class="select-wrapper">
+                    <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
+                        <option value="ko">{{ lan('Korean') }}</option>
+                        <option value="en">{{ lan('English') }}</option>
+                        <option value="zh">{{ lan('Chinese') }}</option>
+                        <option value="jp">{{ lan('Japanese') }}</option>
+                    </select>
+                </div>
+            </span>
+            <!--<a style="display: none;" class="notify_silver" href="#" ng-if="isLogin"></a>-->
+            <a class="login_silver" href="#" ng-if="isLogin" ng-click="openMenu($event);"></a>
+            <ul class="popup-menu user-menu">
+                <ul>
+                    <li class="popup-title">{{ user.email }}</a></li>
+                    <li><a href="/playchat/user-profile">{{lan('Profile') }}</a></li>
+                    <li><a href="#" ng-click="signout();">{{lan('Signout') }}</a></li>
+                </ul>
+            </ul>
+        </div>
     </div>
-  </div>
-  <!-- end: search & user box -->
+    <div class="modal-background import-modal" ng-show="openReporting">
+        <div class="modal">
+            <form ng-submit="sendReporting();">
+                <div class="modal-header">{{ lan('Error reporting and suggestions for improvement') }}</div>
+                <div>
+                    <textarea class="reporting-content" required="true" ng-model="reportContent"></textarea>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{ lan('Send') }}</button>
+                    <button type="button" class="default-button" ng-click="closeReporting();">{{ lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </header>
-<!-- end: header -->

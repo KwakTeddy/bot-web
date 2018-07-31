@@ -1,140 +1,130 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window',
-  'BotsService', '$timeout',
-  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $timeout) {
-    // Expose view variables
-    $scope.$state = $state;
-    $scope.authentication = Authentication;
-    $scope.currentBot = '';
-    $scope.myBot = '';
-    console.log($cookies.getAll())
-    $scope.$$postDigest(function () {
-      BotsService.query({my: 1}).$promise.then(function (result) {
-        $scope.myBot = result;
-        console.log($scope.myBot)
-        // if (result.length){
-        //   for(var i = 0; i < result.length; i++){
-        //     if($cookies.get('default_bot') == result[i].id){
-        //       $scope.test = true
-        //       break
-        //     }
-        //   }
-        //   console.log($scope.test)
-        //   if(!$scope.test){
-        //     // $rootScope.botId = $scope.myBot[0].id;
-        //     // $rootScope.userBot = $scope.myBot[0];
-        //     // $cookies.put('botObjectId', $scope.myBot[0]._id);
-        //     $cookies.remove('default_bot')
-        //     console.log($scope.myBot[0].id)
-        //     $cookies.put('default_bot', $scope.myBot[0].id);
-        //     console.log($cookies.getAll())
-        //     // $window.location.reload()
-        //   }
-        //
-        // }else {
-        //   $cookies.put('default_bot', null);
-        //   $cookies.put('botObjectId', null);
-        //   // $window.location.href ='http://localhost:8443/developer/bots/create'
-        //
-        // }
-      }, function (err) {
-        console.log(err)
-      });
-    })
+//플레이챗 전반적인 관리
 
+angular.module('playchat').controller('HeaderController', ['$scope', '$location', '$timeout', '$cookies', '$window', '$rootScope', '$resource', 'LanguageService', function ($scope, $location, $timeout, $cookies, $window, $rootScope, $resource, LanguageService)
+{
+    $scope.isLogin = $cookies.get('login') == 'true';
 
-    $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
-      $scope.currentBot = result.data;
-    }, function (err) {
-      console.log(err);
+    var UserService = $resource('/api/users');
+    var ReportingService = $resource('/api/reporting');
+
+    var user = $scope.user = $cookies.getObject('user');
+    
+    // var userLang = navigator.language || navigator.userLanguage;
+    // var code = user ? user.language : userLang || 'en';
+    //
+    // code = code.split('-')[0];
+
+    var code = $cookies.get('language');
+
+    $scope.language = code || 'en';
+
+    $scope.openReporting = false;
+
+    $scope.reportContent = '';
+
+    $scope.languageChange = function()
+    {
+
+        UserService.save({ language: $scope.language }, function(result)
+        {
+            if(!user) user = {};
+
+            // user.language = $scope.language;
+            // $cookies.putObject('user', user);
+
+            $cookies.put('language', $scope.language);
+
+            $rootScope.$broadcast('changeLanguage');
+        },
+        function(err)
+        {
+            if(err.status == 401)
+            {
+                var user = {};
+                user.language = $scope.language;
+                $cookies.putObject('user', user);
+
+                $cookies.put('language', $scope.language);
+
+                $rootScope.$broadcast('changeLanguage');
+            }
+            else
+            {
+                alert(err);
+            }
+        });
+    };
+
+    angular.element('.user-menu a').on('click', function()
+    {
+        angular.element('.user-menu').hide();
     });
 
-    $scope.changeBot = function (target) {
-      console.log(target.name);
-      $scope.currentBot = target;
-      $rootScope.botId = target.id;
-      $rootScope.userBot = target;
-      // clearBubble();
-      // var header = document.getElementById("chat-header");
-      // if(header) header.innerText = target.name;
-      // emitMsg(':reset user', target);
+    $scope.openMenu = function(e)
+    {
+        var x = e.currentTarget.offsetLeft;
+        var y = e.currentTarget.offsetTop + e.currentTarget.offsetHeight;
 
-      $cookies.put('default_bot', target.id);
-      //$route.reload?
-      $cookies.put('botObjectId', target._id);
-      $window.location.reload();
-      // vm.changeBotInfo(target);
-      // vm.connect();
-    };
-    function emitMsg(msg, target) {
-      Socket.emit('send_msg', {
-        bot: target.id,
-        user: $scope.authentication.user._id,
-        msg: msg,
-        options: $location.search()
-      });
-    }
+        x -= angular.element('.user-menu').css('width').replace('px', '')*1;
 
-    $scope.connect = function () {
-      if (!vm.userId || vm.userId.length <= 0) {
-        alert('유저명을 입력해주세요!');
-        return;
-      }
+        console.log(angular.element('.user-menu'));
 
-      if (!Socket.socket) {
-        Socket.connect();
-      }
+        angular.element('.user-menu').css('left', x + 'px').css('top', y + 'px').show();
 
-      $cookies.put('default_bot', vm.bot);
-
-      vm.isConnected = true;
-      init();
+        e.stopPropagation();
+        e.preventDefault();
     };
 
-    $scope.changeBotInfo = function(userBot) {
-      vm.bot = userBot.id;
-      $cookies.put('default_bot', vm.bot);
-
-      vm.userBot = userBot;
-      $rootScope.botId = userBot.id;
-      $rootScope.userBot = vm.userBot;
-
-      var header = document.getElementById("chat-header");
-      if(header) header.innerText = userBot.name;
+    $scope.signout = function()
+    {
+        angular.forEach($cookies.getAll(), function (v, k) {
+            if(k != 'language') $cookies.remove(k);
+        });
+        $window.location.href = '/api/auth/signout';
     };
 
-    function clearBubble() {
-      var main = document.getElementById('chat_main');
-      main.innerText = '';
-      document.chatForm.inputbox.value = '';
-    }
-
-    // Get the topbar menu
-    $scope.menu = Menus.getMenu('topbar');
-
-    // Toggle the menu items
-    $scope.isCollapsed = false;
-    $scope.toggleCollapsibleMenu = function () {
-      $scope.isCollapsed = !$scope.isCollapsed;
+    $scope.reporting = function()
+    {
+        if(confirm(LanguageService('Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the \'Cancel\', then you can send to our email.')))
+        {
+            window.open(
+                'http://pf.kakao.com/_xoWVbC',
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }
+        else
+        {
+            $scope.openReporting = true;
+            setTimeout(function()
+            {
+                angular.element('.reporting-content').focus();
+            }, 100);
+        }
     };
 
-    // Collapsing the menu after navigation
-    $scope.$on('$stateChangeSuccess', function () {
-      $scope.isCollapsed = false;
+    $scope.sendReporting = function()
+    {
+        ReportingService.save({ content: $scope.reportContent }, function(result)
+        {
+            alert(LanguageService('Successfully transferred!'));
+            $scope.reportContent = '';
+            $scope.closeReporting();
+        },
+        function(err)
+        {
+            console.log('에러 : ', err);
+        });
+    };
+
+    $scope.closeReporting = function()
+    {
+        $scope.openReporting = false;
+    };
+
+    window.addEventListener('click', function(e)
+    {
+        angular.element('.user-menu').hide();
     });
-
-    $scope.signout = function () {
-      var cookies = $cookies.getAll();
-      angular.forEach(cookies, function (v, k) {
-        $cookies.remove(k)
-      });
-      if ($location.absUrl().split('?')[0].indexOf('developer') > -1){
-        var redirect = '/developer'
-      }else {
-        var redirect = '/'
-      }
-      $window.location.href = '/api/auth/signout?redirect_to=' + redirect;
-    }
-  }
-]);
+}]);

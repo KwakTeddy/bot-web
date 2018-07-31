@@ -1,0 +1,33 @@
+<html>
+<head>
+    <script src="./modal.js"></script>
+    <script>
+    window.addEventListener('DOMContentLoaded', function()
+    {
+        document.querySelector('#testButton').addEventListener('click', function()
+        {
+            var modal = new CustomModal();
+//            modal.open('타이틀', '컨텐트', function(){
+//                alert('컨펌');
+//            },
+//            function(){
+//                alert('캔슬');
+//            });
+
+            modal.openWithTemplate('타이틀', '<input type="text" placeholder="이메일을 입력하세요">', '<button type="button" id="saveButton">저장</button>', function(element)
+            {
+                element.querySelector('#saveButton').addEventListener('click', function()
+                {
+                    var value = element.querySelector('input').value;
+
+                    alert('저장합니다' + value);
+                });
+            });
+        });
+    });
+    </script>
+</head>
+<body>
+    <button type="button" id="testButton">test</button>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<style>
+.template-demo-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-demo-menu
+{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.template-demo-menu input
+{
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 6px;
+    width: 70%;
+    min-width: 95px;
+
+}
+</style>
+
+<h1 class="template-demo-title">메뉴관리</h1>
+<div ng-controller="deliveryMenuController" class="template-demo-menu">
+    <form ng-submit="saveMenu($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 8%;">
+                <col style="width: 8%;">
+                <col style="width: 10%;">
+                <col style="width: 5%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>대분류(필수)</th>
+                    <th>소분류(필수)</th>
+                    <th>메뉴명(필수)<p style="font-size: 5px">(사이즈, 옵션 포함)</p></th>
+                    <th>가격(필수)</th>
+                    <th>삭제</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="menu in menus">
+                    <td>
+                        <input type="text" ng-model="menu.category1">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="menu.category2">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="menu.name">
+                    </td>
+                    <td>
+                        <input type="number" ng-model="menu.price" style="width: 80px;">
+                    </td>
+                    <td>
+                        <button type="button" class="default-button" ng-click="deleteMenu($index)">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <button type="button" class="default-button" ng-click="addMenu();">메뉴추가</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;text-align: right;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

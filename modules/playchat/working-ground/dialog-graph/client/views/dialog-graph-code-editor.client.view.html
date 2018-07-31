@@ -1,0 +1,77 @@
+<style>
+/*.dialog-graph-code-editor-controller.edit*/
+/*{*/
+    /*position: relative;*/
+    /*right: 360px;*/
+/*}*/
+
+/*.dialog-graph-code-editor-controller.edit .alert-success, .dialog-graph-code-editor-controller.edit .alert-error*/
+/*{*/
+    /*top: 30px;*/
+/*}*/
+
+/*.dialog-graph-code-editor-controller .alert-error-close*/
+/*{*/
+    /*position: absolute;*/
+    /*top: 5px;*/
+    /*right: 8px;*/
+
+    /*cursor: pointer;*/
+/*}*/
+
+.CodeMirror-sizer
+{
+    margin-left: 33px !important;
+}
+
+.CodeMirror pre
+{
+    padding-left: 20px !important;
+}
+
+.dialog-graph-code-editor-search
+{
+    float: left;
+    padding: 10px;
+}
+
+.dialog-graph-code-editor-search > input
+{
+    width: 200px !important;
+    background-position-x: 220px !important;
+}
+
+.dialog-graph-code-editor-controller > button[disabled]
+{
+    background-color: #ddd;
+    cursor: default;
+    user-select: none;
+    color: #aaa;
+}
+</style>
+<link rel="stylesheet" href="https://codemirror.net/addon/dialog/dialog.css">
+<link rel="stylesheet" href="https://codemirror.net/addon/search/matchesonscrollbar.css">
+<script src="https://codemirror.net/addon/dialog/dialog.js"></script>
+<script src="https://codemirror.net/addon/search/searchcursor.js"></script>
+<script src="https://codemirror.net/addon/search/search.js"></script>
+<script src="https://codemirror.net/addon/scroll/annotatescrollbar.js"></script>
+<script src="https://codemirror.net/addon/search/matchesonscrollbar.js"></script>
+<form ng-controller="DialogGraphCodeEditorController">
+    <div class="dialog-graph-code-editor-search">
+        <!--<input id="search" name="search" type="search" class="search" ng-keydown="search($event);">-->
+        <p>{{lan('search description1')}}</p>
+        <p style="margin-top: 5px;">{{lan('search description2')}}</p>
+    </div>
+    <div class="dialog-graph-code-editor-controller">
+        <button type="button" class="default-button" ng-click="backToGraph();" ng-if="mode == 'graphsource'" style="width: 200px;">{{lan('Back to Graph edit mode') }}</button>
+        <button type="button" class="blue-button" id="codeSaveButton" ng-click="save();" ng-if="myBotAuth.edit">{{lan('Save') }}</button>
+        <div class="alert-success" role="alert" style="top: 80px;"> <strong>{{lan('Saved.') }}</strong> </div>
+        <div class="alert-error" role="alert" style="top: 80px; text-align: left; max-width: 800px;"> <strong>{{lan('JSON Format Error') }}</strong> <div>{{saveError}}</div> <span class="alert-error-close" ng-click="closeError();">X</span></div>
+    </div>
+    <div class="dialog-graph-code-editor-body">
+    </div>
+    <!--<div class="dialog-editor-footer">-->
+        <!--<button class="blue-button">Save</button>-->
+        <!--<button type="button" class="default-button" ng-click="close($event);">Cancel</button>-->
+    <!--</div>-->
+</form>

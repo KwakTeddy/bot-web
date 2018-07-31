@@ -3,14 +3,50 @@
 var defaultEnvConfig = require('./default');
 
 module.exports = {
+    secure: {
+        ssl: true,
+        ca: './config/sslcerts_moneybrain/ChainCA/rsa-dv.chain-bundle.pem',
+        privateKey: './config/sslcerts_moneybrain/ssl.key',
+        certificate: './config/sslcerts_moneybrain/ssl.crt'
+    },
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/bot-dev',
+    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bot-dev',
     options: {
       user: '',
-      pass: ''
+      pass: '',
+      db: {
+        readPreference: "secondaryPreferred"
+      },
+      replset: {
+        rs_name: 'rs0',
+        debug: false
+      }
     },
-    // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
+  },
+    templatesdb: {
+        uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/templates-dev',
+        options: {
+            user: '',
+            pass: '',
+            db: {
+                readPreference: "secondaryPreferred"
+            },
+            replset: {
+                rs_name: 'rs0',
+                debug: false
+            }
+        },
+        debug: process.env.MONGODB_DEBUG || false
+    },
+  redis: {
+    host: process.env.REDIS ||  '127.0.0.1',
+    port: 6379
+  },
+  loadBalance: {
+    use: process.env.LB_USE == "true" || false,
+    isMaster: process.env.LB_MASTER == "true"|| false,
+    isSlave: process.env.LB_SLAVE == "true" || false
   },
   host: process.env.HOST || 'http://localhost',
   log: {
@@ -41,39 +77,39 @@ module.exports = {
     title: defaultEnvConfig.app.title + ' - Development Environment',
   },
   facebook: {
-      clientID: process.env.FACEBOOK_ID || '1582665965084469',
-      clientSecret: process.env.FACEBOOK_SECRET || '8b544759e4d8604ba8becad76f622d3b',
-      callbackURL: '/api/auth/facebook/callback'
+      clientID: process.env.FACEBOOK_ID || '299548697231251',
+      clientSecret: process.env.FACEBOOK_SECRET || 'f4f156d25ec93050376af77967ed500e',
+      callbackURL: '/auth/facebook/callback'
   },
   twitter: {
     clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
     clientSecret: process.env.TWITTER_SECRET || 'CONSUMER_SECRET',
-    callbackURL: '/api/auth/twitter/callback'
+    callbackURL: '/auth/twitter/callback'
   },
   kakao: {
-      clientID: process.env.KAKAO_KEY || '25009b49de426e1ad0b8da2631b52cc5',
-      callbackURL: '/api/auth/kakao/callback',
-      clientJSID: 'f1eb73f3491e5c1e1178b3b8c12b10e5'
+      clientID: process.env.KAKAO_KEY || '14d5a3ad7584cf6cf2bee86dc6f34935',
+      clientJSID: process.env.KAKAO_JSID || 'ca71056a613942b6ebcf53801a7abb65',
+      callbackURL: '/auth/kakao/callback'
   },
   google: {
-      clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
-      clientSecret: process.env.GOOGLE_SECRET || 'cM_Rcn6dxCNeipINWI8K2QG7',
-      callbackURL: '/api/auth/google/callback'
+      clientID: process.env.GOOGLE_ID || '836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com',
+      clientSecret: process.env.GOOGLE_SECRET || '_NEHSeUNPc7kEeHZZeu-DXoS',
+      callbackURL: '/auth/google/callback'
   },
   linkedin: {
     clientID: process.env.LINKEDIN_ID || 'APP_ID',
     clientSecret: process.env.LINKEDIN_SECRET || 'APP_SECRET',
-    callbackURL: '/api/auth/linkedin/callback'
+    callbackURL: '/auth/linkedin/callback'
   },
   github: {
     clientID: process.env.GITHUB_ID || 'APP_ID',
     clientSecret: process.env.GITHUB_SECRET || 'APP_SECRET',
-    callbackURL: '/api/auth/github/callback'
+    callbackURL: '/auth/github/callback'
   },
   paypal: {
     clientID: process.env.PAYPAL_ID || 'CLIENT_ID',
     clientSecret: process.env.PAYPAL_SECRET || 'CLIENT_SECRET',
-    callbackURL: '/api/auth/paypal/callback',
+    callbackURL: '/auth/paypal/callback',
     sandbox: true
   },
   // mailer: {

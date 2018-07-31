@@ -1,0 +1,40 @@
+<div ng-controller="DialogTrainingInputController" data-ng-init="init()">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button excel-download-button" ng-click="exelDownload('dailyUser')">{{lan('Excel Download') }}</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <table class="tb02">
+        <colgroup>
+            <col style="width: 45%;">
+            <col style="width: 45%;">
+            <col style="width: 10%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{{lan('Trained Dialog') }}</th>
+                <th>{{lan("User's input") }}</th>
+                <th>{{lan('Use Count') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="list.length == 0">
+                <td colspan="3">{{lan('empty') }}</td>
+            </tr>
+            <tr ng-repeat="item in list">
+                <td>{{ item.input }}</td>
+                <td>
+                    <div ng-repeat="userInput in item.userInput">
+                        {{ userInput.raw }} : {{ userInput.count }}회
+                    </div>
+                </td>
+                <td>
+                    {{ item.sum }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

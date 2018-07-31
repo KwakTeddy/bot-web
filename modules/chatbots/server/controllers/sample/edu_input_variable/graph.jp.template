@@ -1,0 +1,170 @@
+var dialogs = [
+    {
+        "name": "키워드 방식",
+        "input": [
+            {
+                "text": {
+                    "raw": "키 워드 방식",
+                    "nlp": "키 워드 방식"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "키워드 방식이란 '사용자 입력'에 입력된 키워드를 사용자가 입력했을 경우에 해당 대화 카드가 실행되는 방식을 뜻합니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "키워드 OR 조건",
+        "input": [
+            {
+                "text": {
+                    "raw": "키",
+                    "nlp": "키"
+                }
+            },
+            {
+                "text": {
+                    "raw": "워드",
+                    "nlp": "워드"
+                }
+            },
+            {
+                "text": {
+                    "raw": "OR",
+                    "nlp": "OR"
+                }
+            },
+            {
+                "text": {
+                    "raw": "조건",
+                    "nlp": "조건"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "키 또는 워드 또는 OR 또는 조건 중 어느 키워드를 입력해도 대화 카드가 실행됩니다.\nOR 조건은 '사용자 입력'을 여러 개 설정하면 됩니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "키워드 AND 조건",
+        "input": [
+            {
+                "text": {
+                    "raw": "AND 조건",
+                    "nlp": "AND 조건"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "'AND' '조건'을 모두 입력했을 시에 실행됩니다.\nAND 조건은 '사용자 입력'에 띄어쓰기 형태로 여러 키워드를 설정하면 됩니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "start",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "スタート",
+                    "nlp": "スタート"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "こんにちは、私は +bot.name+です。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "前",
+                    "nlp": "前"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "upper",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "親",
+                    "nlp": "親"
+                }
+            },
+            {
+                "text": {
+                    "raw": "アップ",
+                    "nlp": "アップ"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "noanswer",
+        "input": "",
+        "output": [
+            {
+                text: "知らない",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

@@ -1,0 +1,171 @@
+var dialogs = [
+    {
+        "name": "다시질문하기 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "기능",
+                    "nlp": "기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n다시질문하기 기능은 사용자의 입력값에 부합하는 자식 대화 카드가 없을 때 커서가 이동하지 않고 챗봇 답변을 다시 실행하는 즉, 다시 질문하는 기능입니다.\n\n다시질문하기는 막내 대화카드에서 사용자 입력을 if(true)로 설정하고 부모 대화카드로 대화이동을 구현한 것과 동일합니다. \n\n사용자에게 특정 대답을 요구할 때 사용 가능합니다.\n\n예를 들어, 핸드폰 번호를 물어볼 경우 그에 해당하지 않는 사용자의 입력값이 들어오면 다시 물어보는 기능입니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "다시질문하기 실행 _ 핸드폰",
+        "input": [
+            {
+                "text": {
+                    "raw": "실행",
+                    "nlp": "실행"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "다시질문하기 기능을 실행하겠습니다.\n\n핸드폰 번호를 입력해주세요."
+            }
+        ],
+        "id": "default1",
+        "children": [
+            {
+                "name": "핸드폰 번호 입력받기",
+                "input": [
+                    {
+                        "types": [
+                            "mobile"
+                        ]
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "핸드폰 번호를 입력해주셨습니다."
+                    }
+                ],
+                "id": "default2"
+            },
+            {
+                "name": "다시질문하기 실행 카드",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": 1,
+                        "options": {
+                            "output": "다시질문하기 기능이 실행됐습니다.\n\n핸드폰 번호가 아닙니다. \n\n다시 핸드폰 번호를 입력해주세요."
+                        }
+                    }
+                ],
+                "id": "default3"
+            }
+        ]
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "start",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "スタート",
+                    "nlp": "スタート"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "こんにちは、私は +bot.name+です。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "前",
+                    "nlp": "前"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "upper",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "親",
+                    "nlp": "親"
+                }
+            },
+            {
+                "text": {
+                    "raw": "アップ",
+                    "nlp": "アップ"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "noanswer",
+        "input": "",
+        "output": [
+            {
+                text: "知らない",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};
