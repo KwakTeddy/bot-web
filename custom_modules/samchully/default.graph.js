@@ -329,10 +329,6 @@ var dialogs = [
         "input": [
             {
                 "text": {
-<<<<<<< HEAD
-                    "raw": " 1. 이사 및 AS",
-                    "nlp": "1 .   이사 및 AS"
-=======
                     "raw": "1. 요금 조회 및 납부",
                     "nlp": "1 . 요금 조회 및 납부"
                 }
@@ -341,52 +337,12 @@ var dialogs = [
                 "text": {
                     "raw": "1",
                     "nlp": "1"
->>>>>>> db85994844d824063a0edf460fa9e19ecffdef24
                 }
             }
         ],
         "output": [
             {
                 "kind": "Content",
-<<<<<<< HEAD
-                "text": "이사(전입/전출) 및 가스렌지 연결/철거 신청, 예약내용 확인/변경, 연결비 안내를 이용하실 수\n있습니다.",
-                "buttons": [
-                    {
-                        "text": "이전"
-                    },
-                    {
-                        "text": "처음"
-                    }
-                ]
-            }
-        ],
-        "id": "default5",
-        "children": [],
-        "task": {
-            "name": ""
-        }
-    },
-    {
-        "name": "요금 조회 및 납부",
-        "input": [
-            {
-                "text": {
-                    "raw": "2. 요금 조회 및 납부",
-                    "nlp": "2 . 요금 조회 및 납부"
-                }
-            },
-            {
-                "text": {
-                    "raw": "2",
-                    "nlp": "2"
-                }
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-=======
->>>>>>> db85994844d824063a0edf460fa9e19ecffdef24
                 "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
                 "if": "context.session.auth && context.session.customerList.length != 1",
                 "dialogName": "요금 조회 및 납부"
