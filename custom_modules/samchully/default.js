@@ -2102,7 +2102,8 @@ module.exports = function(bot)
 		{
                 dialog.output[0].dialogId = reTry[bot.userKey].reTryId;
                 dialog.output[0].dialogName = reTry[bot.userKey].reTryName;
-
+             console.log("reTry[bot.userKey].reTryId: " + reTry[bot.userKey].reTryId);
+            console.log("reTry[bot.userKey].reTryName: " + reTry[bot.userKey].reTryName);
             if(!reTry[bot.userKey].reTryId || !reTry[bot.userKey].reTryName){
                 dialog.output[0].dialogId = 'startDialog';
                 dialog.output[0].dialogName = '시작';
