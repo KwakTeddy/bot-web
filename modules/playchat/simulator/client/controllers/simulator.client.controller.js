@@ -213,8 +213,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
                     addUserBubble(data.inputRaw);
                 }
             }
-
-            console.log('챗로그', data);
             if(data.output)
             {
                 addBotBubble(data.output);

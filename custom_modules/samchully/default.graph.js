@@ -325,18 +325,30 @@ var dialogs = [
         }
     },
     {
-        "name": "이사/AS",
+        "name": "요금 조회 및 납부",
         "input": [
             {
                 "text": {
+<<<<<<< HEAD
                     "raw": " 1. 이사 및 AS",
                     "nlp": "1 .   이사 및 AS"
+=======
+                    "raw": "1. 요금 조회 및 납부",
+                    "nlp": "1 . 요금 조회 및 납부"
+                }
+            },
+            {
+                "text": {
+                    "raw": "1",
+                    "nlp": "1"
+>>>>>>> db85994844d824063a0edf460fa9e19ecffdef24
                 }
             }
         ],
         "output": [
             {
                 "kind": "Content",
+<<<<<<< HEAD
                 "text": "이사(전입/전출) 및 가스렌지 연결/철거 신청, 예약내용 확인/변경, 연결비 안내를 이용하실 수\n있습니다.",
                 "buttons": [
                     {
@@ -373,6 +385,8 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
+=======
+>>>>>>> db85994844d824063a0edf460fa9e19ecffdef24
                 "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
                 "if": "context.session.auth && context.session.customerList.length != 1",
                 "dialogName": "요금 조회 및 납부"
@@ -1042,14 +1056,14 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "3. 전자고지, 자동이체 신청/해지",
-                    "nlp": "3 . 전자 고지 , 자동 이체 신청 / 해지"
+                    "raw": "2. 전자고지, 자동이체 신청/해지",
+                    "nlp": "2 . 전자 고지 , 자동 이체 신청 / 해지"
                 }
             },
             {
                 "text": {
-                    "raw": "3",
-                    "nlp": "3"
+                    "raw": "2",
+                    "nlp": "2"
                 }
             }
         ],
@@ -1646,14 +1660,14 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "4. 자가검침 입력",
-                    "nlp": "4 . 자가 검침 입력"
+                    "raw": "3. 자가검침 입력",
+                    "nlp": "3 . 자가 검침 입력"
                 }
             },
             {
                 "text": {
-                    "raw": "4",
-                    "nlp": "4"
+                    "raw": "3",
+                    "nlp": "3"
                 }
             }
         ],
@@ -1720,14 +1734,14 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "5",
-                    "nlp": "5"
+                    "raw": "4",
+                    "nlp": "4"
                 }
             },
             {
                 "text": {
-                    "raw": "5. 안전점검 및 가스누출/화재 신고",
-                    "nlp": "5 . 안전 점검 및 가스 누 추다 / 화재 신고"
+                    "raw": "4. 안전점검 및 가스누출/화재 신고",
+                    "nlp": "4 . 안전 점검 및 가스 누 추다 / 화재 신고"
                 }
             }
         ],
@@ -1942,14 +1956,14 @@ var dialogs = [
         "input": [
             {
                 "text": {
-                    "raw": "6. 이용가이드 및 FAQ 등",
-                    "nlp": "6 . 이용 가이드 및 FAQ 등"
+                    "raw": "5. 이용가이드 및 FAQ 등",
+                    "nlp": "5 . 이용 가이드 및 FAQ 등"
                 }
             },
             {
                 "text": {
-                    "raw": "6",
-                    "nlp": "6"
+                    "raw": "5",
+                    "nlp": "5"
                 }
             }
         ],
@@ -2590,22 +2604,19 @@ var commonDialogs = [
                 "text": "안녕하세요. 삼천리 톡 서비스 입니다.\n\n*원하시는 메뉴를 하단 버튼에서 선택해주세요*",
                 "buttons": [
                     {
-                        "text": "1. 이사 및 AS"
+                        "text": "1. 요금 조회 및 납부"
                     },
                     {
-                        "text": "2. 요금 조회 및 납부"
+                        "text": "2. 전자고지, 자동이체 신청/해지"
                     },
                     {
-                        "text": "3. 전자고지, 자동이체 신청/해지"
+                        "text": "3. 자가검침 입력"
                     },
                     {
-                        "text": "4. 자가검침 입력"
+                        "text": "4. 안전점검 및 가스누출/화재 신고"
                     },
                     {
-                        "text": "5. 안전점검 및 가스누출/화재 신고"
-                    },
-                    {
-                        "text": "6. 이용가이드 및 FAQ 등"
+                        "text": "5. 이용가이드 및 FAQ 등"
                     }
                 ],
                 "image": {
