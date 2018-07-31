@@ -10,6 +10,7 @@ module.exports = function(bot)
     reTry[bot.userKey]= {};
     reTry[bot.userKey].reTryId = '';
     reTry[bot.userKey].reTryName = '';
+    reTry[bot.userKey].noList = '';
 
     //Variable Area
     var monthIndex =
@@ -111,6 +112,8 @@ module.exports = function(bot)
 
         if(errData.msg && errData.msg == "CONNECTIONERR")
         {
+            console.log("dialog.id: " + dialog.id);
+            console.log("dialog.card.name: " + dialog.card.name);
             reTry[bot.userKey].reTryId = dialog.id;
             reTry[bot.userKey].reTryName = dialog.card.name;
 
@@ -2100,13 +2103,9 @@ module.exports = function(bot)
 	{
 		action: function (dialog, context, callback)
 		{
+            if(reTry[bot.userKey].reTryId && reTry[bot.userKey].reTryName) {
                 dialog.output[0].dialogId = reTry[bot.userKey].reTryId;
                 dialog.output[0].dialogName = reTry[bot.userKey].reTryName;
-             console.log("reTry[bot.userKey].reTryId: " + reTry[bot.userKey].reTryId);
-            console.log("reTry[bot.userKey].reTryName: " + reTry[bot.userKey].reTryName);
-            if(!reTry[bot.userKey].reTryId || !reTry[bot.userKey].reTryName){
-                dialog.output[0].dialogId = 'startDialog';
-                dialog.output[0].dialogName = '시작';
             }
 
 			callback();
@@ -2126,7 +2125,7 @@ module.exports = function(bot)
             }
 
             if (isFirst || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
-
+                reTry[bot.userKey].noList = '';
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
@@ -2152,6 +2151,7 @@ module.exports = function(bot)
                         console.log('channel: ' + context.channel.name);
                         if (body.E_RETCD == 'E') {
                             body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
+                            reTry[bot.userKey].noList = true;
                             errorHandler(dialog, body);
                         }
                         else if (body.E_RETCD == 'S') {
@@ -2206,6 +2206,10 @@ module.exports = function(bot)
             if(dialog.userInput.text === context.session.identificationNum){
                 matched = true;
                 callback(matched);
+            }else if(reTry[bot.userKey].noList === true){
+                dialog.output[0].text = '[알림]\n\n"조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요."';
+                dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
+                callback(matched);
             }
             else{
                 callback(matched);
@@ -2225,4 +2229,5 @@ module.exports = function(bot)
 			callback();
 		}
 	});
+
 };
