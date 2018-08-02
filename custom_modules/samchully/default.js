@@ -2,6 +2,11 @@ var request = require('request');
 var async = require('async');
 var path = require('path');
 
+var testop = {"url":"http://sam.moneybrain.ai:3000/api","json":{"name":"ZCS_CENTER_INFO","channel":"socket","param":[{"key":"I_DONG","val":"오산"}],"isTable":true}}
+
+console.log('abcdrfsadfsdfsadfdsafsdaf');
+request(testop,function(res){console.log(res)});
+
 module.exports = function(bot)
 {
    // if(!reTry){
@@ -462,7 +467,7 @@ module.exports = function(bot)
             }
         });
 
-    bot.setTask('searchSamchullyUser',
+    bot.setTask('search',
         {
             action: function (dialog, context, callback)
             {
@@ -1808,8 +1813,8 @@ module.exports = function(bot)
                     { key: 'I_DONG', val: context.session.centerAddress}
                 ];
                 options.json.isTable = true;
-                ////options.timeout = timeout;
-				console.log(options);
+              
+				console.log(JSON.stringify(options));
                 request.post(options, function(err, response, body)
                 {
                     if(err)
