@@ -4,13 +4,13 @@ var path = require('path');
 
 module.exports = function(bot)
 {
-   if(!reTry){
-       var reTry = {};
-   }
-    reTry[bot.userKey]= {};
-    reTry[bot.userKey].reTryId = '';
-    reTry[bot.userKey].reTryName = '';
-    reTry[bot.userKey].noList = '';
+   // if(!reTry){
+   //     var reTry = {};
+   // }
+    // reTry[bot.userKey]= {};
+    // reTry[bot.userKey].reTryId = '';
+    // reTry[bot.userKey].reTryName = '';
+    // reTry[bot.userKey].noList = '';
 
     //Variable Area
     var monthIndex =
@@ -112,11 +112,6 @@ module.exports = function(bot)
 
         if(errData.msg && errData.msg == "CONNECTIONERR")
         {
-            console.log("dialog.id: " + dialog.id);
-            console.log("dialog.card.name: " + dialog.card.name);
-            reTry[bot.userKey].reTryId = dialog.id;
-            reTry[bot.userKey].reTryName = dialog.card.name;
-
             dialog.output[0].text = '[에러]\n\n"연결이 지연되고 있습니다. 재시도 부탁드립니다. 연결 지연이 계속될 경우, 고객센터로 문의해주세요. 고객센터 전화 (1544-3002)"';
             dialog.output[0].buttons = [{text: '재시도'}, {text: '처음'}];
             return
@@ -680,7 +675,9 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
                 console.log('노티스 히스토리 : ', context.session.noticeHistory);
-                if(context.session.selectedMonth === 1){
+                if(context.session.selectedMonth === 1 && context.session.noticeHistory !== undefined){
+                      context.session.isHistory = "";
+                      context.session.isHistory = "true";
 
                     dialog.noticeDetail = context.session.noticeHistory[0];
 
@@ -692,7 +689,9 @@ module.exports = function(bot)
 
                     callback();
 
-                }else{
+                }else if(context.session.noticeHistory !== undefined){
+                      context.session.isHistory = "";
+                      context.session.isHistory = "true";
 
                     for(var i = 0; i < context.session.noticeHistory.length; i++)
                     {
@@ -712,6 +711,12 @@ module.exports = function(bot)
                     callback();
 
                 }
+              else{
+                context.session.isHistory = "";
+                context.session.isHistory = "false";
+                callback();
+           
+              }
             }
         });
 
@@ -764,7 +769,7 @@ module.exports = function(bot)
                             }
                             context.session.paymentHistory = data;
 
-                        }else {console.log('444444444');
+                        }else {
                             errorHandler(dialog, body);
                         }
                     }
@@ -778,7 +783,7 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
 
-                if(context.session.selectedMonth === 1){
+                if(context.session.selectedMonth === 1 && context.session.paymentHistory.length >0){
 
                     dialog.paymentDetail = context.session.paymentHistory[0];
 
@@ -915,9 +920,6 @@ module.exports = function(bot)
                 {
                     dialog.output[0].buttons.push({text: '로그아웃'});
                 }
-
-                reTry[bot.userKey].reTryId = '';
-                reTry[bot.userKey].reTryName = '';
 
                 callback();
             }
@@ -1116,8 +1118,8 @@ module.exports = function(bot)
             }
         });
 
-  
-  bot.setTask('setNoticeMethod_kkoalarm', 
+
+  bot.setTask('setNoticeMethod_kkoalarm',
 	{
 		action: function (dialog, context, callback)
             {
@@ -1162,7 +1164,7 @@ module.exports = function(bot)
                 });
             }
 	});
-  
+
     bot.setTask('setNoticeMethod_kkopay',
         {
             action: function (dialog, context, callback)
@@ -2099,20 +2101,22 @@ module.exports = function(bot)
             }
         });
 
-	bot.setTask('reTry', 
+	bot.setTask('reTry',
 	{
 		action: function (dialog, context, callback)
 		{
-            if(reTry[bot.userKey].reTryId && reTry[bot.userKey].reTryName) {
-                dialog.output[0].dialogId = reTry[bot.userKey].reTryId;
-                dialog.output[0].dialogName = reTry[bot.userKey].reTryName;
-            }
 
-			callback();
+                context.session.history.splice(0, 1);
+                dialog.output[0].dialogId = context.session.history[0].id;
+                dialog.output[0].dialogName = context.session.history[0].card.name;
+                console.log("dialog.output[0].dialogId: " + dialog.output[0].dialogId);
+                console.log("dialog.output[0].dialogName: " + dialog.output[0].dialogName);
+
+            callback();
 		}
 	});
 
-	bot.setTask('sendIdentificationNum', 
+	bot.setTask('sendIdentificationNum',
 	{
         action: function (dialog, context, callback) {
             var word = dialog.userInput.text;
@@ -2125,7 +2129,7 @@ module.exports = function(bot)
             }
 
             if (isFirst || word === 'ㅈ' || word === '재발송' || word === '재시도' || word === '이전' || word === 'ㄱ') {
-                reTry[bot.userKey].noList = '';
+                context.session.noList = '';
                 var options = {};
                 options.url = 'http://sam.moneybrain.ai:3000/api';
                 options.json = {};
@@ -2151,7 +2155,7 @@ module.exports = function(bot)
                         console.log('channel: ' + context.channel.name);
                         if (body.E_RETCD == 'E') {
                             body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
-                            reTry[bot.userKey].noList = true;
+                            context.session.noList = true;
                             errorHandler(dialog, body);
                         }
                         else if (body.E_RETCD == 'S') {
@@ -2203,21 +2207,24 @@ module.exports = function(bot)
         typeCheck: function (dialog, context, callback)
         {
             var matched = false;
-            if(dialog.userInput.text === context.session.identificationNum){
+          if(context.session.noList === true){
                 matched = true;
-                callback(matched);
-            }else if(reTry[bot.userKey].noList === true){
-                dialog.output[0].text = '[알림]\n\n"조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요."';
-                dialog.output[0].buttons = [{text: '이전'}, {text: '처음'}];
                 callback(matched);
             }
             else{
+              if(dialog.userInput.text === context.session.identificationNum){
+                matched = true;
                 callback(matched);
+            }
+              else{
+               callback(matched);
+              }
+               
             }
         }
     });
 
-	bot.setTask('notRetry', 
+	bot.setTask('notRetry',
 	{
 		action: function (dialog, context, callback)
 		{
