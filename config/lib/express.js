@@ -181,25 +181,6 @@ module.exports.initHelmetHeaders = function (app) {
 /**
  * Configure the modules static routes
  */
-<<<<<<< HEAD
-module.exports.initModulesClientRoutes = function (app) {
-  app.use(function forceWWW(req, res, next) {
-    var host = req.header("host");
-    if (host == 'playchat.ai') {
-      return res.redirect(301, 'https://www.' + host + req.path);
-    } else {
-      return next();
-    }
-  });
-
-  // Setting the app router and static folder
-  app.use('/', express.static(path.resolve('./public')));
-
-  // Globbing static routing
-  config.folders.client.forEach(function (staticPath) {
-    app.use(staticPath, express.static(path.resolve('./' + staticPath)));
-  });
-=======
 module.exports.initModulesClientRoutes = function (app)
 {
     // app.use(function forceWWW(req, res, next)
@@ -231,7 +212,6 @@ module.exports.initModulesClientRoutes = function (app)
     logger.systemInfo('=========== Load Client Routing Configuration - express.js ==========');
     logger.systemInfo(config.folders.client.toString().replace(/,/gi, '\n'));
     logger.systemInfo('=====================================================================');
->>>>>>> 853793575fbbde7a41ab1f44363eea84af2e4266
 };
 
 /**
