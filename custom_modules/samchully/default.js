@@ -1809,7 +1809,7 @@ module.exports = function(bot)
                 ];
                 options.json.isTable = true;
                 ////options.timeout = timeout;
-
+				console.log(options);
                 request.post(options, function(err, response, body)
                 {
                     if(err)
