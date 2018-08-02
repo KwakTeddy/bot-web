@@ -125,6 +125,20 @@ var dialogs = [
                                                             {
                                                                 "text": "아니요"
                                                             }
+                                                        ],
+                                                        "if": "context.session.noList !== true"
+                                                    },
+                                                    {
+                                                        "kind": "Content",
+                                                        "text": "조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.",
+                                                        "if": "context.session.noList === true",
+                                                        "buttons": [
+                                                            {
+                                                                "text": "이전"
+                                                            },
+                                                            {
+                                                                "text": "처음"
+                                                            }
                                                         ]
                                                     }
                                                 ],
@@ -346,7 +360,7 @@ var dialogs = [
                 "text": "이사(전입/전출) 및 가스렌지 연결/철거 신청, 예약내용 확인/변경, 연결비 안내를 이용하실 수\n있습니다.\n\n자세히 보기를 클릭해주세요.",
                 "buttons": [
                     {
-                        "url": "https://www.samchully.co.kr/simpleReg",
+                        "url": "http://simplereg.samchully.co.kr",
                         "text": "자세히보기"
                     },
                     {
@@ -531,11 +545,23 @@ var dialogs = [
                                                 "text": "+dialog.noticeDetail.BILLING_PERIOD+ 상세 내용입니다.\n\n전월지침 : +dialog.noticeDetail.PR_ZWSTNDAB+㎥\n당월지침 : +dialog.noticeDetail.ZWSTNDAB+㎥\n보정계수 : +dialog.noticeDetail.ZUSTZAHL+\n온압부과량(㎥) : +dialog.noticeDetail.I_ABRMENGE+㎥\n단위열량(MJ) : +dialog.noticeDetail.UNIT_CALORY+MJ\n사용열량(MJ) : +dialog.noticeDetail.USED_CALORY+MJ\n기본요금 : +dialog.noticeDetail.BETRW_GI+원\n사용요금 : +dialog.noticeDetail.BETRW_GA+원\n경감금액 : +dialog.noticeDetail.BETRW_DC+원\n계량기교체비 : +dialog.noticeDetail.ZRESERVE_AMT+원\n부가세 : +dialog.noticeDetail.SBETW+원\n가산금 : +dialog.noticeDetail.BETRW_D+원\n정산금액 : +dialog.noticeDetail.BETRW_JS+원\n원단위절사 : +dialog.noticeDetail.BETRW_RO+원\n재공급수수료 : +dialog.noticeDetail.BETRW_SS+원\n고지금액 : +dialog.noticeDetail.BETRW_TOT+원",
                                                 "buttons": [
                                                     {
-                                                        "url": "",
                                                         "text": "이전"
                                                     },
                                                     {
-                                                        "url": "",
+                                                        "text": "처음"
+                                                    }
+                                                ],
+                                                "if": "context.session.isHistory === \"true\""
+                                            },
+                                            {
+                                                "kind": "Content",
+                                                "text": "[알림]\n  \n\"조회한 내역이 없습니다.\"",
+                                                "if": "context.session.isHistory === \"false\"",
+                                                "buttons": [
+                                                    {
+                                                        "text": "이전"
+                                                    },
+                                                    {
                                                         "text": "처음"
                                                     }
                                                 ]
@@ -2732,9 +2758,10 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Action",
-                "type": "back",
+                "type": "call",
                 "text": "",
-                "dialogId": "rePeat"
+                "dialogId": "startDialog",
+                "dialogName": "시작"
             }
         ],
         "task": {
