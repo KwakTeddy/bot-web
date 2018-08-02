@@ -2,11 +2,6 @@ var request = require('request');
 var async = require('async');
 var path = require('path');
 
-var testop = {"url":"http://sam.moneybrain.ai:3000/api","json":{"name":"ZCS_CENTER_INFO","channel":"socket","param":[{"key":"I_DONG","val":"오산"}],"isTable":true}}
-
-console.log('abcdrfsadfsdfsadfdsafsdaf');
-request(testop,function(res){console.log(res)});
-
 module.exports = function(bot)
 {
    // if(!reTry){
@@ -657,7 +652,7 @@ module.exports = function(bot)
                                 dialog.output[0].buttons.push({text: data[i].BILLING_PERIOD});
                             }
                             context.session.noticeHistory = data;
-                            console.log(context.session.noticeHistory);
+                          
                             addDefaultButton(dialog);
 
                         }else {
@@ -679,7 +674,7 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                console.log('노티스 히스토리 : ', context.session.noticeHistory);
+              
                 if(context.session.selectedMonth === 1 && context.session.noticeHistory !== undefined){
                       context.session.isHistory = "";
                       context.session.isHistory = "true";
@@ -764,7 +759,7 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(JSON.stringify(body, null, 4));
+                          
                             var data = body.data.ET_TABLE;
 
                             for(var i = 0; i < data.length; i++)
@@ -860,7 +855,6 @@ module.exports = function(bot)
                         {
                             if(body.data)
                             {
-                                console.log(JSON.stringify(body, null, 4));
                                 var data = body.data.E_TAB;
 
                                 for(var i = 0 ; i < data.length; i++)
@@ -1060,7 +1054,6 @@ module.exports = function(bot)
                         else if(body.E_RETCD == 'S')
                         {
                             dialog.createdBankAccount = body.E_BANKN;
-                            console.log(body)
                         }else {
                             errorHandler(dialog, body);
                         }
@@ -1108,10 +1101,8 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body);
                             dialog.curNoticeMethod = methodIdex[body['E_SENDCONTROL_GP']];
                             dialog.curNoticeMethodCategory = parseInt(body['E_SENDCONTROL_GP']);
-                            console.log(dialog.curNoticeMethod)
                         }else {
                             errorHandler(dialog, body);
                         }
@@ -1207,7 +1198,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body);
                             dialog.setNoticeMethodSuccess = true;
                         }else {
                             errorHandler(dialog, body);
@@ -1255,7 +1245,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body);
                             dialog.setNoticeMethodSuccess = true;
                         }else {
                             errorHandler(dialog, body);
@@ -1306,7 +1295,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body, ((new Date().getTime()) - start) / 1000 + 'ms');
                             dialog.setNoticeMethodSuccess = true;
                         }else {
                             errorHandler(dialog, body);
@@ -1352,7 +1340,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body);
                             dialog.cancelNoticeMethodSuccess = true;
                         }
                         else {
@@ -1507,7 +1494,6 @@ module.exports = function(bot)
                             }
 
                             dialog.curPaymentMethod = methodIdex[body['E_EZAWE']];
-                            console.log(body)
                         }else {
                             errorHandler(dialog, err);
                         }
@@ -1574,7 +1560,6 @@ module.exports = function(bot)
                         {
                             dialog.data.list = body.data.T_OUT;
 
-                            console.log('성공 데이터 : ', dialog.data.list);
                             var outputText = [];
 
                             // async.eachSeries(dialog.data.list, function(item, next)
@@ -1754,7 +1739,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(JSON.stringify(body, null, 4));
 
                             var msg = '';
 
@@ -1814,7 +1798,6 @@ module.exports = function(bot)
                 ];
                 options.json.isTable = true;
               
-				console.log(JSON.stringify(options));
                 request.post(options, function(err, response, body)
                 {
                     if(err)
@@ -1902,7 +1885,7 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body)
+                          
                         }
                         else
                         {
@@ -1972,7 +1955,6 @@ module.exports = function(bot)
                                     text: '처음'
                                 }
                             ];
-                            console.log(body);
                         }
                         else
                         {
@@ -2022,7 +2004,6 @@ module.exports = function(bot)
                         }
                         else if(body.E_RETCD == 'S')
                         {
-                            console.log(body)
                         }else {
                             errorHandler(dialog, body);
                         }
@@ -2114,8 +2095,6 @@ module.exports = function(bot)
                 context.session.history.splice(0, 1);
                 dialog.output[0].dialogId = context.session.history[0].id;
                 dialog.output[0].dialogName = context.session.history[0].card.name;
-                console.log("dialog.output[0].dialogId: " + dialog.output[0].dialogId);
-                console.log("dialog.output[0].dialogName: " + dialog.output[0].dialogName);
 
             callback();
 		}
@@ -2157,7 +2136,7 @@ module.exports = function(bot)
                             errorHandler(dialog, null);
                             return callback();
                         }
-                        console.log('channel: ' + context.channel.name);
+                      
                         if (body.E_RETCD == 'E') {
                             body.E_RETMG = '조회된 내역이 없습니다. 고객정보를 정확히 확인해 주세요.';
                             context.session.noList = true;
