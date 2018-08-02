@@ -2,19 +2,126 @@
 <div ng-controller="LayoutSamDevelopmentController" class="graph-background">
 
     <div class="working-ground-bizchat">
-        <select class="custom-select">
-        <option  selected>발송할 봇을 선택하세요.</option>
-        <option><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> rrrrr 봇</option>
-        <option><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png">dddddd 봇</option>
-        </select>
+
+        <div class="bot-messages-list">
+            <h2 class="title01">발송하기</h2>
+            <ul class="nal1">
+                <li class="first">봇 선택</li>
+                <li>
+                    <select class="select01" style="width: 324px;">
+                        <option  selected>발송할 봇을 선택하세요.</option>
+                        <option><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> rrrrr 봇</option>
+                        <option><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png">dddddd 봇</option>
+                    </select>
+                </li>
+            </ul>
+            <ul class="nal1">
+                <li class="first">채널 선택</li>
+                <li>
+                    <a class="btn-style03" href="" style="width: 50px;margin-right: 5px;">SMS</a>
+                    <a class="btn-style05" href="" style="width: 100px;margin-right: 5px;">카카오톡</a>
+                    <a class="btn-style05" href="" style="width: 100px;">페이스북</a>
+                </li>
+            </ul>
+            <ul class="edit-windo">
+                <li class="select">
+                    <ul>
+                        <li class="two">입력 방법</li>
+                        <li class="three">
+                            <input id="radio1" type="radio" class="styled-radio" name="choice">
+                            <label for="radio1" class="label">직접 입력</label>
+                        </li>
+                        <li class="three">
+                            <input id="radio2" type="radio" class="styled-radio" name="choice">
+                            <label for="radio2" class="label">주소록</label>
+                        </li>
+                        <li class="three">
+                            <input id="radio3" type="radio" class="styled-radio" name="choice">
+                            <label for="radio3" class="label">파일 입력</label>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="four">발송 번호 입력하기 (최대 12명)</li>
+                        <li>
+                            <input type="text" class="ml3 type05">
+                            <input type="text" class="ml3 type05">
+                        </li>
+                        <li class="mt10">
+                            <input type="text" class="ml3 type05">
+                            <input type="text" class="ml3 type05">
+                        </li>
+                        <li class="mt10">
+                            <input type="text" class="ml3 type05">
+                            <input type="text" class="ml3 type05">
+                        </li>
+                        <li class="mt10">
+                            <input type="text" class="ml3 type05">
+                            <input type="text" class="ml3 type05">
+                        </li>
+                        <li class="mt10">
+                            <input type="text" class="ml3 type05">
+                            <input type="text" class="ml3 type05">
+                        </li>
+                        <li class="mt10 mb40">
+                            <input type="text" class="ml3 type05">
+                            <input type="text" class="ml3 type05">
+                        </li>
+                    </ul>
+                    <ul class="mb25">
+                        <li class="two">전송 대상</li>
+                        <li class="three mr20">12<span>명</span></li>
+                        <a class="btn-style05" href="#">초기화</a>
+                    </ul>
+                    <ul class="mb10">
+                        <li class="two">필요 코인</li>
+                        <li class="three">5,000,000<span>코인</span></li>
+                        <span style="color: #f25e5e;">*코인이 부족합니다. 잔액을 확인하세요.</span>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nal2">
+                <li class="first">발송 시간</li>
+                <li class="three">
+                    <input id="radio4" type="radio" class="styled-radio" name="choice">
+                    <label for="radio4" class="label">즉시</label>
+                </li>
+                <li class="three">
+                    <input id="radio5" type="radio" class="styled-radio" name="choice">
+                    <label for="radio5" class="label">예약</label>
+                    <span style="color: #bbb;">현재시간 : 2018년 07월 1일 00시 00분</span>
+                </li>
+            </ul>
+
+            <ul class="nal1">
+                <li class="first">봇 선택</li>
+                <li>
+                    <select class="select01">
+                        <option  selected>발송할 봇을 선택하세요.</option>
+                        <option>몰라봇</option>
+                        <option>몰라봇</option>
+                    </select>
+                </li>
+                <li>
+                    <select class="select01">
+                        <option  selected>00시</option>
+                        <option>몰라봇</option>
+                        <option>몰라봇</option>
+                    </select>
+                </li>
+                <li>
+                    <select class="select01">
+                        <option  selected>00분</option>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+
 
         <div class="subtitle">
-            <div class="message-edit-list">
-                <span>메세지 서식 리스트</span>
-                <ul>
-                    <li ng-repeat="s in Data.sentences" ng-click="addCard(s)">{{s.name}}</li>
-                </ul>
-            </div>
+
             <div class="bot-messages-list">
                 <span>{{chatbot.name}} (총 {{Data.cardArr.length}} 개의 메세지)</span>
                 <ul ondragstart="DRAG.dragStartHandler(event)" ondrop="DRAG.drop_handler(event);" ondragover="DRAG.dragover_handler(event);">
