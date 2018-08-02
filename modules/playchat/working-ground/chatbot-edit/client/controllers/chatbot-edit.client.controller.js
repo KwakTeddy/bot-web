@@ -20,7 +20,7 @@
         $scope.share = {};
 
         $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
-        if($location.host() == 'localhost')
+        if($location.host() == 'localhost' || $location.port() == 8443)
             $scope.host = 'http://' + $scope.host;
         else
             $scope.host = 'https://' + $scope.host;

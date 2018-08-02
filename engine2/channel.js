@@ -31,6 +31,8 @@ var demo = require('../modules/demo/server/controllers/demo.server.controller.js
 
         app.route('/chat/:bot/message').post(rest.message);
 
+        app.route('/chat/:dialogId/dialogs').post(rest.dialog);
+
         //
         // // 카카오톡
         app.route('/kakao/:bot/keyboard').get(kakao.keyboard);
