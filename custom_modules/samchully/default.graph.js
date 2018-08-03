@@ -65,7 +65,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "고객명 : +context.session.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678\n\n*본 서비스는 삼천리에 등록하신 휴대폰으로만 이용하실 수 있습니다. 핸드폰번호 미등록 또는 변경시에는 고객센터로 문의하여 등록 후 이용해주세요."
+                                "text": "고객명 : +context.user.customerName+\n\n삼천리에 등록된 휴대폰 번호를 입력해주세요.\n예)01012345678\n\n*본 서비스는 삼천리에 등록하신 휴대폰으로만 이용하실 수 있습니다. 핸드폰번호 미등록 또는 변경시에는 고객센터로 문의하여 등록 후 이용해주세요."
                             }
                         ],
                         "id": "default49",
@@ -82,7 +82,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n생년월일 앞 6자리를 입력해주세요.\n예) 900930",
+                                        "text": "고객명 : +context.user.customerName+\n휴대폰 번호 : +context.user.customerMobile+\n\n생년월일 앞 6자리를 입력해주세요.\n예) 900930",
                                         "if": ""
                                     }
                                 ],
@@ -117,7 +117,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Content",
-                                                        "text": "삼천리 고객 검색 결과입니다.\n#context.session.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
+                                                        "text": "삼천리 고객 검색 결과입니다.\n#context.user.customerList#\n+index+.\n고객명 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자번호 : +VKONT+\n\n#\n인증하시겠습니까?",
                                                         "buttons": [
                                                             {
                                                                 "text": "네"
@@ -243,7 +243,7 @@ var dialogs = [
                                                 "output": [
                                                     {
                                                         "kind": "Action",
-                                                        "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n생년월일: +context.session.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 혹은 3자리 형식에 맞게 입력해주세요.\n시) 1234 or 123",
+                                                        "text": "고객명 : +context.user.customerName+\n휴대폰 번호 : +context.user.customerMobile+\n생년월일: +context.user.customerBirth+\n\n잘못 입력하셨습니다.\n인증번호 4자리 혹은 3자리 형식에 맞게 입력해주세요.\n시) 1234 or 123",
                                                         "type": "repeat"
                                                     }
                                                 ],
@@ -264,7 +264,7 @@ var dialogs = [
                                         "output": [
                                             {
                                                 "kind": "Action",
-                                                "text": "고객명 : +context.session.customerName+\n휴대폰 번호 : +context.session.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
+                                                "text": "고객명 : +context.user.customerName+\n휴대폰 번호 : +context.user.customerMobile+\n\n잘못 입력하셨습니다.\n생년월일 앞 6자리 형식에 맞게 입력해주세요.\n시) 900930\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                                 "type": "repeat"
                                             }
                                         ],
@@ -285,7 +285,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Action",
-                                        "text": "고객명 : +context.session.customerName+\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
+                                        "text": "고객명 : +context.user.customerName+\n\n잘못 입력하셨습니다. 전화번호 형식에 맞게 다시 입력해주세요.\n\nex)01012345678\n\n이전으로 돌아가시려면 'ㄱ' 을, 처음으로 돌아가시려면 'ㄴ' 를 입력해주세요.",
                                         "type": "repeat"
                                     }
                                 ],
@@ -397,15 +397,15 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.session.auth && context.session.customerList.length != 1",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.user.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.user.auth && context.user.customerList.length != 1",
                 "dialogName": "요금 조회 및 납부"
             },
             {
                 "kind": "Action",
                 "type": "call",
                 "dialogId": "default13",
-                "if": "context.session.auth && context.session.customerList.length == 1",
+                "if": "context.user.auth && context.user.customerList.length == 1",
                 "dialogName": "요금 메뉴 선택"
             },
             {
@@ -430,7 +430,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -481,7 +481,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n조회할 '고지'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "text": "1개월"
@@ -518,7 +518,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[고지내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+개월)\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n#\n월별 상세내용을 확인할 수 있습니다.",
+                                        "text": "[고지내역 조회]\n\n이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n월별 고지내역입니다.(+context.session.selectedMonth+개월)\n#context.session.noticeHistory#\n+index+.\n고지년월: +BILLING_PERIOD+\n고지금액 : +BETRW_TOT+원\n미납금액 : +DFAMT+원\n납부마감일 : +FAEDN+\n#\n월별 상세내용을 확인할 수 있습니다.",
                                         "if": "context.session.selectedMonth === 3 || context.session.selectedMonth === 6 || context.session.selectedMonth ===12"
                                     },
                                     {
@@ -615,7 +615,7 @@ var dialogs = [
                         "output": [
                             {
                                 "kind": "Content",
-                                "text": "이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
+                                "text": "이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n조회할 '납부'내역 기간을 선택해주세요.",
                                 "buttons": [
                                     {
                                         "text": "1개월"
@@ -652,7 +652,7 @@ var dialogs = [
                                 "output": [
                                     {
                                         "kind": "Content",
-                                        "text": "[납부내역 조회]\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.session.selectedMonth+개월)\n#context.session.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+원\n납부금액 : +BETRWS+원\n#",
+                                        "text": "[납부내역 조회]\n\n이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n월별 납부내역입니다.(+context.session.selectedMonth+개월)\n#context.session.paymentHistory#\n+index+.\n고지년월 : +YYYYMM+\n납부방식 : +PAY_TYPE+\n납부일자 : +BUDAT+\n고지금액 : +BETRWG+원\n납부금액 : +BETRWS+원\n#",
                                         "buttons": [
                                             {
                                                 "text": "이전"
@@ -1092,15 +1092,15 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.session.auth && context.session.customerList.length != 1",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.user.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.user.auth && context.user.customerList.length != 1",
                 "dialogName": "요금"
             },
             {
                 "kind": "Action",
                 "type": "call",
                 "dialogId": "default37",
-                "if": "context.session.auth && context.session.customerList.length == 1",
+                "if": "context.user.auth && context.user.customerList.length == 1",
                 "dialogName": "요금 메뉴 선택"
             },
             {
@@ -1125,7 +1125,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "if": "",
                         "buttons": [
                             {
@@ -1696,15 +1696,15 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.session.auth && context.session.customerList.length != 1",
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.user.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.user.auth && context.user.customerList.length != 1",
                 "dialogName": "요금"
             },
             {
                 "kind": "Action",
                 "type": "call",
                 "dialogId": "default10",
-                "if": "context.session.auth && context.session.customerList.length == 1",
+                "if": "context.user.auth && context.user.customerList.length == 1",
                 "dialogName": "자가 검침 입력"
             },
             {
@@ -1770,19 +1770,19 @@ var dialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.session.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
-                "if": "context.session.auth && context.session.customerList.length != 1"
+                "text": "[요금] 고객 목록입니다. \n원하시는 고객 번호를 선택하세요.\n#context.user.customerList#\n+index+. \n고객 이름 : +NAME+\n주소 : +VSTELLE_ADDR+\n납부자 번호 : +VKONT+\n\n#",
+                "if": "context.user.auth && context.user.customerList.length != 1"
             },
             {
                 "kind": "Action",
                 "type": "call",
-                "if": "context.session.auth && context.session.customerList.length == 1",
+                "if": "context.user.auth && context.user.customerList.length == 1",
                 "dialogId": "default60",
                 "dialogName": "안전점검메뉴선택"
             },
             {
                 "kind": "Action",
-                "if": "!context.session.auth",
+                "if": "!context.user.auth",
                 "type": "call",
                 "dialogId": "default76",
                 "dialogName": "고객정보 취득동의"
@@ -1802,7 +1802,7 @@ var dialogs = [
                 "output": [
                     {
                         "kind": "Content",
-                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.session.curCustomer.NAME+\n주소:  +context.session.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.session.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
+                        "text": "다음 고객이 선택되었습니다.\n\n이름 : +context.user.curCustomer.NAME+\n주소:  +context.user.curCustomer.VSTELLE_ADDR+\n납부자번호 :  +context.user.curCustomer.VKONT+\n\n원하시는 메뉴를 선택하세요.",
                         "buttons": [
                             {
                                 "text": "안전점검"
@@ -2647,12 +2647,12 @@ var commonDialogs = [
                 "image": {
                     "url": "https://s3.ap-northeast-2.amazonaws.com/playchat-samchully/samchully-1518159068905-1.png"
                 },
-                "if": "context.channel.name === 'kakao' || context.session.isFirst === false"
+                "if": "context.channel.name === 'kakao' || context.user.isFirst === false"
             },
             {
                 "kind": "Content",
                 "text": "안녕하세요. 삼천리 톡 서비스 입니다. 환영합니다!",
-                "if": "context.channel.name !== 'kakao' && context.session.isFirst === undefined",
+                "if": "context.channel.name !== 'kakao' && context.user.isFirst === undefined",
                 "buttons": [
                     {
                         "text": "시작하기"
@@ -2772,6 +2772,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }
