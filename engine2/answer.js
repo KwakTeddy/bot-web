@@ -251,7 +251,7 @@ var Logger = require('./logger.js');
                 output = OutputManager.make(context, userInput, dialogInstance, output);
 
                 var currentDialog = context.session.history[0];
-                if(!currentDialog.userInput)
+                if(!currentDialog)
                     currentDialog.userInput = userInput;
 
                 Logger.analysisLog('answer', { target: dialogInstance, output: output }, context.user.userKey);
