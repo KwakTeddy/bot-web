@@ -42,29 +42,29 @@
                     </ul>
                     <ul>
                         <li class="four">발송 번호 입력하기 (최대 12명)</li>
-                        <li>
-                            <input type="text" class="ml3 type05">
-                            <input type="text" class="ml3 type05">
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
                         </li>
-                        <li class="mt10">
-                            <input type="text" class="ml3 type05">
-                            <input type="text" class="ml3 type05">
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
                         </li>
-                        <li class="mt10">
-                            <input type="text" class="ml3 type05">
-                            <input type="text" class="ml3 type05">
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
                         </li>
-                        <li class="mt10">
-                            <input type="text" class="ml3 type05">
-                            <input type="text" class="ml3 type05">
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
                         </li>
-                        <li class="mt10">
-                            <input type="text" class="ml3 type05">
-                            <input type="text" class="ml3 type05">
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
                         </li>
-                        <li class="mt10 mb40">
-                            <input type="text" class="ml3 type05">
-                            <input type="text" class="ml3 type05">
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
                         </li>
                     </ul>
                     <ul class="mb25">
@@ -105,8 +105,8 @@
                 <li>
                     <select class="select01">
                         <option  selected>00시</option>
-                        <option>몰라봇</option>
-                        <option>몰라봇</option>
+                        <option></option>
+                        <option></option>
                     </select>
                 </li>
                 <li>
@@ -117,264 +117,11 @@
                     </select>
                 </li>
             </ul>
+            <a href=""><div class="dialog-btn">발송하기</div></a>
         </div>
 
 
         <div class="subtitle">
-
-            <div class="bot-messages-list">
-                <span>{{chatbot.name}} (총 {{Data.cardArr.length}} 개의 메세지)</span>
-                <ul ondragstart="DRAG.dragStartHandler(event)" ondrop="DRAG.drop_handler(event);" ondragover="DRAG.dragover_handler(event);">
-                    <li ng-repeat="card in Data.cardArr | orderBy:'index'" draggable="true" data-value="{{card}}" class="dragline unsel" ng-class="card.is_open? 'select' : ''" ng-click="addudtList(card)">
-                        <div ng-if="!card.is_open">
-                            <span class="message-title01">{{card.index+1}} {{card.name}}</span>
-                            <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <span  ng-click="cardUiSet(card)" class="open-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus_.png"></span>
-                        </div>
-                        <!-- 선택형 -->
-                        <div ng-if="card.is_open && getCardType(card.type).name == '선택형'" onplay="autoSaveTrigger()">
-                            <span class="message-title02">{{card.index+1}} {{card.name}}</span>
-                            <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
-                            <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
-                            <div class="detail-select">
-                                <input id="{{card.id}}" type="checkbox" ng-model="card.connect">
-                                <label for="{{card.id}}">문항별 메시지 연결</label>
-
-                                <div ng-if="card.connect" class="connection-data" ng-repeat="input in card.input">
-                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input);autoSaveTrigger();" class="ml3 type01" ng-model="input.text"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link.png">
-                                    <select ng-model="input.target" class="message-inselect">
-                                        <option ng-repeat="ar in Data.cardArr" value="{{ar.id}}">{{ar.name}}</option>
-                                    </select>
-                                </div>
-                                <div ng-if="!card.connect" class="connection-data" ng-repeat="input in card.input">
-                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input);autoSaveTrigger();" class="ml3 type02"  ng-model="input.text">
-                                </div>
-
-                                <div class="reorder">
-                                    <img ng-if="card.input.length < 5" ng-click="addInput(card, true)" src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus.png" />
-                                    <img ng-if="card.input.length > 2" ng-click="addInput(card, false)" src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus.png"/>
-                                </div>
-                            </div>
-                            <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
-                            <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
-                            <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
-                        </div>
-                        <!-- 단답형, 일반형, 연락처수집형, 날짜수집형 -->
-                        <div ng-if="card.is_open && (getCardType(card.type).name == '단답형' || getCardType(card.type).name == '일반형' || getCardType(card.type).name == '연락처수집형' || getCardType(card.type).name == '날짜수집형')">
-                            <span class="message-title02">{{card.index+1}} {{card.name}}</span>
-                            <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
-                            <p class="cd">내용입력</p>
-
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
-                            <div class="detail-select" style="margin-bottom:0;">
-                                <label class="ml3">연결할 메시지</label>
-                                <select ng-model="card.target" ng-blur="autoSaveTrigger()" class="message-inselect02 ml3">
-                                    <option ng-repeat="ar in Data.cardArr" value="{{ar.id}}">{{ar.name}}</option>
-                                </select>
-                            </div>
-                            <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
-                            <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
-                            <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
-                        </div>
-                        <!-- 정보형 -->
-                        <div ng-if="card.is_open && getCardType(card.type).name == '정보형'">
-                            <span class="message-title02">{{card.index+1}} {{card.name}}</span>
-                            <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
-                            <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
-                            <div class="detail-select">
-                                <input type="checkbox">
-                                <label>URL</label><input type="text" class="ml3 type03" ng-model="card.output.url">
-                            </div>
-                            <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
-                            <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
-                            <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
-                        </div>
-                        <!-- 이미지형 -->
-                        <div ng-if="card.is_open && getCardType(card.type).name == '이미지형'">
-                            <span class="message-title02">{{card.index+1}} {{card.name}}</span>
-                            <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <span ng-click="cardUiSet(card)" class="close-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
-                            <a href="" ng-click="clickToImageFile($event)">
-                                <div ng-if="card.output.image && card.output.image != ''" class="pic-area" style="background-image : url('{{card.output.image}}')"></div>
-                                <div ng-if="!card.output || !card.output.image || card.output.image == ''" class="pic-area" style="background-image : url('/modules/playchat/working-ground/biz-dialog-graph/client/imgs/pic-bg.png')"></div>
-                            </a>
-                            <input tabindex="-1" type="file" nv-file-select uploader="uploader(card)" style="display: none">
-                            <span style="color: #038eda;margin-left: 0;">0000 * 0000 권장 합니다.</span>
-                            <a class="btn-style04" href="" ng-click="deleteImg(card)">삭제</a>
-                            <p class="cd">내용입력</p>
-
-                            <textarea placeholder="내용을 입력해주세요." ng-model="card.message" ng-blur="autoSaveTrigger()"></textarea>
-                            <a class="btn-style01 reorder" href="">삭제</a>
-                            <a class="btn-style01" ng-click="deleteCard(card)" href="">삭제</a>
-                            <a class="btn-style02 flR" ng-click="addCard(card)" href="">복사</a>
-                            <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
-                        </div>
-                    </li>
-
-                    <li class="select">
-                        <div ng-if="addCardSentence.name == '선택형'">
-                            <span class="message-title02">{{Data.cardArr.length+1}} {{addCardSentence.name}}</span>
-
-                            <select ng-change="setDefaultValue(addCardSentence, getCardType(addCardSentence.type).name)" class="message-inselect ml3" ng-model="addCardSentence.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
-                            <div class="detail-select">
-
-                                <input id="addCardSentence" type="checkbox" ng-model="addCardSentence.connect">
-                                <label for="addCardSentence">문항별 메시지 연결</label>
-
-                                <div ng-if="addCardSentence.connect" class="connection-data" ng-repeat="input in addCardSentence.input">
-                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input)" class="ml3 type01" ng-model="input.text"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link.png">
-                                    <select ng-model="input.target" class="message-inselect">
-                                        <option ng-repeat="ar in Data.cardArr" value="{{ar.id}}">{{ar.name}}</option>
-                                    </select>
-                                </div>
-
-                                <div ng-if="!addCardSentence.connect" class="connection-data" ng-repeat="input in addCardSentence.input">
-                                    {{$index+1}}.<input type="text" ng-blur="addNlp(input)" class="ml3 type02" ng-model="input.text">
-                                </div>
-                                <div class="reorder">
-                                    <img ng-if="addCardSentence.input.length < 5" ng-click="addInput(addCardSentence, true)" src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/plus.png" />
-                                    <img ng-if="addCardSentence.input.length > 2" ng-click="addInput(addCardSentence, false)" src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus.png"/>
-                                </div>
-                            </div>
-                            <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
-                            </div>
-                        </div>
-                        <!-- 단답형, 일반형, 연락처수집형, 날짜수집형 -->
-                        <div ng-if="addCardSentence.name == '단답형' || addCardSentence.name == '일반형'
-                         || addCardSentence.name == '연락처수집형' || addCardSentence.name == '날짜수집형'">
-                            <span class="message-title02">{{Data.cardArr.length+1}} {{addCardSentence.name}}</span>
-
-                            <select ng-change="setDefaultValue(addCardSentence, getCardType(addCardSentence.type).name)" class="message-inselect ml3" ng-model="addCardSentence.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
-                            <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
-                            </div>
-                        </div>
-                        <!-- 정보형 -->
-                        <div ng-if="addCardSentence.name == '정보형'">
-                            <span class="message-title02">{{Data.cardArr.length+1}} {{addCardSentence.name}}</span>
-
-                            <select ng-change="setDefaultValue(addCardSentence, getCardType(addCardSentence.type).name)" class="message-inselect ml3" ng-model="addCardSentence.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
-                            <div class="detail-select">
-                                <input type="checkbox">
-                                <label>URL</label><input type="text" class="ml3 type03" value="{{addCardSentence.output.url}}">
-                            </div>
-                            <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
-                            </div>
-                        </div>
-                        <!-- 이미지형 -->
-                        <div ng-if="addCardSentence.name == '이미지형'">
-                            <span class="message-title02">{{Data.cardArr.length+1}} {{addCardSentence.name}}</span>
-
-                            <select ng-change="setDefaultValue(addCardSentence, getCardType(addCardSentence.type).name)" class="message-inselect ml3" ng-model="addCardSentence.type">
-                                <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>
-                            </select>
-                            <a href="" ng-click="clickToImageFile($event)">
-                                <div ng-if="addCardSentence.output.image && addCardSentence.output.image != ''" class="pic-area" style="background-image : url('{{addCardSentence.output.image}}')"></div>
-                                <div ng-if="!addCardSentence.output || !addCardSentence.output.image || addCardSentence.output.image == ''" class="pic-area" style="background-image : url('/modules/playchat/working-ground/biz-dialog-graph/client/imgs/pic-bg.png')"></div>
-                            </a>
-                            <input tabindex="-1" type="file" nv-file-select uploader="uploader(addCardSentence)" style="display: none">
-                            <span style="color: #038eda;margin-left: 0;">0000 * 0000 권장 합니다.</span>
-                            <a class="btn-style04" href="" ng-click="deleteImg(addCardSentence)">삭제</a>
-                            <p class="cd">내용입력</p>
-                            <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
-                            <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
-                            </div>
-                        </div>
-                    </li>
-                    <!--<li class="new-select">-->
-                    <!--<select ng-model="addCardSentence" ng-change="selectCard(addCardSentence)" class="add-menu" ng-options="x.name for x in Data.defaultSentences"></select>-->
-                    <!--</li>-->
-                    <li class="new-select">
-                        <!--<select class="add-menu">셀렉버튼으로 안가고 커스터마이징으로 가기로 함-->
-                        <!--<option selected>메세지 추가하기</option>-->
-                        <!--<option>텍스트 - 선택형</option>-->
-                        <!--<option>텍스트 - 선택형</option>-->
-                        <!--</select>-->
-                        <a href="" class="add-menu">메세지 추가하기</a>
-                    </li>
-
-                    <!--<ul class="long-dd" style="top:687px;left:266px;">-->
-                    <!--<li class="long-dd-menu-container">-->
-                    <!--<ul class="menu-left">-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list01.png"></div>-->
-                    <!--<a href="" class="dd-tit">선택형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list03.png"></div>-->
-                    <!--<a href="" class="dd-tit">일반형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list05.png"></div>-->
-                    <!--<a href="" class="dd-tit">연락처수집형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list07.png"></div>-->
-                    <!--<a href="" class="dd-tit">이미지형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--</ul>-->
-                    <!--<ul class="menu-right">-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list02.png"></div>-->
-                    <!--<a href="" class="dd-tit">단답형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list04.png"></div>-->
-                    <!--<a href="" class="dd-tit">정보형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--<li class="dd-l">-->
-                    <!--<div class="dd-contents">-->
-                    <!--<div class="dd-icon"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/list06.png"></div>-->
-                    <!--<a href="" class="dd-tit">날짜수집형</a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--</ul>-->
-                    <!--</li>-->
-                    <!--</ul>-->
-                </ul>
-            </div>
             <!--<div class="message-view">-->
 
                 <!--&lt;!&ndash; 시뮬레이터 관련 영역 차후 진행예정 &ndash;&gt;-->
@@ -415,7 +162,7 @@
                     </button>
                 </div>
 
-                <div class="dialog-setting">
+                <div class="dialog-setting" style="border-bottom: 1px solid #d0d2d3;">
                     <p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>
                     <button class="select"># 기본</button>
                     <button class="select"># 6월 이벤트</button>
@@ -423,7 +170,7 @@
                     <button># 신규 TES</button>
                     <button># 설문_01</button>
                 </div>
-                <a href=""><div class="dialog-btn">발송하기</div></a>
+
             </div>
         </div>
     </div>

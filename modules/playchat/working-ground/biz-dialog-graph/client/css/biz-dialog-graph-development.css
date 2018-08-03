@@ -101,6 +101,9 @@ select.custom-select option{
     background: #f4fcff;
     transition: all 0.3s;
 }
+.ml2{
+    margin-left:2%;
+}
 .ml3{
     margin-left:3%;
 }
@@ -353,6 +356,14 @@ select.add-menu option{
 .message-view .dialog-btn:focus{
     background-color: #007dc2;
 }
+.dialog-btn{
+    background: #038eda;
+    color: #fff;
+    padding: 4% 0;
+    text-align: center;
+    width: 100%;
+    margin: 6% auto;
+}
 #graphDialogCanvas svg
 {
     position: absolute;
@@ -449,8 +460,10 @@ input.type03{
 input.type05{
     border: 1px solid #e5e5e5;
     text-overflow: ellipsis;
-    padding: 8px;
-    width: 42%;
+    padding: 7px 3px 7px 15px;
+    width: 28%;
+    letter-spacing: 0.4px;
+    font-size: 16px;
 }
 .pic-area{
     width: 100%;

@@ -52,11 +52,19 @@
     text-indent: 6px;
     padding: 7% 0 4%;
 }
+.edit-windo li.five{
+    text-align: right;
+    padding-right: 11%;
+    margin-top: 10px;
+}
+.edit-windo li.five:last-child{
+    margin-bottom: 20px;
+}
 /*셀렉박스*/
 .select01{
     position: relative;
     display: inline-block;
-    padding: 0 25px 0 18px;
+    padding: 0 30px 0 13px;
     font-size: 13px;
     color: #424242;
     line-height: 35px;
@@ -67,6 +75,7 @@
     border:1px solid #d8d8d8;
     outline: none;
     background: url("/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down02.png") no-repeat 99% 38%;
+    margin-right:4px;
 }
 select.select01::-ms-expand{
     display: none;
