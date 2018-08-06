@@ -2652,7 +2652,7 @@ var commonDialogs = [
             {
                 "kind": "Content",
                 "text": "안녕하세요. 삼천리 톡 서비스 입니다. 환영합니다!",
-                "if": "context.channel.name !== 'kakao' && context.user.isFirst === undefined",
+                "if": "context.channel.name !== 'kakao' && (context.user.isFirst === true || context.user.isFirst === undefined)",
                 "buttons": [
                     {
                         "text": "시작하기"
