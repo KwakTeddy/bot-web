@@ -17,7 +17,13 @@ exports.message = function (req, res)
 
         Engine.process(req.params.bot, channel || 'rest', userKey, text, {}, function (context, out)
         {
-            res.send(out.output);
+
+            if(channel=='unity'){
+                res.send(out);
+            }else{
+                res.send(out.output);
+            }
+
         },
         function(err)
         {
@@ -72,7 +78,7 @@ exports.dialog = function(req, res)
             function()
             {
                 dialog.input = inputList;
-                dialog.save(function(err)
+                dialog.save(function(err,result)
                 {
                     if (err)
                     {
@@ -80,6 +86,7 @@ exports.dialog = function(req, res)
                     }
                     else
                     {
+                        dialog._id = result.id;
                         res.jsonp(dialog);
                     }
                 });

@@ -7,203 +7,179 @@
 }
 </style>
 
-<div ng-controller="OutboundController">
-    <form ng-submit="save();">
-        <h3 class="chatbot-profile-title" style="margin: 0;">{{ lan('Chatbot Basic Information') }}</h3>
-        <div class="dashboard-bot-profile" >
-            <div class="dashboard-bot-profile-image">
-                <div class="dashboard-bot-profile-image-wrapper">
-                    <img src="{{ chatbot.imageFile }}">
-                    <span></span>
-                </div>
-                <div style="text-align: center; padding: 5px;"><button type="button" class="default-button" ng-click="showUploadModal();">{{lan('Click to change image') }}</button></div>
-            </div>
-            <div class="dashboard-bot-profile-content">
-                <div style="margin: 10px 0;">
-                    <span>{{ lan('Bot Id') }} : </span> <span style="font-weight: bold;">{{ chatbot.id }}</span>
-                </div>
-                <div style="margin: 10px 0;">
-                    <span>{{ lan('Mobile Web Url') }} : </span> <span style="font-weight: bold;">{{ host }}/mobile/chatbot/{{ chatbot.id }}</span>
-                </div>
-                <div style="display: inline-block;">
-                    <span>{{ lan('Bot Name') }}</span>
-                    <input type="text" ng-model="chatbot.name">
-                </div>
-                <div style="display: inline-block;margin-left: 30px;">
-                    <span class="form-title">{{ lan('Language') }}</span>
-                    <div class="select-wrapper">
-                        <select class="jumbo-select" ng-model="chatbot.language" style="margin-left: 15px;">
-                            <option value="ko">{{ lan('Korean') }}</option>
-                            <option value="en">{{ lan('English') }}</option>
-                            <option value="zh">{{ lan('Chinese') }}</option>
-                            <option value="jp">{{ lan('Japanese') }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <p>{{ lan('Description') }}</p>
-                    <textarea ng-model="chatbot.description">{{ chatbot.description }}</textarea>
-                    <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;margin-bottom: 30px;margin-left: 62px;">{{ lan('Save') }}</button>
-                </div>
-            </div>
+<div ng-controller="OutboundController" class="graph-background">
+
+    <div class="working-ground-bizchat">
+
+        <div class="bot-messages-list">
+            <h2 class="title01">발송하기</h2>
+            <ul class="nal1">
+                <li class="first">봇 선택</li>
+                <li>
+                    <select ng-change="test()" ng-model="selectedBot" class="select01" style="width: 324px;">
+                        <option  selected value="null">발송할 봇을 선택하세요.</option>
+                        <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
+                    </select>
+                </li>
+            </ul>
+            <ul class="nal1">
+                <li class="first">채널 선택</li>
+                <li>
+                    <a class="btn-style03" href="" style="width: 50px;margin-right: 5px;">SMS</a>
+                    <a class="btn-style05" href="" style="width: 100px;margin-right: 5px;">카카오톡</a>
+                    <a class="btn-style05" href="" style="width: 100px;">페이스북</a>
+                </li>
+            </ul>
+            <ul class="edit-windo">
+                <li class="select">
+                    <ul>
+                        <li class="two">입력 방법</li>
+                        <li class="three">
+                            <input id="radio1" type="radio" class="styled-radio" name="choice">
+                            <label for="radio1" class="label">직접 입력</label>
+                        </li>
+                        <li class="three">
+                            <input id="radio2" type="radio" class="styled-radio" name="choice">
+                            <label for="radio2" class="label">주소록</label>
+                        </li>
+                        <li class="three">
+                            <input id="radio3" type="radio" class="styled-radio" name="choice">
+                            <label for="radio3" class="label">파일 입력</label>
+                        </li>
+                    </ul>
+                    <ul id="numberset">
+                        <li class="four">발송 번호 입력하기 (최대 12명)</li>
+                        <li class="five">
+                            <input type="tel" ng-model="numberset[0].number" ng-blur='setRegular(numberset[0])' class="ml2 type05">
+                            <input type="tel" ng-model="numberset[1].number" ng-blur='setRegular(numberset[1])' class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="tel" ng-model="numberset[2].number" ng-blur='setRegular(numberset[2])' class="ml2 type05">
+                            <input type="tel" ng-model="numberset[3].number" ng-blur='setRegular(numberset[3])' class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="tel" ng-model="numberset[4].number" ng-blur='setRegular(numberset[4])' class="ml2 type05">
+                            <input type="tel" ng-model="numberset[5].number" ng-blur='setRegular(numberset[5])' class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="tel" ng-model="numberset[6].number" ng-blur='setRegular(numberset[6])' class="ml2 type05">
+                            <input type="tel" ng-model="numberset[7].number" ng-blur='setRegular(numberset[7])' class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="tel" ng-model="numberset[8].number" ng-blur='setRegular(numberset[8])' class="ml2 type05">
+                            <input type="tel" ng-model="numberset[9].number" ng-blur='setRegular(numberset[9])' class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="tel" ng-model="numberset[10].number" ng-blur='setRegular(numberset[10])' class="ml2 type05">
+                            <input type="tel" ng-model="numberset[11].number" ng-blur='setRegular(numberset[11])' class="ml2 type05">
+                        </li>
+                    </ul>
+                    <ul class="mb25">
+                        <li class="two">전송 대상</li>
+                        <li class="three mr20">12<span>명</span></li>
+                        <a class="btn-style05" href="#" ng-click="clear()">초기화</a>
+                    </ul>
+                    <ul class="mb10">
+                        <li class="two">필요 코인</li>
+                        <li class="three">5,000,000<span>코인</span></li>
+                        <span style="color: #f25e5e;">*코인이 부족합니다. 잔액을 확인하세요.</span>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nal2">
+                <li class="first">발송 시간</li>
+                <li class="three">
+                    <input id="radio4" type="radio" class="styled-radio" name="choice">
+                    <label for="radio4" class="label">즉시</label>
+                </li>
+                <li class="three">
+                    <input id="radio5" type="radio" class="styled-radio" name="choice">
+                    <label for="radio5" class="label">예약</label>
+                    <span style="color: #bbb;">현재시간 : 2018년 07월 1일 00시 00분</span>
+                </li>
+            </ul>
+
+            <ul class="nal1">
+                <li class="first">봇 선택</li>
+                <li>
+                    <select class="select01">
+                        <option  selected>발송할 봇을 선택하세요.</option>
+                        <option>몰라봇</option>
+                        <option>몰라봇</option>
+                    </select>
+                </li>
+                <li>
+                    <select class="select01">
+                        <option  selected>00시</option>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+                <li>
+                    <select class="select01">
+                        <option  selected>00분</option>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+            </ul>
+            <a href=""><div class="dialog-btn">발송하기</div></a>
         </div>
-    </form>
 
-    <form>
-        <h3 class="chatbot-profile-title">{{ lan('Chatbot Options') }}</h3>
-        <table class="tb02">
-            <thead>
-                <tr>
-                    <th>{{ lan('Option Name') }}</th>
-                    <th>{{ lan('Option Value') }}</th>
-                    <th>{{ lan('Description') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ lan('Chatbot Usable') }}</td>
-                    <td>
-                        <select class="jumbo-select" ng-model="botOptions.use" ng-change="changeBotOptions();">
-                            <option value="true">true</option>
-                            <option value="false">false</option>
-                        </select>
-                    </td>
-                    <td>{{ lan('Chatbot Usable Description') }}</td>
-                </tr>
-                <tr>
-                    <td>{{ lan('Auto Correction Usable') }}</td>
-                    <td>
-                        <select class="jumbo-select" ng-model="botOptions.useAutoCorrection" ng-change="changeBotOptions();">
-                            <option value="true">true</option>
-                            <option value="false">false</option>
-                        </select>
-                    </td>
-                    <td>{{ lan('Auto Correction Usable Description') }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
 
-    <form>
-        <h3 class="chatbot-profile-title">{{ lan('Chatbot Sharing') }}</h3>
-        <table class="tb02">
-            <colgroup>
-                <col style="width: 25%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 15%;">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>{{ lan('Email') }}</th>
-                    <th>{{ lan('Username') }}</th>
-                    <th>{{ lan('Name') }}</th>
-                    <th>{{ lan('Authority') }}</th>
-                    <th>
-                        <button type="button" class="default-button" ng-click="addNewMember();">{{ lan('Add Member') }}</button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-if="list.length == 0">
-                    <td colspan="5">{{ lan('empty') }}</td>
-                </tr>
-                <tr ng-repeat="item in list">
-                    <td>{{ item.user.email }}</td>
-                    <td>{{ item.user.username }}</td>
-                    <td>{{ item.user.displayName }}</td>
-                    <td>
-                        <label style="margin: 5px;" ng-if="user.email != item.user.email">
-                            <input type="checkbox" ng-model="item.read" ng-change="saveAuth(item);"><span>Read</span>
-                        </label>
-                        <label style="margin: 5px;" ng-if="user.email != item.user.email">
-                            <input type="checkbox" ng-model="item.edit" ng-change="saveAuth(item);"><span>Edit</span>
-                        </label>
-                    </td>
-                    <td>
-                        <a ng-if="user.email != item.user.email" href="#" class="flR" ng-click="deleteAuth(item, list);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
+        <div class="subtitle">
+            <!--<div class="message-view">-->
 
-    <div class="window_overlay" ng-show="openShareModal">
-        <div class="window">
-            <form class="card_detail_window" ng-submit="shareChatbot();">
-                <div class="window_header">
-				<span class="window_header_icon">
-					<img src="/modules/chatbots/client/imgs/share.png">
-				</span>
-                    <div class="window_title">
-                        <h1>{{ lan('Share chatbot')}}</h1>
+            <!--&lt;!&ndash; 시뮬레이터 관련 영역 차후 진행예정 &ndash;&gt;-->
+            <!--<section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>-->
+            <!--&lt;!&ndash;<div class="mobile-view-practice">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="header">&ndash;&gt;-->
+            <!--&lt;!&ndash;<p>{{selectedBot.name}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="dialog-input">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input placeholder="input your info">&ndash;&gt;-->
+            <!--&lt;!&ndash;<button type="button">&ndash;&gt;-->
+            <!--&lt;!&ndash;<img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">&ndash;&gt;-->
+            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="dialog-setting">-->
+            <!--<p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>-->
+            <!--<button class="select"># 기본</button>-->
+            <!--<button class="select"># 6월 이벤트</button>-->
+            <!--<button>#1월 이벤트</button>-->
+            <!--<button># 신규 TES</button>-->
+            <!--<button># 설문_01</button>-->
+            <!--</div>-->
+            <!--<a href=""><div class="dialog-btn">발송하기</div></a>-->
+            <!--</div>-->
+            <div class="message-view">
+                <div class="mobile-view-practice">
+                    <div class="header">
+                        <p>설문조사 봇</p>
+                        <a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>
                     </div>
                 </div>
-                <div class="window_main_col">
-                    <div class="card_detail_item">
-                        <ul class="list mt20">
-                            <li class="card_detail_item_header">{{ lan('Chatbot') }}</li>
-                        </ul>
-                        <ul class="list mt20">
-                            <li class="card_detail_item_content1">{{ chatbot.id }}</li>
-                        </ul>
-                        <ul class="list clear">
-                            <li class="card_detail_item_header">{{ lan('Share') }}</li>
-                        </ul>
-                        <ul class="list2 mt10">
-                            <li class="ml7">{{ lan('Member ID(Email)') }} :</li>
-                            <li class="ml8 mt23">{{ lan('Authorization') }} :</li>
-                        </ul>
-                        <ul class="list4 mt4">
-                            <li><input type="text" class="input_pop" placeholder="username or username@moneybrain.ai" ng-model="share.email" ng-required="true"></li>
-                            <li class="ml10 mt10">
-                                <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="share.read">
-                                <label for="checkBox1" class="label">{{ lan('Read') }}</label>
-                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.edit">
-                                <label for="checkBox2" class="label">{{ lan('Write') }}</label>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="dialog-input">
+                    <input placeholder="input your info">
+                    <button type="button">
+                        <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">
+                    </button>
                 </div>
-                <!--<div class="list2 mt20 clear">-->
-                    <!--<li class="card_detail_item_content4">-->
-                        <!--{{ lan("Flow chatbots are tree-based. The user is driven down a specific path") }}-->
-                    <!--</li>-->
-                <!--</div>-->
-                <div class="popbtnarea">
-                    <button type="button" class="default-button" ng-click="closeShareModal();">{{ lan('Cancel') }}</button>
-                    <button class="blue-button" style="margin-left: 20px;">{{ lan('Share') }}</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <div class="window_overlay" ng-show="openUploadModal" style="width: 100%; box-sizing: border-box;">
-        <div class="window" style="box-sizing: border-box; padding: 10px;">
-            <form style="width: 100%; box-sizing: border-box;">
-                <div class="window_header">
-                    <div>
-                        <h1 style="font-weight: 500; font-size: 17px;">{{ lan('Change chatbot image')}}</h1>
-                    </div>
+                <div class="dialog-setting" style="border-bottom: 1px solid #d0d2d3;">
+                    <p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>
+                    <button class="select"># 기본</button>
+                    <button class="select"># 6월 이벤트</button>
+                    <button>#1월 이벤트</button>
+                    <button># 신규 TES</button>
+                    <button># 설문_01</button>
                 </div>
-                <div style="text-align: center; padding: 10px 0;">
-                    <img src="{{ botImage }}" style="width: 100%; max-width: 500px;">
-                </div>
-                <div class="window_main_col" style="width: 100%; text-align: center; padding: 5px;">
-                    <input tabindex="-1" type="file" nv-file-select uploader="uploader" style="display: none;">
-                    <button type="button" class="default-button" style="width: 200px; margin-right: 5px;" ng-click="uploadImage($event);">{{lan('Upload bot image') }}</button>
-                    <button type="button" class="default-button" style="width: 200px; margin-left: 5px;" ng-click="addExternalImage();">{{lan('Insert external image') }}</button>
-                </div>
-                <!--<div class="list2 mt20 clear">-->
-                <!--<li class="card_detail_item_content4">-->
-                <!--{{ lan("Flow chatbots are tree-based. The user is driven down a specific path") }}-->
-                <!--</li>-->
-                <!--</div>-->
-                <div style="text-align: center; padding: 10px;">
-                    <button type="button" class="default-button" ng-click="saveUpload();">{{ lan('Save') }}</button>
-                </div>
-            </form>
+
+            </div>
         </div>
     </div>
 </div>
+
