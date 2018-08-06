@@ -894,8 +894,6 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                  console.log('========================================== user request ====================');
-              console.log(context.user);
               if(!context.user.auth&&context.user.userKey&&context.channel.name) {
                     var modelname = "samchully_users";
                     var options = {};

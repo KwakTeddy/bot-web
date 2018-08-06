@@ -115,9 +115,9 @@ var ContextManager = require('../context.js');
                 var tempDialogInstance = ContextManager.createDialogInstance(matchedDialog, dialogInstance.userInput);
                 tempDialogInstance.options = this.makeOption(resultOutput);
 
-                console.log();
-                console.log(chalk.yellow('[[[ Action - call ]]]'));
-                console.log(tempDialogInstance);
+                //console.log();
+                //console.log(chalk.yellow('[[[ Action - call ]]]'));
+                //console.log(tempDialogInstance);
 
                 // dialogInstance.nextCall = tempDialogInstance;
                 // tempDialogInstance.prevCall = dialogInstance;
