@@ -301,7 +301,7 @@ select.add-menu option{
     border-right: 1px solid #d0d2d3;
     border-left: 1px solid #d0d2d3;
     border-bottom: 1px solid #d0d2d3;
-    padding: 6% 2%;
+    padding: 5% 2%;
     display: flex;
     position: relative;
 }
@@ -460,7 +460,7 @@ input.type03{
 input.type05{
     border: 1px solid #e5e5e5;
     text-overflow: ellipsis;
-    padding: 7px 3px 7px 15px;
+    padding: 7px 3px 8px 15px;
     width: 28%;
     letter-spacing: 0.4px;
     font-size: 16px;
