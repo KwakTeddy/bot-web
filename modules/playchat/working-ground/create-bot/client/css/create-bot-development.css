@@ -444,6 +444,8 @@ label{
     padding: 0;
     vertical-align: middle;
     margin-right: 9px;
+    font-size: 13px;
+    padding-right: 4px;
 }
 .styled-radio + label:before{
     content: '';

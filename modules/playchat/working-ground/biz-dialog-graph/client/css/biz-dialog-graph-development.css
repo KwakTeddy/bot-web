@@ -88,7 +88,7 @@ select.custom-select option{
     border: 1px solid #038eda;
     background: #fff;
     margin: 12px 0;
-    padding: 3%;
+    padding: 5% 3% 3%;
 }
 .bot-messages-list li.new-select{
     border: 1px dashed #d0d2d3;
@@ -100,6 +100,9 @@ select.custom-select option{
 .bot-messages-list li.new-select:hover{
     background: #f4fcff;
     transition: all 0.3s;
+}
+.ml2{
+    margin-left:2%;
 }
 .ml3{
     margin-left:3%;
@@ -353,6 +356,14 @@ select.add-menu option{
 .message-view .dialog-btn:focus{
     background-color: #007dc2;
 }
+.dialog-btn{
+    background: #038eda;
+    color: #fff;
+    padding: 4% 0;
+    text-align: center;
+    width: 100%;
+    margin: 6% auto;
+}
 #graphDialogCanvas svg
 {
     position: absolute;
@@ -425,6 +436,7 @@ input.type03{
     width: 82%;
     text-overflow: ellipsis;
 }
+
 .type04{
     border: 1px dashed #d0d2d3;
     width: 93.5%;
@@ -444,6 +456,14 @@ input.type03{
     background: #f4fcff;
     transition: all 0.3s;
     opacity: 1;
+}
+input.type05{
+    border: 1px solid #e5e5e5;
+    text-overflow: ellipsis;
+    padding: 7px 3px 7px 15px;
+    width: 28%;
+    letter-spacing: 0.4px;
+    font-size: 16px;
 }
 .pic-area{
     width: 100%;
