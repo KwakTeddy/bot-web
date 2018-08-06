@@ -14,23 +14,23 @@ module.exports = function(bot)
 
     //Variable Area
     var monthIndex =
-        {
-            1 : 4,
-            3 : 1,
-            6: 2,
-            12: 3
-        };
+    {
+        1 : 4,
+        3 : 1,
+        6: 2,
+        12: 3
+    };
 
     var methodIdex =
-        {
-            '0001' : '우편송달',
-            '0002' : '고객센터송달',
-            '0003' : '이메일송달',
-            '0004' : '모바일송달',
-            '0005' : 'LMS송달',
-            '0006' : '카카오알림톡송달',
-            '0007' : '카카오청구서송달'
-        };
+    {
+        '0001' : '우편송달',
+        '0002' : '고객센터송달',
+        '0003' : '이메일송달',
+        '0004' : '모바일송달',
+        '0005' : 'LMS송달',
+        '0006' : '카카오알림톡송달',
+        '0007' : '카카오청구서송달'
+    };
 
     var test_userData = {
         testmode:false,
@@ -894,35 +894,70 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                console.log("============context.user=============")
-                              console.log(context.user)
-                if(dialog.userInput.text === '시작하기'){
-                    context.user.isFirst = false;
+                if(!context.user.auth) {
+                    var modelname = "samchully_users";
+                    var options = {};
+                    options.url = 'http://52.78.177.173:8443/api/' + modelname;
+                    options.qs = {
+                        userKey: context.user.userKey,
+                        channel: context.channel.name
+                    };
+                    request.get(options, function (err, response, body) {
+                        if (err) {
+                            console.log('err:' + err);
+                            callback();
+                        }
+                        else {
+                            body = JSON.parse(body);
+                            console.log(response.statusCode);
+                            if (body.length > 0) {
+                                context.user.auth = body[0].auth;
+                                context.user.customerName = body[0].customerName;
+                                context.user.customerMobile = body[0].customerMobile;
+                                context.user.customerBirth = body[0].customerBirth;
+                                context.user.isFirst = body[0].isFirst;
+                                context.user.customerList = body[0].customerList;
+
+                                if (dialog.userInput.text === '시작하기') {
+                                    context.user.isFirst = false;
+                                }
+
+                                var arr = dialog.output[0].buttons;
+
+                                if (context.user.auth && arr[arr.length - 1].text != '로그아웃') {
+                                    dialog.output[0].buttons.push({text: '로그아웃'});
+                                }
+                                callback();
+                            }
+                            else {
+                                if (dialog.userInput.text === '시작하기') {
+                                    context.user.isFirst = false;
+                                }
+                                callback();
+                            }
+                        }
+                    });
                 }
-
-                if(!context.user.auth)
-                {
-                    //DB연동
-                    //있으면 context.user.auth = true;
-
-
+                else{
+                    if (dialog.userInput.text === '시작하기') {
+                        context.user.isFirst = false;
+                    }
                     // for through authorization
-                    if(test_userData.testmode){
+                    if (test_userData.testmode) {
                         context.user.auth = test_userData.auth;
                         context.user.customerList = customerList = [test_userData.customer];
                         context.user.curCustomer = customerList[0];
                     }
 
+                    var arr = dialog.output[0].buttons;
+
+                    if(context.user.auth && arr[arr.length-1].text!='로그아웃')
+                    {
+                        dialog.output[0].buttons.push({text: '로그아웃'});
+                    }
+
+                    callback();
                 }
-
-                var arr = dialog.output[0].buttons;
-
-                if(context.user.auth && arr[arr.length-1].text!='로그아웃')
-                {
-                    dialog.output[0].buttons.push({text: '로그아웃'});
-                }
-
-                callback();
             }
         });
 
@@ -1012,14 +1047,14 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
                 var bankIndex =
-                    {
-                        '기업' : '003',
-                        '국민' : '004',
-                        '농협' : '011',
-                        '우리' : '020',
-                        '신한' : '026',
-                        '하나' : '081'
-                    };
+                {
+                    '기업' : '003',
+                    '국민' : '004',
+                    '농협' : '011',
+                    '우리' : '020',
+                    '신한' : '026',
+                    '하나' : '081'
+                };
                 var selectedBank = bankIndex[dialog.userInput.selectedBank];
                 var curCustomer = context.user.curCustomer;
 
@@ -1453,11 +1488,11 @@ module.exports = function(bot)
             {
 
                 var methodIdex =
-                    {
-                        'A': '비자동이체',
-                        'D': '은행자동이체',
-                        'K': '카드자동이체'
-                    };
+                {
+                    'A': '비자동이체',
+                    'D': '은행자동이체',
+                    'K': '카드자동이체'
+                };
                 var curCustomer = context.user.curCustomer;
 
                 var options = {};
@@ -1842,8 +1877,35 @@ module.exports = function(bot)
                 {
                     context.user.customerList[i]['mobile'] = context.user.customerMobile;
                 }
-                context.user.auth = true;
-                callback();
+
+                var newuser = {
+                    isFirst: false,
+                    channel: context.channel.name,
+                    userKey: context.user.userKey,
+                    customerName: context.user.customerName,
+                    customerMobile: context.user.customerMobile,
+                    customerBirth: context.user.customerBirth,
+                    auth: true,
+                    customerList: context.user.customerList
+                };
+
+                var modelname="samchully_users";
+                var options = {};
+
+                options.url = 'http://52.78.177.173:8443/api/'+modelname;
+                options.json = newuser;
+
+                request.post(options, function(err, response, body) {
+                    if (err) {
+                        console.log(err);
+                        callback();
+                    }
+                    else {
+                        console.log("response.statusCode=" + response.statusCode);
+                        context.user.auth = true;
+                        callback();
+                    }
+                });
             }
         });
 
@@ -2050,11 +2112,26 @@ module.exports = function(bot)
                 context.session.totalSelectedNonpayment = '';
 
                 context.user.auth = '';
-                context.user.isFirst = undefined;
+                context.user.isFirst = true;
 
                 context.session.identificationNum = '';
-
-                callback();
+                var modelname = "samchully_users";
+                var options = {};
+                options.url = 'http://52.78.177.173:8443/api/' + modelname;
+                options.qs = {
+                    userKey: context.user.userKey,
+                    channel: context.channel.name
+                };
+                request.delete(options, function (err, response, body) {
+                    if (err) {
+                        console.log('err:' + err);
+                        callback();
+                    }
+                    else {
+                        console.log(response.statusCode);
+                        callback();
+                    }
+                });
             }
         });
 
