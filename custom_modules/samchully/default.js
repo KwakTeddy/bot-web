@@ -894,7 +894,9 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                if(!context.user.auth) {
+                  console.log('========================================== user request ====================');
+              console.log(context.user);
+              if(!context.user.auth&&context.user.userKey&&context.channel.name) {
                     var modelname = "samchully_users";
                     var options = {};
                     options.url = 'http://52.78.177.173:8443/api/' + modelname;
@@ -2122,7 +2124,8 @@ module.exports = function(bot)
                 options.url = 'http://52.78.177.173:8443/api/' + modelname;
                 options.qs = {
                     userKey: context.user.userKey,
-                    channel: context.channel.name
+                    channel: context.channel.name,
+                  testKey: 'test'
                 };
                 request.delete(options, function (err, response, body) {
                     if (err) {
