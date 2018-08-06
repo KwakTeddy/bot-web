@@ -57,9 +57,6 @@ var Logger = require('./logger.js');
                 }
             }
 
-            console.log();
-            console.log(chalk.yellow('[[[ No Answer ]]]'));
-
             var target = undefined;
             if(transaction.qa && transaction.qa.matchedDialog)
             {
