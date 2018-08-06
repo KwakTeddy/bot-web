@@ -904,8 +904,7 @@ module.exports = function(bot)
                         userKey: context.user.userKey,
                         channel: context.channel.name
                     };
-                  var qst = '?userKey='+context.user.userKey+'&channel='+context.channel.name;
-                  options.url = options.url + qst;
+
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log('err:' + err);
