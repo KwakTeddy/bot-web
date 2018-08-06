@@ -467,7 +467,6 @@ var Dialogset = mongoose.model('Dialogset');
 
             that.dialogsets = dialogsets;
 
-            console.log('dialogset: ', dialogsets);
             callback();
         });
     };

@@ -32,9 +32,9 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
     {
         var inputRaw = userInput.text;
 
-        console.log();
-        console.log(chalk.yellow('[[[ INPUT ]]]'));
-        console.log('inputRaw : ', inputRaw);
+        //console.log();
+        //console.log(chalk.yellow('[[[ INPUT ]]]'));
+        //console.log('inputRaw : ', inputRaw);
 
         inputRaw = inputRaw.replace(/^\s+|\s+$/g,"");
 
@@ -65,7 +65,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
                 userInput.lastChar = lastChar;
                 userInput.types = {};
 
-                console.log('nlp: ', nlp);
+                //console.log('nlp: ', nlp);
 
                 //DB를 조회해서 엔티티 분석
                 EntityManager.analysis(bot, nlp, function(err, entities)
@@ -75,7 +75,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
                         return error.delegate(err);
                     }
 
-                    console.log('엔티티 : ', entities);
+                    //console.log('엔티티 : ', entities);
                     userInput.entities = entities;
 
                     //DB를 조회해서 인텐트 분석
@@ -86,7 +86,7 @@ var SynonymDictionary = mongoose.model('SynonymDictionary');
                             return error.delegate(err);
                         }
 
-                        console.log('인텐트 : ', intents);
+                        //console.log('인텐트 : ', intents);
                         userInput.intents = intents;
 
                         userInput.synonyms = [];

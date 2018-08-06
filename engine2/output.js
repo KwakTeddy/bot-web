@@ -53,18 +53,18 @@ var utils = require('./utils/utils.js');
     {
         output = utils.clone(output);
 
-        console.log();
-        console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
-        console.log(output.text);
+        //console.log();
+        //console.log(chalk.yellow('[[[ Output Makeup Before ]]]'));
+        //console.log(output.text);
 
-        if(output && output.buttons)
-        {
-            console.log('-- buttons --');
-            for(var i=0; i<output.buttons.length; i++)
-            {
-                console.log('[ ' + output.buttons[i].text + ' ]');
-            }
-        }
+        //if(output && output.buttons)
+        //{
+        //    console.log('-- buttons --');
+        //    for(var i=0; i<output.buttons.length; i++)
+        //    {
+        //        console.log('[ ' + output.buttons[i].text + ' ]');
+        //    }
+        //}
 
         var bot = context.bot;
 
@@ -210,17 +210,17 @@ var utils = require('./utils/utils.js');
             }
         }
 
-        console.log();
-        console.log(chalk.yellow('[[[ Output Makeup After ]]]'));
-        console.log(output.text);
-        if(output && output.buttons)
-        {
-            console.log('-- buttons --');
-            for(var i=0; i<output.buttons.length; i++)
-            {
-                console.log('[ ' + output.buttons[i].text + ' ]');
-            }
-        }
+        //console.log();
+        //console.log(chalk.yellow('[[[ Output Makeup After ]]]'));
+        //console.log(output.text);
+        //if(output && output.buttons)
+        //{
+        //    console.log('-- buttons --');
+        //    for(var i=0; i<output.buttons.length; i++)
+        //    {
+        //        console.log('[ ' + output.buttons[i].text + ' ]');
+        //    }
+        //}
 
         return output;
     };

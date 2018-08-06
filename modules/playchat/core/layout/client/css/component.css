@@ -3,11 +3,17 @@
     outline: 0;
     background: white;
     cursor: pointer;
+<<<<<<< HEAD
     font-weight: 600;
     border: 1px solid #d0d2d3;
+=======
+    /*font-weight: 600;*/
+    border: 1px solid #ddd;
+    border-radius: 3px;
+>>>>>>> remaster
     padding: 10px 15px;
     font-size: 13px;
-    color: #919191;
+    color: #000;
     width: 110px;
 }
 
@@ -173,9 +179,15 @@
 {
     position: relative;
     outline: 0;
+<<<<<<< HEAD
     border: solid 1px #d0d2d3;
     padding: 8px 12px 8px 8px!important;
 
+=======
+    border: solid 1px #e8ebf0;
+    border-radius: 2px;
+    padding: 11px 12px 11px 8px!important;
+>>>>>>> remaster
     transition: border 0.5s;
 }
 
@@ -308,6 +320,7 @@
 
 .jumbo-select
 {
+<<<<<<< HEAD
     border: 1px solid #d0d2d3;
     outline: 0;
     cursor: pointer;
@@ -319,12 +332,21 @@
     /*width: 83px;*/
     height: 34px;
     text-align: left;
+=======
+    border-radius: 2px;
+    border:1px solid #ddd;
+    /*width: 100px;
+    height: 35px;*/
+    outline: 0;
+    cursor:pointer;
+    padding: 6px 4px;
+>>>>>>> remaster
 }
 
 .codebtn
 {
     background: #038eda url(/modules/playchat/working-ground/dialog-graph/client/imgs/codebtn.png) no-repeat 50%;
-    border-radius: 3px;
+    border-radius: 2px;
     padding: 0px 13px;
     display: inline;
     margin: 0 10px;

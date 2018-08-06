@@ -52,7 +52,7 @@ input { margin:0; padding:0; }
 button { cursor:pointer; }
 
 input[type="checkbox"],input[type="radio"] { padding:0; vertical-align:middle; margin-top:-1px; *margin-top:-2px; }
-input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:8px 18px 8px 8px; background: #fff;}
+input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"], input[type="number"] { padding:8px 10px 8px 8px; background: #fff;}
 input[type="button"] ,input[type="submit"] { cursor:pointer; }
 
 textarea { font-size: 12px; border:1px solid #d0d2d3; padding:5px; }
@@ -398,6 +398,7 @@ input.search[type="submit"]:hover {
 input[type="checkbox"]{
 	box-sizing: border-box;
     padding: 0px;
+    margin-right: 4px;
 }
 label{
 	display: inline-block;
@@ -446,7 +447,7 @@ label{
 .slide{
 	  width: 80px;
 	  height: 24px;
-	  background: #e0e0e0;
+	  background: #d6d6d6;
 	  margin: 0px auto;
 	  position: relative;
 	  border-radius: 50px;

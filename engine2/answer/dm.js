@@ -578,9 +578,9 @@ var ContextManager = require('../context.js');
 
     DialogGraphManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
-        console.log();
-        console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
-        console.log(dialogInstance);
+        //console.log();
+        //console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
+        //console.log(dialogInstance);
 
         if(dialogInstance.userInput.types)
         {
@@ -690,9 +690,9 @@ var ContextManager = require('../context.js');
                 resultOutput = output;
             }
 
-            console.log();
-            console.log(chalk.yellow('[[[ Selected Output ]]]'));
-            console.log(resultOutput);
+            //console.log();
+            //console.log(chalk.yellow('[[[ Selected Output ]]]'));
+            //console.log(resultOutput);
 
             if(resultOutput)
             {
