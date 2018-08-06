@@ -898,7 +898,7 @@ module.exports = function(bot)
                     var modelname = "samchully_users";
                     var options = {};
                     options.url = 'http://52.78.177.173:8443/api/' + modelname;
-                    options.qs = {
+                    options.qs = {   
                         userKey: context.user.userKey,
                         channel: context.channel.name
                     };
