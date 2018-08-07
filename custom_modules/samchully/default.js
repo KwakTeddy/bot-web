@@ -14,23 +14,23 @@ module.exports = function(bot)
 
     //Variable Area
     var monthIndex =
-        {
-            1 : 4,
-            3 : 1,
-            6: 2,
-            12: 3
-        };
+    {
+        1 : 4,
+        3 : 1,
+        6: 2,
+        12: 3
+    };
 
     var methodIdex =
-        {
-            '0001' : '우편송달',
-            '0002' : '고객센터송달',
-            '0003' : '이메일송달',
-            '0004' : '모바일송달',
-            '0005' : 'LMS송달',
-            '0006' : '카카오알림톡송달',
-            '0007' : '카카오청구서송달'
-        };
+    {
+        '0001' : '우편송달',
+        '0002' : '고객센터송달',
+        '0003' : '이메일송달',
+        '0004' : '모바일송달',
+        '0005' : 'LMS송달',
+        '0006' : '카카오알림톡송달',
+        '0007' : '카카오청구서송달'
+    };
 
     var test_userData = {
         testmode:false,
@@ -894,7 +894,9 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
-                if(!context.user.auth) {
+                  console.log('========================================== user request ====================');
+              console.log(context.user);
+              if(!context.user.auth&&context.user.userKey&&context.channel.name) {
                     var modelname = "samchully_users";
                     var options = {};
                     options.url = 'http://52.78.177.173:8443/api/' + modelname;
@@ -903,7 +905,11 @@ module.exports = function(bot)
                         channel: context.channel.name,
                       	testKey:'test'
                     };
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 0a27d6f5626176e5922e1db6309f442179ef5eb0
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log('err:' + err);
@@ -1049,14 +1055,14 @@ module.exports = function(bot)
             action: function (dialog, context, callback)
             {
                 var bankIndex =
-                    {
-                        '기업' : '003',
-                        '국민' : '004',
-                        '농협' : '011',
-                        '우리' : '020',
-                        '신한' : '026',
-                        '하나' : '081'
-                    };
+                {
+                    '기업' : '003',
+                    '국민' : '004',
+                    '농협' : '011',
+                    '우리' : '020',
+                    '신한' : '026',
+                    '하나' : '081'
+                };
                 var selectedBank = bankIndex[dialog.userInput.selectedBank];
                 var curCustomer = context.user.curCustomer;
 
@@ -1490,11 +1496,11 @@ module.exports = function(bot)
             {
 
                 var methodIdex =
-                    {
-                        'A': '비자동이체',
-                        'D': '은행자동이체',
-                        'K': '카드자동이체'
-                    };
+                {
+                    'A': '비자동이체',
+                    'D': '은행자동이체',
+                    'K': '카드자동이체'
+                };
                 var curCustomer = context.user.curCustomer;
 
                 var options = {};
@@ -2122,7 +2128,8 @@ module.exports = function(bot)
                 options.url = 'http://52.78.177.173:8443/api/' + modelname;
                 options.qs = {
                     userKey: context.user.userKey,
-                    channel: context.channel.name
+                    channel: context.channel.name,
+                  testKey: 'test'
                 };
                 request.delete(options, function (err, response, body) {
                     if (err) {
