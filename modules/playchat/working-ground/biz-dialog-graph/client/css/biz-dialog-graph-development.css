@@ -281,7 +281,7 @@ select.add-menu option{
     width: 32%;
     float: left;
     font-size: 14px;
-    margin-left:2%;
+    margin-left:50px;
     margin-bottom: 10%;
     /*width: 17%;*/
     /*font-size: 14px;*/
@@ -389,8 +389,8 @@ select.add-menu option{
 .detail-select input[type='checkbox'] + label::before {
     content: ' ';
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     vertical-align: middle;
     margin: -2px 7px 0px 0;
     background:#fff;
@@ -407,10 +407,10 @@ select.add-menu option{
     color: #fff;
     cursor: pointer;
     border: 1px solid #038eda;
-    line-height: 10px;
+    line-height: 15px;
 }
 .detail-select label{
-    font-size: 12px;
+    font-size: 14px;
     line-height: 28px;
 }
 .connection-data{

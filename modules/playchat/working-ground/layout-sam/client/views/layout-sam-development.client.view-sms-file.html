@@ -28,7 +28,7 @@
                     <ul>
                         <li class="two">입력 방법</li>
                         <li class="three">
-                            <input id="radio1" type="radio" class="styled-radio" name="choice" checked>
+                            <input id="radio1" type="radio" class="styled-radio" name="choice">
                             <label for="radio1" class="label">직접 입력</label>
                         </li>
                         <li class="three">
@@ -36,36 +36,76 @@
                             <label for="radio2" class="label">주소록</label>
                         </li>
                         <li class="three">
-                            <input id="radio3" type="radio" class="styled-radio" name="choice">
+                            <input id="radio3" type="radio" class="styled-radio" name="choice" checked>
                             <label for="radio3" class="label">파일 입력</label>
                         </li>
                     </ul>
                     <ul>
-                        <li class="four">발송 번호 입력하기 (최대 12명)</li>
-                        <li class="five">
-                            <input type="text" class="ml2 type05">
-                            <input type="text" class="ml2 type05">
-                        </li>
-                        <li class="five">
-                            <input type="text" class="ml2 type05">
-                            <input type="text" class="ml2 type05">
-                        </li>
-                        <li class="five">
-                            <input type="text" class="ml2 type05">
-                            <input type="text" class="ml2 type05">
-                        </li>
-                        <li class="five">
-                            <input type="text" class="ml2 type05">
-                            <input type="text" class="ml2 type05">
-                        </li>
-                        <li class="five">
-                            <input type="text" class="ml2 type05">
-                            <input type="text" class="ml2 type05">
-                        </li>
-                        <li class="five">
-                            <input type="text" class="ml2 type05">
-                            <input type="text" class="ml2 type05">
-                        </li>
+                        <div class="six">파일 불러오기</div>
+                        <a class="btn-style03" href="" style="margin-top: 25px;float: right;">엑셀 파일 가져오기</a>
+                        <a href="" class="download">엑셀샘플 다운받기</a>
+                        <div class="box-list" style="height: 280px;">
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                        </div>
                     </ul>
                     <ul class="mb25">
                         <li class="two">전송 대상</li>
@@ -174,28 +214,51 @@
             </div>
         </div>
     </div>
-    <!--팝업화면
-        <div class="biz-window_overlay">-->
-        <!--<div class="biz-window">-->
-            <!--<div class="biz-card_detail_window">-->
-                <!--<div class="biz-window_header">-->
-                    <!--&lt;!&ndash;-->
-                                    <!--<span class="biz-window_header_icon">-->
-                                        <!--<img src="images/temp-new-popup.png">-->
-                                    <!--</span>-->
-                    <!--&ndash;&gt;-->
-                    <!--<div class="biz-window_title">-->
-                        <!--<h1>봇 삭제확인</h1>-->
+    <!--팝업화면-->
+        <!--<div class="biz-window_overlay">-->
+            <!--<div class="biz-window">-->
+                <!--<div class="biz-card_detail_window">-->
+                    <!--<div>-->
+                        <!--<a class="btn-style05" href="" style="width: 100px;margin-right: 5px;">주소록</a>-->
+
+                        <!--<div class="box-list" style="height: 250px;margin-top: 10px;">-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>1</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>2</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>1</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>2</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>1</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>2</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>1</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                            <!--<a class="list-line" href="">-->
+                                <!--<div class="list1"><span>2</span>. VIP 고객 명단</div>-->
+                                <!--<div href="" class="list3">1,000명</div>-->
+                            <!--</a>-->
+                        <!--</div>-->
                     <!--</div>-->
-                    <!--<p class="detail">선택하신 봇의 내용은 삭제되며, 복구가 불가합니다.<br>이대로 삭제하시겠습니까?</p>-->
-                <!--</div>-->
-                <!--<div class="btnarea-bizpop">-->
-                    <!--<div class="btn-style07">취소</div>-->
-                    <!--<div class="btn-style06 ml15">삭제</div>-->
                 <!--</div>-->
             <!--</div>-->
         <!--</div>-->
-    <!--</div>-->
 <!--
     <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
 

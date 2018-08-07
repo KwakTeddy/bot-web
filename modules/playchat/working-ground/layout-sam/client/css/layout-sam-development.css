@@ -28,6 +28,17 @@
     color: #858585;
     letter-spacing: -1px;
 }
+.nal3{
+    padding:0;
+}
+.nal3 li{
+    display: inline;
+}
+.nal3 .first{
+    font-size: 14px;
+    color: #858585;
+    line-height: 47px;
+}
 .edit-windo{
     padding:1% 0;
 }
@@ -74,7 +85,7 @@
     margin: 1% auto 2%;
 }
 .box-list{
-    overflow-y: scroll;
+    overflow:auto;
 }
 .list-line{
     display: block;
