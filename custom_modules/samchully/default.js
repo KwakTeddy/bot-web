@@ -900,9 +900,14 @@ module.exports = function(bot)
                     options.url = 'http://52.78.177.173:8443/api/' + modelname;
                     options.qs = {
                         userKey: context.user.userKey,
-                        channel: context.channel.name
+                        channel: context.channel.name,
+                      	testKey:'test'
                     };
+<<<<<<< HEAD
+                  
+=======
 
+>>>>>>> 0a27d6f5626176e5922e1db6309f442179ef5eb0
                     request.get(options, function (err, response, body) {
                         if (err) {
                             console.log('err:' + err);
