@@ -79,7 +79,6 @@
 
                     { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
 
-                    { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
                     { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
 
                     // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
