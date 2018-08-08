@@ -4,6 +4,8 @@ var async = require('async');
 var fs = require('fs');
 
 var mongoose = require('mongoose');
+var TeleBook = mongoose.model('TeleBook');
+var TeleBookData = mongoose.model('TeleBookData');
 
 (function()
 {
@@ -26,73 +28,7 @@ var mongoose = require('mongoose');
 
     };
 
-    var saveContext = function(botId, dialogsetId, split, index, done)
-    {
-        if(index < split.length)
-        {
-            var customcontext = new CustomContext();
-            customcontext.bot = botId;
-            customcontext.name = split[index];
-
-            if(index-1 >= 0)
-            {
-                customcontext.parent = split[index-1];
-            }
-
-            customcontext.dialogset = dialogsetId;
-            customcontext.save(function(err)
-            {
-                split[index] = customcontext._id;
-                saveContext(botId, dialogsetId, split, index+1, done);
-            });
-        }
-        else
-        {
-            done(split[index-1]);
-        }
-    };
-
-    var saveWithContext = function(botId, language, dialogsetId, keyList, context, index, done)
-    {
-        if(index < keyList.length)
-        {
-            var key = keyList[index];
-            var list = context[key];
-
-            var split = key.split('@@@');
-            saveContext(botId, dialogsetId, split, 0, function(contextId)
-            {
-                async.eachSeries(list, function(item, next)
-                {
-                    var dialogsetDialog = new DialogsetDialog();
-                    dialogsetDialog.dialogset = dialogsetId;
-                    dialogsetDialog.inputRaw = [item.q];
-                    dialogsetDialog.output = [item.a];
-                    dialogsetDialog.context = contextId;
-
-                    NLPManager.getNlpedText(language, item.q, function(err, lastChar, nlpText, nlp)
-                    {
-                        dialogsetDialog.input = [nlpText];
-
-                        dialogsetDialog.save(function()
-                        {
-                            next();
-                        });
-                    });
-                },
-                function()
-                {
-                    saveWithContext(botId, language, dialogsetId, keyList, context, index+1, done);
-                });
-            });
-        }
-        else
-        {
-            done();
-        }
-    };
-
-    Uploader.prototype.uploadFromExcel = function(userId, filePath, callback)
+    Uploader.prototype.uploadFromExcel = function(userId, tag, filename, filePath, callback)
     {
         var workbook = XLSX.readFile(filePath);
         var first_sheet_name = workbook.SheetNames[0];
@@ -108,7 +44,6 @@ var mongoose = require('mongoose');
 
 
         var teleBookList = [];
-        var lastData = undefined;
 
         for(var r=1;r<=range.e.r;r++){
             var name = ws[XLSX.utils.encode_cell({ c: 0, r: r })];
@@ -126,42 +61,67 @@ var mongoose = require('mongoose');
             }
 
         }
-        console.log(teleBookList)
-        process.exit()
 
-
-        async.eachSeries(teleBookList, function(item, next)
-        {
-            var dialogsetDialog = new DialogsetDialog();
-            dialogsetDialog.dialogset = dialogsetId;
-            dialogsetDialog.inputRaw = item.q;
-            dialogsetDialog.input = [];
-            dialogsetDialog.output = item.a;
-            dialogsetDialog.category = item.category;
-
-            async.eachSeries(item.q, function(q, next)
-            {
-                NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
-                {
-                    dialogsetDialog.input.push(nlpText);
-                    next();
-                });
-            },
-            function()
-            {
-                dialogsetDialog.save(function()
-                {
-                    next();
-                });
-            });
-        },
-        function()
-        {
-            callback();
+        var teleBook = new TeleBook({
+            userId : userId,
+            tag : tag,
+            fileName : filename,
+            total : teleBookList.length
         });
+
+        teleBook.save((err,rs) => {
+            if(err){
+                callback(false)
+            }else{
+                var bookId = rs._id;
+                async.eachSeries(teleBookList,(item,next)=>{
+                    var teleBookData = new TeleBookData(item);
+                    teleBookData.bookId = bookId;
+                    teleBookData.save(() => {
+                        next();
+                    })
+                },() => {
+                    console.log(rsa);
+                    process.exit()
+                    callback(true)
+                });
+            };
+        });
+
+
+
+        //async.eachSeries(teleBookList, function(item, next)
+        //{
+        //    var dialogsetDialog = new DialogsetDialog();
+        //    dialogsetDialog.dialogset = dialogsetId;
+        //    dialogsetDialog.inputRaw = item.q;
+        //    dialogsetDialog.input = [];
+        //    dialogsetDialog.output = item.a;
+        //    dialogsetDialog.category = item.category;
+        //
+        //    async.eachSeries(item.q, function(q, next)
+        //    {
+        //        NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
+        //        {
+        //            dialogsetDialog.input.push(nlpText);
+        //            next();
+        //        });
+        //    },
+        //    function()
+        //    {
+        //        dialogsetDialog.save(function()
+        //        {
+        //            next();
+        //        });
+        //    });
+        //},
+        //function()
+        //{
+        //    callback();
+        //});
     };
 
-    Uploader.prototype.uploadFromCsv = function(userId, filePath, callback)
+    Uploader.prototype.uploadFromCsv = function(userId, tag, filename, filePath, callback)
     {
         var data = fs.readFileSync(filePath);
 
@@ -313,7 +273,7 @@ var mongoose = require('mongoose');
         //
     };
 
-    Uploader.prototype.upload = function(userId, filename, callback)
+    Uploader.prototype.upload = function(userId, tag, filename, callback)
     {
         var dir = path.resolve('public/files/');
         var filePath = path.join(dir, filename);
@@ -321,16 +281,16 @@ var mongoose = require('mongoose');
 
         if(info.ext == '.xls' || info.ext == '.xlsx')
         {
-            this.uploadFromExcel(userId, filePath, callback);
+            this.uploadFromExcel(userId, tag, filename, filePath, callback);
         }
         else if(info.ext == '.csv')
         {
-            this.uploadFromCsv(userId, filePath, callback);
+            this.uploadFromCsv(userId, tag, filename, filePath, callback);
         }
     };
 
     module.exports = new Uploader();
 
     var upload = new Uploader();
-    upload.upload('ko', 'Telebook.xlsx');
+    upload.upload('leon@moneybrain.ai', 'temp', 'Telebook.xlsx');
 })();

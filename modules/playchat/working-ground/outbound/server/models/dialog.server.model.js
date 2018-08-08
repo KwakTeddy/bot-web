@@ -16,6 +16,7 @@ var TeleBookSchema = new Schema(
         userId : { type: String },
         tag: { type: String },
         fileName : { type: String },
+        total : { type: Number, default:0 },
         useYN : { type: Number, default:1 },
         created: { type: Date, default: Date.now }
     });

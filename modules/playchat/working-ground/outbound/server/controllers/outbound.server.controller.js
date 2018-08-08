@@ -8,7 +8,7 @@ var utils = require(path.resolve('./engine2/utils/utils.js'));
 var Bot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
 
-//var outboundUploader = require('./outbound-uploader.js');
+var outboundUploader = require('./outbound-uploader.js');
 
 module.exports.check = function(req, res){
     var options = {
