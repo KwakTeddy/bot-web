@@ -2,7 +2,7 @@
 
     <div class="tab">
         <ul class="tab-body">
-            <li class="select_tab" ng-click="moveTab($event, 'botContent');">
+            <li class="select_tab" ng-click="moveTab($event, 'botContent');" ng-if="restrictService!='sam@moneybrain.ai'">
                 <a>{{ lan('My chatbot') }}</a>
             </li>
             <li ng-click="moveTab($event, 'sharedBotContent');">

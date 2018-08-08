@@ -21,7 +21,7 @@
         var countPerPage = $location.search().countPerPage || 50;
 
         var user = $cookies.getObject('user');
-
+        $scope.restrictService = user.email;
         $scope.selectedBot = undefined;
         $scope.openShareModal = false;
         $scope.share = {};
@@ -37,7 +37,6 @@
         {
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
-                console.log(list)
                 $scope.list = list;
                 
                 for(var i=0; i<list.length; i++)
@@ -129,7 +128,7 @@
             angular.element('#botContent').hide();
             angular.element('#sharedBotContent').hide();
             angular.element('#' + name).show();
-            angular.element(e.currentTarget).addClass('select_tab');
+            if(e)angular.element(e.currentTarget).addClass('select_tab');
         };
 
         $scope.toPage = function(page)
@@ -292,7 +291,9 @@
         };
 
         $scope.getList();
-
+        if($scope.restrictService=='sam@moneybrain.ai'){
+            $scope.moveTab(null, 'sharedBotContent');
+        }
         $scope.lan = LanguageService;
     }]);
 })();

@@ -9,6 +9,7 @@
         var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
 
         var instance = undefined;
+        var user = $cookies.getObject('user');
 
         var Menu = function()
         {
@@ -120,10 +121,15 @@
 
                 var menus = [];
                 menus.push(that.dashboard);
-                menus.push(that.development);
-                menus.push(that.management);
+
+                if(user.email!='sam@moneybrain.ai'){
+                    menus.push(that.development);
+                    menus.push(that.management);
+                    menus.push(that.channel);
+                }
+
                 // menus.push(this.contents);
-                menus.push(that.channel);
+
                 if(chatbot.myBotAuth.edit)
                 {
                     menus.push(that.operation);
