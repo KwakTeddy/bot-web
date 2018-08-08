@@ -1,12 +1,31 @@
 var path = require('path');
 var fs = require('fs');
-
+var request = require('request');
 var mongoose = require('mongoose');
 
 var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var Bot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
+
+
+module.exports.check = function(req, res){
+    var options = {
+        method : 'POST',
+        url : 'https://bizchat.moneybrain.ai/bot',
+        //url : 'http://localhost:8080/bot',
+        form : req.body
+    };
+
+    request(options,(err, response, body)=>{
+        if(err){
+            res.send(err);
+        }else{
+            res.send(body);
+        }
+    })
+
+};
 
 module.exports.find = function(req, res)
 {

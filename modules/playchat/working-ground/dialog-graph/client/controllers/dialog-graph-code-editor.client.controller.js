@@ -183,7 +183,6 @@
                 }
 
                 var cursor = editor.getCursor();
-                console.log('커서 : ', cursor);
                 editor.focus();
                 editor.setCursor({line: cursor.line, ch: cursor.ch});
             }
@@ -254,7 +253,6 @@
         {
             if($scope.sourceFileName)
             {
-                console.log('vkdlfdu : ', $scope.sourceFileName);
                 $rootScope.$broadcast('selectTab', $scope.sourceFileName);
             }
 

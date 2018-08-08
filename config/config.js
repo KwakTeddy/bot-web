@@ -55,7 +55,6 @@ var getGlobbedPaths = function (globPatterns, excludes) {
  */
 var validateEnvironmentVariable = function () {
   var environmentFiles = glob.sync('./config/env/' + process.env.NODE_ENV + '.js');
-  console.log();
   if (!environmentFiles.length) {
       var env = 'remaster';
     if (process.env.NODE_ENV) {
@@ -85,7 +84,6 @@ var validateSecureMode = function (config) {
   if (!privateKey || !certificate) {
     console.log(chalk.red('+ Error: Certificate file or key file is missing, falling back to non-SSL mode'));
     console.log(chalk.red('  To create them, simply run the following from your shell: sh ./scripts/generate-ssl-certs.sh'));
-    console.log();
     config.secure.ssl = false;
   }
 };
@@ -102,7 +100,6 @@ var validateSessionSecret = function (config, testing) {
       console.log(chalk.red('+ WARNING: It is strongly recommended that you change sessionSecret config while running in production!'));
       console.log(chalk.red('  Please add `sessionSecret: process.env.SESSION_SECRET || \'super amazing secret\'` to '));
       console.log(chalk.red('  `config/env/production.js` or `config/env/local.js`'));
-      console.log();
     }
     return false;
   } else {

@@ -44,7 +44,6 @@
                 if(statePathname != window.location.pathname){
                     var data = {};
                     data.url = statePathname ;
-                    // console.log($.cookie.get())
                     if(that.userId) data.userId = that.userId;
                     if(that.botId) data.botId = that.botId;
                     $.ajax({

@@ -37,7 +37,6 @@ var Logger = require('./logger.js');
 
         if(quibble)
         {
-            console.log();
             console.log(chalk.yellow('[[[ Quibble ]]]'));
 
             Logger.analysisLog('answer', { output: { text : quibble } }, context.user.userKey);
@@ -209,7 +208,6 @@ var Logger = require('./logger.js');
             context.session.currentCategory = transaction.qa.matchedDialog.category;
         }
 
-        console.log();
         console.log(chalk.yellow('[[[ Q&A ]]]'));
         console.log(transaction.qa.matchedDialog);
         console.log(text);

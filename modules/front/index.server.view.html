@@ -755,7 +755,6 @@
 
 
             var lan = {{ lan | json | safe }};
-        console.log(lan)
             $.cookie('language', lan);
 
             $('[data-id="startBtn"]').on('click', function () {

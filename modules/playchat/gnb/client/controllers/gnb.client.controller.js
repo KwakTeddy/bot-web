@@ -93,8 +93,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             else
             {
                 $scope.stopToggle = true;
-                console.log('스탑 토글 : ', $scope.stopToggle);
-
                 //펼치기
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
             }

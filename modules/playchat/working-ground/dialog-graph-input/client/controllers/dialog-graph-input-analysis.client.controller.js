@@ -40,7 +40,6 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
         {
             DialogGraphInputService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
-                console.log(result)
                 var indexList = {};
                 var list = {};
 

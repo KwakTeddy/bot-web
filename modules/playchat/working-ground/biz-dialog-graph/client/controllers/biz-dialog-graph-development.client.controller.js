@@ -53,7 +53,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
                     $scope.Data.cardArr.sort(e.index);
                 }catch(e){
-                    console.log(e)
+                    console.log(e);
                     pass();
                 }
             })
@@ -88,8 +88,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
     };
 
     $scope.test = function(a){
-        console.log('===== update log =====');
-        console.log(_isUpdated);
         _isUpdated = true;
     };
 

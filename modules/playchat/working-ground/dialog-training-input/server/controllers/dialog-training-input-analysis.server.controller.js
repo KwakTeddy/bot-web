@@ -25,7 +25,6 @@ exports.analysis = function (req, res)
         }
         else
         {
-            console.log('리절트 : ', list);
             DialogsetDialog.populate(list, {path: 'dialogId'}, function(err, list)
             {
                 if(err)

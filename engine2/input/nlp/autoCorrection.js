@@ -45,7 +45,6 @@ var speller_ko = require('./auto-correction/speller_ko');
                 {
                     that.saveWordCorrections(speller.getNWords(), function()
                     {
-                        console.log('batchCorrectionDB: DONE');
                         if(callback)
                         {
                             callback();
@@ -168,9 +167,6 @@ var speller_ko = require('./auto-correction/speller_ko');
         {
             if(tokens[i].length <= 5) tokens[i] = speller_ko.correct(tokens[i]);
         }
-
-        var t1 = new Date();
-        console.log('오타수정: ' + (t1-t0) + 'ms ' +  text + ' > ' + tokens.join(' '));
 
         return tokens.join(' ');
     };

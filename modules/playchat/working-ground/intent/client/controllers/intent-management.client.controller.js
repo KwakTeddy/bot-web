@@ -96,7 +96,6 @@ angular.module('playchat').controller('IntentManagementController', ['$window', 
             angular.element('#intentList .intent-content-row').each(function()
             {
                 var content = angular.element(this).find('td:first-child').text();
-                console.log(content);
                 params.intentContents.push(content);
             });
 
@@ -224,17 +223,12 @@ angular.module('playchat').controller('IntentManagementController', ['$window', 
         $scope.uploader.onErrorItem = function(item, response, status, headers)
         {
             $scope.modalForm.fileUploadError = response.message;
-            console.log($scope.modalForm.fileUploadError);
         };
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers)
         {
-            console.log('성공 : ', item, response, status, headers);
-
             importModal.data.path = response.path;
             importModal.data.filename = response.filename;
-
-            console.log(importModal);
         };
 
         $scope.uploader.onProgressItem = function(fileItem, progress)

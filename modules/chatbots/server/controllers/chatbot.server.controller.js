@@ -293,7 +293,6 @@ exports.create = function(req, res)
                             var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
 
                             if(!language || language != 'ko'){
-                                console.log(lanService(language));
                                 botData = botData.replace("시작",lanService(language)['start']);
                             }
 

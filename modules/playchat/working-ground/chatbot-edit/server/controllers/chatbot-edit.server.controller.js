@@ -31,7 +31,6 @@ module.exports.find = function(req, res)
                     if(list[i].endsWith('bot.js'))
                     {
                         utils.requireNoCache(dir + '/' + list[i])(options);
-                        console.log('봇 옵션 : ', dir + '/' + list[i], options);
                     }
                 }
             }

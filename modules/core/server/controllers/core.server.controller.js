@@ -85,8 +85,6 @@ exports.renderIndex = function (req, res, next)
         var browserLan = accept.language()[0];
         var queryLan = req.query.lan;
 
-        console.log(browserLan);
-
         if(browserLan.indexOf('-') != -1)
         {
             browserLan = browserLan.split('-')[0];

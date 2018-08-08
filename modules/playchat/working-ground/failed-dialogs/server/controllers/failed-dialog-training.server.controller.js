@@ -77,7 +77,6 @@ module.exports.findSimiliars = function(req, res)
             query.output = new RegExp(req.query.text);
         }
 
-        console.log('쿼리 : ', query);
         if(req.query.text)
         {
             DialogsetDialog.find(query).exec(function (err, result)
@@ -88,8 +87,6 @@ module.exports.findSimiliars = function(req, res)
                 }
                 else
                 {
-                    console.log(result);
-
                     var checkDuplicated = {};
 
                     var pureResult = [];

@@ -13,8 +13,6 @@ module.exports = function(globals)
 
         var matchs = inputRaw.match(re);
 
-        console.log(matchs);
-
         if(matchs && matchs.length > 0)
         {
             matched = true;

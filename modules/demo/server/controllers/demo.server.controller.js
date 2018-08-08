@@ -11,7 +11,6 @@ var lngDetector = new LanguageDetect();
 
 module.exports = function (io, socket)
 {
-    console.log('데모 소켓 커넥션');
     socket.on('deeplearning', function(msg)
     {
         client.emotion({ sentence: msg.msg }, function(err, response)

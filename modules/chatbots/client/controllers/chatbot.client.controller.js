@@ -88,7 +88,6 @@
                     if(!version)
                     {
                         alert(LanguageService('It is a chatbot made in old version PlayChat. Go to old version PlayChat.'));
-                        console.log('흠 : ', 'https://old.playchat.ai/playchat/chatbots');
                         window.open(
                             'https://old.playchat.ai/playchat/',
                             '_blank' // <- This is what makes it open in a new window.

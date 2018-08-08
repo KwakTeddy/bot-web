@@ -352,7 +352,6 @@ module.exports.initModulesServerRoutes = function (app)
             console.log(app._router.stack[i].route.path);
     }
 
-    console.log();
     logger.systemInfo('=============== Server Routes require modules - express.js ==========');
     logger.systemInfo(config.files.server.routes.toString().replace(/,/gi, '\n'));
     logger.systemInfo('=====================================================================');

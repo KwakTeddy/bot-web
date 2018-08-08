@@ -251,8 +251,6 @@
 
             $scope.saveTemplateBot = function(e)
             {
-                console.log('12331333')
-
                 var data = {};
                 angular.element(e.currentTarget).find('*[name]').each(function()
                 {

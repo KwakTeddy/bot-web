@@ -421,7 +421,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 
         $scope.$on('set-simulator-content', function(context, data)
         {
-            console.log(data.dialog);
             clearBubble();
             for(var i=data.dialog.length-1; i>=0; i--)
             {

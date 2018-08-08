@@ -63,8 +63,6 @@ module.exports.deleteInstance = function(instanceId, callback)
 
     ec2.terminateInstances(params, function(err, data)
     {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
 
         callback(err, data);
     });

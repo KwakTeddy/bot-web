@@ -121,8 +121,6 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
         {
             SessionAnalysisService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
-                console.log(result);
-
                 excelData = [];
 
                 var list = {};
@@ -154,8 +152,6 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     // 모든 대화 수
                     list[year + '-' + month + '-' + dayOfMonth].dialogCount++;
                 }
-
-                console.log('세션 : ', list);
 
                 var labels = [];
                 var dataset = [{

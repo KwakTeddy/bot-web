@@ -129,7 +129,6 @@ module.exports = function(globals)
     //                     {
     //                         var index = Math.floor(Math.random() * task.typeDoc.output.length);
     //                         task._output = task.typeDoc.output[index];
-    //                         console.log('index: ' + index + ', ' + task._output)
     //                     }
     //                     else
     //                     {

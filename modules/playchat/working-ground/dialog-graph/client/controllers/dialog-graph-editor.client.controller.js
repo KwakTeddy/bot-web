@@ -201,8 +201,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result.task = dialog.task;
         }
 
-        console.log(result.output);
-
         var input = angular.toJson(result.input);
         if(input.startsWith('#') || input.startsWith('$'))
         {
@@ -498,7 +496,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.saveKeydown = function(e)
     {
-        console.log(e.keyCode);
         if(e.keyCode == 9)
         {
             e.preventDefault();

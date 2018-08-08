@@ -33,13 +33,11 @@ var s3 = new AWS.S3();
         this.version = '';
         this.redis = undefined;
 
-        console.log();
         console.log(chalk.green('================= Engine Initailize ==================='));
 
         globals.init();
 
         console.log(chalk.green('===================================================='));
-        console.log();
     };
 
     Core.prototype.setRedisClient = function(client)

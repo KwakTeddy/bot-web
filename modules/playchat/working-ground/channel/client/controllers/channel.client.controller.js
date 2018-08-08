@@ -68,8 +68,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
         WeChatService.get({ botId: chatbot.id }, function(result)
         {
-            console.log('리절트 : ', result);
-
             $scope.wechatAppId = result.appId;
             $scope.wechatKey = result.encodingAESKey;
         });

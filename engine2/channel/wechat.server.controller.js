@@ -28,7 +28,6 @@ exports.message =  function(req, res) {
   });
 
   req.on('end', function () {
-    console.log(body);
     try {
       xml2json.parseString(body, {}, function(err, js) {
         receivedMessage(req, res, js);
@@ -61,9 +60,6 @@ function respondMessage(res, text, json) {
   };
 
   var xml = js2xmlparser.parse("xml", result);
-  console.log(JSON.stringify(json));
-  console.log('============================================');
-  console.log(xml);
 
   res.write(xml);
   res.end();

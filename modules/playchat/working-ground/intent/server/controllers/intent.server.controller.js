@@ -280,7 +280,6 @@ function parseCsv(filepath, callback)
         }
     }).on("end", function()
     {
-        console.log(intentContents);
         callback(intentContents);
     });
 
@@ -511,7 +510,6 @@ exports.uploadFile = function (req, res)
         }
         else
         {
-            console.log('uploadFile:' + req.file.filename);
             var info = path.parse(req.file.filename);
             if (info.ext === ".csv" || info.ext === ".txt" || info.ext === ".xls" || info.ext === ".xlsx")
             {

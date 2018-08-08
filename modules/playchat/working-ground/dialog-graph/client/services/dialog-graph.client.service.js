@@ -1340,8 +1340,6 @@
                 {
                     if(target)
                     {
-                        console.log(target.dialog);
-                        console.log(item.dialog);
                         if($(item.parentElement).find(target.parentElement).length == 0)
                         {
                             var parentDialog = item.parentElement.parentElement.parentElement.children[0].dialog;

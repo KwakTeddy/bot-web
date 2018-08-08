@@ -5,6 +5,13 @@
     font-weight: bold;
     margin: 40px 0 20px 0;
 }
+.daterangepicker.ltr .ranges{
+    float:none !important
+}
+.daterangepicker.ltr .ranges .range_inputs button{
+    width:49% !important
+}
+
 </style>
 
 <div ng-controller="OutboundController" class="graph-background">
@@ -16,7 +23,7 @@
             <ul class="nal1">
                 <li class="first">봇 선택</li>
                 <li>
-                    <select ng-change="test()" ng-model="selectedBot" class="select01" style="width: 324px;">
+                    <select ng-model="selectedBot" class="select01" style="width: 324px;">
                         <option  selected value="null">발송할 봇을 선택하세요.</option>
                         <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
                     </select>
@@ -35,15 +42,15 @@
                     <ul>
                         <li class="two">입력 방법</li>
                         <li class="three">
-                            <input id="radio1" type="radio" class="styled-radio" name="choice">
+                            <input id="radio1" type="radio" class="styled-radio" name="choice1" checked>
                             <label for="radio1" class="label">직접 입력</label>
                         </li>
                         <li class="three">
-                            <input id="radio2" type="radio" class="styled-radio" name="choice">
+                            <input id="radio2" type="radio" class="styled-radio" name="choice1">
                             <label for="radio2" class="label">주소록</label>
                         </li>
                         <li class="three">
-                            <input id="radio3" type="radio" class="styled-radio" name="choice">
+                            <input id="radio3" type="radio" class="styled-radio" name="choice1">
                             <label for="radio3" class="label">파일 입력</label>
                         </li>
                     </ul>
@@ -90,41 +97,24 @@
             <ul class="nal2">
                 <li class="first">발송 시간</li>
                 <li class="three">
-                    <input id="radio4" type="radio" class="styled-radio" name="choice">
+                    <input ng-click="pickerSetting(true)" id="radio4" type="radio" class="styled-radio" name="choice" checked>
                     <label for="radio4" class="label">즉시</label>
                 </li>
                 <li class="three">
-                    <input id="radio5" type="radio" class="styled-radio" name="choice">
+                    <input ng-click="pickerSetting(false)" id="radio5" type="radio" class="styled-radio" name="choice">
                     <label for="radio5" class="label">예약</label>
-                    <span style="color: #bbb;">현재시간 : 2018년 07월 1일 00시 00분</span>
+                    <span style="color: #bbb;">현재시간 : {{timeNow}}</span>
                 </li>
             </ul>
 
             <ul class="nal1">
-                <li class="first">봇 선택</li>
+                <li class="first">유효기간 설정</li>
                 <li>
-                    <select class="select01">
-                        <option  selected>발송할 봇을 선택하세요.</option>
-                        <option>몰라봇</option>
-                        <option>몰라봇</option>
-                    </select>
-                </li>
-                <li>
-                    <select class="select01">
-                        <option  selected>00시</option>
-                        <option></option>
-                        <option></option>
-                    </select>
-                </li>
-                <li>
-                    <select class="select01">
-                        <option  selected>00분</option>
-                        <option></option>
-                        <option></option>
-                    </select>
+                    <input id="createdRange" placeholder="유효기간을 설정해주세요" ng-model="datetimeRange" style="width:250px"/>
                 </li>
             </ul>
-            <a href=""><div class="dialog-btn">발송하기</div></a>
+
+            <a href="" ng-click="send()"><div class="dialog-btn">발송하기</div></a>
         </div>
 
 
@@ -168,7 +158,6 @@
                         <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">
                     </button>
                 </div>
-
                 <div class="dialog-setting" style="border-bottom: 1px solid #d0d2d3;">
                     <p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>
                     <button class="select"># 기본</button>

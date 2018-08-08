@@ -7,7 +7,6 @@ function searchAddress2(task, context, callback) {
 
     var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+\s[0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)?(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?|(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)|(?:^(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)$)|(여의도)/i;
     var matched = task.inRaw.match(지번Re);
-    // console.log('matched: ' + matched);
     if(matched != null) {
         if (matched[1] != null) {
             if (matched[1] == '경기') 시도명 = '경기도';
@@ -55,12 +54,6 @@ function searchAddress2(task, context, callback) {
         if (matched[15]) {
             읍면동명 = matched[15] + '동';
         }
-        console.log('시군구의시도: ' + 시군구의시도);
-        console.log('시군구: ' + 시군구);
-        console.log('시도: ' + 시도);
-        console.log('읍면동명: ' + 읍면동명);
-        console.log('도로명: ' + 도로명);
-        console.log('본번: ' + 본번);
 
         if(도로명) {
             도로명 = 도로명.replace(/\s/, '');
@@ -85,7 +78,6 @@ function searchAddress2(task, context, callback) {
 
         if(시도) query.시도명 = 시도;
         if(시군구) query.시군구명 = new RegExp(시군구, 'i');
-        console.log(Object.keys(query).length);
 
     } else {
         var 건물명Re = /\B(?:[a-zA-Z가-힣]+\s*\d+차[a-zA-Z가-힣]*|[0-9a-zA-Z가-힣]+)(?:\s|$)/g;
@@ -93,15 +85,11 @@ function searchAddress2(task, context, callback) {
         matched = task.inRaw.match(건물명Re);
         if (matched != null) {
             건물명 = matched[0];
-            console.log('건물명1: ' + 건물명)
-            // console.log('inRaw: ' + task.inRaw);
-            // console.log('matched: ' + matched);
             if (matched != null && matched instanceof Array) {
                 if (matched.length > 1) {
                     query = {$or: []};
                     for (var i = 0; i < matched.length; i++) {
                         var match = matched[i].trim();
-                        // console.log(match);
                         // logger.debug('건물명예외Re:' +match + ',' +  건물명예외Re + ','  + match.search(건물명예외Re));
                         if (match.search(건물명예외Re) == -1)
                             query.$or.push({시군구용건물명: match});
@@ -109,14 +97,11 @@ function searchAddress2(task, context, callback) {
                 } else {
                     if (matched[0].trim().search(건물명예외Re) == -1)
                         query = {시군구용건물명: matched[0].trim()};
-                    // console.log('-------------------')
-                    // console.log(JSON.stringify(query));
                 }
 
                 var last = matched[matched.length - 1];
                 var lastRe = new RegExp(last + '\\s+(.*)', 'i');
                 matched = task.inRaw.match(lastRe);
-                console.log('matched: ' + matched);
                 if (matched != null) {
                     상세주소 = matched[1];
                 } else {
@@ -127,12 +112,9 @@ function searchAddress2(task, context, callback) {
 
     task.doc = null;
 
-    // console.log(JSON.stringify(query));
-
     if(Object.keys(query).length == 0) {
         callback(task, context);
     } else if (읍면동명||도로명||행정동명||본번||부번||리명||건물명) {
-        console.log('query start');
         model.aggregate([
             {$match: query},
             {$group: {
@@ -158,11 +140,9 @@ function searchAddress2(task, context, callback) {
             } else {
                 // if(docs.length == 0)
                 //   logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
-                // console.log(JSON.stringify(docs));
                 // var 시군구Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?/g;
                 // if(docs.length > 1) {
                 //   matched = task.inRaw.match(시군구Re);
-                //   // console.log('시군구Re: '+matched);
                 //   if (matched != null) {
                 //     if (matched[1] != null) {
                 //       if (matched[1] == '경기') 시도명 = '경기도';
@@ -202,21 +182,12 @@ function searchAddress2(task, context, callback) {
 
                 for (var i = 0; i < docs.length && i < 10; i++) {
                     var doc = docs[i];
-                    // console.log(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명))
-                    // console.log('건물명2: '+건물명);
-                    // console.log('시도명: '+시도명);
-                    // console.log('독시도명: '+doc.시도명);
-                    // console.log('시군구명: ' +시군구명);
-                    // console.log('독시군구명: '+doc.시군구명);
-                    // if(본번||건물명) {
                     if (본번||건물명) {
                         if(docs.length > 1 && !건물명) {
                             if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
                         }
                         var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
-                        console.log('----------');
                         if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
-                        console.log(1);
                         var _doc = {
                             시도명: doc.시도명,
                             시군구명: doc.시군구명,
@@ -233,7 +204,6 @@ function searchAddress2(task, context, callback) {
                             읍면동일련번호: doc.읍면동일련번호
                         };
 
-                        console.log(2);
                         _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
                                     doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
 
@@ -247,7 +217,6 @@ function searchAddress2(task, context, callback) {
                         if(Array.isArray(task.doc)) task.doc.push(_doc);
                         else if(task.doc) task.doc = [task.doc, _doc];
                         else task.doc = utils.clone(_doc);
-                        // console.log('task1: '+JSON.stringify(task.doc));
 
                     } else if (읍면동명) {
                         var _doc = {
@@ -261,10 +230,6 @@ function searchAddress2(task, context, callback) {
                         _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ' : '');
 
                         _doc.in = task.inRaw;
-
-                        // console.log('_doc: '+JSON.stringify(_doc));
-                        // console.log('task3: '+JSON.stringify(task.doc));
-                        // console.log(Array.isArray(task.doc));
 
                         if (Array.isArray(task.doc)) {
                             for (var j = 0; j < task.doc.length; j++) {
@@ -282,10 +247,6 @@ function searchAddress2(task, context, callback) {
                         else {
                             task.doc = utils.clone(_doc);
                         }
-
-                        // console.log('i::::::::::::::'+i);
-                        // if(Array.isArray(task.doc)) console.log(task.doc[j].시도명);
-                        // console.log('task2: '+JSON.stringify(task.doc));
                         // break;
                     }
                     // } else if (시군구) {
@@ -298,10 +259,6 @@ function searchAddress2(task, context, callback) {
                     //
                     //   _doc.in = task.inRaw;
                     //
-                    //   // console.log('_doc: '+JSON.stringify(_doc));
-                    //   // console.log('task3: '+JSON.stringify(task.doc));
-                    //   // console.log(Array.isArray(task.doc));
-                    //
                     //   if (Array.isArray(task.doc)) {
                     //     for (var j = 0; j < task.doc.length; j++) {
                     //       if (task.doc[j].시도명 == _doc.시도명) {
@@ -318,24 +275,15 @@ function searchAddress2(task, context, callback) {
                     //   else {
                     //     task.doc = utils.clone(_doc);
                     //   }
-                    //
-                    //   // console.log('i::::::::::::::'+i);
-                    //   // if(Array.isArray(task.doc)) console.log(task.doc[j].시도명);
-                    //   // console.log('task2: '+JSON.stringify(task.doc));
                     //   // break;
                     // } else if (시도) {
                     //   var _doc = {
                     //     시도명: doc.시도명
                     //   };
-                    //   console.log('doc.시도명: '+ doc.시도명);
                     //
                     //   _doc.지번주소 = doc.시도명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '');
                     //
                     //   _doc.in = task.inRaw;
-                    //
-                    //   // console.log('_doc: '+JSON.stringify(_doc));
-                    //   // console.log('task3: '+JSON.stringify(task.doc));
-                    //   // console.log(Array.isArray(task.doc));
                     //
                     //   if (Array.isArray(task.doc)) {
                     //     for (var j = 0; j < task.doc.length; j++) {
@@ -353,10 +301,6 @@ function searchAddress2(task, context, callback) {
                     //   else {
                     //     task.doc = utils.clone(_doc);
                     //   }
-                    //
-                    //   // console.log('i::::::::::::::'+i);
-                    //   // if(Array.isArray(task.doc)) console.log(task.doc[j].시도명);
-                    //   // console.log('task2: '+JSON.stringify(task.doc));
                     //   // break;
                     // }
 
@@ -370,8 +314,6 @@ function searchAddress2(task, context, callback) {
                     // + doc.상세건물명 + ' ' + doc.도로명코드 + ',' + doc.읍면동일련번호 + ', ' + doc.건물관리번호
                 }
             }
-            // console.log('docs: ' + JSON.stringify(docs));
-            // console.log('task.doc: '+JSON.stringify(task.doc));
             callback(task, context);
 
         })
@@ -384,10 +326,6 @@ function searchAddress2(task, context, callback) {
             _doc.지번주소 = 시도 + ' ';
 
             _doc.in = task.inRaw;
-
-            // console.log('_doc: '+JSON.stringify(_doc));
-            // console.log('task3: '+JSON.stringify(task.doc));
-            // console.log(Array.isArray(task.doc));
 
             if (Array.isArray(task.doc)) {
                 for (var j = 0; j < task.doc.length; j++) {
@@ -415,10 +353,6 @@ function searchAddress2(task, context, callback) {
 
             _doc.in = task.inRaw;
 
-            // console.log('_doc: '+JSON.stringify(_doc));
-            // console.log('task3: '+JSON.stringify(task.doc));
-            // console.log(Array.isArray(task.doc));
-
             if (Array.isArray(task.doc)) {
                 for (var j = 0; j < task.doc.length; j++) {
                     if (task.doc[j].시도명 == _doc.시도명) {
@@ -436,7 +370,6 @@ function searchAddress2(task, context, callback) {
                 task.doc = utils.clone(_doc);
             }
         } else if (시군구) {
-            console.log('시군구는 바로'+ 시군구);
             var _doc = {
                 시군구명: 시군구
             };
@@ -444,10 +377,6 @@ function searchAddress2(task, context, callback) {
             _doc.지번주소 = 시군구 + ' ';
 
             _doc.in = task.inRaw;
-
-            // console.log('_doc: '+JSON.stringify(_doc));
-            // console.log('task3: '+JSON.stringify(task.doc));
-            // console.log(Array.isArray(task.doc));
 
             if (Array.isArray(task.doc)) {
                 for (var j = 0; j < task.doc.length; j++) {

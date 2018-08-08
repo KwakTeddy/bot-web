@@ -36,7 +36,6 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
         {
             DialogGraphUsageService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(doc)
             {
-                console.log(doc)
                 $scope.scenarioIndex = {};
                 $scope.scenarioUsageList = [];
 
@@ -176,7 +175,6 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
                 columnOrder: ['index', 'name', 'count'],
                 orderedData: excelData
             };
-            console.log(excelData)
 
             ExcelDownloadService.download(chatbot.name, LanguageService('Dialog Scenario Usage'), $scope.date, template);
         };

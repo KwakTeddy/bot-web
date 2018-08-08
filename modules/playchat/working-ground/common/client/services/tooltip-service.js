@@ -31,8 +31,6 @@
             }
 
             var rect = this.target.getBoundingClientRect();
-
-            console.log(rect);
         };
 
         return ToolTip;

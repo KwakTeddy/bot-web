@@ -91,8 +91,6 @@ module.exports.saveIntentContents = function(req, res)
     var intentId = req.params.intentId;
     var name = req.body.name;
 
-    console.log(botId, intentId, name);
-
     var intentContents = new IntentContent();
     intentContents.botId = botId;
     intentContents.intentId = intentId;
