@@ -288,7 +288,7 @@ a.new-bot-right{
     margin-top: 76px;
 }
 .biz-card_detail_window{
-    padding: 30px 20px 40px 20px;
+    padding: 30px 20px;
 }
 .biz-window_header {
     /*
@@ -389,7 +389,7 @@ input.type01-pop {
     border: 1px solid #BEBEBE;
     width: 50%;
     text-overflow: ellipsis;
-    padding: 11px;
+    padding: 7px;
     font-size: 16px;
     text-align: center;
 }

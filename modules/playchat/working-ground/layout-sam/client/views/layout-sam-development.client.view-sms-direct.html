@@ -1,0 +1,207 @@
+
+<div ng-controller="LayoutSamDevelopmentController" class="graph-background">
+
+    <div class="working-ground-bizchat">
+
+        <div class="bot-messages-list">
+            <h2 class="title01">발송하기</h2>
+            <ul class="nal1">
+                <li class="first">봇 선택</li>
+                <li>
+                    <select class="select01" style="width: 324px;">
+                        <option disabled selected>발송할 봇을 선택하세요.</option>
+                        <option><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> rrrrr 봇</option>
+                        <option><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png">dddddd 봇</option>
+                    </select>
+                </li>
+            </ul>
+            <ul class="nal1">
+                <li class="first">채널 선택</li>
+                <li>
+                    <a class="btn-style03" href="" style="width: 50px;margin-right: 5px;">SMS</a>
+                    <a class="btn-style05" href="" style="width: 100px;margin-right: 5px;">카카오톡</a>
+                    <a class="btn-style05" href="" style="width: 100px;">페이스북</a>
+                </li>
+            </ul>
+            <ul class="edit-windo">
+                <li class="select">
+                    <ul>
+                        <li class="two">입력 방법</li>
+                        <li class="three">
+                            <input id="radio1" type="radio" class="styled-radio" name="choice" checked>
+                            <label for="radio1" class="label">직접 입력</label>
+                        </li>
+                        <li class="three">
+                            <input id="radio2" type="radio" class="styled-radio" name="choice">
+                            <label for="radio2" class="label">주소록</label>
+                        </li>
+                        <li class="three">
+                            <input id="radio3" type="radio" class="styled-radio" name="choice">
+                            <label for="radio3" class="label">파일 입력</label>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="four">발송 번호 입력하기 (최대 12명)</li>
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
+                        </li>
+                        <li class="five">
+                            <input type="text" class="ml2 type05">
+                            <input type="text" class="ml2 type05">
+                        </li>
+                    </ul>
+                    <ul class="mb25">
+                        <li class="two">전송 대상</li>
+                        <li class="three mr20">12<span>명</span></li>
+                        <a class="btn-style05" href="#">초기화</a>
+                    </ul>
+                    <ul class="mb10">
+                        <li class="two">필요 코인</li>
+                        <li class="three">5,000,000<span>코인</span></li>
+                        <span style="color: #f25e5e;">*코인이 부족합니다. 잔액을 확인하세요.</span>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nal2">
+                <li class="first">발송 시간</li>
+                <li class="three">
+                    <input id="radio4" type="radio" class="styled-radio" name="choice">
+                    <label for="radio4" class="label">즉시</label>
+                </li>
+                <li class="three">
+                    <input id="radio5" type="radio" class="styled-radio" name="choice">
+                    <label for="radio5" class="label">예약</label>
+                    <span style="color: #858585;">현재시간 : 2018년 07월 1일 00시 00분</span>
+                </li>
+            </ul>
+
+            <ul class="nal1">
+                <li class="first">유효기간 설정</li>
+                <li>
+                    <select class="select02" style="width: 100%;">
+                        <option  disabled selected>날짜를 선택하세요.</option>
+                        <option>몰라봇</option>
+                        <option>몰라봇</option>
+                    </select>
+                </li>
+                <li>
+                    <select class="select03">
+                        <option  selected>00시</option>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+                <li>
+                    <select class="select03">
+                        <option  selected>00분</option>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+            </ul>
+            <a href=""><div class="dialog-btn">발송하기</div></a>
+        </div>
+
+
+        <div class="subtitle">
+            <!--<div class="message-view">-->
+
+                <!--&lt;!&ndash; 시뮬레이터 관련 영역 차후 진행예정 &ndash;&gt;-->
+                <!--<section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>-->
+                <!--&lt;!&ndash;<div class="mobile-view-practice">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="header">&ndash;&gt;-->
+                <!--&lt;!&ndash;<p>{{selectedBot.name}}</p>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="dialog-input">&ndash;&gt;-->
+                <!--&lt;!&ndash;<input placeholder="input your info">&ndash;&gt;-->
+                <!--&lt;!&ndash;<button type="button">&ndash;&gt;-->
+                <!--&lt;!&ndash;<img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">&ndash;&gt;-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<div class="dialog-setting">-->
+                    <!--<p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>-->
+                    <!--<button class="select"># 기본</button>-->
+                    <!--<button class="select"># 6월 이벤트</button>-->
+                    <!--<button>#1월 이벤트</button>-->
+                    <!--<button># 신규 TES</button>-->
+                    <!--<button># 설문_01</button>-->
+                <!--</div>-->
+                <!--<a href=""><div class="dialog-btn">발송하기</div></a>-->
+            <!--</div>-->
+            <div class="message-view">
+                <div class="mobile-view-practice">
+                    <div class="header">
+                        <p>설문조사 봇</p>
+                        <a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>
+                    </div>
+                </div>
+                <div class="dialog-input">
+                    <input placeholder="input your info">
+                    <button type="button">
+                        <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">
+                    </button>
+                </div>
+
+                <div class="dialog-setting" style="border-bottom: 1px solid #d0d2d3;">
+                    <p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>
+                    <button class="select"># 기본</button>
+                    <button class="select"># 6월 이벤트</button>
+                    <button>#1월 이벤트</button>
+                    <button># 신규 TES</button>
+                    <button># 설문_01</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--팝업화면
+        <div class="biz-window_overlay">-->
+        <!--<div class="biz-window">-->
+            <!--<div class="biz-card_detail_window">-->
+                <!--<div class="biz-window_header">-->
+                    <!--&lt;!&ndash;-->
+                                    <!--<span class="biz-window_header_icon">-->
+                                        <!--<img src="images/temp-new-popup.png">-->
+                                    <!--</span>-->
+                    <!--&ndash;&gt;-->
+                    <!--<div class="biz-window_title">-->
+                        <!--<h1>봇 삭제확인</h1>-->
+                    <!--</div>-->
+                    <!--<p class="detail">선택하신 봇의 내용은 삭제되며, 복구가 불가합니다.<br>이대로 삭제하시겠습니까?</p>-->
+                <!--</div>-->
+                <!--<div class="btnarea-bizpop">-->
+                    <!--<div class="btn-style07">취소</div>-->
+                    <!--<div class="btn-style06 ml15">삭제</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--
+    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
+
+        <!--init here the selected card
+        <div id="graphDialogCanvas"></div>
+    </div>
+-->
+</div>
+

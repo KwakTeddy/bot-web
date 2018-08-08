@@ -668,6 +668,9 @@ div.slide>input[type=checkbox]{
 	letter-spacing: 0.1px;
     vertical-align: middle;
 }
+.tb02 tr:hover{
+    /*background: #f4fcff;*/
+}
 .tb02 tbody td{
     text-align: center;
 
