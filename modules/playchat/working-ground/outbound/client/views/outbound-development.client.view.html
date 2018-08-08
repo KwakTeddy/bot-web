@@ -42,19 +42,19 @@
                     <ul>
                         <li class="two">입력 방법</li>
                         <li class="three">
-                            <input id="radio1" type="radio" class="styled-radio" name="choice1" checked>
+                            <input id="radio1" type="radio" class="styled-radio" name="choice1" checked ng-click="setInputMethod(1)">
                             <label for="radio1" class="label">직접 입력</label>
                         </li>
                         <li class="three">
-                            <input id="radio2" type="radio" class="styled-radio" name="choice1">
+                            <input id="radio2" type="radio" class="styled-radio" name="choice1" ng-click="setInputMethod(2)">
                             <label for="radio2" class="label">주소록</label>
                         </li>
                         <li class="three">
-                            <input id="radio3" type="radio" class="styled-radio" name="choice1">
+                            <input id="radio3" type="radio" class="styled-radio" name="choice1" ng-click="setInputMethod(3)">
                             <label for="radio3" class="label">파일 입력</label>
                         </li>
                     </ul>
-                    <ul id="numberset">
+                    <ul id="numberset" ng-if="inputMethod==1">
                         <li class="four">발송 번호 입력하기 (최대 12명)</li>
                         <li class="five">
                             <input type="tel" ng-model="numberset[0].number" ng-blur='setRegular(numberset[0])' class="ml2 type05">
@@ -81,9 +81,135 @@
                             <input type="tel" ng-model="numberset[11].number" ng-blur='setRegular(numberset[11])' class="ml2 type05">
                         </li>
                     </ul>
+
+                    <ul ng-if="inputMethod==2">
+                        <div class="six">주소록 불러오기</div>
+                        <a class="btn-style03" href="" style="margin-top: 25px;float: right;">주소록 가져오기</a>
+                        <div class="box-list" style="height: 280px;">
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                        </div>
+                    </ul>
+
+                    <ul ng-if="inputMethod==3">
+                        <div class="six">파일 불러오기</div>
+                        <a class="btn-style03" href="" style="margin-top: 25px;float: right;">엑셀 파일 가져오기</a>
+                        <a href="" class="download" ng-click="excelDownload()">엑셀샘플 다운받기</a>
+                        <div class="box-list" style="height: 280px;">
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                            <a class="list-line" href="">
+                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                                <div href="" class="list3">1,000명</div>
+                                <div href="" class="list2"></div>
+                            </a>
+                        </div>
+                    </ul>
+
+
+
                     <ul class="mb25">
                         <li class="two">전송 대상</li>
-                        <li class="three mr20">12<span>명</span></li>
+                        <li class="three mr20">{{getCallNumber()}}<span>명</span></li>
                         <a class="btn-style05" href="#" ng-click="clear()">초기화</a>
                     </ul>
                     <ul class="mb10">
@@ -119,32 +245,6 @@
 
 
         <div class="subtitle">
-            <!--<div class="message-view">-->
-
-            <!--&lt;!&ndash; 시뮬레이터 관련 영역 차후 진행예정 &ndash;&gt;-->
-            <!--<section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>-->
-            <!--&lt;!&ndash;<div class="mobile-view-practice">&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="header">&ndash;&gt;-->
-            <!--&lt;!&ndash;<p>{{selectedBot.name}}</p>&ndash;&gt;-->
-            <!--&lt;!&ndash;<a href="" class="lef"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/reset02.png"></a>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="dialog-input">&ndash;&gt;-->
-            <!--&lt;!&ndash;<input placeholder="input your info">&ndash;&gt;-->
-            <!--&lt;!&ndash;<button type="button">&ndash;&gt;-->
-            <!--&lt;!&ndash;<img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/send.png">&ndash;&gt;-->
-            <!--&lt;!&ndash;</button>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--<div class="dialog-setting">-->
-            <!--<p>대화셋 설정-<br>아래 대화셋을 설정하고, 고객의 문의에 대응하세요.</p>-->
-            <!--<button class="select"># 기본</button>-->
-            <!--<button class="select"># 6월 이벤트</button>-->
-            <!--<button>#1월 이벤트</button>-->
-            <!--<button># 신규 TES</button>-->
-            <!--<button># 설문_01</button>-->
-            <!--</div>-->
-            <!--<a href=""><div class="dialog-btn">발송하기</div></a>-->
-            <!--</div>-->
             <div class="message-view">
                 <div class="mobile-view-practice">
                     <div class="header">

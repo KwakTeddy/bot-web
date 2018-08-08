@@ -281,11 +281,11 @@ select.add-menu option{
     width: 32%;
     float: left;
     font-size: 14px;
-    margin-left:50px;
+    /*margin-left:50px;*/
     margin-bottom: 10%;
     /*width: 17%;*/
     /*font-size: 14px;*/
-    /*margin-left: 2%;*/
+    margin-left: 2%;
     /*margin-bottom: 10%;*/
     /*position: fixed;*/
     /*right: 27%;*/

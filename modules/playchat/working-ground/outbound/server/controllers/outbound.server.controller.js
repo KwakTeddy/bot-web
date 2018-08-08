@@ -8,6 +8,7 @@ var utils = require(path.resolve('./engine2/utils/utils.js'));
 var Bot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
 
+//var outboundUploader = require('./outbound-uploader.js');
 
 module.exports.check = function(req, res){
     var options = {
@@ -26,6 +27,19 @@ module.exports.check = function(req, res){
     })
 
 };
+
+
+/*
+ dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function(err)
+ {
+ dialogset.importState = err || '';
+ dialogset.save(function()
+ {
+
+ });
+ });
+
+ */
 
 module.exports.find = function(req, res)
 {

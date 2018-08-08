@@ -31,6 +31,15 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
             $scope.botList = list;
         });
     };
+
+    $scope.getCallNumber = () => {
+        var n = 0;
+        $scope.numberset.forEach((e) => {
+            e.use == true? n++ : null;
+        });
+        return n
+    };
+
     $scope.pickerSetting = (e) => {
         $('#createdRange').daterangepicker({
             timePicker: true,
@@ -71,6 +80,27 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
                 "firstDay": 1
             }
         });
+    };
+
+    $scope.uploader = new FileUploader({
+        url: '/api/dialogsets/uploadfile',
+        alias: 'uploadFile',
+        autoUpload: true
+    });
+
+    $scope.uploader.onErrorItem = function(item, response, status, headers)
+    {
+        $scope.modalForm.fileUploadError = response.message;
+    };
+
+    $scope.uploader.onSuccessItem = function(item, response, status, headers)
+    {
+        importModal.data.path = response.path;
+        importModal.data.filename = response.filename;
+    };
+
+    $scope.setInputMethod = (m) => {
+        $scope.inputMethod = m;
     };
 
     $scope.setRegular = (e) => {
@@ -137,8 +167,6 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
             paramset.firstString = res.data[0].message.replace('+bot.name+',bot.name);
 
             OutboundService.save(paramset,(res) => {
-                console.log('ressssssss')
-                console.log(res)
                 if(!res.status){
                     alert('현재 번호가 사용중입니다.\n나중에 다시 시도해주세요.');
                 }else{
@@ -157,6 +185,7 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
     // default environment setting
     (() => {
         $scope.getList();
+        $scope.setInputMethod(1);
         $scope.pickerSetting(true);
         angular.element('.main-logo-background').css('opacity', 0);
         $timeout(function()
