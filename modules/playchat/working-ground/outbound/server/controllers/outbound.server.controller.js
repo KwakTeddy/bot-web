@@ -20,8 +20,6 @@ module.exports.check = (req, res) => {
         form : req.body
     };
 
-    console.log(req.body);
-
     request(options,(err, response, body)=>{
         if(err){
             res.send(err);
@@ -153,7 +151,8 @@ module.exports.uploadFile = (req,res) => {
                             userId: req.params.userId,
                             tag: req.params.tag
                         },(result) => {
-                            res.send(result)
+                            res.send(result);
+                            fs.unlinkSync(filepath);
                         });
                     }
                 ]);
