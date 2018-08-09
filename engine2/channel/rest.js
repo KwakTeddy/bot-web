@@ -17,6 +17,10 @@ exports.message = function (req, res)
 
         Engine.process(req.params.bot, channel || 'rest', userKey, text, {}, function (context, out)
         {
+            if(channel=='unity'&&out.originalDialogId == 'noanswer')
+            {
+                return res.end();
+            }
 
             if(channel=='unity'){
                 res.send(out);
