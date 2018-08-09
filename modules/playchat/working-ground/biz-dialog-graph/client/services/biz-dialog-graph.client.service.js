@@ -295,7 +295,13 @@
                 })
             });
 
+
             var firstDsSet = dialog.filter((e) => {return e.parent});
+
+            if(firstDsSet.length == 0){
+                dialog[0].input = TC.getInput();
+                firstDsSet = [dialog[0]]
+            }
 
             firstDsSet.forEach((e) => {
                 // new item of B
@@ -321,8 +327,12 @@
 
             newArr.splice(0,1);
             oldArr.splice(0,1);
-
+            console.log(newArr)
+            console.log(oldArr)
+            console.log(firstInput)
             var dialogs =_recoverProcess(newArr,oldArr,firstInput);
+
+            console.log(dialogs)
             BizChat.commonDialogs[0] = startDialog;
             TC._getCompleteData(dialogs, BizChat.commonDialogs,
                 (script) => {
