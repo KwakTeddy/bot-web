@@ -86,52 +86,8 @@
                         <div class="six">주소록 불러오기</div>
                         <a class="btn-style03" href="" style="margin-top: 25px;float: right;">주소록 가져오기</a>
                         <div class="box-list" style="height: 280px;">
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
+                            <a class="list-line" ng-repeat="telebook in telebookset" href="">
+                                <div class="list1"><span>{{$index + 1}}</span>. {{telebook.fileName}}</div>
                                 <div href="" class="list2"></div>
                             </a>
                         </div>
@@ -139,68 +95,14 @@
 
                     <ul ng-if="inputMethod==3">
                         <div class="six">파일 불러오기</div>
-                        <a class="btn-style03" href="" style="margin-top: 25px;float: right;">엑셀 파일 가져오기</a>
+                        <a class="btn-style03" href="" style="margin-top: 25px;float: right;" ng-click="triggerFile($event)">엑셀 파일 가져오기</a>
+                        <input type="file" name="file" id="file" ng-required="true" style="display:none;" nv-file-select uploader="uploader"/>
                         <a href="" class="download" ng-click="excelDownload()">엑셀샘플 다운받기</a>
                         <div class="box-list" style="height: 280px;">
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>1</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
-                            </a>
-                            <a class="list-line" href="">
-                                <div class="list1"><span>2</span>. VIP 고객 명단</div>
-                                <div href="" class="list3">1,000명</div>
-                                <div href="" class="list2"></div>
+                            <a class="list-line" ng-repeat="telebook in telebookset" href="">
+                                <div class="list1"><span>{{$index + 1}}</span>. {{telebook.fileName}}</div>
+                                <div href="" class="list3">{{ telebook.total | number}}명</div>
+                                <div href="" class="list2" ng-click="deleteTelebook(telebook)"></div>
                             </a>
                         </div>
                     </ul>
@@ -209,7 +111,7 @@
 
                     <ul class="mb25">
                         <li class="two">전송 대상</li>
-                        <li class="three mr20">{{getCallNumber()}}<span>명</span></li>
+                        <li class="three mr20">{{getTotalNumber()}}<span>명</span></li>
                         <a class="btn-style05" href="#" ng-click="clear()">초기화</a>
                     </ul>
                     <ul class="mb10">

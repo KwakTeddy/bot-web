@@ -4,6 +4,7 @@ var async = require('async');
 var fs = require('fs');
 
 var mongoose = require('mongoose');
+
 var TeleBook = mongoose.model('TeleBook');
 var TeleBookData = mongoose.model('TeleBookData');
 
@@ -28,6 +29,35 @@ var TeleBookData = mongoose.model('TeleBookData');
 
     };
 
+    var _dbSetProcess = (userId, tag, filename, list, cb) => {
+        var teleBook = new TeleBook({
+            userId : userId,
+            tag : tag,
+            fileName : filename,
+            total : list.length
+        });
+
+        teleBook.save((err,rs) => {
+            if(err){
+                cb({status:false})
+            }else{
+                var bookId = rs._id;
+                async.eachSeries(list,(item,next)=>{
+                    var teleBookData = new TeleBookData(item);
+                    teleBookData.bookId = bookId;
+                    teleBookData.save(() => {
+                        next();
+                    })
+                },() => {
+                    cb({
+                        status:true,
+                        data : rs
+                    })
+                });
+            }
+        });
+    }
+
     Uploader.prototype.uploadFromExcel = function(userId, tag, filename, filePath, callback)
     {
         var workbook = XLSX.readFile(filePath);
@@ -40,8 +70,6 @@ var TeleBookData = mongoose.model('TeleBookData');
         {
             throw 'The format does not match';
         }
-
-
 
         var teleBookList = [];
 
@@ -62,63 +90,13 @@ var TeleBookData = mongoose.model('TeleBookData');
 
         }
 
-        var teleBook = new TeleBook({
-            userId : userId,
-            tag : tag,
-            fileName : filename,
-            total : teleBookList.length
-        });
-
-        teleBook.save((err,rs) => {
-            if(err){
-                callback(false)
-            }else{
-                var bookId = rs._id;
-                async.eachSeries(teleBookList,(item,next)=>{
-                    var teleBookData = new TeleBookData(item);
-                    teleBookData.bookId = bookId;
-                    teleBookData.save(() => {
-                        next();
-                    })
-                },() => {
-                    console.log(rsa);
-                    process.exit()
-                    callback(true)
-                });
-            };
-        });
-
-
-
-        //async.eachSeries(teleBookList, function(item, next)
-        //{
-        //    var dialogsetDialog = new DialogsetDialog();
-        //    dialogsetDialog.dialogset = dialogsetId;
-        //    dialogsetDialog.inputRaw = item.q;
-        //    dialogsetDialog.input = [];
-        //    dialogsetDialog.output = item.a;
-        //    dialogsetDialog.category = item.category;
-        //
-        //    async.eachSeries(item.q, function(q, next)
-        //    {
-        //        NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
-        //        {
-        //            dialogsetDialog.input.push(nlpText);
-        //            next();
-        //        });
-        //    },
-        //    function()
-        //    {
-        //        dialogsetDialog.save(function()
-        //        {
-        //            next();
-        //        });
-        //    });
-        //},
-        //function()
-        //{
-        //    callback();
-        //});
+        if(teleBookList.length>0){
+            _dbSetProcess(userId, tag, filename, teleBookList, (result) => {
+                callback(result)
+            })
+        }else{
+            callback({status:false,message:'no data in file'})
+        }
     };
 
     Uploader.prototype.uploadFromCsv = function(userId, tag, filename, filePath, callback)
@@ -127,155 +105,38 @@ var TeleBookData = mongoose.model('TeleBookData');
 
         data = data.toString();
 
-        var list = [];
+
+        var teleBookList = [];
         var split = data.split('\r\n');
-        for(var i=1; i<split.length; i++)
-        {
-            var line = split[i];
-            var matched = line.match(/,"[^"]*"/gi);
 
-            if(matched)
-            {
-                for(var j=0; j<matched.length; j++)
-                {
-                    line = line.replace(matched[j], '');
+
+        split.forEach((e)=>{
+            var item = {};
+
+            var col = e.split(',');
+            if(col[0]&&col[1]&&col[0]!=''&&col[1]!=''){
+                item.name = col[0];
+                item.number = replacePhone(col[1]);
+
+                if(item.number){
+                    teleBookList.push(item)
                 }
             }
 
-            line = line.trim();
-
-            var obj = [];
-            var subSplit = line.split(',');
-
-            var j = 0;
-            for(; j<subSplit.length; j++)
-            {
-                obj.push(subSplit[j]);
-            }
-
-            if(matched)
-            {
-                for(var k=0; k<matched.length; k++)
-                {
-                    var s = matched[k].replace(/"/gi, '').substring(1);
-                    if(s.trim())
-                    {
-                        obj.push(s);
-                    }
-                }
-            }
-
-            list.push(obj);
-        }
-
-        var dialogsetList = [];
-        var lastData = undefined;
-        for(var i=0; i<list.length; i++)
-        {
-            var item = list[i];
-
-            var category = '';
-            for(var j=0; j<item.length-2; j++)
-            {
-                if(category)
-                {
-                    category += '@@@';
-                }
-
-                category += item[j];
-            }
-
-            var q = item[item.length-2];
-            var a = item[item.length-1];
-
-            if(q && a)
-            {
-                lastData = { q: [], a: [] };
-                dialogsetList.push(lastData);
-            }
-
-            if(lastData)
-            {
-                lastData.category = category;
-
-                if(q)
-                {
-                    lastData.q.push(q);
-                }
-
-                if(a)
-                {
-                    lastData.a.push(a);
-                }
-            }
-        }
-
-        async.eachSeries(dialogsetList, function(item, next)
-        {
-            var dialogsetDialog = new DialogsetDialog();
-            dialogsetDialog.dialogset = dialogsetId;
-            dialogsetDialog.inputRaw = item.q;
-            dialogsetDialog.input = [];
-            dialogsetDialog.output = item.a;
-            dialogsetDialog.category = item.category;
-
-            async.eachSeries(item.q, function(q, next)
-            {
-                NLPManager.getNlpedText(language, q, function(err, lastChar, nlpText, nlp)
-                {
-                    dialogsetDialog.input.push(nlpText);
-                    next();
-                });
-            },
-            function()
-            {
-                dialogsetDialog.save(function()
-                {
-                    next();
-                });
-            });
-        },
-        function()
-        {
-            callback();
         });
 
-        // var data = fs.readFileSync(filePath);
-        // if(data)
-        // {
-        //     data = data.toString();
-        // }
-        // else
-        // {
-        //     return callback();
-        // }
-        //
-        // var lines = data.split('\r\n');
-        //
-        // var dialogsetList = [];
-        // for(var i=1; i<lines.length; i++)
-        // {
-        //     var split = lines[i].split(',');
-        //
-        //     var category = '';
-        //     for(var j=0; j<split.length-2; j++)
-        //     {
-        //         if(category)
-        //         {
-        //             category += '@@@';
-        //         }
-        //
-        //         category += split[j];
-        //     }
-        //
-        //     dialogsetList.push({ q: split[split.length-2], a: split[split.length-1], category: category });
-        // }
-        //
+        if(teleBookList.length>0){
+            _dbSetProcess(userId, tag, filename, teleBookList, (result) => {
+                callback(result)
+            })
+        }else{
+            callback({status:false,message:'no data in file'})
+        }
     };
 
-    Uploader.prototype.upload = function(userId, tag, filename, callback)
+    Uploader.prototype.upload = function(userId, tag, filename, filepath, callback)
     {
-        var dir = path.resolve('public/files/');
+        var dir = path.resolve(filepath);
         var filePath = path.join(dir, filename);
         var info = path.parse(filename);
 
@@ -291,6 +152,14 @@ var TeleBookData = mongoose.model('TeleBookData');
 
     module.exports = new Uploader();
 
-    var upload = new Uploader();
-    upload.upload('leon@moneybrain.ai', 'temp', 'Telebook.xlsx');
+    //var upload = new Uploader();
+    //upload.upload('leon@moneybrain.ai', 'temp', 'Telebook.csv',(res)=>{
+    //    TeleBook.findOne({_id:res.data},(err,teleBook)=>{
+    //        console.log(err)
+    //        console.log(teleBook)
+    //        process.exit()
+    //    })
+    //
+    //});
+
 })();

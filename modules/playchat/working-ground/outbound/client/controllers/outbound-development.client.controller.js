@@ -8,7 +8,8 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
 
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var BizMsgsService = $resource('/api/:botId/biz-msg/:id', { botId: '@botId', id:'@id', data:'@data' });
-    var OutboundService = $resource('/api/outbound',{});
+    var OutboundService = $resource('/api/outbound/:action',{action: '@action'});
+    var TelebookService = $resource('/api/telebook/:userId/:tag',{userId: '@userId', tag: '@tag'});
 
     const match = /\b((?:010[-.]?\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g;
     const dtFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -16,10 +17,10 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
     var page = 1, countPerPage = $location.search().countPerPage || 50;
 
     var user = $cookies.getObject('user');
-
-    $scope.botList = [], $scope.numberset = [];
+    $scope.botList = [], $scope.numberset = [], $scope.telebookset = [];
     $scope.selectedBot = 'null';
     $scope.isSingle = false;
+
     $scope.getList = function()
     {
         ChatBotService.query({ page: page, countPerPage: countPerPage, type : true }, function(list)
@@ -32,11 +33,18 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
         });
     };
 
-    $scope.getCallNumber = () => {
+    $scope.getTotalNumber = () => {
         var n = 0;
-        $scope.numberset.forEach((e) => {
-            e.use == true? n++ : null;
-        });
+        if($scope.inputMethod==1){
+            $scope.numberset.forEach((e) => {
+                e.use == true? n++ : null;
+            });
+        }else{
+            $scope.telebookset.forEach((e) => {
+                e.useYN == true? n = n + parseInt(e.total) : null;
+            })
+        }
+
         return n
     };
 
@@ -83,25 +91,57 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
     };
 
     $scope.uploader = new FileUploader({
-        url: '/api/dialogsets/uploadfile',
         alias: 'uploadFile',
         autoUpload: true
     });
 
+    $scope.triggerFile = (e) => {
+        $scope.uploader.url = '/api/outbound/'+user._id+'/upload/'+ ($scope.inputMethod == 2 ? 'telebook' : 'temp');
+        e.target.nextElementSibling.click()
+    };
+
     $scope.uploader.onErrorItem = function(item, response, status, headers)
     {
-        $scope.modalForm.fileUploadError = response.message;
+        alert(response.message)
     };
 
     $scope.uploader.onSuccessItem = function(item, response, status, headers)
     {
-        importModal.data.path = response.path;
-        importModal.data.filename = response.filename;
+        if(response.status){
+            _loadTeleBook();
+        }
+    };
+
+    var _loadTeleBook = () => {
+        TelebookService.get({
+            userId:user._id,
+            tag: $scope.inputMethod == 2 ? 'telebook' : 'temp'
+        },(telebook) => {
+            if(telebook.status){items = telebook.data
+                $scope.telebookset = telebook.data
+            }
+        })
     };
 
     $scope.setInputMethod = (m) => {
         $scope.inputMethod = m;
+
+        if(m==2||m==3){
+            _loadTeleBook();
+        }
     };
+
+    $scope.deleteTelebook = (item) => {
+        TelebookService.remove({
+            id:item._id,
+            userId:user._id,
+            tag: $scope.inputMethod == 2 ? 'telebook' : 'temp'
+        },(result) => {
+            if(result.status){
+                _loadTeleBook();
+            }
+        })
+    }
 
     $scope.setRegular = (e) => {
         if(e&&e.number){
@@ -117,10 +157,13 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
     $scope.send = () => {
         var paramset = {
             botId : null,
+            tag : '',
             numberset : '',
+            telebookset : '',
             startTime : null,
             endTime : null
         };
+
         if(!$scope.selectedBot||$scope.selectedBot=='null'){
             return alert('봇을 선택해주세요.');
         }
@@ -136,14 +179,26 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
                     paramset.endTime = moment(new Date(range[0])).format(dtFormat);
                     break;
                 case 2 :
+                    // 임시코드
                     supported = false;
                     paramset.startTime = moment(new Date(range[0])).format(dtFormat);
                     paramset.endTime = moment(new Date(range[1])).format(dtFormat);
                     break;
             }
-            $scope.numberset.forEach((e) => {
-                e.use ? arr.push(e) : null;
-            });
+            paramset.tag = $scope.inputMethod == 1 ? 'numberSet' : 'telebookSet';
+            if(paramset.tag == 'numberSet'){
+                $scope.numberset.forEach((e) => {
+                    e.use ? arr.push(e) : null;
+                });
+
+                paramset.numberset = JSON.stringify(arr);
+            }else{
+                $scope.telebookset.forEach((e) => {
+                    e.useYN == 1 ? arr.push(e._id):null;
+                });
+
+                paramset.telebookset = JSON.stringify(arr);
+            }
 
             if(arr.length == 0||paramset.startTime>paramset.endTime){
                 throw '필수정보가 누락되었거나 사용불가능한 시간을 선택하셨습니다.\n입력하신 내용을 확인해주세요.';
@@ -153,7 +208,7 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
                 throw '아직 지원하지 않는 기능입니다.\n나중에 다시 시도해주세요.';
             }
 
-            paramset.numberset = JSON.stringify(arr);
+
             _send_process(paramset);
         }catch(e){
             console.log(e);
@@ -178,6 +233,19 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
         })
     };
 
+    $scope.excelDownload = () => {
+        var template = {
+            sheetName: 'Contact',
+            columnOrder: ['Name', 'Mobile'],
+            orderedData: [{
+                Name: '',
+                Mobile: ''
+            }]
+        };
+
+        ExcelDownloadService.download(user._id, 'Telebook', null, template);
+    };
+
     $scope.clear = () => {
         $scope.numberset = [];
     };
@@ -197,24 +265,20 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
         $interval(()=>{
             $scope.timeNow = moment().format('YYYY년 MM월 DD일 HH시 mm분')
         },1000);
+
+        $scope.$watch('inputMethod',(o,n) => {
+
+        });
     })();
 
     $scope.$parent.loaded('working-ground');
 
 
-    $scope.excelDownload = () => {
-        var template = {
-            sheetName: 'Contact',
-            columnOrder: ['Name', 'Mobile'],
-            orderedData: [{
-                Name: '',
-                Mobile: ''
-            }]
-        };
-
-        ExcelDownloadService.download('userID', 'Telebook', null, template);
-    };
     //$scope.getList();
     //$scope.excelDownload();
     $scope.lan = LanguageService;
 }]);
+
+
+
+var items = null;
