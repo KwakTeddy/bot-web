@@ -40,7 +40,7 @@ module.exports =
             env_development:
             {
                 "PORT": 443,
-                "HOST": "https://remaster.moneybrain.ai",
+                "HOST": "https://biz.moneybrain.ai",
                 "REDIS": "127.0.0.1",
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
