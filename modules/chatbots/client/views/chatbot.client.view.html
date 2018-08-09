@@ -49,6 +49,7 @@
     <div id="sharedBotContent" style="display: none;">
         <div class="chatbots" style="margin-top: 5%;">
             <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectChatbot(chatbot.bot);">
+                <div class="chatbot-language"></div>
                 <ul class="hei50">
                     <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
                     <li class="sub3" data-id="{{ chatbot.bot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.bot.name }}</li>

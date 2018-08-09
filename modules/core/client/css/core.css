@@ -204,8 +204,8 @@ header .system .docs span
 
 header .system .docs img
 {
-    vertical-align: middle;
-    margin-right: 5px;
+    /*vertical-align: middle;*/
+    margin-top: 2px;
 }
 
 header .system .notify_silver

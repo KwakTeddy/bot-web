@@ -33,13 +33,11 @@ var s3 = new AWS.S3();
         this.version = '';
         this.redis = undefined;
 
-        console.log();
         console.log(chalk.green('================= Engine Initailize ==================='));
 
         globals.init();
 
         console.log(chalk.green('===================================================='));
-        console.log();
     };
 
     Core.prototype.setRedisClient = function(client)
@@ -134,11 +132,11 @@ var s3 = new AWS.S3();
     {
         var that = this;
 
-        console.log();
-        console.log(chalk.green('======================== Engine Process ========================'));
-        console.log(chalk.yellow('[[[ Parameter ]]]'));
-        console.log({ botId: botId, channel: channel, userKey: userKey, inputRaw: inputRaw, options: options });
-        console.log();
+        //console.log();
+        //console.log(chalk.green('======================== Engine Process ========================'));
+        //console.log(chalk.yellow('[[[ Parameter ]]]'));
+        //console.log({ botId: botId, channel: channel, userKey: userKey, inputRaw: inputRaw, options: options });
+        //console.log();
 
         Logger.logBotUser(botId, channel, userKey, {});
 
@@ -313,9 +311,6 @@ var s3 = new AWS.S3();
                                                     {
                                                         Logger.userSockets[userKey].emit('chat_log', { type: 'dialog', inputRaw: inputRaw, output: dialog.output });
                                                     }
-
-                                                    console.log(chalk.green('================================================================'));
-                                                    console.log();
                                                 }
                                             });
                                         });

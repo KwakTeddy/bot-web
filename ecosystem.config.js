@@ -29,7 +29,8 @@ module.exports =
             {
                 "PORT": 8443,
                 "HOST": "http://localhost:8443",
-                "REDIS": "127.0.0.1",
+                //"REDIS": "172.31.5.26",
+                "REDIS": "localhost",
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
@@ -40,8 +41,13 @@ module.exports =
             env_development:
             {
                 "PORT": 443,
+<<<<<<< HEAD
                 "HOST": "https://biz.moneybrain.ai",
                 "REDIS": "127.0.0.1",
+=======
+                "HOST": "https://remaster.moneybrain.ai",
+                "REDIS": "172.31.5.26",
+>>>>>>> 6c0448df18261cd7cd3c50926298a3524b2bfcfd
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
@@ -50,7 +56,6 @@ module.exports =
 
                 "LOG_ROTATING_ACTIVE":'true',
                 "LOG_LEVEL":'debug',
-
                 "NODE_ENV": "development"
             },
             env_production:

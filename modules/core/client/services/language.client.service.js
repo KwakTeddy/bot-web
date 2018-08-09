@@ -843,7 +843,7 @@
             },
             "Click to change image": {
                 "ko": "이미지 변경",
-                "en": "Click to change image",
+                "en": "Change img",
                 "jp": "イメージ変更",
                 "zh": "点击更改图像"
             },

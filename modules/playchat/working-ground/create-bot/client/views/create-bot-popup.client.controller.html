@@ -1,0 +1,93 @@
+<style>
+    #createBotPopup{
+        display:none;
+    }
+    .pic-area-unable img{
+        width: 100%;
+        height: 120px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+</style>
+<div ng-controller="CreateBotPopupController">
+    <div class="biz-window_overlay">
+        <div class="biz-window">
+            <div class="biz-card_detail_window">
+                <div class="biz-window_header">
+                    <div class="biz-window_title">
+                        <h1>봇 생성하기</h1>
+                    </div>
+                    <p class="detail">생성하실 봇의 이름을 입력하세요.</p>
+                    <input type="text" class="type01-pop" ng-model="botProfile.name">
+                </div>
+                <div class="radiobox">
+                    <ul>
+                        <li class="box01">
+                            <input ng-click="turnProfile(true)" id="radio1" type="radio" class="styled-radio" name="choice">
+                            <label for="radio1" class="label">기본정보 사용</label>
+                        </li>
+                        <li class="box01">
+                            <input ng-click="turnProfile(false)" id="radio2" type="radio" class="styled-radio" name="choice">
+                            <label for="radio2" class="label">새로 입력</label>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div>
+
+                        <div ng-if="useBasicProfile" class="pic-area-unable"></div>
+                        <div ng-if="!useBasicProfile" class="pic-area-trigger" ng-click="addImage()"></div>
+                        <div ng-if="!useBasicProfile" class="pic-area">
+                            <input type="file" nv-file-select uploader="uploader()" style="display: none">
+                        </div>
+                    </div>
+                </div>
+                <div class="biz-window_main_col">
+                    <div class="biz-card_detail_item">
+
+                        <ul class="info1">
+                            <li class="biz-card_detail_item_header">상호</li>
+                        </ul>
+                        <ul class="info2">
+                            <li ng-if="useBasicProfile" ><input type="text" ng-model="botProfile.companyName" class="type02-pop-unable" disabled></li>
+                            <li ng-if="!useBasicProfile" ><input type="text" ng-model="botProfile.companyName" class="type02-pop"></li>
+                        </ul>
+
+                        <ul class="info1">
+                            <li class="biz-card_detail_item_header">회사 대표번호</li>
+                        </ul>
+                        <ul class="info2">
+                            <li ng-if="useBasicProfile" ><input type="text" ng-model="botProfile.companyCall" class="type02-pop-unable" disabled></li>
+                            <li ng-if="!useBasicProfile" ><input type="text" ng-model="botProfile.companyCall" class="type02-pop"></li>
+                        </ul>
+
+                        <ul class="info1">
+                            <li class="biz-card_detail_item_header">수신거부 번호</li>
+                        </ul>
+
+                        <ul class="info2">
+                            <li ng-if="useBasicProfile" ><input type="text" ng-model="botProfile.rejectCall" class="type02-pop-unable" disabled></li>
+                            <li ng-if="!useBasicProfile" ><input type="text" ng-model="botProfile.rejectCall" class="type02-pop"></li>
+                        </ul>
+
+                        <ul class="info1">
+                            <li class="biz-card_detail_item_header">회사 소개</li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <textarea ng-if="useBasicProfile" placeholder="내용을 입력해주세요" ng-model="botProfile.description" class="biz-card_detail_item_content3-disable" disabled></textarea>
+                                <textarea ng-if="!useBasicProfile" placeholder="내용을 입력해주세요" ng-model="botProfile.description" class="biz-card_detail_item_content3"></textarea>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="btnarea-bizpop">
+                        <div class="btn-style07" ng-click="offPopup()">취소</div>
+                        <div class="btn-style06 ml15" ng-click="save(botProfile)">생성</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

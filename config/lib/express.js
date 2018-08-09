@@ -47,13 +47,15 @@ module.exports.initLocalVariables = function (app)
     app.locals.env = process.env.NODE_ENV;
     app.locals.app_version = '';
 
-    if(process.env.NODE_ENV == 'production')
-    {
-        var stats = fs.statSync("public/dist/application.min.js");
-        var mtime = new Date(util.inspect(stats.mtime));
-        app.locals.app_version = mtime.getTime() + "";
-    }
-
+    //if(process.env.NODE_ENV == 'production')
+    //{
+    //    var stats = fs.statSync("public/dist/application.min.js");
+    //    var mtime = new Date(util.inspect(stats.mtime));
+    //    app.locals.app_version = mtime.getTime() + "";
+    //}
+    app.all('*.php',function(req,res,next){
+        res.status(500);
+    });
     // Passing the request url to environment locals
     app.use(function (req, res, next)
     {
@@ -350,7 +352,6 @@ module.exports.initModulesServerRoutes = function (app)
             console.log(app._router.stack[i].route.path);
     }
 
-    console.log();
     logger.systemInfo('=============== Server Routes require modules - express.js ==========');
     logger.systemInfo(config.files.server.routes.toString().replace(/,/gi, '\n'));
     logger.systemInfo('=====================================================================');

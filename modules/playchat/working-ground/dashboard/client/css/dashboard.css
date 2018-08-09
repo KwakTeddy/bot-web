@@ -84,8 +84,13 @@
 
 .dashboard-bot-profile-content input
 {
+<<<<<<< HEAD
     border:1px solid #d0d2d3;
     /*border-radius: 4px;*/
+=======
+    border: 1px solid #ddd;
+    border-radius: 2px;
+>>>>>>> remaster
     margin-left: 20px;
     vertical-align: middle;
 

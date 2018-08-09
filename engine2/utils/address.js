@@ -36,7 +36,6 @@ function usaTypeCheck(text, type, task, context, callback) {
       // console.log(body);
       task.doc = null;
       var doc = JSON.parse(body);
-      console.log(JSON.stringify(doc));
       var _doc = {
         lat:doc.results[0].geometry.location.lat,
         lng:doc.results[0].geometry.location.lng
@@ -760,11 +759,9 @@ function naverGeocode(task, context, callback) {
     }
   }, function(error, response, body) {
     if (!error && response.statusCode == 200) {
-      // console.log(body);
       var doc = JSON.parse(body);
       task.lng=doc.result.items[0].point.x;
       task.lat=doc.result.items[0].point.y;
-      console.log('lat: ' + task.lat + ', lng: ' + task.lng);
     }
     callback(task, context);
   });
@@ -794,7 +791,6 @@ function naverReverseGeocode(task, context, callback) {
       // console.log(body);
       var doc = JSON.parse(body);
       task.address=doc.result.items[0].address;
-      console.log('address: ' + task.address);
     }
     callback(task, context);
   });
@@ -845,7 +841,6 @@ function naverGeoSearch(task, context, callback) {
       // console.log(body);
       var doc = JSON.parse(body);
       task.doc = doc.items;
-      console.log('naverGeoSearch: doc=' + body);
     }
     callback(task, context);
   });

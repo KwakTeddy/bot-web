@@ -12,7 +12,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
     var LineAccessTokenService = $resource('/api/:botId/channel/line', { botId: '@botId' });
 
     $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
-    if($location.host() == 'localhost')
+    if($location.host() == 'localhost' || $location.port() == 8443)
         $scope.host = 'http://' + $scope.host;
     else
         $scope.host = 'https://' + $scope.host;
@@ -68,8 +68,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
         WeChatService.get({ botId: chatbot.id }, function(result)
         {
-            console.log('리절트 : ', result);
-
             $scope.wechatAppId = result.appId;
             $scope.wechatKey = result.encodingAESKey;
         });

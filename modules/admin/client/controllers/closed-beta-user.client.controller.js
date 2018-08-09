@@ -14,7 +14,6 @@
             {
                 ClosedBetaUserService.query({}, function(list)
                 {
-                    console.log(list);
                     $scope.users = list;
                     $scope.$parent.loading = false;
                 },

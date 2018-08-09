@@ -67,7 +67,6 @@ var fs = require('fs');
             {
                 if(files[j].endsWith('.js'))
                 {
-                    console.log(files[j]);
                     require(dir + '/' + dirs[i] + '/' + files[j])(this);
                 }
             }

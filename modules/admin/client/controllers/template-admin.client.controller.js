@@ -26,7 +26,6 @@
                 TemplateCategoriesService.query({}, function(list)
                 {
                     $scope.categories = list;
-                    console.log(list);
 
                     $scope.$parent.loading = false;
                 },
@@ -38,11 +37,9 @@
 
             $scope.save = function()
             {
-                console.log($scope.template);
 
                 TemplateService.save(JSON.parse(angular.toJson($scope.template)), function(result)
                 {
-                    console.log(result);
                     alert('템플릿이 생성되었습니다');
 
                     $scope.template = {

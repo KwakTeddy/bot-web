@@ -10,9 +10,7 @@ var utils = require(path.resolve('./engine2/utils/utils.js'));
 var S3 = require(path.resolve('./modules/common/s3.js'));
 
 var Sentences = mongoose.model('Sentences');
-
 var Scripts = mongoose.model('Scripts');
-
 var BizMsgs = mongoose.model('BizMsgs');
 
 exports.find = function (req, res)

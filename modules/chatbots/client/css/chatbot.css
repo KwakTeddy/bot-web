@@ -38,7 +38,7 @@
     vertical-align: middle;
     padding: 2px 22px 4px 16px;
     line-height: 32px;
-    width: 120px;
+    width: 132px;
     margin-left: 6%;
     margin-top: 50px;
     margin-bottom: 10px;
@@ -298,7 +298,6 @@
     /*border-radius: 6px 6px 0 0;*/
     border: 2px solid #ebebeb;
     border-bottom-color: transparent;
-    margin: 0 5px;
     position: relative;
     top: -2px;
     z-index: 10;

@@ -340,8 +340,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                             matchedList[i].added += 0.1;
                         }
                     }
-
-                    console.log(matchedList[i].category, matchedList[i].inputRaw, matchedList[i].matchRate, matchedList[i].added, matchedList[i].matchRate + matchedList[i].added);
                 }
 
                 matchedList = matchedList.sort(function(a, b)

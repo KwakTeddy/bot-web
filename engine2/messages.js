@@ -127,7 +127,6 @@ exports.messageByID = function (req, res, next, id) {
 
 var sendKakaoSeq = 0;
 exports.sendKakao = function (req, res) {
-    console.log('sendKakao');
     var phoneNum = req.body.phoneNum;
     var message = req.body.message;
     sendKakaoSeq++;
@@ -136,11 +135,9 @@ exports.sendKakao = function (req, res) {
         if(err) {
             console.log(err.toString());
         } else {
-            // console.log('data: ' + data);
             message = data;
 
             mySqlPool.getConnection(function (err, connection) {
-                console.log(err);
                 var query = connection.query('INSERT INTO MZSENDTRAN (SN, SENDER_KEY, CHANNEL, PHONE_NUM, TMPL_CD, SND_MSG, REQ_DTM, TRAN_STS)' +
                                              'VALUES (' +
                                              '\'' + dateformat(new Date(), 'yyyymmddHHMMss') + '\',' +//'\'' + sendKakaoSeq + '\',' +
@@ -159,7 +156,6 @@ exports.sendKakao = function (req, res) {
 
                         connection.release();
                     });
-//    console.log(query);
             })
 
         }
@@ -181,7 +177,6 @@ function sendSMS(task, context, callback) {
     mySqlPool.getConnection(function (err, connection) {
         if(err) {
             console.log(err);
-
             callback(task, context);
         } else {
             var query = 'INSERT INTO SDK_SMS_SEND ' +
@@ -218,8 +213,6 @@ function sendSMS(task, context, callback) {
                                         } else {
 
                                             if(rows.length > 0) {
-                                                console.log('sendSMS: query result' + rows[0]['RESULT']);
-
                                                 if(rows[0]['RESULT'] == 2) {
                                                     task.result = 'SUCCESS';
                                                     cb(true);
@@ -244,8 +237,6 @@ function sendSMS(task, context, callback) {
                         );
                     }
                 });
-
-            console.log(query);
         }
     });
 }
@@ -267,16 +258,13 @@ function sendSMSReq(req, res) {
 exports.sendSMSReq = sendSMSReq;
 
 function sendVMS(task, context, callback) {
-    console.log('sendVMS');
     var callbackPhone = task.callbackPhone;
     var phone = task.phone;
     var message = task.message;
 
     mySqlPool.getConnection(function (err, connection) {
         if(err) {
-            console.log("@@@@@"+err);
-            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-
+            console.log(err);
             callback(task, context);
         } else {
             var query = 'INSERT INTO SDK_VMS_SEND ' +
@@ -297,8 +285,6 @@ function sendVMS(task, context, callback) {
                     connection.release();
                     callback(task, context);
                 });
-
-            console.log(query);
         }
     });
 

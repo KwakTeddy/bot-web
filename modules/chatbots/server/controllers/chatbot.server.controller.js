@@ -4,6 +4,8 @@ var fs = require('fs');
 var accepts = require('accepts');
 var async = require('async');
 
+var multer = require('multer');
+
 // sample
 var utils = require(path.resolve('./engine2/utils/utils.js'));
 
@@ -60,6 +62,8 @@ exports.find = function (req, res)
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
+    if(req.query.type)
+        query.type = { $in: ['survey'] };
 
     ChatBot.find(query).sort('-created').populate('templateId').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
     {
@@ -289,7 +293,6 @@ exports.create = function(req, res)
                             var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
 
                             if(!language || language != 'ko'){
-                                console.log(lanService(language));
                                 botData = botData.replace("시작",lanService(language)['start']);
                             }
 
@@ -752,6 +755,67 @@ exports.share = function(req, res)
         else
         {
             res.status(404).send({ message: req.body.data.email + ' ' + lanService(language)['L091'] });
+        }
+    });
+};
+
+exports.uploadImage = function(req,res)
+{
+    var now = new Date().getTime();
+    var originalname = '';
+
+    var storage = multer.diskStorage(
+        {
+            destination: function (req, file, cb)
+            {
+                cb(null, './public/files/');
+            },
+            filename: function (req, file, cb)
+            {
+                originalname = file.originalname;
+                cb(null, now + '-' + file.originalname);
+            }
+        });
+
+    var fileFilter = function (req, file, cb)
+    {
+        if (!file.mimetype.startsWith('image'))
+        {
+            return cb(new Error('Only image files are allowed!'), false);
+        }
+
+        cb(null, true);
+    };
+
+    var upload = multer({ storage: storage, fileFilter: fileFilter }).single('uploadFile');
+
+    upload(req, res, function (uploadError)
+    {
+        if (uploadError)
+        {
+            console.error(uploadError); return res.status(400).send({ message: uploadError.message });
+        }
+        else
+        {
+            var botId = req.params.botId;
+
+            if(process.env.NODE_ENV == 'production')
+            {
+                S3.uploadFile('playchat-files', req.user._id.toString(), now + '-' + originalname, path.resolve('./public/files/' + now + '-' + originalname), function(err, url)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return res.status(400).send({ message: err });
+                    }
+
+                    res.jsonp({ url : url });
+                });
+            }
+            else
+            {
+                res.jsonp({ url : '/files/' + now + '-' + originalname });
+            }
         }
     });
 };

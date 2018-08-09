@@ -126,7 +126,6 @@
 
                 $timeout(function()
                 {
-                    console.log(e.currentTarget.children[1]);
                     e.currentTarget.children[1].click();
                 })
             };

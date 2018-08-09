@@ -64,7 +64,7 @@ var PAGE_ACCESS_TOKEN = 'EAAWIPOJg3OsBADEhWYKGbPEj6cZCKAV9ZCOlwypXq2deL8SxHNZCvE
                 var output = out.output;
                 var message = that.makeOutputMessage(output);
 
-                request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + accessToken, json: { recipient: { id: sender.id }, message: message } }, function(err, response, body)
+                request.post({ url: 'https://graph.facebook.com/v2.6/me/messages?access_token=' + accessToken, json: { recipient: { id: sender.id }, message: message, messaging_type: 'RESPONSE' } }, function(err, response, body)
                 {
                     console.log(body);
                 });

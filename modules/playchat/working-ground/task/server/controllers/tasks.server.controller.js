@@ -396,7 +396,6 @@ exports.create = function(req, res)
  * Show the current Custom action
  */
 exports.read = function(req, res) {
-  console.log('---------------------====');
   var taskList = global._bots[req.params.botNameId].tasks;
   var task = taskList[req.params.name];
   res.jsonp(task);
@@ -444,7 +443,6 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
 
   // var task = req.task ;
-  console.log('=-=-===--.................');
   // task = _.extend(task , req.body);
   Task.findOne({name: req.body.name}, function (err, data) {
     if (err) {
@@ -542,11 +540,7 @@ exports.taskByID = function(req, res, next, id) {
  * Create a Custom action
  */
 exports.contentCreate = function(req, res) {
-  console.log(req.body.content);
-  console.log('-----------------');
   TaskContent.find({user: req.user._id, taskId: req.body.taskId, name: req.body.content}).exec(function (err, data) {
-    console.log(err);
-    console.log(data);
     if(err){
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -558,13 +552,11 @@ exports.contentCreate = function(req, res) {
         taskContent.user = req.user;
         taskContent.taskId = req.body.taskId;
         taskContent.save(function (err, data) {
-          console.log(err);
           if(err){
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)
             });
           }else {
-            console.log(data);
             res.json(data);
           }
         });
@@ -589,8 +581,6 @@ exports.contentDelete = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(data);
-      console.log('--------------')
       res.jsonp(data);
     }
   })

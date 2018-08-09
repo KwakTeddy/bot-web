@@ -1,5 +1,6 @@
 .working-ground-bizchat{
-    margin: 2% auto 0;
+    /*margin: 2% auto 0;*/
+    margin: 2% auto 10px;
     height: 100%;
     width: 1010px;
     position: relative;
@@ -8,9 +9,9 @@
     position: relative;
     display: inline-block;
     padding: 0 53px 0 19px;
-    font-size: 20px;
+    font-size: 18px;
     color: #424242;
-    line-height: 46px;
+    line-height: 37px;
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -70,32 +71,38 @@ select.custom-select option{
 .bot-messages-list{
     width: 490px;
     float: left;
+    margin-bottom: 80px;
 }
-.bot-messages-list li{
+.bot-messages-list li.unsel{
     padding:3%;
     background: #f6f6f6;
     border: 1px solid #d0d2d3;
     margin: 12px 0;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
-.bot-messages-list li:hover{
+.bot-messages-list li.unsel:hover{
     background: #fff;
     transition: all 0.3s;
 }
 .bot-messages-list li.select{
     border: 1px solid #038eda;
     background: #fff;
+    margin: 12px 0;
+    padding: 5% 3% 3%;
 }
 .bot-messages-list li.new-select{
     border: 1px dashed #d0d2d3;
     background: #fff;
-    padding: 5% 0;
+    padding: 8% 0;
     text-align: center;
     cursor: pointer;
 }
 .bot-messages-list li.new-select:hover{
     background: #f4fcff;
     transition: all 0.3s;
+}
+.ml2{
+    margin-left:2%;
 }
 .ml3{
     margin-left:3%;
@@ -239,9 +246,8 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 
 
 .bot-messages-list .add-menu{
-    padding: 3%;
+    padding:3% 10% 3% 5%;
     margin: 0 auto;
-    width: 200px;
     border: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -249,6 +255,9 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     color: #fff;
     background: url("/modules/playchat/gnb/client/imgs/down.png") #038eda no-repeat 90% 50%;
     cursor: pointer;
+}
+.bot-messages-list .add-menu:focus{
+    background-color: #007dc2;
 }
 select.add-menu option{
     background: #fff;
@@ -272,11 +281,11 @@ select.add-menu option{
     width: 32%;
     float: left;
     font-size: 14px;
-    margin-left:2%;
+    /*margin-left:50px;*/
     margin-bottom: 10%;
     /*width: 17%;*/
     /*font-size: 14px;*/
-    /*margin-left: 2%;*/
+    margin-left: 2%;
     /*margin-bottom: 10%;*/
     /*position: fixed;*/
     /*right: 27%;*/
@@ -292,7 +301,7 @@ select.add-menu option{
     border-right: 1px solid #d0d2d3;
     border-left: 1px solid #d0d2d3;
     border-bottom: 1px solid #d0d2d3;
-    padding: 6% 2%;
+    padding: 5% 2%;
     display: flex;
     position: relative;
 }
@@ -344,7 +353,17 @@ select.add-menu option{
     text-align: center;
     width: 100%;
 }
-
+.message-view .dialog-btn:focus{
+    background-color: #007dc2;
+}
+.dialog-btn{
+    background: #038eda;
+    color: #fff;
+    padding: 4% 0;
+    text-align: center;
+    width: 100%;
+    margin: 6% auto;
+}
 #graphDialogCanvas svg
 {
     position: absolute;
@@ -370,8 +389,8 @@ select.add-menu option{
 .detail-select input[type='checkbox'] + label::before {
     content: ' ';
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     vertical-align: middle;
     margin: -2px 7px 0px 0;
     background:#fff;
@@ -388,10 +407,10 @@ select.add-menu option{
     color: #fff;
     cursor: pointer;
     border: 1px solid #038eda;
-    line-height: 10px;
+    line-height: 15px;
 }
 .detail-select label{
-    font-size: 12px;
+    font-size: 14px;
     line-height: 28px;
 }
 .connection-data{
@@ -417,6 +436,7 @@ input.type03{
     width: 82%;
     text-overflow: ellipsis;
 }
+
 .type04{
     border: 1px dashed #d0d2d3;
     width: 93.5%;
@@ -437,6 +457,14 @@ input.type03{
     transition: all 0.3s;
     opacity: 1;
 }
+input.type05{
+    border: 1px solid #e5e5e5;
+    text-overflow: ellipsis;
+    padding: 7px 3px 8px 15px;
+    width: 28%;
+    letter-spacing: 0.4px;
+    font-size: 16px;
+}
 .pic-area{
     width: 100%;
     height: 100px;
@@ -451,6 +479,72 @@ input.type03{
 .reorder{
     text-align: right;
     display: block;
+}
+/*long-dd*/
+.long-dd{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 420px;
+    border-radius: 2px;
+    z-index: 200;
+    font-size: 13px !important;
+    /*background-color: #f6f6f6;*/
+    background: #fff;
+    position: absolute;
+    min-width: 310px;
+    box-shadow: 0 2px 15px 0 rgba(0,0,0,0.2);
+}
+.long-dd li{
+    margin: 0;
+    outline: none;
+    padding: 0;
+}
+.long-d li.long-dd-menu-container{
+    display: block;
+    box-sizing: border-box;
+    position: relative;
+    width: 455px;
+    background: #fff !important;
+    border: 1px solid #fff !important;
+}
+ul.menu-left{
+    display: inline-block;
+    float: left;
+    width: 50%;
+    vertical-align: top;
+}
+ul.menu-left li.dd-l{
+    color: #333E48;
+}
+li.dd-l:hover{
+    background: #e9e9e9;
+    transition: all .3s;
+}
+ul.menu-left li{
+    margin: 0;
+    position: relative;
+    outline: none;
+}
+.dd-contents{position: relative;}
+.dd-contents .dd-icon{
+    position: absolute;
+    top: 11px;
+    left: 14px;
+}
+.dd-contents .dd-tit{
+    font-size: 13px;
+    outline: none;
+    padding: 12px 32px 12px 46px !important;
+    color: #333E48 !important;
+    cursor: pointer;
+    display: block;
+    word-wrap: break-word;
+}
+ul.menu-right{
+    display: inline-block;
+    float: right;
+    width: 50%;
+    vertical-align: top;
 }
 
 @media screen and (max-width: 1450px)

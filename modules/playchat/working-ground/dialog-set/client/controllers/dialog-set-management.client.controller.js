@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$rootScope', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', function ($window, $scope, $resource, $cookies, $location, $rootScope, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService)
+angular.module('playchat').controller('DialogSetManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$rootScope', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService','LanguageService', 'ExcelDownloadService', 'DateRangePickerService', function ($window, $scope, $resource, $cookies, $location, $rootScope, FileUploader, ModalService, TabService, FormService, PagingService, LanguageService, ExcelDownloadService, DateRangePickerService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Management') + ' > ' + LanguageService('Dialog Set'), '/modules/playchat/gnb/client/imgs/speech.png');
 
@@ -67,8 +67,6 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
             {
                 $scope.dialogsets = list;
 
-                console.log(list);
-
                 var check = false;
                 for(var i=0; i<list.length; i++)
                 {
@@ -112,7 +110,6 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                 {
                     DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
                     {
-                        console.log(dialogset);
                         $scope.dialogsets = [dialogset];
                     },
                     function(err)
@@ -294,14 +291,12 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
         $scope.uploader.onErrorItem = function(item, response, status, headers)
         {
             $scope.modalForm.fileUploadError = response.message;
-            console.log($scope.modalForm.fileUploadError);
         };
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers)
         {
             importModal.data.path = response.path;
             importModal.data.filename = response.filename;
-            console.log(importModal);
         };
 
         $scope.uploader.onProgressItem = function(fileItem, progress)

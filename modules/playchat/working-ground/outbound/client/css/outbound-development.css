@@ -1,0 +1,88 @@
+/*발송하기*/
+.title01{
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+.nal1{
+    padding: 20px 20px 0;
+}
+.nal1 li{
+    display: inline-block;
+}
+.nal1 li.first{
+    width: 95px;
+    font-size: 14px;
+    color: #858585;
+    letter-spacing: -1px;
+}
+.nal2{
+    padding: 0px 20px 0;
+}
+.nal2 li{
+    display: inline-block;
+}
+.nal2 li.first{
+    width: 77px;
+    font-size: 14px;
+    color: #858585;
+    letter-spacing: -1px;
+}
+.edit-windo{
+    padding: 3% 0;
+}
+.edit-windo li.two{
+    width: 110px;
+    font-size: 14px;
+    color: #858585;
+    letter-spacing: -1px;
+    display: inline-block;
+    text-indent: 6px;
+}
+.edit-windo li.three{
+    display: inline-block;
+    font-size: 14px;
+}
+.edit-windo li.four{
+    width: 100%;
+    font-size: 14px;
+    color: #858585;
+    letter-spacing: -1px;
+    display: inline-block;
+    text-indent: 6px;
+    padding: 7% 0 4%;
+}
+.edit-windo li.five{
+    text-align: right;
+    padding-right: 11%;
+    margin-top: 10px;
+}
+.edit-windo li.five:last-child{
+    margin-bottom: 20px;
+}
+/*셀렉박스*/
+.select01{
+    position: relative;
+    display: inline-block;
+    padding: 0 30px 0 13px;
+    font-size: 13px;
+    color: #424242;
+    line-height: 35px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border:1px solid #d8d8d8;
+    outline: none;
+    background: url("/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down02.png") no-repeat 99% 38%;
+    margin-right:4px;
+}
+select.select01::-ms-expand{
+    display: none;
+}
+select.select01 option{
+    font-size: 13px;
+    border: none;
+    outline: none;
+}
+

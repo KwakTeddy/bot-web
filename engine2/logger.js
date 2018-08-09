@@ -108,6 +108,8 @@ var UserDialogLog = mongoose.model('UserDialogLog');
 
     Logger.prototype.analysisLog = function(type, log, userKey)
     {
+        //console.log('=============================>>>>>')
+        //console.log(this.sockets[userKey])
         if(this.sockets[userKey])
         {
             this.sockets[userKey].emit('analysis_log', { type: type, log: log });
