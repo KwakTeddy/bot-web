@@ -119,7 +119,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
             $scope.addCardSentence.type = $scope.Data.defaultSentences[2]._id;
 
-            var _isUpdated = true;
+            _isUpdated = true;
         })
     };
 
@@ -213,6 +213,7 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             if(!rtn){
                 console.log(rtn);
             }
+            _isUpdated = true;
         });
     };
 

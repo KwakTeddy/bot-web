@@ -327,12 +327,10 @@
 
             newArr.splice(0,1);
             oldArr.splice(0,1);
-            console.log(newArr)
-            console.log(oldArr)
-            console.log(firstInput)
+
             var dialogs =_recoverProcess(newArr,oldArr,firstInput);
 
-            console.log(dialogs)
+
             BizChat.commonDialogs[0] = startDialog;
             TC._getCompleteData(dialogs, BizChat.commonDialogs,
                 (script) => {
