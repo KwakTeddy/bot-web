@@ -118,6 +118,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
 
             angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
             $scope.addCardSentence.type = $scope.Data.defaultSentences[2]._id;
+
+            var _isUpdated = true;
         })
     };
 
