@@ -343,7 +343,6 @@
             oldArr.splice(0,1);
 
             var dialogs =_recoverProcess(newArr,oldArr,firstInput);
-console.log(dialogs)
 
             BizChat.commonDialogs[0] = startDialog;
             TC._getCompleteData(dialogs, BizChat.commonDialogs,

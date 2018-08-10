@@ -48,6 +48,16 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
         return n
     };
 
+    $scope.$watch('selectedBot',(n,o)=>{
+        if(n){
+            var bot = $scope.botList.find((e) => {return e.id ==n})
+
+            bot.myBotAuth = { read: true, edit: true };
+            $cookies.putObject('chatbot', bot);
+            $rootScope.$broadcast('editChatbotInfo');
+        }
+    });
+
     $scope.pickerSetting = (e) => {
         $('#createdRange').daterangepicker({
             timePicker: true,
