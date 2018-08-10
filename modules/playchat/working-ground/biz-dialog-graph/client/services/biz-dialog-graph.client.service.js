@@ -273,6 +273,20 @@
                             }
                         }
                     })
+                }else if(item.target&&item.target!=''){
+                    var c = TC.callCard();
+                    c.name = c.name + callIdx;
+                    c.id = c.id + callIdx;
+                    c.input = TC.getInput(null);
+                    c.output[0].dialogId = item.target;
+
+                    child.push(c);
+                    callIdx ++;
+                    var target = newArr.find((j) => {return j.id == item.target});
+                    if(!target.parent){
+                        target.parent = true;
+                        target.input = TC.getInput(null);
+                    }
                 }
 
                 if(child.length > 0){
@@ -329,7 +343,7 @@
             oldArr.splice(0,1);
 
             var dialogs =_recoverProcess(newArr,oldArr,firstInput);
-
+console.log(dialogs)
 
             BizChat.commonDialogs[0] = startDialog;
             TC._getCompleteData(dialogs, BizChat.commonDialogs,
