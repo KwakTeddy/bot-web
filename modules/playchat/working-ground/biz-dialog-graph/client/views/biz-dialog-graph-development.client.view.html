@@ -122,7 +122,7 @@ caption
                             <a class="btn-style03 flR mr5" ng-click="save()" href="">저장</a>
                         </div>
                         <!-- 단답형, 일반형, 연락처수집형, 날짜수집형 -->
-                        <div ng-if="card.is_open && (getCardType(card.type).name == '단답형' || getCardType(card.type).name == '일반형' || getCardType(card.type).name == '연락처수집형' || getCardType(card.type).name == '날짜수집형')">
+                        <div ng-if="card.is_open && (getCardType(card.type).name == '단답형' || getCardType(card.type).name == '일반형' || getCardType(card.type).name == '연락처수집형' || getCardType(card.type).name == '날짜수집형' || getCardType(card.type).name == '이름수집형')">
                             <span class="message-title02">{{card.index+1}} {{card.name}}</span>
                             <select ng-change="setDefaultValue(card)" class="message-inselect ml3" ng-model="card.type">
                                 <option ng-repeat="s in Data.defaultSentences" value="{{s._id}}">{{s.name}}</option>

@@ -57,11 +57,12 @@ module.exports = function(globals)
         context: true
     });
 
-    // globals.setTypes('string',
-    // {
-    //     name: 'string',
-    //     typeCheck: globals.typeChecks.stringTypeCheck
-    // });
+    globals.setTypes('name',
+    {
+         name: 'name',
+         typeCheck: globals.typeChecks.regexpTypeCheck,
+        regexp: /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g
+    });
 
     globals.setTypes('number',
     {

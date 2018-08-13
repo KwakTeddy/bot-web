@@ -223,14 +223,20 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         }else{
             card.name = typeNm;
         }
+        console.log(card)
         if(card.input && card.input.length > 0){card.input.forEach((e)=>{delete e.target});}
         switch(typeNm){
             case '단답형' :
             case '일반형' :
+                delete card.connect;
+                delete card.output;
+                break;
             case '연락처수집형' :
+            case '이름수집형' :
             case '날짜수집형' :
                 delete card.connect;
                 delete card.output;
+                card.input = $scope.Data.defaultSentences.find((e) => {return e.name == typeNm}).input;
                 break;
             case '정보형' :
                 delete card.connect;

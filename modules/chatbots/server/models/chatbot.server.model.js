@@ -13,7 +13,14 @@ var BotSchema = new Schema(
 {
     id: { type: String },
     name: { type: String },
+
+    //for bizchat
+    companyName: { type: String },
+    companyCall: { type: String },
+    rejectCall: { type: String },
+
     description: String,
+    phone: { type: String },
     language: { type: String, default: 'ko' },
     kakao: { type: Boolean, default: false },
     line: { type: Boolean, default: false },

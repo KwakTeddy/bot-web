@@ -20,6 +20,8 @@
         var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
         var SentencesService = $resource('/api/:bizchatId/biz-sentences', { bizchatId: '@bizchatId' });
 
+
+        var callIdx = 0;
         // TemplateCreator
         var TC = {
             firstInput : () => {
@@ -72,8 +74,8 @@
                             nlp:p.nlp ? p.nlp : p.text
                         }
                     }];
-                }else if(p.types){
-                    input = [{types:[p.types]}]
+                }else if(p[0].types){
+                    input = [{types:[p[0].types]}]
                 }else{
                     input = [{'if':'true'}];
                 }
@@ -117,16 +119,28 @@
             },
             setChild : (cardA, cardB, dialog) => {
                 if(cardB && !cardB.parent){
-                    cardB.input = TC.getInput(cardA.input);
+
 
                     // dialog item A
-
                     if(!cardB.called){
                         var c_item = dialog.find((e) => {return e.index == cardB.index+1});
                         cardB = TC.setChild(cardB, c_item, dialog);
                     }
-
+                    var inf = cardA.fnInput? cardA.fnInput : cardA.input;
+                    cardB.input = TC.getInput(inf);
                     cardA.children = [TC.createCard(cardB)];
+
+                    if(inf&&inf[0].types){
+                        var c = TC.callCard();
+                        c.name = c.name + callIdx;
+                        c.id = c.id + callIdx;
+                        c.input = TC.getInput(null);
+                        c.output[0].dialogId = cardA.id;
+                        c.output[0].text = '예시를 참고하여 다시 한번 입력해 주세요.';
+                        c.output[0].type = 'returnCall';
+                        cardA.children.push(c);
+                        callIdx ++;
+                    }
                 }
                 return cardA;
             },
@@ -241,12 +255,13 @@
                     if(e.target){
                         var item = newArr.find((j) => {return j.id == e.target});
                         item.parent = true;
+                        if(item.input&&item.input[0].types){
+                            item.fnInput = item.input;
+                        }
                         item.input = TC.getInput(e);
                     }
                 })
             }
-
-            var callIdx = 0;
 
             // dialog 내 call 설정
             for(var i in oldArr){
@@ -261,12 +276,15 @@
                             c.name = c.name + callIdx;
                             c.id = c.id + callIdx;
                             c.input = TC.getInput(e);
-                            c.output[0].dialogId = e.target;
+                            var target = newArr.find((j) => {return j.id == e.target});
+
+                            c.output[0].dialogId = target.id;
+                            c.output[0].dialogName = target.name;
 
                             child.push(c);
                             callIdx ++;
                             // target에 parent 설정
-                            var target = newArr.find((j) => {return j.id == e.target});
+
                             if(!target.parent){
                                 target.parent = true;
                                 target.input = TC.getInput(null);
@@ -278,11 +296,14 @@
                     c.name = c.name + callIdx;
                     c.id = c.id + callIdx;
                     c.input = TC.getInput(null);
-                    c.output[0].dialogId = item.target;
+                    var target = newArr.find((j) => {return j.id == item.target});
+
+                    c.output[0].dialogId = target.id;
+                    c.output[0].dialogName = target.name;
 
                     child.push(c);
                     callIdx ++;
-                    var target = newArr.find((j) => {return j.id == item.target});
+
                     if(!target.parent){
                         target.parent = true;
                         target.input = TC.getInput(null);
@@ -297,7 +318,7 @@
 
             var dialog = [];
             newArr.forEach((e)=>{
-                dialog.push({
+                var item = {
                     id : e.id,
                     name : e.name,
                     input : e.input,
@@ -306,7 +327,9 @@
                     called : e.called,
                     children : e.children,
                     index : e.index
-                })
+                }
+                e.fnInput ? item.fnInput = e.fnInput : null;
+                dialog.push(item)
             });
 
 
@@ -316,7 +339,6 @@
                 dialog[0].input = TC.getInput();
                 firstDsSet = [dialog[0]]
             }
-
             firstDsSet.forEach((e) => {
                 // new item of B
                 var b_item = dialog.find((j) => {return j.index == e.index+1});
@@ -330,7 +352,7 @@
 
         BizChat.saveGraph = (arr, cb) => {
             BizChat.cardArr = arr.sort((a,b)=>{return a.index - b.index});
-
+            console.log(BizChat.cardArr);
             var newArr = [], oldArr = [];
             angular.copy(BizChat.cardArr,newArr);
             angular.copy(BizChat.cardArr,oldArr);
@@ -436,6 +458,7 @@
                 BizChat.sentences = res.data.sentences;
                 // message list load
                 BizMsgsService.get({botId:BizChat.chatbot.id},(res) => {
+                    console.log(res)
                     BizChat.cardArr = res.data;
                     BizChat.cardArr[0].type = BizChat.defaultSentences.find((e) => {return e.name == '일반형'})._id;
                     cb(BizChat);
