@@ -90,6 +90,7 @@
 .list-line{
     display: block;
     padding: 10px;
+    text-align: left;
 }
 .list-line:hover{
     color: #038eda;
@@ -123,7 +124,6 @@
     padding: 0 40px;
 }
 .download{
-    float: right;
     color: #038eda !important;
     margin: 33px 16px 0;
     border-bottom: 1px solid;

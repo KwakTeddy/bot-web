@@ -110,7 +110,7 @@
                         <div class="six">파일 불러오기</div>
                         <a class="btn-style03" href="" style="margin-top: 25px;float: right;" ng-click="triggerFile($event)">엑셀 파일 가져오기</a>
                         <input type="file" name="file" id="file" ng-required="true" style="display:none;" nv-file-select uploader="uploader"/>
-                        <a href="" class="download" ng-click="excelDownload()">엑셀샘플 다운받기</a>
+                        <a href="" class="download" ng-click="excelDownload()" style="float: right;">엑셀샘플 다운받기</a>
                         <div class="box-list" style="height: 280px;">
                             <a class="list-line" ng-repeat="telebook in telebookset" href="">
                                 <div class="list1"><span>{{$index + 1}}</span>. {{telebook.fileName}}</div>
