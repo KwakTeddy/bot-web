@@ -19,10 +19,12 @@ exports.message = function (req, res)
         {
             if(channel=='unity'&&out.originalDialogId == 'noanswer')
             {
+                console.log('no response')
                 return res.end();
             }
 
             if(channel=='unity'){
+                console.log(out);
                 res.send(out);
             }else{
                 res.send(out.output);
